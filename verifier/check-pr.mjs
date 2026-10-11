@@ -1,7 +1,8 @@
 // Only trusted default-branch orchestration may run this entrypoint.
 // Candidate files are inspected by name through the API, never executed.
 import { api, pages } from "./github-api.mjs";
-import { evaluatePR } from "./pr-admission.mjs";
+import { classifyPRChanges, evaluatePR } from "./pr-admission.mjs";
+import { syncPRLabels } from "./pr-labels.mjs";
 
 const repo = process.env.GITHUB_REPOSITORY;
 const number = Number(process.env.QRH_PR);
@@ -68,6 +69,13 @@ let conclusion = "failure",
   summary;
 try {
   const files = await pages(`repos/${repo}/pulls/${number}/files`);
+  const classification = classifyPRChanges({
+    pr,
+    files,
+    repository: repo,
+    defaultBranch,
+  });
+  await syncPRLabels(repo, number, classification);
   summary = await evaluatePR({
     pr,
     files,

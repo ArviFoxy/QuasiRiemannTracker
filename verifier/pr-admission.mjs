@@ -12,23 +12,12 @@ export function parseDeclaration(body) {
   const fields = new Map();
   for (const line of (body ?? "").split(/\r?\n/)) {
     if (!line.trim().startsWith("QRH-")) continue;
-    const match = /^QRH-(Type|Result|Bound|Decimal): ([^\r\n]+)$/.exec(
-      line.trim(),
-    );
+    const match = /^QRH-(Result|Bound|Decimal): ([^\r\n]+)$/.exec(line.trim());
     if (!match) throw Error("Malformed or unknown QRH declaration field");
     if (fields.has(match[1])) throw Error("Duplicate QRH declaration field");
     fields.set(match[1], match[2].trim());
   }
-  const type = fields.get("Type");
-  if (!["maintenance", "new-bound"].includes(type))
-    throw Error(
-      "Declare QRH-Type: maintenance or QRH-Type: new-bound in the PR body",
-    );
-  if (type === "maintenance") {
-    if (fields.size !== 1)
-      throw Error("Maintenance must not declare a result, bound or decimal");
-    return { type };
-  }
+  if (!fields.size) return null;
   const result_id = fields.get("Result"),
     theta_exact = fields.get("Bound");
   if (!/^[a-z][a-z0-9-]{2,63}$/.test(result_id ?? ""))
@@ -51,7 +40,17 @@ export function parseDeclaration(body) {
   }
   const theta_decimal = fields.get("Decimal");
   decimalPrecision(theta_decimal);
-  return { type, result_id, theta_exact, theta_decimal };
+  return { result_id, theta_exact, theta_decimal };
+}
+
+export function hasResultSection(body) {
+  return (body ?? "").split(/\r?\n/).some((line) => {
+    const text = line.trim();
+    return (
+      /^QRH-(?:Result|Bound|Decimal)\b/i.test(text) ||
+      /^#{1,6}\s+(?:new bounds?|QRH[- ]results?)\b/i.test(text)
+    );
+  });
 }
 
 function proofPath(name) {
@@ -78,17 +77,14 @@ function paths(files) {
 }
 
 export function classifyChanges(files) {
-  return paths(files).some(proofPath);
+  const changedPaths = paths(files);
+  return {
+    proof: changedPaths.some(proofPath),
+    maintenance: changedPaths.some((name) => !proofPath(name)),
+  };
 }
 
-export async function evaluatePR({
-  pr,
-  files,
-  repository,
-  defaultBranch,
-  root,
-  validateEvidence = validateAdmission,
-}) {
+export function classifyPRChanges({ pr, files, repository, defaultBranch }) {
   if (pr.base?.repo?.full_name !== repository || pr.base?.ref !== defaultBranch)
     throw Error(
       "Admission requires a PR targeting this repository's default branch",
@@ -99,8 +95,7 @@ export async function evaluatePR({
     !/^[a-f0-9]{40}$/.test(pr.head?.sha ?? "")
   )
     throw Error("Invalid PR identity or head commit");
-  if (pr.state !== "open" || pr.draft)
-    throw Error("Admission requires an open, non-draft PR");
+  if (pr.state !== "open") throw Error("Admission requires an open PR");
   if (
     !Array.isArray(files) ||
     !files.length ||
@@ -110,22 +105,38 @@ export async function evaluatePR({
     throw Error(
       "Incomplete or duplicate PR file list; refusing a truncated diff",
     );
-  const declaration = parseDeclaration(pr.body);
-  const proofBearing = classifyChanges(files);
-  if (declaration.type === "maintenance") {
-    if (proofBearing)
-      throw Error(
-        "Proof, submission or catalogue changes require QRH-Type: new-bound and independently checked evidence",
-      );
-    return "Maintenance change: no proof or catalogue admission. Website checks and maintainer review are still required.";
-  }
-  if (!proofBearing)
+  return classifyChanges(files);
+}
+
+export async function evaluatePR({
+  pr,
+  files,
+  repository,
+  defaultBranch,
+  root,
+  validateEvidence = validateAdmission,
+}) {
+  const classification = classifyPRChanges({
+    pr,
+    files,
+    repository,
+    defaultBranch,
+  });
+  if (pr.draft) throw Error("Admission requires a non-draft PR");
+  if (classification.maintenance && hasResultSection(pr.body))
     throw Error(
-      "New-bound PR contains no proof, submission or catalogue changes",
+      "QRH result sections cannot accompany maintenance changes; separate them into different PRs",
     );
-  if (paths(files).some((name) => !proofPath(name)))
+  if (classification.proof && classification.maintenance)
     throw Error(
-      "Separate proof changes from workflow, verifier and other infrastructure changes",
+      "Separate proof changes from maintenance changes, including workflow and verifier changes",
+    );
+  const declaration = parseDeclaration(pr.body);
+  if (!classification.proof)
+    return "Maintenance change: no proof or catalogue admission. Website checks and maintainer review are still required.";
+  if (!declaration)
+    throw Error(
+      "Proof, submission or catalogue changes require QRH-Result, QRH-Bound, QRH-Decimal and independently checked evidence",
     );
   const evidence = await validateEvidence(root, {
     repository,

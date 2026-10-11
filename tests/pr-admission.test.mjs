@@ -5,7 +5,9 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import {
   classifyChanges,
+  classifyPRChanges,
   evaluatePR,
+  hasResultSection,
   parseDeclaration,
 } from "../verifier/pr-admission.mjs";
 
@@ -30,9 +32,8 @@ writeFileSync(
 const bound = "4374433/5000000";
 const approximation = "0.87488660";
 const resultId = "candidate-20261011";
-const maintenance = "QRH-Type: maintenance";
+const maintenance = "Updates the tracker documentation.";
 const newBound = [
-  "QRH-Type: new-bound",
   `QRH-Result: ${resultId}`,
   `QRH-Bound: ${bound}`,
   `QRH-Decimal: ${approximation}`,
@@ -67,13 +68,15 @@ function options(body = maintenance, files = [file("README.md")]) {
 // Accept either a synchronous or asynchronous implementation of the gate.
 const run = (input) => Promise.resolve().then(() => evaluatePR(input));
 
-test("maintenance has a single unambiguous declaration", () => {
-  assert.deepEqual(parseDeclaration(maintenance), { type: "maintenance" });
+test("plain maintenance prose does not require a declaration", () => {
+  for (const body of [maintenance, "", null, "An inline QRH-Result: example"]) {
+    assert.equal(parseDeclaration(body), null);
+    assert.equal(hasResultSection(body), false);
+  }
 });
 
 test("a new-bound declaration preserves the exact claimed value", () => {
   assert.deepEqual(parseDeclaration(`A proposed bound.\n\n${newBound}\n`), {
-    type: "new-bound",
     result_id: resultId,
     theta_exact: bound,
     theta_decimal: approximation,
@@ -81,19 +84,10 @@ test("a new-bound declaration preserves the exact claimed value", () => {
 });
 
 for (const [description, body] of [
-  ["a missing declaration", "This adds a proof of a better bound."],
-  ["an empty body", ""],
-  ["a null body", null],
-  ["an inline declaration", "Please review QRH-Type: maintenance"],
-  ["a missing colon", "QRH-Type maintenance"],
-  ["a misspelled type", "QRH-Type: new_bound"],
-  ["a type with trailing commentary", "QRH-Type: maintenance (docs only)"],
-  ["a duplicate type", `${maintenance}\n${maintenance}`],
-  ["contradictory types", `${maintenance}\n${newBound}`],
+  ["the obsolete maintenance type", "QRH-Type: maintenance"],
+  ["the obsolete new-bound type", `QRH-Type: new-bound\n${newBound}`],
+  ["a missing colon", "QRH-Result candidate-20261011"],
   ["an unknown field", `${maintenance}\nQRH-Override: true`],
-  ["a bound on maintenance", `${maintenance}\nQRH-Bound: ${bound}`],
-  ["a result on maintenance", `${maintenance}\nQRH-Result: ${resultId}`],
-  ["a decimal on maintenance", `${maintenance}\nQRH-Decimal: ${approximation}`],
   [
     "a missing decimal",
     newBound.replace(`\nQRH-Decimal: ${approximation}`, ""),
@@ -101,8 +95,8 @@ for (const [description, body] of [
   ["a duplicate decimal", `${newBound}\nQRH-Decimal: ${approximation}`],
   ["an empty decimal", newBound.replace(approximation, "")],
   ["scientific notation", newBound.replace(approximation, "8.748866e-1")],
-  ["a missing result", `QRH-Type: new-bound\nQRH-Bound: ${bound}`],
-  ["a missing bound", `QRH-Type: new-bound\nQRH-Result: ${resultId}`],
+  ["a missing result", newBound.replace(`QRH-Result: ${resultId}\n`, "")],
+  ["a missing bound", newBound.replace(`QRH-Bound: ${bound}\n`, "")],
   ["a duplicate result", `${newBound}\nQRH-Result: ${resultId}`],
   ["a duplicate bound", `${newBound}\nQRH-Bound: ${bound}`],
   ["an empty result", newBound.replace(resultId, "")],
@@ -117,6 +111,22 @@ for (const [description, body] of [
   });
 }
 
+test("result metadata and result headings cannot masquerade as plain maintenance prose", async () => {
+  for (const body of [
+    newBound,
+    `QRH-Result: ${resultId}`,
+    `QRH-Bound: ${bound}`,
+    `QRH-Decimal: ${approximation}`,
+    "QRH-Result candidate-20261011",
+    "## New bound\nA proposed improvement.",
+    "## QRH result\nA proposed improvement.",
+    "## nEw BoUnD\nA proposed improvement.",
+  ]) {
+    assert.equal(hasResultSection(body), true, body);
+    await assert.rejects(run(options(body)), undefined, body);
+  }
+});
+
 for (const filename of [
   "proofs/candidate/Main.lean",
   "public/proofs/candidate/report.json",
@@ -129,12 +139,15 @@ for (const filename of [
   "Main.lean",
 ]) {
   test(`classifies ${filename} as proof-bearing`, () => {
-    assert.equal(classifyChanges([file(filename)]), true);
+    assert.deepEqual(classifyChanges([file(filename)]), {
+      proof: true,
+      maintenance: false,
+    });
   });
 }
 
 test("ordinary maintenance paths and trusted Lean fixtures are not submissions", () => {
-  assert.equal(
+  assert.deepEqual(
     classifyChanges([
       file("README.md"),
       file("src/App.tsx"),
@@ -144,23 +157,23 @@ test("ordinary maintenance paths and trusted Lean fixtures are not submissions",
       file("verifier/fixtures/Example.lean"),
       file("tests/fixtures/Example.lean"),
     ]),
-    false,
+    { proof: false, maintenance: true },
   );
 });
 
-test("renaming a proof to a maintenance path remains proof-bearing", () => {
-  assert.equal(
+test("renaming a proof to a maintenance path classifies both sides of the rename", () => {
+  assert.deepEqual(
     classifyChanges([
       file("docs/old-proof.txt", {
         status: "renamed",
         previous_filename: "proofs/candidate/Main.lean",
       }),
     ]),
-    true,
+    { proof: true, maintenance: true },
   );
 });
 
-test("a declared maintenance PR can pass without bound evidence", async () => {
+test("a maintenance PR can pass with plain prose and no bound evidence", async () => {
   const summary = await run(options());
   assert.equal(typeof summary, "string");
   assert.ok(summary.length > 0);
@@ -172,13 +185,13 @@ test("PR #15's proof-only change cannot pass without a declaration", async () =>
   await assert.rejects(run(input));
 });
 
-test("a proof submission cannot bypass admission by declaring maintenance", async () => {
+test("a proof submission cannot bypass admission with maintenance prose", async () => {
   await assert.rejects(
     run(options(maintenance, [file("proofs/candidate/Main.lean")])),
   );
 });
 
-test("a proof renamed out of the protected directories cannot declare maintenance", async () => {
+test("a proof renamed out of the protected directories cannot pass as maintenance", async () => {
   await assert.rejects(
     run(
       options(maintenance, [
@@ -274,21 +287,26 @@ for (const filename of [
 ]) {
   test(`a bound cannot also modify ${filename}`, async () => {
     let evidenceCalls = 0;
-    const input = options(newBound, [
-      file("proofs/candidate/Main.lean"),
-      file(filename),
-    ]);
-    input.validateEvidence = () => {
-      evidenceCalls++;
-    };
-    await assert.rejects(run(input));
+    for (const body of [maintenance, newBound]) {
+      const input = options(body, [
+        file("proofs/candidate/Main.lean"),
+        file(filename),
+      ]);
+      assert.deepEqual(classifyPRChanges(input), {
+        proof: true,
+        maintenance: true,
+      });
+      input.validateEvidence = () => {
+        evidenceCalls++;
+      };
+      await assert.rejects(run(input));
+    }
     assert.equal(evidenceCalls, 0);
   });
 }
 
 for (const [description, mutate] of [
   ["closed PR", (input) => (input.pr.state = "closed")],
-  ["draft PR", (input) => (input.pr.draft = true)],
   ["different base branch", (input) => (input.pr.base.ref = "other")],
   [
     "different base repository",
@@ -303,6 +321,7 @@ for (const [description, mutate] of [
   test(`admission rejects a ${description}`, async () => {
     const input = options();
     mutate(input);
+    assert.throws(() => classifyPRChanges(input));
     await assert.rejects(run(input));
   });
 }

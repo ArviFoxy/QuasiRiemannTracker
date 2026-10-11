@@ -16,7 +16,7 @@ function fixture(files = [{ filename: "README.md", status: "modified" }]) {
       state: "open",
       draft: false,
       title: "Maintenance",
-      body: "QRH-Type: maintenance",
+      body: "Updates the tracker documentation.",
       head: { sha: head, repo: { full_name: "Contributor/Tracker" } },
       base: {
         sha: "b".repeat(40),
@@ -52,6 +52,16 @@ globalThis.fetch = async (url, options = {}) => {
     if (parsed.searchParams.get("per_page") !== "100") throw Error("Unexpected page size");
     const page = Number(parsed.searchParams.get("page"));
     value = fixture.files.slice((page - 1) * 100, page * 100);
+  } else if (request.method === "GET" && route === "/repos/${repository}/issues/15/labels") {
+    const page = Number(parsed.searchParams.get("page"));
+    value = (fixture.labels ?? []).slice((page - 1) * 100, page * 100);
+  } else if (request.method === "GET" && route.startsWith("/repos/${repository}/labels/")) {
+    value = { name: decodeURIComponent(route.split("/").at(-1)) };
+  } else if (request.method === "POST" && route === "/repos/${repository}/issues/15/labels") {
+    if (fixture.labelWriteStatus) return { ok: false, status: fixture.labelWriteStatus };
+    value = request.body.labels.map(name => ({ name }));
+  } else if (request.method === "DELETE" && route.startsWith("/repos/${repository}/issues/15/labels/")) {
+    value = {};
   } else if (request.method === "POST" && route === "/repos/${repository}/check-runs") {
     value = { id: 123 };
   } else if (request.method === "PATCH" && route === "/repos/${repository}/check-runs/123") {
@@ -103,16 +113,24 @@ function run(t, data, overrides = {}) {
   return {
     ...result,
     status: child.status,
-    writes: result.requests.filter((request) => request.method !== "GET"),
+    checkWrites: result.requests.filter(
+      (request) =>
+        request.method !== "GET" && request.url.includes("/check-runs"),
+    ),
+    labelWrites: result.requests.filter(
+      (request) => request.method !== "GET" && request.url.includes("/labels"),
+    ),
   };
 }
 
-test("maintenance publishes qrh/pr-admission success on the current PR head", (t) => {
-  const result = run(t, fixture());
+test("maintenance publishes success and replaces a stale new-bound label", (t) => {
+  const data = fixture();
+  data.labels = [{ name: "new-bound" }, { name: "help wanted" }];
+  const result = run(t, data);
   assert.equal(result.status, 0);
   assert.equal(result.importError, undefined);
-  assert.equal(result.writes.length, 2);
-  const [created, completed] = result.writes;
+  assert.equal(result.checkWrites.length, 2);
+  const [created, completed] = result.checkWrites;
   assert.equal(created.method, "POST");
   assert.equal(created.body.name, "qrh/pr-admission");
   assert.equal(created.body.head_sha, head);
@@ -124,9 +142,24 @@ test("maintenance publishes qrh/pr-admission success on the current PR head", (t
   );
   assert.equal(completed.body.status, "completed");
   assert.equal(completed.body.conclusion, "success");
+  assert.deepEqual(
+    result.labelWrites.map(({ method, body, url }) => ({ method, body, url })),
+    [
+      {
+        method: "POST",
+        body: { labels: ["maintenance"] },
+        url: `https://api.github.com/repos/${repository}/issues/15/labels`,
+      },
+      {
+        method: "DELETE",
+        body: undefined,
+        url: `https://api.github.com/repos/${repository}/issues/15/labels/new-bound`,
+      },
+    ],
+  );
 });
 
-test("a proof on the second changed-files page prevents maintenance admission", (t) => {
+test("a proof on the second changed-files page adds both labels and fails mixed admission", (t) => {
   const files = Array.from({ length: 100 }, (_, i) => ({
     filename: `docs/page-${i}.md`,
     status: "modified",
@@ -138,11 +171,41 @@ test("a proof on the second changed-files page prevents maintenance admission", 
     .filter((request) => new URL(request.url).pathname.endsWith("/files"))
     .map((request) => new URL(request.url).searchParams.get("page"));
   assert.deepEqual(pages, ["1", "2"]);
-  assert.equal(result.writes.at(-1).body.conclusion, "failure");
+  assert.equal(result.checkWrites.at(-1).body.conclusion, "failure");
   assert.match(
-    result.writes.at(-1).body.output.summary,
-    /require QRH-Type: new-bound/,
+    result.checkWrites.at(-1).body.output.summary,
+    /[Ss]eparate|[Mm]ixed/,
   );
+  assert.deepEqual(
+    result.labelWrites.map((request) => request.body?.labels),
+    [["new-bound", "maintenance"]],
+  );
+});
+
+test("an open draft receives its maintenance label while admission fails", (t) => {
+  const data = fixture();
+  data.pr.draft = true;
+  const result = run(t, data);
+  assert.equal(result.status, 1);
+  assert.deepEqual(
+    result.labelWrites.map((request) => request.body?.labels),
+    [["maintenance"]],
+  );
+  assert.equal(result.checkWrites.at(-1).body.conclusion, "failure");
+  assert.match(result.checkWrites.at(-1).body.output.summary, /non-draft PR/);
+});
+
+test("a failed required label write prevents a successful admission check", (t) => {
+  const data = fixture();
+  data.labelWriteStatus = 403;
+  const result = run(t, data);
+  assert.equal(result.status, 1);
+  assert.deepEqual(
+    result.labelWrites.map((request) => request.body?.labels),
+    [["maintenance"]],
+  );
+  assert.equal(result.checkWrites.at(-1).body.conclusion, "failure");
+  assert.match(result.checkWrites.at(-1).body.output.summary, /GitHub API 403/);
 });
 
 test("a declared new bound without trusted evidence publishes failure", (t) => {
@@ -150,13 +213,33 @@ test("a declared new bound without trusted evidence publishes failure", (t) => {
     { filename: "proofs/candidate/Main.lean", status: "added" },
   ]);
   data.pr.body =
-    "QRH-Type: new-bound\nQRH-Result: candidate-20261011\nQRH-Bound: 4374433/5000000\nQRH-Decimal: 0.87488660";
+    "QRH-Result: candidate-20261011\nQRH-Bound: 4374433/5000000\nQRH-Decimal: 0.87488660";
   const result = run(t, data);
   assert.equal(result.status, 1);
-  assert.equal(result.writes.at(-1).body.conclusion, "failure");
+  assert.equal(result.checkWrites.at(-1).body.conclusion, "failure");
   assert.match(
-    result.writes.at(-1).body.output.summary,
+    result.checkWrites.at(-1).body.output.summary,
     /no trusted verification/,
+  );
+  assert.deepEqual(
+    result.labelWrites.map((request) => request.body?.labels),
+    [["new-bound"]],
+  );
+});
+
+test("an incomplete file list fails before assigning classification labels", (t) => {
+  const data = fixture();
+  data.pr.changed_files = 2;
+  const result = run(t, data);
+  assert.equal(result.status, 1);
+  assert.equal(result.checkWrites.at(-1).body.conclusion, "failure");
+  assert.match(
+    result.checkWrites.at(-1).body.output.summary,
+    /[Ii]ncomplete|truncated/,
+  );
+  assert.deepEqual(result.labelWrites, []);
+  assert.ok(
+    result.requests.every((request) => !request.url.includes("/labels")),
   );
 });
 
@@ -165,13 +248,13 @@ test("a head or declaration change on the final reread prevents success", (t) =>
     const data = fixture();
     data.current = structuredClone(data.pr);
     if (change === "head") data.current.head.sha = "c".repeat(40);
-    else data.current.body = "QRH-Type: new-bound";
+    else data.current.body = "## New bound";
     const result = run(t, data);
     assert.equal(result.status, 1, change);
-    assert.equal(result.writes[0].body.head_sha, head);
-    assert.equal(result.writes.at(-1).body.conclusion, "failure", change);
+    assert.equal(result.checkWrites[0].body.head_sha, head);
+    assert.equal(result.checkWrites.at(-1).body.conclusion, "failure", change);
     assert.match(
-      result.writes.at(-1).body.output.summary,
+      result.checkWrites.at(-1).body.output.summary,
       /changed during validation/,
     );
   }
@@ -187,5 +270,6 @@ test("a workflow running outside the default branch cannot read or publish check
     /Trusted default-branch PR admission orchestration required/,
   );
   assert.deepEqual(result.requests, []);
-  assert.deepEqual(result.writes, []);
+  assert.deepEqual(result.checkWrites, []);
+  assert.deepEqual(result.labelWrites, []);
 });

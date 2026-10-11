@@ -2,19 +2,13 @@
 
 ## Required PR declaration and admission
 
-Every PR body must contain exactly one standalone declaration:
+The workflow classifies each PR from its changed files and assigns the
+`maintenance` or `new-bound` label. Maintenance PRs need no declaration: remove
+the result fields and New bound section from the template. A result/proof PR
+starts its body with its stable result ID, exact checked bound and decimal
+approximation, for example:
 
 ```text
-QRH-Type: maintenance
-```
-
-Use `maintenance` for website, documentation or separately reviewed checking
-infrastructure changes; remove the result, bound and decimal fields for this
-type. A result/proof PR instead declares its stable result ID, exact checked
-bound and decimal approximation, for example:
-
-```text
-QRH-Type: new-bound
 QRH-Result: example-result
 QRH-Bound: 4374433/5000000
 QRH-Decimal: 0.87488660
@@ -38,11 +32,15 @@ decimal is checked against the certified enclosure in the trusted evidence.
 
 Changes under `proofs/`, `public/proofs/`, `submissions/`, `catalogue/` or
 `registry/records/`, and changes to `public/catalogue.json` or
-`public/registry.json`, require `new-bound`. This includes deletions, metadata
+`public/registry.json`, receive `new-bound`. This includes deletions, metadata
 corrections and either path of a rename. New-bound PRs may change only those
 proof/result paths or Lean files outside `verifier/`, `core/` and `tests/`, which
-also require new-bound admission. Put workflow, verifier, dependencies and other checking
-infrastructure changes in a separate maintenance PR.
+also require new-bound admission. All other paths receive `maintenance`.
+Mixed PRs receive both labels and fail admission. A QRH result declaration or
+New bound section alongside any maintenance changes also fails, even when no
+proof files change. Put website, documentation, workflow, verifier and dependency
+changes in a separate maintenance PR. The workflow creates missing managed
+labels and preserves unrelated labels; changing a label cannot bypass the gate.
 
 The `qrh/pr-admission` check uses trusted default-branch code and evidence. For
 `new-bound`, it fails until an independent maintainer has registered an accepted
@@ -59,7 +57,7 @@ unchanged. Editing the declaration reruns admission as well.
 2. Use **framework-verified** only after an independent maintainer run in the trusted offline Linux sandbox: the exact claimed statements and their definitions must pass Comparator, with exported proofs accepted by Lean, NanoDa and con-ron. Only `propext`, `Classical.choice` and `Quot.sound` are permitted. The maintainer receipt must bind the complete checked source and dependency pins; author-written reports or regenerated checksums cannot grant verification or preserve acceptance after a source change. Retain the source, checker pins, exact statements and acceptance reports for maintainer review. These labels do not create a signed Comparator/NanoDa receipt. Use the first successful independent run for the verification date and timeline. Existing **verification-pending** entries describe historical evidence; that label does not exempt a new PR from admission.
 3. Add proof sources under `proofs/<stable-id>/` with license/attribution and reproduction instructions. Existing proof snapshots are immutable; submit revisions as a new directory. Heavy Lean checks run independently of website CI.
 4. Run `npm ci --ignore-scripts`, `npm run check`, and `npm run test:browser` (install Chromium with `npx playwright install chromium` if necessary).
-5. Open a pull request with the required body declaration, attribution and evidence links. A result PR remains blocked until its independent check and exact-head admission are available. After `qrh/pr-admission`, site checks and maintainer review, merging updates the public website automatically through GitHub Pages.
+5. Open a pull request with a summary; for a result, include the required body declaration, attribution and evidence links. A result PR remains blocked until its independent check and exact-head admission are available. After `qrh/pr-admission`, site checks and maintainer review, merging updates the public website automatically through GitHub Pages.
 
 ### Registering an independently checked head
 

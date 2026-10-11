@@ -18,7 +18,7 @@ on:
         required: true
 permissions:
   contents: read
-  pull-requests: read
+  pull-requests: write
   checks: write
 concurrency:
   group: pr-admission-${{ github.event.pull_request.number || inputs.pr }}
@@ -36,7 +36,7 @@ jobs:
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version: 22.17.0
-      - name: Check declarations and trusted receipts; attach result to PR head
+      - name: Label changed files and check trusted evidence for the PR head
         run: node verifier/check-pr.mjs
         env:
           GITHUB_TOKEN: ${{ github.token }}

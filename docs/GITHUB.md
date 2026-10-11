@@ -1,16 +1,17 @@
 # GitHub submission and publication workflow
 
-The active contribution workflow is PR declaration → `qrh/pr-admission` and
-site checks → maintainer review/merge → automatic Pages deployment; see
-`DEPLOYMENT.md`. A successful site build checks the website and evidence
+The active contribution workflow is PR → automatic classification,
+`qrh/pr-admission` and site checks → maintainer review/merge → automatic Pages
+deployment; see `DEPLOYMENT.md`. A successful site build checks the website and evidence
 integrity. It does not establish a new mathematical result.
 
 ## Required PR admission
 
-Every PR body needs exactly one standalone `QRH-Type: maintenance` or
-`QRH-Type: new-bound` line. New-bound PRs also need `QRH-Result: <stable-id>`,
-`QRH-Bound: <exact-checked-bound>` and `QRH-Decimal: <truncated-decimal>`.
-Maintenance PRs must omit all three fields. The exact bound must match the independently
+The workflow infers the PR category from its changed files; no type declaration
+is needed. New-bound PR bodies start with three standalone lines:
+`QRH-Result: <stable-id>`, `QRH-Bound: <exact-checked-bound>` and
+`QRH-Decimal: <truncated-decimal>`. Maintenance PRs must omit all QRH fields and
+the `New bound` section. The exact bound must match the independently
 checked receipt and protected admission record; a rounded approximation is
 insufficient. See `../CONTRIBUTING.md` for examples.
 
@@ -30,6 +31,13 @@ must contain only proof/result paths, so the submission cannot change the code
 or trust policy used to accept itself. Lean files outside `verifier/`, `core/`
 and `tests/` also require new-bound admission.
 
+All other changed paths are maintenance. The workflow assigns `new-bound` and/or
+`maintenance` labels accordingly, creating these labels if missing and preserving
+unrelated labels. These labels are informational: admission always uses the
+actual changed paths. A PR containing both kinds of changes receives both labels
+and fails admission. A result declaration or `New bound` section also fails if
+the PR contains any maintenance changes, including a maintenance-only PR.
+
 The admission workflow runs on `pull_request_target` for `opened`, `reopened`,
 `synchronize`, `edited`, `ready_for_review` and `converted_to_draft`, and supports a maintainer
 `workflow_dispatch` with a PR number. It runs the trusted default-branch
@@ -37,7 +45,9 @@ validator, reads PR metadata and changed paths as data, and posts
 `qrh/pr-admission` to the current PR head. It never checks out or executes PR
 code, installs candidate dependencies, or runs proof compilation with the
 workflow token. Body edits rerun the check; a head change requires a new
-independent admission.
+independent admission. The workflow's `pull-requests: write` permission lets it
+manage category labels; its check-writing permission publishes the admission
+result. Both operations remain under trusted default-branch code.
 
 For a new bound, the validator reads `verifier/pr-admissions.json` from the
 trusted base. Its initially empty `admissions` array contains records binding
@@ -86,7 +96,7 @@ the repository owner must configure the following protections in GitHub.
 - Protect the default branch against direct pushes, force pushes and deletion; require independent maintainer review, dismiss stale approvals and require approval of the most recent push. Prevent administrator/bot bypass for submission admission.
 - Require code-owner review for `.github/`, `verifier/`, `evidence/pr-checks/`, `worker/`, `schemas/`, `core/`, lockfiles and all `registry/` paths. Keep checking infrastructure changes separate from proof/result PRs.
 - Prefer a repository/organization rule requiring the protected admission workflow or a dedicated check-producing GitHub App. Requiring a check name alone does not prevent another workflow from producing a same-name check. Ordinary PR-controlled CI is not an admission authority.
-- Restrict Actions to approved actions pinned by commit and default read-only token permissions. The admission workflow needs a check-writing token only to publish its result; it must keep candidate code out of that runner.
+- Restrict Actions to approved actions pinned by commit and default read-only token permissions. The admission workflow needs `checks: write` to publish its result and `pull-requests: write` to manage category labels; it must keep candidate code out of that runner.
 - Keep the append-only registry check mandatory for all registry changes: `node verifier/audit-history.mjs BASE_COMMIT`. Validate signed contents with `npm run build`. `BASE_COMMIT` must be the actual protected base SHA, not a submitted string.
 
 These settings are an owner setup step; adding workflow files does not enable
@@ -117,7 +127,7 @@ tested to require all three kernels before it can admit verified results.
 6. Dispatch **Prepare signed publication** with the successful verification run/attempt. It authenticates the Ed25519 receipt, checks the earliest journal receipt, current PR head, independent review and merged source digest. A merge conflict resolution that changes the proof fails the content check and needs a new reviewed submission/receipt.
 7. The job creates a signed publication bundle artifact. Put it under `registry/records/<id>/` through a maintainer-reviewed registry PR; run registry authentication/build and immutable-history audit. Deploy the generated static site through the separate approved hosting process.
 
-Publication jobs do not execute Lean, check out candidate sources as code, or grant the worker write access to the repository. They prepare artifacts, not automatic pushes or merges. This avoids giving a submission the ability to publish itself. The signed service uses no `pull_request_target` or candidate-controlled `workflow_run` entrypoint. The active PR admission workflow above uses `pull_request_target` only to read metadata and authenticate protected-base evidence.
+Publication jobs do not execute Lean, check out candidate sources as code, or grant the worker write access to the repository. They prepare artifacts, not automatic pushes or merges. This avoids giving a submission the ability to publish itself. The signed service uses no `pull_request_target` or candidate-controlled `workflow_run` entrypoint. The active PR admission workflow above uses `pull_request_target` to classify changed paths, update category labels, authenticate protected-base evidence and publish its check, without executing candidate code.
 
 ## Withdrawals and supersessions
 

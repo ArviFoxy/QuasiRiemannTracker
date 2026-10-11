@@ -1,12 +1,20 @@
 // This module must be loaded from the trusted base checkout, never from a PR.
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { rational, cmp, BASELINE } from "../core/rational.mjs";
 import { validateAdmission } from "./pr-evidence.mjs";
+import {
+  decimalPrecision,
+  validateDecimalApproximation,
+} from "./pr-decimal.mjs";
 
 export function parseDeclaration(body) {
   const fields = new Map();
   for (const line of (body ?? "").split(/\r?\n/)) {
     if (!line.trim().startsWith("QRH-")) continue;
-    const match = /^QRH-(Type|Result|Bound): ([^\r\n]+)$/.exec(line.trim());
+    const match = /^QRH-(Type|Result|Bound|Decimal): ([^\r\n]+)$/.exec(
+      line.trim(),
+    );
     if (!match) throw Error("Malformed or unknown QRH declaration field");
     if (fields.has(match[1])) throw Error("Duplicate QRH declaration field");
     fields.set(match[1], match[2].trim());
@@ -18,7 +26,7 @@ export function parseDeclaration(body) {
     );
   if (type === "maintenance") {
     if (fields.size !== 1)
-      throw Error("Maintenance must not declare a result or bound");
+      throw Error("Maintenance must not declare a result, bound or decimal");
     return { type };
   }
   const result_id = fields.get("Result"),
@@ -41,7 +49,9 @@ export function parseDeclaration(body) {
     if (BigInt(value.numerator) <= 0n || cmp(value, BASELINE) > 0)
       throw Error("Bound must be positive and at most 7/8");
   }
-  return { type, result_id, theta_exact };
+  const theta_decimal = fields.get("Decimal");
+  decimalPrecision(theta_decimal);
+  return { type, result_id, theta_exact, theta_decimal };
 }
 
 function proofPath(name) {
@@ -117,12 +127,20 @@ export async function evaluatePR({
     throw Error(
       "Separate proof changes from workflow, verifier and other infrastructure changes",
     );
-  await validateEvidence(root, {
+  const evidence = await validateEvidence(root, {
     repository,
     number: pr.number,
     head_sha: pr.head.sha,
     result_id: declaration.result_id,
     theta_exact: declaration.theta_exact,
   });
-  return `Independent maintainer evidence accepts ${declaration.result_id} at ${declaration.theta_exact} for this exact PR head.`;
+  validateDecimalApproximation({
+    theta_exact: declaration.theta_exact,
+    theta_decimal: declaration.theta_decimal,
+    bound_interval: evidence?.bound_interval,
+    catalogue: JSON.parse(
+      readFileSync(join(root, "catalogue/results.json"), "utf8"),
+    ),
+  });
+  return `Independent maintainer evidence accepts ${declaration.result_id} at ${declaration.theta_exact} for this exact PR head. Decimal ${declaration.theta_decimal} is accurate and differs from the previous verified bound at this precision.`;
 }

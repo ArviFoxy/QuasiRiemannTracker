@@ -8,10 +8,20 @@ integrity. It does not establish a new mathematical result.
 ## Required PR admission
 
 Every PR body needs exactly one standalone `QRH-Type: maintenance` or
-`QRH-Type: new-bound` line. New-bound PRs also need `QRH-Result: <stable-id>` and
-`QRH-Bound: <exact-checked-bound>`. The exact bound must match the independently
+`QRH-Type: new-bound` line. New-bound PRs also need `QRH-Result: <stable-id>`,
+`QRH-Bound: <exact-checked-bound>` and `QRH-Decimal: <truncated-decimal>`.
+Maintenance PRs must omit all three fields. The exact bound must match the independently
 checked receipt and protected admission record; a rounded approximation is
 insufficient. See `../CONTRIBUTING.md` for examples.
+
+The decimal must be `0.` followed by 1–200 digits, truncated rather than rounded.
+The validator checks every digit using exact `BigInt` arithmetic and requires
+enough digits to differ from the strongest currently **framework-verified**
+catalogue bound on the trusted base, truncated to the same precision. Pending
+and historical records are ignored. For example, `4374433/5000000` requires
+`QRH-Decimal: 0.87488660` to distinguish it from a frontier of `0.87488664704`
+(`0.87488664` at eight places); seven places would be identical. A bound equal
+to the current frontier cannot pass this rule.
 
 Any change under `proofs/`, `public/proofs/`, `submissions/`, `catalogue/` or
 `registry/records/`, or to `public/catalogue.json` or `public/registry.json`,
@@ -38,6 +48,14 @@ source revision/content, exact bound, canonical challenge, replay driver and
 dependency pins, allowed axioms, isolation checks, Comparator acceptance and
 Lean/NanoDa/con-ron results. The receipt must also bind `reviewed_pr_head` to
 the candidate head. Missing, stale or invalid evidence fails the check.
+
+For an irrational bound, `QRH-Bound` retains its exact expression. Its
+checksum-pinned `result.json` must contain a certified `bound_interval` for
+that same `theta_exact`, with rational `lower` and `upper` objects containing
+`numerator` and `denominator`. The current replay validator authenticates the
+report before the gate reads the interval; a PR supplies no interval field.
+Both endpoints must yield the declared decimal prefix. If they do not, the
+certified enclosure needs refinement before admission.
 
 Maintainers perform the actual replay on the reviewed offline Linux worker.
 They register the resulting dossier under `evidence/pr-checks/<id>/` and its

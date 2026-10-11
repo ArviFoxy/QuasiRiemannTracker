@@ -150,7 +150,7 @@ test("a declared new bound without trusted evidence publishes failure", (t) => {
     { filename: "proofs/candidate/Main.lean", status: "added" },
   ]);
   data.pr.body =
-    "QRH-Type: new-bound\nQRH-Result: candidate-20261011\nQRH-Bound: 4374433/5000000";
+    "QRH-Type: new-bound\nQRH-Result: candidate-20261011\nQRH-Bound: 4374433/5000000\nQRH-Decimal: 0.87488660";
   const result = run(t, data);
   assert.equal(result.status, 1);
   assert.equal(result.writes.at(-1).body.conclusion, "failure");

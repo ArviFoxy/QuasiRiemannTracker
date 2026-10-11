@@ -1,5 +1,8 @@
-import test from "node:test";
+import test, { after } from "node:test";
 import assert from "node:assert/strict";
+import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import {
   classifyChanges,
   evaluatePR,
@@ -9,14 +12,30 @@ import {
 const repository = "GTimG/QuasiRiemannTracker";
 const defaultBranch = "main";
 const head = "a".repeat(40);
-const root = "/unused/trusted-checkout";
+const root = mkdtempSync(join(tmpdir(), "qrh-admission-tests-"));
+after(() => rmSync(root, { recursive: true, force: true }));
+mkdirSync(join(root, "catalogue"));
+writeFileSync(
+  join(root, "catalogue/results.json"),
+  JSON.stringify({
+    records: [
+      {
+        id: "previous-result",
+        status: "framework-verified",
+        theta: { numerator: "683505193", denominator: "781250000" },
+      },
+    ],
+  }),
+);
 const bound = "4374433/5000000";
+const approximation = "0.87488660";
 const resultId = "candidate-20261011";
 const maintenance = "QRH-Type: maintenance";
 const newBound = [
   "QRH-Type: new-bound",
   `QRH-Result: ${resultId}`,
   `QRH-Bound: ${bound}`,
+  `QRH-Decimal: ${approximation}`,
 ].join("\n");
 const file = (filename, extra = {}) => ({
   filename,
@@ -57,6 +76,7 @@ test("a new-bound declaration preserves the exact claimed value", () => {
     type: "new-bound",
     result_id: resultId,
     theta_exact: bound,
+    theta_decimal: approximation,
   });
 });
 
@@ -73,6 +93,14 @@ for (const [description, body] of [
   ["an unknown field", `${maintenance}\nQRH-Override: true`],
   ["a bound on maintenance", `${maintenance}\nQRH-Bound: ${bound}`],
   ["a result on maintenance", `${maintenance}\nQRH-Result: ${resultId}`],
+  ["a decimal on maintenance", `${maintenance}\nQRH-Decimal: ${approximation}`],
+  [
+    "a missing decimal",
+    newBound.replace(`\nQRH-Decimal: ${approximation}`, ""),
+  ],
+  ["a duplicate decimal", `${newBound}\nQRH-Decimal: ${approximation}`],
+  ["an empty decimal", newBound.replace(approximation, "")],
+  ["scientific notation", newBound.replace(approximation, "8.748866e-1")],
   ["a missing result", `QRH-Type: new-bound\nQRH-Bound: ${bound}`],
   ["a missing bound", `QRH-Type: new-bound\nQRH-Result: ${resultId}`],
   ["a duplicate result", `${newBound}\nQRH-Result: ${resultId}`],
@@ -197,6 +225,33 @@ test("a failed evidence check fails the PR instead of passing on existing reposi
     throw new Error("No trusted admission receipt for this PR head");
   };
   await assert.rejects(run(input), /No trusted admission receipt/);
+});
+
+test("even accepted evidence cannot pass with inaccurate or indistinguishable decimal digits", async () => {
+  for (const decimal of ["0.8748866", "0.87488661"]) {
+    const input = options(newBound.replace(approximation, decimal), [
+      file("proofs/candidate/Main.lean"),
+    ]);
+    input.validateEvidence = () => ({ theta_exact: bound });
+    await assert.rejects(run(input));
+  }
+});
+
+test("irrational decimal digits require an enclosure from authenticated evidence", async () => {
+  const body = newBound
+    .replace(bound, "sqrt(3)/2")
+    .replace(approximation, "0.866025");
+  const input = options(body, [file("proofs/candidate/Main.lean")]);
+  input.validateEvidence = () => ({ theta_exact: "sqrt(3)/2" });
+  await assert.rejects(run(input));
+  input.validateEvidence = () => ({
+    theta_exact: "sqrt(3)/2",
+    bound_interval: {
+      lower: { numerator: "4330127", denominator: "5000000" },
+      upper: { numerator: "17320509", denominator: "20000000" },
+    },
+  });
+  assert.match(await run(input), /0\.866025/);
 });
 
 test("pushing a new head cannot reuse a receipt for the old commit", async () => {

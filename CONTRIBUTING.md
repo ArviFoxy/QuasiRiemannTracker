@@ -9,19 +9,32 @@ QRH-Type: maintenance
 ```
 
 Use `maintenance` for website, documentation or separately reviewed checking
-infrastructure changes. A result/proof PR instead declares its stable result ID
-and exact checked bound, for example:
+infrastructure changes; remove the result, bound and decimal fields for this
+type. A result/proof PR instead declares its stable result ID, exact checked
+bound and decimal approximation, for example:
 
 ```text
 QRH-Type: new-bound
 QRH-Result: example-result
 QRH-Bound: 4374433/5000000
+QRH-Decimal: 0.87488660
 ```
 
 Use the exact bound string authenticated by the maintainer receipt and admission
 record. Do not substitute a rounded decimal for a rational or algebraic bound.
 The title, labels and an author-written check report cannot replace these body
 fields or independent evidence.
+
+`QRH-Decimal` is required for new bounds. Supply `0.` followed by 1–200 digits,
+truncated rather than rounded. Every supplied digit is checked using exact
+integer arithmetic (`BigInt`). Include enough digits to differ from the
+strongest currently **framework-verified** catalogue bound on the trusted base,
+truncated to the same precision; pending and historical records do not count.
+For a frontier of `0.87488664704`, the example above needs at least eight
+decimal places: `0.87488660` differs from `0.87488664`, while seven places would
+show `0.8748866` for both. A bound equal to the current frontier cannot satisfy
+this rule. An irrational bound keeps its exact expression in `QRH-Bound`; its
+decimal is checked against the certified enclosure in the trusted evidence.
 
 Changes under `proofs/`, `public/proofs/`, `submissions/`, `catalogue/` or
 `registry/records/`, and changes to `public/catalogue.json` or
@@ -73,6 +86,14 @@ The `pin` uses the existing replay-pin format (for example,
 `palomar_commit`, plus any fields required by that replay profile.
 Evidence or admission records supplied only by the candidate PR are not trusted.
 
+For an irrational exact bound, the checksum-pinned `result.json` must include
+a certified `bound_interval` for that same `theta_exact`, with rational
+`lower` and `upper` objects containing `numerator` and `denominator`. The gate
+reads this report through the existing replay validator; there is no PR-body
+interval field. Both interval endpoints must produce the declared decimal
+prefix at its supplied precision. If they disagree, refine the certified
+enclosure before registering the evidence.
+
 Once that maintenance PR is on the default branch, a maintainer can dispatch
 the PR admission workflow with the candidate PR number to check its current
 head again. Do not push a cosmetic commit just to rerun it: that creates a new
@@ -115,7 +136,7 @@ workflow is not a substitute for the active `qrh/pr-admission` requirement.
 The track admits only the fixed all-Dirichlet theorem. It quantifies over every natural modulus with `NeZero q`, every complex Dirichlet character and every complex `s` with `θ < s.re`, retaining `¬ (χ = 1 ∧ s = 1)` and `_root_.DirichletCharacter.LFunction`. Zeta-only, conditional and restricted-character results do not qualify. A manuscript, a successful Lean build or an AI critic's approval is not admission evidence.
 
 1. Copy `submissions/openai-baseline/` to a new stable lowercase ID. Replace its explanation, author metadata and Lean proof. Keep your modules in `src/Candidate/`; use `Candidate.Main` or another valid module as your entrypoint.
-2. Update `manifest.json` following `schemas/submission.schema.json`. Store numerator and denominator as decimal **strings**, with a positive denominator, no leading zeros, and gcd = 1. `14/16` is rejected; use `7/8`. Bounds must be at most `7/8`; equal bounds are welcome as alternative proofs.
+2. Update `manifest.json` following `schemas/submission.schema.json`. Store numerator and denominator as decimal **strings**, with a positive denominator, no leading zeros, and gcd = 1. `14/16` is rejected; use `7/8`. Bounds must be at most `7/8`; the active PR gate additionally requires a decimal digit differing from the current verified frontier.
 3. List all authors accurately, describe the method, include HTTPS references and an appropriate contribution license (Apache-2.0, MIT, BSD-2-Clause, BSD-3-Clause or CC0-1.0). Include `LICENSE` and preserve required notices. Maintainers still review compatibility and attribution; a declared license alone cannot grant rights you do not have.
 4. Put only actual mathematical reuse in `builds_on`. IDs must exist in the published registry and predate this verification. Put citations, comparisons and acknowledgments in `references`/explanation instead. Method similarity does not imply dependence.
 5. Run `npm run verify -- submissions/your-id --image sha256:APPROVED_LOCAL_IMAGE_ID`. This requires the documented disposable Linux worker and sealed libraries. A local attempt is not a signed public receipt.

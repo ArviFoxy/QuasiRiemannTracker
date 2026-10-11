@@ -29,8 +29,8 @@ function fixture(files = [{ filename: "README.md", status: "modified" }]) {
   };
 }
 
-// This child replaces fetch before importing the executable module. Every API
-// read and write is synthetic, and an unknown request fails without networking.
+// This child replaces fetch before importing the executable module. The mock
+// handles every API read and write and rejects unknown requests.
 const harness = `
 const fixture = JSON.parse(process.env.QRH_TEST_FIXTURE);
 const requests = [];
@@ -192,10 +192,10 @@ test("an open draft receives its maintenance label while admission fails", (t) =
     [["maintenance"]],
   );
   assert.equal(result.checkWrites.at(-1).body.conclusion, "failure");
-  assert.match(result.checkWrites.at(-1).body.output.summary, /non-draft PR/);
+  assert.match(result.checkWrites.at(-1).body.output.summary, /draft|ready/i);
 });
 
-test("a failed required label write prevents a successful admission check", (t) => {
+test("publishes admission failure when a required label write fails", (t) => {
   const data = fixture();
   data.labelWriteStatus = 403;
   const result = run(t, data);
@@ -208,7 +208,7 @@ test("a failed required label write prevents a successful admission check", (t) 
   assert.match(result.checkWrites.at(-1).body.output.summary, /GitHub API 403/);
 });
 
-test("a declared new bound without trusted evidence publishes failure", (t) => {
+test("requires trusted evidence for a declared new bound", (t) => {
   const data = fixture([
     { filename: "proofs/candidate/Main.lean", status: "added" },
   ]);
@@ -219,7 +219,7 @@ test("a declared new bound without trusted evidence publishes failure", (t) => {
   assert.equal(result.checkWrites.at(-1).body.conclusion, "failure");
   assert.match(
     result.checkWrites.at(-1).body.output.summary,
-    /no trusted verification/,
+    /archive an independent maintainer replay/,
   );
   assert.deepEqual(
     result.labelWrites.map((request) => request.body?.labels),
@@ -243,7 +243,7 @@ test("an incomplete file list fails before assigning classification labels", (t)
   );
 });
 
-test("a head or declaration change on the final reread prevents success", (t) => {
+test("publishes admission failure when the head or declaration changes during validation", (t) => {
   for (const change of ["head", "body"]) {
     const data = fixture();
     data.current = structuredClone(data.pr);
@@ -260,7 +260,7 @@ test("a head or declaration change on the final reread prevents success", (t) =>
   }
 });
 
-test("a workflow running outside the default branch cannot read or publish checks", (t) => {
+test("requires the default branch before reading or publishing checks", (t) => {
   const result = run(t, fixture(), {
     GITHUB_REF: "refs/heads/untrusted-candidate",
   });

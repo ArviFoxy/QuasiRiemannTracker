@@ -68,7 +68,7 @@ export async function syncPRLabels(repository, number, classification) {
         description: label.description,
       });
       // Another PR run can create the same repository label concurrently.
-      // A failed create is safe only after confirming that the label exists.
+      // Confirm that the label exists after a concurrent creation attempt.
       if (response.status === 422) response = await request(route);
       else requireSuccess(response, createRoute);
     }

@@ -68,7 +68,7 @@ function options(body = maintenance, files = [file("README.md")]) {
 // Accept either a synchronous or asynchronous implementation of the gate.
 const run = (input) => Promise.resolve().then(() => evaluatePR(input));
 
-test("plain maintenance prose does not require a declaration", () => {
+test("accepts plain maintenance prose", () => {
   for (const body of [maintenance, "", null, "An inline QRH-Result: example"]) {
     assert.equal(parseDeclaration(body), null);
     assert.equal(hasResultSection(body), false);
@@ -111,7 +111,7 @@ for (const [description, body] of [
   });
 }
 
-test("result metadata and result headings cannot masquerade as plain maintenance prose", async () => {
+test("rejects result metadata and headings in maintenance PRs", async () => {
   for (const body of [
     newBound,
     `QRH-Result: ${resultId}`,
@@ -146,7 +146,7 @@ for (const filename of [
   });
 }
 
-test("ordinary maintenance paths and trusted Lean fixtures are not submissions", () => {
+test("classifies maintenance paths and trusted Lean fixtures as maintenance", () => {
   assert.deepEqual(
     classifyChanges([
       file("README.md"),
@@ -173,25 +173,25 @@ test("renaming a proof to a maintenance path classifies both sides of the rename
   );
 });
 
-test("a maintenance PR can pass with plain prose and no bound evidence", async () => {
+test("accepts a maintenance PR with plain prose", async () => {
   const summary = await run(options());
   assert.equal(typeof summary, "string");
   assert.ok(summary.length > 0);
 });
 
-test("PR #15's proof-only change cannot pass without a declaration", async () => {
+test("requires a result declaration for PR #15's proof change", async () => {
   const input = options("Adds the Lean proof.", [file("proofs/solution.lean")]);
   input.pr.number = 15;
   await assert.rejects(run(input));
 });
 
-test("a proof submission cannot bypass admission with maintenance prose", async () => {
+test("requires result metadata for proof submissions", async () => {
   await assert.rejects(
     run(options(maintenance, [file("proofs/candidate/Main.lean")])),
   );
 });
 
-test("a proof renamed out of the protected directories cannot pass as maintenance", async () => {
+test("rejects proof-to-maintenance renames", async () => {
   await assert.rejects(
     run(
       options(maintenance, [
@@ -232,7 +232,7 @@ test("new-bound admission binds evidence to the repository, PR, current head, re
   ]);
 });
 
-test("a failed evidence check fails the PR instead of passing on existing repository checks", async () => {
+test("propagates evidence validation failures to PR admission", async () => {
   const input = options(newBound, [file("proofs/candidate/Main.lean")]);
   input.validateEvidence = () => {
     throw new Error("No trusted admission receipt for this PR head");
@@ -240,7 +240,7 @@ test("a failed evidence check fails the PR instead of passing on existing reposi
   await assert.rejects(run(input), /No trusted admission receipt/);
 });
 
-test("even accepted evidence cannot pass with inaccurate or indistinguishable decimal digits", async () => {
+test("requires accurate and distinguishing decimal digits with accepted evidence", async () => {
   for (const decimal of ["0.8748866", "0.87488661"]) {
     const input = options(newBound.replace(approximation, decimal), [
       file("proofs/candidate/Main.lean"),
@@ -267,7 +267,7 @@ test("irrational decimal digits require an enclosure from authenticated evidence
   assert.match(await run(input), /0\.866025/);
 });
 
-test("pushing a new head cannot reuse a receipt for the old commit", async () => {
+test("requires a matching receipt after the PR head changes", async () => {
   const input = options(newBound, [file("proofs/candidate/Main.lean")]);
   input.pr.head.sha = "b".repeat(40);
   input.validateEvidence = (_root, subject) => {
@@ -285,7 +285,7 @@ for (const filename of [
   "tests/pr-admission.test.mjs",
   "README.md",
 ]) {
-  test(`a bound cannot also modify ${filename}`, async () => {
+  test(`requires a separate maintenance PR for ${filename}`, async () => {
     let evidenceCalls = 0;
     for (const body of [maintenance, newBound]) {
       const input = options(body, [

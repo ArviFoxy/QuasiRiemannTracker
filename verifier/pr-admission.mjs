@@ -1,4 +1,4 @@
-// This module must be loaded from the trusted base checkout, never from a PR.
+// Load this module from the trusted default-branch checkout.
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { rational, cmp, BASELINE } from "../core/rational.mjs";
@@ -29,11 +29,10 @@ export function parseDeclaration(body) {
   )
     throw Error("New bounds require QRH-Bound: <exact checked value>");
   // Rational literals must be canonical. Algebraic expressions are compared
-  // byte-for-byte with the trusted replay's exact bound; never evaluated here.
+  // byte-for-byte with the trusted replay's exact bound.
   if (/^[\d\s+./-]+$/.test(theta_exact)) {
     const match = /^(\d+)\/(\d+)$/.exec(theta_exact);
-    if (!match)
-      throw Error("Use an exact reduced fraction, not a decimal bound");
+    if (!match) throw Error("Use an exact reduced fraction");
     const value = rational(match[1], match[2]);
     if (BigInt(value.numerator) <= 0n || cmp(value, BASELINE) > 0)
       throw Error("Bound must be positive and at most 7/8");
@@ -122,18 +121,16 @@ export async function evaluatePR({
     repository,
     defaultBranch,
   });
-  if (pr.draft) throw Error("Admission requires a non-draft PR");
+  if (pr.draft) throw Error("Mark the PR ready for review before admission");
   if (classification.maintenance && hasResultSection(pr.body))
-    throw Error(
-      "QRH result sections cannot accompany maintenance changes; separate them into different PRs",
-    );
+    throw Error("Submit QRH results and maintenance changes in separate PRs");
   if (classification.proof && classification.maintenance)
     throw Error(
       "Separate proof changes from maintenance changes, including workflow and verifier changes",
     );
   const declaration = parseDeclaration(pr.body);
   if (!classification.proof)
-    return "Maintenance change: no proof or catalogue admission. Website checks and maintainer review are still required.";
+    return "Maintenance requirements satisfied. Complete website checks and maintainer review before merging.";
   if (!declaration)
     throw Error(
       "Proof, submission or catalogue changes require QRH-Result, QRH-Bound, QRH-Decimal and independently checked evidence",

@@ -81,11 +81,11 @@ test("empty trusted admissions reject candidate-authored PASS reports", (t) => {
   );
   assert.throws(
     () => validateAdmission(root, expected),
-    /no trusted verification/,
+    /archive an independent maintainer replay/,
   );
 });
 
-test("a prior receipt cannot authorize a different head, value, ID, PR or repository", (t) => {
+test("requires receipt identity to match the head, bound, result, PR and repository", (t) => {
   const root = fixture(t, approval(), false);
   for (const change of [
     { head_sha: "0".repeat(40) },
@@ -96,22 +96,16 @@ test("a prior receipt cannot authorize a different head, value, ID, PR or reposi
   ])
     assert.throws(
       () => validateAdmission(root, { ...expected, ...change }),
-      /no trusted verification/,
+      /archive an independent maintainer replay/,
     );
 });
 
-test("relabeling an existing approval cannot change the head or value proved by its receipt", (t) => {
+test("requires receipt proof to match the approval head and bound", (t) => {
   const entry = approval();
   const root = fixture(t, entry);
   for (const [change, pattern] of [
-    [
-      { head_sha: "0".repeat(40) },
-      /receipt does not verify this exact PR head/,
-    ],
-    [
-      { theta_exact: "7/8" },
-      /receipt does not verify the declared exact bound/,
-    ],
+    [{ head_sha: "0".repeat(40) }, /receipt must verify this exact PR head/],
+    [{ theta_exact: "7/8" }, /receipt must verify the declared exact bound/],
   ]) {
     writePolicy(root, [{ ...entry, ...change }]);
     assert.throws(
@@ -121,7 +115,7 @@ test("relabeling an existing approval cannot change the head or value proved by 
   }
 });
 
-test("invalid or duplicate trusted identities fail closed", (t) => {
+test("rejects invalid or duplicate trusted identities", (t) => {
   const entry = approval();
   const root = fixture(t, entry, false);
   for (const change of [
@@ -152,7 +146,7 @@ test("invalid or duplicate trusted identities fail closed", (t) => {
   );
 });
 
-test("modified evidence cannot retain its trusted collection pin", (t) => {
+test("rejects evidence changed after the collection was pinned", (t) => {
   const root = fixture(t);
   writeFileSync(join(root, pin.directory, "result.json"), "{}");
   assert.throws(
@@ -161,7 +155,7 @@ test("modified evidence cannot retain its trusted collection pin", (t) => {
   );
 });
 
-test("recomputed checksums cannot authorize missing kernels or changed statement scope", (t) => {
+test("checks kernel and statement scope after authenticating checksums", (t) => {
   const entry = approval();
   const root = fixture(t, entry);
   const collection = read(join(root, pin.directory, "collection.json"));

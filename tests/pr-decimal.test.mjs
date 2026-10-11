@@ -30,7 +30,7 @@ test("a required decimal extends through the first differing digit", () => {
   assert.throws(() => check({ theta_decimal: "0.8748866" }), /more digits/);
 });
 
-test("missing, malformed and excessively long decimals are rejected", () => {
+test("rejects missing, malformed and excessively long decimals", () => {
   for (const theta_decimal of [
     undefined,
     null,
@@ -52,7 +52,7 @@ test("missing, malformed and excessively long decimals are rejected", () => {
   }
 });
 
-test("fabricated differing digits cannot bypass the precision check", () => {
+test("rejects fabricated decimal digits", () => {
   assert.throws(
     () => check({ theta_decimal: "0.87488661" }),
     /truncated digits/,
@@ -96,7 +96,7 @@ test("comparison remains exact well beyond floating-point precision", () => {
   );
 });
 
-test("decimal digits are truncated, with no rounding carry", () => {
+test("validates decimal digits by truncation", () => {
   assert.doesNotThrow(() =>
     check({ theta_exact: "874886599/1000000000", theta_decimal: "0.8748865" }),
   );
@@ -110,7 +110,7 @@ test("decimal digits are truncated, with no rounding carry", () => {
   );
 });
 
-test("identical exact bounds cannot claim a differing digit", () => {
+test("requires an exact bound distinct from the previous bound", () => {
   assert.throws(
     () =>
       check({
@@ -121,7 +121,7 @@ test("identical exact bounds cannot claim a differing digit", () => {
   );
 });
 
-test("a differing non-record bound is still accepted", () => {
+test("accepts a distinct bound larger than the current record", () => {
   assert.doesNotThrow(() =>
     check({ theta_exact: "7/8", theta_decimal: "0.875" }),
   );
@@ -140,11 +140,11 @@ test("an irrational uses the enclosure in the trusted receipt", () => {
   assert.doesNotThrow(() => check(algebraic));
   assert.throws(
     () => check({ ...algebraic, theta_decimal: "0.8660" }),
-    /refine the enclosure/,
+    /bound_interval needs refinement/,
   );
 });
 
-test("missing, reversed or out-of-range irrational enclosures fail", () => {
+test("rejects missing, reversed or out-of-range irrational enclosures", () => {
   for (const bound_interval of [undefined, {}, { lower: q("1", "2") }])
     assert.throws(
       () => check({ ...algebraic, bound_interval }),
@@ -188,7 +188,7 @@ test("the comparison uses the best currently verified catalogue bound", () => {
   );
 });
 
-test("previous irrational bounds only need certified digits through the difference", () => {
+test("certifies previous irrational digits through the first difference", () => {
   const catalogue = {
     records: [
       record("algebraic", algebraic.bound_interval.upper, {
@@ -211,7 +211,7 @@ test("previous irrational bounds only need certified digits through the differen
         theta_decimal: "0.86605",
         catalogue,
       }),
-    /previous bound.*refine the enclosure/,
+    /previous bound.*bound_interval needs refinement/,
   );
   assert.throws(
     () => check({ ...algebraic, catalogue }),
@@ -219,9 +219,12 @@ test("previous irrational bounds only need certified digits through the differen
   );
 });
 
-test("missing previous verification fails closed", () => {
+test("requires a previously verified catalogue bound", () => {
   assert.throws(() => check({ catalogue: {} }), /trusted catalogue/);
-  assert.throws(() => check({ catalogue: { records: [] } }), /No previously/);
+  assert.throws(
+    () => check({ catalogue: { records: [] } }),
+    /requires a previously verified catalogue bound/,
+  );
   assert.throws(
     () =>
       check({
@@ -229,6 +232,6 @@ test("missing previous verification fails closed", () => {
           records: [{ ...current, status: "verification-pending" }],
         },
       }),
-    /No previously/,
+    /requires a previously verified catalogue bound/,
   );
 });

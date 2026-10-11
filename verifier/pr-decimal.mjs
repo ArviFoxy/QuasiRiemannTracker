@@ -38,13 +38,13 @@ function prefix(bounds, digits, label) {
     upper = scaled(bounds.upper);
   if (lower !== upper)
     throw Error(
-      `${label} bound_interval does not certify these decimal digits; refine the enclosure`,
+      `${label} bound_interval needs refinement to certify these decimal digits`,
     );
   return `0.${String(lower).padStart(digits, "0")}`;
 }
 
-// Both the receipt enclosure and catalogue must come from the trusted base
-// checkout. An algebraic expression is never evaluated as JavaScript.
+// Compare rational bounds and certified algebraic enclosures from the trusted
+// base checkout's receipts and catalogue.
 export function validateDecimalApproximation({
   theta_exact,
   theta_decimal,
@@ -74,7 +74,9 @@ export function validateDecimalApproximation({
     (record) => record.status === "framework-verified",
   );
   if (!verified.length)
-    throw Error("No previously verified catalogue bound is available");
+    throw Error(
+      "Decimal comparison requires a previously verified catalogue bound",
+    );
   const previous = verified.reduce((best, record) => {
     checkedRational(record.theta);
     return !best || cmp(record.theta, best.theta) < 0 ? record : best;
@@ -89,10 +91,9 @@ export function validateDecimalApproximation({
       cmp(candidate.lower, previousBounds.lower) === 0)
   )
     throw Error(
-      "The exact bound equals the previous bound; no digit can differ",
+      "The exact bound equals the previous bound; supply a distinct bound",
     );
-  // The previous bound only needs certified digits through the first
-  // difference. Extra valid candidate digits do not demand a tighter old proof.
+  // The previous bound needs certified digits through the first difference.
   for (let places = 1; places <= digits; places++) {
     const previousDecimal = prefix(
       previousBounds,

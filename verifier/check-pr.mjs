@@ -1,5 +1,5 @@
-// Only trusted default-branch orchestration may run this entrypoint.
-// Candidate files are inspected by name through the API, never executed.
+// Run this entrypoint from the trusted default-branch checkout.
+// Read candidate file paths through the GitHub API.
 import { api, pages } from "./github-api.mjs";
 import { classifyPRChanges, evaluatePR } from "./pr-admission.mjs";
 import { syncPRLabels } from "./pr-labels.mjs";
@@ -48,7 +48,8 @@ const check = await writeCheck("check-runs", "POST", {
   details_url: `https://github.com/${repo}/actions/runs/${process.env.GITHUB_RUN_ID}`,
   output: {
     title: "Checking PR declaration and independent proof evidence",
-    summary: "Website CI does not establish mathematical verification.",
+    summary:
+      "Classifying changed files and validating declarations against trusted maintainer evidence.",
   },
 });
 const identity = (p) =>
@@ -90,7 +91,7 @@ try {
     );
   conclusion = "success";
 } catch (error) {
-  summary = `Admission failed: ${error.message}\n\nSee CONTRIBUTING.md and docs/GITHUB.md. Pending or missing verification cannot pass this check.`;
+  summary = `Admission failed: ${error.message}\n\nSee CONTRIBUTING.md and docs/GITHUB.md for admission requirements.`;
   process.exitCode = 1;
 }
 await writeCheck(`check-runs/${check.id}`, "PATCH", {
@@ -101,7 +102,7 @@ await writeCheck(`check-runs/${check.id}`, "PATCH", {
     title:
       conclusion === "success"
         ? "PR admission requirements satisfied"
-        : "PR admission requirements not satisfied",
+        : "PR admission failed",
     summary,
   },
 });

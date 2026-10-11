@@ -112,7 +112,7 @@ test("maintenance replaces only stale managed labels", async (t) => {
   );
 });
 
-test("a repeated run is idempotent and leaves unrelated labels intact", async (t) => {
+test("repeated runs preserve managed and unrelated labels", async (t) => {
   const state = setup(t, { current: ["keep me"] });
   await syncPRLabels(repository, number, classification);
   state.calls.length = 0;
@@ -165,7 +165,7 @@ test("concurrent repository-label creation is confirmed after a 422", async (t) 
   );
 });
 
-test("an unconfirmed 422 creation failure fails the gate", async (t) => {
+test("requires label existence after a 422 creation response", async (t) => {
   setup(t, {
     intercept(call) {
       if (call.method === "POST" && call.body.name)
@@ -186,7 +186,7 @@ test("concurrently removed stale labels may return 404", async (t) => {
   await assert.doesNotReject(syncPRLabels(repository, number, classification));
 });
 
-test("HTTP and transport failures propagate instead of passing the gate", async (t) => {
+test("propagates HTTP and transport failures", async (t) => {
   const state = setup(t, {
     intercept(call) {
       if (call.method === "POST") return response({}, 403);
@@ -203,7 +203,7 @@ test("HTTP and transport failures propagate instead of passing the gate", async 
   );
 });
 
-test("failed PR label additions and removals fail the gate", async (t) => {
+test("propagates PR label addition and removal failures", async (t) => {
   let failedMethod = "POST";
   setup(t, {
     current: ["maintenance"],
@@ -217,7 +217,7 @@ test("failed PR label additions and removals fail the gate", async (t) => {
   await assert.rejects(syncPRLabels(repository, number, classification), /503/);
 });
 
-test("both false removes only managed labels", async (t) => {
+test("an empty classification removes managed labels and preserves unrelated labels", async (t) => {
   const state = setup(t, {
     current: ["new-bound", "maintenance", "bug"],
   });
@@ -231,7 +231,7 @@ test("both false removes only managed labels", async (t) => {
   assert.deepEqual([...state.current], ["bug"]);
 });
 
-test("invalid identities, classifications and missing tokens fail before API use", async (t) => {
+test("validates identity, classification and token before API use", async (t) => {
   const state = setup(t);
   for (const invalid of [
     "../owner/repo",
@@ -265,7 +265,7 @@ test("invalid identities, classifications and missing tokens fail before API use
   assert.equal(state.calls.length, 0);
 });
 
-test("malformed label responses fail closed", async (t) => {
+test("rejects malformed label responses", async (t) => {
   setup(t, {
     intercept(call) {
       if (call.path.includes(`/issues/`)) return response([{ id: 1 }]);

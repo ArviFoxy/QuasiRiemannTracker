@@ -1,5 +1,4 @@
-// Run only from a trusted base checkout. A candidate's copies of these pins,
-// admissions and evidence have no authority and must never be loaded here.
+// Load this module, pins, admissions and evidence from the trusted base checkout.
 import { lstatSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { validateMaintainerReplay } from "../core/maintainer-replay.mjs";
@@ -62,7 +61,7 @@ export function validateAdmission(root, expected) {
       "invalid admission entry",
     );
     // A single contribution at an exact PR head has one approved bound.
-    // Conflicting approvals must not be resolved by record ordering.
+    // Require a unique approval for each identity.
     const key = JSON.stringify([
       entry.repository.toLowerCase(),
       entry.number,
@@ -76,18 +75,17 @@ export function validateAdmission(root, expected) {
   }
   demand(
     matches.length === 1,
-    "no trusted verification for this exact PR head, result ID and bound; " +
-      "an independent maintainer replay must be archived on the base branch",
+    "archive an independent maintainer replay on the base branch for this exact PR head, result ID and bound",
   );
   const entry = matches[0];
   const report = validateMaintainerReplay(root, entry.pin, entry.contribution);
   demand(
     report.reviewed_pr_head === expected.head_sha,
-    "receipt does not verify this exact PR head",
+    "receipt must verify this exact PR head",
   );
   demand(
     report.theta_exact === expected.theta_exact,
-    "receipt does not verify the declared exact bound",
+    "receipt must verify the declared exact bound",
   );
   return report;
 }

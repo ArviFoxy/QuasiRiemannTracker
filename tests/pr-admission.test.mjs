@@ -322,7 +322,7 @@ test("a proof-only 29/33 submission fails the bound limit before evidence valida
   await rejectsBeforeEvidence(input, "Bound must be positive and at most 7/8");
 });
 
-test("PR #15's valid declaration reaches the missing trusted replay requirement", async () => {
+test("PR #15's declaration reaches the missing trusted replay requirement when ready for review", async () => {
   const input = options(
     newBound.replace(resultId, "gao-local-moment-20261011"),
     [

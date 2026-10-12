@@ -217,7 +217,7 @@ test("publishes admission failure when a required label write fails", (t) => {
   );
 });
 
-test("PR #15 publishes the missing trusted replay failure for its valid declaration", (t) => {
+test("PR #15 publishes the missing trusted replay failure when ready for review", (t) => {
   const data = fixture([
     { filename: "proofs/candidate/Main.lean", status: "added" },
   ]);

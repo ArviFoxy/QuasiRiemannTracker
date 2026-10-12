@@ -643,6 +643,70 @@
       "date_label": "Independent sandboxed verification",
       "verification_note": "The maintainer independently rebuilt all 3,224 submitted Lean modules (301 Cycle25/reused-moment modules and 2,923 pinned OpenAI modules) in a genuine offline Linux sandbox. The canonical challenge was exported first from the approved upstream library. Comparator checked eight targets and their definitions: rational and exact quartic all-Dirichlet, zeta and Eisenstein Hecke bounds, quartic root existence and uniqueness, and the reusable moment theorem with its stated hypotheses. Lean, NanoDa and con-ron accepted the exports using only propext, Classical.choice and Quot.sound. Isolation and positive/negative checker controls passed. The external controller receipt binds the exact source, dependency and tool pins, challenge and logs. The timeline uses this first independent acceptance, not discovery or the historical contributor check. The original contributor evidence remains immutable. This is a maintainer mechanical replay, not signed registry admission or Palomar registration.",
       "attribution_note": "Human contributor: Hailey Collet. AI-assisted research and formalization, reusing OpenAI/math, Mathlib and Akash Levy’s weighted construction. The earlier single-compensating-prime development supplies a reused unconditional moment lemma; its terminal 29/33 bound is not an assumption. Upstream licenses and notices are retained."
+    },
+    {
+      "submitted_at": "",
+      "published_at": "",
+      "merged_at": "",
+      "pr": 8,
+      "repository": "HaileyStorm/QuasiRiemannTracker",
+      "source_commit": "eecd4131f1cac4f31f71e84b301a4e4619aa18d9",
+      "first_verified_at": "2026-10-12T18:44:41.093487+00:00",
+      "entrypoint": {
+        "module": "Candidate.Main",
+        "declaration": "Candidate.bound"
+      },
+      "license": "Apache-2.0 for the OpenAI-derived Lean sources; manuscript licensing is separate, see NOTICE.md",
+      "builds_on": [
+        "openai-baseline"
+      ],
+      "id": "single-prime-29-33-20261010",
+      "title": "Single compensating prime · 29/33",
+      "theta": {
+        "numerator": "29",
+        "denominator": "33"
+      },
+      "authors": [
+        {
+          "name": "Hailey Collet"
+        }
+      ],
+      "method": "A single compensating-prime construction and finite descent give all-Dirichlet nonvanishing to the right of 29/33. The development includes an unconditional moving-radical mixed moment and uses pinned OpenAI foundations.",
+      "references": [
+        {
+          "label": "Rendered manuscript (PDF)",
+          "url": "proofs/single-prime-29-33-20261010/zeta_zero_free_4_33_self_contained.pdf"
+        },
+        {
+          "label": "Source and reproduction",
+          "url": "https://github.com/GTimG/QuasiRiemannTracker/tree/main/proofs/single-prime-29-33-20261010"
+        },
+        {
+          "label": "Verification and exact scope",
+          "url": "proofs/single-prime-29-33-20261010/Verification.md"
+        },
+        {
+          "label": "Contributor three-kernel report",
+          "url": "proofs/single-prime-29-33-20261010/multi-kernel-report.json"
+        },
+        {
+          "label": "Independently checked Solution.lean",
+          "url": "https://github.com/GTimG/QuasiRiemannTracker/blob/main/verifier/standard/receipts/single-prime-first-20261012/solution-src/Solution.lean"
+        },
+        {
+          "label": "Standard three-kernel verification receipt",
+          "url": "https://github.com/GTimG/QuasiRiemannTracker/blob/main/verifier/standard/receipts/single-prime-first-20261012/result.json"
+        },
+        {
+          "label": "Pinned standard submission",
+          "url": "https://github.com/HaileyStorm/QuasiRiemannTracker/tree/eecd4131f1cac4f31f71e84b301a4e4619aa18d9/submissions/single-prime-29-33-20261010"
+        }
+      ],
+      "status": "framework-verified",
+      "timeline_at": "2026-10-10T07:47:35.881822+00:00",
+      "date_label": "Contributor three-kernel verification",
+      "verification_note": "Comparator matched the canonical all-Dirichlet statement at 29/33. Lean, NanoDa and con-ron accepted its exported proof using propext, Classical.choice and Quot.sound in the standard Palomar sandbox. The original package retains contributor checks of its additional endpoints. The timeline marks the contributor verification; first_verified_at records the independent standard check.",
+      "attribution_note": "Manuscript by Hailey Collet, developed with assistance from OpenAI's GPT-6 Pro. Formalization submitted as HaileyStorm with substantial OpenAI Codex assistance, adapting pinned OpenAI/math foundations. See NOTICE.md for attribution and licensing."
     }
   ],
   "historical_records": [

@@ -15,5 +15,4 @@ The imported Mathlib development is pinned to commit
   analytically continued Dirichlet L-function with its convergent series.
 
 Mathlib's imported dependencies retain their original notices and licenses.
-The historical catalogue entry separately credits its bibliographic date
-anchor. These wrappers express the classical Euler-product bound.
+These wrappers express the classical Euler-product bound.

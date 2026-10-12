@@ -1,0 +1,80 @@
+[
+  {
+    "name": "isolation-controls",
+    "exit_code": 0,
+    "image": "sha256:3a8e2f234449dfece1b1557c30b9d79a7eeaa5190afd5d1e9c9962ebf4b20a51",
+    "elapsed_seconds": 1.2,
+    "isolation": "Docker network none, read-only root, nonroot, caps0, seccomp, setpriv NoNewPrivs",
+    "memory_bytes": 25769803776,
+    "cpu_limit": 8,
+    "pids_limit": 256,
+    "timeout_seconds": 1800,
+    "output_limit_bytes": 25769803776,
+    "stream_limit_bytes": 12582912
+  },
+  {
+    "name": "challenge-compile",
+    "exit_code": 0,
+    "image": "sha256:3a8e2f234449dfece1b1557c30b9d79a7eeaa5190afd5d1e9c9962ebf4b20a51",
+    "elapsed_seconds": 2.213,
+    "isolation": "Docker network none, read-only root, nonroot, caps0, seccomp, setpriv NoNewPrivs",
+    "memory_bytes": 25769803776,
+    "cpu_limit": 8,
+    "pids_limit": 256,
+    "timeout_seconds": 1800,
+    "output_limit_bytes": 25769803776,
+    "stream_limit_bytes": 12582912
+  },
+  {
+    "name": "challenge-export",
+    "exit_code": 0,
+    "image": "sha256:3a8e2f234449dfece1b1557c30b9d79a7eeaa5190afd5d1e9c9962ebf4b20a51",
+    "elapsed_seconds": 16.2,
+    "isolation": "Docker network none, read-only root, nonroot, caps0, seccomp, setpriv NoNewPrivs",
+    "memory_bytes": 25769803776,
+    "cpu_limit": 8,
+    "pids_limit": 256,
+    "timeout_seconds": 1800,
+    "output_limit_bytes": 25769803776,
+    "stream_limit_bytes": 17179869184
+  },
+  {
+    "name": "compile-Solution",
+    "exit_code": 0,
+    "image": "sha256:3a8e2f234449dfece1b1557c30b9d79a7eeaa5190afd5d1e9c9962ebf4b20a51",
+    "elapsed_seconds": 2.198,
+    "isolation": "Docker network none, read-only root, nonroot, caps0, seccomp, setpriv NoNewPrivs",
+    "memory_bytes": 25769803776,
+    "cpu_limit": 8,
+    "pids_limit": 256,
+    "timeout_seconds": 1800,
+    "output_limit_bytes": 25769803776,
+    "stream_limit_bytes": 12582912
+  },
+  {
+    "name": "solution-export",
+    "exit_code": 0,
+    "image": "sha256:3a8e2f234449dfece1b1557c30b9d79a7eeaa5190afd5d1e9c9962ebf4b20a51",
+    "elapsed_seconds": 17.19,
+    "isolation": "Docker network none, read-only root, nonroot, caps0, seccomp, setpriv NoNewPrivs",
+    "memory_bytes": 25769803776,
+    "cpu_limit": 8,
+    "pids_limit": 256,
+    "timeout_seconds": 1800,
+    "output_limit_bytes": 25769803776,
+    "stream_limit_bytes": 17179869184
+  },
+  {
+    "name": "judge",
+    "exit_code": 0,
+    "image": "sha256:3a8e2f234449dfece1b1557c30b9d79a7eeaa5190afd5d1e9c9962ebf4b20a51",
+    "elapsed_seconds": 129.214,
+    "isolation": "Docker network none, read-only root, nonroot, caps0, seccomp, setpriv NoNewPrivs",
+    "memory_bytes": 25769803776,
+    "cpu_limit": 8,
+    "pids_limit": 256,
+    "timeout_seconds": 7200,
+    "output_limit_bytes": 25769803776,
+    "stream_limit_bytes": 12582912
+  }
+]

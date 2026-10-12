@@ -311,8 +311,12 @@ export default function App() {
                 <div className="research-main">
                   {tab === "Timeline" && (
                     <Chart
-                      records={records.filter(verifiedHere)}
-                      allRecords={all.filter(verifiedHere)}
+                      records={records.filter(
+                        (record) => verifiedHere(record) || historicalBaseline(record),
+                      )}
+                      allRecords={all.filter(
+                        (record) => verifiedHere(record) || historicalBaseline(record),
+                      )}
                       events={events}
                       selected={selected}
                       onSelect={(r) => setSelected(r.id)}

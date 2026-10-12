@@ -10,6 +10,7 @@ const baseline = {
   date_precision: "year",
   date_label: "Early QRH-era formulation",
   first_verified_at: "",
+  entrypoint: { module: "", declaration: "" },
   method: "Absolute convergence of the Euler product.",
   verification_note: "Classical theorem included as historical context.",
   license: "Historical references linked",

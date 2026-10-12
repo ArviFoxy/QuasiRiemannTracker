@@ -339,6 +339,11 @@ select {
   align-items: center;
   gap: 4px;
 }
+.chart-panel .chart-toolbar {
+  position: static;
+  justify-content: flex-end;
+}
+
 .chart-tools .icon {
   border: 1px solid var(--control);
   background: #fff;
@@ -1105,7 +1110,4 @@ dialog .protocol-grid h2 {
 .tag.historical {
   color: #56677f;
   background: #edf1f6;
-}
-.historical-dot {
-  background: #718096;
 }

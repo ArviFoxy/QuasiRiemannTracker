@@ -8,7 +8,7 @@
       "result_id": "classical-euler-product",
       "theta_exact": "1/1",
       "pin": {
-        "collection_sha256": "504d5ed11bdd1da7b486172c4a6cee307bcae852d3e438517c935c4fb6012578",
+        "collection_sha256": "657daf905ef9665c300a38304a2ddbe073cfd99b1d10bc825eb2cdc0b85a4387",
         "receipt_sha256": "49e9665d0062199f6753ab1a56e09ddd7c0037ab600ed572200527e02bcd6f6b",
         "replay_profile": "docker-classical-v1",
         "directory": "evidence/pr-checks/classical-20261012"

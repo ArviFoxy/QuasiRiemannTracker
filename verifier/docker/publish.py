@@ -18,7 +18,7 @@ for name in ['logs', 'challenge-src', 'config']:
     regular_inventory(args.work/name)
 regular_inventory(args.controls/'logs')
 args.destination.mkdir(parents=True)
-for name in ['logs', 'challenge-src', 'config']:
+for name in ['logs', 'config']:
     shutil.copytree(args.work/name, args.destination/name)
 if (args.work/'original-source-replay').exists():
     regular_inventory(args.work/'original-source-replay')

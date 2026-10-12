@@ -22,7 +22,6 @@
     "controls/logs/export-PalomarPreflightSolution.err": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     "controls/logs/compile-PalomarPreflightChallenge.err": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     "config/comparator.json": "0f2bdd08946fa15ab65ac1bb37800655497851c5ea6d94dbe54f8c7947ed6749",
-    "challenge-src/Challenge.lean": "210b8985fc916e32fa89bd3f89cbef8c6bee595040032f2390b5906d30e516ac",
     "logs/judge.out": "221d915703dded06096f5fe79d960a3cda7646342d78f6df154f379d194e5b30",
     "logs/judge.err": "54943b382d9eb698ff11bd2c5272d06f1f83d713891254c7f538e3af445f7cbd",
     "logs/challenge-compile.err": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",

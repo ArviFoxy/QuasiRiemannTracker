@@ -245,6 +245,11 @@ export function validateDockerReplay(root, pin, contribution) {
         ["exports/Challenge.export", "exports/Solution.export"].includes(name),
         "unknown private export",
       );
+    else if (name === "challenge-src/Challenge.lean")
+      demand(
+        expected === inputs.challenge_sha256,
+        "canonical challenge artifact differs",
+      );
     else
       demand(collection.files[name] === expected, "receipt artifact differs");
   }

@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "kind": "standard-submission-replay",
+  "files": {
+    "challenge-src/Challenge.lean": "590bc671b8193122ae5d899671cec09bee4fec42623169540ab24b4466d9ac7a",
+    "comparator.json": "56915e8f4fe47275a5ad62ec3b5950ee4bd8b508818f02911774954e8dec44a0",
+    "contract.json": "ff455fafc332775e79ee555ba826a3b57475b47139fd320b22dc85c933793fe7",
+    "controls.json": "83782e525741e374d2ea9378ad8728baab7fcbd86178673c7e0d14373e179bac",
+    "logs/challenge-compile.log": "2f3cd7ea87f1fd44e67851223af57be50d15590d0a40ea2c4afddfdf9a699223",
+    "logs/challenge-export.log": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "logs/compile-Candidate.Main.log": "2c359a8998914141ae4c6bdd7ca21a532d5ed063c7032db8b117e7ecb65e88ff",
+    "logs/control-PalomarPreflightIllTyped.log": "6994a1fa94659b082fb2d9e77d67900e319fba8fc0c09d272729d116d2a80571",
+    "logs/control-PalomarPreflightSolution.log": "1c8c9bdcf1f3c9e7f1439ce96eb3cf94d67e6ce2dcc434caf418bd84aa440a94",
+    "logs/control-PalomarPreflightWrong.log": "f4273084699f4405463045913e694114bf24e7fdae19548df8bc5bce8097fa37",
+    "logs/judge.log": "cc466ca77b47bb21b4e74e004f4455569f668eabd29b06cd9f601ff0a3c3e5fe",
+    "logs/solution-compile.log": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "logs/solution-export.log": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "phases.json": "579aa40b02ec2c08a1abdd598972690fa9dd7172dab4b323e4e9ea4207d9587c",
+    "replay.py": "d5c9b7cb7930f70600d98731ccf8c38413878a657ef42f8625c46c25fbea3e12",
+    "result.json": "21bab08a0f75ef5352a2937a97c98cd49abcd504fe31a740f89dc2cdac1572a9",
+    "solution-src/Solution.lean": "faab92b97cd7016c34115bfeaab6cc3c84c61bdc2435724195e851272413a8c4",
+    "tools.json": "1f26a9874f72b39d73bea5d9ed0c7cd800b246abba1cef852cc512641cf3694c",
+    "source/explanation.md": "8e20a3cd2d66e5f2de268336226f2a06b07be4d4c7512484b9e397fd0c3b7070",
+    "source/NOTICE": "fdd7a48210479a06e89f2ba2d1b85bdbc3e3944988f78c0a363d2b89dd3b8593",
+    "source/manifest.json": "0c126147b9c2acd144eb5a9fa6d8f03e1cf1062ff930d36e25d584c240b8d137",
+    "source/LICENSE": "b40930bbcf80744c86c46a12bc9da056641d722716c378f5659b9e555ef833e1",
+    "source/src/Candidate/Main.lean": "2a60cb98d85c6d543f419351c580e18970223bdc6e5097f299cec742c6726873"
+  }
+}

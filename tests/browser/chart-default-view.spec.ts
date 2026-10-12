@@ -124,3 +124,54 @@ test("all points stay in the chart while default zoom fits the verified frontier
   ).toHaveAttribute("aria-hidden", "true");
   expect(await summary.innerText()).toBe(summaryText);
 });
+
+test("a verified theta-one baseline connects to OpenAI while the default zoom stays below one", async ({
+  page,
+}) => {
+  const openai = verified.find(
+    (record: { id: string }) => record.id === "openai-baseline",
+  );
+  const classical = {
+    ...openai,
+    id: "verified-classical-fixture",
+    title: "Verified classical baseline",
+    theta: { numerator: "1", denominator: "1" },
+    timeline_at: "1922-01-01T00:00:00Z",
+    date_precision: "year",
+    date_label: "Historical year",
+    first_verified_at: "2026-10-12T17:39:36Z",
+    builds_on: [],
+  };
+  await page.route("**/catalogue.json", (route) =>
+    route.fulfill({
+      json: {
+        ...catalogue,
+        records: [
+          classical,
+          ...catalogue.records.filter(
+            (r: { id: string }) => r.id !== "classical-euler-product",
+          ),
+        ],
+      },
+    }),
+  );
+  await page.goto("/");
+  const chart = page.locator(".chart");
+  const point = chart.locator('[data-id="verified-classical-fixture"]');
+  await expect(point).toHaveAttribute("aria-hidden", "true");
+  for (const text of await chart
+    .locator('[data-axis="bound"]')
+    .allTextContents())
+    expect(Number(text.replace("…", ""))).toBeLessThan(1);
+  await page.getByRole("button", { name: "Fit chart", exact: true }).click();
+  await expect(point).toHaveAttribute("aria-hidden", "false");
+  const coordinates = async (id: string) => {
+    const circle = chart.locator(`[data-id="${id}"] circle`).first();
+    return [await circle.getAttribute("cx"), await circle.getAttribute("cy")];
+  };
+  const [x1, y1] = await coordinates(classical.id),
+    [x2, y2] = await coordinates("openai-baseline");
+  expect(await chart.locator(".verified-frontier").getAttribute("d")).toMatch(
+    new RegExp(`^M ${x1} ${y1} H ${x2} V ${y2}`.replaceAll(".", "\\.")),
+  );
+});

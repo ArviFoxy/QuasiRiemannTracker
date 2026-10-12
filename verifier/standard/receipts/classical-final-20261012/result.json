@@ -1,0 +1,77 @@
+{
+  "status": "PASS",
+  "verified_at": "2026-10-12T17:47:42.669687+00:00",
+  "reviewed_pr_head": "4876e6b0786d9871e9b267d945930fcd0668fa83",
+  "source_commit": "a04a07166729cadd3d74da634c6cfa7b2821f2c2",
+  "source_repository": "nielstron/QuasiRiemannTracker",
+  "result_id": "classical-euler-product",
+  "theta_exact": "1/1",
+  "targets": [
+    "QRH.canonical_bound"
+  ],
+  "allowed_axioms": [
+    "Classical.choice",
+    "Quot.sound",
+    "propext"
+  ],
+  "kernels": [
+    "Lean default",
+    "nanoda",
+    "con-ron"
+  ],
+  "judge_exit_code": 0,
+  "sandbox_preflight": "PASS",
+  "candidate_mount_preflight": "PASS",
+  "challenge_exported_before_candidate_execution": true,
+  "receipt_outside_candidate": true,
+  "source_files": {
+    "explanation.md": "8e20a3cd2d66e5f2de268336226f2a06b07be4d4c7512484b9e397fd0c3b7070",
+    "NOTICE": "fdd7a48210479a06e89f2ba2d1b85bdbc3e3944988f78c0a363d2b89dd3b8593",
+    "manifest.json": "0c126147b9c2acd144eb5a9fa6d8f03e1cf1062ff930d36e25d584c240b8d137",
+    "LICENSE": "b40930bbcf80744c86c46a12bc9da056641d722716c378f5659b9e555ef833e1",
+    "src/Candidate/Main.lean": "2a60cb98d85c6d543f419351c580e18970223bdc6e5097f299cec742c6726873"
+  },
+  "library_inventory_sha256": "aa6ffce9b0416b91fe3585c9b77b39cba393edbaefac841550a2195105b7e869",
+  "driver_sha256": "70166bacf7a787ca84581e9ca47709b05368bae8acac6a14919c0067b85305db",
+  "palomar_sha256": "c575759d82c506f181b3736a110950fd32931c08a1be454262027d6205f178a2",
+  "tool_pins": {
+    "source_lean": "e8baaa71855a616dc351028f3ad2200051b0671f423a1696a100e809302d5550",
+    "exporter": "8c5d64ba68f4d3a68b3bcb7e1c5f188e35ae573b29470b8d4530a62324c9ddd1",
+    "judge_lake": "8ba83c98f76562d03b8dbc33f1057151ba6cbb121679dde76b2260ccc90495e1",
+    "judge_lean": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+    "judge_leanexport": "c5bc1a10a21e22cbb3671d65987cdef2076833b14182d823ccb2153adf2fa954",
+    "judge_leanchecker": "9e36e955a251b1313c8eb5b7fa101282d51df109d34d8bb7c1cfdf51985aba29",
+    "judge_nanoda_bin": "8241c5e6baa29490aa118d382f97961b208ae730fdb96545c2abed74c9ece5a8",
+    "judge_con-ron": "4e5616d94374cae37324dad2594f6230c2bb2297240249fc78ff508f3bc5acef"
+  },
+  "artifacts": {
+    "phases.json": "e65033ef77990399735780c771188b13e049f4d894bbd5071530b09e0fcbae0b",
+    "contract.json": "da54d41f83b42b4613e86aa1c989b9640e6821205dafc9fc043b05475e73c36b",
+    "tools.json": "1f26a9874f72b39d73bea5d9ed0c7cd800b246abba1cef852cc512641cf3694c",
+    "controls.json": "83782e525741e374d2ea9378ad8728baab7fcbd86178673c7e0d14373e179bac",
+    "comparator.json": "56915e8f4fe47275a5ad62ec3b5950ee4bd8b508818f02911774954e8dec44a0",
+    "challenge-src/Challenge.lean": "590bc671b8193122ae5d899671cec09bee4fec42623169540ab24b4466d9ac7a",
+    "source/manifest.json": "0c126147b9c2acd144eb5a9fa6d8f03e1cf1062ff930d36e25d584c240b8d137",
+    "source/src/Candidate/Main.lean": "2a60cb98d85c6d543f419351c580e18970223bdc6e5097f299cec742c6726873",
+    "preflight/comparator-preflight/comparator.json": "7e5abcff1ad5fc7e1ef3e3f5abe4261c0dd9a18366da4d857d8aabac6eaa20fc",
+    "preflight/comparator-preflight/exports/PalomarPreflightChallenge.export": "52873e4378a50d065fd4e434fdc2594367b12e35d171bca7ce21257f0cd251da",
+    "preflight/comparator-preflight/exports/PalomarPreflightIllTyped.export": "ba2aa93b3a344a8babf690e97c62b92385d51669ebb47c84e60a2904a43c292e",
+    "preflight/comparator-preflight/exports/PalomarPreflightSolution.export": "52873e4378a50d065fd4e434fdc2594367b12e35d171bca7ce21257f0cd251da",
+    "preflight/comparator-preflight/exports/PalomarPreflightWrong.export": "350b23212a8fddf95e2d5bcbf091a65ccdf520bde16237edb351962921be42bd",
+    "preflight/comparator-preflight/src/PalomarPreflightChallenge.lean": "046179a35565715e2ea1f48f01a7d743ea99b354e985959f902e14367c90f7ce",
+    "preflight/comparator-preflight/src/PalomarPreflightWrong.lean": "06ad1f6b739394b7c8f59d9cda6710f53c4736c3a689ed9fcbafb8d00ecc6477",
+    "preflight/comparator-preflight/src/PalomarPreflightSolution.lean": "046179a35565715e2ea1f48f01a7d743ea99b354e985959f902e14367c90f7ce",
+    "exports/Solution.export": "8ee94d76736dedab23284ed9390f9c6d8d9fc3b407279182f1b7737de4e48623",
+    "exports/Challenge.export": "333e7fd0294b287f5a98dc5b5778d787a15cc151b2b2bfdf787d6669027f2b5b",
+    "solution-src/Solution.lean": "faab92b97cd7016c34115bfeaab6cc3c84c61bdc2435724195e851272413a8c4",
+    "logs/challenge-export.log": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "logs/judge.log": "cc466ca77b47bb21b4e74e004f4455569f668eabd29b06cd9f601ff0a3c3e5fe",
+    "logs/solution-export.log": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "logs/control-PalomarPreflightWrong.log": "f4273084699f4405463045913e694114bf24e7fdae19548df8bc5bce8097fa37",
+    "logs/control-PalomarPreflightSolution.log": "1c8c9bdcf1f3c9e7f1439ce96eb3cf94d67e6ce2dcc434caf418bd84aa440a94",
+    "logs/compile-Candidate.Main.log": "2c359a8998914141ae4c6bdd7ca21a532d5ed063c7032db8b117e7ecb65e88ff",
+    "logs/challenge-compile.log": "2f3cd7ea87f1fd44e67851223af57be50d15590d0a40ea2c4afddfdf9a699223",
+    "logs/solution-compile.log": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "logs/control-PalomarPreflightIllTyped.log": "61db4c430b18a55b3e071bae13d502b418b59ad114071d277a6319ebd55bd0cf"
+  }
+}

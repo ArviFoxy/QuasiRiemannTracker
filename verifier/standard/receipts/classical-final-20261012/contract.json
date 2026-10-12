@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "repository": "nielstron/QuasiRiemannTracker",
+  "head_sha": "4876e6b0786d9871e9b267d945930fcd0668fa83",
+  "source_commit": "a04a07166729cadd3d74da634c6cfa7b2821f2c2",
+  "manifest": {
+    "schema_version": 1,
+    "id": "classical-euler-product",
+    "title": "Classical Euler-product bound at theta one",
+    "theta": {
+      "numerator": "1",
+      "denominator": "1"
+    },
+    "authors": [
+      {
+        "name": "QuasiRiemannTracker contributors"
+      }
+    ],
+    "entrypoint": {
+      "module": "Candidate.Main",
+      "declaration": "Candidate.bound"
+    },
+    "method": "Apply Mathlib’s nonvanishing theorem for absolutely convergent Dirichlet L-series and its equality with the analytically continued L-function where the real part of s exceeds one. The source also proves the Riemann-zeta specialization.",
+    "references": [
+      {
+        "label": "Mathlib Dirichlet L-series nonvanishing",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/d13f23b723b8a846827a245b89c10fc7d3f11612/Mathlib/NumberTheory/LSeries/Dirichlet.lean"
+      },
+      {
+        "label": "Mathlib analytic continuation of Dirichlet L-functions",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/d13f23b723b8a846827a245b89c10fc7d3f11612/Mathlib/NumberTheory/LSeries/DirichletContinuation.lean"
+      }
+    ],
+    "license": "Apache-2.0",
+    "builds_on": []
+  },
+  "source_files": {
+    "LICENSE": "b40930bbcf80744c86c46a12bc9da056641d722716c378f5659b9e555ef833e1",
+    "NOTICE": "fdd7a48210479a06e89f2ba2d1b85bdbc3e3944988f78c0a363d2b89dd3b8593",
+    "explanation.md": "8e20a3cd2d66e5f2de268336226f2a06b07be4d4c7512484b9e397fd0c3b7070",
+    "manifest.json": "0c126147b9c2acd144eb5a9fa6d8f03e1cf1062ff930d36e25d584c240b8d137",
+    "src/Candidate/Main.lean": "2a60cb98d85c6d543f419351c580e18970223bdc6e5097f299cec742c6726873"
+  },
+  "build_order": [
+    "Candidate.Main"
+  ],
+  "generated_files": {
+    "Challenge.lean": "590bc671b8193122ae5d899671cec09bee4fec42623169540ab24b4466d9ac7a",
+    "Solution.lean": "faab92b97cd7016c34115bfeaab6cc3c84c61bdc2435724195e851272413a8c4"
+  },
+  "library_inventory_sha256": "aa6ffce9b0416b91fe3585c9b77b39cba393edbaefac841550a2195105b7e869"
+}

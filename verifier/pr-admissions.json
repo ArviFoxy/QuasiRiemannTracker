@@ -1,4 +1,25 @@
 {
   "schema_version": 1,
-  "admissions": []
+  "admissions": [
+    {
+      "repository": "GTimG/QuasiRiemannTracker",
+      "number": 5,
+      "head_sha": "4876e6b0786d9871e9b267d945930fcd0668fa83",
+      "result_id": "classical-euler-product",
+      "theta_exact": "1/1",
+      "pin": {
+        "collection_sha256": "68de8cec7d6e1d2e199e9f144b132ea4592234bcefc2a5cd7e98ac6032869a62",
+        "receipt_sha256": "ca9f13a75511fd23bda444c41a6f306a8084141da64524e525304b391164992a",
+        "driver_sha256": "70166bacf7a787ca84581e9ca47709b05368bae8acac6a14919c0067b85305db",
+        "result_id": "classical-euler-product",
+        "theta_exact": "1/1",
+        "replay_profile": "standard-submission-v1",
+        "directory": "verifier/standard/receipts/classical-final-20261012"
+      },
+      "contribution": {
+        "repository": "nielstron/QuasiRiemannTracker",
+        "source_commit": "a04a07166729cadd3d74da634c6cfa7b2821f2c2"
+      }
+    }
+  ]
 }

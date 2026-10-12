@@ -6,6 +6,65 @@
       "submitted_at": "",
       "published_at": "",
       "merged_at": "",
+      "pr": 5,
+      "repository": "nielstron/QuasiRiemannTracker",
+      "source_commit": "a04a07166729cadd3d74da634c6cfa7b2821f2c2",
+      "first_verified_at": "2026-10-12T17:39:36.807728+00:00",
+      "entrypoint": {
+        "module": "Candidate.Main",
+        "declaration": "Candidate.bound"
+      },
+      "license": "Apache-2.0",
+      "builds_on": [],
+      "id": "classical-euler-product",
+      "title": "Classical baseline · θ = 1",
+      "theta": {
+        "numerator": "1",
+        "denominator": "1"
+      },
+      "authors": [
+        {
+          "name": "Classical Euler-product theorem"
+        }
+      ],
+      "method": "Absolute convergence of the Euler products gives nonvanishing of the Riemann zeta function and every Dirichlet L-function for Re(s) > 1. This is the classical starting bound; quasi-RH asks for a fixed boundary strictly below 1.",
+      "references": [
+        {
+          "label": "Hardy–Littlewood, Partitio numerorum III, p. 4 (Hypothesis R); scan printed in 1922",
+          "url": "https://archive.ymsc.tsinghua.edu.cn/pacm_download/117/5327-11511_2006_Article_BF02403921.pdf"
+        },
+        {
+          "label": "Publisher catalogue: Acta Mathematica 44 (1923), pp. 1–70",
+          "url": "https://link.springer.com/article/10.1007/BF02403921"
+        },
+        {
+          "label": "Pinned Mathlib proof of all-Dirichlet nonvanishing for Re(s) > 1",
+          "url": "https://github.com/leanprover-community/mathlib4/blob/d13f23b723b8a846827a245b89c10fc7d3f11612/Mathlib/NumberTheory/LSeries/Dirichlet.lean#L228"
+        },
+        {
+          "label": "Independently checked Solution.lean",
+          "url": "https://github.com/GTimG/QuasiRiemannTracker/blob/main/verifier/standard/receipts/classical-first-20261012/solution-src/Solution.lean"
+        },
+        {
+          "label": "Three-kernel verification receipt",
+          "url": "https://github.com/GTimG/QuasiRiemannTracker/blob/main/verifier/standard/receipts/classical-first-20261012/result.json"
+        },
+        {
+          "label": "Pinned standard submission and attribution",
+          "url": "https://github.com/nielstron/QuasiRiemannTracker/tree/a04a07166729cadd3d74da634c6cfa7b2821f2c2/submissions/classical-euler-product"
+        }
+      ],
+      "status": "framework-verified",
+      "timeline_at": "1922-01-01T00:00:00Z",
+      "date_precision": "year",
+      "date_label": "Early QRH-era formulation",
+      "verification_note": "Comparator checked the canonical all-Dirichlet statement at theta = 1, and Lean, NanoDa and con-ron accepted its exported proof using propext, Classical.choice and Quot.sound. The independent check ran in the standard Palomar sandbox. The timeline uses the historical 1922 date anchor; the verification date records the completed check.",
+      "attribution_note": "The point uses 1922, the printing year shown in Hardy and Littlewood’s Partitio numerorum III; the publisher catalogues the volume in 1923. The paper supplies an early fixed-half-plane formulation and the timeline anchor. The Euler-product bound was already classical."
+    },
+    {
+      "submitted_at": "",
+      "published_at": "",
+      "merged_at": "",
       "pr": null,
       "repository": "openai/math",
       "source_commit": "fd4aeeb2ee4fc729c18d98444fed42fd0529eeeb",

@@ -1,24 +1,10 @@
-import { readFileSync } from "node:fs";
+import { standardChallenge } from "../core/standard-challenge.mjs";
 import { manifest } from "./manifest.mjs";
-import { pins, sha256 } from "./common.mjs";
+import { pins } from "./common.mjs";
 export const THEOREM = "QRH.canonical_bound";
 export function challenge(m) {
   manifest(m);
-  const template = readFileSync(
-    new URL("./upstream-challenge.lean", import.meta.url),
-    "utf8",
-  );
-  if (sha256(template) !== pins.challenge_sha256)
-    throw Error("Trusted challenge template changed");
-  // Replace ONLY the namespace/name and literal. No submitted syntax enters the statement.
-  const n = m.theta.numerator.startsWith("-")
-    ? `(${m.theta.numerator})`
-    : m.theta.numerator;
-  return template
-    .replace("namespace OAI\n\nnamespace DirichletCharacter", "namespace QRH")
-    .replace("LFunction_ne_zero_of_seven_eighths_lt_re", "canonical_bound")
-    .replace("(7 / 8 : ℝ)", `(${n} / ${m.theta.denominator} : ℝ)`)
-    .replace("end DirichletCharacter\n\nend OAI", "end QRH");
+  return standardChallenge(m.theta);
 }
 export function solutionWrapper(m) {
   manifest(m);

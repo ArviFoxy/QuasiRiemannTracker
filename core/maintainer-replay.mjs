@@ -1,3 +1,4 @@
+import { validateStandardReplay } from "./standard-replay.mjs";
 // Authenticate a protected maintainer collection. This never runs proof code and
 // is not a signed registry-admission protocol.
 import { readFileSync, readdirSync, lstatSync } from "node:fs";
@@ -31,6 +32,8 @@ function filesAt(root, prefix = "") {
   return files.sort();
 }
 export function validateMaintainerReplay(root, pin, contribution) {
+  if (pin?.replay_profile === "standard-submission-v1")
+    return validateStandardReplay(root, pin, contribution);
   const profile = pin?.replay_profile ?? "liu-algebraic-v1";
   demand(
     [

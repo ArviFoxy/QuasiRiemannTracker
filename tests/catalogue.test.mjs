@@ -14,6 +14,10 @@ import {
   EXTERNAL_PINS,
   validateExternalKernelEvidence,
 } from "../core/external-kernel-evidence.mjs";
+import { validateStandardCatalogue } from "../core/standard-replay.mjs";
+const standardPins = JSON.parse(
+  readFileSync("verifier/standard/catalogue-pins.json", "utf8"),
+);
 const data = () => JSON.parse(readFileSync("catalogue/results.json", "utf8"));
 test("the existing contribution selects one current proof revision and preserves its earlier metadata", () => {
   const d = validateCatalogue(data());
@@ -35,6 +39,7 @@ test("the plotted frontier retains the strongest bound while verification stays 
   const d = validateCatalogue(data());
   const verified = d.records.filter(verifiedHere);
   validateExternalKernelEvidence(process.cwd(), d);
+  validateStandardCatalogue(process.cwd(), d);
   assert.deepEqual(
     verified.map((r) => r.id),
     d.records
@@ -47,6 +52,7 @@ test("the plotted frontier retains the strongest bound while verification stays 
             "akashlevy-20261009-weighted-numerator",
             "cycle25-quartic-20261010",
           ].includes(r.id) ||
+          standardPins[r.id] !== undefined ||
           (EXTERNAL_PINS.entries[r.id] !== undefined &&
             EXTERNAL_PINS.entries[r.id] !== null),
       )
@@ -97,7 +103,14 @@ test("Cycle25 advances the boundary only after independent maintainer verificati
     "Cycle25.dirichlet_nonzero_catalogue",
   );
   const frontier = frontierHistory(
-    timelineRecords(d.records.filter(verifiedHere)),
+    timelineRecords(
+      d.records.filter(
+        (r) =>
+          verifiedHere(r) &&
+          Date.parse(r.first_verified_at) <=
+            Date.parse(cycle.first_verified_at),
+      ),
+    ),
     [],
   );
   assert.equal(cmp(frontier.at(-1).theta, cycle.theta), 0);

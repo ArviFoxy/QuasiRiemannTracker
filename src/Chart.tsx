@@ -105,19 +105,6 @@ export default function Chart({
     setWindow([0, 100]);
     setVertical({ scale: 1, offset: 0 });
   };
-  const fit = () => {
-    const full = chartExtent(allRecords, events, true);
-    const base = chartExtent(allRecords, events);
-    const span = base.end - base.start;
-    const lo = relativePosition(full.low, base.low, base.high);
-    const hi = relativePosition(full.high, base.low, base.high);
-    const scale = 1 / (hi - lo);
-    setWindow([
-      ((full.start - base.start) / span) * 100,
-      ((full.end - base.start) / span) * 100,
-    ]);
-    setVertical({ scale, offset: (0.5 - (lo + hi) / 2) * scale });
-  };
   useEffect(() => {
     const element = svg.current;
     if (!element) return;
@@ -308,8 +295,8 @@ export default function Chart({
           <button
             className="icon"
             aria-label="Fit chart"
-            title="Fit all points"
-            onClick={() => fit()}
+            title="Reset to initial view"
+            onClick={reset}
           >
             <Maximize2 size={16} />
           </button>

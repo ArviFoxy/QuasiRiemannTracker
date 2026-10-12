@@ -60,7 +60,7 @@ test("all points stay in the chart while default zoom fits the verified frontier
   await page.goto("/");
 
   const chart = page.locator(".chart");
-  const fitAll = page.getByRole("button", { name: "Fit chart", exact: true });
+  const fit = page.getByRole("button", { name: "Fit chart", exact: true });
   const summary = page.getByRole("button", {
     name: "View best verified proof",
   });
@@ -98,7 +98,8 @@ test("all points stay in the chart while default zoom fits the verified frontier
   }
 
   const pointCount = await chart.locator("[data-dot]").count();
-  await fitAll.click();
+  await chart.focus();
+  for (let i = 0; i < 30; i++) await chart.press("-");
   await expect(chart.locator("[data-dot]")).toHaveCount(pointCount);
   await expect(
     chart.locator('[data-id="historical-1922-fixture"]'),
@@ -114,8 +115,9 @@ test("all points stay in the chart while default zoom fits the verified frontier
   expect(Math.max(...years)).toBeGreaterThan(2034);
   expect(await summary.innerText()).toBe(summaryText);
 
-  await chart.focus();
-  await chart.press("Home");
+  await chart.press("ArrowRight");
+  await chart.press("ArrowUp");
+  await fit.click();
   await expect(boundTicks).toHaveText(initialBounds);
   await expect(dateTicks).toHaveText(initialDates);
   await expect(chart.locator("[data-dot]")).toHaveCount(pointCount);
@@ -123,6 +125,14 @@ test("all points stay in the chart while default zoom fits the verified frontier
     chart.locator('[data-id="verified-weaker-fixture"]'),
   ).toHaveAttribute("aria-hidden", "true");
   expect(await summary.innerText()).toBe(summaryText);
+
+  await chart.focus();
+  await chart.press("+");
+  await chart.press("ArrowLeft");
+  await chart.press("ArrowDown");
+  await chart.press("Home");
+  await expect(boundTicks).toHaveText(initialBounds);
+  await expect(dateTicks).toHaveText(initialDates);
 });
 
 test("a verified theta-one baseline connects to OpenAI while the default zoom stays below one", async ({
@@ -163,7 +173,8 @@ test("a verified theta-one baseline connects to OpenAI while the default zoom st
     .locator('[data-axis="bound"]')
     .allTextContents())
     expect(Number(text.replace("…", ""))).toBeLessThan(1);
-  await page.getByRole("button", { name: "Fit chart", exact: true }).click();
+  await chart.focus();
+  for (let i = 0; i < 30; i++) await chart.press("-");
   await expect(point).toHaveAttribute("aria-hidden", "false");
   const coordinates = async (id: string) => {
     const circle = chart.locator(`[data-id="${id}"] circle`).first();

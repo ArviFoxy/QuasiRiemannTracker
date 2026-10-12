@@ -3,7 +3,6 @@
 import { readFileSync, readdirSync, lstatSync } from "node:fs";
 import { createHash } from "node:crypto";
 import { join } from "node:path";
-import { validateDockerReplay } from "./docker-replay-evidence.mjs";
 const digest = (bytes) => createHash("sha256").update(bytes).digest("hex");
 const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
 const demand = (ok, message) => {
@@ -33,8 +32,6 @@ function filesAt(root, prefix = "") {
 }
 export function validateMaintainerReplay(root, pin, contribution) {
   const profile = pin?.replay_profile ?? "liu-algebraic-v1";
-  if (["docker-classical-v1", "docker-single-prime-v1"].includes(profile))
-    return validateDockerReplay(root, pin, contribution);
   demand(
     [
       "liu-algebraic-v1",

@@ -24,10 +24,20 @@ test("verified proof badges open solution sources and contribution dates retain 
     if (record.status === "framework-verified") {
       await expect(badge).toHaveAttribute("href", /\/Solution\.lean$/);
       const href = (await badge.getAttribute("href"))!;
-      const path = new URL(href).pathname.split("/public/")[1];
-      const response = await request.get(`/${path}`);
-      expect(response.ok()).toBe(true);
-      const source = await response.text();
+      const url = new URL(href);
+      const path = url.pathname.split("/public/")[1];
+      let source: string;
+      if (path) {
+        const response = await request.get(`/${path}`);
+        expect(response.ok()).toBe(true);
+        source = await response.text();
+      } else {
+        expect(url.origin).toBe("https://github.com");
+        expect(url.pathname).toMatch(
+          /^\/GTimG\/QuasiRiemannTracker\/blob\/main\/verifier\/standard\/receipts\/[^/]+\/solution-src\/Solution\.lean$/,
+        );
+        source = readFileSync(url.pathname.split("/blob/main/")[1], "utf8");
+      }
       expect(source).toMatch(/\btheorem\b/);
       expect(source).not.toMatch(/\bsorry\b/);
     } else if (record.status === "historical-baseline") {
@@ -63,6 +73,7 @@ test("flat-layout solution references beat challenge templates; unknown layouts 
     id: "test-flat-layout",
     title: "Test fixture · flat layout",
     timeline_at: undefined,
+    date_precision: "day",
     date_label: undefined,
     references: [
       {

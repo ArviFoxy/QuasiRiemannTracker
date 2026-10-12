@@ -11,7 +11,8 @@ test("diagonal trackpad gestures preserve both pan and zoom", async ({
   await expect(curve).toHaveAttribute("d", /^M/);
   const initial = (await curve.getAttribute("d"))!;
   const reset = async () => {
-    await page.getByRole("button", { name: "Fit chart", exact: true }).click();
+    await plot.focus();
+    await plot.press("Home");
     await expect(curve).toHaveAttribute("d", initial);
   };
   const wheel = async (deltaX: number, deltaY: number) => {

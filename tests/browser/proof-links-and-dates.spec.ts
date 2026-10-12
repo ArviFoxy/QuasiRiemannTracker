@@ -57,7 +57,9 @@ test("flat-layout solution references beat challenge templates; unknown layouts 
 }) => {
   // Isolated response fixtures model the flat layout used by Akash's snapshot.
   const flat = {
-    ...catalogue.records[0],
+    ...catalogue.records.find(
+      (record: { status: string }) => record.status === "framework-verified",
+    ),
     id: "test-flat-layout",
     title: "Test fixture · flat layout",
     timeline_at: undefined,

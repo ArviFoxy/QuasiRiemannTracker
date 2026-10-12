@@ -56,7 +56,7 @@ test("nearby chart names stay readable through resizing and zoom", async ({
   isMobile,
 }) => {
   await page.goto("/");
-  await expect(page.locator("[data-dot]")).toHaveCount(liveRecords.length);
+  await expect(page.locator("[data-dot]")).toHaveCount(verifiedCount);
   if (!isMobile) {
     const newest = page.locator(
       '[data-id="cycle25-quartic-20261010"] .point-label',

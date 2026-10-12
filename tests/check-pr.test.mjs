@@ -33,6 +33,7 @@ function fixture(files = [{ filename: "README.md", status: "modified" }]) {
 // handles every API read and write and rejects unknown requests.
 const harness = `
 const fixture = JSON.parse(process.env.QRH_TEST_FIXTURE);
+const number = fixture.pr.number;
 const requests = [];
 let prReads = 0;
 globalThis.fetch = async (url, options = {}) => {
@@ -46,21 +47,21 @@ globalThis.fetch = async (url, options = {}) => {
   const route = parsed.pathname;
   if (parsed.origin !== "https://api.github.com") throw Error("Unexpected API origin");
   let value;
-  if (request.method === "GET" && route === "/repos/${repository}/pulls/15") {
+  if (request.method === "GET" && route === "/repos/${repository}/pulls/" + number) {
     value = prReads++ === 0 ? fixture.pr : (fixture.current ?? fixture.pr);
-  } else if (request.method === "GET" && route === "/repos/${repository}/pulls/15/files") {
+  } else if (request.method === "GET" && route === "/repos/${repository}/pulls/" + number + "/files") {
     if (parsed.searchParams.get("per_page") !== "100") throw Error("Unexpected page size");
     const page = Number(parsed.searchParams.get("page"));
     value = fixture.files.slice((page - 1) * 100, page * 100);
-  } else if (request.method === "GET" && route === "/repos/${repository}/issues/15/labels") {
+  } else if (request.method === "GET" && route === "/repos/${repository}/issues/" + number + "/labels") {
     const page = Number(parsed.searchParams.get("page"));
     value = (fixture.labels ?? []).slice((page - 1) * 100, page * 100);
   } else if (request.method === "GET" && route.startsWith("/repos/${repository}/labels/")) {
     value = { name: decodeURIComponent(route.split("/").at(-1)) };
-  } else if (request.method === "POST" && route === "/repos/${repository}/issues/15/labels") {
+  } else if (request.method === "POST" && route === "/repos/${repository}/issues/" + number + "/labels") {
     if (fixture.labelWriteStatus) return { ok: false, status: fixture.labelWriteStatus };
     value = request.body.labels.map(name => ({ name }));
-  } else if (request.method === "DELETE" && route.startsWith("/repos/${repository}/issues/15/labels/")) {
+  } else if (request.method === "DELETE" && route.startsWith("/repos/${repository}/issues/" + number + "/labels/")) {
     value = {};
   } else if (request.method === "POST" && route === "/repos/${repository}/check-runs") {
     value = { id: 123 };
@@ -96,7 +97,7 @@ function run(t, data, overrides = {}) {
         GITHUB_REF: "refs/heads/main",
         GITHUB_EVENT_NAME: "pull_request_target",
         GITHUB_RUN_ID: "456",
-        QRH_PR: "15",
+        QRH_PR: String(data.pr.number),
         QRH_DEFAULT_BRANCH: "main",
         QRH_TEST_FIXTURE: JSON.stringify(data),
         ...overrides,
@@ -121,6 +122,20 @@ function run(t, data, overrides = {}) {
       (request) => request.method !== "GET" && request.url.includes("/labels"),
     ),
   };
+}
+
+function assertFailure(result, message) {
+  assert.equal(result.status, 1);
+  assert.equal(result.importError, undefined);
+  assert.equal(result.checkWrites.length, 2);
+  const completed = result.checkWrites.at(-1).body;
+  assert.equal(completed.status, "completed");
+  assert.equal(completed.conclusion, "failure");
+  assert.equal(completed.output.title, "PR admission failed");
+  assert.equal(
+    completed.output.summary,
+    `Admission failed: ${message}\n\nSee CONTRIBUTING.md and docs/GITHUB.md for admission requirements.`,
+  );
 }
 
 test("maintenance publishes success and replaces a stale new-bound label", (t) => {
@@ -166,16 +181,14 @@ test("a proof on the second changed-files page adds both labels and fails mixed 
   }));
   files.push({ filename: "proofs/candidate/Main.lean", status: "added" });
   const result = run(t, fixture(files));
-  assert.equal(result.status, 1);
+  assertFailure(
+    result,
+    "Separate proof changes from maintenance changes, including workflow and verifier changes",
+  );
   const pages = result.requests
     .filter((request) => new URL(request.url).pathname.endsWith("/files"))
     .map((request) => new URL(request.url).searchParams.get("page"));
   assert.deepEqual(pages, ["1", "2"]);
-  assert.equal(result.checkWrites.at(-1).body.conclusion, "failure");
-  assert.match(
-    result.checkWrites.at(-1).body.output.summary,
-    /[Ss]eparate|[Mm]ixed/,
-  );
   assert.deepEqual(
     result.labelWrites.map((request) => request.body?.labels),
     [["new-bound", "maintenance"]],
@@ -186,40 +199,34 @@ test("an open draft receives its maintenance label while admission fails", (t) =
   const data = fixture();
   data.pr.draft = true;
   const result = run(t, data);
-  assert.equal(result.status, 1);
+  assertFailure(result, "Mark the PR ready for review before admission");
   assert.deepEqual(
     result.labelWrites.map((request) => request.body?.labels),
     [["maintenance"]],
   );
-  assert.equal(result.checkWrites.at(-1).body.conclusion, "failure");
-  assert.match(result.checkWrites.at(-1).body.output.summary, /draft|ready/i);
 });
 
 test("publishes admission failure when a required label write fails", (t) => {
   const data = fixture();
   data.labelWriteStatus = 403;
   const result = run(t, data);
-  assert.equal(result.status, 1);
+  assertFailure(result, `GitHub API 403 for repos/${repository}/issues/15/labels`);
   assert.deepEqual(
     result.labelWrites.map((request) => request.body?.labels),
     [["maintenance"]],
   );
-  assert.equal(result.checkWrites.at(-1).body.conclusion, "failure");
-  assert.match(result.checkWrites.at(-1).body.output.summary, /GitHub API 403/);
 });
 
-test("requires trusted evidence for a declared new bound", (t) => {
+test("PR #15 publishes the missing trusted replay failure when ready for review", (t) => {
   const data = fixture([
     { filename: "proofs/candidate/Main.lean", status: "added" },
   ]);
   data.pr.body =
-    "QRH-Result: candidate-20261011\nQRH-Bound: 4374433/5000000\nQRH-Decimal: 0.87488660";
+    "QRH-Result: gao-local-moment-20261011\nQRH-Bound: 4374433/5000000\nQRH-Decimal: 0.87488660";
   const result = run(t, data);
-  assert.equal(result.status, 1);
-  assert.equal(result.checkWrites.at(-1).body.conclusion, "failure");
-  assert.match(
-    result.checkWrites.at(-1).body.output.summary,
-    /archive an independent maintainer replay/,
+  assertFailure(
+    result,
+    "PR admission: archive an independent maintainer replay on the base branch for this exact PR head, result ID and bound",
   );
   assert.deepEqual(
     result.labelWrites.map((request) => request.body?.labels),
@@ -227,15 +234,47 @@ test("requires trusted evidence for a declared new bound", (t) => {
   );
 });
 
+for (const [description, maintenanceFiles, message, labels] of [
+  [
+    "mixed changes",
+    [{ filename: "tests/browser/dashboard.spec.ts", status: "modified" }],
+    "Submit QRH results and maintenance changes in separate PRs",
+    ["new-bound", "maintenance"],
+  ],
+  [
+    "a proof-only submission",
+    [],
+    "Bound must be positive and at most 7/8",
+    ["new-bound"],
+  ],
+]) {
+  test(`PR #8 publishes the admission reason for ${description}`, (t) => {
+    const data = fixture([
+      {
+        filename: "proofs/single-prime-29-33-20261010/Solution.lean",
+        status: "added",
+      },
+      ...maintenanceFiles,
+    ]);
+    data.pr.number = 8;
+    data.pr.body =
+      "QRH-Result: single-prime-29-33-20261010\nQRH-Bound: 29/33\nQRH-Decimal: 0.87878787";
+    const result = run(t, data);
+    assertFailure(result, message);
+    assert.deepEqual(
+      result.labelWrites.map((request) => request.body?.labels),
+      [labels],
+    );
+  });
+}
+
 test("an incomplete file list fails before assigning classification labels", (t) => {
   const data = fixture();
   data.pr.changed_files = 2;
   const result = run(t, data);
-  assert.equal(result.status, 1);
-  assert.equal(result.checkWrites.at(-1).body.conclusion, "failure");
-  assert.match(
-    result.checkWrites.at(-1).body.output.summary,
-    /[Ii]ncomplete|truncated/,
+  assertFailure(
+    result,
+    "Incomplete or duplicate PR file list; refusing a truncated diff",
   );
   assert.deepEqual(result.labelWrites, []);
   assert.ok(
@@ -250,13 +289,11 @@ test("publishes admission failure when the head or declaration changes during va
     if (change === "head") data.current.head.sha = "c".repeat(40);
     else data.current.body = "## New bound";
     const result = run(t, data);
-    assert.equal(result.status, 1, change);
-    assert.equal(result.checkWrites[0].body.head_sha, head);
-    assert.equal(result.checkWrites.at(-1).body.conclusion, "failure", change);
-    assert.match(
-      result.checkWrites.at(-1).body.output.summary,
-      /changed during validation/,
+    assertFailure(
+      result,
+      "PR head, base or declaration changed during validation; rerun admission",
     );
+    assert.equal(result.checkWrites[0].body.head_sha, head);
   }
 });
 
@@ -265,9 +302,9 @@ test("requires the default branch before reading or publishing checks", (t) => {
     GITHUB_REF: "refs/heads/untrusted-candidate",
   });
   assert.equal(result.status, 1);
-  assert.match(
+  assert.equal(
     result.importError,
-    /Trusted default-branch PR admission orchestration required/,
+    "Trusted default-branch PR admission orchestration required",
   );
   assert.deepEqual(result.requests, []);
   assert.deepEqual(result.checkWrites, []);

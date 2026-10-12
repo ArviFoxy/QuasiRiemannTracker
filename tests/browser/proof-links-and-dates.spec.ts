@@ -8,7 +8,7 @@ const catalogue = JSON.parse(
   ),
 );
 
-test("proof badges open solution sources and dates retain their meaning", async ({
+test("verified proof badges open solution sources and contribution dates retain their meaning", async ({
   page,
   request,
 }) => {
@@ -21,14 +21,22 @@ test("proof badges open solution sources and dates retain their meaning", async 
       has: page.getByRole("button", { name: record.title, exact: true }),
     });
     const badge = row.locator(".verification-badge");
-    await expect(badge).toHaveAttribute("href", /\/Solution\.lean$/);
-    const href = (await badge.getAttribute("href"))!;
-    const path = new URL(href).pathname.split("/public/")[1];
-    const response = await request.get(`/${path}`);
-    expect(response.ok()).toBe(true);
-    const source = await response.text();
-    expect(source).toMatch(/\btheorem\b/);
-    expect(source).not.toMatch(/\bsorry\b/);
+    if (record.status === "framework-verified") {
+      await expect(badge).toHaveAttribute("href", /\/Solution\.lean$/);
+      const href = (await badge.getAttribute("href"))!;
+      const path = new URL(href).pathname.split("/public/")[1];
+      const response = await request.get(`/${path}`);
+      expect(response.ok()).toBe(true);
+      const source = await response.text();
+      expect(source).toMatch(/\btheorem\b/);
+      expect(source).not.toMatch(/\bsorry\b/);
+    } else {
+      expect(record.status).toBe("verification-pending");
+      await expect(badge).toHaveClass(/\bamber\b/);
+      await expect(badge.locator(".sr-only")).toHaveText(
+        "Verification pending",
+      );
+    }
     const dateCell = row.locator('td[data-label="Date"]');
     await expect(dateCell.locator("time")).toHaveAttribute(
       "datetime",

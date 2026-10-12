@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
 import { readFileSync } from "node:fs";
+import { cmp } from "../../core/rational.mjs";
 const liveRecords = JSON.parse(
   readFileSync(
     new URL("../../catalogue/results.json", import.meta.url),
@@ -10,6 +11,7 @@ const verifiedCount = liveRecords.filter(
   (record: { status: string }) => record.status === "framework-verified",
 ).length;
 const pendingCount = liveRecords.length - verifiedCount;
+const recordsByBound = [...liveRecords].sort((a, b) => cmp(a.theta, b.theta));
 test("Cycle25 independent acceptance, lineage and historical paper evidence are accessible", async ({
   page,
   request,
@@ -212,7 +214,7 @@ test("current results, verification statuses and source downloads", async ({
 }, info) => {
   await page.goto("/");
   await expect(page.locator("tbody tr")).toHaveCount(liveRecords.length);
-  await expect(page.locator("[data-dot]")).toHaveCount(liveRecords.length);
+  await expect(page.locator("[data-dot]")).toHaveCount(verifiedCount);
   await expect(page.locator("tbody .tag.teal")).toHaveCount(verifiedCount);
   await expect(page.locator("tbody .tag.amber")).toHaveCount(pendingCount);
   await page
@@ -355,13 +357,24 @@ test("selection, exact sorting and zoom", async ({ page }, info) => {
   await page
     .getByRole("button", { name: "Exact bound θ", exact: true })
     .click();
-  await expect(page.locator("tbody tr").first()).toContainText("seven eighths");
+  await expect(
+    page
+      .locator("tbody tr")
+      .first()
+      .getByRole("button", {
+        name: recordsByBound.at(-1).title,
+        exact: true,
+      }),
+  ).toBeVisible();
   await page
     .getByRole("button", { name: "Exact bound θ", exact: true })
     .click();
-  await expect(page.locator("tbody tr").first()).toContainText(
-    "quartic boundary",
-  );
+  await expect(
+    page.locator("tbody tr").first().getByRole("button", {
+      name: recordsByBound[0].title,
+      exact: true,
+    }),
+  ).toBeVisible();
   await page.screenshot({
     path: `evidence/screenshots/${info.project.name}-interactions.png`,
     fullPage: true,

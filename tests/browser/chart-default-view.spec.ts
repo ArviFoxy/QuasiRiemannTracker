@@ -8,7 +8,7 @@ const verified = catalogue.records.filter(
 );
 const best = [...verified].sort((a, b) => cmp(a.theta, b.theta))[0];
 
-test("default chart fits the verified frontier below one and restores it from full history", async ({
+test("all points stay in the chart while default zoom fits the verified frontier below one", async ({
   page,
 }) => {
   const source = verified[0];
@@ -60,28 +60,23 @@ test("default chart fits the verified frontier below one and restores it from fu
   await page.goto("/");
 
   const chart = page.locator(".chart");
-  const bestView = page.getByRole("button", {
-    name: "Best verified",
-    exact: true,
-  });
-  const fullView = page.getByRole("button", {
-    name: "Full history",
-    exact: true,
-  });
+  const fitAll = page.getByRole("button", { name: "Fit chart", exact: true });
   const summary = page.getByRole("button", {
     name: "View best verified proof",
   });
   const boundTicks = chart.locator('[data-axis="bound"]');
   const dateTicks = chart.locator('[data-axis="date"]');
 
-  await expect(bestView).toHaveAttribute("aria-pressed", "true");
+  await expect(
+    page.getByRole("group", { name: "Chart view", exact: true }),
+  ).toHaveCount(0);
   await expect(chart.locator(`[data-id="${best.id}"]`)).toBeVisible();
   await expect(
     chart.locator('[data-id="historical-1922-fixture"]'),
-  ).toHaveCount(0);
+  ).toHaveAttribute("aria-hidden", "true");
   await expect(
     chart.locator('[data-id="verified-weaker-fixture"]'),
-  ).toHaveCount(0);
+  ).toHaveAttribute("aria-hidden", "true");
   await expect(chart.locator('[data-id="pending-better-fixture"]')).toHaveCount(
     0,
   );
@@ -102,14 +97,15 @@ test("default chart fits the verified frontier below one and restores it from fu
     ).toBeVisible();
   }
 
-  await fullView.click();
-  await expect(fullView).toHaveAttribute("aria-pressed", "true");
+  const pointCount = await chart.locator("[data-dot]").count();
+  await fitAll.click();
+  await expect(chart.locator("[data-dot]")).toHaveCount(pointCount);
   await expect(
     chart.locator('[data-id="historical-1922-fixture"]'),
-  ).toBeVisible();
+  ).toHaveAttribute("aria-hidden", "false");
   await expect(
     chart.locator('[data-id="verified-weaker-fixture"]'),
-  ).toBeVisible();
+  ).toHaveAttribute("aria-hidden", "false");
   await expect(chart.locator('[data-id="pending-better-fixture"]')).toHaveCount(
     0,
   );
@@ -118,17 +114,13 @@ test("default chart fits the verified frontier below one and restores it from fu
   expect(Math.max(...years)).toBeGreaterThan(2034);
   expect(await summary.innerText()).toBe(summaryText);
 
-  await bestView.click();
-  await expect(boundTicks).toHaveText(initialBounds);
-  await expect(dateTicks).toHaveText(initialDates);
-  await fullView.click();
   await chart.focus();
   await chart.press("Home");
-  await expect(bestView).toHaveAttribute("aria-pressed", "true");
   await expect(boundTicks).toHaveText(initialBounds);
   await expect(dateTicks).toHaveText(initialDates);
+  await expect(chart.locator("[data-dot]")).toHaveCount(pointCount);
   await expect(
     chart.locator('[data-id="verified-weaker-fixture"]'),
-  ).toHaveCount(0);
+  ).toHaveAttribute("aria-hidden", "true");
   expect(await summary.innerText()).toBe(summaryText);
 });

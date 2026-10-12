@@ -222,7 +222,7 @@ test("current results, verification statuses and source downloads", async ({
 }, info) => {
   await page.goto("/");
   await expect(page.locator("tbody tr")).toHaveCount(liveRecords.length);
-  await page.getByRole("button", { name: "Full history", exact: true }).click();
+  await page.getByRole("button", { name: "Fit chart", exact: true }).click();
   await expect(page.locator("[data-dot]")).toHaveCount(plottedCount);
   await expect(page.locator("tbody .tag.teal")).toHaveCount(verifiedCount);
   await expect(page.locator("tbody .tag.amber")).toHaveCount(pendingCount);

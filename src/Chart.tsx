@@ -36,7 +36,6 @@ export default function Chart({
 }) {
   const [window, setWindow] = useState<[number, number]>([0, 100]),
     [vertical, setVertical] = useState({ scale: 1, offset: 0 }),
-    [view, setView] = useState<"best" | "full">("best"),
     [hover, setHover] = useState<Contribution | null>(null);
   const dragging = useRef<{
     x: number;
@@ -63,8 +62,8 @@ export default function Chart({
   const width = W - L - R,
     height = H - T - B;
   const extent = useMemo(
-    () => chartExtent(allRecords, events, view === "full", window),
-    [allRecords, events, view, window],
+    () => chartExtent(allRecords, events, false, window),
+    [allRecords, events, window],
   );
   const { low, high } = extent;
   const span = extent.end - extent.start,
@@ -102,10 +101,22 @@ export default function Chart({
         };
       });
   };
-  const fit = (nextView: "best" | "full" = "best") => {
-    setView(nextView);
+  const reset = () => {
     setWindow([0, 100]);
     setVertical({ scale: 1, offset: 0 });
+  };
+  const fit = () => {
+    const full = chartExtent(allRecords, events, true);
+    const base = chartExtent(allRecords, events);
+    const span = base.end - base.start;
+    const lo = relativePosition(full.low, base.low, base.high);
+    const hi = relativePosition(full.high, base.low, base.high);
+    const scale = 1 / (hi - lo);
+    setWindow([
+      ((full.start - base.start) / span) * 100,
+      ((full.end - base.start) / span) * 100,
+    ]);
+    setVertical({ scale, offset: (0.5 - (lo + hi) / 2) * scale });
   };
   useEffect(() => {
     const element = svg.current;
@@ -279,14 +290,6 @@ export default function Chart({
   return (
     <section className="panel chart-panel" aria-label="Bound progress">
       <div className="chart-toolbar">
-        <div className="chart-views" role="group" aria-label="Chart view">
-          <button aria-pressed={view === "best"} onClick={() => fit("best")}>
-            Best verified
-          </button>
-          <button aria-pressed={view === "full"} onClick={() => fit("full")}>
-            Full history
-          </button>
-        </div>
         <div className="chart-tools">
           <button
             className="icon"
@@ -305,7 +308,7 @@ export default function Chart({
           <button
             className="icon"
             aria-label="Fit chart"
-            title="Fit best verified bounds below 1"
+            title="Fit all points"
             onClick={() => fit()}
           >
             <Maximize2 size={16} />
@@ -338,7 +341,7 @@ export default function Chart({
             if (e.key === "+" || e.key === "=")
               zoom(0.7, 0.5, 0.5, !e.shiftKey);
             if (e.key === "-") zoom(1.4, 0.5, 0.5, !e.shiftKey);
-            if (e.key === "Home") fit();
+            if (e.key === "Home") reset();
             if (e.key === "ArrowUp" || e.key === "ArrowDown")
               setVertical((v) => ({
                 ...v,
@@ -442,21 +445,20 @@ export default function Chart({
               const px = x(contributionDate(r)),
                 py = y(r.theta),
                 label = labels[r.id];
-              if (
-                px < L - 6 ||
-                px > W - R + 6 ||
-                py < T - 10 ||
-                py > H - B + 10
-              )
-                return null;
+              const inView =
+                px >= L - 6 &&
+                px <= W - R + 6 &&
+                py >= T - 10 &&
+                py <= H - B + 10;
               return (
                 <g
                   key={r.id}
                   data-dot
+                  aria-hidden={!inView}
                   data-id={r.id}
                   data-time={Date.parse(contributionDate(r))}
                   role="button"
-                  tabIndex={0}
+                  tabIndex={inView ? 0 : -1}
                   aria-label={`Select ${r.title}, theta ${boundLabel(r)}`}
                   aria-pressed={selected === r.id}
                   onKeyDown={(e) => {

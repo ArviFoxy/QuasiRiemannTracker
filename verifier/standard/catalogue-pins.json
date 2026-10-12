@@ -22,5 +22,20 @@
       "repository": "nielstron/QuasiRiemannTracker",
       "source_commit": "a04a07166729cadd3d74da634c6cfa7b2821f2c2"
     }
+  },
+  "single-prime-29-33-20261010": {
+    "pin": {
+      "collection_sha256": "23477b0e0fd34419e38077580b11444c9ce8b4e13d258369865b38300ffca4f6",
+      "receipt_sha256": "d1b1cc3f51f7e86cb7e0de6cc1d6e6ab2b04c2999a1b708c4f31bb5bf98ee0da",
+      "driver_sha256": "70166bacf7a787ca84581e9ca47709b05368bae8acac6a14919c0067b85305db",
+      "result_id": "single-prime-29-33-20261010",
+      "theta_exact": "29/33",
+      "replay_profile": "standard-submission-v1",
+      "directory": "verifier/standard/receipts/single-prime-first-20261012"
+    },
+    "contribution": {
+      "repository": "HaileyStorm/QuasiRiemannTracker",
+      "source_commit": "eecd4131f1cac4f31f71e84b301a4e4619aa18d9"
+    }
   }
 }

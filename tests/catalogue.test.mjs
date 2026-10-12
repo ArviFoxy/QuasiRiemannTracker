@@ -5,6 +5,9 @@ import {
   validateCatalogue,
   verifiedHere,
   timelineRecords,
+  historicalBaseline,
+  statusLabel,
+  formatContributionDate,
 } from "../core/catalogue.mjs";
 import { frontierHistory, recordHistory, cmp } from "../core/rational.mjs";
 import {
@@ -111,4 +114,51 @@ test("catalogue cannot fabricate signed admission or local verification dates fo
   e.records[1].status = "verification-pending";
   e.records[1].first_verified_at = "2026-10-09T00:00:00Z";
   assert.throws(() => validateCatalogue(e), /Pending result/);
+});
+
+const historicalCatalogue = () => {
+  const d = data();
+  const fixture = {
+    ...d.records[0],
+    id: "test-historical-baseline",
+    proof_revision: undefined,
+    status: "historical-baseline",
+    theta: { numerator: "1", denominator: "1" },
+    timeline_at: "1922-01-01T00:00:00Z",
+    date_precision: "year",
+    first_verified_at: "",
+    receipt_url: "",
+    log_url: "",
+    builds_on: [],
+  };
+  d.records.push(fixture);
+  return { data: d, baseline: fixture };
+};
+test("historical baseline preserves a year-only date and its separate status", () => {
+  const { data: d, baseline } = historicalCatalogue();
+  validateCatalogue(d);
+  assert.equal(historicalBaseline(baseline), true);
+  assert.equal(verifiedHere(baseline), false);
+  assert.equal(statusLabel(baseline), "Historical baseline");
+  assert.equal(formatContributionDate(baseline), "1922");
+});
+test("historical baseline validation enforces theta = 1 and historical evidence metadata", () => {
+  for (const changes of [
+    { first_verified_at: "2026-10-10T00:00:00Z" },
+    { receipt_url: "proofs/fake-receipt.json" },
+    { log_url: "proofs/fake-log.json" },
+    { theta: { numerator: "7", denominator: "8" } },
+  ]) {
+    const { data: changed, baseline } = historicalCatalogue();
+    Object.assign(baseline, changes);
+    assert.throws(() => validateCatalogue(changed), {
+      message:
+        "Historical baseline must be theta = 1 without local or signed verification claims",
+    });
+  }
+  const { data: changed, baseline } = historicalCatalogue();
+  baseline.timeline_at = "1922-02-15T00:00:00Z";
+  assert.throws(() => validateCatalogue(changed), {
+    message: "Year-only dates must use the start-of-year plotting anchor",
+  });
 });

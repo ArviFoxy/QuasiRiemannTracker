@@ -1,16 +1,6 @@
 import { test, expect, type Page } from "@playwright/test";
 import { readFileSync } from "node:fs";
 
-const liveRecords = JSON.parse(
-  readFileSync(
-    new URL("../../catalogue/results.json", import.meta.url),
-    "utf8",
-  ),
-).records;
-const verifiedCount = liveRecords.filter(
-  (record: { status: string }) => record.status === "framework-verified",
-).length;
-
 async function expectReadableLabels(page: Page) {
   const problems = await page.locator(".chart").evaluate((svg) => {
     // Clip-path definitions have no screen rectangle; compare SVG coordinates.
@@ -56,7 +46,9 @@ test("nearby chart names stay readable through resizing and zoom", async ({
   isMobile,
 }) => {
   await page.goto("/");
-  await expect(page.locator("[data-dot]")).toHaveCount(verifiedCount);
+  await expect(
+    page.locator('[data-id="cycle25-quartic-20261010"]'),
+  ).toBeVisible();
   if (!isMobile) {
     const newest = page.locator(
       '[data-id="cycle25-quartic-20261010"] .point-label',

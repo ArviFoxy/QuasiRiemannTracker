@@ -4,11 +4,16 @@ import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { get } from "node:http";
 import { readFileSync } from "node:fs";
+import { cmp } from "../core/rational.mjs";
 const records = JSON.parse(
   readFileSync("catalogue/results.json", "utf8"),
 ).records;
-const verifiedCount = records.filter((r) =>
+const verified = records.filter((r) =>
   ["verified", "framework-verified"].includes(r.status),
+);
+const best = [...verified].sort((a, b) => cmp(a.theta, b.theta))[0];
+const plottedCount = records.filter((r) =>
+  ["verified", "framework-verified", "historical-baseline"].includes(r.status),
 ).length;
 
 const base = process.env.QRH_BASE_PATH || "/qrh-bounds/";
@@ -73,9 +78,17 @@ try {
     if (r.status() >= 400) failures.push(`${r.status()} ${r.url()}`);
   });
   await page.goto(origin + base);
+  await page.locator(`[data-dot][data-id="${best.id}"]`).waitFor();
+  assert.equal(
+    await page
+      .getByRole("button", { name: "Best verified", exact: true })
+      .getAttribute("aria-pressed"),
+    "true",
+  );
+  await page.getByRole("button", { name: "Full history", exact: true }).click();
   await page.waitForFunction(
     (count) => document.querySelectorAll("[data-dot]").length === count,
-    verifiedCount,
+    plottedCount,
   );
   assert.equal(await page.locator("tbody tr").count(), records.length);
   for (const name of [
@@ -199,7 +212,7 @@ try {
   );
   assert.deepEqual(failures, []);
   console.log(
-    `PASS: production build at ${base}, ${verifiedCount} verified dots, JSON, favicon and proof evidence paths; no browser errors.`,
+    `PASS: production build at ${base}, ${plottedCount} full-history points, JSON, favicon and proof evidence paths; no browser errors.`,
   );
 } finally {
   if (browser) await browser.close();

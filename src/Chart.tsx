@@ -12,8 +12,10 @@ import {
   reduced,
 } from "../core/rational.mjs";
 import type { Contribution, Event, Rational } from "./types";
+import { chartExtent } from "../core/chart-viewport.mjs";
 import {
   contributionDate,
+  formatContributionDate,
   boundLabel,
   verifiedHere,
   statusLabel,
@@ -34,6 +36,7 @@ export default function Chart({
 }) {
   const [window, setWindow] = useState<[number, number]>([0, 100]),
     [vertical, setVertical] = useState({ scale: 1, offset: 0 }),
+    [view, setView] = useState<"best" | "full">("best"),
     [hover, setHover] = useState<Contribution | null>(null);
   const dragging = useRef<{
     x: number;
@@ -59,29 +62,14 @@ export default function Chart({
     B = 60;
   const width = W - L - R,
     height = H - T - B;
-  const times = [
-      ...allRecords.map((r) => Date.parse(contributionDate(r))),
-      ...events.map((e) => Date.parse(e.at)),
-    ],
-    minTime = times.length ? Math.min(...times) : Date.UTC(2026, 9, 1),
-    maxTime = times.length ? Math.max(...times) : Date.UTC(2026, 9, 9),
-    pad = Math.max((maxTime - minTime) * 0.06, 86400000);
-  const domain: [number, number] = [minTime - pad, maxTime + pad];
-  const span = domain[1] - domain[0],
-    start = domain[0] + (span * window[0]) / 100,
-    end = domain[0] + (span * window[1]) / 100;
-  const inTime = allRecords.filter(
-    (r) =>
-      Date.parse(contributionDate(r)) >= start &&
-      Date.parse(contributionDate(r)) <= end,
+  const extent = useMemo(
+    () => chartExtent(allRecords, events, view === "full", window),
+    [allRecords, events, view, window],
   );
-  const values = inTime.map((r) => r.theta).sort(cmp);
-  let low: Rational = values[0] ?? { numerator: "0", denominator: "1" },
-    high: Rational = values.at(-1) ?? BASELINE;
-  if (cmp(low, high) === 0) {
-    low = sub(low, { numerator: "1", denominator: "1000000" });
-    high = sub(high, { numerator: "-1", denominator: "1000000" });
-  }
+  const { low, high } = extent;
+  const span = extent.end - extent.start,
+    start = extent.start + (span * window[0]) / 100,
+    end = extent.start + (span * window[1]) / 100;
   const x = (at: string) =>
     L + ((Date.parse(at) - start) / (end - start)) * width;
   const y = (v: Rational) => {
@@ -114,7 +102,8 @@ export default function Chart({
         };
       });
   };
-  const fit = () => {
+  const fit = (nextView: "best" | "full" = "best") => {
+    setView(nextView);
     setWindow([0, 100]);
     setVertical({ scale: 1, offset: 0 });
   };
@@ -149,7 +138,8 @@ export default function Chart({
     return () => element.removeEventListener("wheel", wheel);
   }, [window, W]);
   const curve = useMemo(
-    () => frontierHistory(timelineRecords(allRecords), events),
+    () =>
+      frontierHistory(timelineRecords(allRecords.filter(verifiedHere)), events),
     [allRecords, events],
   );
   let path = "",
@@ -289,6 +279,14 @@ export default function Chart({
   return (
     <section className="panel chart-panel" aria-label="Bound progress">
       <div className="chart-toolbar">
+        <div className="chart-views" role="group" aria-label="Chart view">
+          <button aria-pressed={view === "best"} onClick={() => fit("best")}>
+            Best verified
+          </button>
+          <button aria-pressed={view === "full"} onClick={() => fit("full")}>
+            Full history
+          </button>
+        </div>
         <div className="chart-tools">
           <button
             className="icon"
@@ -304,7 +302,12 @@ export default function Chart({
           >
             <Minus size={17} />
           </button>
-          <button className="icon" aria-label="Fit chart" onClick={fit}>
+          <button
+            className="icon"
+            aria-label="Fit chart"
+            title="Fit best verified bounds below 1"
+            onClick={() => fit()}
+          >
             <Maximize2 size={16} />
           </button>
         </div>
@@ -315,7 +318,7 @@ export default function Chart({
           viewBox={`0 0 ${W} ${H}`}
           className="chart"
           role="group"
-          aria-label="Interactive bound timeline. Plus and minus zoom; arrows pan; Home resets. Tab to select points."
+          aria-label="Interactive bound timeline. Plus and minus zoom; arrows pan; Home fits best verified bounds below 1. Tab to select points."
           tabIndex={0}
           onKeyDown={(e) => {
             if (e.target !== e.currentTarget) return;
@@ -401,6 +404,7 @@ export default function Chart({
                 y={T + t * height + 4}
                 textAnchor="end"
                 className="axis"
+                data-axis="bound"
               >
                 {allRecords.length ? tickLabel(t) : (0.9 - t * 0.4).toFixed(2)}
               </text>
@@ -409,10 +413,13 @@ export default function Chart({
                 y={H - 18}
                 textAnchor="middle"
                 className="axis"
+                data-axis="date"
               >
                 {new Date(start + t * (end - start)).toLocaleDateString(
                   "en-GB",
-                  { day: "2-digit", month: "short", timeZone: "UTC" },
+                  end - start > 365.25 * 86400000
+                    ? { year: "numeric", timeZone: "UTC" }
+                    : { day: "2-digit", month: "short", timeZone: "UTC" },
                 )}
               </text>
             </g>
@@ -468,7 +475,7 @@ export default function Chart({
                   <title>
                     {r.title} · {boundLabel(r)} ·{" "}
                     {r.authors.map((a) => a.name).join(", ")} ·{" "}
-                    {contributionDate(r)}
+                    {formatContributionDate(r)}
                   </title>
                   <circle cx={px} cy={py} r={16} fill="transparent" />
                   {selected === r.id && (

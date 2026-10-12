@@ -19,6 +19,8 @@ import {
   verifiedHere,
   statusLabel,
   timelineRecords,
+  historicalBaseline,
+  formatContributionDate,
 } from "../core/catalogue.mjs";
 import { publicUrl } from "./urls";
 import CatalogueDetail from "./CatalogueDetail";
@@ -55,7 +57,9 @@ const columns: { key: SortKey; label: string }[] = [
 ];
 const theorem = `∀ {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) {s : ℂ},\n  (θ < s.re) → ¬ (χ = 1 ∧ s = 1) →\n  DirichletCharacter.LFunction χ s ≠ 0`;
 const proofSolutionUrl = (r: Contribution) => {
-  const explicit = r.references.find((ref) => /\/Solution\.lean$/.test(ref.url));
+  const explicit = r.references.find((ref) =>
+    /\/Solution\.lean$/.test(ref.url),
+  );
   if (explicit) {
     return explicit.url.startsWith("https://")
       ? explicit.url
@@ -307,8 +311,12 @@ export default function App() {
                 <div className="research-main">
                   {tab === "Timeline" && (
                     <Chart
-                      records={records.filter(verifiedHere)}
-                      allRecords={all.filter(verifiedHere)}
+                      records={records.filter(
+                        (record) => verifiedHere(record) || historicalBaseline(record),
+                      )}
+                      allRecords={all.filter(
+                        (record) => verifiedHere(record) || historicalBaseline(record),
+                      )}
                       events={events}
                       selected={selected}
                       onSelect={(r) => setSelected(r.id)}
@@ -374,30 +382,41 @@ export default function App() {
                                   >
                                     {contributionTitle(r)}
                                   </button>
-                                  <a
-                                    className={
-                                      "tag verification-badge " +
-                                      (verifiedHere(r) ? "teal" : "amber")
-                                    }
-                                    title={`${statusLabel(r)} · View checked solution`}
-                                    aria-label={`Verified solution for ${contributionTitle(r)}`}
-                                    href={proofSolutionUrl(r)}
-                                    onClick={(event) => event.stopPropagation()}
-                                    target="_blank"
-                                    rel="noreferrer"
-                                  >
-                                    {verifiedHere(r) ? (
-                                      <BadgeCheck
-                                        size={18}
-                                        aria-hidden="true"
-                                      />
-                                    ) : (
-                                      <Clock size={18} aria-hidden="true" />
-                                    )}
-                                    <span className="sr-only">
+                                  {historicalBaseline(r) ? (
+                                    <span
+                                      className="tag historical"
+                                      title={statusLabel(r)}
+                                    >
                                       {statusLabel(r)}
                                     </span>
-                                  </a>
+                                  ) : (
+                                    <a
+                                      className={
+                                        "tag verification-badge " +
+                                        (verifiedHere(r) ? "teal" : "amber")
+                                      }
+                                      title={`${statusLabel(r)} · View checked solution`}
+                                      aria-label={`Verified solution for ${contributionTitle(r)}`}
+                                      href={proofSolutionUrl(r)}
+                                      onClick={(event) =>
+                                        event.stopPropagation()
+                                      }
+                                      target="_blank"
+                                      rel="noreferrer"
+                                    >
+                                      {verifiedHere(r) ? (
+                                        <BadgeCheck
+                                          size={18}
+                                          aria-hidden="true"
+                                        />
+                                      ) : (
+                                        <Clock size={18} aria-hidden="true" />
+                                      )}
+                                      <span className="sr-only">
+                                        {statusLabel(r)}
+                                      </span>
+                                    </a>
+                                  )}
                                   {projectUrl(r) && (
                                     <a
                                       className="source-link"
@@ -430,12 +449,22 @@ export default function App() {
                               </td>
                               <td data-label="Date">
                                 <time
-                                  dateTime={contributionDate(r)}
-                                  title={timestamp(contributionDate(r))}
+                                  dateTime={
+                                    r.date_precision === "year"
+                                      ? contributionDate(r).slice(0, 4)
+                                      : contributionDate(r)
+                                  }
+                                  title={
+                                    r.date_precision === "year"
+                                      ? `${formatContributionDate(r)} (year only)`
+                                      : timestamp(contributionDate(r))
+                                  }
                                 >
-                                  {date(contributionDate(r))}
+                                  {formatContributionDate(r)}
                                 </time>
-                                <small>{r.date_label || "First verified"}</small>
+                                <small>
+                                  {r.date_label || "First verified"}
+                                </small>
                               </td>
                             </tr>
                           ))}
@@ -730,9 +759,9 @@ function Protocol({ commissioned }: { commissioned: boolean }) {
         <h2>Dates</h2>
         <p>
           Dates are in UTC and refer to publication, announcement or the first
-          local Lean check, as indicated in the table. Hover over a date for its full
-          timestamp. Verification dates are recorded separately in the result
-          details.
+          local Lean check, as indicated in the table. Hover over a date for its
+          full timestamp. Verification dates are recorded separately in the
+          result details.
         </p>
       </article>
     </section>

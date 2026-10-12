@@ -339,6 +339,28 @@ select {
   align-items: center;
   gap: 4px;
 }
+.chart-panel .chart-toolbar {
+  position: static;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+.chart-views {
+  display: flex;
+  gap: 4px;
+}
+.chart-views button {
+  border: 1px solid var(--control);
+  border-radius: 4px;
+  padding: 7px 9px;
+  background: #fff;
+  color: var(--muted);
+  font-size: 12px;
+}
+.chart-views button[aria-pressed="true"] {
+  color: #1d5d74;
+  background: #edf4f6;
+  border-color: #9caeb9;
+}
 .chart-tools .icon {
   border: 1px solid var(--control);
   background: #fff;
@@ -1100,4 +1122,9 @@ dialog .protocol-grid h2 {
   dialog {
     padding: 26px 20px;
   }
+}
+
+.tag.historical {
+  color: #56677f;
+  background: #edf1f6;
 }

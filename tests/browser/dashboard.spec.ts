@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
 import { readFileSync } from "node:fs";
+import { cmp } from "../../core/rational.mjs";
 const liveRecords = JSON.parse(
   readFileSync(
     new URL("../../catalogue/results.json", import.meta.url),
@@ -10,6 +11,7 @@ const verifiedCount = liveRecords.filter(
   (record: { status: string }) => record.status === "framework-verified",
 ).length;
 const pendingCount = liveRecords.length - verifiedCount;
+const recordsByBound = [...liveRecords].sort((a, b) => cmp(a.theta, b.theta));
 test("Cycle25 independent acceptance, lineage and historical paper evidence are accessible", async ({
   page,
   request,
@@ -325,36 +327,6 @@ test("current results, verification statuses and source downloads", async ({
       name: "Previous N24 independent kernel report (historical revision)",
     }),
   ).toBeVisible();
-  await page
-    .getByRole("button", {
-      name: "Single compensating prime · 29/33 (non-record)",
-      exact: true,
-    })
-    .click();
-  await expect(page.locator(".proof-detail")).toContainText(
-    "Verification pending",
-  );
-  await expect(page.locator(".proof-detail")).toContainText(
-    "independently usable unconditional moving-radical mixed moment",
-  );
-  await expect(page.locator(".proof-detail")).not.toContainText(
-    "Signed verification receipt",
-  );
-  const alternativeReport = await request.get(
-    "/proofs/single-prime-29-33-20261010/multi-kernel-report.json",
-  );
-  expect(alternativeReport.ok()).toBeTruthy();
-  expect((await alternativeReport.json()).kernels).toEqual([
-    "Lean default",
-    "nanoda",
-    "con-ron",
-  ]);
-  const manuscript = await request.get(
-    "/proofs/single-prime-29-33-20261010/zeta_zero_free_4_33_self_contained.pdf",
-  );
-  expect(manuscript.ok()).toBeTruthy();
-  expect(manuscript.headers()["content-type"]).toContain("application/pdf");
-  expect((await manuscript.body()).subarray(0, 5).toString()).toBe("%PDF-");
   const reg = await (await request.get("/registry.json")).json();
   expect(reg.records).toEqual([]);
   await page.getByRole("button", { name: "Close proof details" }).click();
@@ -386,17 +358,23 @@ test("selection, exact sorting and zoom", async ({ page }, info) => {
     .getByRole("button", { name: "Exact bound θ", exact: true })
     .click();
   await expect(
-    page.locator("tbody tr").first().getByRole("button", {
-      name: "Single compensating prime · 29/33 (non-record)",
-      exact: true,
-    }),
+    page
+      .locator("tbody tr")
+      .first()
+      .getByRole("button", {
+        name: recordsByBound.at(-1).title,
+        exact: true,
+      }),
   ).toBeVisible();
   await page
     .getByRole("button", { name: "Exact bound θ", exact: true })
     .click();
-  await expect(page.locator("tbody tr").first()).toContainText(
-    "quartic boundary",
-  );
+  await expect(
+    page.locator("tbody tr").first().getByRole("button", {
+      name: recordsByBound[0].title,
+      exact: true,
+    }),
+  ).toBeVisible();
   await page.screenshot({
     path: `evidence/screenshots/${info.project.name}-interactions.png`,
     fullPage: true,

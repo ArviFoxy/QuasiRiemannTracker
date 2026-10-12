@@ -1,4 +1,4 @@
-import test, { after } from "node:test";
+import test, { after, mock } from "node:test";
 import assert from "node:assert/strict";
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
@@ -17,6 +17,11 @@ const head = "a".repeat(40);
 const root = mkdtempSync(join(tmpdir(), "qrh-admission-tests-"));
 after(() => rmSync(root, { recursive: true, force: true }));
 mkdirSync(join(root, "catalogue"));
+mkdirSync(join(root, "verifier"));
+writeFileSync(
+  join(root, "verifier/pr-admissions.json"),
+  JSON.stringify({ schema_version: 1, admissions: [] }),
+);
 writeFileSync(
   join(root, "catalogue/results.json"),
   JSON.stringify({
@@ -59,14 +64,19 @@ function options(body = maintenance, files = [file("README.md")]) {
       base: { ref: defaultBranch, repo: { full_name: repository } },
       head: { sha: head },
     },
-    validateEvidence: () => {
+    validateEvidence: mock.fn(() => {
       throw new Error("Unexpected evidence validation");
-    },
+    }),
   };
 }
 
 // Accept either a synchronous or asynchronous implementation of the gate.
 const run = (input) => Promise.resolve().then(() => evaluatePR(input));
+
+async function rejectsBeforeEvidence(input, message) {
+  await assert.rejects(run(input), { message });
+  assert.equal(input.validateEvidence.mock.callCount(), 0);
+}
 
 test("accepts plain maintenance prose", () => {
   for (const body of [maintenance, "", null, "An inline QRH-Result: example"]) {
@@ -83,31 +93,100 @@ test("a new-bound declaration preserves the exact claimed value", () => {
   });
 });
 
-for (const [description, body] of [
-  ["the obsolete maintenance type", "QRH-Type: maintenance"],
-  ["the obsolete new-bound type", `QRH-Type: new-bound\n${newBound}`],
-  ["a missing colon", "QRH-Result candidate-20261011"],
-  ["an unknown field", `${maintenance}\nQRH-Override: true`],
+for (const [description, body, message] of [
+  [
+    "the obsolete maintenance type",
+    "QRH-Type: maintenance",
+    "Malformed or unknown QRH declaration field",
+  ],
+  [
+    "the obsolete new-bound type",
+    `QRH-Type: new-bound\n${newBound}`,
+    "Malformed or unknown QRH declaration field",
+  ],
+  [
+    "a missing colon",
+    "QRH-Result candidate-20261011",
+    "Malformed or unknown QRH declaration field",
+  ],
+  [
+    "an unknown field",
+    `${maintenance}\nQRH-Override: true`,
+    "Malformed or unknown QRH declaration field",
+  ],
   [
     "a missing decimal",
     newBound.replace(`\nQRH-Decimal: ${approximation}`, ""),
+    "QRH-Decimal must be 0. followed by 1–200 decimal digits",
   ],
-  ["a duplicate decimal", `${newBound}\nQRH-Decimal: ${approximation}`],
-  ["an empty decimal", newBound.replace(approximation, "")],
-  ["scientific notation", newBound.replace(approximation, "8.748866e-1")],
-  ["a missing result", newBound.replace(`QRH-Result: ${resultId}\n`, "")],
-  ["a missing bound", newBound.replace(`QRH-Bound: ${bound}\n`, "")],
-  ["a duplicate result", `${newBound}\nQRH-Result: ${resultId}`],
-  ["a duplicate bound", `${newBound}\nQRH-Bound: ${bound}`],
-  ["an empty result", newBound.replace(resultId, "")],
-  ["an uppercase result", newBound.replace(resultId, "Candidate-20261011")],
-  ["a short result", newBound.replace(resultId, "ab")],
-  ["a path as result", newBound.replace(resultId, "../candidate")],
-  ["an empty bound", newBound.replace(bound, "")],
-  ["an oversized bound", newBound.replace(bound, "1".repeat(257))],
+  [
+    "a duplicate decimal",
+    `${newBound}\nQRH-Decimal: ${approximation}`,
+    "Duplicate QRH declaration field",
+  ],
+  [
+    "an empty decimal",
+    newBound.replace(approximation, ""),
+    "Malformed or unknown QRH declaration field",
+  ],
+  [
+    "scientific notation",
+    newBound.replace(approximation, "8.748866e-1"),
+    "QRH-Decimal must be 0. followed by 1–200 decimal digits",
+  ],
+  [
+    "a missing result",
+    newBound.replace(`QRH-Result: ${resultId}\n`, ""),
+    "New bounds require QRH-Result: <stable-result-id>",
+  ],
+  [
+    "a missing bound",
+    newBound.replace(`QRH-Bound: ${bound}\n`, ""),
+    "New bounds require QRH-Bound: <exact checked value>",
+  ],
+  [
+    "a duplicate result",
+    `${newBound}\nQRH-Result: ${resultId}`,
+    "Duplicate QRH declaration field",
+  ],
+  [
+    "a duplicate bound",
+    `${newBound}\nQRH-Bound: ${bound}`,
+    "Duplicate QRH declaration field",
+  ],
+  [
+    "an empty result",
+    newBound.replace(resultId, ""),
+    "Malformed or unknown QRH declaration field",
+  ],
+  [
+    "an uppercase result",
+    newBound.replace(resultId, "Candidate-20261011"),
+    "New bounds require QRH-Result: <stable-result-id>",
+  ],
+  [
+    "a short result",
+    newBound.replace(resultId, "ab"),
+    "New bounds require QRH-Result: <stable-result-id>",
+  ],
+  [
+    "a path as result",
+    newBound.replace(resultId, "../candidate"),
+    "New bounds require QRH-Result: <stable-result-id>",
+  ],
+  [
+    "an empty bound",
+    newBound.replace(bound, ""),
+    "Malformed or unknown QRH declaration field",
+  ],
+  [
+    "an oversized bound",
+    newBound.replace(bound, "1".repeat(257)),
+    "New bounds require QRH-Bound: <exact checked value>",
+  ],
 ]) {
   test(`declaration rejects ${description}`, () => {
-    assert.throws(() => parseDeclaration(body));
+    assert.throws(() => parseDeclaration(body), { message });
   });
 }
 
@@ -123,7 +202,10 @@ test("rejects result metadata and headings in maintenance PRs", async () => {
     "## nEw BoUnD\nA proposed improvement.",
   ]) {
     assert.equal(hasResultSection(body), true, body);
-    await assert.rejects(run(options(body)), undefined, body);
+    await rejectsBeforeEvidence(
+      options(body),
+      "Submit QRH results and maintenance changes in separate PRs",
+    );
   }
 });
 
@@ -182,30 +264,78 @@ test("accepts a maintenance PR with plain prose", async () => {
 test("requires a result declaration for PR #15's proof change", async () => {
   const input = options("Adds the Lean proof.", [file("proofs/solution.lean")]);
   input.pr.number = 15;
-  await assert.rejects(run(input));
+  await rejectsBeforeEvidence(
+    input,
+    "Proof, submission or catalogue changes require QRH-Result, QRH-Bound, QRH-Decimal and independently checked evidence",
+  );
 });
 
 test("requires result metadata for proof submissions", async () => {
-  await assert.rejects(
-    run(options(maintenance, [file("proofs/candidate/Main.lean")])),
+  await rejectsBeforeEvidence(
+    options(maintenance, [file("proofs/candidate/Main.lean")]),
+    "Proof, submission or catalogue changes require QRH-Result, QRH-Bound, QRH-Decimal and independently checked evidence",
   );
 });
 
 test("rejects proof-to-maintenance renames", async () => {
-  await assert.rejects(
-    run(
-      options(maintenance, [
-        file("docs/old-proof.txt", {
-          status: "renamed",
-          previous_filename: "public/proofs/candidate/report.json",
-        }),
-      ]),
-    ),
+  await rejectsBeforeEvidence(
+    options(maintenance, [
+      file("docs/old-proof.txt", {
+        status: "renamed",
+        previous_filename: "public/proofs/candidate/report.json",
+      }),
+    ]),
+    "Separate proof changes from maintenance changes, including workflow and verifier changes",
   );
 });
 
 test("a new-bound declaration requires a proof-bearing change", async () => {
-  await assert.rejects(run(options(newBound)));
+  await rejectsBeforeEvidence(
+    options(newBound),
+    "Submit QRH results and maintenance changes in separate PRs",
+  );
+});
+
+test("PR #8's result metadata and maintenance changes fail the mixed-change requirement first", async () => {
+  const body = [
+    "QRH-Result: single-prime-29-33-20261010",
+    "QRH-Bound: 29/33",
+    "QRH-Decimal: 0.87878787",
+  ].join("\n");
+  const input = options(body, [
+    file("proofs/single-prime-29-33-20261010/Solution.lean"),
+    file("tests/browser/dashboard.spec.ts"),
+  ]);
+  input.pr.number = 8;
+  await rejectsBeforeEvidence(
+    input,
+    "Submit QRH results and maintenance changes in separate PRs",
+  );
+});
+
+test("a proof-only 29/33 submission fails the bound limit before evidence validation", async () => {
+  const input = options(
+    newBound.replace(bound, "29/33").replace(approximation, "0.87878787"),
+    [file("proofs/single-prime-29-33-20261010/Solution.lean")],
+  );
+  input.pr.number = 8;
+  await rejectsBeforeEvidence(input, "Bound must be positive and at most 7/8");
+});
+
+test("PR #15's declaration reaches the missing trusted replay requirement when ready for review", async () => {
+  const input = options(
+    newBound.replace(resultId, "gao-local-moment-20261011"),
+    [
+      file(
+        "proofs/gao-local-moment-20261011-v3/formalization/LocalMoment/SourceAudit.lean",
+      ),
+    ],
+  );
+  delete input.validateEvidence;
+  await assert.rejects(run(input), {
+    message:
+      "PR admission: archive an independent maintainer replay on the base branch for this exact PR head, result ID and bound",
+  });
 });
 
 test("new-bound admission binds evidence to the repository, PR, current head, result and value", async () => {
@@ -237,16 +367,28 @@ test("propagates evidence validation failures to PR admission", async () => {
   input.validateEvidence = () => {
     throw new Error("No trusted admission receipt for this PR head");
   };
-  await assert.rejects(run(input), /No trusted admission receipt/);
+  await assert.rejects(run(input), {
+    message: "No trusted admission receipt for this PR head",
+  });
 });
 
 test("requires accurate and distinguishing decimal digits with accepted evidence", async () => {
-  for (const decimal of ["0.8748866", "0.87488661"]) {
+  for (const [decimal, message] of [
+    [
+      "0.8748866",
+      "QRH-Decimal needs more digits to differ from the previous bound (previous-result: 0.8748866)",
+    ],
+    [
+      "0.87488661",
+      "QRH-Decimal must give the exact bound's truncated digits: 0.87488660",
+    ],
+  ]) {
     const input = options(newBound.replace(approximation, decimal), [
       file("proofs/candidate/Main.lean"),
     ]);
-    input.validateEvidence = () => ({ theta_exact: bound });
-    await assert.rejects(run(input));
+    input.validateEvidence = mock.fn(() => ({ theta_exact: bound }));
+    await assert.rejects(run(input), { message });
+    assert.equal(input.validateEvidence.mock.callCount(), 1);
   }
 });
 
@@ -255,8 +397,12 @@ test("irrational decimal digits require an enclosure from authenticated evidence
     .replace(bound, "sqrt(3)/2")
     .replace(approximation, "0.866025");
   const input = options(body, [file("proofs/candidate/Main.lean")]);
-  input.validateEvidence = () => ({ theta_exact: "sqrt(3)/2" });
-  await assert.rejects(run(input));
+  input.validateEvidence = mock.fn(() => ({ theta_exact: "sqrt(3)/2" }));
+  await assert.rejects(run(input), {
+    message:
+      "The exact algebraic bound needs a trusted certified bound_interval",
+  });
+  assert.equal(input.validateEvidence.mock.callCount(), 1);
   input.validateEvidence = () => ({
     theta_exact: "sqrt(3)/2",
     bound_interval: {
@@ -275,7 +421,7 @@ test("requires a matching receipt after the PR head changes", async () => {
     if (subject.head_sha !== head)
       throw new Error("Receipt head does not match");
   };
-  await assert.rejects(run(input), /Receipt head does not match/);
+  await assert.rejects(run(input), { message: "Receipt head does not match" });
 });
 
 for (const filename of [
@@ -286,7 +432,6 @@ for (const filename of [
   "README.md",
 ]) {
   test(`requires a separate maintenance PR for ${filename}`, async () => {
-    let evidenceCalls = 0;
     for (const body of [maintenance, newBound]) {
       const input = options(body, [
         file("proofs/candidate/Main.lean"),
@@ -296,32 +441,62 @@ for (const filename of [
         proof: true,
         maintenance: true,
       });
-      input.validateEvidence = () => {
-        evidenceCalls++;
-      };
-      await assert.rejects(run(input));
+      await rejectsBeforeEvidence(
+        input,
+        body === newBound
+          ? "Submit QRH results and maintenance changes in separate PRs"
+          : "Separate proof changes from maintenance changes, including workflow and verifier changes",
+      );
     }
-    assert.equal(evidenceCalls, 0);
   });
 }
 
-for (const [description, mutate] of [
-  ["closed PR", (input) => (input.pr.state = "closed")],
-  ["different base branch", (input) => (input.pr.base.ref = "other")],
+for (const [description, mutate, message] of [
+  [
+    "closed PR",
+    (input) => (input.pr.state = "closed"),
+    "Admission requires an open PR",
+  ],
+  [
+    "different base branch",
+    (input) => (input.pr.base.ref = "other"),
+    "Admission requires a PR targeting this repository's default branch",
+  ],
   [
     "different base repository",
     (input) => (input.pr.base.repo.full_name = "Elsewhere/Tracker"),
+    "Admission requires a PR targeting this repository's default branch",
   ],
-  ["missing head", (input) => delete input.pr.head],
-  ["short head SHA", (input) => (input.pr.head.sha = "abcd")],
-  ["nonhex head SHA", (input) => (input.pr.head.sha = "z".repeat(40))],
-  ["truncated file list", (input) => (input.pr.changed_files = 2)],
-  ["inconsistent file count", (input) => (input.pr.changed_files = 0)],
+  [
+    "missing head",
+    (input) => delete input.pr.head,
+    "Invalid PR identity or head commit",
+  ],
+  [
+    "short head SHA",
+    (input) => (input.pr.head.sha = "abcd"),
+    "Invalid PR identity or head commit",
+  ],
+  [
+    "nonhex head SHA",
+    (input) => (input.pr.head.sha = "z".repeat(40)),
+    "Invalid PR identity or head commit",
+  ],
+  [
+    "truncated file list",
+    (input) => (input.pr.changed_files = 2),
+    "Incomplete or duplicate PR file list; refusing a truncated diff",
+  ],
+  [
+    "inconsistent file count",
+    (input) => (input.pr.changed_files = 0),
+    "Incomplete or duplicate PR file list; refusing a truncated diff",
+  ],
 ]) {
   test(`admission rejects a ${description}`, async () => {
     const input = options();
     mutate(input);
-    assert.throws(() => classifyPRChanges(input));
-    await assert.rejects(run(input));
+    assert.throws(() => classifyPRChanges(input), { message });
+    await rejectsBeforeEvidence(input, message);
   });
 }

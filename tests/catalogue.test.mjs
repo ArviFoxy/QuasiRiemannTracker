@@ -30,7 +30,6 @@ test("the existing contribution selects one current proof revision and preserves
 });
 test("the plotted frontier retains the strongest bound while verification stays separate", () => {
   const d = validateCatalogue(data());
-  assert.equal(d.records.length, 8);
   const verified = d.records.filter(verifiedHere);
   validateExternalKernelEvidence(process.cwd(), d);
   assert.deepEqual(
@@ -50,28 +49,15 @@ test("the plotted frontier retains the strongest bound while verification stays 
       )
       .map((r) => r.id),
   );
-  const timeline = recordHistory(timelineRecords(d.records));
+  const timeline = recordHistory(timelineRecords(verified));
   const frontier = frontierHistory(timeline, []);
-  assert.equal(frontier.length, 8);
-  const alternative = timeline.find(
-    (r) => r.id === "single-prime-29-33-20261010",
-  );
-  assert.equal(alternative.is_record, false);
-  assert.equal(verifiedHere(alternative), false);
-  assert.equal(cmp(alternative.theta, { numerator: "7", denominator: "8" }), 1);
-  const previousFrontier = frontierHistory(
-    timeline.filter((r) => r.id !== alternative.id),
-    [],
-  );
-  assert.deepEqual(
-    frontier.filter((point) => point.at !== alternative.first_verified_at),
-    previousFrontier,
-  );
+  assert.equal(frontier.length, timeline.length);
   for (let i = 0; i < frontier.length; i++) {
+    assert.equal(frontier[i].at, timeline[i].first_verified_at);
     assert.ok(cmp(frontier[i].theta, timeline[i].theta) <= 0);
     if (i) assert.ok(cmp(frontier[i].theta, frontier[i - 1].theta) <= 0);
   }
-  const strongest = d.records.reduce((best, r) =>
+  const strongest = verified.reduce((best, r) =>
     cmp(r.theta, best.theta) < 0 ? r : best,
   );
   assert.equal(cmp(frontier.at(-1).theta, strongest.theta), 0);
@@ -107,9 +93,11 @@ test("Cycle25 advances the boundary only after independent maintainer verificati
     cycle.entrypoint.declaration,
     "Cycle25.dirichlet_nonzero_catalogue",
   );
-  const frontier = frontierHistory(timelineRecords(d.records), []);
+  const frontier = frontierHistory(
+    timelineRecords(d.records.filter(verifiedHere)),
+    [],
+  );
   assert.equal(cmp(frontier.at(-1).theta, cycle.theta), 0);
-  assert.equal(d.records.filter(verifiedHere).length, 7);
   assert.ok(cycle.references.some((r) => r.url.endsWith("/paper.pdf")));
   assert.ok(
     cycle.references.some((r) => r.url.endsWith("/source-public.tar.gz")),

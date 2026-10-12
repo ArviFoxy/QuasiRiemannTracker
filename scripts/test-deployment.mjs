@@ -116,9 +116,6 @@ try {
     "proofs/nielstron-algebraic-20261009-kernels/result.json",
     "proofs/nielstron-algebraic-20261009-kernels/control-results.json",
     "proofs/nielstron-algebraic-20261009-kernels/collection.json",
-    "proofs/single-prime-29-33-20261010/multi-kernel-report.json",
-    "proofs/single-prime-29-33-20261010/SHA256SUMS.txt",
-    "proofs/single-prime-29-33-20261010/zeta_zero_free_4_33_self_contained.pdf",
     "proofs/liu-20261010-safe-replay/README.txt",
     "proofs/liu-20261010-safe-replay/result.json",
     "proofs/liu-20261010-safe-replay/collection.json",
@@ -140,7 +137,7 @@ try {
     const response = await page.request.get(origin + base + name);
     assert.equal(response.status(), 200, name);
     if (name.endsWith(".json")) await response.json();
-    if (name.endsWith(".pdf")) {
+    if (name.endsWith("/paper.pdf")) {
       assert.ok(response.headers()["content-type"].includes("application/pdf"));
       assert.equal((await response.body()).subarray(0, 5).toString(), "%PDF-");
     }
@@ -149,7 +146,6 @@ try {
     "cycle25-quartic-20261010",
     "qrh-20261009",
     "nielstron-algebraic-20261009",
-    "single-prime-29-33-20261010",
     "argonaut-20261010-kernels",
     "akashlevy-20261009-weighted-numerator",
   ]) {

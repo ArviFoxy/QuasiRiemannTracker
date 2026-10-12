@@ -4,9 +4,14 @@ import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { get } from "node:http";
 import { readFileSync } from "node:fs";
+const records = JSON.parse(
+  readFileSync("catalogue/results.json", "utf8"),
+).records;
+const verifiedCount = records.filter((r) =>
+  ["verified", "framework-verified"].includes(r.status),
+).length;
 
 const base = process.env.QRH_BASE_PATH || "/qrh-bounds/";
-const resultCount = JSON.parse(readFileSync("dist/catalogue.json", "utf8")).records.length;
 const origin = "http://127.0.0.1:4184";
 const server = spawn(
   process.execPath,
@@ -69,11 +74,18 @@ try {
   });
   await page.goto(origin + base);
   await page.waitForFunction(
-    (expected) => document.querySelectorAll("[data-dot]").length === expected,
-    resultCount,
+    (count) => document.querySelectorAll("[data-dot]").length === count,
+    verifiedCount,
   );
-  assert.equal(await page.locator("tbody tr").count(), resultCount);
+  assert.equal(await page.locator("tbody tr").count(), records.length);
   for (const name of [
+    "proofs/cycle25-20261010-safe-replay/result.json",
+    "proofs/cycle25-20261010-safe-replay/logs/judge.log",
+    "proofs/cycle25-20261010-safe-replay/README.txt",
+    "proofs/cycle25-quartic-20261010/result.json",
+    "proofs/cycle25-quartic-20261010/control-results.json",
+    "proofs/cycle25-quartic-20261010/paper.tex",
+    "proofs/cycle25-quartic-20261010/paper.pdf",
     "registry.json",
     "catalogue.json",
     "site.json",
@@ -87,30 +99,90 @@ try {
     "proofs/nielstron-20261009-kernels/result.json",
     "proofs/nielstron-20261009-kernels/control-results.json",
     "proofs/nielstron-20261009-kernels/collection.json",
+    "proofs/akashlevy-20261009-weighted-numerator/result.json",
+    "proofs/akashlevy-20261009-weighted-numerator/judge.log",
+    "proofs/akashlevy-20261009-weighted-numerator/control-results.json",
+    "proofs/akashlevy-20261009-weighted-numerator/Challenge.lean",
+    "proofs/akashlevy-20261009-weighted-numerator/manuscript.pdf",
+    "proofs/akashlevy-20261009-weighted-numerator/collection.json",
+    "proofs/akashlevy-20261010-safe-replay/result.json",
+    "proofs/akashlevy-20261010-safe-replay/collection.json",
+    "proofs/akashlevy-20261010-safe-replay/README.txt",
+    "proofs/akashlevy-20261010-safe-replay/logs/judge.log",
+    "proofs/akashlevy-20261010-safe-replay/contract-audit.json",
+    "proofs/nielstron-algebraic-20261009/collection.json",
+    "proofs/nielstron-algebraic-20261009/native-final-audit.json",
+    "proofs/nielstron-algebraic-20261009/token-counts.json",
+    "proofs/nielstron-algebraic-20261009-kernels/result.json",
+    "proofs/nielstron-algebraic-20261009-kernels/control-results.json",
+    "proofs/nielstron-algebraic-20261009-kernels/collection.json",
+    "proofs/liu-20261010-safe-replay/README.txt",
+    "proofs/liu-20261010-safe-replay/result.json",
+    "proofs/liu-20261010-safe-replay/collection.json",
+    "proofs/liu-20261010-safe-replay/contract-audit.json",
+    "proofs/liu-20261010-safe-replay/controls/control-results.json",
+    "proofs/liu-20261010-safe-replay/challenge-src/Challenge.lean",
+    "proofs/liu-20261010-kernels/result.json",
+    "proofs/liu-20261010-kernels/collection.json",
+    "proofs/liu-20261010-kernels/compiler-input-supplements.json",
+    "proofs/argonaut-20261010-safe-replay/README.txt",
+    "proofs/argonaut-20261010-safe-replay/result.json",
+    "proofs/argonaut-20261010-safe-replay/collection.json",
+    "proofs/argonaut-20261010-safe-replay/contract-audit.json",
+    "proofs/argonaut-20261010-safe-replay/controls/control-results.json",
+    "proofs/argonaut-20261010-safe-replay/challenge-src/Challenge.lean",
+    "proofs/argonaut-20261010-kernels/result.json",
+    "proofs/argonaut-20261010-kernels/collection.json",
   ]) {
     const response = await page.request.get(origin + base + name);
     assert.equal(response.status(), 200, name);
     if (name.endsWith(".json")) await response.json();
+    if (name.endsWith("/paper.pdf")) {
+      assert.ok(response.headers()["content-type"].includes("application/pdf"));
+      assert.equal((await response.body()).subarray(0, 5).toString(), "%PDF-");
+    }
+  }
+  for (const id of [
+    "cycle25-quartic-20261010",
+    "qrh-20261009",
+    "nielstron-algebraic-20261009",
+    "argonaut-20261010-kernels",
+    "akashlevy-20261009-weighted-numerator",
+  ]) {
+    const proofBase = origin + base + `proofs/${id}/`;
+    const checksum = await (
+      await page.request.get(
+        proofBase +
+          (id === "argonaut-20261010-kernels"
+            ? "SOURCE-SHA256SUMS.txt"
+            : "SHA256SUMS.txt"),
+      )
+    ).text();
+    const [digest, archiveName] = checksum.trim().split("  ");
+    assert.equal(archiveName, "source-public.tar.gz");
+    // Read wire bytes: browser clients transparently decode Vite's gzip response.
+    const archive = await new Promise((resolve, reject) => {
+      const request = get(proofBase + archiveName, (response) => {
+        if (response.statusCode !== 200)
+          return reject(Error("Archive unavailable"));
+        const chunks = [];
+        response.on("data", (chunk) => chunks.push(chunk));
+        response.on("error", reject);
+        response.on("end", () => resolve(Buffer.concat(chunks)));
+      });
+      request.on("error", reject);
+      request.setTimeout(30000, () =>
+        request.destroy(Error("Archive download timed out")),
+      );
+    });
+    assert.equal(createHash("sha256").update(archive).digest("hex"), digest);
   }
   const proofBase = origin + base + "proofs/qrh-20261009/";
-  const checksum = await (await page.request.get(proofBase + "SHA256SUMS.txt")).text();
-  const [digest, archiveName] = checksum.trim().split("  ");
-  assert.equal(archiveName, "source-public.tar.gz");
-  // Read wire bytes: browser clients transparently decode Vite's gzip response.
-  const archive = await new Promise((resolve, reject) => {
-    const request = get(proofBase + archiveName, (response) => {
-      if (response.statusCode !== 200) return reject(Error("Archive unavailable"));
-      const chunks = [];
-      response.on("data", (chunk) => chunks.push(chunk));
-      response.on("error", reject);
-      response.on("end", () => resolve(Buffer.concat(chunks)));
-    });
-    request.on("error", reject);
-    request.setTimeout(30000, () => request.destroy(Error("Archive download timed out")));
-  });
-  assert.equal(createHash("sha256").update(archive).digest("hex"), digest);
   const retired = await page.request.get(proofBase + "source.tar.gz");
-  assert.notDeepEqual((await retired.body()).subarray(0, 2), Buffer.from([0x1f, 0x8b]));
+  assert.notDeepEqual(
+    (await retired.body()).subarray(0, 2),
+    Buffer.from([0x1f, 0x8b]),
+  );
   await page
     .getByRole("button", {
       name: "ProofCouncil · certified uniform descent",
@@ -127,7 +199,7 @@ try {
   );
   assert.deepEqual(failures, []);
   console.log(
-    `PASS: production build at ${base}, ${resultCount} dots, JSON, favicon and proof evidence paths; no browser errors.`,
+    `PASS: production build at ${base}, ${verifiedCount} verified dots, JSON, favicon and proof evidence paths; no browser errors.`,
   );
 } finally {
   if (browser) await browser.close();

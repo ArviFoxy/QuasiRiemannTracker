@@ -1,12 +1,22 @@
 import { readFileSync, writeFileSync, existsSync } from "node:fs";
 import { createHash } from "node:crypto";
 import { validateCatalogue } from "../core/catalogue.mjs";
+import { catalogueProofRecords } from "../core/catalogue-revisions.mjs";
 import { validateNativeKernelEvidence } from "../core/native-kernel-evidence.mjs";
+import { validateExternalKernelEvidence } from "../core/external-kernel-evidence.mjs";
+import { validateAlgebraicKernelEvidence } from "../core/algebraic-kernel-evidence.mjs";
+import { validateAkashlevyKernelEvidence } from "../core/akashlevy-kernel-evidence.mjs";
+
+import { validateCycle25KernelEvidence } from "../core/cycle25-kernel-evidence.mjs";
 
 const data = validateCatalogue(
   JSON.parse(readFileSync("catalogue/results.json", "utf8")),
 );
 validateNativeKernelEvidence(process.cwd(), data);
+validateExternalKernelEvidence(process.cwd(), data);
+validateAlgebraicKernelEvidence(process.cwd(), data);
+validateAkashlevyKernelEvidence(process.cwd(), data);
+validateCycle25KernelEvidence(process.cwd(), data);
 const proof = "proofs/qrh-20261009/";
 const sha = (p) => createHash("sha256").update(readFileSync(p)).digest("hex");
 const manifest = JSON.parse(
@@ -39,7 +49,7 @@ for (const ax of Object.values(audit.declarations))
     ax.some((a) => !["propext", "Classical.choice", "Quot.sound"].includes(a))
   )
     throw Error("Unexpected axiom");
-for (const r of data.records)
+for (const r of catalogueProofRecords(data))
   for (const ref of r.references)
     if (!ref.url.startsWith("https://") && !existsSync("public/" + ref.url))
       throw Error(`Missing public evidence: ${ref.url}`);

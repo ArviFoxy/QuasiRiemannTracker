@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
-import { Minus, Plus, Maximize2, Move, Info } from "lucide-react";
+import { Minus, Plus, Maximize2, Move } from "lucide-react";
 import {
   BASELINE,
   sub,
@@ -18,8 +18,6 @@ import {
   verifiedHere,
   statusLabel,
   timelineRecords,
-  historicalBaseline,
-  formatContributionDate,
 } from "../core/catalogue.mjs";
 export default function Chart({
   records,
@@ -35,7 +33,6 @@ export default function Chart({
   onSelect: (r: Contribution) => void;
 }) {
   const [window, setWindow] = useState<[number, number]>([0, 100]),
-    [period, setPeriod] = useState<"all" | "recent">("all"),
     [vertical, setVertical] = useState({ scale: 1, offset: 0 }),
     [hover, setHover] = useState<Contribution | null>(null);
   const dragging = useRef<{
@@ -62,13 +59,8 @@ export default function Chart({
     B = 60;
   const width = W - L - R,
     height = H - T - B;
-  const hasHistory = allRecords.some(historicalBaseline);
-  const periodRecords =
-    period === "recent"
-      ? allRecords.filter((r) => !historicalBaseline(r))
-      : allRecords;
   const times = [
-      ...periodRecords.map((r) => Date.parse(contributionDate(r))),
+      ...allRecords.map((r) => Date.parse(contributionDate(r))),
       ...events.map((e) => Date.parse(e.at)),
     ],
     minTime = times.length ? Math.min(...times) : Date.UTC(2026, 9, 1),
@@ -100,17 +92,27 @@ export default function Chart({
         (1 - ((ratio - 0.5) * 0.83 * vertical.scale + 0.5 + vertical.offset))
     );
   };
-  const zoom = (factor: number) => {
-    const middle = (window[0] + window[1]) / 2,
-      half = Math.max(
-        0.02,
-        Math.min(50, ((window[1] - window[0]) * factor) / 2),
-      );
-    setWindow([Math.max(0, middle - half), Math.min(100, middle + half)]);
-    setVertical((v) => ({
-      ...v,
-      scale: Math.max(0.5, Math.min(1e6, v.scale / factor)),
-    }));
+  const zoom = (
+    factor: number,
+    anchorX = 0.5,
+    anchorY = 0.5,
+    scaleVertical = true,
+  ) => {
+    setWindow((current) => {
+      const span = current[1] - current[0],
+        nextSpan = Math.max(0.0001, span * factor),
+        anchor = current[0] + span * anchorX;
+      return [anchor - nextSpan * anchorX, anchor + nextSpan * (1 - anchorX)];
+    });
+    if (scaleVertical)
+      setVertical((v) => {
+        const scale = Math.max(0.0001, Math.min(1e6, v.scale / factor)),
+          ratio = scale / v.scale;
+        return {
+          scale,
+          offset: (1 - anchorY - 0.5) * (1 - ratio) + v.offset * ratio,
+        };
+      });
   };
   const fit = () => {
     setWindow([0, 100]);
@@ -120,13 +122,32 @@ export default function Chart({
     const element = svg.current;
     if (!element) return;
     const wheel = (event: WheelEvent) => {
-      if (!event.ctrlKey && !event.metaKey) return;
       event.preventDefault();
-      zoom(event.deltaY > 0 ? 1.15 : 0.85);
+      const bounds = element.getBoundingClientRect();
+      if (event.deltaX) {
+        setWindow((current) => {
+          const delta = (event.deltaX / width) * (current[1] - current[0]);
+          return [current[0] + delta, current[1] + delta];
+        });
+      }
+      if (event.deltaY) {
+        const unit =
+          event.deltaMode === 1
+            ? 16
+            : event.deltaMode === 2
+              ? bounds.height
+              : 1;
+        zoom(
+          Math.exp(Math.max(-1, Math.min(1, event.deltaY * unit * 0.003))),
+          Math.max(0, Math.min(1, (event.clientX - bounds.left - L) / width)),
+          Math.max(0, Math.min(1, (event.clientY - bounds.top - T) / height)),
+          !event.shiftKey,
+        );
+      }
     };
     element.addEventListener("wheel", wheel, { passive: false });
     return () => element.removeEventListener("wheel", wheel);
-  }, [window]);
+  }, [window, W]);
   const curve = useMemo(
     () => frontierHistory(timelineRecords(allRecords), events),
     [allRecords, events],
@@ -267,37 +288,7 @@ export default function Chart({
   const ticks = [0, 0.25, 0.5, 0.75, 1];
   return (
     <section className="panel chart-panel" aria-label="Bound progress">
-      <div className="panel-heading">
-        <div>
-          <h2>Bounds over time</h2>
-        </div>
-      </div>
       <div className="chart-toolbar">
-        <span className="chart-axis-description">
-          Bound θ · smaller is better
-        </span>
-        {hasHistory && (
-          <div className="segmented" aria-label="Timeline period">
-            <button
-              aria-pressed={period === "all"}
-              onClick={() => {
-                setPeriod("all");
-                fit();
-              }}
-            >
-              Full history
-            </button>
-            <button
-              aria-pressed={period === "recent"}
-              onClick={() => {
-                setPeriod("recent");
-                fit();
-              }}
-            >
-              Recent results
-            </button>
-          </div>
-        )}
         <div className="chart-tools">
           <button
             className="icon"
@@ -341,8 +332,9 @@ export default function Chart({
               ].includes(e.key)
             )
               e.preventDefault();
-            if (e.key === "+" || e.key === "=") zoom(0.7);
-            if (e.key === "-") zoom(1.4);
+            if (e.key === "+" || e.key === "=")
+              zoom(0.7, 0.5, 0.5, !e.shiftKey);
+            if (e.key === "-") zoom(1.4, 0.5, 0.5, !e.shiftKey);
             if (e.key === "Home") fit();
             if (e.key === "ArrowUp" || e.key === "ArrowDown")
               setVertical((v) => ({
@@ -402,7 +394,7 @@ export default function Chart({
                 x2={W - R}
                 y1={T + t * height}
                 y2={T + t * height}
-                stroke="#e4e9f0"
+                stroke="#e1e7ea"
               />
               <text
                 x={L - 14}
@@ -420,9 +412,7 @@ export default function Chart({
               >
                 {new Date(start + t * (end - start)).toLocaleDateString(
                   "en-GB",
-                  end - start > 2 * 365.25 * 86400000
-                    ? { year: "numeric", timeZone: "UTC" }
-                    : { day: "2-digit", month: "short", timeZone: "UTC" },
+                  { day: "2-digit", month: "short", timeZone: "UTC" },
                 )}
               </text>
             </g>
@@ -433,9 +423,10 @@ export default function Chart({
           <g clipPath="url(#plotClip)">
             {allRecords.length > 0 && (
               <path
+                className="verified-frontier"
                 d={path}
                 fill="none"
-                stroke="#178e82"
+                stroke="#1d5d74"
                 strokeWidth="2"
                 strokeLinejoin="round"
               />
@@ -477,30 +468,24 @@ export default function Chart({
                   <title>
                     {r.title} · {boundLabel(r)} ·{" "}
                     {r.authors.map((a) => a.name).join(", ")} ·{" "}
-                    {formatContributionDate(r)}
+                    {contributionDate(r)}
                   </title>
                   <circle cx={px} cy={py} r={16} fill="transparent" />
                   {selected === r.id && (
-                    <circle cx={px} cy={py} r={12} fill="#178e8222" />
+                    <circle cx={px} cy={py} r={12} fill="#1d5d7422" />
                   )}
                   <circle
                     cx={px}
                     cy={py}
                     r={selected === r.id ? 6 : 5}
                     fill={
-                      historicalBaseline(r)
-                        ? "#7184a2"
-                        : !verifiedHere(r)
-                          ? "white"
-                          : r.is_record
-                            ? "#148d80"
-                            : "#7184a2"
-                    }
-                    stroke={
-                      historicalBaseline(r) || verifiedHere(r)
+                      !verifiedHere(r)
                         ? "white"
-                        : "#ad761e"
+                        : r.is_record
+                          ? "#1d5d74"
+                          : "#7184a2"
                     }
+                    stroke={!verifiedHere(r) ? "#ad761e" : "white"}
                     strokeWidth={2}
                   />
                   {W > 600 &&
@@ -552,61 +537,16 @@ export default function Chart({
       <div className="chart-bottom">
         <span>
           <i className="legend-line" />
-          Best listed bound
+          Best verified bound
         </span>
-        <span>
-          <i className="legend-dot pending-dot" />
-          Verification pending
-        </span>
-        {hasHistory && (
-          <span>
-            <i className="legend-dot historical-dot" />
-            Historical baseline
-          </span>
-        )}
         <span className="pan-hint">
           <Move size={13} />
-          Drag to pan · + / − to zoom
+          Drag to pan · scroll to zoom
         </span>
       </div>
-      <div className="range-controls">
-        <label>
-          From{" "}
-          <input
-            aria-label="Timeline start"
-            type="range"
-            min="0"
-            max="99"
-            step=".1"
-            value={Math.max(0, window[0])}
-            onChange={(e) =>
-              setWindow([Math.min(+e.target.value, window[1] - 0.1), window[1]])
-            }
-          />
-        </label>
-        <label>
-          To{" "}
-          <input
-            aria-label="Timeline end"
-            type="range"
-            min="1"
-            max="100"
-            step=".1"
-            value={Math.min(100, window[1])}
-            onChange={(e) =>
-              setWindow([window[0], Math.max(+e.target.value, window[0] + 0.1)])
-            }
-          />
-        </label>
-      </div>
-      <p className="chart-note">
-        <Info size={14} />
-        <span>
-          {tiny && <>Local axis origin θ₀ = {fraction(low)}. </>}
-          Dates in UTC. The line includes results awaiting verification. Filters
-          affect dots.
-        </span>
-      </p>
+      {tiny && (
+        <p className="chart-note">Local axis origin θ₀ = {fraction(low)}.</p>
+      )}
     </section>
   );
 }

@@ -113,10 +113,10 @@
       "pr": null,
       "repository": "Argonaut-Math/argonaut-math-quasi-riemann-boundary",
       "source_commit": "5971383edcb0b1cf863927eed3b359d2d3ba346e",
-      "first_verified_at": "",
+      "first_verified_at": "2026-10-10T10:09:10.743884+00:00",
       "entrypoint": {
-        "module": "",
-        "declaration": ""
+        "module": "PerturbedBoundaryMain",
+        "declaration": "OAI.DirichletCharacter.LFunction_ne_zero_of_perturbed_boundary_lt_re"
       },
       "license": "Apache-2.0",
       "builds_on": [
@@ -133,17 +133,49 @@
           "name": "Argonaut Math"
         }
       ],
-      "method": "Refinement of the OpenAI framework to 3499999/4000000. Authors report Lean and native Comparator verification; our independent verification is pending.",
+      "method": "Refinement of the OpenAI framework to 3499999/4000000. The pinned original proof has been independently reproduced and checked with Comparator and three kernels.",
       "references": [
+        {
+          "label": "Independent maintainer replay receipt",
+          "url": "proofs/argonaut-20261010-safe-replay/result.json"
+        },
+        {
+          "label": "Maintainer replay: all three kernel acceptances",
+          "url": "proofs/argonaut-20261010-safe-replay/logs/judge.log"
+        },
+        {
+          "label": "Exact independent target statements",
+          "url": "proofs/argonaut-20261010-safe-replay/challenge-src/Challenge.lean"
+        },
+        {
+          "label": "Sandboxed reproduction instructions",
+          "url": "proofs/argonaut-20261010-safe-replay/README.txt"
+        },
+        {
+          "label": "Positive and negative checker controls",
+          "url": "proofs/argonaut-20261010-safe-replay/controls/control-results.json"
+        },
+        {
+          "label": "Reviewed original source package",
+          "url": "proofs/argonaut-20261010-kernels/source-public.tar.gz"
+        },
+        {
+          "label": "Earlier submitted checker report (historical)",
+          "url": "proofs/argonaut-20261010-kernels/result.json"
+        },
+        {
+          "label": "Historical native instructions (unsafe for untrusted submissions)",
+          "url": "proofs/argonaut-20261010-kernels/README.txt"
+        },
         {
           "label": "Argonaut source and release",
           "url": "https://github.com/Argonaut-Math/argonaut-math-quasi-riemann-boundary"
         }
       ],
-      "status": "verification-pending",
+      "status": "framework-verified",
       "timeline_at": "2026-10-08T00:00:00Z",
       "date_label": "Public announcement",
-      "verification_note": "Authors report Lean and native Comparator verification. We have inspected sources but have not independently reproduced the complete proof check. This is a verification status, not a claim that the proof is defective."
+      "verification_note": "Argonaut Math's unchanged pinned v0.1.8 proof was independently rebuilt by the maintainer in a genuine offline Linux sandbox. The canonical challenge was exported before candidate execution; Comparator checked the exact all-Dirichlet, zeta and finite-order Eisenstein Hecke statements and definitions, and Lean, NanoDa and con-ron accepted all three targets at exactly 3499999/4000000 with only propext, Classical.choice and Quot.sound. The receipt was written outside candidate-writable paths. Original proof sources, authorship and license notices remain in the historical package. The first verified time records this confined maintainer run; the earlier submitted report remains historical evidence. This is local mechanical verification, not signed registry admission or Palomar registration."
     },
     {
       "submitted_at": "",
@@ -151,11 +183,11 @@
       "merged_at": "",
       "pr": null,
       "repository": "liubaiying101/Slightly-improved-zero-free-half-planes-for-the-quasi-Riemann-hypothesis",
-      "source_commit": "",
-      "first_verified_at": "",
+      "source_commit": "7d10420de90efa2f082a06a342fc7accbd57ab37",
+      "first_verified_at": "2026-10-10T09:10:59.898288+00:00",
       "entrypoint": {
-        "module": "",
-        "declaration": ""
+        "module": "RHZeroFreeExtension.CombinedPaperVerification",
+        "declaration": "CombinedPaper.algebraic_dirichlet_nonzero"
       },
       "license": "See source and notices",
       "builds_on": [
@@ -186,6 +218,38 @@
       "method": "Optimizes b and ℓ in the OpenAI argument. The exact boundary is algebraic. The plotted rational is a certified upper endpoint less than 10⁻³⁰ above it, used only for rendering.",
       "references": [
         {
+          "label": "Independent maintainer replay receipt",
+          "url": "proofs/liu-20261010-safe-replay/result.json"
+        },
+        {
+          "label": "Maintainer replay: all three kernel acceptances",
+          "url": "proofs/liu-20261010-safe-replay/logs/judge.log"
+        },
+        {
+          "label": "Earlier submitted checker report (historical)",
+          "url": "proofs/liu-20261010-kernels/result.json"
+        },
+        {
+          "label": "Earlier submitted checker log (historical)",
+          "url": "proofs/liu-20261010-kernels/judge.log"
+        },
+        {
+          "label": "Exact independent target statements",
+          "url": "proofs/liu-20261010-safe-replay/challenge-src/Challenge.lean"
+        },
+        {
+          "label": "Sandboxed reproduction instructions",
+          "url": "proofs/liu-20261010-safe-replay/README.txt"
+        },
+        {
+          "label": "Historical reconstruction notes (old native scripts are unsafe)",
+          "url": "proofs/liu-20261010-kernels/README.txt"
+        },
+        {
+          "label": "Positive and negative checker controls",
+          "url": "proofs/liu-20261010-safe-replay/controls/control-results.json"
+        },
+        {
           "label": "Paper · arXiv:2610.12234",
           "url": "https://arxiv.org/abs/2610.12234"
         },
@@ -194,10 +258,10 @@
           "url": "https://github.com/liubaiying101/Slightly-improved-zero-free-half-planes-for-the-quasi-Riemann-hypothesis"
         }
       ],
-      "status": "verification-pending",
+      "status": "framework-verified",
       "timeline_at": "2026-10-08T16:18:53Z",
       "date_label": "arXiv submission",
-      "verification_note": "The author reports a Lean formalization. We have not independently reproduced it. No Liu proof code is redistributed in this repository."
+      "verification_note": "Liu's pinned original proof was independently rebuilt by the maintainer in a genuine offline Linux sandbox. The canonical challenge was exported before candidate execution; Comparator checked the exact statements and definitions, and Lean, NanoDa and con-ron accepted all three targets with only propext, Classical.choice and Quot.sound. The checked boundary is (1507 − 2√921) / 1653; its rational enclosure is only a plotting coordinate. The receipt was written outside candidate-writable paths. No Liu proof source or proof exports are redistributed. The first verified time records this confined maintainer run; the earlier submitted report is retained as historical evidence. This is local mechanical verification, not signed registry admission or Palomar registration."
     },
     {
       "submitted_at": "",
@@ -275,6 +339,301 @@
       "verification_note": "The original proof passed local verification with Palomar’s mechanical checker: Comparator compared the exact statements and their definitions, then con-ron, NanoDa and Lean’s fresh kernel accepted the exported proofs. All-Dirichlet, zeta and finite-order Eisenstein Hecke targets were checked, with only propext, Classical.choice and Quot.sound allowed. This is a local check; Palomar registration and editorial review are separate.",
       "attribution_note": "Tim Gehrunger is the maintainer; ProofCouncil is the project credit. AI-assisted research and formalization, reusing the Apache-2.0 OpenAI/math and Mathlib developments. This display credit does not amend the supplied manuscript’s blank author field."
     },
+    {
+      "submitted_at": "",
+      "published_at": "",
+      "merged_at": "",
+      "pr": null,
+      "repository": "Nielstron/QuasiRiemannTracker",
+      "source_commit": "2fc2b0b7f2b9510df4618936e1b2ccd58f7d9171",
+      "first_verified_at": "2026-10-09T19:51:12.662856+00:00",
+      "entrypoint": {
+        "module": "QRH.TighterNonvanishing",
+        "declaration": "QRH.DirichletCharacter.LFunction_ne_zero_of_tightTheta_lt_re"
+      },
+      "license": "Apache-2.0 (retained upstream notices)",
+      "builds_on": [
+        "proofcouncil-20261009",
+        "openai-baseline"
+      ],
+      "id": "nielstron-20261009-tightening",
+      "title": "Nielstron · exact algebraic endpoint",
+      "theta": {
+        "numerator": "874957019420098946128603850561452983",
+        "denominator": "1000000000000000000000000000000000000"
+      },
+      "authors": [
+        {
+          "name": "Nielstron",
+          "url": "https://github.com/Nielstron"
+        }
+      ],
+      "method": "Revision of the same compressed Lean contribution to the exact cubic endpoint: 11/12-e/4, where e is the unique real root in [1/6,1/5] of 657e³−954e²+21e+20=0. The plotted rational is a rigorously proved upper bound. The final QRH package uses 259,073 source tokens under the pinned LeanLeanBench metric. The earlier N24 proof and its evidence remain available as historical snapshots.",
+      "references": [
+        {
+          "label": "Seven-target Comparator and three-kernel report",
+          "url": "proofs/nielstron-algebraic-20261009-kernels/result.json"
+        },
+        {
+          "label": "Independent checking method and reproduction",
+          "url": "proofs/nielstron-algebraic-20261009-kernels/README.txt"
+        },
+        {
+          "label": "All-kernel acceptance log",
+          "url": "proofs/nielstron-algebraic-20261009-kernels/judge.log"
+        },
+        {
+          "label": "Exact independent statements and root nonvacuity",
+          "url": "proofs/nielstron-algebraic-20261009-kernels/src/PalomarCanonical3d11d053040a6a513a35e5ef/Challenge.lean"
+        },
+        {
+          "label": "Positive and negative controls",
+          "url": "proofs/nielstron-algebraic-20261009-kernels/control-results.json"
+        },
+        {
+          "label": "Frozen source and native evidence",
+          "url": "proofs/nielstron-algebraic-20261009/source-public.tar.gz"
+        },
+        {
+          "label": "Source and algebraic endpoint explanation",
+          "url": "proofs/nielstron-algebraic-20261009-README.md"
+        },
+        {
+          "label": "Exact LeanLeanBench token counts",
+          "url": "proofs/nielstron-algebraic-20261009/token-counts.json"
+        },
+        {
+          "label": "Previous N24 source and evidence (historical revision)",
+          "url": "proofs/nielstron-20261009-tightening/README.txt"
+        },
+        {
+          "label": "Previous N24 independent kernel report (historical revision)",
+          "url": "proofs/nielstron-20261009-kernels/result.json"
+        }
+      ],
+      "status": "framework-verified",
+      "timeline_at": "2026-10-09T19:51:12.662856+00:00",
+      "date_label": "Independent kernel verification",
+      "verification_note": "The pinned local Palomar mechanical suite compared seven literal targets and their definitions: three N36 rational bounds, three exact algebraic bounds, and unique root existence. Lean’s fresh kernel, NanoDa and con-ron accepted the proofs. Positive, statement-mismatch and ill-typed-proof controls passed. Only propext, Classical.choice and Quot.sound were permitted. This is a local mechanical check, not Palomar registration, editorial approval or a signed admission.",
+      "attribution_note": "Human contributor: Nielstron. AI-assisted research and formalization; inherited ProofCouncil and OpenAI notices retained.",
+      "proof_revision": "nielstron-algebraic-20261009"
+    },
+    {
+      "submitted_at": "2026-10-10T03:22:55Z",
+      "published_at": "",
+      "merged_at": "",
+      "pr": 6,
+      "repository": "akashlevy/QuasiRiemannTracker",
+      "source_commit": "ec626ec9c0e7ab7b29f6c916314932caeb4df39a",
+      "first_verified_at": "2026-10-10T13:35:18.422104+00:00",
+      "entrypoint": {
+        "module": "WeightedQRH.Statements",
+        "declaration": "OAI.DirichletCharacter.LFunction_ne_zero_of_10499_12000_lt_re"
+      },
+      "license": "Apache-2.0 (retained upstream notices)",
+      "builds_on": [
+        "openai-baseline"
+      ],
+      "id": "akashlevy-20261009-weighted-numerator",
+      "title": "Akash Levy · weighted numerator",
+      "theta": {
+        "numerator": "10499",
+        "denominator": "12000"
+      },
+      "authors": [
+        {
+          "name": "Akash Levy",
+          "url": "https://github.com/akashlevy"
+        }
+      ],
+      "method": "Replaces the pointwise numerator bound in the cubic-theta probe of OpenAI's argument by a weighted fourth moment of the reflected physical numerator: Mellin inversion and the Hecke functional equation reduce the actual smoothed numerator sum to a plain polynomial of length at most U/Y, and the unused length carries selected prime factors in the original fourth moment, while a coefficient-norm argument controls the original Euler correction and its ramified error terms. The moment parameter stays at the original kappa = 3/4; with ell = 167/1000, theta = 11/12 - ell/4 = 10499/12000, and the finite exponent comparisons are exact rational certificates. Lean 4.34.1 development of 228 modules on the akashlevy/math fork (c388e88e6) of OpenAI/math fd4aeeb, with Mathlib d13f23b7; it proves zeta, all-Dirichlet and finite-order Hecke nonvanishing for Re s > 10499/12000.",
+      "references": [
+        {
+          "label": "Independent maintainer replay receipt",
+          "url": "proofs/akashlevy-20261010-safe-replay/result.json"
+        },
+        {
+          "label": "Independent Comparator and three-kernel acceptance log",
+          "url": "proofs/akashlevy-20261010-safe-replay/logs/judge.log"
+        },
+        {
+          "label": "Sandboxed reproduction instructions",
+          "url": "proofs/akashlevy-20261010-safe-replay/README.txt"
+        },
+        {
+          "label": "Canonical all-Dirichlet contract audit",
+          "url": "proofs/akashlevy-20261010-safe-replay/contract-audit.json"
+        },
+        {
+          "label": "Independent positive and negative checker controls",
+          "url": "proofs/akashlevy-20261010-safe-replay/controls/control-results.json"
+        },
+        {
+          "label": "Historical author-side checker report (unsandboxed macOS)",
+          "url": "proofs/akashlevy-20261009-weighted-numerator/result.json"
+        },
+        {
+          "label": "Historical author-side acceptance log (unsandboxed)",
+          "url": "proofs/akashlevy-20261009-weighted-numerator/judge.log"
+        },
+        {
+          "label": "Exact checked statements (tracker template at 10499/12000)",
+          "url": "proofs/akashlevy-20261009-weighted-numerator/Challenge.lean"
+        },
+        {
+          "label": "Solution wrapper",
+          "url": "proofs/akashlevy-20261009-weighted-numerator/Solution.lean"
+        },
+        {
+          "label": "Comparator configuration",
+          "url": "proofs/akashlevy-20261009-weighted-numerator/comparator.json"
+        },
+        {
+          "label": "Historical author-side checker controls",
+          "url": "proofs/akashlevy-20261009-weighted-numerator/control-results.json"
+        },
+        {
+          "label": "Post-run audit of the challenge definition files against pinned upstream blobs",
+          "url": "proofs/akashlevy-20261009-weighted-numerator/challenge-source-audit.json"
+        },
+        {
+          "label": "Original author README and reproduction notes (historical)",
+          "url": "proofs/akashlevy-20261009-weighted-numerator/README.txt"
+        },
+        {
+          "label": "Manuscript (PDF)",
+          "url": "proofs/akashlevy-20261009-weighted-numerator/manuscript.pdf"
+        },
+        {
+          "label": "Manuscript (TeX)",
+          "url": "proofs/akashlevy-20261009-weighted-numerator/weighted_numerator_proof.tex"
+        },
+        {
+          "label": "Manuscript lemma (TeX, input by the manuscript)",
+          "url": "proofs/akashlevy-20261009-weighted-numerator/weighted_numerator_lemma.tex"
+        },
+        {
+          "label": "Complete Lean source, manuscript source and evidence",
+          "url": "proofs/akashlevy-20261009-weighted-numerator/source-public.tar.gz"
+        },
+        {
+          "label": "Lean base: akashlevy/math fork of OpenAI/math",
+          "url": "https://github.com/akashlevy/math/tree/c388e88e6519d139ad2ca5571ef0c7fbf0e245b5"
+        }
+      ],
+      "status": "framework-verified",
+      "timeline_at": "2026-10-10T13:35:18.422104+00:00",
+      "date_label": "Independent sandboxed verification",
+      "verification_note": "The exact submitted proof was independently rebuilt by the maintainer in a genuine offline Linux sandbox: all 228 new Lean modules and 2,670 modules from the pinned dependency fork were rebuilt. The canonical challenge was exported first from the approved upstream library. Comparator checked all-Dirichlet, zeta and Eisenstein Hecke statements and their definitions at exactly 10499/12000; Lean, NanoDa and con-ron accepted the exports with only propext, Classical.choice and Quot.sound. Isolation tests and matching, mismatched and ill-typed checker controls passed. The receipt was written outside candidate-writable paths and binds the complete source, dependency and tool pins. The timeline records this first independent acceptance, not the discovery date. The original unsandboxed author-side report remains historical evidence. This is a maintainer mechanical replay, not signed registry admission or Palomar registration.",
+      "attribution_note": "Akash Levy (akashlevy) is the human contributor. GPT-6 Astra (Ultra) was used to discover the proof and perform partial formalization; Opus 5.5 Ultracode was used to complete the formalization and submit the result. Builds on the Apache-2.0 OpenAI/math and Mathlib developments; upstream notices are retained."
+    },
+    {
+      "submitted_at": "2026-10-10T12:08:27Z",
+      "published_at": "",
+      "merged_at": "",
+      "pr": 9,
+      "repository": "HaileyStorm/QuasiRiemannTracker",
+      "source_commit": "58344dfdbe756cf2f743da1908ffe0582418cf5b",
+      "first_verified_at": "2026-10-10T16:09:09.733191+00:00",
+      "entrypoint": {
+        "module": "Cycle25.Assembly.Final.Endpoint",
+        "declaration": "Cycle25.dirichlet_nonzero_catalogue"
+      },
+      "license": "Apache-2.0 (retained upstream notices)",
+      "builds_on": [
+        "openai-baseline",
+        "akashlevy-20261009-weighted-numerator"
+      ],
+      "id": "cycle25-quartic-20261010",
+      "title": "Hailey Collet · quartic boundary",
+      "theta": {
+        "numerator": "683505193",
+        "denominator": "781250000"
+      },
+      "authors": [
+        {
+          "name": "Hailey Collet"
+        }
+      ],
+      "method": "The exact boundary is 11/12−ℓ/4, where ℓ is the unique root in [1/6,1/5] of 927ℓ⁴−3135ℓ³+2433ℓ²+275ℓ−100=0. The plotted rational 683505193/781250000 is a proved upper bound less than 4×10⁻¹⁴ above it. The proof extends the unconditional common-mesh moving-radical moment and applies weighted low/high estimates and analytic continuation to Dirichlet, zeta and finite-order Eisenstein Hecke L-functions.",
+      "references": [
+        {
+          "label": "Independent maintainer replay receipt",
+          "url": "proofs/cycle25-20261010-safe-replay/result.json"
+        },
+        {
+          "label": "Independent Comparator and three-kernel acceptance log",
+          "url": "proofs/cycle25-20261010-safe-replay/logs/judge.log"
+        },
+        {
+          "label": "Sandboxed reproduction instructions",
+          "url": "proofs/cycle25-20261010-safe-replay/README.txt"
+        },
+        {
+          "label": "Canonical all-Dirichlet contract audit",
+          "url": "proofs/cycle25-20261010-safe-replay/contract-audit.json"
+        },
+        {
+          "label": "Independent positive and negative checker controls",
+          "url": "proofs/cycle25-20261010-safe-replay/controls/control-results.json"
+        },
+        {
+          "label": "Eight independently checked statements",
+          "url": "proofs/cycle25-20261010-safe-replay/challenge-src/Challenge.lean"
+        },
+        {
+          "label": "Paper (PDF)",
+          "url": "proofs/cycle25-quartic-20261010/paper.pdf"
+        },
+        {
+          "label": "Paper source (TeX)",
+          "url": "proofs/cycle25-quartic-20261010/paper.tex"
+        },
+        {
+          "label": "Historical contributor seven-target report",
+          "url": "proofs/cycle25-quartic-20261010/result.json"
+        },
+        {
+          "label": "Historical contributor statements",
+          "url": "proofs/cycle25-quartic-20261010/Challenge.lean"
+        },
+        {
+          "label": "Historical contributor kernel log",
+          "url": "proofs/cycle25-quartic-20261010/judge.log"
+        },
+        {
+          "label": "Historical contributor checker controls",
+          "url": "proofs/cycle25-quartic-20261010/control-results.json"
+        },
+        {
+          "label": "Historical contributor reproduction notes (unsandboxed; use maintainer instructions)",
+          "url": "proofs/cycle25-quartic-20261010/REPRODUCE.md"
+        },
+        {
+          "label": "Historical contributor verification scope",
+          "url": "proofs/cycle25-quartic-20261010/Verification.md"
+        },
+        {
+          "label": "Finished proof source and evidence",
+          "url": "proofs/cycle25-quartic-20261010/source-public.tar.gz"
+        },
+        {
+          "label": "Source checksums",
+          "url": "proofs/cycle25-quartic-20261010/source-sha256.json"
+        },
+        {
+          "label": "Attribution and provenance",
+          "url": "proofs/cycle25-quartic-20261010/PROVENANCE.md"
+        }
+      ],
+      "status": "framework-verified",
+      "timeline_at": "2026-10-10T16:09:09.733191+00:00",
+      "date_label": "Independent sandboxed verification",
+      "verification_note": "The maintainer independently rebuilt all 3,224 submitted Lean modules (301 Cycle25/reused-moment modules and 2,923 pinned OpenAI modules) in a genuine offline Linux sandbox. The canonical challenge was exported first from the approved upstream library. Comparator checked eight targets and their definitions: rational and exact quartic all-Dirichlet, zeta and Eisenstein Hecke bounds, quartic root existence and uniqueness, and the reusable moment theorem with its stated hypotheses. Lean, NanoDa and con-ron accepted the exports using only propext, Classical.choice and Quot.sound. Isolation and positive/negative checker controls passed. The external controller receipt binds the exact source, dependency and tool pins, challenge and logs. The timeline uses this first independent acceptance, not discovery or the historical contributor check. The original contributor evidence remains immutable. This is a maintainer mechanical replay, not signed registry admission or Palomar registration.",
+      "attribution_note": "Human contributor: Hailey Collet. AI-assisted research and formalization, reusing OpenAI/math, Mathlib and Akash Levy’s weighted construction. The earlier single-compensating-prime development supplies a reused unconditional moment lemma; its terminal 29/33 bound is not an assumption. Upstream licenses and notices are retained."
+    }
+  ],
+  "historical_records": [
     {
       "submitted_at": "2026-10-09T17:29:56Z",
       "published_at": "",

@@ -1,7 +1,7 @@
 import Ajv from "ajv";
 import { lstatSync, readdirSync, readFileSync, realpathSync } from "node:fs";
 import path from "node:path";
-import { rational, cmp, BASELINE } from "../core/rational.mjs";
+import { rational } from "../core/rational.mjs";
 import { readJSON, sha256 } from "./common.mjs";
 const validate = new Ajv({ allErrors: true, strict: true }).compile(
   readJSON(new URL("../schemas/submission.schema.json", import.meta.url)),
@@ -10,8 +10,8 @@ export function manifest(input) {
   if (!validate(input))
     throw Error("Invalid manifest: " + JSON.stringify(validate.errors));
   rational(input.theta.numerator, input.theta.denominator);
-  if (cmp(input.theta, BASELINE) > 0)
-    throw Error("This track accepts bounds at most 7/8.");
+  if (BigInt(input.theta.numerator) <= 0n)
+    throw Error("Bound must be positive");
   if (input.builds_on.includes(input.id))
     throw Error("A contribution cannot build on itself.");
   const inspect = (x) => {

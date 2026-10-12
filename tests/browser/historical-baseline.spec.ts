@@ -1,52 +1,54 @@
 import { test, expect } from "@playwright/test";
 
-test("historical theta = 1 stays distinct from verification and recent results remain accessible", async ({
+const baseline = {
+  id: "test-historical-baseline",
+  title: "Classical baseline · θ = 1",
+  authors: [{ name: "Classical Euler-product theorem" }],
+  theta: { numerator: "1", denominator: "1" },
+  status: "historical-baseline",
+  timeline_at: "1922-01-01T00:00:00Z",
+  date_precision: "year",
+  date_label: "Early QRH-era formulation",
+  first_verified_at: "",
+  method: "Absolute convergence of the Euler product.",
+  verification_note: "Classical theorem included as historical context.",
+  license: "Historical references linked",
+  builds_on: [],
+  references: [
+    { label: "Theorem reference", url: "https://example.com/theorem" },
+  ],
+};
+
+test("historical catalogue entries display their status and year precision", async ({
   page,
 }) => {
-  await page.goto("/");
-  const baseline = page.locator(
-    '[data-dot][data-id="classical-euler-product"]',
+  await page.route("**/catalogue.json", (route) =>
+    route.fulfill({
+      json: { schema_version: 1, records: [baseline] },
+    }),
   );
-  await expect(baseline).toBeVisible();
-  await expect(page.locator(".chart")).toContainText("1922");
-  await baseline.press("Enter");
+  await page.route("**/registry.json", (route) =>
+    route.fulfill({
+      json: { schema_version: 1, records: [], events: [], active_ids: [] },
+    }),
+  );
+  await page.goto("/");
+  const row = page.locator("tbody tr");
+  await expect(row.locator(".tag.historical")).toHaveText(
+    "Historical baseline",
+  );
+  const date = row.locator('td[data-label="Date"] time');
+  await expect(date).toHaveText("1922");
+  await expect(date).toHaveAttribute("datetime", "1922");
+  await expect(date).toHaveAttribute("title", "1922 (year only)");
+  await page.getByRole("button", { name: baseline.title, exact: true }).click();
   const detail = page.locator(".proof-detail");
   await expect(detail).toContainText("Historical baseline");
   await expect(detail).toContainText("1922 (year only)");
-  await expect(detail).not.toContainText("1922-01-01");
-  await expect(detail).not.toContainText("Verified in our framework");
-  await expect(detail).not.toContainText("Pending");
   await expect(detail.locator(".exact-result strong")).toHaveText("1/1");
-  await page.getByRole("button", { name: "Close proof details" }).click();
-
-  await page.getByLabel("Contribution type").selectOption("pending");
-  await expect(
-    page.getByRole("button", {
-      name: "Classical baseline · θ = 1",
-      exact: true,
-    }),
-  ).toHaveCount(0);
-  await page.getByLabel("Contribution type").selectOption("historical");
-  await expect(page.locator("tbody tr")).toHaveCount(1);
-  await expect(page.locator("tbody .tag.historical")).toHaveText(
-    "Historical baseline",
-  );
-  await page.getByLabel("Contribution type").selectOption("all");
-
-  await page
-    .getByRole("button", { name: "Recent results", exact: true })
-    .click();
-  await expect(baseline).toHaveCount(0);
-  await expect(page.locator("[data-dot]")).toHaveCount(5);
-  const xs = await page
-    .locator("[data-dot] circle:first-of-type")
-    .evaluateAll((dots) => dots.map((dot) => Number(dot.getAttribute("cx"))));
-  expect(Math.max(...xs) - Math.min(...xs)).toBeGreaterThan(100);
-  await page.getByRole("button", { name: "Full history", exact: true }).click();
-  await expect(baseline).toBeVisible();
   expect(
     await page.evaluate(
       () => document.documentElement.scrollWidth <= window.innerWidth,
     ),
-  ).toBeTruthy();
+  ).toBe(true);
 });

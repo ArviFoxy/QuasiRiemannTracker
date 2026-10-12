@@ -117,7 +117,7 @@ for (const [description, body, message] of [
   [
     "a missing decimal",
     newBound.replace(`\nQRH-Decimal: ${approximation}`, ""),
-    "QRH-Decimal must be 0. followed by 1–200 decimal digits",
+    "QRH-Decimal must have a canonical integer part and 1–200 fractional digits",
   ],
   [
     "a duplicate decimal",
@@ -132,7 +132,7 @@ for (const [description, body, message] of [
   [
     "scientific notation",
     newBound.replace(approximation, "8.748866e-1"),
-    "QRH-Decimal must be 0. followed by 1–200 decimal digits",
+    "QRH-Decimal must have a canonical integer part and 1–200 fractional digits",
   ],
   [
     "a missing result",
@@ -313,13 +313,20 @@ test("PR #8's result metadata and maintenance changes fail the mixed-change requ
   );
 });
 
-test("a proof-only 29/33 submission fails the bound limit before evidence validation", async () => {
+test("PR #8's proof-only 29/33 submission reaches the missing trusted replay requirement", async () => {
   const input = options(
-    newBound.replace(bound, "29/33").replace(approximation, "0.87878787"),
+    newBound
+      .replace(resultId, "single-prime-29-33-20261010")
+      .replace(bound, "29/33")
+      .replace(approximation, "0.87878787"),
     [file("proofs/single-prime-29-33-20261010/Solution.lean")],
   );
   input.pr.number = 8;
-  await rejectsBeforeEvidence(input, "Bound must be positive and at most 7/8");
+  delete input.validateEvidence;
+  await assert.rejects(run(input), {
+    message:
+      "PR admission: archive an independent maintainer replay on the base branch for this exact PR head, result ID and bound",
+  });
 });
 
 test("PR #15's declaration reaches the missing trusted replay requirement when ready for review", async () => {
@@ -361,6 +368,60 @@ test("new-bound admission binds evidence to the repository, PR, current head, re
     ],
   ]);
 });
+
+for (const [theta, decimal] of [
+  ["29/33", "0.87878787"],
+  ["7/8", "0.875"],
+  ["1/1", "1.0"],
+  ["3/2", "1.5"],
+  ["683505193/781250000", "0.87488664704"],
+]) {
+  test(`accepts ${theta} with authenticated evidence and an accurate decimal`, async () => {
+    const input = options(
+      newBound.replace(bound, theta).replace(approximation, decimal),
+      [file("proofs/candidate/Main.lean")],
+    );
+    input.validateEvidence = mock.fn(() => ({ theta_exact: theta }));
+    assert.equal(
+      await run(input),
+      `Independent maintainer evidence accepts ${resultId} at ${theta} for this exact PR head. Decimal ${decimal} accurately approximates the exact bound.`,
+    );
+    assert.equal(input.validateEvidence.mock.callCount(), 1);
+    assert.deepEqual(input.validateEvidence.mock.calls[0].arguments, [
+      root,
+      {
+        repository,
+        number: input.pr.number,
+        head_sha: head,
+        result_id: resultId,
+        theta_exact: theta,
+      },
+    ]);
+  });
+}
+
+for (const [theta, message] of [
+  ["0/1", "Bound must be positive"],
+  ["-1/1", "Bound must be positive"],
+  ["2/2", "Rational must be normalized."],
+  [
+    "01/1",
+    "Use canonical integer strings and a positive denominator (maximum 200 digits).",
+  ],
+  [
+    "1/0",
+    "Use canonical integer strings and a positive denominator (maximum 200 digits).",
+  ],
+]) {
+  test(`rejects invalid bound ${theta} before evidence validation`, async () => {
+    await rejectsBeforeEvidence(
+      options(newBound.replace(bound, theta), [
+        file("proofs/candidate/Main.lean"),
+      ]),
+      message,
+    );
+  });
+}
 
 test("propagates evidence validation failures to PR admission", async () => {
   const input = options(newBound, [file("proofs/candidate/Main.lean")]);

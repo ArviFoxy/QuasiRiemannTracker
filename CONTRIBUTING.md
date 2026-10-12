@@ -15,19 +15,27 @@ QRH-Decimal: 0.87488660
 ```
 
 Use the exact rational or algebraic bound string authenticated by the maintainer
-receipt and admission record. Result PRs require the three body fields above
-and independent verification evidence.
+receipt and admission record. Rational bounds must be positive and reduced,
+with canonical integer strings of at most 200 digits. Checked bounds such as
+`29/33` and `1/1` qualify for admission. Result PRs require the three body fields
+above and independent verification evidence. The catalogue retains accepted
+contributions; the best-bound display and record history select the strongest
+verified bounds by exact comparison.
 
-`QRH-Decimal` is required for new bounds. Supply a truncated decimal written as
-`0.` followed by 1–200 digits. Every supplied digit is checked using exact
-integer arithmetic (`BigInt`). Include enough digits to differ from the
-strongest bound among the current **framework-verified** catalogue records on
-the trusted base, truncated to the same precision.
+`QRH-Decimal` is required for new bounds. Supply a truncated decimal with a
+canonical integer part (`0` or 1–200 digits starting with 1–9), a decimal point
+and 1–200 fractional digits. Examples include `0.87878787` for `29/33` and `1.0`
+for `1/1`. Every supplied digit is checked using exact integer arithmetic
+(`BigInt`). When the exact value differs from the strongest current
+**framework-verified** catalogue bound on the trusted base, include enough
+digits to show that difference at the supplied precision.
 For a frontier of `0.87488664704`, the example above needs at least eight
 decimal places: `0.87488660` differs from `0.87488664`, while seven places would
-show `0.8748866` for both. Admission requires a value distinct from the current
-frontier. An irrational bound keeps its exact expression in `QRH-Bound`; its
-decimal is checked against the certified enclosure in the trusted evidence.
+show `0.8748866` for both. An equal exact bound accepts an accurate decimal at
+any supported precision. For algebraic bounds, an identical exact expression
+establishes this equality after the trusted evidence is authenticated. An
+irrational bound keeps its exact expression in `QRH-Bound`; its decimal is
+checked against the certified enclosure in the trusted evidence.
 
 Changes under `proofs/`, `public/proofs/`, `submissions/`, `catalogue/` or
 `registry/records/`, and changes to `public/catalogue.json` or
@@ -132,7 +140,7 @@ Every submission also requires the active `qrh/pr-admission` check.
 The track requires the fixed all-Dirichlet theorem. It quantifies over every natural modulus with `NeZero q`, every complex Dirichlet character and every complex `s` with `θ < s.re`, retaining `¬ (χ = 1 ∧ s = 1)` and `_root_.DirichletCharacter.LFunction`. Admission requires independent verification of this complete statement and its definitions, using the canonical challenge and permitted axioms.
 
 1. Copy `submissions/openai-baseline/` to a new stable lowercase ID. Replace its explanation, author metadata and Lean proof. Keep your modules in `src/Candidate/`; use `Candidate.Main` or another valid module as your entrypoint.
-2. Update `manifest.json` following `schemas/submission.schema.json`. Store numerator and denominator as canonical decimal **strings**: the first digit of each nonzero integer is 1–9, the denominator is positive, and gcd = 1. For example, use `7/8`. Bounds must be at most `7/8`; the active PR gate additionally requires a decimal digit differing from the current verified frontier.
+2. Update `manifest.json` following `schemas/submission.schema.json`. Store numerator and denominator as canonical decimal **strings**: the first digit of each nonzero integer is 1–9, the denominator is positive, and gcd = 1. For example, use `7/8`, `29/33` or `1/1`. Bounds must be positive. The active PR gate requires an accurate decimal and, when the exact value differs from the strongest verified bound, enough digits to show that difference.
 3. List all authors accurately, describe the method, include HTTPS references and an appropriate contribution license (Apache-2.0, MIT, BSD-2-Clause, BSD-3-Clause or CC0-1.0). Include `LICENSE` and preserve required notices. Maintainers review attribution, license compatibility and the rights to distribute all contributed material.
 4. Document actual mathematical reuse in `builds_on`. IDs must exist in the published registry and predate this verification. Use `references` and the explanation for citations, comparisons and acknowledgments.
 5. Run `npm run verify -- submissions/your-id --image sha256:APPROVED_LOCAL_IMAGE_ID` on the documented disposable Linux worker with sealed libraries. The protected workflow creates the signed public receipt after successful verification.

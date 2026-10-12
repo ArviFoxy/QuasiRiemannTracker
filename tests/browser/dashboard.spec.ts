@@ -10,8 +10,16 @@ const liveRecords = JSON.parse(
 const verifiedCount = liveRecords.filter(
   (record: { status: string }) => record.status === "framework-verified",
 ).length;
-const pendingCount = liveRecords.length - verifiedCount;
+const pendingCount = liveRecords.filter(
+  (record: { status: string }) => record.status === "verification-pending",
+).length;
 const recordsByBound = [...liveRecords].sort((a, b) => cmp(a.theta, b.theta));
+const bestVerified = recordsByBound.find(
+  (record) => record.status === "framework-verified",
+);
+const plottedCount = liveRecords.filter((record: { status: string }) =>
+  ["framework-verified", "historical-baseline"].includes(record.status),
+).length;
 test("Cycle25 independent acceptance, lineage and historical paper evidence are accessible", async ({
   page,
   request,
@@ -214,7 +222,8 @@ test("current results, verification statuses and source downloads", async ({
 }, info) => {
   await page.goto("/");
   await expect(page.locator("tbody tr")).toHaveCount(liveRecords.length);
-  await expect(page.locator("[data-dot]")).toHaveCount(verifiedCount);
+  await page.getByRole("button", { name: "Fit chart", exact: true }).click();
+  await expect(page.locator("[data-dot]")).toHaveCount(plottedCount);
   await expect(page.locator("tbody .tag.teal")).toHaveCount(verifiedCount);
   await expect(page.locator("tbody .tag.amber")).toHaveCount(pendingCount);
   await page
@@ -474,7 +483,10 @@ test("a stronger pending submission stays in the table and cannot move the verif
   page,
 }) => {
   await page.goto("/");
-  await expect(page.locator("[data-dot]")).toHaveCount(verifiedCount);
+  await expect(
+    page.locator(`[data-dot][data-id="${bestVerified.id}"]`),
+  ).toBeVisible();
+  const pointCount = await page.locator("[data-dot]").count();
   const before = await page.locator(".verified-frontier").getAttribute("d");
   const best = await page.locator(".best-bound").textContent();
   const pending = {
@@ -500,7 +512,7 @@ test("a stronger pending submission stays in the table and cannot move the verif
   );
   await page.reload();
   await expect(page.locator("tbody tr")).toHaveCount(liveRecords.length + 1);
-  await expect(page.locator("[data-dot]")).toHaveCount(verifiedCount);
+  await expect(page.locator("[data-dot]")).toHaveCount(pointCount);
   await expect(page.locator('[data-id="pending-test-only"]')).toHaveCount(0);
   await expect(page.locator(".best-bound")).toHaveText(best!);
   await expect(page.locator(".verified-frontier")).toHaveAttribute(

@@ -8,6 +8,7 @@ import { validateAlgebraicKernelEvidence } from "../core/algebraic-kernel-eviden
 import { validateAkashlevyKernelEvidence } from "../core/akashlevy-kernel-evidence.mjs";
 
 import { validateCycle25KernelEvidence } from "../core/cycle25-kernel-evidence.mjs";
+import { validateDockerCatalogue } from "../core/docker-replay-evidence.mjs";
 
 const data = validateCatalogue(
   JSON.parse(readFileSync("catalogue/results.json", "utf8")),
@@ -17,6 +18,7 @@ validateExternalKernelEvidence(process.cwd(), data);
 validateAlgebraicKernelEvidence(process.cwd(), data);
 validateAkashlevyKernelEvidence(process.cwd(), data);
 validateCycle25KernelEvidence(process.cwd(), data);
+validateDockerCatalogue(process.cwd(), data);
 const proof = "proofs/qrh-20261009/";
 const sha = (p) => createHash("sha256").update(readFileSync(p)).digest("hex");
 const manifest = JSON.parse(

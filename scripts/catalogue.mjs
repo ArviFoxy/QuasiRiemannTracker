@@ -9,9 +9,12 @@ import { validateAkashlevyKernelEvidence } from "../core/akashlevy-kernel-eviden
 
 import { validateCycle25KernelEvidence } from "../core/cycle25-kernel-evidence.mjs";
 
+import { validateStandardCatalogue } from "../core/standard-replay.mjs";
+
 const data = validateCatalogue(
   JSON.parse(readFileSync("catalogue/results.json", "utf8")),
 );
+validateStandardCatalogue(process.cwd(), data);
 validateNativeKernelEvidence(process.cwd(), data);
 validateExternalKernelEvidence(process.cwd(), data);
 validateAlgebraicKernelEvidence(process.cwd(), data);

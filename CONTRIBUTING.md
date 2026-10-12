@@ -66,6 +66,24 @@ reruns the check.
 4. Run `npm ci --ignore-scripts`, `npm run check`, and `npm run test:browser` (install Chromium with `npx playwright install chromium` if necessary).
 5. Open a pull request with a summary; for a result, include the required body declaration, attribution and evidence links. Complete the independent check and admission for the exact PR head. After `qrh/pr-admission`, site checks and maintainer review, merging updates the public website automatically through GitHub Pages.
 
+### Standard submission replay
+
+Use `submissions/<id>/manifest.json`, `explanation.md`, `LICENSE`, optional
+`NOTICE`, and Lean modules under `src/Candidate/`. The
+[standard replay adapter](verifier/standard/README.md) generates the canonical
+challenge and solution wrapper through the shared verifier, then runs Palomar's
+sandbox, Comparator, Lean, NanoDa and con-ron. Its receipt records the exact PR
+head and all checked source files. Catalogue publication may accompany the
+submission through the active maintainer admission process.
+
+Standard replay dossiers live under `verifier/standard/receipts/<run-id>/` and
+use replay profile `standard-submission-v1`. The protected collection pins its
+executed driver, tools, source, generated statements, control transcripts and
+acceptance. `verifier/standard/catalogue-pins.json` binds catalogue status to
+that receipt and the checked source bytes. When publication follows an earlier
+successful check of identical source, retain its dossier as `first_pin`; the
+catalogue preserves that first verification time.
+
 ### Registering an independently checked head
 
 A maintainer runs the appropriate reviewed replay driver on a disposable,

@@ -1,0 +1,34 @@
+{
+  "kind": "cached-dependency-lean-compilation",
+  "compiled_at": "2026-10-12T15:11:47.565473+00:00",
+  "lean_version": "4.34.1",
+  "lean_commit": "5045d0056413266e57c625dcd7c365b10e377c52",
+  "mathlib_commit": "d13f23b723b8a846827a245b89c10fc7d3f11612",
+  "dependency_mode": "Existing Mathlib and official dependency .olean cache; dependency sources were not rebuilt by this preliminary check.",
+  "declarations": [
+    "QRH.canonical_bound",
+    "QRH.zeta_bound"
+  ],
+  "theta_exact": "1/1",
+  "axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "source_sha256": {
+    "Solution.lean": "323ac5c815d4dc3bdd559be41c1377034cff73b4606100d57588dd44736f0cda",
+    "Challenge.lean": "2a5a2df5158f23f96e4a6da8a6b609533f90fe5a74bbd1124e78a1b4c305addb",
+    "lakefile.toml": "dc16b92e8322e2ea25e6d1f1e0530105146dd91816053dd016363adffb20bc43",
+    "lean-toolchain": "d5edba4e4b8faad9c1baeadb265716d20d03be4d1a2647dc5e35b0c0325bea7b"
+  },
+  "compiled_modules": [
+    "Solution.lean",
+    "Challenge.lean"
+  ],
+  "outstanding_checks": [
+    "independent dependency rebuild",
+    "Comparator statement comparison",
+    "NanoDa",
+    "con-ron"
+  ]
+}

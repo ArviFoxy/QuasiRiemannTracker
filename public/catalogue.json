@@ -40,14 +40,18 @@
         {
           "label": "Pinned Mathlib proof of all-Dirichlet nonvanishing for Re(s) > 1",
           "url": "https://github.com/leanprover-community/mathlib4/blob/d13f23b723b8a846827a245b89c10fc7d3f11612/Mathlib/NumberTheory/LSeries/Dirichlet.lean#L228"
+        },
+        {
+          "label": "Classical all-Dirichlet and zeta Lean proof package",
+          "url": "https://github.com/GTimG/QuasiRiemannTracker/tree/main/proofs/classical-euler-product-20261012"
         }
       ],
       "status": "historical-baseline",
       "timeline_at": "1922-01-01T00:00:00Z",
       "date_precision": "year",
       "date_label": "Early QRH-era formulation",
-      "verification_note": "A classical theorem included as historical context. This entry has no local Comparator or kernel verification run and carries no verified badge. The linked Mathlib theorem states the all-Dirichlet bound; the historical paper is the date anchor, not a proof of the tracker’s three-family target.",
-      "attribution_note": "The point is placed in 1922, the printing year shown in Hardy and Littlewood’s Partitio numerorum III; the publisher catalogues the volume in 1923. This is an early fixed-half-plane formulation, not an established first use of the term quasi-Riemann hypothesis. The θ = 1 bound was already classical and is not attributed to Hardy and Littlewood."
+      "verification_note": "Historical context for the classical Euler-product bound. The linked Mathlib theorem gives all-Dirichlet nonvanishing for Re(s) > 1. The accompanying Lean package states the all-Dirichlet and zeta targets; its admission evidence records the scope of each check.",
+      "attribution_note": "The point uses 1922, the printing year shown in Hardy and Littlewood’s Partitio numerorum III; the publisher catalogues the volume in 1923. The paper supplies an early fixed-half-plane formulation and the timeline anchor. The Euler-product bound was already classical."
     },
     {
       "submitted_at": "",

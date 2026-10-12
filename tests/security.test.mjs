@@ -24,6 +24,28 @@ import { classify, workerArgs, preflight } from "../verifier/runner.mjs";
 import { allowedChanges } from "../verifier/github.mjs";
 import { setup } from "./helpers.mjs";
 const valid = () => readJSON("submissions/openai-baseline/manifest.json");
+test("manifest accepts positive normalized bounds above the baseline", () => {
+  for (const [numerator, denominator] of [
+    ["29", "33"],
+    ["1", "1"],
+    ["3", "2"],
+  ]) {
+    const input = { ...valid(), theta: { numerator, denominator } };
+    assert.deepEqual(manifest(input), input);
+  }
+});
+test("manifest requires positive normalized bounds", () => {
+  for (const [numerator, denominator, message] of [
+    ["0", "1", "Bound must be positive"],
+    ["-1", "1", "Bound must be positive"],
+    ["14", "16", "Rational must be normalized."],
+  ]) {
+    assert.throws(
+      () => manifest({ ...valid(), theta: { numerator, denominator } }),
+      { message },
+    );
+  }
+});
 test("challenge fixes quantifiers, pole exclusion and definitions; only literals vary", () => {
   const m = valid();
   m.theta = { numerator: "3", denominator: "4" };

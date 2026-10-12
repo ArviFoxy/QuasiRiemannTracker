@@ -1,7 +1,7 @@
 // Load this module from the trusted default-branch checkout.
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import { rational, cmp, BASELINE } from "../core/rational.mjs";
+import { rational } from "../core/rational.mjs";
 import { validateAdmission } from "./pr-evidence.mjs";
 import {
   decimalPrecision,
@@ -31,11 +31,10 @@ export function parseDeclaration(body) {
   // Rational literals must be canonical. Algebraic expressions are compared
   // byte-for-byte with the trusted replay's exact bound.
   if (/^[\d\s+./-]+$/.test(theta_exact)) {
-    const match = /^(\d+)\/(\d+)$/.exec(theta_exact);
+    const match = /^(-?\d+)\/(\d+)$/.exec(theta_exact);
     if (!match) throw Error("Use an exact reduced fraction");
     const value = rational(match[1], match[2]);
-    if (BigInt(value.numerator) <= 0n || cmp(value, BASELINE) > 0)
-      throw Error("Bound must be positive and at most 7/8");
+    if (BigInt(value.numerator) <= 0n) throw Error("Bound must be positive");
   }
   const theta_decimal = fields.get("Decimal");
   decimalPrecision(theta_decimal);
@@ -150,5 +149,5 @@ export async function evaluatePR({
       readFileSync(join(root, "catalogue/results.json"), "utf8"),
     ),
   });
-  return `Independent maintainer evidence accepts ${declaration.result_id} at ${declaration.theta_exact} for this exact PR head. Decimal ${declaration.theta_decimal} is accurate and differs from the previous verified bound at this precision.`;
+  return `Independent maintainer evidence accepts ${declaration.result_id} at ${declaration.theta_exact} for this exact PR head. Decimal ${declaration.theta_decimal} accurately approximates the exact bound.`;
 }

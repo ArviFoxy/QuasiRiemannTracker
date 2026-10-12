@@ -82,3 +82,38 @@ test("records after withdrawal compare to the active frontier while retaining pa
   assert.equal(recordHistory(rows, events).at(-1).is_record, true);
   assert.equal(recordHistory(rows, events)[1].is_record, true);
 });
+test("checked bounds above the baseline and tied bounds remain alternatives to the strongest result", () => {
+  const best = rational("683505193", "781250000");
+  const rows = [
+    { id: "baseline", theta: BASELINE, first_verified_at: "2026-01-01" },
+    { id: "best", theta: best, first_verified_at: "2026-01-02" },
+    {
+      id: "single-prime",
+      theta: rational("29", "33"),
+      first_verified_at: "2026-01-03",
+    },
+    {
+      id: "unit-bound",
+      theta: rational("1", "1"),
+      first_verified_at: "2026-01-04",
+    },
+    { id: "tied-best", theta: best, first_verified_at: "2026-01-05" },
+  ];
+  const history = recordHistory(rows);
+  assert.deepEqual(
+    history.map((row) => row.is_record),
+    [true, true, false, false, false],
+  );
+  assert.deepEqual(
+    history.map((row) => row.record_theta),
+    [BASELINE, best, best, best, best],
+  );
+  assert.deepEqual(
+    frontierHistory(rows, []).map((event) => event.theta),
+    [BASELINE, best, best, best, best],
+  );
+  assert.deepEqual(
+    activeRecords(rows, []).map((row) => row.id),
+    ["baseline", "best", "single-prime", "unit-bound", "tied-best"],
+  );
+});

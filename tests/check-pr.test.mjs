@@ -210,7 +210,10 @@ test("publishes admission failure when a required label write fails", (t) => {
   const data = fixture();
   data.labelWriteStatus = 403;
   const result = run(t, data);
-  assertFailure(result, `GitHub API 403 for repos/${repository}/issues/15/labels`);
+  assertFailure(
+    result,
+    `GitHub API 403 for repos/${repository}/issues/15/labels`,
+  );
   assert.deepEqual(
     result.labelWrites.map((request) => request.body?.labels),
     [["maintenance"]],
@@ -244,7 +247,7 @@ for (const [description, maintenanceFiles, message, labels] of [
   [
     "a proof-only submission",
     [],
-    "Bound must be positive and at most 7/8",
+    "PR admission: archive an independent maintainer replay on the base branch for this exact PR head, result ID and bound",
     ["new-bound"],
   ],
 ]) {
@@ -267,6 +270,23 @@ for (const [description, maintenanceFiles, message, labels] of [
     );
   });
 }
+
+test("a theta 1 submission publishes the missing trusted replay failure", (t) => {
+  const data = fixture([
+    { filename: "proofs/theta-one/Solution.lean", status: "added" },
+  ]);
+  data.pr.number = 5;
+  data.pr.body = "QRH-Result: theta-one\nQRH-Bound: 1/1\nQRH-Decimal: 1.0";
+  const result = run(t, data);
+  assertFailure(
+    result,
+    "PR admission: archive an independent maintainer replay on the base branch for this exact PR head, result ID and bound",
+  );
+  assert.deepEqual(
+    result.labelWrites.map((request) => request.body?.labels),
+    [["new-bound"]],
+  );
+});
 
 test("an incomplete file list fails before assigning classification labels", (t) => {
   const data = fixture();

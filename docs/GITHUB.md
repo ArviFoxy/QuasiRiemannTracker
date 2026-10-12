@@ -13,15 +13,22 @@ start with three standalone lines:
 `QRH-Decimal: <truncated-decimal>`. Maintenance PR bodies contain the change
 summary; result fields and the `New bound` section belong to new-bound PRs.
 The exact bound must match the independently checked receipt and protected
-admission record. See `../CONTRIBUTING.md` for examples.
+admission record. Positive bounds such as `29/33` and `1/1` qualify for
+admission with the required evidence. The catalogue retains accepted
+contributions, and the best-bound display selects the strongest verified value.
+See `../CONTRIBUTING.md` for examples.
 
-The decimal must be `0.` followed by 1–200 truncated digits.
-The validator checks every digit using exact `BigInt` arithmetic and requires
-enough digits to differ from the strongest currently **framework-verified**
-catalogue bound on the trusted base, truncated to the same precision. For
-example, `4374433/5000000` requires
+The decimal has a canonical integer part (`0` or 1–200 digits starting with
+1–9), a decimal point and 1–200 truncated fractional digits. The validator
+checks every digit using exact `BigInt` arithmetic. When the exact bound differs
+from the strongest currently **framework-verified** catalogue bound on the
+trusted base, supply enough digits to show that difference at the declared
+precision. For example, `4374433/5000000` requires
 `QRH-Decimal: 0.87488660` to distinguish it from a frontier of `0.87488664704`
-(`0.87488664` at eight places); the first differing digit is the eighth.
+(`0.87488664` at eight places); the first differing digit is the eighth. An equal
+exact bound accepts an accurate decimal at any supported precision. For
+algebraic bounds, an identical exact expression establishes this equality after
+the trusted evidence is authenticated.
 
 Any change under `proofs/`, `public/proofs/`, `submissions/`, `catalogue/` or
 `registry/records/`, or to `public/catalogue.json` or `public/registry.json`,

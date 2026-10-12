@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "single-prime-29-33-20261010",
+  "title": "Single compensating prime at 29/33",
+  "theta": {
+    "numerator": "29",
+    "denominator": "33"
+  },
+  "authors": [
+    {
+      "name": "Hailey Collet",
+      "url": "https://github.com/HaileyStorm"
+    }
+  ],
+  "entrypoint": {
+    "module": "Candidate.Main",
+    "declaration": "Candidate.bound"
+  },
+  "method": "A single compensating-prime construction and finite descent yield all-Dirichlet nonvanishing to the right of 29/33. The standard wrapper applies the original endpoint theorem.",
+  "references": [
+    {
+      "label": "Original proof package and manuscript",
+      "url": "https://github.com/HaileyStorm/QuasiRiemannTracker/tree/d702723d3b38d07dee90db4b2f4f218a640d1a3d/proofs/single-prime-29-33-20261010"
+    },
+    {
+      "label": "Pinned OpenAI source foundation",
+      "url": "https://github.com/openai/math/tree/fd4aeeb2ee4fc729c18d98444fed42fd0529eeeb"
+    }
+  ],
+  "license": "Apache-2.0",
+  "builds_on": []
+}

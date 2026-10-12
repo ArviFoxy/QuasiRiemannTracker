@@ -1,6 +1,7 @@
 // Run this entrypoint from the trusted default-branch checkout.
-// Read candidate file paths through the GitHub API.
-import { api, pages } from "./github-api.mjs";
+// Read candidate file paths as data from the API or immutable Git commits.
+import { api } from "./github-api.mjs";
+import { prFiles } from "./pr-files.mjs";
 import { classifyPRChanges, evaluatePR } from "./pr-admission.mjs";
 import { syncPRLabels } from "./pr-labels.mjs";
 
@@ -69,7 +70,7 @@ const identity = (p) =>
 let conclusion = "failure",
   summary;
 try {
-  const files = await pages(`repos/${repo}/pulls/${number}/files`);
+  const files = await prFiles(pr, repo);
   const classification = classifyPRChanges({
     pr,
     files,

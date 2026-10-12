@@ -48,7 +48,11 @@ The admission workflow runs on `pull_request_target` for `opened`, `reopened`,
 `synchronize`, `edited`, `ready_for_review` and `converted_to_draft`, and supports a maintainer
 `workflow_dispatch` with a PR number. The admission validator executes from the
 trusted default-branch checkout; PR metadata and changed paths arrive through
-the GitHub API as data. It posts `qrh/pr-admission` to the current PR
+the GitHub API as data. For PRs with more than 3,000 changed files, it reads
+the diff between the merge base and exact head in a temporary bare Git
+repository. The file count must agree with the PR metadata. Rename detection
+retains both paths, and Git runs with external diff commands and text
+conversion disabled. It posts `qrh/pr-admission` to the current PR
 head. Body edits rerun the check; a head change requires a new independent
 admission. The workflow's `pull-requests: write` permission manages category
 labels, and `checks: write` publishes the admission result. Proof compilation

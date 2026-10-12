@@ -1,0 +1,83 @@
+Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+Candidate/ZetaZeroFree/Analytic/Energy/PhysicalSource.lean:462:2: warning: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+Candidate/ZetaZeroFree/Analytic/Energy/PhysicalSource.lean:830:32: warning: Variable name `i` is not explicitly referenced.
+
+Hint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:
+  [apply] _i
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+Candidate/ZetaZeroFree/Analytic/Energy/PhysicalSource.lean:832:36: warning: Variable name `i` is not explicitly referenced.
+
+Hint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:
+  [apply] _i
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+Candidate/ZetaZeroFree/Analytic/Energy/PhysicalSource.lean:835:78: warning: This simp argument is unused:
+  Fintype.prod_empty
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [lowSelectedInverseRow, lowSelectedWeight, lowSelectedIdeal, SelectedSlot]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Candidate/ZetaZeroFree/Analytic/Energy/PhysicalSource.lean:882:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+Candidate/ZetaZeroFree/Analytic/Energy/PhysicalSource.lean:851:19: warning: Variable name `hX` is not explicitly referenced.
+
+Hint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:
+  [apply] _hX
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+Candidate/ZetaZeroFree/Analytic/Energy/PhysicalSource.lean:851:30: warning: Variable name `hY` is not explicitly referenced.
+
+Hint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:
+  [apply] _hY
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+Candidate/ZetaZeroFree/Analytic/Energy/PhysicalSource.lean:883:65: warning: This simp argument is unused:
+  selected_zero_tuple_card
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [lowSelectedInverseRow, lowSelectedWeight, lowSelectedIdeal]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Candidate/ZetaZeroFree/Analytic/Energy/PhysicalSource.lean:935:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+Candidate/ZetaZeroFree/Analytic/Energy/PhysicalSource.lean:899:21: warning: Variable name `hX` is not explicitly referenced.
+
+Hint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:
+  [apply] _hX
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+Candidate/ZetaZeroFree/Analytic/Energy/PhysicalSource.lean:899:32: warning: Variable name `hY` is not explicitly referenced.
+
+Hint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:
+  [apply] _hY
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+Candidate/ZetaZeroFree/Analytic/Energy/PhysicalSource.lean:936:65: warning: This simp argument is unused:
+  selected_zero_tuple_card
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [lowSelectedInverseRow, lowSelectedWeight, lowSelectedIdeal]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+

@@ -30,6 +30,10 @@ test("verified proof badges open solution sources and contribution dates retain 
       const source = await response.text();
       expect(source).toMatch(/\btheorem\b/);
       expect(source).not.toMatch(/\bsorry\b/);
+    } else if (record.status === "historical-baseline") {
+      await expect(row.locator(".tag.historical")).toHaveText(
+        "Historical baseline",
+      );
     } else {
       expect(record.status).toBe("verification-pending");
       await expect(badge).toHaveClass(/\bamber\b/);
@@ -40,7 +44,9 @@ test("verified proof badges open solution sources and contribution dates retain 
     const dateCell = row.locator('td[data-label="Date"]');
     await expect(dateCell.locator("time")).toHaveAttribute(
       "datetime",
-      record.timeline_at,
+      record.date_precision === "year"
+        ? record.timeline_at.slice(0, 4)
+        : record.timeline_at,
     );
     await expect(dateCell.locator("small")).toHaveText(record.date_label);
   }

@@ -12,8 +12,10 @@ import {
   reduced,
 } from "../core/rational.mjs";
 import type { Contribution, Event, Rational } from "./types";
+import { chartExtent } from "../core/chart-viewport.mjs";
 import {
   contributionDate,
+  formatContributionDate,
   boundLabel,
   verifiedHere,
   statusLabel,
@@ -59,29 +61,14 @@ export default function Chart({
     B = 60;
   const width = W - L - R,
     height = H - T - B;
-  const times = [
-      ...allRecords.map((r) => Date.parse(contributionDate(r))),
-      ...events.map((e) => Date.parse(e.at)),
-    ],
-    minTime = times.length ? Math.min(...times) : Date.UTC(2026, 9, 1),
-    maxTime = times.length ? Math.max(...times) : Date.UTC(2026, 9, 9),
-    pad = Math.max((maxTime - minTime) * 0.06, 86400000);
-  const domain: [number, number] = [minTime - pad, maxTime + pad];
-  const span = domain[1] - domain[0],
-    start = domain[0] + (span * window[0]) / 100,
-    end = domain[0] + (span * window[1]) / 100;
-  const inTime = allRecords.filter(
-    (r) =>
-      Date.parse(contributionDate(r)) >= start &&
-      Date.parse(contributionDate(r)) <= end,
+  const extent = useMemo(
+    () => chartExtent(allRecords, events, false, window),
+    [allRecords, events, window],
   );
-  const values = inTime.map((r) => r.theta).sort(cmp);
-  let low: Rational = values[0] ?? { numerator: "0", denominator: "1" },
-    high: Rational = values.at(-1) ?? BASELINE;
-  if (cmp(low, high) === 0) {
-    low = sub(low, { numerator: "1", denominator: "1000000" });
-    high = sub(high, { numerator: "-1", denominator: "1000000" });
-  }
+  const { low, high } = extent;
+  const span = extent.end - extent.start,
+    start = extent.start + (span * window[0]) / 100,
+    end = extent.start + (span * window[1]) / 100;
   const x = (at: string) =>
     L + ((Date.parse(at) - start) / (end - start)) * width;
   const y = (v: Rational) => {
@@ -114,9 +101,22 @@ export default function Chart({
         };
       });
   };
-  const fit = () => {
+  const reset = () => {
     setWindow([0, 100]);
     setVertical({ scale: 1, offset: 0 });
+  };
+  const fit = () => {
+    const full = chartExtent(allRecords, events, true);
+    const base = chartExtent(allRecords, events);
+    const span = base.end - base.start;
+    const lo = relativePosition(full.low, base.low, base.high);
+    const hi = relativePosition(full.high, base.low, base.high);
+    const scale = 1 / (hi - lo);
+    setWindow([
+      ((full.start - base.start) / span) * 100,
+      ((full.end - base.start) / span) * 100,
+    ]);
+    setVertical({ scale, offset: (0.5 - (lo + hi) / 2) * scale });
   };
   useEffect(() => {
     const element = svg.current;
@@ -149,7 +149,8 @@ export default function Chart({
     return () => element.removeEventListener("wheel", wheel);
   }, [window, W]);
   const curve = useMemo(
-    () => frontierHistory(timelineRecords(allRecords), events),
+    () =>
+      frontierHistory(timelineRecords(allRecords.filter(verifiedHere)), events),
     [allRecords, events],
   );
   let path = "",
@@ -304,7 +305,12 @@ export default function Chart({
           >
             <Minus size={17} />
           </button>
-          <button className="icon" aria-label="Fit chart" onClick={fit}>
+          <button
+            className="icon"
+            aria-label="Fit chart"
+            title="Fit all points"
+            onClick={() => fit()}
+          >
             <Maximize2 size={16} />
           </button>
         </div>
@@ -315,7 +321,7 @@ export default function Chart({
           viewBox={`0 0 ${W} ${H}`}
           className="chart"
           role="group"
-          aria-label="Interactive bound timeline. Plus and minus zoom; arrows pan; Home resets. Tab to select points."
+          aria-label="Interactive bound timeline. Plus and minus zoom; arrows pan; Home fits best verified bounds below 1. Tab to select points."
           tabIndex={0}
           onKeyDown={(e) => {
             if (e.target !== e.currentTarget) return;
@@ -335,7 +341,7 @@ export default function Chart({
             if (e.key === "+" || e.key === "=")
               zoom(0.7, 0.5, 0.5, !e.shiftKey);
             if (e.key === "-") zoom(1.4, 0.5, 0.5, !e.shiftKey);
-            if (e.key === "Home") fit();
+            if (e.key === "Home") reset();
             if (e.key === "ArrowUp" || e.key === "ArrowDown")
               setVertical((v) => ({
                 ...v,
@@ -401,6 +407,7 @@ export default function Chart({
                 y={T + t * height + 4}
                 textAnchor="end"
                 className="axis"
+                data-axis="bound"
               >
                 {allRecords.length ? tickLabel(t) : (0.9 - t * 0.4).toFixed(2)}
               </text>
@@ -409,10 +416,13 @@ export default function Chart({
                 y={H - 18}
                 textAnchor="middle"
                 className="axis"
+                data-axis="date"
               >
                 {new Date(start + t * (end - start)).toLocaleDateString(
                   "en-GB",
-                  { day: "2-digit", month: "short", timeZone: "UTC" },
+                  end - start > 365.25 * 86400000
+                    ? { year: "numeric", timeZone: "UTC" }
+                    : { day: "2-digit", month: "short", timeZone: "UTC" },
                 )}
               </text>
             </g>
@@ -435,21 +445,20 @@ export default function Chart({
               const px = x(contributionDate(r)),
                 py = y(r.theta),
                 label = labels[r.id];
-              if (
-                px < L - 6 ||
-                px > W - R + 6 ||
-                py < T - 10 ||
-                py > H - B + 10
-              )
-                return null;
+              const inView =
+                px >= L - 6 &&
+                px <= W - R + 6 &&
+                py >= T - 10 &&
+                py <= H - B + 10;
               return (
                 <g
                   key={r.id}
                   data-dot
+                  aria-hidden={!inView}
                   data-id={r.id}
                   data-time={Date.parse(contributionDate(r))}
                   role="button"
-                  tabIndex={0}
+                  tabIndex={inView ? 0 : -1}
                   aria-label={`Select ${r.title}, theta ${boundLabel(r)}`}
                   aria-pressed={selected === r.id}
                   onKeyDown={(e) => {
@@ -468,7 +477,7 @@ export default function Chart({
                   <title>
                     {r.title} · {boundLabel(r)} ·{" "}
                     {r.authors.map((a) => a.name).join(", ")} ·{" "}
-                    {contributionDate(r)}
+                    {formatContributionDate(r)}
                   </title>
                   <circle cx={px} cy={py} r={16} fill="transparent" />
                   {selected === r.id && (

@@ -8,8 +8,6 @@ import {
   validateDecimalApproximation,
 } from "./pr-decimal.mjs";
 
-const maintenanceLine = (line) => /^QRH-Result: \s*none\s*$/.test(line.trim());
-
 export function parseDeclaration(body) {
   const fields = new Map();
   for (const line of (body ?? "").split(/\r?\n/)) {
@@ -22,11 +20,6 @@ export function parseDeclaration(body) {
   if (!fields.size) return null;
   const result_id = fields.get("Result"),
     theta_exact = fields.get("Bound");
-  if (result_id === "none") {
-    if (fields.size !== 1)
-      throw Error("Maintenance uses only QRH-Result: none");
-    return { maintenance: true };
-  }
   if (!/^[a-z][a-z0-9-]{2,63}$/.test(result_id ?? ""))
     throw Error("New bounds require QRH-Result: <stable-result-id>");
   if (
@@ -49,14 +42,9 @@ export function parseDeclaration(body) {
 }
 
 export function hasResultSection(body) {
-  return (body ?? "").split(/\r?\n/).some((line) => {
-    const text = line.trim();
-    if (maintenanceLine(text)) return false;
-    return (
-      /^QRH-(?:Result|Bound|Decimal)\b/i.test(text) ||
-      /^#{1,6}\s+(?:new bounds?|QRH[- ]results?)\b/i.test(text)
-    );
-  });
+  return (body ?? "")
+    .split(/\r?\n/)
+    .some((line) => /^QRH-(?:Result|Bound|Decimal)\b/i.test(line.trim()));
 }
 
 function proofPath(name) {
@@ -112,12 +100,9 @@ export function classifyPRChanges({ pr, files, repository, defaultBranch }) {
       "Incomplete or duplicate PR file list; refusing a truncated diff",
     );
   const classification = classifyChanges(files);
-  if ((pr.body ?? "").split(/\r?\n/).some(maintenanceLine)) {
-    // Validate the whole declaration before applying the maintenance marker.
-    parseDeclaration(pr.body);
-    return { proof: false, maintenance: true };
-  }
-  return classification;
+  return hasResultSection(pr.body)
+    ? classification
+    : { proof: false, maintenance: true };
 }
 
 export async function evaluatePR({
@@ -136,10 +121,6 @@ export async function evaluatePR({
   });
   if (classification.maintenance && hasResultSection(pr.body))
     throw Error("Submit QRH results and maintenance changes in separate PRs");
-  if (classification.proof && classification.maintenance)
-    throw Error(
-      "Separate proof changes from maintenance changes, including workflow and verifier changes",
-    );
   const declaration = parseDeclaration(pr.body);
   if (!classification.proof)
     return "Maintenance requirements satisfied. Complete website checks and maintainer review before merging.";

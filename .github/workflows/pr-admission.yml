@@ -57,7 +57,8 @@ jobs:
     needs: prepare
     if: needs.prepare.outputs.verify == 'true'
     runs-on: ubuntu-24.04
-    timeout-minutes: 150
+    # Leave time for setup, replay, and artifact upload before finalization.
+    timeout-minutes: 270
     permissions:
       contents: read
     outputs:
@@ -93,13 +94,13 @@ jobs:
         id: setup
         if: steps.prerequisites.outcome == 'success'
         continue-on-error: true
-        timeout-minutes: 85
+        timeout-minutes: 120
         run: python3 verifier/actions/setup.py
       - name: Check the canonical theorem with Comparator and all three kernels
         id: check
         if: steps.setup.outcome == 'success'
         continue-on-error: true
-        timeout-minutes: 65
+        timeout-minutes: 125
         run: python3 verifier/actions/run.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()

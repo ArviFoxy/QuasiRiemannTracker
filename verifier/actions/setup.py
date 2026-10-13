@@ -90,14 +90,9 @@ for lib in libraries:
     for p in sorted(lib.rglob('*')):
         if p.is_symlink(): raise RuntimeError('Symlink in checker library: '+str(p))
         if p.is_file(): inventory[str(p)] = sha(p)
-data = (json.dumps(inventory,sort_keys=True)+'\n').encode()
+from library_contract import bind_libraries
 prepared = OUT/'prepared'
-(prepared/'libraries.json').chmod(0o644)
-(prepared/'libraries.json').write_bytes(data)
-(prepared/'libraries.json').chmod(0o444)
-contract = json.loads((prepared/'contract.json').read_text())
-contract['library_inventory_sha256'] = hashlib.sha256(data).hexdigest()
-(prepared/'contract.json').write_text(json.dumps(contract,indent=2)+'\n')
+bind_libraries(prepared, inventory)
 profile = dict(palomar=str(palomar),source_toolchain=str(source),judge_toolchain=str(judge),
                exporter=str(exporter),submission=str(prepared/'submission'),libraries=list(map(str,libraries)), bwrap=str(bwrap))
 (OUT/'profile.json').write_text(json.dumps(profile,indent=2)+'\n')

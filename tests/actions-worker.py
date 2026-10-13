@@ -26,7 +26,9 @@ else:
     source.write_text('import Mathlib\nnamespace Candidate\ntheorem bound {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q)\n    {s : ℂ} (hs : (1 / 1 : ℝ) < s.re)\n    (hpole : ¬ (χ = 1 ∧ s = 1)) :\n    _root_.DirichletCharacter.LFunction χ s ≠ 0 := by\n  sorry\nend Candidate\n')
     contract = json.loads((prepared/'contract.json').read_text())
     contract['source_files']['src/Candidate/Main.lean'] = hashlib.sha256(source.read_bytes()).hexdigest()
+    (prepared/'contract.json').chmod(0o644)
     (prepared/'contract.json').write_text(json.dumps(contract))
+    (prepared/'contract.json').chmod(0o444)
     result = subprocess.run(['python3','verifier/actions/run.py'])
     attempt = json.loads((out/'attempt.json').read_text())
     assert result.returncode != 0 and attempt['status'] == 'checking-failed', attempt

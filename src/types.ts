@@ -17,6 +17,8 @@ export type Contribution = {
   source_commit: string;
   repository: string;
   pr: number | null;
+  solution_url?: string;
+  certificate_url?: string;
   receipt_url?: string;
   log_url?: string;
   is_record?: boolean;
@@ -35,10 +37,4 @@ export type Event = {
   at: string;
   reason: string;
   replacement?: string;
-};
-export type Registry = {
-  records: Contribution[];
-  events: Event[];
-  baseline_status: string;
-  active_ids: string[];
 };

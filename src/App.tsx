@@ -2,7 +2,6 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { MathJax } from "better-react-mathjax";
 import {
   ExternalLink,
-  GitBranch,
   Github,
   GitPullRequest,
   BadgeCheck,
@@ -11,8 +10,8 @@ import {
   FileCheck2,
 } from "lucide-react";
 import Chart from "./Chart";
-import { cmp, decimal, fraction, recordHistory } from "../core/rational.mjs";
-import type { Contribution, Registry } from "./types";
+import { cmp, decimal, recordHistory } from "../core/rational.mjs";
+import type { Contribution } from "./types";
 import {
   contributionDate,
   boundLabel,
@@ -27,19 +26,6 @@ import CatalogueDetail from "./CatalogueDetail";
 import LeanCode from "./LeanCode";
 const upstream =
   "https://github.com/openai/math/blob/fd4aeeb2ee4fc729c18d98444fed42fd0529eeeb/lean/";
-const initial: Registry = {
-  records: [],
-  events: [],
-  active_ids: [],
-  baseline_status: "infrastructure-blocked",
-};
-const date = (s: string) =>
-  new Date(s).toLocaleDateString("en-GB", {
-    day: "2-digit",
-    month: "short",
-    year: "numeric",
-    timeZone: "UTC",
-  });
 const timestamp = (s: string) =>
   new Date(s)
     .toISOString()
@@ -55,31 +41,7 @@ const columns: { key: SortKey; label: string }[] = [
   { key: "bound", label: "Exact bound θ" },
   { key: "date", label: "Date" },
 ];
-const theorem = `∀ {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) {s : ℂ},\n  (θ < s.re) → ¬ (χ = 1 ∧ s = 1) →\n  DirichletCharacter.LFunction χ s ≠ 0`;
-const proofSolutionUrl = (r: Contribution) => {
-  const explicit = r.references.find((ref) =>
-    /\/Solution\.lean$/.test(ref.url),
-  );
-  if (explicit) {
-    return explicit.url.startsWith("https://")
-      ? explicit.url
-      : `https://github.com/GTimG/QuasiRiemannTracker/blob/main/public/${explicit.url}`;
-  }
-  const statement = r.references.find(
-    (ref) =>
-      ref.url.startsWith("proofs/") &&
-      ref.url.endsWith(".lean") &&
-      /statement/i.test(ref.label),
-  );
-  if (statement) {
-    const solution = statement.url
-      .replace(/challenge-src\/Challenge\.lean$/, "solution-src/Solution.lean")
-      .replace(/src\/(?:[^/]+\/)?Challenge\.lean$/, "src/Solution.lean");
-    // An unfamiliar layout must never link the challenge template as a proof.
-    if (solution === statement.url) return;
-    return `https://github.com/GTimG/QuasiRiemannTracker/blob/main/public/${solution}`;
-  }
-};
+const proofSolutionUrl = (r: Contribution) => r.solution_url;
 const projectUrl = (r: Contribution) => {
   if (r.repository) return `https://github.com/${r.repository}`;
   const publication = r.references.find((ref) =>
@@ -93,8 +55,7 @@ const leanTheorem = `theorem quasi_riemann_bound
     LFunction χ s ≠ 0 := by
   sorry`;
 export default function App() {
-  const [registry, setRegistry] = useState<Registry>(initial),
-    [catalogue, setCatalogue] = useState<Contribution[]>([]),
+  const [catalogue, setCatalogue] = useState<Contribution[]>([]),
     [repository, setRepository] = useState<string | null>(null),
     [tab, setTab] = useState("Timeline"),
     [sort, setSort] = useState<{
@@ -111,20 +72,10 @@ export default function App() {
         if (!r.ok) throw Error(`Could not load ${name}`);
         return r.json();
       });
-    Promise.all([
-      read("registry.json"),
-      read("catalogue.json"),
-      read("site.json"),
-    ])
-      .then(([r, c, config]) => {
-        if (
-          r.schema_version !== 1 ||
-          !Array.isArray(r.records) ||
-          c.schema_version !== 1 ||
-          !Array.isArray(c.records)
-        )
+    Promise.all([read("catalogue.json"), read("site.json")])
+      .then(([c, config]) => {
+        if (c.schema_version !== 1 || !Array.isArray(c.records))
           throw Error("Unsupported research data.");
-        setRegistry(r);
         setCatalogue(c.records);
         setRepository(config.repository);
       })
@@ -134,47 +85,37 @@ export default function App() {
     if (modal && !dialog.current?.open) dialog.current?.showModal();
     if (!modal && dialog.current?.open) dialog.current?.close();
   }, [modal]);
-  const combined = [
-    ...new Map(
-      [...catalogue, ...registry.records].map((r) => [r.id, r]),
-    ).values(),
-  ];
   const ranked = new Map(
-    recordHistory(timelineRecords(combined.filter(verifiedHere))).map((r) => [
+    recordHistory(timelineRecords(catalogue.filter(verifiedHere))).map((r) => [
       r.id,
       r.is_record,
     ]),
   );
-  const all = combined.map((r) => ({
-      ...r,
-      is_record: ranked.get(r.id) === true,
-    })),
-    events = registry.events,
-    withdrawn = new Set(events.map((e) => e.id));
-  const commissioned = registry.records.length > 0;
+  const all = catalogue.map((r) => ({
+    ...r,
+    is_record: ranked.get(r.id) === true,
+  }));
   const records = useMemo(
     () =>
-      all
-        .filter((r) => !withdrawn.has(r.id))
-        .sort((a, b) => {
-          const comparison =
-            sort.key === "bound"
-              ? cmp(a.theta, b.theta)
-              : sort.key === "title"
-                ? contributionTitle(a).localeCompare(contributionTitle(b))
-                : sort.key === "author"
-                  ? a.authors
-                      .map((author) => author.name)
-                      .join(", ")
-                      .localeCompare(
-                        b.authors.map((author) => author.name).join(", "),
-                      )
-                  : contributionDate(a).localeCompare(contributionDate(b));
-          return comparison * (sort.direction === "ascending" ? 1 : -1);
-        }),
-    [all, sort, events],
+      all.sort((a, b) => {
+        const comparison =
+          sort.key === "bound"
+            ? cmp(a.theta, b.theta)
+            : sort.key === "title"
+              ? contributionTitle(a).localeCompare(contributionTitle(b))
+              : sort.key === "author"
+                ? a.authors
+                    .map((author) => author.name)
+                    .join(", ")
+                    .localeCompare(
+                      b.authors.map((author) => author.name).join(", "),
+                    )
+                : contributionDate(a).localeCompare(contributionDate(b));
+        return comparison * (sort.direction === "ascending" ? 1 : -1);
+      }),
+    [all, sort],
   );
-  const active = all.filter((r) => !withdrawn.has(r.id)),
+  const active = all,
     best = [...active]
       .filter(verifiedHere)
       .sort((a, b) => cmp(a.theta, b.theta))[0],
@@ -302,7 +243,7 @@ export default function App() {
             </div>
           )}
           {tab === "Protocol" ? (
-            <Protocol commissioned={commissioned} />
+            <Protocol />
           ) : (
             <>
               <div
@@ -311,13 +252,15 @@ export default function App() {
                 <div className="research-main">
                   {tab === "Timeline" && (
                     <Chart
+                      events={[]}
                       records={records.filter(
-                        (record) => verifiedHere(record) || historicalBaseline(record),
+                        (record) =>
+                          verifiedHere(record) || historicalBaseline(record),
                       )}
                       allRecords={all.filter(
-                        (record) => verifiedHere(record) || historicalBaseline(record),
+                        (record) =>
+                          verifiedHere(record) || historicalBaseline(record),
                       )}
-                      events={events}
                       selected={selected}
                       onSelect={(r) => setSelected(r.id)}
                     />
@@ -485,25 +428,14 @@ export default function App() {
                 </div>
                 {detail && (
                   <aside className="details" aria-live="polite">
-                    <ProofDetail
+                    <CatalogueDetail
                       record={detail}
                       onClose={() => setSelected(null)}
                       onSelect={(id) => setSelected(id)}
-                      events={events}
                     />
                   </aside>
                 )}
               </div>
-              {events.length > 0 && (
-                <section className="panel event-list">
-                  <h2>Registry events</h2>
-                  {events.map((e, i) => (
-                    <p key={i}>
-                      {date(e.at)} · {e.type} · {e.id}: {e.reason}
-                    </p>
-                  ))}
-                </section>
-              )}
             </>
           )}
         </div>
@@ -526,15 +458,20 @@ export default function App() {
           <>
             <h2>Contribute a result</h2>
             <p>
-              Open a GitHub pull request with the exact bound, author names,
-              source links and verification evidence. Include Lean source for a
-              new proof.
+              Open a GitHub pull request with your Lean proof and exact bound.
             </p>
             <ol className="guide-list">
               <li>
-                Add the result to <code>catalogue/results.json</code>.
+                Add{" "}
+                <code>
+                  submissions/&lt;result-id&gt;/src/Candidate/Main.lean
+                </code>{" "}
+                with theorem <code>Candidate.bound</code>.
               </li>
-              <li>Open a pull request. Website checks run automatically.</li>
+              <li>
+                Start the PR body with QRH-Result, QRH-Bound and QRH-Decimal.
+                Proof checks run automatically, including on drafts.
+              </li>
               <li>
                 After review and merge, the website updates automatically.
               </li>
@@ -558,134 +495,14 @@ export default function App() {
         ) : modal === "policy" ? (
           <>
             <h2>Verification details</h2>
-            <Protocol commissioned={commissioned} />
+            <Protocol />
           </>
         ) : null}
       </dialog>
     </div>
   );
 }
-function ProofDetail({
-  record: r,
-  onClose,
-  onSelect,
-  events,
-}: {
-  record: Contribution;
-  onClose: () => void;
-  onSelect: (id: string) => void;
-  events: Registry["events"];
-}) {
-  if (r.timeline_at)
-    return <CatalogueDetail record={r} onClose={onClose} onSelect={onSelect} />;
-  return (
-    <section className="panel proof-detail">
-      <div className="panel-heading">
-        <button
-          className="icon"
-          aria-label="Close proof details"
-          onClick={onClose}
-        >
-          <X size={17} />
-        </button>
-      </div>
-      <div className="detail-body">
-        <h2>{r.title}</h2>
-        <p className="authors">{r.authors.map((a) => a.name).join(", ")}</p>
-        <div className="exact-result">
-          <span>EXACT θ</span>
-          <strong>{boundLabel(r)}</strong>
-          <code>≈ {decimal(r.theta, 32)}</code>
-        </div>
-        <h3>Method</h3>
-        <p>{r.method}</p>
-        <h3>Statement</h3>
-        <pre>
-          {theorem.replace(
-            "θ",
-            `(${r.theta.numerator} / ${r.theta.denominator} : ℝ)`,
-          )}
-        </pre>
-        <h3>Provenance</h3>
-        <dl>
-          <dt>Submitted</dt>
-          <dd>{timestamp(r.submitted_at)}</dd>
-          <dt>First verified</dt>
-          <dd>{timestamp(r.first_verified_at)}</dd>
-          <dt>Merged</dt>
-          <dd>{timestamp(r.merged_at)}</dd>
-          <dt>Published</dt>
-          <dd>{timestamp(r.published_at)}</dd>
-          <dt>License</dt>
-          <dd>{r.license}</dd>
-        </dl>
-        <span className="detail-label">SOURCE COMMIT</span>
-        <code className="hash">{r.source_commit || "Not recorded"}</code>
-        <span className="detail-label">ENTRYPOINT</span>
-        <code className="hash">{r.entrypoint.declaration}</code>
-        <div className="detail-links">
-          <a
-            href={`https://github.com/${r.repository}/tree/${r.source_commit}`}
-            target="_blank"
-            rel="noreferrer"
-          >
-            Pinned source <ExternalLink size={13} />
-          </a>
-          <a
-            href={`https://github.com/${r.repository}/pull/${r.pr}`}
-            target="_blank"
-            rel="noreferrer"
-          >
-            Submission PR <ExternalLink size={13} />
-          </a>
-          <a href={publicUrl(r.receipt_url || "")}>
-            Signed verification receipt
-          </a>
-          <a href={publicUrl(r.log_url || "")}>Complete checking logs</a>
-        </div>
-        <h3>Builds on</h3>
-        {r.builds_on.length ? (
-          r.builds_on.map((id) => (
-            <button
-              className="predecessor"
-              key={id}
-              onClick={() => onSelect(id)}
-            >
-              <GitBranch size={14} />
-              {id}
-            </button>
-          ))
-        ) : (
-          <p className="muted">No explicit predecessors.</p>
-        )}
-        <h3>References</h3>
-        {r.references.length ? (
-          r.references.map((ref) => (
-            <a
-              className="reference"
-              key={ref.url}
-              href={ref.url}
-              target="_blank"
-              rel="noreferrer"
-            >
-              {ref.label} <ExternalLink size={13} />
-            </a>
-          ))
-        ) : (
-          <p className="muted">No references listed.</p>
-        )}
-        {events
-          .filter((e) => e.id === r.id)
-          .map((e, i) => (
-            <p className="event-warning" key={i}>
-              {e.type} · {e.reason}
-            </p>
-          ))}
-      </div>
-    </section>
-  );
-}
-function Protocol({ commissioned }: { commissioned: boolean }) {
+function Protocol() {
   return (
     <section className="protocol-grid">
       <article className="panel">
@@ -735,13 +552,11 @@ function Protocol({ commissioned }: { commissioned: boolean }) {
           .
         </p>
         <p>
-          {commissioned
-            ? "Signed registry entries link to Comparator and NanoDa receipts and checking logs."
-            : "Maintainers run these checks and publish the reports and exact checked statements with each result."}
+          GitHub Actions checks each submitted proof. Each accepted result links
+          to a verification record and its exact source commit.
         </p>
         <p>
-          Only propext, Classical.choice and Quot.sound are allowed. These local
-          checks are separate from Palomar registration and editorial review.
+          The permitted axioms are propext, Classical.choice and Quot.sound.
         </p>
         <h3>Labels</h3>
         <p>
@@ -753,7 +568,7 @@ function Protocol({ commissioned }: { commissioned: boolean }) {
           formalization that we have not independently reproduced. These results
           appear in the table, outside the verified chart.
         </p>
-        <p>Each result links to its source and available checking logs.</p>
+        <p>Verification records link to the checker run or archived report.</p>
       </article>
       <article className="panel">
         <h2>Dates</h2>

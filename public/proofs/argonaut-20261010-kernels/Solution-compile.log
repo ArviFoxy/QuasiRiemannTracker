@@ -1,4 +1,0 @@
-'QRHPalomar.allDirichlet' depends on axioms: [propext, Classical.choice, Quot.sound]
-'QRHPalomar.zeta' depends on axioms: [propext, Classical.choice, Quot.sound]
-'QRHPalomar.allHecke' depends on axioms: [propext, Classical.choice, Quot.sound]
-

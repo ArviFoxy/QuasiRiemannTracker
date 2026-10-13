@@ -1,2 +1,0 @@
-import QRH.Energy.ZeroGrowthPhysical
-#print axioms OAI.SevenEighths.CenteredMomentEnergyZeroGrowthPhysical.actual_growth_physical_extended

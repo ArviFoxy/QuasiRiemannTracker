@@ -13,9 +13,7 @@ import { join, resolve } from "node:path";
 import { execFileSync } from "node:child_process";
 import { standardChallenge } from "../core/standard-challenge.mjs";
 import { challenge } from "../verifier/challenge.mjs";
-const template = JSON.parse(
-  readFileSync("submissions/openai-baseline/manifest.json", "utf8"),
-);
+const template = { id: "openai-baseline" };
 test("dependency-free gate and submission verifier generate the same canonical challenge", () => {
   for (const theta of [
     { numerator: "7", denominator: "8" },
@@ -66,6 +64,8 @@ test("standard preparation reads the committed source and rejects symlink blobs"
           "fixture/repo",
           "--id",
           "openai-baseline",
+          "--bound",
+          "7/8",
           "--libraries",
           libraries,
           "--out",

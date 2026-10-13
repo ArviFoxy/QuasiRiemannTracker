@@ -26,6 +26,7 @@ function fixture() {
   return {
     context: {
       expected,
+      expectations: [expected],
       pr,
       repository,
       defaultBranch: "main",
@@ -40,6 +41,7 @@ function fixture() {
       status: "accepted",
       report: {
         status: "PASS",
+        verified_at: "2026-10-13T00:00:00Z",
         reviewed_pr_head: head,
         source_repository: repository,
         result_id: expected.result_id,
@@ -70,6 +72,35 @@ function run(t, data, env = {}) {
       join(cwd, "verification/attempt.json"),
       JSON.stringify(data.attempt),
     );
+  mkdirSync(join(cwd, "verification/run"));
+  writeFileSync(
+    join(cwd, "verification/run/result.json"),
+    JSON.stringify(data.attempt?.report ?? {}),
+  );
+  if (data.context.expectations)
+    for (const expected of data.context.expectations) {
+      const directory = join(
+        cwd,
+        `verification-results/proof-verification-1-${expected.result_id}`,
+      );
+      mkdirSync(join(directory, "run"), { recursive: true });
+      const attempt = data.attempts
+        ? data.attempts[expected.result_id]
+        : data.attempt;
+      if (attempt) {
+        writeFileSync(join(directory, "attempt.json"), JSON.stringify(attempt));
+        writeFileSync(
+          join(directory, "run/result.json"),
+          JSON.stringify(attempt.report),
+        );
+        writeFileSync(
+          join(directory, "worker-status.json"),
+          JSON.stringify({
+            result: data.completions?.[expected.result_id] || "success",
+          }),
+        );
+      }
+    }
   writeFileSync(
     join(cwd, "catalogue/results.json"),
     JSON.stringify({
@@ -163,4 +194,58 @@ test("publisher checks decimal accuracy after successful proof verification", (t
   const result = run(t, data);
   assert.equal(result.status, 1);
   assert.match(result.requests.at(-1).body.output.summary, /decimal|Decimal/);
+});
+
+function batch() {
+  const data = fixture();
+  data.context.pr.body = data.current.body =
+    "Maintenance of two proofs and the website.";
+  data.context.expectations = [
+    data.context.expected,
+    { ...data.context.expected, result_id: "second-proof", theta_exact: "7/8" },
+  ];
+  const second = structuredClone(data.attempt);
+  Object.assign(second, { result_id: "second-proof", theta_exact: "7/8" });
+  Object.assign(second.report, {
+    result_id: "second-proof",
+    theta_exact: "7/8",
+  });
+  data.attempts = { "candidate-proof": data.attempt, "second-proof": second };
+  return data;
+}
+test("maintenance publisher requires every affected proof and no declaration", (t) => {
+  const result = run(t, batch());
+  assert.equal(result.status, 0);
+  const output = result.requests.at(-1).body;
+  assert.equal(output.conclusion, "success");
+  assert.match(output.output.summary, /Maintenance validations passed/);
+  assert.match(output.output.summary, /second-proof at 7\/8/);
+});
+test("maintenance fails for the forbidden axiom in the second proof", (t) => {
+  const data = batch();
+  data.attempts["second-proof"].status = "checking-failed";
+  data.attempts["second-proof"].reason = "Forbidden axiom: sorryAx";
+  const result = run(t, data);
+  assert.equal(result.status, 1);
+  assert.match(
+    result.requests.at(-1).body.output.summary,
+    /Forbidden axiom: sorryAx/,
+  );
+});
+test("maintenance rejects a missing result among several proofs", (t) => {
+  const data = batch();
+  delete data.attempts["second-proof"];
+  const result = run(t, data);
+  assert.equal(result.status, 1);
+  assert.match(result.requests.at(-1).body.output.summary, /report is missing/);
+});
+test("maintenance requires successful worker completion for each accepted report", (t) => {
+  const data = batch();
+  data.completions = { "second-proof": "failure" };
+  const result = run(t, data);
+  assert.equal(result.status, 1);
+  assert.match(
+    result.requests.at(-1).body.output.summary,
+    /job did not complete successfully/,
+  );
 });

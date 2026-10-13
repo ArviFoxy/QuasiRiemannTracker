@@ -1,3 +1,0 @@
-import QRH.PrimeRows.OptimizedLargeTail
-#print axioms OAI.SevenEighths.QRHPhysicalTails.absolutePhysicalDyadIntegral_nonneg
-#print axioms OAI.SevenEighths.QRHPhysicalTails.large_physical_dyads_summable

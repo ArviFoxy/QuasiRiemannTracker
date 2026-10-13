@@ -1,2 +1,0 @@
-import QRH.PrimeRows.OptimizedCentralTupleCount
-#print axioms OAI.SevenEighths.QRHPhysicalTails.central_prime_tuple_count

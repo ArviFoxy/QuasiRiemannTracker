@@ -1,2 +1,0 @@
-import QRH.Detector.ExtendedRayPoolThresholds
-#print axioms OAI.SevenEighths.QRHRayPoolThresholds.power_pool_thresholds

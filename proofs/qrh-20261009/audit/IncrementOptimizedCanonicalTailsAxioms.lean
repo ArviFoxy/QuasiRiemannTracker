@@ -1,3 +1,0 @@
-import QRH.PrimeRows.OptimizedCanonicalTails
-#print axioms OAI.SevenEighths.QRHPhysicalTails.canonical_small_original_tail
-#print axioms OAI.SevenEighths.QRHPhysicalTails.canonical_large_original_tail

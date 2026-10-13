@@ -1,3 +1,0 @@
-'OAI.SevenEighths.QRHDetectorBatchCount.batch_count_from_raw_moments' depends on axioms: [propext,
- Classical.choice,
- Quot.sound]

@@ -28,11 +28,6 @@ test("historical catalogue entries display their status and year precision", asy
       json: { schema_version: 1, records: [baseline] },
     }),
   );
-  await page.route("**/registry.json", (route) =>
-    route.fulfill({
-      json: { schema_version: 1, records: [], events: [], active_ids: [] },
-    }),
-  );
   await page.goto("/");
   const row = page.locator("tbody tr");
   await expect(row.locator(".tag.historical")).toHaveText(

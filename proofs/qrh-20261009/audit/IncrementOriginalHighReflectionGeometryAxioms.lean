@@ -1,3 +1,0 @@
-import QRH.Energy.OriginalHighReflectionGeometry
-#print axioms OAI.SevenEighths.CenteredMomentEnergyOriginalHighReflectionGeometry.original_long_positive_extended
-#print axioms OAI.SevenEighths.CenteredMomentEnergyOriginalHighReflectionGeometry.actual_deleted_gates_extended

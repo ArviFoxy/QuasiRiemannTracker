@@ -1,3 +1,0 @@
-import QRH.Detector.LowRemoteMass
-#print axioms OAI.SevenEighths.ProbePhysical.canonicalTuple_count_optimized
-#print axioms OAI.SevenEighths.ProbePhysical.compensation_scale_mass_bound_optimized

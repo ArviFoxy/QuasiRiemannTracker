@@ -1,2 +1,0 @@
-import QRH.Detector.OptimizedPrincipalNormalized
-#print axioms OAI.SevenEighths.QRHPrincipalNormalized.actual_ray_principal_comparison

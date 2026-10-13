@@ -1,2 +1,0 @@
-import QRH.Detector.LowWindowBound
-#print axioms OAI.SevenEighths.ProbePhysical.original_ray_compensatedPhysicalProbe_low_loss_optimized

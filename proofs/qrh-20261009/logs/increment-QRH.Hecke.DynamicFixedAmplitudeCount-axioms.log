@@ -1,3 +1,0 @@
-'OAI.SevenEighths.QRHDetectorFixedAmplitudeCount.fixed_amplitude_count_from_raw_moments' depends on axioms: [propext,
- Classical.choice,
- Quot.sound]

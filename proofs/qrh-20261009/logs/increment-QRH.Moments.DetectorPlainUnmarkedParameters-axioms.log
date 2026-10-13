@@ -1,3 +1,0 @@
-'OAI.SevenEighths.CenteredMomentDetectorPlainMomentParameters.unmarked_state_admission_slots' depends on axioms: [propext,
- Classical.choice,
- Quot.sound]

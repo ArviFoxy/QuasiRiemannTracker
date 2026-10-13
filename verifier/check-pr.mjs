@@ -71,7 +71,7 @@ const identity = (p) =>
 class VerificationRequired extends Error {
   constructor(expected) {
     super("Proof verification is queued");
-    this.expected = expected;
+    this.expected = Array.isArray(expected) ? expected : [expected];
   }
 }
 let queued = false;
@@ -94,6 +94,9 @@ try {
     root: process.cwd(),
     ...(process.env.QRH_PHASE === "prepare"
       ? {
+          validateProofs: (_root, expected) => {
+            throw new VerificationRequired(expected);
+          },
           validateEvidence: (_root, expected) => {
             throw new VerificationRequired(expected);
           },
@@ -114,7 +117,8 @@ try {
       "verification-context/context.json",
       JSON.stringify(
         {
-          expected: error.expected,
+          expected: error.expected[0],
+          expectations: error.expected,
           pr,
           check_id: check.id,
           repository: repo,
@@ -127,10 +131,13 @@ try {
         2,
       ) + "\n",
     );
-    appendFileSync(process.env.GITHUB_OUTPUT, "verify=true\n");
+    appendFileSync(
+      process.env.GITHUB_OUTPUT,
+      `verify=true\nmatrix=${JSON.stringify(error.expected.map((e) => e.result_id))}\n`,
+    );
     summary = "Checking the submitted proof in an isolated worker.";
   } else {
-    summary = `Admission failed: ${error.message}\n\nSee CONTRIBUTING.md and docs/GITHUB.md for admission requirements.`;
+    summary = `Admission failed: ${error.message}`;
     process.exitCode = 1;
   }
 }

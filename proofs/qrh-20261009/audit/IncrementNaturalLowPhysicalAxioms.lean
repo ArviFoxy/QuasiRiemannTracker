@@ -1,2 +1,0 @@
-import QRH.Energy.NaturalLowPhysical
-#print axioms OAI.SevenEighths.CenteredMomentEnergyNaturalLowPhysical.actual_natural_low_physical_extended

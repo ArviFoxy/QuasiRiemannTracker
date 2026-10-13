@@ -1,2 +1,0 @@
-import QRH.Energy.OriginalHighReflectionPower
-#print axioms OAI.SevenEighths.CenteredMomentEnergyOriginalHighReflectionPower.original_high_power_extended

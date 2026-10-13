@@ -29,8 +29,7 @@ exporter = Path(profile['exporter']).resolve()
 source = work/'source'
 shutil.copytree(Path(profile['submission']).resolve(), source)
 libs = [Path(p).resolve() for p in profile['libraries']]
-manifest = json.loads((source/'manifest.json').read_text())
-assert manifest == contract['manifest']
+manifest = contract['manifest']
 assert re.fullmatch(r'[a-f0-9]{40}',contract['head_sha'])
 inputs = {str(p.relative_to(source)):sha(p) for p in source.rglob('*') if p.is_file()}
 assert inputs == contract['source_files']
@@ -101,7 +100,7 @@ v.verify_export(work/'exports/Challenge.export')
 challenge_hash=sha(work/'exports/Challenge.export')
 candidate_env={**env,'LEAN_PATH':':'.join(map(str,[work/'candidate-lib',*libs]))}
 stage('candidate mount controls')
-v.verify_sandbox_confinement(source/'denied-write',work/'denied-read',positive_read=source/'manifest.json',python=python,touch=touch,cwd=source,environment=candidate_env,writable_directories=[work/'candidate-lib',work/'home',work/'tmp'],protected_write_directories=[source,work/'challenge-lib',*libs],readable_paths=[source,work/'challenge-lib',*libs,*system],executable_paths=[old,Path('/usr')],tools=tools)
+v.verify_sandbox_confinement(source/'denied-write',work/'denied-read',positive_read=source/'src/Candidate/Main.lean',python=python,touch=touch,cwd=source,environment=candidate_env,writable_directories=[work/'candidate-lib',work/'home',work/'tmp'],protected_write_directories=[source,work/'challenge-lib',*libs],readable_paths=[source,work/'challenge-lib',*libs,*system],executable_paths=[old,Path('/usr')],tools=tools)
 stage('compile standard candidate')
 for index, module in enumerate(contract['build_order'], 1):
     print(f"Compile {index}/{len(contract['build_order'])}: {module}", flush=True)

@@ -1,2 +1,0 @@
-import QRH.Detector.PlainUnmarkedSlots
-#print axioms OAI.SevenEighths.ProbeDetectorPlainUnmarkedRestrictedField.source_batch_plain_unmarked_slots

@@ -1,2 +1,0 @@
-import QRH.PrimeRows.OptimizedNormalizedTransportSaving
-#print axioms OAI.SevenEighths.QRHPhysicalTails.actual_normalized_probe_transport_saving

@@ -57,11 +57,11 @@ try {
     "ls-tree",
     e.head_sha,
     "--",
-    `submissions/${e.result_id}/manifest.json`,
+    `submissions/${e.result_id}/src/Candidate/Main.lean`,
   ]).toString();
   if (!listing)
     throw new WorkerProfileUnavailable(
-      `Add submissions/${e.result_id}/manifest.json and its Lean proof in the standard submission layout`,
+      `Add submissions/${e.result_id}/src/Candidate/Main.lean with theorem Candidate.bound`,
     );
   // Preparation binds source and generates the theorem before provisioning libraries.
   writeFileSync("verification/empty-libraries.json", "{}\n");
@@ -77,6 +77,8 @@ try {
       e.repository,
       "--id",
       e.result_id,
+      "--bound",
+      e.theta_exact,
       "--libraries",
       "verification/empty-libraries.json",
       "--out",
@@ -84,15 +86,10 @@ try {
     ],
     { env, stdio: "pipe" },
   );
-  const s = submission("verification/prepared/submission");
-  if (
-    `${s.manifest.theta.numerator}/${s.manifest.theta.denominator}` !==
-    e.theta_exact
-  )
-    throw Error("Submission manifest bound must equal QRH-Bound");
   const contract = JSON.parse(
     readFileSync("verification/prepared/contract.json", "utf8"),
   );
+  const s = submission("verification/prepared/submission", contract.manifest);
   // Only the pinned upstream OAI modules named in the source are built; source is data here.
   const imports = new Set();
   for (const f of s.files.filter((f) => f.path.endsWith(".lean"))) {

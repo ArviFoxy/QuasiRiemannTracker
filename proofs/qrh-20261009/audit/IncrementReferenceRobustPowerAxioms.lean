@@ -1,2 +1,0 @@
-import QRH.Energy.ReferenceRobustPower
-#print axioms OAI.SevenEighths.CenteredMomentEnergyReferenceRobustPower.original_reference_power_robust_extended

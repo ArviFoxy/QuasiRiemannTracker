@@ -1,2 +1,0 @@
-import QRH.Energy.CappedAnalyticSuccessor
-#print axioms OAI.SevenEighths.CenteredMomentEnergyCappedAnalyticSuccessor.actual_successor_extended

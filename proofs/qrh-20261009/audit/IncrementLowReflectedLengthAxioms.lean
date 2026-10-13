@@ -1,2 +1,0 @@
-import QRH.Detector.LowReflectedLength
-#print axioms OAI.SevenEighths.ProbeLowReflected.compensated_reflected_exponent_with_length_optimized

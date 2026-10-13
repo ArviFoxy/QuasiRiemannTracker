@@ -1,3 +1,0 @@
-'OAI.SevenEighths.QRHUniformDetectorMoment.actual_uniform_adaptive_batch_count' depends on axioms: [propext,
- Classical.choice,
- Quot.sound]

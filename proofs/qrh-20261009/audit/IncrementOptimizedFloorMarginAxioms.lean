@@ -1,2 +1,0 @@
-import QRH.Detector.OptimizedFloorMargin
-#print axioms OAI.SevenEighths.QRHProbeCentralExponent.floor_source_margin

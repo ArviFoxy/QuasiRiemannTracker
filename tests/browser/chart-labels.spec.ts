@@ -95,7 +95,7 @@ test("nearby chart names stay readable through resizing and zoom", async ({
   await page
     .locator('[data-id="nielstron-20261009-tightening"]')
     .press("Enter");
-  await expect(page.locator(".proof-detail")).toContainText("Nielstron");
+  await expect(page.locator(".proof-detail")).toContainText("nielstron");
 });
 
 test("a crowded cluster retains its newest name and every selectable dot", async ({

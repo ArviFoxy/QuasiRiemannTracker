@@ -1,2 +1,0 @@
-import QRH.Detector.ActualDetectorFiberCount
-#print axioms OAI.SevenEighths.QRHUniformDetectorMoment.actual_uniform_detector_fiber_count

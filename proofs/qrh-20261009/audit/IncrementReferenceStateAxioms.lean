@@ -1,3 +1,0 @@
-import QRH.Energy.ReferenceState
-#print axioms OAI.SevenEighths.CenteredMomentEnergyReferenceState.balanced_reference_geometry_extended
-#print axioms OAI.SevenEighths.CenteredMomentEnergyReferenceState.balanced_reflection_margins_extended

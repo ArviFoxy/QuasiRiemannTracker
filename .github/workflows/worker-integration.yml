@@ -3,7 +3,6 @@ on:
   pull_request:
     paths:
       - "verifier/**"
-      - "worker/**"
       - "core/standard-challenge.mjs"
       - "tests/actions-worker.py"
       - ".github/workflows/pr-admission.yml"
@@ -44,6 +43,7 @@ jobs:
           path: |
             verification/attempt.json
             verification/accepted-attempt.json
+            verification/certificate.json
             verification/accepted-run/logs/
             verification/run/logs/
             verification/run/phases.json

@@ -4,7 +4,6 @@ import {
   proofRevision,
 } from "./catalogue-revisions.mjs";
 
-// Catalogue evidence is separate from the signed Comparator/NanoDa registry.
 export const contributionDate = (r) => r.timeline_at || r.first_verified_at;
 export const historicalBaseline = (r) => r.status === "historical-baseline";
 export const formatContributionDate = (r) =>
@@ -50,7 +49,7 @@ export function validateCatalogue(data) {
         "historical-baseline",
       ].includes(r.status)
     )
-      throw Error("Catalogue cannot mint signed verification status");
+      throw Error("Unsupported catalogue verification status");
     if (
       !Number.isFinite(Date.parse(r.timeline_at)) ||
       !r.date_label ||
@@ -86,7 +85,7 @@ export function validateCatalogue(data) {
     for (const ref of r.references) {
       if (
         !/^https:\/\//.test(ref.url) &&
-        !/^proofs\/[a-zA-Z0-9_./-]+$/.test(ref.url)
+        !/^certificates\/[a-z0-9-]+\.json$/.test(ref.url)
       )
         throw Error("Unsafe reference");
       if (ref.url.split("/").includes("..")) throw Error("Unsafe path");

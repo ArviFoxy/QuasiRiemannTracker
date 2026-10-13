@@ -1,0 +1,38 @@
+[
+  {
+    "repository": "GTimG/QuasiRiemannTracker",
+    "number": 5,
+    "head_sha": "4876e6b0786d9871e9b267d945930fcd0668fa83",
+    "result_id": "classical-euler-product",
+    "theta_exact": "1/1",
+    "verified_at": "2026-10-12T17:47:42.669687+00:00",
+    "report_url": "https://github.com/GTimG/QuasiRiemannTracker/blob/d716ecaae80f7823a5b8314916364fdfa0d133fb/verifier/standard/receipts/classical-final-20261012/result.json",
+    "report_sha256": "ca9f13a75511fd23bda444c41a6f306a8084141da64524e525304b391164992a",
+    "kernels": [
+      "Lean default",
+      "nanoda",
+      "con-ron"
+    ],
+    "schema_version": 1,
+    "source_repository": "GTimG/QuasiRiemannTracker",
+    "source_commit": "4876e6b0786d9871e9b267d945930fcd0668fa83"
+  },
+  {
+    "repository": "GTimG/QuasiRiemannTracker",
+    "number": 8,
+    "head_sha": "0b97bfdae9f026d9446d077952b2b4980700e742",
+    "result_id": "single-prime-29-33-20261010",
+    "theta_exact": "29/33",
+    "verified_at": "2026-10-12T19:10:29.401842+00:00",
+    "report_url": "https://github.com/GTimG/QuasiRiemannTracker/blob/d716ecaae80f7823a5b8314916364fdfa0d133fb/verifier/standard/receipts/single-prime-final-20261012/result.json",
+    "report_sha256": "ead901a3c4c4da28c6c11283f32fe9fb4c6bf038419e6a4458223e99a2568dc3",
+    "kernels": [
+      "Lean default",
+      "nanoda",
+      "con-ron"
+    ],
+    "schema_version": 1,
+    "source_repository": "GTimG/QuasiRiemannTracker",
+    "source_commit": "0b97bfdae9f026d9446d077952b2b4980700e742"
+  }
+]

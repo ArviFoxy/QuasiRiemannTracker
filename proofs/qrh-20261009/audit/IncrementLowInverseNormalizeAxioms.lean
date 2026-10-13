@@ -1,3 +1,0 @@
-import QRH.Detector.LowInverseNormalize
-#print axioms OAI.SevenEighths.ProbePhysical.low_inverse_power_cancel_optimized
-#print axioms OAI.SevenEighths.ProbePhysical.low_inverse_sqrt_normalized_optimized

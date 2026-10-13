@@ -1,2 +1,0 @@
-import QRH.Detector.ActualCubeClassBound
-#print axioms OAI.SevenEighths.QRHUniformDetectorMoment.actual_uniform_cube_class_bound

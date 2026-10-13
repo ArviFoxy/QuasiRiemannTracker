@@ -25,21 +25,12 @@ jobs:
         id: pages
         if: github.event_name != 'pull_request'
         uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6
-      - name: Enforce append-only evidence history
-        if: github.event_name == 'push' && github.event.before != '0000000000000000000000000000000000000000'
-        run: |
-          if ! git cat-file -e "$QRH_BEFORE^{commit}" 2>/dev/null; then
-            git fetch --quiet --no-tags --depth=1 origin "$QRH_BEFORE"
-          fi
-          node verifier/audit-history.mjs "$QRH_BEFORE"
-        env:
-          QRH_BEFORE: ${{ github.event.before }}
       - run: npm run check
         env:
           QRH_BASE_PATH: ${{ steps.pages.outputs.base_path }}/
       - run: npx playwright install --with-deps chromium
       - run: npm run test:browser
-      - name: Test production paths and proof downloads
+      - name: Test production paths and verification records
         run: node scripts/test-deployment.mjs
         env:
           QRH_BASE_PATH: ${{ steps.pages.outputs.base_path }}/

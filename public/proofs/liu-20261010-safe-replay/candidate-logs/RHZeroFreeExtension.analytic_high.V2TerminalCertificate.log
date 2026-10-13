@@ -1,3 +1,0 @@
-'RHZeroFreeExtension.AnalyticHigh.V2.fixed_kappa_terminal_certificate' depends on axioms: [propext,
- Classical.choice,
- Quot.sound]

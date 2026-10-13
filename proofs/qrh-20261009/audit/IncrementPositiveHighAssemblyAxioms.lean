@@ -1,2 +1,0 @@
-import QRH.Energy.PositiveHighAssembly
-#print axioms OAI.SevenEighths.CenteredMomentEnergyPositiveHighAssembly.actual_high_source_split_extended

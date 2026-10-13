@@ -1,2 +1,0 @@
-import QRH.Reflection.LowRetained
-#print axioms OAI.SevenEighths.InverseReflectedPhase.original_low_sector_retained_energy_optimized

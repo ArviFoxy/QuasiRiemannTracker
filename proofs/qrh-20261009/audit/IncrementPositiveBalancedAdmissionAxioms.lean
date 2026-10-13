@@ -1,3 +1,0 @@
-import QRH.Energy.PositiveBalancedAdmission
-#print axioms OAI.SevenEighths.CenteredMomentEnergyPositiveBalancedAdmission.four_upper_scales_extended
-#print axioms OAI.SevenEighths.CenteredMomentEnergyPositiveBalancedAdmission.state_capacity_packet_extended

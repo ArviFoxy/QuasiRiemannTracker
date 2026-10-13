@@ -1,3 +1,0 @@
-import OAI.NumberTheory.DirichletL.Supremum
-#print axioms OAI.SevenEighths.Supremum.uniform_bound_below_supremum_false
-#print axioms OAI.SevenEighths.Supremum.seven_eighths_of_uniform_margin_with_sentinel

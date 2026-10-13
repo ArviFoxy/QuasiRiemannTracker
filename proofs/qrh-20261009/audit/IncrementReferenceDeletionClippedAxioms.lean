@@ -1,3 +1,0 @@
-import QRH.Energy.ReferenceDeletionClipped
-#print axioms OAI.SevenEighths.CenteredMomentEnergyReferenceDeletionClipped.deleted_long_le_width_extended
-#print axioms OAI.SevenEighths.CenteredMomentEnergyReferenceDeletionClipped.clipped_reflected_bound_extended

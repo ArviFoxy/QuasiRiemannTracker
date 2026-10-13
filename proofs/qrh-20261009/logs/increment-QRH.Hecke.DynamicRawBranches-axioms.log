@@ -1,3 +1,0 @@
-'OAI.SevenEighths.HeckeDetectorRawFiber.Fiber.plain_marked_count_optimized' depends on axioms: [propext,
- Classical.choice,
- Quot.sound]

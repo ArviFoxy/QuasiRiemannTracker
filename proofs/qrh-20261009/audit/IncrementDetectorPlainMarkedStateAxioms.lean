@@ -1,2 +1,0 @@
-import QRH.Moments.DetectorPlainMarkedState
-#print axioms OAI.SevenEighths.CenteredMomentDetectorPlainMarkedState.source_batch_marked_initial_dynamic

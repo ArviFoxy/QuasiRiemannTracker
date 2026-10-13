@@ -1,2 +1,0 @@
-import QRH.Energy.CappedLowStage
-#print axioms OAI.SevenEighths.CenteredMomentEnergyCappedLowStage.actual_capped_low_extended

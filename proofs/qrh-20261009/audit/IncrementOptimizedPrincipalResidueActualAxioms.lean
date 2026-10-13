@@ -1,2 +1,0 @@
-import QRH.Detector.OptimizedPrincipalResidueActual
-#print axioms OAI.SevenEighths.QRHPrincipalResidueActual.normalized_actual_window_residue

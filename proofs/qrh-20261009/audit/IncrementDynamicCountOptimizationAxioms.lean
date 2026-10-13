@@ -1,2 +1,0 @@
-import QRH.Hecke.DynamicCountOptimization
-#print axioms OAI.SevenEighths.QRHDetectorRowCount.count_bound_of_source_branches

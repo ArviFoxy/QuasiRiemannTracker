@@ -2,21 +2,15 @@ QRH-Result: stable-result-id
 QRH-Bound: exact-bound
 QRH-Decimal: decimal-approximation
 
-<!-- For maintenance, remove the three lines above and the New bound section below.
+<!-- For maintenance, remove the three lines above and describe the change.
 PRs without result declarations are maintenance and can update any repository paths.
-For a new bound, give a stable result ID and the exact value, e.g. 4374433/5000000.
-Also give an accurate truncated decimal, e.g. 0.87488660 or 1.0. When the exact
-bound differs from the current best verified bound, include enough digits to
-show the difference. An equal exact bound accepts any supported decimal
-precision. For irrational bounds, keep the exact expression in QRH-Bound. -->
+Changed proofs are checked against their catalogue bounds. Catalogue and verification records are validated.
+For a result, add submissions/<result-id>/src/Candidate/Main.lean with theorem
+Candidate.bound and any supporting Candidate modules. Submission files are Lean source.
+Give the exact reduced fraction (e.g. 4374433/5000000) or exact algebraic expression.
+Give an accurate truncated decimal with enough digits to differ from the current
+best verified bound. Equal bounds accept any supported decimal precision.
+GitHub Actions checks the proof, including on drafts. -->
 
-## Summary
-
-Describe the change.
-
-## New bound
-
-Proof and source links:
-Reproduction instructions:
 Authors and credits:
-License and upstream notices:
+Source or paper links:

@@ -1,2 +1,0 @@
-import QRH.PrimeRows.OptimizedPhysicalLargeTail
-#print axioms OAI.SevenEighths.QRHPhysicalTails.large_original_physical_tail

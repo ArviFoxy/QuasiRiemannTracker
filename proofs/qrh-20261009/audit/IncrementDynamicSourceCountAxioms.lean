@@ -1,5 +1,0 @@
-import QRH.PrimeRows.DynamicSourceCount
-#print axioms OAI.SevenEighths.QRHProbeHighRowFamily.balanced_source_count_from_raw_moments
-#print axioms OAI.SevenEighths.QRHProbeHighRowFamily.high_source_count_from_raw_moments
-#print axioms OAI.SevenEighths.QRHProbeHighRowFamily.adaptiveRowExponent
-#print axioms OAI.SevenEighths.QRHProbeHighRowFamily.adaptive_source_count_from_raw_moments

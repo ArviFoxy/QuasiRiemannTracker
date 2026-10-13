@@ -1,2 +1,0 @@
-import QRH.Detector.OptimizedTransportBudget
-#print axioms OAI.SevenEighths.QRHParameters.optimized_transport_budgets

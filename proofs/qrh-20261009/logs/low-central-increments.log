@@ -1,3 +1,0 @@
-WAIT QRH.Detector.LowCentralTuple : QRH.Detector.LowPhysicalInverseBound, QRH.Detector.LowSlotScales
-WAIT QRH.Detector.LowCentralTuple : QRH.Detector.LowSlotScales
-FAIL QRH.Detector.LowCentralTuple; /work/qrh-proof/logs/increment-QRH.Detector.LowCentralTuple.log

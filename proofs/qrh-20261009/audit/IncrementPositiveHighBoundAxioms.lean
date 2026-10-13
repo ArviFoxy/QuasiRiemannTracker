@@ -1,2 +1,0 @@
-import QRH.Energy.PositiveHighBound
-#print axioms OAI.SevenEighths.CenteredMomentEnergyPositiveHighBound.actual_high_from_physical_extended

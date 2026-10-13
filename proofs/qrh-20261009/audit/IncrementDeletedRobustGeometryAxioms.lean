@@ -1,2 +1,0 @@
-import QRH.Energy.DeletedRobustGeometry
-#print axioms OAI.SevenEighths.CenteredMomentEnergyDeletedRobustGeometry.actual_deleted_gates_extended

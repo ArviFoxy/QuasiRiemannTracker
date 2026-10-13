@@ -1,1 +1,0 @@
-'RHV2.adaptive_mixed_saving' depends on axioms: [propext, Classical.choice, Quot.sound]

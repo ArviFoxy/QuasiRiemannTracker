@@ -1,3 +1,0 @@
-'OAI.SevenEighths.CenteredMomentEnergyZeroGrowthPhysical.actual_growth_physical_extended' depends on axioms: [propext,
- Classical.choice,
- Quot.sound]

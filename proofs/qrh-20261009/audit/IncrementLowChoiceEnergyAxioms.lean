@@ -1,2 +1,0 @@
-import QRH.Reflection.LowChoiceEnergy
-#print axioms OAI.SevenEighths.InverseReflectedPhase.low_original_choice_energy_optimized

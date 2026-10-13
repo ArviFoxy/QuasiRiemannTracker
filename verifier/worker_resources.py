@@ -5,7 +5,7 @@ import os
 GIB = 1024 ** 3
 
 
-def worker_threads(*, environ=None, affinity=None, memory_bytes=None,
+def worker_capacity(*, environ=None, affinity=None, memory_bytes=None,
                    cgroup_root=Path('/sys/fs/cgroup'),
                    membership=Path('/proc/self/cgroup')):
     environ = os.environ if environ is None else environ
@@ -43,4 +43,15 @@ def worker_threads(*, environ=None, affinity=None, memory_bytes=None,
         if not requested.isascii() or not requested.isdecimal() or int(requested) < 1:
             raise ValueError('QRH_WORKER_THREADS must be a positive integer')
         threads = min(threads, int(requested))
-    return threads
+    # Large exports can need several GiB in each independent checker.
+    kernels = max(1, min(3, threads, memory_bytes * 3 // 4 // (8 * GIB)))
+    requested_kernels = environ.get('QRH_KERNEL_JOBS')
+    if requested_kernels is not None:
+        if requested_kernels not in ['1', '2', '3']:
+            raise ValueError('QRH_KERNEL_JOBS must be 1, 2 or 3')
+        kernels = min(int(requested_kernels), threads)
+    return {'threads': threads, 'kernel_jobs': kernels, 'memory_bytes': memory_bytes}
+
+
+def worker_threads(**kwargs):
+    return worker_capacity(**kwargs)['threads']

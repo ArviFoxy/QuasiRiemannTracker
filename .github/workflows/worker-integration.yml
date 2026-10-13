@@ -16,6 +16,9 @@ jobs:
   worker:
     runs-on: ubuntu-24.04
     timeout-minutes: 150
+    env:
+      # Exercise concurrent kernels on these small positive/negative fixtures.
+      QRH_KERNEL_JOBS: "3"
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -49,6 +52,8 @@ jobs:
             verification/accepted-attempt.json
             verification/certificate.json
             verification/accepted-run/logs/
+            verification/accepted-run/judge/logs/
             verification/run/logs/
+            verification/run/judge/logs/
             verification/run/phases.json
           retention-days: 30

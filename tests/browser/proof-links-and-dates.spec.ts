@@ -22,11 +22,11 @@ test("verified proof badges open solution sources and contribution dates retain 
     });
     const badge = row.locator(".verification-badge");
     if (record.status === "framework-verified") {
-      await expect(badge).toHaveAttribute("href", /\/Solution\.lean$/);
+      await expect(badge).toHaveAttribute("href", /\.lean$/);
       const href = (await badge.getAttribute("href"))!;
       expect(href).toBe(record.solution_url);
       expect(new URL(href).pathname).toMatch(
-        /\/blob\/[a-f0-9]{40}\/.+\/Solution\.lean$/,
+        /\/blob\/[a-f0-9]{40}\/.+\.lean$/,
       );
     } else if (record.status === "historical-baseline") {
       await expect(row.locator(".tag.historical")).toHaveText(

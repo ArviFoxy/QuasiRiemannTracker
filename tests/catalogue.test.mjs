@@ -30,7 +30,7 @@ test("the existing contribution selects one current proof revision and preserves
 test("the plotted frontier retains the strongest bound while verification stays separate", () => {
   const d = validateCatalogue(data());
   const verified = d.records.filter(verifiedHere);
-  assert.equal(verified.length, 9);
+  assert.equal(verified.length, 10);
   const timeline = recordHistory(timelineRecords(verified));
   const frontier = frontierHistory(timeline, []);
   assert.equal(frontier.length, timeline.length);

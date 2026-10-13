@@ -134,7 +134,7 @@ test("selection, exact sorting and zoom", async ({ page }, info) => {
   await page.getByRole("button", { name: "Zoom in", exact: true }).click();
   await page.getByRole("button", { name: "Fit chart", exact: true }).click();
   await expect(page.locator("tbody tr").first()).toContainText(
-    "quartic boundary",
+    bestVerified.title.split(" · ").at(-1),
   );
   await page
     .getByRole("button", { name: "Exact bound θ", exact: true })

@@ -71,6 +71,11 @@ function run(t, data, env = {}) {
       join(cwd, "verification/attempt.json"),
       JSON.stringify(data.attempt),
     );
+  mkdirSync(join(cwd, "verification/run"));
+  writeFileSync(
+    join(cwd, "verification/run/result.json"),
+    JSON.stringify(data.attempt?.report ?? {}),
+  );
   writeFileSync(
     join(cwd, "catalogue/results.json"),
     JSON.stringify({

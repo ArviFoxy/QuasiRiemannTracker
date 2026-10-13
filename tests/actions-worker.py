@@ -1,6 +1,6 @@
 """Exercise the live worker with a known proof, then an incomplete proof."""
 from pathlib import Path
-import hashlib, json, shutil, subprocess, sys
+import hashlib, json, os, shutil, subprocess, sys
 root = Path(__file__).resolve().parents[1]
 out = root/'verification'
 if sys.argv[1] == 'prepare':
@@ -17,6 +17,15 @@ if sys.argv[1] == 'prepare':
 else:
     accepted = json.loads((out/'attempt.json').read_text())
     assert accepted['status'] == 'accepted', accepted
+    run_url = f"https://github.com/{os.environ['GITHUB_REPOSITORY']}/actions/runs/{os.environ['GITHUB_RUN_ID']}/attempts/{os.environ['GITHUB_RUN_ATTEMPT']}"
+    subprocess.run(['node', 'verifier/certify-local.mjs', '--context', str(root/'verification-context/context.json'),
+        '--attempt', str(out/'attempt.json'), '--report', str(out/'run/result.json'),
+        '--report-url', run_url, '--out', str(out/'certificate.json')], check=True)
+    certificate = json.loads((out/'certificate.json').read_text())
+    assert certificate['source_commit'] == accepted['head_sha']
+    assert certificate['theta_exact'] == '1/1'
+    assert certificate['report_sha256'] == hashlib.sha256((out/'run/result.json').read_bytes()).hexdigest()
+    assert (out/'certificate.json').stat().st_size < 2048
     shutil.move(out/'run',out/'accepted-run')
     shutil.copyfile(out/'attempt.json',out/'accepted-attempt.json')
     prepared = out/'prepared'

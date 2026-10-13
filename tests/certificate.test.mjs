@@ -25,6 +25,7 @@ const record = () =>
     expected,
     report,
     "https://github.com/owner/repo/actions/runs/123/attempts/1",
+    Buffer.from(JSON.stringify(report)),
   );
 test("minimal verification records bind source, exact bound, date and report", () => {
   const c = record();
@@ -88,4 +89,17 @@ test("submission layout contains Lean source with a fixed entrypoint", (t) => {
   });
   writeFileSync(join(root, "manifest.json"), "{}");
   assert.throws(() => submission(root, declaration), /only Lean source/);
+});
+
+test("the certificate hash authenticates the exact archived report bytes", () => {
+  assert.throws(
+    () =>
+      workerCertificate(
+        expected,
+        report,
+        record().report_url,
+        Buffer.from("{}"),
+      ),
+    /Archived report differs/,
+  );
 });

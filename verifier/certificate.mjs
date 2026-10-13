@@ -20,7 +20,9 @@ export function certificate(value) {
   return value;
 }
 // Call after verificationResult has authenticated a successful worker report.
-export function workerCertificate(expected, report, reportUrl) {
+export function workerCertificate(expected, report, reportUrl, reportBytes) {
+  if (sha256(JSON.parse(reportBytes)) !== sha256(report))
+    throw Error("Archived report differs from the accepted worker report");
   return certificate({
     schema_version: 1,
     result_id: expected.result_id,
@@ -30,7 +32,7 @@ export function workerCertificate(expected, report, reportUrl) {
     source_commit: expected.head_sha,
     kernels: KERNELS,
     report_url: reportUrl,
-    report_sha256: sha256(report),
+    report_sha256: sha256(reportBytes),
     ...(report.bound_interval ? { bound_interval: report.bound_interval } : {}),
   });
 }

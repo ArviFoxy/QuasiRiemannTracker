@@ -55,6 +55,7 @@ try {
           c.expected,
           report,
           `https://github.com/${c.repository}/actions/runs/${c.run_id}/attempts/${c.run_attempt}`,
+          readFileSync("verification/run/result.json"),
         )
       : report;
   writeFileSync(

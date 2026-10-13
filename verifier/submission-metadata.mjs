@@ -1,3 +1,4 @@
+import { submissionDependencies } from "./submission-dependencies.mjs";
 // Publication metadata is authored once, in the submitted PR body. Admission
 // preserves this exact data beside the checked proof and its certificate.
 const text = (value, limit) =>
@@ -18,6 +19,7 @@ export function validateSubmissionMetadata(value) {
     "license",
     "builds_on",
     "references",
+    "dependencies",
   ]);
   if (
     !value ||
@@ -62,6 +64,7 @@ export function validateSubmissionMetadata(value) {
     throw Error(
       "Invalid publication metadata: provide title, authors and description in qrh-metadata JSON",
     );
+  submissionDependencies(value);
   return value;
 }
 

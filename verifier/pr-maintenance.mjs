@@ -1,3 +1,7 @@
+import {
+  submissionDependencies,
+  affectedSubmissions,
+} from "./submission-dependencies.mjs";
 // Candidate commits supply data; validators and worker code come from the base.
 import { execFileSync } from "node:child_process";
 import { existsSync, readFileSync, mkdtempSync, rmSync } from "node:fs";
@@ -88,7 +92,7 @@ export function maintenancePlan({
         validateSubmissionMetadata(input);
         continue;
       }
-      const { historical, ...record } = input;
+      const { historical, dependencies, ...record } = input;
       if (path.split("/")[1] !== proofRevision(record))
         throw Error("Proof metadata path differs from its revision");
       (historical === true ? historical_records : records).push(record);
@@ -202,7 +206,38 @@ export function maintenancePlan({
         );
     }
   }
-  for (const id of sourceIds) {
+  const ids = new Set(
+    list("head", "submissions/").map((path) => path.split("/")[1]),
+  );
+  const graph = new Map();
+  for (const id of ids) {
+    const file = `submissions/${id}/metadata.json`;
+    const deps = submissionDependencies(JSON.parse(read("head", file) || "{}"));
+    for (const dep of deps)
+      if (!ids.has(dep))
+        throw Error(`Missing submission dependency: ${id} -> ${dep}`);
+    graph.set(id, deps);
+    const before = read("base", file);
+    if (
+      !isDeepStrictEqual(
+        submissionDependencies(JSON.parse(before || "{}")),
+        deps,
+      )
+    )
+      sourceIds.add(id);
+  }
+  const visited = new Set(),
+    active = new Set();
+  function visit(id) {
+    if (active.has(id)) throw Error(`Cyclic submission dependencies: ${id}`);
+    if (visited.has(id)) return;
+    active.add(id);
+    for (const dep of graph.get(id)) visit(dep);
+    active.delete(id);
+    visited.add(id);
+  }
+  for (const id of ids) visit(id);
+  for (const id of affectedSubmissions(sourceIds, graph)) {
     if (list("head", `submissions/${id}/`).length) requireProof(id);
   }
   if (

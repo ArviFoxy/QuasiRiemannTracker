@@ -2,8 +2,6 @@
 import { execFileSync } from "node:child_process";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { exactBound } from "../../core/exact-bound.mjs";
-import { submission } from "../manifest.mjs";
-import { upstreamImports } from "./imports.mjs";
 const c = JSON.parse(readFileSync("verification-context/context.json", "utf8"));
 const e = c.expected;
 mkdirSync("verification", { recursive: true });
@@ -61,7 +59,7 @@ try {
     `submissions/${e.result_id}/src/Candidate/Main.lean`,
   ]).toString();
   if (!listing)
-    throw new WorkerProfileUnavailable(
+    throw new Error(
       `Add submissions/${e.result_id}/src/Candidate/Main.lean with theorem Candidate.bound`,
     );
   // Preparation binds source and generates the theorem before provisioning libraries.
@@ -90,15 +88,9 @@ try {
   const contract = JSON.parse(
     readFileSync("verification/prepared/contract.json", "utf8"),
   );
-  const s = submission("verification/prepared/submission", contract.manifest);
-  // Only the pinned upstream OAI modules named in the source are built; source is data here.
-  const imports = new Set();
-  for (const f of s.files.filter((f) => f.path.endsWith(".lean"))) {
-    for (const name of upstreamImports(f.bytes.toString())) imports.add(name);
-  }
   writeFileSync(
     "verification/imports.json",
-    JSON.stringify([...imports].sort()) + "\n",
+    JSON.stringify(contract.package_imports) + "\n",
   );
   console.log(`Prepared ${contract.manifest.id} at ${e.head_sha}`);
 } catch (error) {

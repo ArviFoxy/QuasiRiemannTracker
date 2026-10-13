@@ -4,6 +4,7 @@ import argparse, datetime, hashlib, json, os, re, shutil, sys, time
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from worker_resources import worker_capacity
 from standard.judge import judge_exports
+from standard.compile import compile_modules, publish_module
 
 if sys.flags.optimize or os.getuid() == 0:
     raise SystemExit('Use unoptimized Python as an unprivileged worker user')
@@ -108,15 +109,31 @@ candidate_env={**env,'LEAN_PATH':':'.join(map(str,[work/'candidate-lib',*libs]))
 stage('candidate mount controls')
 v.verify_sandbox_confinement(source/'denied-write',work/'denied-read',positive_read=source/'src/Candidate/Main.lean',python=python,touch=touch,cwd=source,environment=candidate_env,writable_directories=[work/'candidate-lib',work/'home',work/'tmp'],protected_write_directories=[source,work/'challenge-lib',*libs],readable_paths=[source,work/'challenge-lib',*libs,*system],executable_paths=[old,Path('/usr')],tools=tools)
 stage('compile standard candidate')
-for index, module in enumerate(contract['build_order'], 1):
-    print(f"Compile {index}/{len(contract['build_order'])}: {module}", flush=True)
+jobs = min(threads, len(contract['build_order']))
+print(f'Compiling up to {jobs} modules concurrently', flush=True)
+def compile_one(module):
     started = time.monotonic()
-    assert re.fullmatch(r'Candidate(?:\.[A-Za-z_][A-Za-z0-9_]*)+',module)
-    relative = module.replace('.','/')
-    output = work/'candidate-lib'/(relative+'.olean')
-    output.parent.mkdir(parents=True,exist_ok=True)
-    log('compile-'+module,v.sandboxed_run([str(old/'bin/lean'),'-o',str(output),relative+'.lean'],cwd=source/'src',environment=candidate_env,writable_directories=[work/'candidate-lib',work/'home',work/'tmp'],readable_paths=[*libs,*system],executable_paths=[old,Path('/usr')],tools=tools,timeout=600))
+    assert re.fullmatch(r'(?:Candidate|Submissions)(?:\.[A-Za-z_][A-Za-z0-9_]*)+', module)
+    relative = module.replace('.', '/')
+    scratch = work/'compilers'/module
+    for part in ['out', 'home', 'tmp']:
+        (scratch/part).mkdir(parents=True, exist_ok=True)
+    output = scratch/'out'/('module.olean')
+    environment = {**candidate_env, 'HOME':str(scratch/'home'), 'TMPDIR':str(scratch/'tmp'), 'LEAN_NUM_THREADS':str(max(1, threads // jobs))}
+    print(f'Compile {module}', flush=True)
+    log('compile-'+module, v.sandboxed_run([str(old/'bin/lean'), '-o', str(output), relative+'.lean'],
+        cwd=source/'src', environment=environment,
+        writable_directories=[scratch/'out', scratch/'home', scratch/'tmp'],
+        readable_paths=[work/'candidate-lib', *libs, *system], executable_paths=[old, Path('/usr')],
+        tools=tools, timeout=600,
+        resource_properties=(f"MemoryMax={max(1024**3, capacity['memory_bytes'] * 3 // 4 // jobs)}",)))
+    publish_module(output, work/'candidate-lib'/(relative+'.olean'))
+    shutil.rmtree(scratch)
     print(f'Compiled {module} in {time.monotonic()-started:.1f}s', flush=True)
+# Legacy contracts used a sequential order; their dependency list is a chain.
+order = contract['build_order']
+dependencies = contract.get('module_dependencies', {name:order[max(0, i-1):i] for i, name in enumerate(order)})
+compile_modules(order, dependencies, compile_one, jobs=jobs)
 solution_env={**env,'LEAN_PATH':':'.join(map(str,[work/'solution-lib',work/'candidate-lib',*libs]))}
 stage('compile and export standard solution wrapper')
 log('solution-compile',v.sandboxed_run([str(old/'bin/lean'),'-o',str(work/'solution-lib/Solution.olean'),'Solution.lean'],cwd=work/'solution-src',environment=solution_env,writable_directories=[work/'solution-lib',work/'home',work/'tmp'],readable_paths=[work/'candidate-lib',*libs,*system],executable_paths=[old,Path('/usr')],tools=tools,timeout=600))
@@ -134,6 +151,6 @@ assert sha(work/'exports/Challenge.export') == challenge_hash
 assert inputs == {str(p.relative_to(source)):sha(p) for p in source.rglob('*') if p.is_file()}
 check_libraries()
 stage('accepted')
-report={'status':'PASS','verified_at':datetime.datetime.now(datetime.timezone.utc).isoformat(),'reviewed_pr_head':contract['head_sha'],'source_commit':contract['source_commit'],'source_repository':contract['repository'],'result_id':manifest['id'],'theta_exact':manifest.get('exact_bound',manifest['theta']['numerator']+'/'+manifest['theta']['denominator']),**({'bound_interval':manifest['bound_interval']} if 'bound_interval' in manifest else {}),'targets':config['theorem_names'],'allowed_axioms':config['permitted_axioms'],'kernels':['Lean default','nanoda','con-ron'],'judge_exit_code':result.returncode,'sandbox_preflight':'PASS','candidate_mount_preflight':'PASS','challenge_exported_before_candidate_execution':True,'receipt_outside_candidate':True,'source_files':inputs,'library_inventory_sha256':contract['library_inventory_sha256'],'driver_sha256':sha(Path(__file__)),'palomar_sha256':sha(ref/'scripts/verify_submission.py'),'tool_pins':approved_tools,'artifacts':{str(p.relative_to(work)):sha(p) for p in work.rglob('*') if p.is_file() and p.suffix in ['.log','.json','.lean','.export']}}
+report={'status':'PASS','verified_at':datetime.datetime.now(datetime.timezone.utc).isoformat(),'reviewed_pr_head':contract['head_sha'],'source_commit':contract['source_commit'],'source_repository':contract['repository'],'result_id':manifest['id'],'theta_exact':manifest.get('exact_bound',manifest['theta']['numerator']+'/'+manifest['theta']['denominator']),**({'bound_interval':manifest['bound_interval']} if 'bound_interval' in manifest else {}),'targets':config['theorem_names'],'allowed_axioms':config['permitted_axioms'],'kernels':['Lean default','nanoda','con-ron'],'judge_exit_code':result.returncode,'sandbox_preflight':'PASS','candidate_mount_preflight':'PASS','challenge_exported_before_candidate_execution':True,'receipt_outside_candidate':True,'source_files':inputs,'submission_trees':contract.get('submission_trees', {}),'library_inventory_sha256':contract['library_inventory_sha256'],'driver_sha256':sha(Path(__file__)),'palomar_sha256':sha(ref/'scripts/verify_submission.py'),'tool_pins':approved_tools,'artifacts':{str(p.relative_to(work)):sha(p) for p in work.rglob('*') if p.is_file() and p.suffix in ['.log','.json','.lean','.export']}}
 (work/'result.json').write_text(json.dumps(report,indent=2)+'\n')
 print('Accepted '+manifest['id']+' at '+contract['head_sha'],flush=True)

@@ -90,6 +90,20 @@ for name in json.loads((OUT/('cache-imports.json' if warm_cache else 'imports.js
         name = name.rsplit('.',1)[0]
 print(f'Build {len(modules)} protected upstream import targets and their dependencies', flush=True)
 if modules: run(source/'bin/lake','build',*sorted(modules),cwd=project,env=env)
+# These package sources are fixed by the protected manifest and compatibility
+# patches. A submitted import can select a module within these fixed trees.
+package_roots = {'PrimeNumberTheoremAnd': packages/'PrimeNumberTheoremAnd',
+                 'RellichKondrachov': packages/'rellich-kondrachov'}
+modules = (['PrimeNumberTheoremAnd.Wiener',
+            'RellichKondrachov.Analysis.FunctionalSpaces.Sobolev.Euclidean.Rellich']
+           if warm_cache else [name for name in json.loads((OUT/'imports.json').read_text()) if not name.startswith('OAI.')])
+for module in modules:
+    parts = module.split('.')
+    if parts[0] not in package_roots or any(not part.isascii() or not part.isidentifier() for part in parts):
+        raise RuntimeError('Invalid pinned package import')
+    path = package_roots[parts[0]]/Path(*parts).with_suffix('.lean')
+    if not path.is_file(): raise RuntimeError('Missing pinned package source: '+module)
+if modules: run(source/'bin/lake', 'build', *sorted(set(modules)), cwd=project, env=env)
 # Import Mathlib exactly as the canonical challenge does, before checking source.
 (project/'Challenge.lean').write_text('import Mathlib\n')
 run(source/'bin/lake','build','Challenge',cwd=project,env=env)
@@ -100,7 +114,8 @@ if warm_cache:
     sys.exit(0)
 libraries = sorted(p.resolve() for p in packages.glob('*/.lake/build/lib/lean') if p.is_dir())
 local = project/'.lake/build/lib/lean'
-if local.exists(): libraries.append(local.resolve())
+contract = json.loads((OUT/'prepared/contract.json').read_text())
+if local.exists() and not contract.get('vendored_sources'): libraries.append(local.resolve())
 inventory = {}
 for lib in libraries:
     for p in sorted(lib.rglob('*')):

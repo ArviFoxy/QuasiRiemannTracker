@@ -3,6 +3,7 @@ import path from "node:path";
 import { rational } from "../core/rational.mjs";
 import { sha256 } from "./common.mjs";
 
+import { submissionDependencies } from "./submission-dependencies.mjs";
 import { exactBound } from "../core/exact-bound.mjs";
 export function manifest({ id, theta, exact_bound }) {
   if (!/^[a-z][a-z0-9-]{2,63}$/.test(id ?? ""))
@@ -46,7 +47,9 @@ export function submissionFiles(dir) {
       if (stat.isDirectory()) {
         if (
           file !== "src" &&
-          !/^src\/Candidate(?:\/[A-Za-z_][A-Za-z0-9_]*)*$/.test(file)
+          !/^src\/(?:Candidate|Submissions)(?:\/[A-Za-z_][A-Za-z0-9_]*)*$/.test(
+            file,
+          )
         )
           throw Error("Unapproved directory");
         walk(file);
@@ -54,7 +57,7 @@ export function submissionFiles(dir) {
       }
       if (
         file !== "metadata.json" &&
-        !/^src\/Candidate\/(?:[A-Za-z_][A-Za-z0-9_]*\/)*[A-Za-z_][A-Za-z0-9_]*\.lean$/.test(
+        !/^src\/(?:Candidate|Submissions)\/(?:[A-Za-z_][A-Za-z0-9_]*\/)*[A-Za-z_][A-Za-z0-9_]*\.lean$/.test(
           file,
         )
       )
@@ -63,9 +66,9 @@ export function submissionFiles(dir) {
         );
       total += stat.size;
       if (
-        total > 10 * 1024 * 1024 ||
+        total > 64 * 1024 * 1024 ||
         stat.size > 2 * 1024 * 1024 ||
-        files.length >= 512
+        files.length >= 8192
       )
         throw Error("Submission size limit");
       const bytes = readFileSync(full);
@@ -76,10 +79,17 @@ export function submissionFiles(dir) {
   if (!files.some((f) => f.path === "src/Candidate/Main.lean"))
     throw Error("Missing src/Candidate/Main.lean");
   const metadataFile = files.find((f) => f.path === "metadata.json");
-  // Existing submissions acquire metadata during the catalogue migration.
+  // Existing submissions acquire metadata in the following source migration.
+  if (!metadataFile)
+    files.push({
+      path: "metadata.json",
+      bytes: Buffer.from("{}"),
+      sha256: sha256("{}"),
+    });
   if (metadataFile && metadataFile.bytes.length > 65536)
     throw Error("Submission metadata is too large");
-  if (metadataFile) JSON.parse(metadataFile.bytes.toString());
+  if (metadataFile)
+    submissionDependencies(JSON.parse(metadataFile.bytes.toString()));
   return {
     files,
     inventory: files.map(({ path, sha256 }) => ({ path, sha256 })),

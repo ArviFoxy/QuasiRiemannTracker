@@ -145,7 +145,7 @@
         },
         {
           "label": "Checked Lean solution",
-          "url": "https://github.com/GTimG/QuasiRiemannTracker/blob/d716ecaae80f7823a5b8314916364fdfa0d133fb/public/proofs/argonaut-20261010-safe-replay/challenge-src/Solution.lean"
+          "url": "https://github.com/GTimG/QuasiRiemannTracker/blob/d716ecaae80f7823a5b8314916364fdfa0d133fb/public/proofs/argonaut-20261010-safe-replay/solution-src/Solution.lean"
         },
         {
           "label": "Reviewed original source package",
@@ -161,7 +161,7 @@
       "date_label": "Public announcement",
       "verification_note": "Argonaut Math's unchanged pinned v0.1.8 proof was independently rebuilt by the maintainer in a genuine offline Linux sandbox. The canonical challenge was exported before candidate execution; Comparator checked the exact all-Dirichlet, zeta and finite-order Eisenstein Hecke statements and definitions, and Lean, NanoDa and con-ron accepted all three targets at exactly 3499999/4000000 with only propext, Classical.choice and Quot.sound. The receipt was written outside candidate-writable paths. Original proof sources, authorship and license notices remain in the historical package. The first verified time records this confined maintainer run; the earlier submitted report remains historical evidence. This is local mechanical verification, not signed registry admission or Palomar registration.",
       "certificate_url": "certificates/argonaut-20261008.json",
-      "solution_url": "https://github.com/GTimG/QuasiRiemannTracker/blob/d716ecaae80f7823a5b8314916364fdfa0d133fb/public/proofs/argonaut-20261010-safe-replay/challenge-src/Solution.lean"
+      "solution_url": "https://github.com/GTimG/QuasiRiemannTracker/blob/d716ecaae80f7823a5b8314916364fdfa0d133fb/public/proofs/argonaut-20261010-safe-replay/solution-src/Solution.lean"
     },
     {
       "submitted_at": "",
@@ -209,7 +209,7 @@
         },
         {
           "label": "Checked Lean solution",
-          "url": "https://github.com/GTimG/QuasiRiemannTracker/blob/d716ecaae80f7823a5b8314916364fdfa0d133fb/public/proofs/liu-20261010-safe-replay/challenge-src/Solution.lean"
+          "url": "https://github.com/GTimG/QuasiRiemannTracker/blob/d716ecaae80f7823a5b8314916364fdfa0d133fb/public/proofs/liu-20261010-safe-replay/solution-src/Solution.lean"
         },
         {
           "label": "Paper · arXiv:2610.12234",
@@ -225,7 +225,7 @@
       "date_label": "arXiv submission",
       "verification_note": "Liu's pinned original proof was independently rebuilt by the maintainer in a genuine offline Linux sandbox. The canonical challenge was exported before candidate execution; Comparator checked the exact statements and definitions, and Lean, NanoDa and con-ron accepted all three targets with only propext, Classical.choice and Quot.sound. The checked boundary is (1507 − 2√921) / 1653; its rational enclosure is only a plotting coordinate. The receipt was written outside candidate-writable paths. No Liu proof source or proof exports are redistributed. The first verified time records this confined maintainer run; the earlier submitted report is retained as historical evidence. This is local mechanical verification, not signed registry admission or Palomar registration.",
       "certificate_url": "certificates/liu-20261008.json",
-      "solution_url": "https://github.com/GTimG/QuasiRiemannTracker/blob/d716ecaae80f7823a5b8314916364fdfa0d133fb/public/proofs/liu-20261010-safe-replay/challenge-src/Solution.lean"
+      "solution_url": "https://github.com/GTimG/QuasiRiemannTracker/blob/d716ecaae80f7823a5b8314916364fdfa0d133fb/public/proofs/liu-20261010-safe-replay/solution-src/Solution.lean"
     },
     {
       "submitted_at": "",
@@ -322,7 +322,7 @@
         },
         {
           "label": "Checked Lean solution",
-          "url": "https://github.com/GTimG/QuasiRiemannTracker/blob/d716ecaae80f7823a5b8314916364fdfa0d133fb/public/proofs/nielstron-algebraic-20261009-kernels/src/PalomarCanonical3d11d053040a6a513a35e5ef/Solution.lean"
+          "url": "https://github.com/GTimG/QuasiRiemannTracker/blob/d716ecaae80f7823a5b8314916364fdfa0d133fb/public/proofs/nielstron-algebraic-20261009-kernels/src/Solution.lean"
         },
         {
           "label": "Frozen source and native evidence",
@@ -336,7 +336,7 @@
       "attribution_note": "Human contributor: Nielstron. AI-assisted research and formalization; inherited ProofCouncil and OpenAI notices retained.",
       "proof_revision": "nielstron-algebraic-20261009",
       "certificate_url": "certificates/nielstron-algebraic-20261009.json",
-      "solution_url": "https://github.com/GTimG/QuasiRiemannTracker/blob/d716ecaae80f7823a5b8314916364fdfa0d133fb/public/proofs/nielstron-algebraic-20261009-kernels/src/PalomarCanonical3d11d053040a6a513a35e5ef/Solution.lean"
+      "solution_url": "https://github.com/GTimG/QuasiRiemannTracker/blob/d716ecaae80f7823a5b8314916364fdfa0d133fb/public/proofs/nielstron-algebraic-20261009-kernels/src/Solution.lean"
     },
     {
       "submitted_at": "2026-10-10T03:22:55Z",
@@ -441,7 +441,7 @@
         },
         {
           "label": "Checked Lean solution",
-          "url": "https://github.com/GTimG/QuasiRiemannTracker/blob/d716ecaae80f7823a5b8314916364fdfa0d133fb/public/proofs/cycle25-20261010-safe-replay/challenge-src/Solution.lean"
+          "url": "https://github.com/GTimG/QuasiRiemannTracker/blob/d716ecaae80f7823a5b8314916364fdfa0d133fb/public/proofs/cycle25-20261010-safe-replay/solution-src/Solution.lean"
         },
         {
           "label": "Paper (PDF)",
@@ -462,7 +462,7 @@
       "verification_note": "The maintainer independently rebuilt all 3,224 submitted Lean modules (301 Cycle25/reused-moment modules and 2,923 pinned OpenAI modules) in a genuine offline Linux sandbox. The canonical challenge was exported first from the approved upstream library. Comparator checked eight targets and their definitions: rational and exact quartic all-Dirichlet, zeta and Eisenstein Hecke bounds, quartic root existence and uniqueness, and the reusable moment theorem with its stated hypotheses. Lean, NanoDa and con-ron accepted the exports using only propext, Classical.choice and Quot.sound. Isolation and positive/negative checker controls passed. The external controller receipt binds the exact source, dependency and tool pins, challenge and logs. The timeline uses this first independent acceptance, not discovery or the historical contributor check. The original contributor evidence remains immutable. This is a maintainer mechanical replay, not signed registry admission or Palomar registration.",
       "attribution_note": "Human contributor: Hailey Collet. AI-assisted research and formalization, reusing OpenAI/math, Mathlib and Akash Levy’s weighted construction. The earlier single-compensating-prime development supplies a reused unconditional moment lemma; its terminal 29/33 bound is not an assumption. Upstream licenses and notices are retained.",
       "certificate_url": "certificates/cycle25-quartic-20261010.json",
-      "solution_url": "https://github.com/GTimG/QuasiRiemannTracker/blob/d716ecaae80f7823a5b8314916364fdfa0d133fb/public/proofs/cycle25-20261010-safe-replay/challenge-src/Solution.lean"
+      "solution_url": "https://github.com/GTimG/QuasiRiemannTracker/blob/d716ecaae80f7823a5b8314916364fdfa0d133fb/public/proofs/cycle25-20261010-safe-replay/solution-src/Solution.lean"
     },
     {
       "submitted_at": "",
@@ -561,7 +561,7 @@
         },
         {
           "label": "Checked Lean solution",
-          "url": "https://github.com/GTimG/QuasiRiemannTracker/blob/d716ecaae80f7823a5b8314916364fdfa0d133fb/public/proofs/nielstron-20261009-kernels/src/PalomarCanonical852af299eac8f1607f3d35b3/Solution.lean"
+          "url": "https://github.com/GTimG/QuasiRiemannTracker/blob/d716ecaae80f7823a5b8314916364fdfa0d133fb/public/proofs/nielstron-20261009-kernels/src/Solution.lean"
         },
         {
           "label": "Tighter Lean proof source",
@@ -578,7 +578,7 @@
       "verification_note": "The exact submitted proof passed the pinned local Palomar mechanical suite: Comparator compared all three statements and their definitions, then Lean's fresh kernel, NanoDa and con-ron accepted the exports. Matching, mismatched-statement and ill-typed-proof preflight controls passed. Only propext, Classical.choice and Quot.sound were permitted. This is a local mechanical result, proposed for maintainer review; it is not Palomar registration, editorial acceptance or a signed tracker receipt. Earlier native reports and their pending status remain immutable historical evidence.",
       "attribution_note": "Nielstron is the human contributor; this research and formalization were AI-assisted. The result derives from Tim Gehrunger / ProofCouncil and the Apache-2.0 OpenAI/math and Mathlib developments; upstream notices are retained.",
       "certificate_url": "certificates/nielstron-20261009-tightening.json",
-      "solution_url": "https://github.com/GTimG/QuasiRiemannTracker/blob/d716ecaae80f7823a5b8314916364fdfa0d133fb/public/proofs/nielstron-20261009-kernels/src/PalomarCanonical852af299eac8f1607f3d35b3/Solution.lean"
+      "solution_url": "https://github.com/GTimG/QuasiRiemannTracker/blob/d716ecaae80f7823a5b8314916364fdfa0d133fb/public/proofs/nielstron-20261009-kernels/src/Solution.lean"
     }
   ]
 }

@@ -714,12 +714,6 @@ tbody tr {
   font-weight: 500;
   margin: 24px 0 8px;
 }
-.detail-body .event-warning {
-  border-left: 2px solid #d9b56b;
-  padding: 10px;
-  font-size: 0.75rem;
-  color: #9a6a12;
-}
 pre {
   background: #f2f5f6;
   padding: 14px;
@@ -854,15 +848,6 @@ dd {
 .protocol-grid a {
   font-size: 0.875rem;
 }
-.event-list {
-  border-top: 1px solid var(--line);
-  padding-top: 24px;
-  margin-top: 36px;
-}
-.event-list p {
-  font-size: 0.8125rem;
-  margin-top: 12px;
-}
 dialog {
   width: min(680px, calc(100vw - 32px));
   border: 1px solid #c9d2d7;
@@ -917,30 +902,6 @@ dialog .protocol-grid h2 {
 .error {
   background: #fff0ed;
   border-color: #e9b9ae;
-}
-.lineage svg {
-  display: block;
-  width: 100%;
-  min-height: 300px;
-}
-.lineage-node {
-  cursor: pointer;
-}
-.lineage-node text {
-  font-size: 12px;
-  fill: #475661;
-}
-.lineage-pan {
-  display: flex;
-  gap: 20px;
-  align-items: center;
-  padding: 10px 0;
-  font-size: 0.75rem;
-  color: var(--muted);
-}
-.lineage-pan input {
-  flex: 1;
-  accent-color: var(--teal);
 }
 .check {
   display: flex;

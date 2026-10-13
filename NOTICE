@@ -68,4 +68,3 @@ The imported Mathlib development is pinned to commit
 
 Mathlib's imported dependencies retain their original notices and licenses.
 These wrappers express the classical Euler-product bound.
-

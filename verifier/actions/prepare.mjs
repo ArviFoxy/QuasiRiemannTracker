@@ -1,6 +1,7 @@
 // Fetch immutable Git objects; never check out or execute the submitted project.
 import { execFileSync } from "node:child_process";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { exactBound } from "../../core/exact-bound.mjs";
 import { submission } from "../manifest.mjs";
 import { upstreamImports } from "./imports.mjs";
 const c = JSON.parse(readFileSync("verification-context/context.json", "utf8"));
@@ -18,11 +19,11 @@ if (
   !/^[a-z][a-z0-9-]{2,63}$/.test(e.result_id)
 )
   throw Error("Invalid verification identity");
-if (!/^[0-9]+\/[0-9]+$/.test(e.theta_exact)) {
-  const reason =
-    "The standard hosted worker supports rational bounds; this exact expression requires an algebraic checking profile";
-  result("infrastructure-blocked", reason);
-  console.error(reason);
+try {
+  exactBound(e.theta_exact);
+} catch (error) {
+  result("infrastructure-blocked", error.message);
+  console.error(error.message);
   process.exit(1);
 }
 class WorkerProfileUnavailable extends Error {}

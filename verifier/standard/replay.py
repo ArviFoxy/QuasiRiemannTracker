@@ -111,7 +111,7 @@ stage('compile standard candidate')
 for index, module in enumerate(contract['build_order'], 1):
     print(f"Compile {index}/{len(contract['build_order'])}: {module}", flush=True)
     started = time.monotonic()
-    assert re.fullmatch(r'Candidate(?:\.[A-Z][A-Za-z0-9_]*)+',module)
+    assert re.fullmatch(r'Candidate(?:\.[A-Za-z_][A-Za-z0-9_]*)+',module)
     relative = module.replace('.','/')
     output = work/'candidate-lib'/(relative+'.olean')
     output.parent.mkdir(parents=True,exist_ok=True)
@@ -134,6 +134,6 @@ assert sha(work/'exports/Challenge.export') == challenge_hash
 assert inputs == {str(p.relative_to(source)):sha(p) for p in source.rglob('*') if p.is_file()}
 check_libraries()
 stage('accepted')
-report={'status':'PASS','verified_at':datetime.datetime.now(datetime.timezone.utc).isoformat(),'reviewed_pr_head':contract['head_sha'],'source_commit':contract['source_commit'],'source_repository':contract['repository'],'result_id':manifest['id'],'theta_exact':manifest['theta']['numerator']+'/'+manifest['theta']['denominator'],'targets':config['theorem_names'],'allowed_axioms':config['permitted_axioms'],'kernels':['Lean default','nanoda','con-ron'],'judge_exit_code':result.returncode,'sandbox_preflight':'PASS','candidate_mount_preflight':'PASS','challenge_exported_before_candidate_execution':True,'receipt_outside_candidate':True,'source_files':inputs,'library_inventory_sha256':contract['library_inventory_sha256'],'driver_sha256':sha(Path(__file__)),'palomar_sha256':sha(ref/'scripts/verify_submission.py'),'tool_pins':approved_tools,'artifacts':{str(p.relative_to(work)):sha(p) for p in work.rglob('*') if p.is_file() and p.suffix in ['.log','.json','.lean','.export']}}
+report={'status':'PASS','verified_at':datetime.datetime.now(datetime.timezone.utc).isoformat(),'reviewed_pr_head':contract['head_sha'],'source_commit':contract['source_commit'],'source_repository':contract['repository'],'result_id':manifest['id'],'theta_exact':manifest.get('exact_bound',manifest['theta']['numerator']+'/'+manifest['theta']['denominator']),**({'bound_interval':manifest['bound_interval']} if 'bound_interval' in manifest else {}),'targets':config['theorem_names'],'allowed_axioms':config['permitted_axioms'],'kernels':['Lean default','nanoda','con-ron'],'judge_exit_code':result.returncode,'sandbox_preflight':'PASS','candidate_mount_preflight':'PASS','challenge_exported_before_candidate_execution':True,'receipt_outside_candidate':True,'source_files':inputs,'library_inventory_sha256':contract['library_inventory_sha256'],'driver_sha256':sha(Path(__file__)),'palomar_sha256':sha(ref/'scripts/verify_submission.py'),'tool_pins':approved_tools,'artifacts':{str(p.relative_to(work)):sha(p) for p in work.rglob('*') if p.is_file() and p.suffix in ['.log','.json','.lean','.export']}}
 (work/'result.json').write_text(json.dumps(report,indent=2)+'\n')
 print('Accepted '+manifest['id']+' at '+contract['head_sha'],flush=True)

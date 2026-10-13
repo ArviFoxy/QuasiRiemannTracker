@@ -3,7 +3,7 @@ import { manifest } from "./manifest.mjs";
 export const THEOREM = "QRH.canonical_bound";
 export function challenge(m) {
   m = manifest(m);
-  return standardChallenge(m.theta);
+  return standardChallenge(m.theta, m.exact_bound);
 }
 export function solutionWrapper(m) {
   m = manifest(m);

@@ -3,6 +3,7 @@ import { execFileSync } from "node:child_process";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { resolve, dirname, join } from "node:path";
 import { parseArgs } from "node:util";
+import { exactBound } from "../../core/exact-bound.mjs";
 import { submission, safePath } from "../manifest.mjs";
 import { challenge, solutionWrapper } from "../challenge.mjs";
 import { sha256 } from "../common.mjs";
@@ -39,7 +40,7 @@ const entries = git(["ls-tree", "-rz", v.head, "--", prefix])
   .toString()
   .split("\0")
   .filter(Boolean);
-if (!entries.length || entries.length > 260)
+if (!entries.length || entries.length > 512)
   throw Error("Invalid submission file count");
 for (const row of entries) {
   const match = /^(100644|100755) blob ([a-f0-9]{40})\t(.+)$/.exec(row);
@@ -49,12 +50,7 @@ for (const row of entries) {
   mkdirSync(dirname(file), { recursive: true });
   writeFileSync(file, git(["cat-file", "blob", match[2]]), { mode: 0o444 });
 }
-const match = /^([0-9]+)\/([0-9]+)$/.exec(v.bound ?? "");
-if (!match) throw Error("Provide --bound as an exact fraction");
-const s = submission(source, {
-  id: v.id,
-  theta: { numerator: match[1], denominator: match[2] },
-});
+const s = submission(source, { id: v.id, ...exactBound(v.bound) });
 const sourceCommit = v["source-commit"] ?? v.head;
 if (!/^[a-f0-9]{40}$/.test(sourceCommit))
   throw Error("Invalid original source commit");

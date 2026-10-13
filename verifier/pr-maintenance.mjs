@@ -9,6 +9,7 @@ import {
   catalogueProofRecords,
   proofRevision,
 } from "../core/catalogue-revisions.mjs";
+import { validateSubmissionMetadata } from "./submission-metadata.mjs";
 import { certificate } from "./certificate.mjs";
 
 export function maintenancePaths(files) {
@@ -50,9 +51,13 @@ export function maintenancePlan({
   // Older commits have a tracked catalogue. New commits contain one metadata
   // file per legacy proof; current admissions come from the trusted archive.
   const baseMetadata = new Set(
-    list("base", "proofs/").filter((path) =>
-      /^proofs\/[^/]+\/metadata\.json$/.test(path),
-    ),
+    [...list("base", "proofs/"), ...list("base", "submissions/")]
+      .filter(
+        (path) =>
+          /^(?:proofs|submissions)\/[^/]+\/metadata\.json$/.test(path) &&
+          JSON.parse(read("base", path)).id,
+      )
+      .map((path) => path.split("/")[1]),
   );
   const oldBaseIds = new Set(
     oldBaseJSON
@@ -63,7 +68,7 @@ export function maintenancePlan({
     admittedCatalogue ? catalogueProofRecords(admittedCatalogue) : []
   ).filter(
     (record) =>
-      !baseMetadata.has(`proofs/${proofRevision(record)}/metadata.json`) &&
+      !baseMetadata.has(proofRevision(record)) &&
       !oldBaseIds.has(proofRevision(record)),
   );
   const archiveIds = new Set(archived.map(proofRevision));
@@ -72,11 +77,19 @@ export function maintenancePlan({
     if (old) return JSON.parse(old);
     const records = [],
       historical_records = [];
-    for (const path of list(side, "proofs/").filter((path) =>
-      /^proofs\/[^/]+\/metadata\.json$/.test(path),
+    for (const path of [
+      ...list(side, "proofs/"),
+      ...list(side, "submissions/"),
+    ].filter((path) =>
+      /^(?:proofs|submissions)\/[^/]+\/metadata\.json$/.test(path),
     )) {
-      const { historical, ...record } = JSON.parse(read(side, path));
-      if (path !== `proofs/${proofRevision(record)}/metadata.json`)
+      const input = JSON.parse(read(side, path));
+      if (!input.id) {
+        validateSubmissionMetadata(input);
+        continue;
+      }
+      const { historical, ...record } = input;
+      if (path.split("/")[1] !== proofRevision(record))
         throw Error("Proof metadata path differs from its revision");
       (historical === true ? historical_records : records).push(record);
     }

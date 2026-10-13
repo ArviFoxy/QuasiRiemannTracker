@@ -132,6 +132,7 @@ jobs:
             verification/run/contract.json
             verification/run/phases.json
             verification/run/exports/
+            verification/run/judge/logs/
           if-no-files-found: warn
           retention-days: 30
   admission:

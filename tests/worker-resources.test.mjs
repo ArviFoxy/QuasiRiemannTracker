@@ -11,7 +11,7 @@ test("Lean parallelism respects affinity, ancestor quotas, memory and operator l
 from pathlib import Path
 import sys, tempfile
 sys.path.insert(0, 'verifier')
-from worker_resources import worker_threads, GIB
+from worker_resources import worker_threads, worker_capacity, GIB
 with tempfile.TemporaryDirectory() as temporary:
     root = Path(temporary)
     cgroup = root/'cgroup'
@@ -23,6 +23,14 @@ with tempfile.TemporaryDirectory() as temporary:
         return worker_threads(environ=env or {}, affinity=cpus, memory_bytes=memory,
                               cgroup_root=cgroup, membership=membership)
     assert threads() == 16
+    def kernels(cpus=16, memory=64*GIB, env=None):
+        return worker_capacity(environ=env or {}, affinity=cpus, memory_bytes=memory,
+                               cgroup_root=cgroup, membership=membership)['kernel_jobs']
+    assert kernels() == 3
+    assert kernels(cpus=4, memory=16*GIB) == 1
+    assert kernels(cpus=4, memory=16*GIB, env={'QRH_KERNEL_JOBS':'3'}) == 3
+    assert kernels(env={'QRH_WORKER_THREADS':'1'}) == 1
+    assert kernels(env={'QRH_KERNEL_JOBS':'1'}) == 1
     assert threads(cpus=4, memory=16*GIB) == 4
     assert threads(cpus=2, memory=7*GIB) == 2
     assert threads(cpus=8) == 8

@@ -222,7 +222,10 @@ test("a stronger pending submission stays in the table and cannot move the verif
   ).toBeVisible();
   const pointCount = await page.locator("[data-dot]").count();
   const before = await page.locator(".verified-frontier").getAttribute("d");
-  const best = await page.locator(".best-bound").textContent();
+  // The chart can appear before MathJax replaces the raw TeX with rendered math.
+  const bestBound = page.locator(".best-bound mjx-container");
+  await expect(bestBound).toBeVisible();
+  const best = await bestBound.textContent();
   const pending = {
     ...fixtureRecords.find((r: { id: string }) => r.id === "fixture-newest"),
     id: "pending-test-only",
@@ -246,7 +249,7 @@ test("a stronger pending submission stays in the table and cannot move the verif
   await expect(page.locator("tbody tr")).toHaveCount(fixtureRecords.length + 1);
   await expect(page.locator("[data-dot]")).toHaveCount(pointCount);
   await expect(page.locator('[data-id="pending-test-only"]')).toHaveCount(0);
-  await expect(page.locator(".best-bound")).toHaveText(best!);
+  await expect(bestBound).toHaveText(best!);
   await expect(page.locator(".verified-frontier")).toHaveAttribute(
     "d",
     before!,

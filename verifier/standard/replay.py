@@ -10,6 +10,7 @@ parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--profile', type=Path, required=True)
 parser.add_argument('--prepared', type=Path, required=True)
 parser.add_argument('--work', type=Path, required=True)
+parser.add_argument('--tool-pins', type=Path, default=Path(__file__).parent/'tool-pins.json')
 args = parser.parse_args()
 profile = json.loads(args.profile.read_text())
 prepared = args.prepared.resolve()
@@ -47,11 +48,11 @@ def check_libraries():
         assert not path.is_symlink() and sha(path) == expected, filename
 print('Authenticate pinned library snapshot',flush=True)
 check_libraries()
-v._BWRAP = Path('/usr/bin/bwrap')
+v._BWRAP = Path(profile.get('bwrap', '/usr/bin/bwrap'))
 v.VERIFICATION_LIMITS = {**v.VERIFICATION_LIMITS,'memory_high_percent':75,'memory_max_percent':85,'tasks_max':256}
 v.install_execution_deadline(budget_seconds=3600)
 bundled = {name:judge/'bin'/name for name in v.TOOLCHAIN_TOOLS}
-approved_tools=json.loads((Path(__file__).parent/'tool-pins.json').read_text())
+approved_tools=json.loads(args.tool_pins.read_text())
 selected_tools={'source_lean':old/'bin/lean','exporter':exporter,**{'judge_'+name:path for name,path in bundled.items()}}
 assert {name:sha(path) for name,path in selected_tools.items()} == approved_tools, 'Checker tool pins differ'
 python, touch = Path('/usr/bin/python3').resolve(), Path('/usr/bin/touch')

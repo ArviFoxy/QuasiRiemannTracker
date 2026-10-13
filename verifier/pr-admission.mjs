@@ -2,7 +2,7 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { rational } from "../core/rational.mjs";
-import { validateAdmission } from "./pr-evidence.mjs";
+import { currentVerification } from "./actions/result.mjs";
 import {
   decimalPrecision,
   validateDecimalApproximation,
@@ -112,7 +112,7 @@ export async function evaluatePR({
   repository,
   defaultBranch,
   root,
-  validateEvidence = validateAdmission,
+  validateEvidence = currentVerification,
 }) {
   const classification = classifyPRChanges({
     pr,
@@ -131,7 +131,7 @@ export async function evaluatePR({
     return "Maintenance requirements satisfied. Complete website checks and maintainer review before merging.";
   if (!declaration)
     throw Error(
-      "Proof, submission or catalogue changes require QRH-Result, QRH-Bound, QRH-Decimal and independently checked evidence",
+      "Proof, submission or catalogue changes require QRH-Result, QRH-Bound, QRH-Decimal and a checkable proof",
     );
   const evidence = await validateEvidence(root, {
     repository,
@@ -148,5 +148,5 @@ export async function evaluatePR({
       readFileSync(join(root, "catalogue/results.json"), "utf8"),
     ),
   });
-  return `Independent maintainer evidence accepts ${declaration.result_id} at ${declaration.theta_exact} for this exact PR head. Decimal ${declaration.theta_decimal} accurately approximates the exact bound.`;
+  return `Proof verification accepts ${declaration.result_id} at ${declaration.theta_exact} for this exact PR head. Decimal ${declaration.theta_decimal} accurately approximates the exact bound.`;
 }

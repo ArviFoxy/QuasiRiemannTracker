@@ -1,7 +1,14 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
-import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import {
+  mkdirSync,
+  mkdtempSync,
+  rmSync,
+  writeFileSync,
+  readFileSync,
+  existsSync,
+} from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 
@@ -97,6 +104,9 @@ function run(t, data, overrides = {}) {
         GITHUB_REF: "refs/heads/main",
         GITHUB_EVENT_NAME: "pull_request_target",
         GITHUB_RUN_ID: "456",
+        GITHUB_OUTPUT: join(cwd, "outputs"),
+        GITHUB_RUN_ATTEMPT: "1",
+        GITHUB_WORKFLOW_SHA: "c".repeat(40),
         QRH_PR: String(data.pr.number),
         QRH_DEFAULT_BRANCH: "main",
         QRH_TEST_FIXTURE: JSON.stringify(data),
@@ -113,6 +123,14 @@ function run(t, data, overrides = {}) {
   const result = JSON.parse(line.slice("MOCK_RESULT=".length));
   return {
     ...result,
+    context: existsSync(join(cwd, "verification-context/context.json"))
+      ? JSON.parse(
+          readFileSync(join(cwd, "verification-context/context.json"), "utf8"),
+        )
+      : null,
+    outputs: existsSync(join(cwd, "outputs"))
+      ? readFileSync(join(cwd, "outputs"), "utf8")
+      : "",
     status: child.status,
     checkWrites: result.requests.filter(
       (request) =>
@@ -224,7 +242,7 @@ test("publishes admission failure when a required label write fails", (t) => {
 });
 
 for (const draft of [false, true]) {
-  test(`PR #15 publishes the missing trusted replay failure as ${draft ? "a draft" : "ready for review"}`, (t) => {
+  test(`PR #15 publishes the live verification failure as ${draft ? "a draft" : "ready for review"}`, (t) => {
     const data = fixture([
       { filename: "proofs/candidate/Main.lean", status: "added" },
     ]);
@@ -232,10 +250,7 @@ for (const draft of [false, true]) {
     data.pr.body =
       "QRH-Result: gao-local-moment-20261011\nQRH-Bound: 4374433/5000000\nQRH-Decimal: 0.87488660";
     const result = run(t, data);
-    assertFailure(
-      result,
-      "PR admission: archive an independent maintainer replay on the base branch for this exact PR head, result ID and bound",
-    );
+    assertFailure(result, "Proof verification has not run for this PR head");
     assert.deepEqual(
       result.labelWrites.map((request) => request.body?.labels),
       [["new-bound"]],
@@ -253,7 +268,7 @@ for (const [description, maintenanceFiles, message, labels] of [
   [
     "a proof-only submission",
     [],
-    "PR admission: archive an independent maintainer replay on the base branch for this exact PR head, result ID and bound",
+    "Proof verification has not run for this PR head",
     ["new-bound"],
   ],
 ]) {
@@ -277,17 +292,14 @@ for (const [description, maintenanceFiles, message, labels] of [
   });
 }
 
-test("a theta 1 submission publishes the missing trusted replay failure", (t) => {
+test("a theta 1 submission publishes the live verification failure", (t) => {
   const data = fixture([
     { filename: "proofs/theta-one/Solution.lean", status: "added" },
   ]);
   data.pr.number = 5;
   data.pr.body = "QRH-Result: theta-one\nQRH-Bound: 1/1\nQRH-Decimal: 1.0";
   const result = run(t, data);
-  assertFailure(
-    result,
-    "PR admission: archive an independent maintainer replay on the base branch for this exact PR head, result ID and bound",
-  );
+  assertFailure(result, "Proof verification has not run for this PR head");
   assert.deepEqual(
     result.labelWrites.map((request) => request.body?.labels),
     [["new-bound"]],
@@ -336,3 +348,30 @@ test("requires the default branch before reading or publishing checks", (t) => {
   assert.deepEqual(result.checkWrites, []);
   assert.deepEqual(result.labelWrites, []);
 });
+
+for (const draft of [false, true]) {
+  test(`queues live proof verification for draft=${draft}`, (t) => {
+    const data = fixture([
+      {
+        filename: "submissions/candidate/src/Candidate/Main.lean",
+        status: "added",
+      },
+    ]);
+    data.pr.draft = draft;
+    data.pr.body = "QRH-Result: candidate\nQRH-Bound: 1/1\nQRH-Decimal: 1.0";
+    const result = run(t, data, { QRH_PHASE: "prepare" });
+    assert.equal(result.status, 0);
+    assert.equal(result.checkWrites.length, 1);
+    assert.equal(result.checkWrites[0].body.status, "in_progress");
+    assert.equal(result.outputs, "verify=true\n");
+    assert.deepEqual(result.context.expected, {
+      repository,
+      number: 15,
+      head_sha: head,
+      result_id: "candidate",
+      theta_exact: "1/1",
+    });
+    assert.equal(result.context.check_id, 123);
+    assert.equal(result.context.run_id, "456");
+  });
+}

@@ -2,7 +2,8 @@
 from pathlib import Path
 import argparse, datetime, hashlib, json, os, re, shutil, sys, time
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from worker_resources import worker_threads
+from worker_resources import worker_capacity
+from standard.judge import judge_exports
 
 if sys.flags.optimize or os.getuid() == 0:
     raise SystemExit('Use unoptimized Python as an unprivileged worker user')
@@ -51,7 +52,7 @@ print('Authenticate pinned library snapshot',flush=True)
 check_libraries()
 v._BWRAP = Path(profile.get('bwrap', '/usr/bin/bwrap'))
 v.VERIFICATION_LIMITS = {**v.VERIFICATION_LIMITS,'memory_high_percent':75,'memory_max_percent':85,'tasks_max':256}
-# Compilation, export and the three serial kernel checks share this deadline.
+# Compilation, export and all three kernel checks share this deadline.
 # Keep the Actions check step longer so timeout evidence can still be retained.
 v.install_execution_deadline(budget_seconds=7200)
 bundled = {name:judge/'bin'/name for name in v.TOOLCHAIN_TOOLS}
@@ -61,7 +62,8 @@ assert {name:sha(path) for name,path in selected_tools.items()} == approved_tool
 python, touch = Path('/usr/bin/python3').resolve(), Path('/usr/bin/touch')
 tools = v.tool_snapshot([*bundled.values(),v._BWRAP,old/'bin/lean',exporter,python,touch])
 (work/'tools.json').write_text(json.dumps({str(k):val for k,val in tools.items()},indent=2)+'\n')
-threads = worker_threads()
+capacity = worker_capacity()
+threads = capacity['threads']
 print(f'Proof compilation: using {threads} Lean threads', flush=True)
 env = {'PATH':str(old/'bin')+':/usr/bin:/bin','HOME':str(work/'home'),'TMPDIR':str(work/'tmp'),'LANG':'C.UTF-8','LEAN_NUM_THREADS':str(threads),'LEAN_ABORT_ON_PANIC':'1'}
 system = v.system_readable_paths()
@@ -122,7 +124,8 @@ log('solution-export',v.export_module('Solution',targets,output=work/'exports/So
 v.verify_export(work/'exports/Solution.export')
 assert sha(work/'exports/Challenge.export') == challenge_hash
 stage('Comparator and Lean, NanoDa, con-ron')
-result=v.judge_exports(lake=bundled['lake'],config=work/'comparator.json',challenge_export=work/'exports/Challenge.export',solution_export=work/'exports/Solution.export',scratch=work/'judge',bwrap=v._BWRAP,lean_prefix=judge,environment=env,tools=tools,timeout=3600)
+print(f"Kernel verification: {capacity['kernel_jobs']} simultaneous checks",flush=True)
+result=judge_exports(v,config=work/'comparator.json',challenge_export=work/'exports/Challenge.export',solution_export=work/'exports/Solution.export',scratch=work/'judge',bundled=bundled,lean_prefix=judge,environment=env,tools=tools,capacity=capacity,timeout=3600)
 log('judge',result)
 transcript=result.stdout+'\n'+result.stderr
 assert 'Your solution is okay!' in transcript and all(k+' kernel accepts the solution' in transcript for k in ['Lean default','nanoda','con-ron'])

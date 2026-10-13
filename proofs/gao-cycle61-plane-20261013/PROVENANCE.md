@@ -1,6 +1,6 @@
 # Authorship and source provenance
 
-**Verification status: LOCAL_FULL_PROOF_VERIFIED_HOSTED_ADMISSION_PENDING.** This describes the exact staged source and completed component checks, with completed local proof verification and tracker admission still pending.
+**Verification status: CI_REPAIR_COMPONENTS_PASS_FULL_REPLAY_PENDING.** The 206-module R7 source retains the exact boundary and original public declaration types. All 14 changed or added modules compile locally; full revised-source replay and independent kernels remain pending. See [CI-REPAIR.md](CI-REPAIR.md).
 
 Zhongpai Gao, with AI assistance, prepared the present parameter refinement, source integration and concise note. AI assistance contributed to the numerical search, exact rational derivations, Lean transformations and verification engineering. This credits the new refinement without assigning the inherited analytic construction to its new author.
 
@@ -14,7 +14,7 @@ The new source changes are:
 - New global rational quadratic certificates at the top, old junction and half row, retaining the downstream theorem names and endpoint/feedback interfaces.
 - Canonical final theorem specializations at the new exact boundary.
 
-The frozen candidate comprises all 194 Lean files and changes 64 relative to the submitted Cycle61 snapshot. Source comments, mathematical namespaces, licenses and original module provenance markers are retained. The markers identify original pre-adaptation material; current file identities are given by `source-pin.json` and the publication manifest.
+The prior R6 candidate comprised 194 Lean files and changed 64 relative to the submitted Cycle61 snapshot. The current R7 compilation repair retains those original module paths, revises B167/B176 and adds 12 parts, for 206 modules. Source comments, mathematical namespaces, licenses and original module provenance markers are retained. The markers identify original pre-adaptation material; current file identities are given by `source-pin.json` and the publication manifest.
 
 Retained mathematical sources include:
 

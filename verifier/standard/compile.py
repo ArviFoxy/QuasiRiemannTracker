@@ -13,17 +13,19 @@ def compile_modules(order, dependencies, compile_one, *, jobs):
     done, running = set(), {}
     with ThreadPoolExecutor(max_workers=jobs) as pool:
         while pending or running:
-            for name in order:
-                if len(running) >= jobs:
-                    break
-                if name in pending and set(dependencies[name]) <= done:
-                    running[pool.submit(compile_one, name)] = name
-                    pending.remove(name)
+            available = jobs - sum(threads for _, threads in running.values())
+            ready = [name for name in order if name in pending and set(dependencies[name]) <= done]
+            slots = min(available, len(ready))
+            for index, name in enumerate(ready[:slots]):
+                threads = available // (slots - index)
+                running[pool.submit(compile_one, name, threads)] = (name, threads)
+                available -= threads
+                pending.remove(name)
             if not running:
                 raise ValueError('Cyclic module build graph')
             completed, _ = wait(running, return_when=FIRST_COMPLETED)
             for future in completed:
-                name = running.pop(future)
+                name, _ = running.pop(future)
                 future.result()
                 done.add(name)
 

@@ -12,7 +12,9 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 from threading import Barrier, Lock
 barrier=Barrier(2);done=set();lock=Lock()
-def compile(name):
+def compile(name, threads):
+    if name in ['First', 'Second']: assert threads==1
+    else: assert threads==2
     if name in ['First', 'Second']: barrier.wait(timeout=5)
     if name=='Main': assert done=={'First','Second'}
     with lock: done.add(name)

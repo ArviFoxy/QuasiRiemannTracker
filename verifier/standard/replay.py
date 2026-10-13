@@ -109,9 +109,9 @@ candidate_env={**env,'LEAN_PATH':':'.join(map(str,[work/'candidate-lib',*libs]))
 stage('candidate mount controls')
 v.verify_sandbox_confinement(source/'denied-write',work/'denied-read',positive_read=source/'src/Candidate/Main.lean',python=python,touch=touch,cwd=source,environment=candidate_env,writable_directories=[work/'candidate-lib',work/'home',work/'tmp'],protected_write_directories=[source,work/'challenge-lib',*libs],readable_paths=[source,work/'challenge-lib',*libs,*system],executable_paths=[old,Path('/usr')],tools=tools)
 stage('compile standard candidate')
-jobs = min(threads, len(contract['build_order']))
-print(f'Compiling up to {jobs} modules concurrently', flush=True)
-def compile_one(module):
+jobs = threads
+print(f"Compiling up to {min(jobs, len(contract['build_order']))} modules concurrently", flush=True)
+def compile_one(module, module_threads):
     started = time.monotonic()
     assert re.fullmatch(r'(?:Candidate|Submissions)(?:\.[A-Za-z_][A-Za-z0-9_]*)+', module)
     relative = module.replace('.', '/')
@@ -119,14 +119,14 @@ def compile_one(module):
     for part in ['out', 'home', 'tmp']:
         (scratch/part).mkdir(parents=True, exist_ok=True)
     output = scratch/'out'/('module.olean')
-    environment = {**candidate_env, 'HOME':str(scratch/'home'), 'TMPDIR':str(scratch/'tmp'), 'LEAN_NUM_THREADS':str(max(1, threads // jobs))}
-    print(f'Compile {module}', flush=True)
+    environment = {**candidate_env, 'HOME':str(scratch/'home'), 'TMPDIR':str(scratch/'tmp'), 'LEAN_NUM_THREADS':str(module_threads)}
+    print(f'Compile {module} ({module_threads} threads)', flush=True)
     log('compile-'+module, v.sandboxed_run([str(old/'bin/lean'), '-o', str(output), relative+'.lean'],
         cwd=source/'src', environment=environment,
         writable_directories=[scratch/'out', scratch/'home', scratch/'tmp'],
         readable_paths=[work/'candidate-lib', *libs, *system], executable_paths=[old, Path('/usr')],
         tools=tools, timeout=600,
-        resource_properties=(f"MemoryMax={max(1024**3, capacity['memory_bytes'] * 3 // 4 // jobs)}",)))
+        resource_properties=(f"MemoryMax={max(1024**3, capacity['memory_bytes'] * 3 // 4 * module_threads // jobs)}",)))
     publish_module(output, work/'candidate-lib'/(relative+'.olean'))
     shutil.rmtree(scratch)
     print(f'Compiled {module} in {time.monotonic()-started:.1f}s', flush=True)

@@ -87,6 +87,9 @@ jobs:
         id: source
         continue-on-error: true
         run: node verifier/actions/prepare.mjs
+      - name: Restore the shared checking environment
+        if: steps.source.outcome == 'success'
+        uses: ./.github/actions/verifier-cache
       - name: Install worker prerequisites
         id: prerequisites
         if: steps.source.outcome == 'success'

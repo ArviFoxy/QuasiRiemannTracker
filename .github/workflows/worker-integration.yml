@@ -7,6 +7,8 @@ on:
       - "tests/actions-worker.py"
       - ".github/workflows/pr-admission.yml"
       - ".github/workflows/worker-integration.yml"
+      - ".github/workflows/verifier-cache.yml"
+      - ".github/actions/verifier-cache/**"
   workflow_dispatch:
 permissions:
   contents: read
@@ -23,6 +25,8 @@ jobs:
           node-version: 22.17.0
       - run: npm ci --ignore-scripts --no-audit --no-fund
       - run: python3 tests/actions-worker.py prepare
+      - name: Restore the shared checking environment
+        uses: ./.github/actions/verifier-cache
       - name: Install worker prerequisites
         run: |
           sudo apt-get update -qq

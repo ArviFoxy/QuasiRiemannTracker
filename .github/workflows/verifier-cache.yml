@@ -1,0 +1,53 @@
+name: Shared checking environment
+on:
+  push:
+    branches: [main]
+    paths:
+      - "verifier/actions/**"
+      - "verifier/pins.json"
+      - "verifier/worker_resources.py"
+      - "verifier/standard/tool-pins.json"
+      - "verifier/standard/lakefile.lean"
+      - "verifier/standard/lake-manifest.json"
+      - "submissions/**"
+      - ".github/actions/verifier-cache/**"
+      - ".github/workflows/verifier-cache.yml"
+  schedule:
+    - cron: "23 3 * * 1"
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: shared-checking-environment
+  cancel-in-progress: false
+jobs:
+  publish:
+    if: github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 270
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 22.17.0
+      - uses: ./.github/actions/verifier-cache
+        id: cache
+      - name: Install build prerequisites
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends meson ninja-build libcap-dev pkg-config zstd libgmp-dev python3-yaml
+      - name: Build the shared upstream dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        timeout-minutes: 240
+        run: python3 verifier/actions/setup.py --warm-cache
+      # This job executes protected upstream code and finishes before any PR
+      # source is compiled. Consumers use the restore-only action.
+      - name: Publish for all proof workers
+        if: steps.cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+        with:
+          path: ${{ steps.cache.outputs.path }}
+          key: ${{ steps.cache.outputs.key }}

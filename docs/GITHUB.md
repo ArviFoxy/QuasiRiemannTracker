@@ -44,6 +44,9 @@ actual changed paths. A PR containing both kinds of changes receives both labels
 and fails admission. A result declaration or `New bound` section also fails if
 the PR contains any maintenance changes, including a maintenance-only PR.
 
+Draft and ready-for-review PRs run the same admission checks. Maintainers can
+also dispatch proof verification for either status.
+
 The admission workflow runs on `pull_request_target` for `opened`, `reopened`,
 `synchronize`, `edited`, `ready_for_review` and `converted_to_draft`, and supports a maintainer
 `workflow_dispatch` with a PR number. The admission validator executes from the

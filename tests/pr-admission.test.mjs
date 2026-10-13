@@ -329,45 +329,49 @@ test("PR #8's proof-only 29/33 submission reaches the missing trusted replay req
   });
 });
 
-test("PR #15's declaration reaches the missing trusted replay requirement when ready for review", async () => {
-  const input = options(
-    newBound.replace(resultId, "gao-local-moment-20261011"),
-    [
-      file(
-        "proofs/gao-local-moment-20261011-v3/formalization/LocalMoment/SourceAudit.lean",
-      ),
-    ],
-  );
-  delete input.validateEvidence;
-  await assert.rejects(run(input), {
-    message:
-      "PR admission: archive an independent maintainer replay on the base branch for this exact PR head, result ID and bound",
+for (const draft of [false, true]) {
+  test(`PR #15's declaration requires a trusted replay as ${draft ? "a draft" : "ready for review"}`, async () => {
+    const input = options(
+      newBound.replace(resultId, "gao-local-moment-20261011"),
+      [
+        file(
+          "proofs/gao-local-moment-20261011-v3/formalization/LocalMoment/SourceAudit.lean",
+        ),
+      ],
+    );
+    input.pr.draft = draft;
+    delete input.validateEvidence;
+    await assert.rejects(run(input), {
+      message:
+        "PR admission: archive an independent maintainer replay on the base branch for this exact PR head, result ID and bound",
+    });
   });
-});
 
-test("new-bound admission binds evidence to the repository, PR, current head, result and value", async () => {
-  const input = options(newBound, [file("proofs/candidate/Main.lean")]);
-  const calls = [];
-  input.validateEvidence = (...args) => {
-    calls.push(args);
-    return { result_id: resultId, theta_exact: bound };
-  };
-  const summary = await run(input);
-  assert.equal(typeof summary, "string");
-  assert.ok(summary.length > 0);
-  assert.deepEqual(calls, [
-    [
-      root,
-      {
-        repository,
-        number: 15,
-        head_sha: head,
-        result_id: resultId,
-        theta_exact: bound,
-      },
-    ],
-  ]);
-});
+  test(`new-bound admission binds evidence to the repository, PR, current head, result and value for draft=${draft}`, async () => {
+    const input = options(newBound, [file("proofs/candidate/Main.lean")]);
+    input.pr.draft = draft;
+    const calls = [];
+    input.validateEvidence = (...args) => {
+      calls.push(args);
+      return { result_id: resultId, theta_exact: bound };
+    };
+    const summary = await run(input);
+    assert.equal(typeof summary, "string");
+    assert.ok(summary.length > 0);
+    assert.deepEqual(calls, [
+      [
+        root,
+        {
+          repository,
+          number: 15,
+          head_sha: head,
+          result_id: resultId,
+          theta_exact: bound,
+        },
+      ],
+    ]);
+  });
+}
 
 for (const [theta, decimal] of [
   ["29/33", "0.87878787"],

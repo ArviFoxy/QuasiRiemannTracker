@@ -120,7 +120,6 @@ export async function evaluatePR({
     repository,
     defaultBranch,
   });
-  if (pr.draft) throw Error("Mark the PR ready for review before admission");
   if (classification.maintenance && hasResultSection(pr.body))
     throw Error("Submit QRH results and maintenance changes in separate PRs");
   if (classification.proof && classification.maintenance)

@@ -15,7 +15,6 @@ if (
 )
   throw Error("Trusted default-branch orchestration required");
 const source = await inspectPR(repo, pr);
-if (source.is_draft) throw Error("Draft submission");
 const dir = mkdtempSync(path.join(tmpdir(), "qrh-source-"));
 mkdirSync("out", { recursive: true });
 try {

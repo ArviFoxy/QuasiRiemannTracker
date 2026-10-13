@@ -95,7 +95,7 @@ test("current results, verification statuses and source downloads", async ({
   );
   await page
     .getByRole("button", {
-      name: "Nielstron · exact algebraic endpoint",
+      name: "nielstron · exact algebraic endpoint",
       exact: true,
     })
     .click();

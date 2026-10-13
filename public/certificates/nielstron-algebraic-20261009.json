@@ -3,7 +3,7 @@
   "result_id": "nielstron-algebraic-20261009",
   "theta_exact": "874957019420098946128603850561452983/1000000000000000000000000000000000000",
   "verified_at": "2026-10-09T19:51:12.662856+00:00",
-  "source_repository": "Nielstron/QuasiRiemannTracker",
+  "source_repository": "nielstron/QuasiRiemannTracker",
   "source_commit": "2fc2b0b7f2b9510df4618936e1b2ccd58f7d9171",
   "kernels": [
     "Lean default",

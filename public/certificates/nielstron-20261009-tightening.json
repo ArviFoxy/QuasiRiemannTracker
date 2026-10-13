@@ -3,7 +3,7 @@
   "result_id": "nielstron-20261009-tightening",
   "theta_exact": "874957019420098946128604623/1000000000000000000000000000",
   "verified_at": "2026-10-09T18:25:39.673785+00:00",
-  "source_repository": "Nielstron/QuasiRiemannTracker",
+  "source_repository": "nielstron/QuasiRiemannTracker",
   "source_commit": "49331e02e2c04bb2388ae9c6e9ea424c23b96ac6",
   "kernels": [
     "Lean default",

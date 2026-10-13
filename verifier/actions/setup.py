@@ -1,6 +1,9 @@
 """Build the pinned checker environment before any submitted code executes."""
 from pathlib import Path
 import hashlib, json, os, shlex, shutil, subprocess, sys, time
+warm_cache = sys.argv[1:] == ['--warm-cache']
+if sys.argv[1:] and not warm_cache:
+    raise SystemExit('Usage: setup.py [--warm-cache]')
 ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / 'verification'
 ENV_ROOT = Path(os.environ.get('QRH_WORKER_ROOT', str(OUT / 'environment'))).resolve()
@@ -76,7 +79,7 @@ run(source/'bin/lake','exe','cache','get',cwd=project,env=env)
 # Build only protected upstream modules. Submitted module names select files
 # from this fixed tree; all mathematical checking happens later in confinement.
 modules = set()
-for name in json.loads((OUT/'imports.json').read_text()):
+for name in json.loads((OUT/('cache-imports.json' if warm_cache else 'imports.json')).read_text()):
     while name.startswith('OAI.'):
         if (project/(name.replace('.','/')+'.lean')).is_file():
             modules.add(name); break
@@ -88,6 +91,9 @@ if modules: run(source/'bin/lake','build',*sorted(modules),cwd=project,env=env)
 run(source/'bin/lake','build','Challenge',cwd=project,env=env)
 (project/'Challenge.lean').unlink()
 for p in (project/'.lake/build').rglob('Challenge.*'): p.unlink()
+if warm_cache:
+    print('Shared checking environment ready',flush=True)
+    sys.exit(0)
 libraries = sorted(p.resolve() for p in packages.glob('*/.lake/build/lib/lean') if p.is_dir())
 local = project/'.lake/build/lib/lean'
 if local.exists(): libraries.append(local.resolve())

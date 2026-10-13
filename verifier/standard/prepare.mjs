@@ -41,11 +41,14 @@ const sourceCommit = v["source-commit"] ?? v.head;
 if (!/^[a-f0-9]{40}$/.test(sourceCommit))
   throw Error("Invalid original source commit");
 const trees = {};
-let total = 0;
+let total = 0,
+  fileCount = 0;
 const graph = dependencyGraph(v.id, (id) => {
   const prefix = `submissions/${id}/`;
   const entries = git(["ls-tree", "-rz", v.head, "--", prefix]).toString();
   const rows = entries.split("\0").filter(Boolean);
+  fileCount += rows.length;
+  if (fileCount > 16384) throw Error("Submission dependency file count limit");
   if (!rows.length || rows.length > 8192)
     throw Error(`Invalid submission file count: ${id}`);
   if (

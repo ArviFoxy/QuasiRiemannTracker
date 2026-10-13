@@ -195,11 +195,14 @@ test("a proof on the second changed-files page adds both labels and fails mixed 
   );
 });
 
-test("an open draft receives its maintenance label while admission fails", (t) => {
+test("an open maintenance draft publishes successful admission and receives its label", (t) => {
   const data = fixture();
   data.pr.draft = true;
   const result = run(t, data);
-  assertFailure(result, "Mark the PR ready for review before admission");
+  assert.equal(result.status, 0);
+  assert.equal(result.importError, undefined);
+  assert.equal(result.checkWrites.at(-1).body.status, "completed");
+  assert.equal(result.checkWrites.at(-1).body.conclusion, "success");
   assert.deepEqual(
     result.labelWrites.map((request) => request.body?.labels),
     [["maintenance"]],
@@ -220,22 +223,25 @@ test("publishes admission failure when a required label write fails", (t) => {
   );
 });
 
-test("PR #15 publishes the missing trusted replay failure when ready for review", (t) => {
-  const data = fixture([
-    { filename: "proofs/candidate/Main.lean", status: "added" },
-  ]);
-  data.pr.body =
-    "QRH-Result: gao-local-moment-20261011\nQRH-Bound: 4374433/5000000\nQRH-Decimal: 0.87488660";
-  const result = run(t, data);
-  assertFailure(
-    result,
-    "PR admission: archive an independent maintainer replay on the base branch for this exact PR head, result ID and bound",
-  );
-  assert.deepEqual(
-    result.labelWrites.map((request) => request.body?.labels),
-    [["new-bound"]],
-  );
-});
+for (const draft of [false, true]) {
+  test(`PR #15 publishes the missing trusted replay failure as ${draft ? "a draft" : "ready for review"}`, (t) => {
+    const data = fixture([
+      { filename: "proofs/candidate/Main.lean", status: "added" },
+    ]);
+    data.pr.draft = draft;
+    data.pr.body =
+      "QRH-Result: gao-local-moment-20261011\nQRH-Bound: 4374433/5000000\nQRH-Decimal: 0.87488660";
+    const result = run(t, data);
+    assertFailure(
+      result,
+      "PR admission: archive an independent maintainer replay on the base branch for this exact PR head, result ID and bound",
+    );
+    assert.deepEqual(
+      result.labelWrites.map((request) => request.body?.labels),
+      [["new-bound"]],
+    );
+  });
+}
 
 for (const [description, maintenanceFiles, message, labels] of [
   [

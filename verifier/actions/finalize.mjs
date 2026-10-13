@@ -1,5 +1,6 @@
 // Runs in the publishing job, using only base-branch code and same-run artifacts.
-import { readFileSync, existsSync, writeFileSync } from "node:fs";
+import { readFileSync, existsSync, writeFileSync, mkdirSync } from "node:fs";
+import { join } from "node:path";
 import { api } from "../github-api.mjs";
 import { parseDeclaration } from "../pr-admission.mjs";
 import { validateDecimalApproximation } from "../pr-decimal.mjs";
@@ -34,39 +35,60 @@ try {
     throw Error(
       "PR head, base or declaration changed during verification; rerun admission",
     );
-  const attempt = existsSync("verification/attempt.json")
-    ? JSON.parse(readFileSync("verification/attempt.json", "utf8"))
-    : null;
-  const report = verificationResult(
-    process.cwd(),
-    c.expected,
-    attempt,
-    process.env.QRH_VERIFICATION_RESULT,
-  );
   const declaration = parseDeclaration(p.body);
-  validateDecimalApproximation({
-    ...declaration,
-    bound_interval: report.bound_interval,
-    catalogue: JSON.parse(readFileSync("catalogue/results.json", "utf8")),
-  });
-  const record =
-    attempt.status === "accepted"
-      ? workerCertificate(
-          c.expected,
-          report,
-          `https://github.com/${c.repository}/actions/runs/${c.run_id}/attempts/${c.run_attempt}`,
-          readFileSync("verification/run/result.json"),
-        )
-      : report;
-  writeFileSync(
-    "verification/certificate.json",
-    JSON.stringify(record, null, 2) + "\n",
-  );
+  const expectations = c.expectations;
+  if (!Array.isArray(expectations) || !expectations.length)
+    throw Error("Verification context has no proof targets");
+  const summaries = [];
+  mkdirSync("verification/certificates", { recursive: true });
+  for (const expected of expectations) {
+    const directory = `verification-results/proof-verification-${c.run_attempt}-${expected.result_id}`;
+    const attemptPath = join(directory, "attempt.json");
+    const attempt = existsSync(attemptPath)
+      ? JSON.parse(readFileSync(attemptPath, "utf8"))
+      : null;
+    const completion = existsSync(join(directory, "worker-status.json"))
+      ? JSON.parse(readFileSync(join(directory, "worker-status.json"), "utf8"))
+          .result
+      : "failure";
+    const report = verificationResult(
+      process.cwd(),
+      expected,
+      attempt,
+      completion,
+    );
+    if (declaration)
+      validateDecimalApproximation({
+        ...declaration,
+        bound_interval: report.bound_interval,
+        catalogue: JSON.parse(readFileSync("catalogue/results.json", "utf8")),
+      });
+    const record =
+      attempt.status === "accepted"
+        ? workerCertificate(
+            expected,
+            report,
+            `https://github.com/${c.repository}/actions/runs/${c.run_id}/attempts/${c.run_attempt}`,
+            readFileSync(join(directory, "run/result.json")),
+          )
+        : report;
+    writeFileSync(
+      `verification/certificates/${expected.result_id}.json`,
+      JSON.stringify(record, null, 2) + "\n",
+    );
+    summaries.push(
+      `Proof verification accepts ${expected.result_id} at ${expected.theta_exact} for this exact PR head.`,
+    );
+    if (attempt.status !== "accepted")
+      summaries.push(
+        "A matching independently verified local run supplied the result because hosted verification was unavailable.",
+      );
+  }
   conclusion = "success";
-  summary = `Proof verification accepts ${c.expected.result_id} at ${c.expected.theta_exact} for this exact PR head. Decimal ${declaration.theta_decimal} accurately approximates the exact bound.`;
-  if (attempt.status !== "accepted")
-    summary +=
-      " A matching independently verified local run supplied the result because hosted verification was unavailable.";
+  summary = summaries.join(" ");
+  if (declaration)
+    summary += ` Decimal ${declaration.theta_decimal} accurately approximates the exact bound.`;
+  else summary = `Maintenance validations passed. ${summary}`;
 } catch (error) {
   summary = `Admission failed: ${error.message}`;
   process.exitCode = 1;

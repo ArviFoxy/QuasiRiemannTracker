@@ -4,6 +4,7 @@ QRH-Decimal: decimal-approximation
 
 <!-- For maintenance, remove the three lines above and describe the change.
 PRs without result declarations are maintenance and can update any repository paths.
+Changed proofs are checked against their catalogue bounds. Catalogue and verification records are validated.
 For a result, add submissions/<result-id>/src/Candidate/Main.lean with theorem
 Candidate.bound and any supporting Candidate modules. Submission files are Lean source.
 Give the exact reduced fraction (e.g. 4374433/5000000) or exact algebraic expression.

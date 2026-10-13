@@ -64,6 +64,7 @@ function options(body = maintenance, files = [file("README.md")]) {
       base: { ref: defaultBranch, repo: { full_name: repository } },
       head: { sha: head },
     },
+    validateMaintenance: mock.fn(() => []),
     validateEvidence: mock.fn(() => {
       throw new Error("Unexpected evidence validation");
     }),
@@ -293,6 +294,7 @@ for (const [description, files] of [
         maintenance: true,
       });
       assert.match(await run(input), /Maintenance requirements satisfied/);
+      assert.equal(input.validateMaintenance.mock.callCount(), 1);
       assert.equal(input.validateEvidence.mock.callCount(), 0);
     });
   }
@@ -568,3 +570,55 @@ for (const [description, mutate, message] of [
     await rejectsBeforeEvidence(input, message);
   });
 }
+
+for (const draft of [false, true]) {
+  test(`maintenance checks every affected proof for draft=${draft}`, async () => {
+    const input = options("", [
+      file("submissions/first/src/Candidate/Main.lean"),
+      file("src/App.tsx"),
+    ]);
+    input.pr.draft = draft;
+    input.validateMaintenance = () => [
+      { result_id: "first", theta_exact: "1/1" },
+      { result_id: "second", theta_exact: "7/8" },
+    ];
+    input.validateEvidence = mock.fn(() => ({}));
+    assert.match(await run(input), /2 proof/);
+    assert.deepEqual(
+      input.validateEvidence.mock.calls.map((c) => c.arguments[1]),
+      [
+        {
+          repository,
+          number: 15,
+          head_sha: head,
+          result_id: "first",
+          theta_exact: "1/1",
+        },
+        {
+          repository,
+          number: 15,
+          head_sha: head,
+          result_id: "second",
+          theta_exact: "7/8",
+        },
+      ],
+    );
+    input.validateEvidence = () => {
+      throw Error("Forbidden axiom: sorryAx");
+    };
+    await assert.rejects(run(input), /Forbidden axiom: sorryAx/);
+  });
+}
+test("maintenance propagates invalid bound metadata before proof checking", async () => {
+  const input = options("", [
+    file("catalogue/results.json"),
+    file("src/App.tsx"),
+  ]);
+  input.validateMaintenance = () => {
+    throw Error("Verification record differs from catalogue: first");
+  };
+  await rejectsBeforeEvidence(
+    input,
+    "Verification record differs from catalogue: first",
+  );
+});

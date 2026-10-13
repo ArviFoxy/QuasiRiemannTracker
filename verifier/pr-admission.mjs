@@ -2,6 +2,7 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { rational } from "../core/rational.mjs";
+import { maintenanceVerification } from "./pr-maintenance.mjs";
 import { currentVerification } from "./actions/result.mjs";
 import {
   decimalPrecision,
@@ -49,7 +50,7 @@ export function hasResultSection(body) {
 
 function proofPath(name) {
   return (
-    /^(?:proofs|public\/proofs|submissions|catalogue|registry\/records)(?:\/|$)/.test(
+    /^(?:proofs|public\/proofs|public\/certificates|submissions|catalogue|registry\/records)(?:\/|$)/.test(
       name,
     ) ||
     ["public/catalogue.json", "public/registry.json"].includes(name) ||
@@ -112,6 +113,8 @@ export async function evaluatePR({
   defaultBranch,
   root,
   validateEvidence = currentVerification,
+  validateMaintenance = maintenanceVerification,
+  validateProofs,
 }) {
   const classification = classifyPRChanges({
     pr,
@@ -122,12 +125,20 @@ export async function evaluatePR({
   if (classification.maintenance && hasResultSection(pr.body))
     throw Error("Submit QRH results and maintenance changes in separate PRs");
   const declaration = parseDeclaration(pr.body);
-  if (!classification.proof)
-    return "Maintenance requirements satisfied. Complete website checks and maintainer review before merging.";
-  if (!declaration)
-    throw Error(
-      "Proof, submission or catalogue changes require QRH-Result, QRH-Bound, QRH-Decimal and a checkable proof",
-    );
+  if (!declaration) {
+    const plan = await validateMaintenance(root, { pr, files, repository });
+    const expected = plan.map((item) => ({
+      repository,
+      number: pr.number,
+      head_sha: pr.head.sha,
+      ...item,
+    }));
+    if (expected.length) {
+      if (validateProofs) await validateProofs(root, expected);
+      else for (const item of expected) await validateEvidence(root, item);
+    }
+    return `Maintenance requirements satisfied. Validated affected catalogue data and ${expected.length} proof(s).`;
+  }
   const evidence = await validateEvidence(root, {
     repository,
     number: pr.number,

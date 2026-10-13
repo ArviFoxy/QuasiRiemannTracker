@@ -42,6 +42,27 @@ const harness = `
 const fixture = JSON.parse(process.env.QRH_TEST_FIXTURE);
 const number = fixture.pr.number;
 const requests = [];
+const cp = (await import("node:child_process")).default;
+const originalExec = cp.execFileSync;
+cp.execFileSync = (command, args, options) => {
+  if (command !== "git") return originalExec(command, args, options);
+  const offset = args.indexOf("core.hooksPath=/dev/null") + 1;
+  const op = args.slice(offset);
+  const snapshots = fixture.snapshots || {base:{"catalogue/results.json":{schema_version:1,records:[]}},head:{"catalogue/results.json":{schema_version:1,records:[]}}};
+  const side = sha => sha === fixture.pr.head.sha ? "head" : "base";
+  if (op[0] === "ls-tree") {
+    const ref = op[op.indexOf("--")-1], path = op.at(-1), data = snapshots[side(ref)];
+    if (op.includes("-r")) return Object.keys(data).filter(p=>p.startsWith(path)).join(String.fromCharCode(10));
+    return Object.hasOwn(data, path) ? "100644 blob " + "d".repeat(40) + String.fromCharCode(9) + path + String.fromCharCode(10) : "";
+  }
+  if (op[0] === "show") {
+    const split = op[1].indexOf(":"), ref = op[1].slice(0,split), path = op[1].slice(split+1);
+    return JSON.stringify(snapshots[side(ref)][path]);
+  }
+  if (["init","remote","config","fetch"].includes(op[0])) return "";
+  throw Error("Unexpected git call: " + JSON.stringify(op));
+};
+(await import("node:module")).syncBuiltinESMExports();
 let prReads = 0;
 globalThis.fetch = async (url, options = {}) => {
   const request = {
@@ -194,7 +215,7 @@ test("unmarked cleanup across multiple file pages receives maintenance and succe
     filename: `docs/page-${i}.md`,
     status: "modified",
   }));
-  files.push({ filename: "proofs/candidate/Main.lean", status: "added" });
+  files.push({ filename: "proofs/candidate/Main.lean", status: "removed" });
   const result = run(t, fixture(files), { QRH_PHASE: "prepare" });
   assert.equal(result.status, 0);
   assert.equal(result.checkWrites.at(-1).body.conclusion, "success");
@@ -362,7 +383,7 @@ for (const draft of [false, true]) {
     assert.equal(result.status, 0);
     assert.equal(result.checkWrites.length, 1);
     assert.equal(result.checkWrites[0].body.status, "in_progress");
-    assert.equal(result.outputs, "verify=true\n");
+    assert.equal(result.outputs, 'verify=true\nmatrix=["candidate"]\n');
     assert.deepEqual(result.context.expected, {
       repository,
       number: 15,
@@ -397,5 +418,55 @@ for (const draft of [false, true]) {
         ["DELETE", undefined],
       ],
     );
+  });
+}
+
+for (const draft of [false, true]) {
+  test(`maintenance queues source checks while retaining maintenance label for draft=${draft}`, (t) => {
+    const data = fixture([
+      {
+        filename: "submissions/candidate/src/Candidate/Main.lean",
+        status: "modified",
+      },
+      { filename: "src/App.tsx", status: "modified" },
+    ]);
+    data.pr.draft = draft;
+    data.pr.body = "";
+    const catalogue = {
+      schema_version: 1,
+      records: [
+        {
+          id: "candidate",
+          theta: { numerator: "1", denominator: "1" },
+          status: "verification-pending",
+          timeline_at: "2026-10-01T00:00:00Z",
+          date_label: "Submitted",
+          verification_note: "Pending",
+          authors: [{ name: "Author" }],
+          references: [{ url: "https://example.com/proof" }],
+          title: "Candidate",
+          method: "Proof",
+          builds_on: [],
+        },
+      ],
+    };
+    data.snapshots = {
+      base: { "catalogue/results.json": catalogue },
+      head: {
+        "catalogue/results.json": catalogue,
+        "submissions/candidate/src/Candidate/Main.lean": "theorem",
+      },
+    };
+    const result = run(t, data, { QRH_PHASE: "prepare" });
+    assert.equal(result.status, 0, JSON.stringify(result));
+    assert.equal(result.checkWrites.length, 1);
+    assert.deepEqual(
+      result.labelWrites.map((r) => r.body?.labels),
+      [["maintenance"]],
+    );
+    assert.equal(result.context.expectations.length, 1);
+    assert.equal(result.context.expected.theta_exact, "1/1");
+    assert.equal(result.context.expected.head_sha, head);
+    assert.match(result.outputs, /matrix=\["candidate"\]/);
   });
 }

@@ -44,3 +44,49 @@ test("algebraic bounds retain their local verification profile", (t) => {
   assert.equal(attempt.theta_exact, expected.theta_exact);
   assert.match(attempt.reason, /requires an algebraic checking profile/);
 });
+
+test("a worker selects its own result from a maintenance batch before preparation", (t) => {
+  const cwd = mkdtempSync(join(tmpdir(), "qrh-select-"));
+  t.after(() => rmSync(cwd, { recursive: true, force: true }));
+  mkdirSync(join(cwd, "verification-context"));
+  const path = join(cwd, "verification-context/context.json");
+  const expected = {
+    repository: "GTimG/QuasiRiemannTracker",
+    number: 15,
+    head_sha: "a".repeat(40),
+    result_id: "algebraic-bound",
+    theta_exact: "sqrt(3)/2",
+  };
+  writeFileSync(
+    path,
+    JSON.stringify({
+      expected: { ...expected, result_id: "first-proof", theta_exact: "1/1" },
+      expectations: [
+        { ...expected, result_id: "first-proof", theta_exact: "1/1" },
+        expected,
+      ],
+    }),
+  );
+  const select = fileURLToPath(
+    new URL("../verifier/actions/select.mjs", import.meta.url),
+  );
+  const selected = spawnSync(process.execPath, [select], {
+    cwd,
+    encoding: "utf8",
+    env: { QRH_RESULT_ID: "algebraic-bound" },
+  });
+  assert.equal(selected.status, 0, selected.stderr);
+  assert.deepEqual(JSON.parse(readFileSync(path)).expected, expected);
+  const prepared = spawnSync(process.execPath, [entrypoint], {
+    cwd,
+    encoding: "utf8",
+    env: { PATH: "/nonexistent" },
+  });
+  assert.equal(prepared.status, 1);
+  const attempt = JSON.parse(
+    readFileSync(join(cwd, "verification/attempt.json")),
+  );
+  assert.equal(attempt.result_id, "algebraic-bound");
+  assert.equal(attempt.theta_exact, "sqrt(3)/2");
+  assert.equal(attempt.status, "infrastructure-blocked");
+});

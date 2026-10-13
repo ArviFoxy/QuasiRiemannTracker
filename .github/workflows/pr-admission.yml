@@ -30,6 +30,7 @@ jobs:
       checks: write
     outputs:
       verify: ${{ steps.prepare.outputs.verify }}
+      matrix: ${{ steps.prepare.outputs.matrix }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -57,11 +58,13 @@ jobs:
     needs: prepare
     if: needs.prepare.outputs.verify == 'true'
     runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        result: ${{ fromJSON(needs.prepare.outputs.matrix) }}
     timeout-minutes: 150
     permissions:
       contents: read
-    outputs:
-      check: ${{ steps.check.outcome }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -75,6 +78,10 @@ jobs:
           name: verification-context-${{ github.run_attempt }}
           path: verification-context/
       - run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Select the affected result
+        run: node verifier/actions/select.mjs
+        env:
+          QRH_RESULT_ID: ${{ matrix.result }}
       - name: Read the exact submitted Lean source
         id: source
         continue-on-error: true
@@ -101,11 +108,19 @@ jobs:
         continue-on-error: true
         timeout-minutes: 65
         run: python3 verifier/actions/run.py
+      - name: Record worker completion
+        if: always()
+        run: |
+          mkdir -p verification
+          node --input-type=module -e 'import {writeFileSync} from "node:fs"; writeFileSync("verification/worker-status.json", JSON.stringify({result:process.env.QRH_CHECK_RESULT}));'
+        env:
+          QRH_CHECK_RESULT: ${{ steps.check.outcome }}
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: proof-verification-${{ github.run_attempt }}
+          name: proof-verification-${{ github.run_attempt }}-${{ matrix.result }}
           path: |
+            verification/worker-status.json
             verification/attempt.json
             verification/run/logs/
             verification/run/result.json
@@ -140,16 +155,15 @@ jobs:
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         continue-on-error: true
         with:
-          name: proof-verification-${{ github.run_attempt }}
-          path: verification/
+          pattern: proof-verification-${{ github.run_attempt }}-*
+          path: verification-results/
       - name: Publish verification for the current PR head
         run: node verifier/actions/finalize.mjs
         env:
           GITHUB_TOKEN: ${{ github.token }}
-          QRH_VERIFICATION_RESULT: ${{ needs.verify.result == 'success' && needs.verify.outputs.check == 'success' && 'success' || 'failure' }}
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: success()
         with:
           name: verification-record-${{ github.run_attempt }}
-          path: verification/certificate.json
+          path: verification/certificates/
           if-no-files-found: error

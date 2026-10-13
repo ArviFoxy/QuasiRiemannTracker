@@ -1,6 +1,8 @@
 """Replay prepared standard submission with Palomar's unmodified sandbox and kernels."""
 from pathlib import Path
 import argparse, datetime, hashlib, json, os, re, shutil, sys, time
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from worker_resources import worker_threads
 
 if sys.flags.optimize or os.getuid() == 0:
     raise SystemExit('Use unoptimized Python as an unprivileged worker user')
@@ -59,7 +61,9 @@ assert {name:sha(path) for name,path in selected_tools.items()} == approved_tool
 python, touch = Path('/usr/bin/python3').resolve(), Path('/usr/bin/touch')
 tools = v.tool_snapshot([*bundled.values(),v._BWRAP,old/'bin/lean',exporter,python,touch])
 (work/'tools.json').write_text(json.dumps({str(k):val for k,val in tools.items()},indent=2)+'\n')
-env = {'PATH':str(old/'bin')+':/usr/bin:/bin','HOME':str(work/'home'),'TMPDIR':str(work/'tmp'),'LANG':'C.UTF-8','LEAN_NUM_THREADS':'1','LEAN_ABORT_ON_PANIC':'1'}
+threads = worker_threads()
+print(f'Proof compilation: using {threads} Lean threads', flush=True)
+env = {'PATH':str(old/'bin')+':/usr/bin:/bin','HOME':str(work/'home'),'TMPDIR':str(work/'tmp'),'LANG':'C.UTF-8','LEAN_NUM_THREADS':str(threads),'LEAN_ABORT_ON_PANIC':'1'}
 system = v.system_readable_paths()
 phases=[]
 def stage(name):

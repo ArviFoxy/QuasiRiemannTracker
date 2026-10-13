@@ -54,6 +54,7 @@ test("dependency, toolchain and setup changes invalidate the shared environment"
   const before = cachePlan(root, platform).key;
   for (const file of [
     "verifier/pins.json",
+    "verifier/worker_resources.py",
     "verifier/standard/tool-pins.json",
     "verifier/standard/lake-manifest.json",
     "verifier/standard/lakefile.lean",

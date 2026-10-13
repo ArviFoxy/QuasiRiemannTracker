@@ -5,6 +5,10 @@ warm_cache = sys.argv[1:] == ['--warm-cache']
 if sys.argv[1:] and not warm_cache:
     raise SystemExit('Usage: setup.py [--warm-cache]')
 ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT/'verifier'))
+from worker_resources import worker_threads
+threads = worker_threads()
+print(f'Worker setup: using {threads} Lean threads', flush=True)
 OUT = ROOT / 'verification'
 ENV_ROOT = Path(os.environ.get('QRH_WORKER_ROOT', str(OUT / 'environment'))).resolve()
 ENV_ROOT.mkdir(parents=True, exist_ok=True)
@@ -36,7 +40,7 @@ def toolchain(version, digest):
     return dest
 source = toolchain('4.34.1','47bf4bbd78f70c2e9670598ab7124d92b6efb7330ff33e5fbb4030f6fd72e4e4')
 judge = toolchain('4.35.0-rc2','b67d0e0ba959fc74e186f1b44aebca32d6ecb6a28f8e9a029fc4e9f73398a049')
-env = {**os.environ, 'PATH':str(source/'bin')+':'+os.environ['PATH'], 'LEAN_NUM_THREADS':'2'}
+env = {**os.environ, 'PATH':str(source/'bin')+':'+os.environ['PATH'], 'LEAN_NUM_THREADS':str(threads)}
 palomar = ENV_ROOT/'palomar'
 clone('https://github.com/PalomarRegistry/PalomarSubmission.git','d4e41c1d5b0d114c4859e6e5831dc6d3ad1d0d44',palomar)
 bwrap = ENV_ROOT/'bwrap-bin/bwrap'

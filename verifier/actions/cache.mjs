@@ -12,6 +12,7 @@ import { upstreamImports } from "./imports.mjs";
 
 const inputs = [
   "verifier/pins.json",
+  "verifier/worker_resources.py",
   "verifier/standard/tool-pins.json",
   "verifier/standard/lakefile.lean",
   "verifier/standard/lake-manifest.json",

@@ -87,7 +87,8 @@ those records and the website build.
 When the hosted worker reports an infrastructure or resource failure, admission
 can use an independently verified local run for the same repository, PR number,
 head commit, result ID and exact bound. A completed proof rejection fails
-admission. Run the [standard replay adapter](verifier/standard/README.md) on a
+admission. Algebraic bounds and legacy layouts can use their existing local
+replay profiles when the standard hosted profile cannot represent them. Run the [standard replay adapter](verifier/standard/README.md) on a
 disposable Linux worker with sufficient resources; this server can host that
 worker.
 

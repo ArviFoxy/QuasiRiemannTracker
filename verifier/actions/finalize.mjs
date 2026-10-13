@@ -52,7 +52,7 @@ try {
   summary = `Proof verification accepts ${c.expected.result_id} at ${c.expected.theta_exact} for this exact PR head. Decimal ${declaration.theta_decimal} accurately approximates the exact bound.`;
   if (attempt.status !== "accepted")
     summary +=
-      " A matching independently verified local run supplied the result after the hosted worker reached its limits.";
+      " A matching independently verified local run supplied the result because hosted verification was unavailable.";
 } catch (error) {
   summary = `Admission failed: ${error.message}`;
   process.exitCode = 1;

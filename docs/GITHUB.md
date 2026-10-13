@@ -82,7 +82,8 @@ For infrastructure or resource failures, the publishing job can use a matching
 local replay registered in `verifier/pr-admissions.json` on the base branch.
 `validateMaintainerReplay` authenticates the local dossier, source, exact head,
 bound, canonical theorem, controls and all three kernels. Proof rejection and
-invalid submissions fail admission. See `../CONTRIBUTING.md` for the local
+invalid standard submissions fail admission. Existing local profiles remain
+available for algebraic bounds and legacy proof layouts. See `../CONTRIBUTING.md` for the local
 fallback process. A stronger disposable worker on the local server can produce
 that replay when the standard hosted worker lacks capacity.
 

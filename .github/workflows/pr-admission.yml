@@ -60,6 +60,8 @@ jobs:
     timeout-minutes: 150
     permissions:
       contents: read
+    outputs:
+      check: ${{ steps.check.outcome }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -74,8 +76,13 @@ jobs:
           path: verification-context/
       - run: npm ci --ignore-scripts --no-audit --no-fund
       - name: Read the exact submitted source and check its manifest
+        id: source
+        continue-on-error: true
         run: node verifier/actions/prepare.mjs
       - name: Install worker prerequisites
+        id: prerequisites
+        if: steps.source.outcome == 'success'
+        continue-on-error: true
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y --no-install-recommends meson ninja-build libcap-dev pkg-config zstd libgmp-dev python3-yaml
@@ -83,9 +90,15 @@ jobs:
           echo "XDG_RUNTIME_DIR=/run/user/$(id -u)" >> "$GITHUB_ENV"
           echo "DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$(id -u)/bus" >> "$GITHUB_ENV"
       - name: Build the pinned checking environment
+        id: setup
+        if: steps.prerequisites.outcome == 'success'
+        continue-on-error: true
         timeout-minutes: 85
         run: python3 verifier/actions/setup.py
       - name: Check the canonical theorem with Comparator and all three kernels
+        id: check
+        if: steps.setup.outcome == 'success'
+        continue-on-error: true
         timeout-minutes: 65
         run: python3 verifier/actions/run.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -133,4 +146,4 @@ jobs:
         run: node verifier/actions/finalize.mjs
         env:
           GITHUB_TOKEN: ${{ github.token }}
-          QRH_VERIFICATION_RESULT: ${{ needs.verify.result }}
+          QRH_VERIFICATION_RESULT: ${{ needs.verify.result == 'success' && needs.verify.outputs.check == 'success' && 'success' || 'failure' }}

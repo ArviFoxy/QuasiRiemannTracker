@@ -92,7 +92,9 @@ for lib in libraries:
         if p.is_file(): inventory[str(p)] = sha(p)
 data = (json.dumps(inventory,sort_keys=True)+'\n').encode()
 prepared = OUT/'prepared'
+(prepared/'libraries.json').chmod(0o644)
 (prepared/'libraries.json').write_bytes(data)
+(prepared/'libraries.json').chmod(0o444)
 contract = json.loads((prepared/'contract.json').read_text())
 contract['library_inventory_sha256'] = hashlib.sha256(data).hexdigest()
 (prepared/'contract.json').write_text(json.dumps(contract,indent=2)+'\n')

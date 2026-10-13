@@ -13,3 +13,5 @@ proofs/**/toolchains/
 proofs/**/downloads/
 proofs/**/.lake/
 **/__pycache__/
+/verification/
+/verification-context/

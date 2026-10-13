@@ -1,7 +1,6 @@
 // Fetch immutable Git objects; never check out or execute the submitted project.
 import { execFileSync } from "node:child_process";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
-import { resolve } from "node:path";
 import { submission } from "../manifest.mjs";
 const c = JSON.parse(readFileSync("verification-context/context.json", "utf8"));
 const e = c.expected;

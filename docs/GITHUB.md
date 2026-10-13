@@ -3,7 +3,7 @@
 The active contribution workflow is PR → automatic classification,
 `qrh/pr-admission` and site checks → maintainer review/merge → automatic Pages
 deployment; see `DEPLOYMENT.md`. A successful site build checks the website and evidence
-integrity. Independent maintainer replay establishes proof acceptance.
+integrity. The admission worker executes proof verification.
 
 ## Required PR admission
 
@@ -12,9 +12,9 @@ start with three standalone lines:
 `QRH-Result: <stable-id>`, `QRH-Bound: <exact-checked-bound>` and
 `QRH-Decimal: <truncated-decimal>`. Maintenance PR bodies contain the change
 summary; result fields and the `New bound` section belong to new-bound PRs.
-The exact bound must match the independently checked receipt and protected
-admission record. Positive bounds such as `29/33` and `1/1` qualify for
-admission with the required evidence. The catalogue retains accepted
+The exact bound must match the submission manifest and the theorem checked by
+the worker. Positive bounds such as `29/33` and `1/1` qualify for
+admission after successful verification. The catalogue retains accepted
 contributions, and the best-bound display selects the strongest verified value.
 See `../CONTRIBUTING.md` for examples.
 
@@ -28,7 +28,7 @@ precision. For example, `4374433/5000000` requires
 (`0.87488664` at eight places); the first differing digit is the eighth. An equal
 exact bound accepts an accurate decimal at any supported precision. For
 algebraic bounds, an identical exact expression establishes this equality after
-the trusted evidence is authenticated.
+verification.
 
 Any change under `proofs/`, `public/proofs/`, `submissions/`, `catalogue/` or
 `registry/records/`, or to `public/catalogue.json` or `public/registry.json`,
@@ -56,45 +56,45 @@ the diff between the merge base and exact head in a temporary bare Git
 repository. The file count must agree with the PR metadata. Rename detection
 retains both paths, and Git runs with external diff commands and text
 conversion disabled. It posts `qrh/pr-admission` to the current PR
-head. Body edits rerun the check; a head change requires a new independent
-admission. The workflow's `pull-requests: write` permission manages category
-labels, and `checks: write` publishes the admission result. Proof compilation
-runs separately on the reviewed offline Linux worker.
+head. Body edits and head changes rerun verification.
 
-For a new bound, the validator reads `verifier/pr-admissions.json` from the
-trusted base. Its initially empty `admissions` array contains records binding
-the repository, PR number, exact `head_sha`, `result_id` and `theta_exact` to
-the reviewed `pin` and `contribution`. Admission requires
-`validateMaintainerReplay` to authenticate the complete immutable dossier,
-source revision/content, exact bound, canonical challenge, replay driver and
-dependency pins, allowed axioms, isolation checks, Comparator acceptance and
-Lean/NanoDa/con-ron results. The receipt must also bind `reviewed_pr_head` to
-the candidate head.
+The workflow has three jobs:
 
-For an irrational bound, `QRH-Bound` retains its exact expression. Its
-checksum-pinned `result.json` must contain a certified `bound_interval` for
-that same `theta_exact`, with rational `lower` and `upper` objects containing
-`numerator` and `denominator`. The current replay validator authenticates the
-report before the gate reads the interval. Both endpoints must yield the
-declared decimal prefix; refine the certified enclosure until both agree.
+1. `prepare` classifies changed files, manages category labels and validates the
+   declaration. Maintenance PRs complete admission here. Result PRs receive a
+   pending check and an immutable context artifact for this run and attempt.
+2. `verify` fetches the exact head as Git objects and reads the standard
+   submission as data. It installs pinned tools and dependencies, then compiles
+   the proof in Palomar's offline sandbox. Comparator checks the canonical
+   theorem and its definitions; Lean, NanoDa and con-ron check the exported
+   proof. This job has read-only repository permissions. Logs, reports and
+   exports are uploaded automatically with 30-day retention.
+3. `admission` consumes only artifacts from the same run and attempt. It checks
+   the source identity, declared bound, complete kernel acceptance and sandbox
+   controls, validates the decimal, rechecks current PR metadata, and completes
+   `qrh/pr-admission`. This separate job holds the check-publishing permission.
 
-Maintainers perform the actual replay on the reviewed offline Linux worker.
-They register the resulting dossier under `evidence/pr-checks/<id>/` and its
-admission record in a separate infrastructure maintenance PR. Existing trusted
-`public/proofs/` dossiers can also be referenced. New profiles or checker
-changes must be reviewed separately before the replay; the gate supports the
-existing reviewed replay profiles. Admission records become trusted when their
-maintenance PR merges into the default branch. Then dispatch the gate for the
-same candidate head to refresh its check.
+All orchestration and checker code comes from the protected default branch.
+The candidate supplies its manifest and proof files through
+`submissions/<id>/`. A successful live check directly satisfies admission.
 
-The workflow becomes active when its bootstrap PR merges into the
-default branch. Then dispatch it for already-open PRs, including PR #15, or
-wait for a supported PR event. Each existing PR requires its own admission.
+For infrastructure or resource failures, the publishing job can use a matching
+local replay registered in `verifier/pr-admissions.json` on the base branch.
+`validateMaintainerReplay` authenticates the local dossier, source, exact head,
+bound, canonical theorem, controls and all three kernels. Proof rejection and
+invalid submissions fail admission. See `../CONTRIBUTING.md` for the local
+fallback process. A stronger disposable worker on the local server can produce
+that replay when the standard hosted worker lacks capacity.
+
+An irrational bound retains its exact expression and a certified rational
+`bound_interval`. Both interval endpoints must yield the declared decimal
+prefix. The standard submission format currently supports rational bounds;
+new exact representations require an appropriate checker implementation.
 
 GitHub check results belong to commits. After a body-only edit, the previous
 result may remain visible until the new run posts its check; a runner startup
 failure needs a fresh dispatch. Review the latest admission run before merging.
-Changing proof code always changes the head and requires new evidence.
+Changing proof code always changes the head and requires new verification.
 
 ## Repository protection setup (required)
 
@@ -109,8 +109,7 @@ protections and rulesets in GitHub:
 - Keep the append-only registry check mandatory for all registry changes: `node verifier/audit-history.mjs BASE_COMMIT`. Validate signed contents with `npm run build`. Obtain `BASE_COMMIT` from the protected base SHA.
 
 After merging the gate, activate and confirm the required checks and independent
-review settings. The maintainer replay lane operates independently of the signed
-service below.
+review settings. Automatic admission operates independently of the signed service below.
 
 ## Separate signed service (commissioning required)
 

@@ -14,11 +14,12 @@ QRH-Bound: 4374433/5000000
 QRH-Decimal: 0.87488660
 ```
 
-Use the exact rational or algebraic bound string authenticated by the maintainer
-receipt and admission record. Rational bounds must be positive and reduced,
+Use the exact bound proved by the submission. The standard submission manifest
+represents rational bounds as numerator and denominator strings. Rational bounds must be positive and reduced,
 with canonical integer strings of at most 200 digits. Checked bounds such as
 `29/33` and `1/1` qualify for admission. Result PRs require the three body fields
-above and independent verification evidence. The catalogue retains accepted
+above and a checkable proof. GitHub Actions runs verification when the PR opens
+or changes, including drafts. The catalogue retains accepted
 contributions; the best-bound display and record history select the strongest
 verified bounds by exact comparison.
 
@@ -33,9 +34,9 @@ For a frontier of `0.87488664704`, the example above needs at least eight
 decimal places: `0.87488660` differs from `0.87488664`, while seven places would
 show `0.8748866` for both. An equal exact bound accepts an accurate decimal at
 any supported precision. For algebraic bounds, an identical exact expression
-establishes this equality after the trusted evidence is authenticated. An
+establishes this equality after verification. An
 irrational bound keeps its exact expression in `QRH-Bound`; its decimal is
-checked against the certified enclosure in the trusted evidence.
+checked against the certified enclosure in the verification result.
 
 Changes under `proofs/`, `public/proofs/`, `submissions/`, `catalogue/` or
 `registry/records/`, and changes to `public/catalogue.json` or
@@ -47,79 +48,62 @@ Mixed PRs receive both labels and fail admission. A QRH result declaration or
 New bound section requires a PR confined to proof/result changes. Put website,
 documentation, workflow, verifier and dependency changes in a separate
 maintenance PR. The workflow creates missing managed labels and preserves
-unrelated labels. File classification and authenticated evidence determine
-admission.
+unrelated labels. File classification and proof verification determine admission.
 
-The `qrh/pr-admission` workflow executes trusted default-branch validation code
-and reads candidate metadata and changed paths through the GitHub API. For
-`new-bound`, admission requires an independent maintainer's accepted check for
-this repository, PR number, exact head commit, result ID and exact bound. The
-evidence must authenticate Comparator and all three kernels: Lean, NanoDa and
-con-ron. Every new commit requires a new admission. Editing the declaration
-reruns the check.
+The `qrh/pr-admission` workflow runs the default branch's checker on the exact
+submitted commit. It compiles the standard submission in an offline sandbox,
+compares its theorem with the canonical all-Dirichlet challenge, and requires
+acceptance from Lean, NanoDa and con-ron. The permitted axioms are `propext`,
+`Classical.choice` and `Quot.sound`. A separate publishing job rechecks the PR
+commit and declaration before reporting success.
 
-## Add a result or improve the website
+## Submit a proof
 
-1. Fork the repository and create a branch. For a result, edit `catalogue/results.json`, preserving exact constants, authorship, publication dates and evidence links. Keep any checking infrastructure changes in a separate PR.
-2. Use **framework-verified** after an independent maintainer run in the trusted offline Linux sandbox: the exact claimed statements and their definitions must pass Comparator, with exported proofs accepted by Lean, NanoDa and con-ron. The permitted axioms are `propext`, `Classical.choice` and `Quot.sound`. The maintainer receipt must bind the complete checked source and dependency pins. Each source revision requires independent verification. Retain the source, checker pins, exact statements and acceptance reports for maintainer review. Use the first successful independent run for the verification date and timeline. Existing **verification-pending** entries describe historical evidence; all new result PRs require admission.
-3. Add proof sources under `proofs/<stable-id>/` with license/attribution and reproduction instructions. Existing proof snapshots are immutable; submit revisions as a new directory. Heavy Lean checks run independently of website CI.
-4. Run `npm ci --ignore-scripts`, `npm run check`, and `npm run test:browser` (install Chromium with `npx playwright install chromium` if necessary).
-5. Open a pull request with a summary; for a result, include the required body declaration, attribution and evidence links. Complete the independent check and admission for the exact PR head. After `qrh/pr-admission`, site checks and maintainer review, merging updates the public website automatically through GitHub Pages.
+1. Add `submissions/<id>/manifest.json`, `explanation.md`, `LICENSE`, optional
+   `NOTICE`, and Lean modules under `src/Candidate/`. Use the schema in
+   `schemas/submission.schema.json`; the manifest's exact bound must match
+   `QRH-Bound`. `submissions/classical-euler-product/` is a complete example.
+2. Include authorship, references, license and upstream attribution. Supply an
+   entrypoint proving the canonical theorem with the declared bound. Keep
+   checker and dependency changes in a separate maintenance PR.
+3. Open the PR with the three declaration lines above. The workflow runs the
+   checker automatically. Compiler and judge errors appear in the Actions log;
+   reports and proof exports are retained as workflow artifacts for 30 days.
+4. Correct any proof errors and push a new commit to rerun verification. After
+   admission, website checks and maintainer review pass, the PR can merge.
 
-### Standard submission replay
+The standard worker uses the pinned Lean 4.34.1 compiler and dependencies,
+with the Lean 4.35.0-rc2 Comparator and three-kernel judge. Its setup reads
+protected repository files. Candidate code executes with read-only dependency
+mounts, a minimal environment, resource limits and network isolation.
 
-Use `submissions/<id>/manifest.json`, `explanation.md`, `LICENSE`, optional
-`NOTICE`, and Lean modules under `src/Candidate/`. The
-[standard replay adapter](verifier/standard/README.md) generates the canonical
-challenge and solution wrapper through the shared verifier, then runs Palomar's
-sandbox, Comparator, Lean, NanoDa and con-ron. Its receipt records the exact PR
-head and all checked source files. Catalogue publication may accompany the
-submission through the active maintainer admission process.
+Catalogue publication preserves the first successful verification time and
+retains proof sources and reports for reproducibility. Existing catalogue
+records keep their immutable evidence and source bindings. Website CI checks
+those records and the website build.
 
-Standard replay dossiers live under `verifier/standard/receipts/<run-id>/` and
-use replay profile `standard-submission-v1`. The protected collection pins its
-executed driver, tools, source, generated statements, control transcripts and
-acceptance. `verifier/standard/catalogue-pins.json` binds catalogue status to
-that receipt and the checked source bytes. When publication follows an earlier
-successful check of identical source, retain its dossier as `first_pin`; the
-catalogue preserves that first verification time.
+## Local verification fallback
 
-### Registering an independently checked head
+When the hosted worker reports an infrastructure or resource failure, admission
+can use an independently verified local run for the same repository, PR number,
+head commit, result ID and exact bound. A completed proof rejection fails
+admission. Run the [standard replay adapter](verifier/standard/README.md) on a
+disposable Linux worker with sufficient resources; this server can host that
+worker.
 
-A maintainer runs the appropriate reviewed replay driver on a disposable,
-offline Linux worker, then reviews the resulting receipt, complete source
-bindings, canonical challenge, checker acceptance and isolation evidence.
-Use a replay profile supported by `core/maintainer-replay.mjs`. If a result needs
-a new driver, target representation or tool profile, review and merge that
-infrastructure first, then perform the independent check.
+To register a local run, retain its complete replay dossier and add a record to
+`verifier/pr-admissions.json` through a maintenance PR. The record contains
+`repository`, `number`, `head_sha`, `result_id`, `theta_exact`, `pin` and
+`contribution`. The existing replay validator checks the source bindings,
+canonical challenge, checker controls, tool pins and all three kernel results.
+The gate reads fallback records from the protected base branch. Dispatch
+`PR admission` for the candidate PR after registering its local run.
 
-Publish the immutable replay dossier under `evidence/pr-checks/<id>/` and add
-its record to `verifier/pr-admissions.json` in a separate maintainer-reviewed
-maintenance PR. An already reviewed dossier under `public/proofs/` may also be
-referenced. New dossiers under `evidence/pr-checks/` follow the maintenance
-review process. The admissions file has `schema_version: 1` and an `admissions`
-array. Each entry specifies `repository`, `number`, `head_sha`, `result_id`,
-`theta_exact`, `pin` and `contribution`; the pin and contribution must pass the existing independent
-replay validator. The dossier's `reviewed_pr_head` must match `head_sha`.
-The `pin` uses the existing replay-pin format (for example,
-`core/cycle25-kernel-pins.json`). The `contribution` identifies the checked source
-`repository`, `source_commit`, `source_compiler`, `judge_toolchain` and
-`palomar_commit`, plus any fields required by that replay profile.
-The gate loads these admission records and evidence from the trusted default
-branch.
-
-For an irrational exact bound, the checksum-pinned `result.json` must include
-a certified `bound_interval` for that same `theta_exact`, with rational
-`lower` and `upper` objects containing `numerator` and `denominator`. The gate
-reads this report through the existing replay validator. Both interval endpoints
-must produce the declared decimal prefix at its supplied precision. If they
-disagree, refine the certified enclosure before registering the evidence.
-
-Once that maintenance PR is on the default branch, a maintainer can dispatch
-the PR admission workflow with the candidate PR number to check its current
-head again. Dispatching preserves the checked head; every new commit requires
-a new admission. The admissions file starts empty, and each result PR requires
-its own registered acceptance, including existing open PRs.
+For an irrational bound, retain its exact expression and a certified rational
+`bound_interval` in the verification result. Both endpoints must yield the
+declared decimal prefix. The standard manifest currently represents rational
+bounds; additional exact representations require a corresponding canonical
+challenge and verifier implementation in a maintenance PR.
 
 For an update to the same catalogue contribution, retain its displayed `id` and
 point `proof_revision` to the reviewed new proof snapshot. Preserve the previous
@@ -131,8 +115,8 @@ the supersession rules below.
 
 Liu's existing algebraic constant retains its exact expression and a certified rational enclosure for plotting. The validator checks the enclosure with integer arithmetic and preserves the theorem's exact constant. New algebraic forms need a reviewed exact representation and comparison method.
 
-Status and evidence changes require maintainer review and PR admission. The
-independent maintainer replay process above is the active admission path. The
+Status and evidence changes require maintainer review and PR admission. Automatic proof verification is the active admission path, with local replay
+as the infrastructure fallback described above. The
 automatic signed service below awaits commissioning, including an update to
 require all three kernels and validation of that requirement.
 

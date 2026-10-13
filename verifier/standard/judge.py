@@ -1,5 +1,6 @@
 """Check a frozen export with independent kernels in separate sandboxes."""
 from concurrent.futures import ThreadPoolExecutor
+from pathlib import Path
 import json, subprocess, time
 
 
@@ -74,7 +75,7 @@ def judge_exports(v, *, config, challenge_export, solution_export, scratch,
                              'LANG': 'C.UTF-8', 'LEAN_ABORT_ON_PANIC': '1'},
                 writable_directories=[directory],
                 readable_paths=[config_path, solution_export, *v.system_readable_paths()],
-                executable_paths=[lean_prefix], tools=tools, timeout=timeout, check=False)
+                executable_paths=[lean_prefix, Path('/usr')], tools=tools, timeout=timeout, check=False)
             message = f'{name} kernel accepts the solution' if result.returncode == 0 else f'{name} kernel rejected the solution'
             return subprocess.CompletedProcess(args, result.returncode,
                                                result.stdout+'\n'+message, result.stderr)

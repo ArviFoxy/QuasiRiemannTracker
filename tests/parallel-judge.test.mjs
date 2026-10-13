@@ -53,6 +53,7 @@ with tempfile.TemporaryDirectory() as temporary:
             barrier.wait()
             return subprocess.CompletedProcess([],0,'Your solution is okay!\\nLean default kernel accepts the solution','')
         def sandboxed_run(self,command,**kwargs):
+            assert Path('/usr') in kwargs['executable_paths']  # ELF loader and system libraries
             assert solution in kwargs['readable_paths']
             assert solution not in kwargs['writable_directories']
             assert kwargs['writable_directories']==[kwargs['cwd']]

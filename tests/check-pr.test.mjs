@@ -189,24 +189,26 @@ test("maintenance publishes success and replaces a stale new-bound label", (t) =
   );
 });
 
-test("a proof on the second changed-files page adds both labels and fails mixed admission", (t) => {
+test("unmarked cleanup across multiple file pages receives maintenance and succeeds", (t) => {
   const files = Array.from({ length: 100 }, (_, i) => ({
     filename: `docs/page-${i}.md`,
     status: "modified",
   }));
   files.push({ filename: "proofs/candidate/Main.lean", status: "added" });
-  const result = run(t, fixture(files));
-  assertFailure(
-    result,
-    "Separate proof changes from maintenance changes, including workflow and verifier changes",
-  );
-  const pages = result.requests
-    .filter((request) => new URL(request.url).pathname.endsWith("/files"))
-    .map((request) => new URL(request.url).searchParams.get("page"));
-  assert.deepEqual(pages, ["1", "2"]);
+  const result = run(t, fixture(files), { QRH_PHASE: "prepare" });
+  assert.equal(result.status, 0);
+  assert.equal(result.checkWrites.at(-1).body.conclusion, "success");
+  assert.equal(result.context, null);
+  assert.equal(result.outputs, "");
   assert.deepEqual(
-    result.labelWrites.map((request) => request.body?.labels),
-    [["new-bound", "maintenance"]],
+    result.requests
+      .filter((r) => new URL(r.url).pathname.endsWith("/files"))
+      .map((r) => new URL(r.url).searchParams.get("page")),
+    ["1", "2"],
+  );
+  assert.deepEqual(
+    result.labelWrites.map((r) => r.body?.labels),
+    [["maintenance"]],
   );
 });
 
@@ -370,5 +372,30 @@ for (const draft of [false, true]) {
     });
     assert.equal(result.context.check_id, 123);
     assert.equal(result.context.run_id, "456");
+  });
+}
+
+for (const draft of [false, true]) {
+  test(`cleanup defaults to maintenance without queuing a proof for draft=${draft}`, (t) => {
+    const data = fixture([
+      { filename: "proofs/old/Main.lean", status: "removed" },
+      { filename: "catalogue/results.json", status: "modified" },
+      { filename: "src/App.tsx", status: "modified" },
+    ]);
+    data.pr.draft = draft;
+    data.pr.body = "Clean up the codebase.";
+    data.labels = [{ name: "new-bound" }];
+    const result = run(t, data, { QRH_PHASE: "prepare" });
+    assert.equal(result.status, 0);
+    assert.equal(result.checkWrites.at(-1).body.conclusion, "success");
+    assert.equal(result.context, null);
+    assert.equal(result.outputs, "");
+    assert.deepEqual(
+      result.labelWrites.map((r) => [r.method, r.body?.labels]),
+      [
+        ["POST", ["maintenance"]],
+        ["DELETE", undefined],
+      ],
+    );
   });
 }

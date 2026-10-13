@@ -190,16 +190,13 @@ for (const [description, body, message] of [
   });
 }
 
-test("rejects result metadata and headings in maintenance PRs", async () => {
+test("rejects result declaration fields mixed with maintenance changes", async () => {
   for (const body of [
     newBound,
     `QRH-Result: ${resultId}`,
     `QRH-Bound: ${bound}`,
     `QRH-Decimal: ${approximation}`,
     "QRH-Result candidate-20261011",
-    "## New bound\nA proposed improvement.",
-    "## QRH result\nA proposed improvement.",
-    "## nEw BoUnD\nA proposed improvement.",
   ]) {
     assert.equal(hasResultSection(body), true, body);
     await rejectsBeforeEvidence(
@@ -261,33 +258,45 @@ test("accepts a maintenance PR with plain prose", async () => {
   assert.ok(summary.length > 0);
 });
 
-test("requires a result declaration for PR #15's proof change", async () => {
-  const input = options("Adds the Lean proof.", [file("proofs/solution.lean")]);
-  input.pr.number = 15;
-  await rejectsBeforeEvidence(
-    input,
-    "Proof, submission or catalogue changes require QRH-Result, QRH-Bound, QRH-Decimal and a checkable proof",
-  );
-});
-
-test("requires result metadata for proof submissions", async () => {
-  await rejectsBeforeEvidence(
-    options(maintenance, [file("proofs/candidate/Main.lean")]),
-    "Proof, submission or catalogue changes require QRH-Result, QRH-Bound, QRH-Decimal and a checkable proof",
-  );
-});
-
-test("rejects proof-to-maintenance renames", async () => {
-  await rejectsBeforeEvidence(
-    options(maintenance, [
+for (const [description, files] of [
+  ["proof source", [file("proofs/solution.lean")]],
+  ["catalogue", [file("catalogue/results.json")]],
+  [
+    "cleanup across code and proof paths",
+    [
+      file("proofs/old/Main.lean", { status: "removed" }),
+      file("src/App.tsx"),
+      file("public/catalogue.json"),
+    ],
+  ],
+  [
+    "proof-to-maintenance rename",
+    [
       file("docs/old-proof.txt", {
         status: "renamed",
         previous_filename: "public/proofs/candidate/report.json",
       }),
-    ]),
-    "Separate proof changes from maintenance changes, including workflow and verifier changes",
-  );
-});
+    ],
+  ],
+]) {
+  for (const body of [
+    "Clean up existing records.",
+    "",
+    null,
+    "## New bound",
+    "## QRH result",
+  ]) {
+    test(`defaults to maintenance for ${description} with body=${JSON.stringify(body)}`, async () => {
+      const input = options(body, files);
+      assert.deepEqual(classifyPRChanges(input), {
+        proof: false,
+        maintenance: true,
+      });
+      assert.match(await run(input), /Maintenance requirements satisfied/);
+      assert.equal(input.validateEvidence.mock.callCount(), 0);
+    });
+  }
+}
 
 test("a new-bound declaration requires a proof-bearing change", async () => {
   await rejectsBeforeEvidence(
@@ -494,23 +503,19 @@ for (const filename of [
   "tests/pr-admission.test.mjs",
   "README.md",
 ]) {
-  test(`requires a separate maintenance PR for ${filename}`, async () => {
-    for (const body of [maintenance, newBound]) {
-      const input = options(body, [
-        file("proofs/candidate/Main.lean"),
-        file(filename),
-      ]);
-      assert.deepEqual(classifyPRChanges(input), {
-        proof: true,
-        maintenance: true,
-      });
-      await rejectsBeforeEvidence(
-        input,
-        body === newBound
-          ? "Submit QRH results and maintenance changes in separate PRs"
-          : "Separate proof changes from maintenance changes, including workflow and verifier changes",
-      );
-    }
+  test(`bound declarations require a separate maintenance PR for ${filename}`, async () => {
+    const input = options(newBound, [
+      file("proofs/candidate/Main.lean"),
+      file(filename),
+    ]);
+    assert.deepEqual(classifyPRChanges(input), {
+      proof: true,
+      maintenance: true,
+    });
+    await rejectsBeforeEvidence(
+      input,
+      "Submit QRH results and maintenance changes in separate PRs",
+    );
   });
 }
 

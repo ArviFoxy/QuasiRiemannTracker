@@ -1,2 +1,0 @@
-import QRH.Energy.NaturalLowStage
-#print axioms OAI.SevenEighths.CenteredMomentEnergyNaturalLowStage.actual_low_from_bands_extended

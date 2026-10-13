@@ -1,4 +1,0 @@
-import QRH.Detector.DynamicMomentInput
-#print axioms OAI.SevenEighths.QRHDynamicMomentInput.dynamicMesh_pos
-#print axioms OAI.SevenEighths.QRHDynamicMomentInput.dynamic_source_input
-#print axioms OAI.SevenEighths.QRHDynamicMomentInput.actual_source_batch_plain_marked

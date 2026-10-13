@@ -1,2 +1,0 @@
-import QRH.PrimeRows.OptimizedCanonicalCubeChoice
-#print axioms OAI.SevenEighths.QRHPhysicalTails.canonical_probe_exists_cube

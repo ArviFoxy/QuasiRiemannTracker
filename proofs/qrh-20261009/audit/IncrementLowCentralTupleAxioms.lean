@@ -1,2 +1,0 @@
-import QRH.Detector.LowCentralTuple
-#print axioms OAI.SevenEighths.ProbePhysical.low_central_compensated_tuple_optimized

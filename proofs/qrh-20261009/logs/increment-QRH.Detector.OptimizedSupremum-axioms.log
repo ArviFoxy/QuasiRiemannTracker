@@ -1,1 +1,0 @@
-'OAI.SevenEighths.QRHFinalAssembly.beta_le_theta' depends on axioms: [propext, Classical.choice, Quot.sound]

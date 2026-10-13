@@ -1,2 +1,0 @@
-import QRH.PrimeRows.OptimizedSmallTail
-#print axioms OAI.SevenEighths.QRHPhysicalTails.small_physical_dyads_sum

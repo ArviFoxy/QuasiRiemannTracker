@@ -1,2 +1,0 @@
-import QRH.Detector.LowPhysicalInverseBound
-#print axioms OAI.SevenEighths.ProbePhysical.low_physical_inverse_normalized_optimized

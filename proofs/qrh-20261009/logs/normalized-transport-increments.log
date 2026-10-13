@@ -1,4 +1,0 @@
-WAIT QRH.PrimeRows.OptimizedNormalizedTransport : QRH.PrimeRows.OptimizedCanonicalRayCube
-CHECKED QRH.PrimeRows.OptimizedNormalizedTransport
-CHECKED QRH.PrimeRows.OptimizedNormalizedTransportSaving
-FAIL QRH.PrimeRows.OptimizedNonfloorTransport; /work/qrh-proof/logs/increment-QRH.PrimeRows.OptimizedNonfloorTransport.log

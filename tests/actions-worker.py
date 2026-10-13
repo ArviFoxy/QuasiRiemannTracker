@@ -12,7 +12,7 @@ if sys.argv[1] == 'prepare':
     (out/'empty-libraries.json').write_text('{}\n')
     (out/'imports.json').write_text('[]\n')
     subprocess.run(['node','verifier/standard/prepare.mjs','--checkout',str(root),'--head',head,
-        '--repository',expected['repository'],'--id',expected['result_id'],'--libraries',str(out/'empty-libraries.json'),
+        '--repository',expected['repository'],'--id',expected['result_id'],'--bound',expected['theta_exact'],'--libraries',str(out/'empty-libraries.json'),
         '--out',str(out/'prepared')],check=True)
 else:
     accepted = json.loads((out/'attempt.json').read_text())

@@ -1,2 +1,0 @@
-import QRH.Reflection.LowRetainedBudget
-#print axioms OAI.SevenEighths.InverseReflectedPhase.original_low_sector_retained_budget_optimized

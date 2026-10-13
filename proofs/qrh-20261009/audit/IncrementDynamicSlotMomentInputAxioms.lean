@@ -1,3 +1,0 @@
-import QRH.Detector.DynamicSlotMomentInput
-#print axioms OAI.SevenEighths.QRHDynamicSlotMomentInput.dynamic_source_input_slots
-#print axioms OAI.SevenEighths.QRHDynamicSlotMomentInput.actual_source_batch_plain_marked_slots

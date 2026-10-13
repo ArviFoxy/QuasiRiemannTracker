@@ -14,6 +14,7 @@ const { values: v } = parseArgs({
       "repository",
       "id",
       "libraries",
+      "bound",
       "source-commit",
       "out",
     ].map((k) => [k, { type: "string" }]),
@@ -48,7 +49,12 @@ for (const row of entries) {
   mkdirSync(dirname(file), { recursive: true });
   writeFileSync(file, git(["cat-file", "blob", match[2]]), { mode: 0o444 });
 }
-const s = submission(source);
+const match = /^([0-9]+)\/([0-9]+)$/.exec(v.bound ?? "");
+if (!match) throw Error("Provide --bound as an exact fraction");
+const s = submission(source, {
+  id: v.id,
+  theta: { numerator: match[1], denominator: match[2] },
+});
 const sourceCommit = v["source-commit"] ?? v.head;
 if (!/^[a-f0-9]{40}$/.test(sourceCommit))
   throw Error("Invalid original source commit");

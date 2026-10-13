@@ -1,2 +1,0 @@
-import QRH.Detector.UniformDetectorCount
-#print axioms OAI.SevenEighths.QRHUniformDetectorMoment.actual_uniform_plain_detector_count

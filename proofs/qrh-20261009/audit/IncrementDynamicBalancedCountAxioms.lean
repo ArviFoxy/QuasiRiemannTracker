@@ -1,2 +1,0 @@
-import QRH.Hecke.DynamicBalancedCount
-#print axioms OAI.SevenEighths.QRHDetectorRowCount.balanced_count_identity

@@ -1,2 +1,0 @@
-import QRH.Detector.UniformDetectorMoment
-#print axioms OAI.SevenEighths.QRHUniformDetectorMoment.actual_uniform_source_batch_plain_marked_slots

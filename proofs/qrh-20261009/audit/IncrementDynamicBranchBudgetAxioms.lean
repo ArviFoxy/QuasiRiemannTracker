@@ -1,3 +1,0 @@
-import QRH.Hecke.DynamicBranchBudget
-#print axioms OAI.SevenEighths.HeckeDetectorBranchBudget.plain_marked_loss_optimized
-#print axioms OAI.SevenEighths.HeckeDetectorBranchBudget.plain_requested_capacity_optimized

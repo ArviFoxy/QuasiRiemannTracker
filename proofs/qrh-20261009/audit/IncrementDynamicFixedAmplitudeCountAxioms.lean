@@ -1,2 +1,0 @@
-import QRH.Hecke.DynamicFixedAmplitudeCount
-#print axioms OAI.SevenEighths.QRHDetectorFixedAmplitudeCount.fixed_amplitude_count_from_raw_moments

@@ -1,2 +1,0 @@
-import QRH.PrimeRows.OptimizedCubeFloorGlobal
-#print axioms OAI.SevenEighths.QRHProbeHighRowFamily.actual_global_floor_cube_arithmetic

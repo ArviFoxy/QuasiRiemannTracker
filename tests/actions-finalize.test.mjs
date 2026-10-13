@@ -40,6 +40,7 @@ function fixture() {
       status: "accepted",
       report: {
         status: "PASS",
+        verified_at: "2026-10-13T00:00:00Z",
         reviewed_pr_head: head,
         source_repository: repository,
         result_id: expected.result_id,

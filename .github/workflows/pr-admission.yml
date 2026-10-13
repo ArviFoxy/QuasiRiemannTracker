@@ -147,3 +147,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
           QRH_VERIFICATION_RESULT: ${{ needs.verify.result == 'success' && needs.verify.outputs.check == 'success' && 'success' || 'failure' }}
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: success()
+        with:
+          name: verification-record-${{ github.run_attempt }}
+          path: verification/certificate.json
+          if-no-files-found: error

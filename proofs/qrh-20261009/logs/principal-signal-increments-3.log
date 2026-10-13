@@ -1,4 +1,0 @@
-REUSE CHECKED QRH.Detector.ExtendedHeckeSignalShift
-REUSE CHECKED QRH.Detector.ExtendedHeckeSignalBounds
-CHECKED QRH.Detector.OptimizedPrincipalSignal
-All requested increments checked; this does not complete the analytic theorem.

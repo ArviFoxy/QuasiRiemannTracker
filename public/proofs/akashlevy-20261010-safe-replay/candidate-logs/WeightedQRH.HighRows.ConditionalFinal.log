@@ -1,3 +1,0 @@
-WeightedQRH/HighRows/ConditionalFinal.lean:88:4: warning: Unused tactic linter: `congr 1` does nothing
-
-Note: This linter can be disabled with `set_option linter.unusedTactic false`

@@ -1,2 +1,0 @@
-import QRH.Detector.LowSelectedBound
-#print axioms OAI.SevenEighths.ProbePhysical.low_selected_physical_energy_optimized

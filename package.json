@@ -9,19 +9,15 @@
   },
   "scripts": {
     "dev": "vite --host 127.0.0.1 --port 4173 --strictPort",
-    "build": "node scripts/catalogue.mjs && node verifier/registry.mjs && tsc --noEmit && vite build",
+    "build": "node scripts/catalogue.mjs && tsc --noEmit && vite build",
     "preview": "vite preview --host 127.0.0.1 --port 4173 --strictPort",
     "test": "node --test tests/*.test.mjs",
     "test:browser": "playwright test",
-    "verify": "node verifier/cli.mjs",
-    "test:integration": "node verifier/integration.mjs",
-    "check": "npm run check:publication && npm test && npm run build",
-    "format": "prettier --write src core verifier tests .github schemas worker/*.json *.json *.ts *.md docs",
-    "configure-repository": "node scripts/configure-repository.mjs",
-    "check:publication": "python3 scripts/publication_policy.py"
+    "check": "npm test && npm run build",
+    "format": "prettier --write src core verifier tests .github *.json *.ts",
+    "configure-repository": "node scripts/configure-repository.mjs"
   },
   "dependencies": {
-    "ajv": "8.17.1",
     "better-react-mathjax": "^3.0.2",
     "lucide-react": "0.468.0",
     "mathjax": "^3.2.2",

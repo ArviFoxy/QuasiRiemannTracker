@@ -1,2 +1,0 @@
-import QRH.Hecke.DynamicCountFromMoments
-#print axioms OAI.SevenEighths.QRHDetectorCountFromMoments.count_from_raw_moments

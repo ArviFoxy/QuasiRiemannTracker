@@ -1,2 +1,0 @@
-import QRH.Detector.DetectorPlainMarkedFineField
-#print axioms OAI.SevenEighths.ProbeDetectorPlainMarkedFineField.source_batch_plain_marked_dynamic

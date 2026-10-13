@@ -1,2 +1,0 @@
-import QRH.Detector.LowGaussianSum
-#print axioms OAI.SevenEighths.ProbePhysical.low_all_gaussian_dyads_optimized

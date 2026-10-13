@@ -1,2 +1,0 @@
-import QRH.Detector.ExtendedEulerRegion
-#print axioms OAI.SevenEighths.QRHEulerRegion.unramifiedClosed_second_region_bound

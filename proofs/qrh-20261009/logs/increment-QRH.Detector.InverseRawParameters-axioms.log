@@ -1,3 +1,0 @@
-'OAI.SevenEighths.ProbeDetectorInverseRawField.source_batch_inverse_raw_parameters' depends on axioms: [propext,
- Classical.choice,
- Quot.sound]

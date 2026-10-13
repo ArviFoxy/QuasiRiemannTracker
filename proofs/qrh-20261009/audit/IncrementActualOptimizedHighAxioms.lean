@@ -1,3 +1,0 @@
-import QRH.Detector.ActualOptimizedHigh
-#print axioms OAI.SevenEighths.QRHFinalAssembly.optimizedNormalizedProbe
-#print axioms OAI.SevenEighths.QRHFinalAssembly.exists_actual_optimized_high

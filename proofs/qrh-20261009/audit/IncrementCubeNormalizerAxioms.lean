@@ -1,2 +1,0 @@
-import QRH.PrimeRows.CubeNormalizer
-#print axioms OAI.SevenEighths.ProbeHighRowFamily.actual_ray_normalizer_inverse_optimized

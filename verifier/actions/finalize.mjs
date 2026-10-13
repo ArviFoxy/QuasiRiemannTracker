@@ -1,9 +1,10 @@
 // Runs in the publishing job, using only base-branch code and same-run artifacts.
-import { readFileSync, existsSync } from "node:fs";
+import { readFileSync, existsSync, writeFileSync } from "node:fs";
 import { api } from "../github-api.mjs";
 import { parseDeclaration } from "../pr-admission.mjs";
 import { validateDecimalApproximation } from "../pr-decimal.mjs";
 import { verificationResult } from "./result.mjs";
+import { workerCertificate } from "../certificate.mjs";
 const c = JSON.parse(readFileSync("verification-context/context.json", "utf8"));
 if (
   c.repository !== process.env.GITHUB_REPOSITORY ||
@@ -48,6 +49,18 @@ try {
     bound_interval: report.bound_interval,
     catalogue: JSON.parse(readFileSync("catalogue/results.json", "utf8")),
   });
+  const record =
+    attempt.status === "accepted"
+      ? workerCertificate(
+          c.expected,
+          report,
+          `https://github.com/${c.repository}/actions/runs/${c.run_id}/attempts/${c.run_attempt}`,
+        )
+      : report;
+  writeFileSync(
+    "verification/certificate.json",
+    JSON.stringify(record, null, 2) + "\n",
+  );
   conclusion = "success";
   summary = `Proof verification accepts ${c.expected.result_id} at ${c.expected.theta_exact} for this exact PR head. Decimal ${declaration.theta_decimal} accurately approximates the exact bound.`;
   if (attempt.status !== "accepted")

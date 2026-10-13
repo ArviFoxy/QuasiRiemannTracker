@@ -1,2 +1,0 @@
-import QRH.Detector.ExtendedGlobalRegion
-#print axioms OAI.SevenEighths.QRHGlobalRegion.unramifiedClosed_open_region_bound

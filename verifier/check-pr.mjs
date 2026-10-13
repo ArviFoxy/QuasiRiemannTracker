@@ -130,7 +130,7 @@ try {
     appendFileSync(process.env.GITHUB_OUTPUT, "verify=true\n");
     summary = "Checking the submitted proof in an isolated worker.";
   } else {
-    summary = `Admission failed: ${error.message}\n\nSee CONTRIBUTING.md and docs/GITHUB.md for admission requirements.`;
+    summary = `Admission failed: ${error.message}`;
     process.exitCode = 1;
   }
 }

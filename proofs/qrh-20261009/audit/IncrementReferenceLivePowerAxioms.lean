@@ -1,2 +1,0 @@
-import QRH.Energy.ReferenceLivePower
-#print axioms OAI.SevenEighths.CenteredMomentEnergyReferenceLivePower.original_reference_power_live_extended

@@ -1,2 +1,0 @@
-import QRH.Detector.OptimizedSourceAmplitudeClasses
-#print axioms OAI.SevenEighths.QRHProbeHighRowFamily.actual_source_amplitude_batches

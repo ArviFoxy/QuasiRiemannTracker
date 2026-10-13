@@ -1,39 +1,18 @@
-import Ajv from "ajv";
 import { lstatSync, readdirSync, readFileSync, realpathSync } from "node:fs";
 import path from "node:path";
 import { rational } from "../core/rational.mjs";
-import { readJSON, sha256 } from "./common.mjs";
-const validate = new Ajv({ allErrors: true, strict: true }).compile(
-  readJSON(new URL("../schemas/submission.schema.json", import.meta.url)),
-);
-export function manifest(input) {
-  if (!validate(input))
-    throw Error("Invalid manifest: " + JSON.stringify(validate.errors));
-  rational(input.theta.numerator, input.theta.denominator);
-  if (BigInt(input.theta.numerator) <= 0n)
-    throw Error("Bound must be positive");
-  if (input.builds_on.includes(input.id))
-    throw Error("A contribution cannot build on itself.");
-  const inspect = (x) => {
-    if (
-      typeof x === "string" &&
-      /[<>\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f\u202a-\u202e\u2066-\u2069]/u.test(
-        x,
-      )
-    )
-      throw Error("Unsafe metadata");
-    if (x && typeof x === "object") Object.values(x).forEach(inspect);
+import { sha256 } from "./common.mjs";
+
+export function manifest({ id, theta }) {
+  if (!/^[a-z][a-z0-9-]{2,63}$/.test(id ?? ""))
+    throw Error("Invalid submission ID");
+  rational(theta.numerator, theta.denominator);
+  if (BigInt(theta.numerator) <= 0n) throw Error("Bound must be positive");
+  return {
+    id,
+    theta,
+    entrypoint: { module: "Candidate.Main", declaration: "Candidate.bound" },
   };
-  inspect(input);
-  for (const ref of [
-    ...input.references,
-    ...input.authors.filter((a) => a.url),
-  ]) {
-    const u = new URL(ref.url);
-    if (u.protocol !== "https:" || u.username || u.password)
-      throw Error("Unsafe URL");
-  }
-  return input;
 }
 export function safePath(p) {
   if (
@@ -48,7 +27,7 @@ export function safePath(p) {
     throw Error("Unsafe path");
   return p;
 }
-export function submission(dir) {
+export function submission(dir, declaration) {
   if (lstatSync(dir).isSymbolicLink()) throw Error("Symlink submission");
   const base = realpathSync(dir),
     files = [];
@@ -61,20 +40,20 @@ export function submission(dir) {
       if (stat.isSymbolicLink() || (!stat.isFile() && !stat.isDirectory()))
         throw Error("Only regular files/directories allowed");
       if (stat.isDirectory()) {
-        if (file !== "src" && !file.startsWith("src/Candidate"))
+        if (
+          file !== "src" &&
+          !/^src\/Candidate(?:\/[A-Z][A-Za-z0-9_]*)*$/.test(file)
+        )
           throw Error("Unapproved directory");
         walk(file);
         continue;
       }
       if (
-        !["manifest.json", "explanation.md", "LICENSE", "NOTICE"].includes(
-          file,
-        ) &&
         !/^src\/Candidate\/(?:[A-Z][A-Za-z0-9_]*\/)*[A-Z][A-Za-z0-9_]*\.lean$/.test(
           file,
         )
       )
-        throw Error("Unapproved submission file: " + file);
+        throw Error("Submissions contain only Lean source: " + file);
       total += stat.size;
       if (
         total > 10 * 1024 * 1024 ||
@@ -87,20 +66,11 @@ export function submission(dir) {
     }
   }
   walk();
-  const m = manifest(readJSON(path.join(base, "manifest.json")));
-  const entry = "src/" + m.entrypoint.module.replaceAll(".", "/") + ".lean";
-  if (
-    !files.some((f) => f.path === entry) ||
-    !files.some((f) => f.path === "explanation.md") ||
-    !files.some((f) => f.path === "LICENSE")
-  )
-    throw Error("Missing source, explanation or license");
-  const inventory = files.map(({ path, sha256 }) => ({ path, sha256 }));
+  if (!files.some((f) => f.path === "src/Candidate/Main.lean"))
+    throw Error("Missing src/Candidate/Main.lean");
   return {
-    manifest: m,
+    manifest: manifest(declaration),
     files,
-    inventory,
-    content_digest: sha256(inventory),
-    manifest_digest: sha256(m),
+    inventory: files.map(({ path, sha256 }) => ({ path, sha256 })),
   };
 }

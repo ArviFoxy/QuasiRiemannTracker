@@ -1,3 +1,0 @@
-import QRH.PrimeRows.OptimizedNormalizedTransport
-#print axioms OAI.SevenEighths.QRHPhysicalTails.normalized_central_transport
-#print axioms OAI.SevenEighths.QRHPhysicalTails.actual_normalized_probe_transport

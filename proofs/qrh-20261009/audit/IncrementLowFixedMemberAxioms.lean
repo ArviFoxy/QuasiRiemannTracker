@@ -1,2 +1,0 @@
-import QRH.Reflection.LowFixedMember
-#print axioms OAI.SevenEighths.InverseReflectedPhase.low_fixed_member_geometry_uniform_optimized

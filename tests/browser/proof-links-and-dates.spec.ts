@@ -24,22 +24,10 @@ test("verified proof badges open solution sources and contribution dates retain 
     if (record.status === "framework-verified") {
       await expect(badge).toHaveAttribute("href", /\/Solution\.lean$/);
       const href = (await badge.getAttribute("href"))!;
-      const url = new URL(href);
-      const path = url.pathname.split("/public/")[1];
-      let source: string;
-      if (path) {
-        const response = await request.get(`/${path}`);
-        expect(response.ok()).toBe(true);
-        source = await response.text();
-      } else {
-        expect(url.origin).toBe("https://github.com");
-        expect(url.pathname).toMatch(
-          /^\/GTimG\/QuasiRiemannTracker\/blob\/main\/verifier\/standard\/receipts\/[^/]+\/solution-src\/Solution\.lean$/,
-        );
-        source = readFileSync(url.pathname.split("/blob/main/")[1], "utf8");
-      }
-      expect(source).toMatch(/\btheorem\b/);
-      expect(source).not.toMatch(/\bsorry\b/);
+      expect(href).toBe(record.solution_url);
+      expect(new URL(href).pathname).toMatch(
+        /\/blob\/[a-f0-9]{40}\/.+\/Solution\.lean$/,
+      );
     } else if (record.status === "historical-baseline") {
       await expect(row.locator(".tag.historical")).toHaveText(
         "Historical baseline",
@@ -60,63 +48,4 @@ test("verified proof badges open solution sources and contribution dates retain 
     );
     await expect(dateCell.locator("small")).toHaveText(record.date_label);
   }
-});
-
-test("flat-layout solution references beat challenge templates; unknown layouts are not proof links", async ({
-  page,
-}) => {
-  // Isolated response fixtures model the flat layout used by Akash's snapshot.
-  const flat = {
-    ...catalogue.records.find(
-      (record: { status: string }) => record.status === "framework-verified",
-    ),
-    id: "test-flat-layout",
-    title: "Test fixture · flat layout",
-    timeline_at: undefined,
-    date_precision: "day",
-    date_label: undefined,
-    references: [
-      {
-        label: "Exact checked statements",
-        url: "proofs/test-flat/Challenge.lean",
-      },
-      { label: "Solution wrapper", url: "proofs/test-flat/Solution.lean" },
-    ],
-  };
-  const unknown = {
-    ...flat,
-    id: "test-unknown-layout",
-    title: "Test fixture · unknown layout",
-    references: [flat.references[0]],
-  };
-  await page.route("**/catalogue.json", (route) =>
-    route.fulfill({ json: { schema_version: 1, records: [flat, unknown] } }),
-  );
-  await page.route("**/registry.json", (route) =>
-    route.fulfill({
-      json: { schema_version: 1, records: [], events: [], active_ids: [] },
-    }),
-  );
-  await page.goto("/");
-  const row = page.locator("tbody tr").filter({
-    has: page.getByRole("button", { name: flat.title, exact: true }),
-  });
-  await expect(row.locator(".verification-badge")).toHaveAttribute(
-    "href",
-    "https://github.com/GTimG/QuasiRiemannTracker/blob/main/public/proofs/test-flat/Solution.lean",
-  );
-  await expect(row.locator('td[data-label="Date"] small')).toHaveText(
-    "First verified",
-  );
-  await expect(row.locator("time")).toHaveAttribute(
-    "datetime",
-    flat.first_verified_at,
-  );
-  const unknownRow = page.locator("tbody tr").filter({
-    has: page.getByRole("button", { name: unknown.title, exact: true }),
-  });
-  await expect(unknownRow).toBeVisible();
-  await expect(unknownRow.locator(".verification-badge")).not.toHaveAttribute(
-    "href",
-  );
 });

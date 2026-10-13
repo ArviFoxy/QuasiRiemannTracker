@@ -1,2 +1,0 @@
-import QRH.Detector.UniformAllMoments
-#print axioms OAI.SevenEighths.QRHUniformDetectorMoment.actual_uniform_four_moment_fields

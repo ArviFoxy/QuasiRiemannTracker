@@ -1,2 +1,0 @@
-import QRH.Reflection.LowGlobalBudget
-#print axioms OAI.SevenEighths.InverseReflectedPhase.original_low_global_full_budget_optimized

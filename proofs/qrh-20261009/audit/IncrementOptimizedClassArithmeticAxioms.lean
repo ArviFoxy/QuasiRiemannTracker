@@ -1,2 +1,0 @@
-import QRH.Detector.OptimizedClassArithmetic
-#print axioms OAI.SevenEighths.QRHProbeHighRowFamily.actual_class_cube_arithmetic

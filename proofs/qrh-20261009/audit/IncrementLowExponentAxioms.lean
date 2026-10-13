@@ -1,2 +1,0 @@
-import QRH.Reflection.LowExponent
-#print axioms OAI.SevenEighths.InverseReflectedPhase.original_surviving_low_exponent_optimized

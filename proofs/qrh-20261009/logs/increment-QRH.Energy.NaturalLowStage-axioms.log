@@ -1,3 +1,0 @@
-'OAI.SevenEighths.CenteredMomentEnergyNaturalLowStage.actual_low_from_bands_extended' depends on axioms: [propext,
- Classical.choice,
- Quot.sound]

@@ -30,6 +30,14 @@
       "method": "Absolute convergence of the Euler products gives nonvanishing of the Riemann zeta function and every Dirichlet L-function for Re(s) > 1. This is the classical starting bound; quasi-RH asks for a fixed boundary strictly below 1.",
       "references": [
         {
+          "label": "Verification record",
+          "url": "certificates/classical-euler-product.json"
+        },
+        {
+          "label": "Checked Lean solution",
+          "url": "https://github.com/GTimG/QuasiRiemannTracker/blob/d716ecaae80f7823a5b8314916364fdfa0d133fb/verifier/standard/receipts/classical-first-20261012/solution-src/Solution.lean"
+        },
+        {
           "label": "Hardy–Littlewood, Partitio numerorum III, p. 4 (Hypothesis R); scan printed in 1922",
           "url": "https://archive.ymsc.tsinghua.edu.cn/pacm_download/117/5327-11511_2006_Article_BF02403921.pdf"
         },
@@ -42,14 +50,6 @@
           "url": "https://github.com/leanprover-community/mathlib4/blob/d13f23b723b8a846827a245b89c10fc7d3f11612/Mathlib/NumberTheory/LSeries/Dirichlet.lean#L228"
         },
         {
-          "label": "Independently checked Solution.lean",
-          "url": "https://github.com/GTimG/QuasiRiemannTracker/blob/main/verifier/standard/receipts/classical-first-20261012/solution-src/Solution.lean"
-        },
-        {
-          "label": "Three-kernel verification receipt",
-          "url": "https://github.com/GTimG/QuasiRiemannTracker/blob/main/verifier/standard/receipts/classical-first-20261012/result.json"
-        },
-        {
           "label": "Pinned standard submission and attribution",
           "url": "https://github.com/nielstron/QuasiRiemannTracker/tree/a04a07166729cadd3d74da634c6cfa7b2821f2c2/submissions/classical-euler-product"
         }
@@ -59,7 +59,9 @@
       "date_precision": "year",
       "date_label": "Early QRH-era formulation",
       "verification_note": "Comparator checked the canonical all-Dirichlet statement at theta = 1, and Lean, NanoDa and con-ron accepted its exported proof using propext, Classical.choice and Quot.sound. The independent check ran in the standard Palomar sandbox. The timeline uses the historical 1922 date anchor; the verification date records the completed check.",
-      "attribution_note": "The point uses 1922, the printing year shown in Hardy and Littlewood’s Partitio numerorum III; the publisher catalogues the volume in 1923. The paper supplies an early fixed-half-plane formulation and the timeline anchor. The Euler-product bound was already classical."
+      "attribution_note": "The point uses 1922, the printing year shown in Hardy and Littlewood’s Partitio numerorum III; the publisher catalogues the volume in 1923. The paper supplies an early fixed-half-plane formulation and the timeline anchor. The Euler-product bound was already classical.",
+      "certificate_url": "certificates/classical-euler-product.json",
+      "solution_url": "https://github.com/GTimG/QuasiRiemannTracker/blob/d716ecaae80f7823a5b8314916364fdfa0d133fb/verifier/standard/receipts/classical-first-20261012/solution-src/Solution.lean"
     },
     {
       "submitted_at": "",
@@ -89,34 +91,24 @@
       "method": "OpenAI’s quasi-Riemann framework establishes the 7/8 boundary. The original pinned proof has now been rebuilt and checked directly.",
       "references": [
         {
-          "label": "Independent kernel verification report",
-          "url": "proofs/palomar-20261009/openai/result.json"
+          "label": "Verification record",
+          "url": "certificates/openai-baseline.json"
         },
         {
-          "label": "Comparator and kernel acceptance log",
-          "url": "proofs/palomar-20261009/openai/judge.log"
-        },
-        {
-          "label": "Exact checked statements",
-          "url": "proofs/palomar-20261009/openai/src/Challenge.lean"
-        },
-        {
-          "label": "Checking method and reproduction details",
-          "url": "proofs/palomar-20261009/README.txt"
+          "label": "Checked Lean solution",
+          "url": "https://github.com/GTimG/QuasiRiemannTracker/blob/d716ecaae80f7823a5b8314916364fdfa0d133fb/public/proofs/palomar-20261009/openai/src/Solution.lean"
         },
         {
           "label": "Original source and scope",
           "url": "https://github.com/openai/math/blob/fd4aeeb2ee4fc729c18d98444fed42fd0529eeeb/lean/docs/003.md"
-        },
-        {
-          "label": "Our verification evidence",
-          "url": "proofs/qrh-20261009/verification.json"
         }
       ],
       "status": "framework-verified",
       "timeline_at": "2026-10-06T00:00:00Z",
       "date_label": "Public release",
-      "verification_note": "The original proof passed local verification with Palomar’s mechanical checker: Comparator compared the exact statements and their definitions, then con-ron, NanoDa and Lean’s fresh kernel accepted the exported proofs. All-Dirichlet, zeta and finite-order Eisenstein Hecke targets were checked, with only propext, Classical.choice and Quot.sound allowed. This is a local check; Palomar registration and editorial review are separate."
+      "verification_note": "The original proof passed local verification with Palomar’s mechanical checker: Comparator compared the exact statements and their definitions, then con-ron, NanoDa and Lean’s fresh kernel accepted the exported proofs. All-Dirichlet, zeta and finite-order Eisenstein Hecke targets were checked, with only propext, Classical.choice and Quot.sound allowed. This is a local check; Palomar registration and editorial review are separate.",
+      "certificate_url": "certificates/openai-baseline.json",
+      "solution_url": "https://github.com/GTimG/QuasiRiemannTracker/blob/d716ecaae80f7823a5b8314916364fdfa0d133fb/public/proofs/palomar-20261009/openai/src/Solution.lean"
     },
     {
       "submitted_at": "",
@@ -148,36 +140,16 @@
       "method": "Refinement of the OpenAI framework to 3499999/4000000. The pinned original proof has been independently reproduced and checked with Comparator and three kernels.",
       "references": [
         {
-          "label": "Independent maintainer replay receipt",
-          "url": "proofs/argonaut-20261010-safe-replay/result.json"
+          "label": "Verification record",
+          "url": "certificates/argonaut-20261008.json"
         },
         {
-          "label": "Maintainer replay: all three kernel acceptances",
-          "url": "proofs/argonaut-20261010-safe-replay/logs/judge.log"
-        },
-        {
-          "label": "Exact independent target statements",
-          "url": "proofs/argonaut-20261010-safe-replay/challenge-src/Challenge.lean"
-        },
-        {
-          "label": "Sandboxed reproduction instructions",
-          "url": "proofs/argonaut-20261010-safe-replay/README.txt"
-        },
-        {
-          "label": "Positive and negative checker controls",
-          "url": "proofs/argonaut-20261010-safe-replay/controls/control-results.json"
+          "label": "Checked Lean solution",
+          "url": "https://github.com/GTimG/QuasiRiemannTracker/blob/d716ecaae80f7823a5b8314916364fdfa0d133fb/public/proofs/argonaut-20261010-safe-replay/challenge-src/Solution.lean"
         },
         {
           "label": "Reviewed original source package",
-          "url": "proofs/argonaut-20261010-kernels/source-public.tar.gz"
-        },
-        {
-          "label": "Earlier submitted checker report (historical)",
-          "url": "proofs/argonaut-20261010-kernels/result.json"
-        },
-        {
-          "label": "Historical native instructions (unsafe for untrusted submissions)",
-          "url": "proofs/argonaut-20261010-kernels/README.txt"
+          "url": "https://github.com/GTimG/QuasiRiemannTracker/blob/d716ecaae80f7823a5b8314916364fdfa0d133fb/public/proofs/argonaut-20261010-kernels/source-public.tar.gz"
         },
         {
           "label": "Argonaut source and release",
@@ -187,7 +159,9 @@
       "status": "framework-verified",
       "timeline_at": "2026-10-08T00:00:00Z",
       "date_label": "Public announcement",
-      "verification_note": "Argonaut Math's unchanged pinned v0.1.8 proof was independently rebuilt by the maintainer in a genuine offline Linux sandbox. The canonical challenge was exported before candidate execution; Comparator checked the exact all-Dirichlet, zeta and finite-order Eisenstein Hecke statements and definitions, and Lean, NanoDa and con-ron accepted all three targets at exactly 3499999/4000000 with only propext, Classical.choice and Quot.sound. The receipt was written outside candidate-writable paths. Original proof sources, authorship and license notices remain in the historical package. The first verified time records this confined maintainer run; the earlier submitted report remains historical evidence. This is local mechanical verification, not signed registry admission or Palomar registration."
+      "verification_note": "Argonaut Math's unchanged pinned v0.1.8 proof was independently rebuilt by the maintainer in a genuine offline Linux sandbox. The canonical challenge was exported before candidate execution; Comparator checked the exact all-Dirichlet, zeta and finite-order Eisenstein Hecke statements and definitions, and Lean, NanoDa and con-ron accepted all three targets at exactly 3499999/4000000 with only propext, Classical.choice and Quot.sound. The receipt was written outside candidate-writable paths. Original proof sources, authorship and license notices remain in the historical package. The first verified time records this confined maintainer run; the earlier submitted report remains historical evidence. This is local mechanical verification, not signed registry admission or Palomar registration.",
+      "certificate_url": "certificates/argonaut-20261008.json",
+      "solution_url": "https://github.com/GTimG/QuasiRiemannTracker/blob/d716ecaae80f7823a5b8314916364fdfa0d133fb/public/proofs/argonaut-20261010-safe-replay/challenge-src/Solution.lean"
     },
     {
       "submitted_at": "",
@@ -230,36 +204,12 @@
       "method": "Optimizes b and ℓ in the OpenAI argument. The exact boundary is algebraic. The plotted rational is a certified upper endpoint less than 10⁻³⁰ above it, used only for rendering.",
       "references": [
         {
-          "label": "Independent maintainer replay receipt",
-          "url": "proofs/liu-20261010-safe-replay/result.json"
+          "label": "Verification record",
+          "url": "certificates/liu-20261008.json"
         },
         {
-          "label": "Maintainer replay: all three kernel acceptances",
-          "url": "proofs/liu-20261010-safe-replay/logs/judge.log"
-        },
-        {
-          "label": "Earlier submitted checker report (historical)",
-          "url": "proofs/liu-20261010-kernels/result.json"
-        },
-        {
-          "label": "Earlier submitted checker log (historical)",
-          "url": "proofs/liu-20261010-kernels/judge.log"
-        },
-        {
-          "label": "Exact independent target statements",
-          "url": "proofs/liu-20261010-safe-replay/challenge-src/Challenge.lean"
-        },
-        {
-          "label": "Sandboxed reproduction instructions",
-          "url": "proofs/liu-20261010-safe-replay/README.txt"
-        },
-        {
-          "label": "Historical reconstruction notes (old native scripts are unsafe)",
-          "url": "proofs/liu-20261010-kernels/README.txt"
-        },
-        {
-          "label": "Positive and negative checker controls",
-          "url": "proofs/liu-20261010-safe-replay/controls/control-results.json"
+          "label": "Checked Lean solution",
+          "url": "https://github.com/GTimG/QuasiRiemannTracker/blob/d716ecaae80f7823a5b8314916364fdfa0d133fb/public/proofs/liu-20261010-safe-replay/challenge-src/Solution.lean"
         },
         {
           "label": "Paper · arXiv:2610.12234",
@@ -273,7 +223,9 @@
       "status": "framework-verified",
       "timeline_at": "2026-10-08T16:18:53Z",
       "date_label": "arXiv submission",
-      "verification_note": "Liu's pinned original proof was independently rebuilt by the maintainer in a genuine offline Linux sandbox. The canonical challenge was exported before candidate execution; Comparator checked the exact statements and definitions, and Lean, NanoDa and con-ron accepted all three targets with only propext, Classical.choice and Quot.sound. The checked boundary is (1507 − 2√921) / 1653; its rational enclosure is only a plotting coordinate. The receipt was written outside candidate-writable paths. No Liu proof source or proof exports are redistributed. The first verified time records this confined maintainer run; the earlier submitted report is retained as historical evidence. This is local mechanical verification, not signed registry admission or Palomar registration."
+      "verification_note": "Liu's pinned original proof was independently rebuilt by the maintainer in a genuine offline Linux sandbox. The canonical challenge was exported before candidate execution; Comparator checked the exact statements and definitions, and Lean, NanoDa and con-ron accepted all three targets with only propext, Classical.choice and Quot.sound. The checked boundary is (1507 − 2√921) / 1653; its rational enclosure is only a plotting coordinate. The receipt was written outside candidate-writable paths. No Liu proof source or proof exports are redistributed. The first verified time records this confined maintainer run; the earlier submitted report is retained as historical evidence. This is local mechanical verification, not signed registry admission or Palomar registration.",
+      "certificate_url": "certificates/liu-20261008.json",
+      "solution_url": "https://github.com/GTimG/QuasiRiemannTracker/blob/d716ecaae80f7823a5b8314916364fdfa0d133fb/public/proofs/liu-20261010-safe-replay/challenge-src/Solution.lean"
     },
     {
       "submitted_at": "",
@@ -305,51 +257,33 @@
       "method": "Extends the actual masked moment and detector range, proves optimized low/high probe estimates, and applies Mellin continuation and all-character transfer. All three targets compile at the exact rational threshold.",
       "references": [
         {
-          "label": "Independent kernel verification report",
-          "url": "proofs/palomar-20261009/qrh/result.json"
+          "label": "Verification record",
+          "url": "certificates/proofcouncil-20261009.json"
         },
         {
-          "label": "Comparator and kernel acceptance log",
-          "url": "proofs/palomar-20261009/qrh/judge.log"
-        },
-        {
-          "label": "Exact checked statements",
-          "url": "proofs/palomar-20261009/qrh/src/Challenge.lean"
-        },
-        {
-          "label": "Checking method and reproduction details",
-          "url": "proofs/palomar-20261009/README.txt"
+          "label": "Checked Lean solution",
+          "url": "https://github.com/GTimG/QuasiRiemannTracker/blob/d716ecaae80f7823a5b8314916364fdfa0d133fb/public/proofs/palomar-20261009/qrh/src/Solution.lean"
         },
         {
           "label": "Lean proof source",
-          "url": "proofs/qrh-20261009/Nonvanishing.lean"
-        },
-        {
-          "label": "Final verification report",
-          "url": "proofs/qrh-20261009/FINAL_STATUS.txt"
-        },
-        {
-          "label": "Statement and axiom checks",
-          "url": "proofs/qrh-20261009/verification.json"
-        },
-        {
-          "label": "Coordinator recheck",
-          "url": "proofs/qrh-20261009/operator-recheck.json"
+          "url": "https://github.com/GTimG/QuasiRiemannTracker/blob/d716ecaae80f7823a5b8314916364fdfa0d133fb/public/proofs/qrh-20261009/Nonvanishing.lean"
         },
         {
           "label": "Complete proof source, inputs and logs",
-          "url": "proofs/qrh-20261009/source-public.tar.gz"
+          "url": "https://github.com/GTimG/QuasiRiemannTracker/blob/d716ecaae80f7823a5b8314916364fdfa0d133fb/public/proofs/qrh-20261009/source-public.tar.gz"
         },
         {
           "label": "Accepted manuscript (TeX)",
-          "url": "proofs/qrh-20261009/accepted-answer.tex"
+          "url": "https://github.com/GTimG/QuasiRiemannTracker/blob/d716ecaae80f7823a5b8314916364fdfa0d133fb/public/proofs/qrh-20261009/accepted-answer.tex"
         }
       ],
       "status": "framework-verified",
       "timeline_at": "2026-10-09T11:37:19Z",
       "date_label": "Lean verification",
       "verification_note": "The original proof passed local verification with Palomar’s mechanical checker: Comparator compared the exact statements and their definitions, then con-ron, NanoDa and Lean’s fresh kernel accepted the exported proofs. All-Dirichlet, zeta and finite-order Eisenstein Hecke targets were checked, with only propext, Classical.choice and Quot.sound allowed. This is a local check; Palomar registration and editorial review are separate.",
-      "attribution_note": "Tim Gehrunger is the maintainer; ProofCouncil is the project credit. AI-assisted research and formalization, reusing the Apache-2.0 OpenAI/math and Mathlib developments. This display credit does not amend the supplied manuscript’s blank author field."
+      "attribution_note": "Tim Gehrunger is the maintainer; ProofCouncil is the project credit. AI-assisted research and formalization, reusing the Apache-2.0 OpenAI/math and Mathlib developments. This display credit does not amend the supplied manuscript’s blank author field.",
+      "certificate_url": "certificates/proofcouncil-20261009.json",
+      "solution_url": "https://github.com/GTimG/QuasiRiemannTracker/blob/d716ecaae80f7823a5b8314916364fdfa0d133fb/public/proofs/palomar-20261009/qrh/src/Solution.lean"
     },
     {
       "submitted_at": "",
@@ -383,44 +317,16 @@
       "method": "Revision of the same compressed Lean contribution to the exact cubic endpoint: 11/12-e/4, where e is the unique real root in [1/6,1/5] of 657e³−954e²+21e+20=0. The plotted rational is a rigorously proved upper bound. The final QRH package uses 259,073 source tokens under the pinned LeanLeanBench metric. The earlier N24 proof and its evidence remain available as historical snapshots.",
       "references": [
         {
-          "label": "Seven-target Comparator and three-kernel report",
-          "url": "proofs/nielstron-algebraic-20261009-kernels/result.json"
+          "label": "Verification record",
+          "url": "certificates/nielstron-algebraic-20261009.json"
         },
         {
-          "label": "Independent checking method and reproduction",
-          "url": "proofs/nielstron-algebraic-20261009-kernels/README.txt"
-        },
-        {
-          "label": "All-kernel acceptance log",
-          "url": "proofs/nielstron-algebraic-20261009-kernels/judge.log"
-        },
-        {
-          "label": "Exact independent statements and root nonvacuity",
-          "url": "proofs/nielstron-algebraic-20261009-kernels/src/PalomarCanonical3d11d053040a6a513a35e5ef/Challenge.lean"
-        },
-        {
-          "label": "Positive and negative controls",
-          "url": "proofs/nielstron-algebraic-20261009-kernels/control-results.json"
+          "label": "Checked Lean solution",
+          "url": "https://github.com/GTimG/QuasiRiemannTracker/blob/d716ecaae80f7823a5b8314916364fdfa0d133fb/public/proofs/nielstron-algebraic-20261009-kernels/src/PalomarCanonical3d11d053040a6a513a35e5ef/Solution.lean"
         },
         {
           "label": "Frozen source and native evidence",
-          "url": "proofs/nielstron-algebraic-20261009/source-public.tar.gz"
-        },
-        {
-          "label": "Source and algebraic endpoint explanation",
-          "url": "proofs/nielstron-algebraic-20261009-README.md"
-        },
-        {
-          "label": "Exact LeanLeanBench token counts",
-          "url": "proofs/nielstron-algebraic-20261009/token-counts.json"
-        },
-        {
-          "label": "Previous N24 source and evidence (historical revision)",
-          "url": "proofs/nielstron-20261009-tightening/README.txt"
-        },
-        {
-          "label": "Previous N24 independent kernel report (historical revision)",
-          "url": "proofs/nielstron-20261009-kernels/result.json"
+          "url": "https://github.com/GTimG/QuasiRiemannTracker/blob/d716ecaae80f7823a5b8314916364fdfa0d133fb/public/proofs/nielstron-algebraic-20261009/source-public.tar.gz"
         }
       ],
       "status": "framework-verified",
@@ -428,7 +334,9 @@
       "date_label": "Independent kernel verification",
       "verification_note": "The pinned local Palomar mechanical suite compared seven literal targets and their definitions: three N36 rational bounds, three exact algebraic bounds, and unique root existence. Lean’s fresh kernel, NanoDa and con-ron accepted the proofs. Positive, statement-mismatch and ill-typed-proof controls passed. Only propext, Classical.choice and Quot.sound were permitted. This is a local mechanical check, not Palomar registration, editorial approval or a signed admission.",
       "attribution_note": "Human contributor: Nielstron. AI-assisted research and formalization; inherited ProofCouncil and OpenAI notices retained.",
-      "proof_revision": "nielstron-algebraic-20261009"
+      "proof_revision": "nielstron-algebraic-20261009",
+      "certificate_url": "certificates/nielstron-algebraic-20261009.json",
+      "solution_url": "https://github.com/GTimG/QuasiRiemannTracker/blob/d716ecaae80f7823a5b8314916364fdfa0d133fb/public/proofs/nielstron-algebraic-20261009-kernels/src/PalomarCanonical3d11d053040a6a513a35e5ef/Solution.lean"
     },
     {
       "submitted_at": "2026-10-10T03:22:55Z",
@@ -461,72 +369,28 @@
       "method": "Replaces the pointwise numerator bound in the cubic-theta probe of OpenAI's argument by a weighted fourth moment of the reflected physical numerator: Mellin inversion and the Hecke functional equation reduce the actual smoothed numerator sum to a plain polynomial of length at most U/Y, and the unused length carries selected prime factors in the original fourth moment, while a coefficient-norm argument controls the original Euler correction and its ramified error terms. The moment parameter stays at the original kappa = 3/4; with ell = 167/1000, theta = 11/12 - ell/4 = 10499/12000, and the finite exponent comparisons are exact rational certificates. Lean 4.34.1 development of 228 modules on the akashlevy/math fork (c388e88e6) of OpenAI/math fd4aeeb, with Mathlib d13f23b7; it proves zeta, all-Dirichlet and finite-order Hecke nonvanishing for Re s > 10499/12000.",
       "references": [
         {
-          "label": "Independent maintainer replay receipt",
-          "url": "proofs/akashlevy-20261010-safe-replay/result.json"
+          "label": "Verification record",
+          "url": "certificates/akashlevy-20261009-weighted-numerator.json"
         },
         {
-          "label": "Independent Comparator and three-kernel acceptance log",
-          "url": "proofs/akashlevy-20261010-safe-replay/logs/judge.log"
-        },
-        {
-          "label": "Sandboxed reproduction instructions",
-          "url": "proofs/akashlevy-20261010-safe-replay/README.txt"
-        },
-        {
-          "label": "Canonical all-Dirichlet contract audit",
-          "url": "proofs/akashlevy-20261010-safe-replay/contract-audit.json"
-        },
-        {
-          "label": "Independent positive and negative checker controls",
-          "url": "proofs/akashlevy-20261010-safe-replay/controls/control-results.json"
-        },
-        {
-          "label": "Historical author-side checker report (unsandboxed macOS)",
-          "url": "proofs/akashlevy-20261009-weighted-numerator/result.json"
-        },
-        {
-          "label": "Historical author-side acceptance log (unsandboxed)",
-          "url": "proofs/akashlevy-20261009-weighted-numerator/judge.log"
-        },
-        {
-          "label": "Exact checked statements (tracker template at 10499/12000)",
-          "url": "proofs/akashlevy-20261009-weighted-numerator/Challenge.lean"
-        },
-        {
-          "label": "Solution wrapper",
-          "url": "proofs/akashlevy-20261009-weighted-numerator/Solution.lean"
-        },
-        {
-          "label": "Comparator configuration",
-          "url": "proofs/akashlevy-20261009-weighted-numerator/comparator.json"
-        },
-        {
-          "label": "Historical author-side checker controls",
-          "url": "proofs/akashlevy-20261009-weighted-numerator/control-results.json"
-        },
-        {
-          "label": "Post-run audit of the challenge definition files against pinned upstream blobs",
-          "url": "proofs/akashlevy-20261009-weighted-numerator/challenge-source-audit.json"
-        },
-        {
-          "label": "Original author README and reproduction notes (historical)",
-          "url": "proofs/akashlevy-20261009-weighted-numerator/README.txt"
+          "label": "Checked Lean solution",
+          "url": "https://github.com/GTimG/QuasiRiemannTracker/blob/d716ecaae80f7823a5b8314916364fdfa0d133fb/public/proofs/akashlevy-20261009-weighted-numerator/Solution.lean"
         },
         {
           "label": "Manuscript (PDF)",
-          "url": "proofs/akashlevy-20261009-weighted-numerator/manuscript.pdf"
+          "url": "https://github.com/GTimG/QuasiRiemannTracker/blob/d716ecaae80f7823a5b8314916364fdfa0d133fb/public/proofs/akashlevy-20261009-weighted-numerator/manuscript.pdf"
         },
         {
           "label": "Manuscript (TeX)",
-          "url": "proofs/akashlevy-20261009-weighted-numerator/weighted_numerator_proof.tex"
+          "url": "https://github.com/GTimG/QuasiRiemannTracker/blob/d716ecaae80f7823a5b8314916364fdfa0d133fb/public/proofs/akashlevy-20261009-weighted-numerator/weighted_numerator_proof.tex"
         },
         {
           "label": "Manuscript lemma (TeX, input by the manuscript)",
-          "url": "proofs/akashlevy-20261009-weighted-numerator/weighted_numerator_lemma.tex"
+          "url": "https://github.com/GTimG/QuasiRiemannTracker/blob/d716ecaae80f7823a5b8314916364fdfa0d133fb/public/proofs/akashlevy-20261009-weighted-numerator/weighted_numerator_lemma.tex"
         },
         {
           "label": "Complete Lean source, manuscript source and evidence",
-          "url": "proofs/akashlevy-20261009-weighted-numerator/source-public.tar.gz"
+          "url": "https://github.com/GTimG/QuasiRiemannTracker/blob/d716ecaae80f7823a5b8314916364fdfa0d133fb/public/proofs/akashlevy-20261009-weighted-numerator/source-public.tar.gz"
         },
         {
           "label": "Lean base: akashlevy/math fork of OpenAI/math",
@@ -537,7 +401,9 @@
       "timeline_at": "2026-10-10T13:35:18.422104+00:00",
       "date_label": "Independent sandboxed verification",
       "verification_note": "The exact submitted proof was independently rebuilt by the maintainer in a genuine offline Linux sandbox: all 228 new Lean modules and 2,670 modules from the pinned dependency fork were rebuilt. The canonical challenge was exported first from the approved upstream library. Comparator checked all-Dirichlet, zeta and Eisenstein Hecke statements and their definitions at exactly 10499/12000; Lean, NanoDa and con-ron accepted the exports with only propext, Classical.choice and Quot.sound. Isolation tests and matching, mismatched and ill-typed checker controls passed. The receipt was written outside candidate-writable paths and binds the complete source, dependency and tool pins. The timeline records this first independent acceptance, not the discovery date. The original unsandboxed author-side report remains historical evidence. This is a maintainer mechanical replay, not signed registry admission or Palomar registration.",
-      "attribution_note": "Akash Levy (akashlevy) is the human contributor. GPT-6 Astra (Ultra) was used to discover the proof and perform partial formalization; Opus 5.5 Ultracode was used to complete the formalization and submit the result. Builds on the Apache-2.0 OpenAI/math and Mathlib developments; upstream notices are retained."
+      "attribution_note": "Akash Levy (akashlevy) is the human contributor. GPT-6 Astra (Ultra) was used to discover the proof and perform partial formalization; Opus 5.5 Ultracode was used to complete the formalization and submit the result. Builds on the Apache-2.0 OpenAI/math and Mathlib developments; upstream notices are retained.",
+      "certificate_url": "certificates/akashlevy-20261009-weighted-numerator.json",
+      "solution_url": "https://github.com/GTimG/QuasiRiemannTracker/blob/d716ecaae80f7823a5b8314916364fdfa0d133fb/public/proofs/akashlevy-20261009-weighted-numerator/Solution.lean"
     },
     {
       "submitted_at": "2026-10-10T12:08:27Z",
@@ -570,79 +436,33 @@
       "method": "The exact boundary is 11/12−ℓ/4, where ℓ is the unique root in [1/6,1/5] of 927ℓ⁴−3135ℓ³+2433ℓ²+275ℓ−100=0. The plotted rational 683505193/781250000 is a proved upper bound less than 4×10⁻¹⁴ above it. The proof extends the unconditional common-mesh moving-radical moment and applies weighted low/high estimates and analytic continuation to Dirichlet, zeta and finite-order Eisenstein Hecke L-functions.",
       "references": [
         {
-          "label": "Independent maintainer replay receipt",
-          "url": "proofs/cycle25-20261010-safe-replay/result.json"
+          "label": "Verification record",
+          "url": "certificates/cycle25-quartic-20261010.json"
         },
         {
-          "label": "Independent Comparator and three-kernel acceptance log",
-          "url": "proofs/cycle25-20261010-safe-replay/logs/judge.log"
-        },
-        {
-          "label": "Sandboxed reproduction instructions",
-          "url": "proofs/cycle25-20261010-safe-replay/README.txt"
-        },
-        {
-          "label": "Canonical all-Dirichlet contract audit",
-          "url": "proofs/cycle25-20261010-safe-replay/contract-audit.json"
-        },
-        {
-          "label": "Independent positive and negative checker controls",
-          "url": "proofs/cycle25-20261010-safe-replay/controls/control-results.json"
-        },
-        {
-          "label": "Eight independently checked statements",
-          "url": "proofs/cycle25-20261010-safe-replay/challenge-src/Challenge.lean"
+          "label": "Checked Lean solution",
+          "url": "https://github.com/GTimG/QuasiRiemannTracker/blob/d716ecaae80f7823a5b8314916364fdfa0d133fb/public/proofs/cycle25-20261010-safe-replay/challenge-src/Solution.lean"
         },
         {
           "label": "Paper (PDF)",
-          "url": "proofs/cycle25-quartic-20261010/paper.pdf"
+          "url": "https://github.com/GTimG/QuasiRiemannTracker/blob/d716ecaae80f7823a5b8314916364fdfa0d133fb/public/proofs/cycle25-quartic-20261010/paper.pdf"
         },
         {
           "label": "Paper source (TeX)",
-          "url": "proofs/cycle25-quartic-20261010/paper.tex"
-        },
-        {
-          "label": "Historical contributor seven-target report",
-          "url": "proofs/cycle25-quartic-20261010/result.json"
-        },
-        {
-          "label": "Historical contributor statements",
-          "url": "proofs/cycle25-quartic-20261010/Challenge.lean"
-        },
-        {
-          "label": "Historical contributor kernel log",
-          "url": "proofs/cycle25-quartic-20261010/judge.log"
-        },
-        {
-          "label": "Historical contributor checker controls",
-          "url": "proofs/cycle25-quartic-20261010/control-results.json"
-        },
-        {
-          "label": "Historical contributor reproduction notes (unsandboxed; use maintainer instructions)",
-          "url": "proofs/cycle25-quartic-20261010/REPRODUCE.md"
-        },
-        {
-          "label": "Historical contributor verification scope",
-          "url": "proofs/cycle25-quartic-20261010/Verification.md"
+          "url": "https://github.com/GTimG/QuasiRiemannTracker/blob/d716ecaae80f7823a5b8314916364fdfa0d133fb/public/proofs/cycle25-quartic-20261010/paper.tex"
         },
         {
           "label": "Finished proof source and evidence",
-          "url": "proofs/cycle25-quartic-20261010/source-public.tar.gz"
-        },
-        {
-          "label": "Source checksums",
-          "url": "proofs/cycle25-quartic-20261010/source-sha256.json"
-        },
-        {
-          "label": "Attribution and provenance",
-          "url": "proofs/cycle25-quartic-20261010/PROVENANCE.md"
+          "url": "https://github.com/GTimG/QuasiRiemannTracker/blob/d716ecaae80f7823a5b8314916364fdfa0d133fb/public/proofs/cycle25-quartic-20261010/source-public.tar.gz"
         }
       ],
       "status": "framework-verified",
       "timeline_at": "2026-10-10T16:09:09.733191+00:00",
       "date_label": "Independent sandboxed verification",
       "verification_note": "The maintainer independently rebuilt all 3,224 submitted Lean modules (301 Cycle25/reused-moment modules and 2,923 pinned OpenAI modules) in a genuine offline Linux sandbox. The canonical challenge was exported first from the approved upstream library. Comparator checked eight targets and their definitions: rational and exact quartic all-Dirichlet, zeta and Eisenstein Hecke bounds, quartic root existence and uniqueness, and the reusable moment theorem with its stated hypotheses. Lean, NanoDa and con-ron accepted the exports using only propext, Classical.choice and Quot.sound. Isolation and positive/negative checker controls passed. The external controller receipt binds the exact source, dependency and tool pins, challenge and logs. The timeline uses this first independent acceptance, not discovery or the historical contributor check. The original contributor evidence remains immutable. This is a maintainer mechanical replay, not signed registry admission or Palomar registration.",
-      "attribution_note": "Human contributor: Hailey Collet. AI-assisted research and formalization, reusing OpenAI/math, Mathlib and Akash Levy’s weighted construction. The earlier single-compensating-prime development supplies a reused unconditional moment lemma; its terminal 29/33 bound is not an assumption. Upstream licenses and notices are retained."
+      "attribution_note": "Human contributor: Hailey Collet. AI-assisted research and formalization, reusing OpenAI/math, Mathlib and Akash Levy’s weighted construction. The earlier single-compensating-prime development supplies a reused unconditional moment lemma; its terminal 29/33 bound is not an assumption. Upstream licenses and notices are retained.",
+      "certificate_url": "certificates/cycle25-quartic-20261010.json",
+      "solution_url": "https://github.com/GTimG/QuasiRiemannTracker/blob/d716ecaae80f7823a5b8314916364fdfa0d133fb/public/proofs/cycle25-20261010-safe-replay/challenge-src/Solution.lean"
     },
     {
       "submitted_at": "",
@@ -674,28 +494,20 @@
       "method": "A single compensating-prime construction and finite descent give all-Dirichlet nonvanishing to the right of 29/33. The development includes an unconditional moving-radical mixed moment and uses pinned OpenAI foundations.",
       "references": [
         {
+          "label": "Verification record",
+          "url": "certificates/single-prime-29-33-20261010.json"
+        },
+        {
+          "label": "Checked Lean solution",
+          "url": "https://github.com/GTimG/QuasiRiemannTracker/blob/d716ecaae80f7823a5b8314916364fdfa0d133fb/verifier/standard/receipts/single-prime-first-20261012/solution-src/Solution.lean"
+        },
+        {
           "label": "Rendered manuscript (PDF)",
-          "url": "proofs/single-prime-29-33-20261010/zeta_zero_free_4_33_self_contained.pdf"
+          "url": "https://github.com/GTimG/QuasiRiemannTracker/blob/d716ecaae80f7823a5b8314916364fdfa0d133fb/public/proofs/single-prime-29-33-20261010/zeta_zero_free_4_33_self_contained.pdf"
         },
         {
           "label": "Source and reproduction",
-          "url": "https://github.com/GTimG/QuasiRiemannTracker/tree/main/proofs/single-prime-29-33-20261010"
-        },
-        {
-          "label": "Verification and exact scope",
-          "url": "proofs/single-prime-29-33-20261010/Verification.md"
-        },
-        {
-          "label": "Contributor three-kernel report",
-          "url": "proofs/single-prime-29-33-20261010/multi-kernel-report.json"
-        },
-        {
-          "label": "Independently checked Solution.lean",
-          "url": "https://github.com/GTimG/QuasiRiemannTracker/blob/main/verifier/standard/receipts/single-prime-first-20261012/solution-src/Solution.lean"
-        },
-        {
-          "label": "Standard three-kernel verification receipt",
-          "url": "https://github.com/GTimG/QuasiRiemannTracker/blob/main/verifier/standard/receipts/single-prime-first-20261012/result.json"
+          "url": "https://github.com/GTimG/QuasiRiemannTracker/tree/d716ecaae80f7823a5b8314916364fdfa0d133fb/proofs/single-prime-29-33-20261010"
         },
         {
           "label": "Pinned standard submission",
@@ -706,7 +518,9 @@
       "timeline_at": "2026-10-10T07:47:35.881822+00:00",
       "date_label": "Contributor three-kernel verification",
       "verification_note": "Comparator matched the canonical all-Dirichlet statement at 29/33. Lean, NanoDa and con-ron accepted its exported proof using propext, Classical.choice and Quot.sound in the standard Palomar sandbox. The original package retains contributor checks of its additional endpoints. The timeline marks the contributor verification; first_verified_at records the independent standard check.",
-      "attribution_note": "Manuscript by Hailey Collet, developed with assistance from OpenAI's GPT-6 Pro. Formalization submitted as HaileyStorm with substantial OpenAI Codex assistance, adapting pinned OpenAI/math foundations. See NOTICE.md for attribution and licensing."
+      "attribution_note": "Manuscript by Hailey Collet, developed with assistance from OpenAI's GPT-6 Pro. Formalization submitted as HaileyStorm with substantial OpenAI Codex assistance, adapting pinned OpenAI/math foundations. See NOTICE.md for attribution and licensing.",
+      "certificate_url": "certificates/single-prime-29-33-20261010.json",
+      "solution_url": "https://github.com/GTimG/QuasiRiemannTracker/blob/d716ecaae80f7823a5b8314916364fdfa0d133fb/verifier/standard/receipts/single-prime-first-20261012/solution-src/Solution.lean"
     }
   ],
   "historical_records": [
@@ -742,63 +556,29 @@
       "method": "Compresses the ProofCouncil Lean development, then tightens its exact rational certificate and slack budgets. The all-Dirichlet, zeta and finite-order Eisenstein Hecke targets compile at the smaller rational boundary. Final QRH source tokens decrease from 294,019 to 251,464 under the pinned LeanLeanBench metric.",
       "references": [
         {
-          "label": "Independent Comparator and three-kernel report",
-          "url": "proofs/nielstron-20261009-kernels/result.json"
+          "label": "Verification record",
+          "url": "certificates/nielstron-20261009-tightening.json"
         },
         {
-          "label": "Independent checker method and reproduction",
-          "url": "proofs/nielstron-20261009-kernels/README.txt"
-        },
-        {
-          "label": "Independent three-kernel acceptance log",
-          "url": "proofs/nielstron-20261009-kernels/judge.log"
-        },
-        {
-          "label": "Exact independent checker statements",
-          "url": "proofs/nielstron-20261009-kernels/src/PalomarCanonical852af299eac8f1607f3d35b3/Challenge.lean"
-        },
-        {
-          "label": "Positive and negative checker controls",
-          "url": "proofs/nielstron-20261009-kernels/control-results.json"
-        },
-        {
-          "label": "Scope, attribution and reproduction",
-          "url": "proofs/nielstron-20261009-tightening/README.txt"
-        },
-        {
-          "label": "Native Lean result and exact improvement",
-          "url": "proofs/nielstron-20261009-tightening/result.json"
-        },
-        {
-          "label": "Native Lean target and axiom checks",
-          "url": "proofs/nielstron-20261009-tightening/native-lean-verification.json"
-        },
-        {
-          "label": "Exact independent target statements",
-          "url": "proofs/nielstron-20261009-tightening/TightIndependentTargets.lean"
+          "label": "Checked Lean solution",
+          "url": "https://github.com/GTimG/QuasiRiemannTracker/blob/d716ecaae80f7823a5b8314916364fdfa0d133fb/public/proofs/nielstron-20261009-kernels/src/PalomarCanonical852af299eac8f1607f3d35b3/Solution.lean"
         },
         {
           "label": "Tighter Lean proof source",
-          "url": "proofs/nielstron-20261009-tightening/TighterNonvanishing.lean"
-        },
-        {
-          "label": "Per-file source token counts",
-          "url": "proofs/nielstron-20261009-tightening/token-counts.json"
-        },
-        {
-          "label": "Historical checker setup report",
-          "url": "proofs/nielstron-20261009-tightening/external-checker-status.json"
+          "url": "https://github.com/GTimG/QuasiRiemannTracker/blob/d716ecaae80f7823a5b8314916364fdfa0d133fb/public/proofs/nielstron-20261009-tightening/TighterNonvanishing.lean"
         },
         {
           "label": "Complete reproducible source and evidence",
-          "url": "proofs/nielstron-20261009-tightening/source-public.tar.gz"
+          "url": "https://github.com/GTimG/QuasiRiemannTracker/blob/d716ecaae80f7823a5b8314916364fdfa0d133fb/public/proofs/nielstron-20261009-tightening/source-public.tar.gz"
         }
       ],
       "status": "framework-verified",
       "timeline_at": "2026-10-09T17:21:30.103097+00:00",
       "date_label": "Author-side Lean check",
       "verification_note": "The exact submitted proof passed the pinned local Palomar mechanical suite: Comparator compared all three statements and their definitions, then Lean's fresh kernel, NanoDa and con-ron accepted the exports. Matching, mismatched-statement and ill-typed-proof preflight controls passed. Only propext, Classical.choice and Quot.sound were permitted. This is a local mechanical result, proposed for maintainer review; it is not Palomar registration, editorial acceptance or a signed tracker receipt. Earlier native reports and their pending status remain immutable historical evidence.",
-      "attribution_note": "Nielstron is the human contributor; this research and formalization were AI-assisted. The result derives from Tim Gehrunger / ProofCouncil and the Apache-2.0 OpenAI/math and Mathlib developments; upstream notices are retained."
+      "attribution_note": "Nielstron is the human contributor; this research and formalization were AI-assisted. The result derives from Tim Gehrunger / ProofCouncil and the Apache-2.0 OpenAI/math and Mathlib developments; upstream notices are retained.",
+      "certificate_url": "certificates/nielstron-20261009-tightening.json",
+      "solution_url": "https://github.com/GTimG/QuasiRiemannTracker/blob/d716ecaae80f7823a5b8314916364fdfa0d133fb/public/proofs/nielstron-20261009-kernels/src/PalomarCanonical852af299eac8f1607f3d35b3/Solution.lean"
     }
   ]
 }

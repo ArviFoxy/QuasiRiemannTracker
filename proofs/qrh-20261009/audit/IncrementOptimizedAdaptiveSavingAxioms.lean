@@ -1,3 +1,0 @@
-import QRH.Detector.OptimizedAdaptiveSaving
-#print axioms OAI.SevenEighths.QRHProbeCentralExponent.high_mixed_margin
-#print axioms OAI.SevenEighths.QRHProbeCentralExponent.adaptive_mixed_saving

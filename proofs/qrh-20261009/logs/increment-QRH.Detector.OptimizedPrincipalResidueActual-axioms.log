@@ -1,3 +1,0 @@
-'OAI.SevenEighths.QRHPrincipalResidueActual.normalized_actual_window_residue' depends on axioms: [propext,
- Classical.choice,
- Quot.sound]

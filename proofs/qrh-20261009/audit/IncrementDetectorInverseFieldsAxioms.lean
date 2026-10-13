@@ -1,2 +1,0 @@
-import QRH.Detector.DetectorInverseFields
-#print axioms OAI.SevenEighths.ProbeDetectorInverseFields.source_batch_inverse_fields_slots

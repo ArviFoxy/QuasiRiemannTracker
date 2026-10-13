@@ -150,10 +150,7 @@ function assertFailure(result, message) {
   assert.equal(completed.status, "completed");
   assert.equal(completed.conclusion, "failure");
   assert.equal(completed.output.title, "PR admission failed");
-  assert.equal(
-    completed.output.summary,
-    `Admission failed: ${message}\n\nSee CONTRIBUTING.md and docs/GITHUB.md for admission requirements.`,
-  );
+  assert.equal(completed.output.summary, `Admission failed: ${message}`);
 }
 
 test("maintenance publishes success and replaces a stale new-bound label", (t) => {

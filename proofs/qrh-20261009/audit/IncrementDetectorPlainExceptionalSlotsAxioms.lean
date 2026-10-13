@@ -1,3 +1,0 @@
-import QRH.Moments.DetectorPlainExceptionalSlots
-#print axioms OAI.SevenEighths.CenteredMomentDetectorPlainExceptional.source_fibers_eventually_retained_slots
-#print axioms OAI.SevenEighths.CenteredMomentDetectorPlainExceptional.source_batch_plain_retained_slots

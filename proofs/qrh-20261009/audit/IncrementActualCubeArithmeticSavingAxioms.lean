@@ -1,2 +1,0 @@
-import QRH.Detector.ActualCubeArithmeticSaving
-#print axioms OAI.SevenEighths.QRHUniformDetectorMoment.actual_uniform_cube_arithmetic_saving

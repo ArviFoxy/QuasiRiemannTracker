@@ -48,7 +48,7 @@ function prefix(bounds, digits, label) {
 }
 
 // Compare rational bounds and certified algebraic enclosures from the trusted
-// base checkout's receipts and catalogue.
+// base checkout's verification records and catalogue.
 export function validateDecimalApproximation({
   theta_exact,
   theta_decimal,

@@ -75,7 +75,7 @@ jobs:
           name: verification-context-${{ github.run_attempt }}
           path: verification-context/
       - run: npm ci --ignore-scripts --no-audit --no-fund
-      - name: Read the exact submitted source and check its manifest
+      - name: Read the exact submitted Lean source
         id: source
         continue-on-error: true
         run: node verifier/actions/prepare.mjs

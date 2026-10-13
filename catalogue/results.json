@@ -58,7 +58,7 @@
       "timeline_at": "1922-01-01T00:00:00Z",
       "date_precision": "year",
       "date_label": "Early QRH-era formulation",
-      "verification_note": "Comparator checked the canonical all-Dirichlet statement at theta = 1, and Lean, NanoDa and con-ron accepted its exported proof using propext, Classical.choice and Quot.sound. The independent check ran in the standard Palomar sandbox. The timeline uses the historical 1922 date anchor; the verification date records the completed check.",
+      "verification_note": "Comparator verified the canonical all-Dirichlet statement at θ = 1. Lean, NanoDa and con-ron accepted the proof in the standard sandbox. The timeline uses the historical 1922 anchor; the verification date records the completed check.",
       "attribution_note": "The point uses 1922, the printing year shown in Hardy and Littlewood’s Partitio numerorum III; the publisher catalogues the volume in 1923. The paper supplies an early fixed-half-plane formulation and the timeline anchor. The Euler-product bound was already classical.",
       "certificate_url": "certificates/classical-euler-product.json",
       "solution_url": "https://github.com/GTimG/QuasiRiemannTracker/blob/d716ecaae80f7823a5b8314916364fdfa0d133fb/verifier/standard/receipts/classical-first-20261012/solution-src/Solution.lean"
@@ -106,7 +106,7 @@
       "status": "framework-verified",
       "timeline_at": "2026-10-06T00:00:00Z",
       "date_label": "Public release",
-      "verification_note": "The original proof passed local verification with Palomar’s mechanical checker: Comparator compared the exact statements and their definitions, then con-ron, NanoDa and Lean’s fresh kernel accepted the exported proofs. All-Dirichlet, zeta and finite-order Eisenstein Hecke targets were checked, with only propext, Classical.choice and Quot.sound allowed. This is a local check; Palomar registration and editorial review are separate.",
+      "verification_note": "Comparator verified the all-Dirichlet, zeta and finite-order Eisenstein Hecke statements and their definitions. Lean, NanoDa and con-ron accepted the exported proofs.",
       "certificate_url": "certificates/openai-baseline.json",
       "solution_url": "https://github.com/GTimG/QuasiRiemannTracker/blob/d716ecaae80f7823a5b8314916364fdfa0d133fb/public/proofs/palomar-20261009/openai/src/Solution.lean"
     },
@@ -159,7 +159,7 @@
       "status": "framework-verified",
       "timeline_at": "2026-10-08T00:00:00Z",
       "date_label": "Public announcement",
-      "verification_note": "Argonaut Math's unchanged pinned v0.1.8 proof was independently rebuilt by the maintainer in a genuine offline Linux sandbox. The canonical challenge was exported before candidate execution; Comparator checked the exact all-Dirichlet, zeta and finite-order Eisenstein Hecke statements and definitions, and Lean, NanoDa and con-ron accepted all three targets at exactly 3499999/4000000 with only propext, Classical.choice and Quot.sound. The receipt was written outside candidate-writable paths. Original proof sources, authorship and license notices remain in the historical package. The first verified time records this confined maintainer run; the earlier submitted report remains historical evidence. This is local mechanical verification, not signed registry admission or Palomar registration.",
+      "verification_note": "The pinned v0.1.8 proof was rebuilt in an offline Linux sandbox. Comparator verified the all-Dirichlet, zeta and finite-order Eisenstein Hecke statements at exactly 3499999/4000000; Lean, NanoDa and con-ron accepted the proofs.",
       "certificate_url": "certificates/argonaut-20261008.json",
       "solution_url": "https://github.com/GTimG/QuasiRiemannTracker/blob/d716ecaae80f7823a5b8314916364fdfa0d133fb/public/proofs/argonaut-20261010-safe-replay/solution-src/Solution.lean"
     },
@@ -223,7 +223,7 @@
       "status": "framework-verified",
       "timeline_at": "2026-10-08T16:18:53Z",
       "date_label": "arXiv submission",
-      "verification_note": "Liu's pinned original proof was independently rebuilt by the maintainer in a genuine offline Linux sandbox. The canonical challenge was exported before candidate execution; Comparator checked the exact statements and definitions, and Lean, NanoDa and con-ron accepted all three targets with only propext, Classical.choice and Quot.sound. The checked boundary is (1507 − 2√921) / 1653; its rational enclosure is only a plotting coordinate. The receipt was written outside candidate-writable paths. No Liu proof source or proof exports are redistributed. The first verified time records this confined maintainer run; the earlier submitted report is retained as historical evidence. This is local mechanical verification, not signed registry admission or Palomar registration.",
+      "verification_note": "The pinned proof was rebuilt in an offline Linux sandbox. Comparator verified the all-Dirichlet, zeta and finite-order Eisenstein Hecke statements at (1507 − 2√921) / 1653; Lean, NanoDa and con-ron accepted the proofs. The rational enclosure determines its chart position.",
       "certificate_url": "certificates/liu-20261008.json",
       "solution_url": "https://github.com/GTimG/QuasiRiemannTracker/blob/d716ecaae80f7823a5b8314916364fdfa0d133fb/public/proofs/liu-20261010-safe-replay/solution-src/Solution.lean"
     },
@@ -280,7 +280,7 @@
       "status": "framework-verified",
       "timeline_at": "2026-10-09T11:37:19Z",
       "date_label": "Lean verification",
-      "verification_note": "The original proof passed local verification with Palomar’s mechanical checker: Comparator compared the exact statements and their definitions, then con-ron, NanoDa and Lean’s fresh kernel accepted the exported proofs. All-Dirichlet, zeta and finite-order Eisenstein Hecke targets were checked, with only propext, Classical.choice and Quot.sound allowed. This is a local check; Palomar registration and editorial review are separate.",
+      "verification_note": "Comparator verified the all-Dirichlet, zeta and finite-order Eisenstein Hecke statements and their definitions. Lean, NanoDa and con-ron accepted the exported proofs.",
       "attribution_note": "Tim Gehrunger is the maintainer; ProofCouncil is the project credit. AI-assisted research and formalization, reusing the Apache-2.0 OpenAI/math and Mathlib developments. This display credit does not amend the supplied manuscript’s blank author field.",
       "certificate_url": "certificates/proofcouncil-20261009.json",
       "solution_url": "https://github.com/GTimG/QuasiRiemannTracker/blob/d716ecaae80f7823a5b8314916364fdfa0d133fb/public/proofs/palomar-20261009/qrh/src/Solution.lean"
@@ -332,7 +332,7 @@
       "status": "framework-verified",
       "timeline_at": "2026-10-09T19:51:12.662856+00:00",
       "date_label": "Independent kernel verification",
-      "verification_note": "The pinned local Palomar mechanical suite compared seven literal targets and their definitions: three N36 rational bounds, three exact algebraic bounds, and unique root existence. Lean’s fresh kernel, NanoDa and con-ron accepted the proofs. Positive, statement-mismatch and ill-typed-proof controls passed. Only propext, Classical.choice and Quot.sound were permitted. This is a local mechanical check, not Palomar registration, editorial approval or a signed admission.",
+      "verification_note": "Comparator verified seven targets: three rational bounds, three exact algebraic bounds and unique root existence. Lean, NanoDa and con-ron accepted the proofs. Positive, statement-mismatch and ill-typed-proof controls passed.",
       "attribution_note": "Human contributor: Nielstron. AI-assisted research and formalization; inherited ProofCouncil and OpenAI notices retained.",
       "proof_revision": "nielstron-algebraic-20261009",
       "certificate_url": "certificates/nielstron-algebraic-20261009.json",
@@ -400,7 +400,7 @@
       "status": "framework-verified",
       "timeline_at": "2026-10-10T13:35:18.422104+00:00",
       "date_label": "Independent sandboxed verification",
-      "verification_note": "The exact submitted proof was independently rebuilt by the maintainer in a genuine offline Linux sandbox: all 228 new Lean modules and 2,670 modules from the pinned dependency fork were rebuilt. The canonical challenge was exported first from the approved upstream library. Comparator checked all-Dirichlet, zeta and Eisenstein Hecke statements and their definitions at exactly 10499/12000; Lean, NanoDa and con-ron accepted the exports with only propext, Classical.choice and Quot.sound. Isolation tests and matching, mismatched and ill-typed checker controls passed. The receipt was written outside candidate-writable paths and binds the complete source, dependency and tool pins. The timeline records this first independent acceptance, not the discovery date. The original unsandboxed author-side report remains historical evidence. This is a maintainer mechanical replay, not signed registry admission or Palomar registration.",
+      "verification_note": "The 228 submitted modules and 2,670 dependency modules were rebuilt in an offline Linux sandbox. Comparator verified the all-Dirichlet, zeta and Eisenstein Hecke statements at 10499/12000; Lean, NanoDa and con-ron accepted the proofs. The timeline records this first independent acceptance.",
       "attribution_note": "Akash Levy (akashlevy) is the human contributor. GPT-6 Astra (Ultra) was used to discover the proof and perform partial formalization; Opus 5.5 Ultracode was used to complete the formalization and submit the result. Builds on the Apache-2.0 OpenAI/math and Mathlib developments; upstream notices are retained.",
       "certificate_url": "certificates/akashlevy-20261009-weighted-numerator.json",
       "solution_url": "https://github.com/GTimG/QuasiRiemannTracker/blob/d716ecaae80f7823a5b8314916364fdfa0d133fb/public/proofs/akashlevy-20261009-weighted-numerator/Solution.lean"
@@ -459,7 +459,7 @@
       "status": "framework-verified",
       "timeline_at": "2026-10-10T16:09:09.733191+00:00",
       "date_label": "Independent sandboxed verification",
-      "verification_note": "The maintainer independently rebuilt all 3,224 submitted Lean modules (301 Cycle25/reused-moment modules and 2,923 pinned OpenAI modules) in a genuine offline Linux sandbox. The canonical challenge was exported first from the approved upstream library. Comparator checked eight targets and their definitions: rational and exact quartic all-Dirichlet, zeta and Eisenstein Hecke bounds, quartic root existence and uniqueness, and the reusable moment theorem with its stated hypotheses. Lean, NanoDa and con-ron accepted the exports using only propext, Classical.choice and Quot.sound. Isolation and positive/negative checker controls passed. The external controller receipt binds the exact source, dependency and tool pins, challenge and logs. The timeline uses this first independent acceptance, not discovery or the historical contributor check. The original contributor evidence remains immutable. This is a maintainer mechanical replay, not signed registry admission or Palomar registration.",
+      "verification_note": "The 3,224 Lean modules were rebuilt in an offline Linux sandbox. Comparator verified the rational and exact quartic all-Dirichlet, zeta and Eisenstein Hecke bounds, quartic root existence and uniqueness, and the reusable moment theorem. Lean, NanoDa and con-ron accepted all eight targets. The timeline records this first independent acceptance.",
       "attribution_note": "Human contributor: Hailey Collet. AI-assisted research and formalization, reusing OpenAI/math, Mathlib and Akash Levy’s weighted construction. The earlier single-compensating-prime development supplies a reused unconditional moment lemma; its terminal 29/33 bound is not an assumption. Upstream licenses and notices are retained.",
       "certificate_url": "certificates/cycle25-quartic-20261010.json",
       "solution_url": "https://github.com/GTimG/QuasiRiemannTracker/blob/d716ecaae80f7823a5b8314916364fdfa0d133fb/public/proofs/cycle25-20261010-safe-replay/solution-src/Solution.lean"
@@ -517,7 +517,7 @@
       "status": "framework-verified",
       "timeline_at": "2026-10-10T07:47:35.881822+00:00",
       "date_label": "Contributor three-kernel verification",
-      "verification_note": "Comparator matched the canonical all-Dirichlet statement at 29/33. Lean, NanoDa and con-ron accepted its exported proof using propext, Classical.choice and Quot.sound in the standard Palomar sandbox. The original package retains contributor checks of its additional endpoints. The timeline marks the contributor verification; first_verified_at records the independent standard check.",
+      "verification_note": "Comparator verified the canonical all-Dirichlet statement at 29/33. Lean, NanoDa and con-ron accepted the proof in the standard sandbox. The timeline records contributor verification; the verification date records the independent standard check.",
       "attribution_note": "Manuscript by Hailey Collet, developed with assistance from OpenAI's GPT-6 Pro. Formalization submitted as HaileyStorm with substantial OpenAI Codex assistance, adapting pinned OpenAI/math foundations. See NOTICE.md for attribution and licensing.",
       "certificate_url": "certificates/single-prime-29-33-20261010.json",
       "solution_url": "https://github.com/GTimG/QuasiRiemannTracker/blob/d716ecaae80f7823a5b8314916364fdfa0d133fb/verifier/standard/receipts/single-prime-first-20261012/solution-src/Solution.lean"
@@ -575,7 +575,7 @@
       "status": "framework-verified",
       "timeline_at": "2026-10-09T17:21:30.103097+00:00",
       "date_label": "Author-side Lean check",
-      "verification_note": "The exact submitted proof passed the pinned local Palomar mechanical suite: Comparator compared all three statements and their definitions, then Lean's fresh kernel, NanoDa and con-ron accepted the exports. Matching, mismatched-statement and ill-typed-proof preflight controls passed. Only propext, Classical.choice and Quot.sound were permitted. This is a local mechanical result, proposed for maintainer review; it is not Palomar registration, editorial acceptance or a signed tracker receipt. Earlier native reports and their pending status remain immutable historical evidence.",
+      "verification_note": "Comparator verified the all-Dirichlet, zeta and finite-order Eisenstein Hecke statements. Lean, NanoDa and con-ron accepted the proofs.",
       "attribution_note": "Nielstron is the human contributor; this research and formalization were AI-assisted. The result derives from Tim Gehrunger / ProofCouncil and the Apache-2.0 OpenAI/math and Mathlib developments; upstream notices are retained.",
       "certificate_url": "certificates/nielstron-20261009-tightening.json",
       "solution_url": "https://github.com/GTimG/QuasiRiemannTracker/blob/d716ecaae80f7823a5b8314916364fdfa0d133fb/public/proofs/nielstron-20261009-kernels/src/Solution.lean"

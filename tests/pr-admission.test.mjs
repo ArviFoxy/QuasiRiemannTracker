@@ -563,3 +563,61 @@ for (const [description, mutate, message] of [
     await rejectsBeforeEvidence(input, message);
   });
 }
+
+for (const files of [
+  [file("catalogue/results.json")],
+  [
+    file("proofs/old/Main.lean", { status: "removed" }),
+    file("src/App.tsx"),
+    file("public/catalogue.json"),
+  ],
+  [
+    file("verifier/libraries.json", {
+      status: "renamed",
+      previous_filename: "proofs/old/libraries.json",
+    }),
+  ],
+]) {
+  test(`explicit maintenance admits ${files.map((f) => f.filename).join(", ")}`, async () => {
+    const input = options(
+      "QRH-Result: none\n\nClean up existing records.",
+      files,
+    );
+    assert.deepEqual(classifyPRChanges(input), {
+      proof: false,
+      maintenance: true,
+    });
+    assert.match(await run(input), /Maintenance requirements satisfied/);
+    assert.equal(input.validateEvidence.mock.callCount(), 0);
+  });
+}
+test("maintenance declaration accepts whitespace and remains separate from bound metadata", async () => {
+  assert.deepEqual(parseDeclaration("  QRH-Result:   none  "), {
+    maintenance: true,
+  });
+  assert.equal(hasResultSection("QRH-Result: none"), false);
+  const input = options("  QRH-Result:   none  ", [
+    file("catalogue/results.json"),
+  ]);
+  assert.match(await run(input), /Maintenance requirements satisfied/);
+  for (const field of ["QRH-Bound: 1/1", "QRH-Decimal: 1.0"]) {
+    await rejectsBeforeEvidence(
+      options(`QRH-Result: none\n${field}`),
+      "Maintenance uses only QRH-Result: none",
+    );
+  }
+  for (const field of ["QRH-Result: none", "QRH-Result: candidate"]) {
+    await rejectsBeforeEvidence(
+      options(`QRH-Result: none\n${field}`),
+      "Duplicate QRH declaration field",
+    );
+  }
+  await rejectsBeforeEvidence(
+    options("QRH-Result: none\nQRH-Type: maintenance"),
+    "Malformed or unknown QRH declaration field",
+  );
+  await rejectsBeforeEvidence(
+    options("QRH-Result: none\n## New bound"),
+    "Submit QRH results and maintenance changes in separate PRs",
+  );
+});

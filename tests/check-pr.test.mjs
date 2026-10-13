@@ -375,3 +375,38 @@ for (const draft of [false, true]) {
     assert.equal(result.context.run_id, "456");
   });
 }
+
+for (const draft of [false, true]) {
+  test(`marked cleanup publishes maintenance success without queuing a proof for draft=${draft}`, (t) => {
+    const data = fixture([
+      { filename: "proofs/old/Main.lean", status: "removed" },
+      { filename: "catalogue/results.json", status: "modified" },
+      { filename: "src/App.tsx", status: "modified" },
+    ]);
+    data.pr.draft = draft;
+    data.pr.body = "QRH-Result: none\n\nClean up the codebase.";
+    data.labels = [{ name: "new-bound" }];
+    const result = run(t, data, { QRH_PHASE: "prepare" });
+    assert.equal(result.status, 0);
+    assert.equal(result.checkWrites.at(-1).body.conclusion, "success");
+    assert.equal(result.context, null);
+    assert.equal(result.outputs, "");
+    assert.deepEqual(
+      result.labelWrites.map((r) => [r.method, r.body?.labels]),
+      [
+        ["POST", ["maintenance"]],
+        ["DELETE", undefined],
+      ],
+    );
+  });
+}
+test("maintenance marker with a bound fails before label changes or proof queuing", (t) => {
+  const data = fixture([
+    { filename: "catalogue/results.json", status: "modified" },
+  ]);
+  data.pr.body = "QRH-Result: none\nQRH-Bound: 1/1";
+  const result = run(t, data, { QRH_PHASE: "prepare" });
+  assertFailure(result, "Maintenance uses only QRH-Result: none");
+  assert.deepEqual(result.labelWrites, []);
+  assert.equal(result.context, null);
+});

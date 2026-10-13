@@ -1,0 +1,28 @@
+{
+  "schema": "cycle61-successor-complete-pipeline-v1",
+  "pid": 3757643,
+  "status": "PASS_LOCAL_FULL_PROOF",
+  "theta_exact": "4374299/5000000",
+  "started_at": "2026-10-13T19:14:20.079591+00:00",
+  "config_sha256": "0fe056c4f8dd3b818022abfa5be3307d19e16efc39ba52685cb494bd683ac7cb",
+  "config": "/mnt/UIIUSA/zhongpai/code/llm/RH/build/affine_next_target_2026-10-13/workflow/complete-cycle61-config-r6.json",
+  "stages": [
+    {
+      "name": "full-source-replay",
+      "exit_code": 0,
+      "log": "/mnt/UIIUSA/zhongpai/code/llm/RH/build/affine_next_target_2026-10-13/complete-verification-r6/full-source-replay.log",
+      "log_sha256": "44f1405691306af1c35db29c1e12cfa277d415f47d01adc4c320ec71115eb387"
+    },
+    {
+      "name": "independent-kernels",
+      "exit_code": 0,
+      "log": "/mnt/UIIUSA/zhongpai/code/llm/RH/build/affine_next_target_2026-10-13/complete-verification-r6/independent-kernels.log",
+      "log_sha256": "426da606c40f03ea8b9417b04f27bd886b41725843a0ec81acf7f8296a85faf9"
+    }
+  ],
+  "full_proof_verified": true,
+  "record_admitted": false,
+  "phase": "complete",
+  "finished_at": "2026-10-13T20:40:53.822747+00:00",
+  "scope": "Complete local proof replay and independent canonical three-kernel verification; hosted admission remains required."
+}

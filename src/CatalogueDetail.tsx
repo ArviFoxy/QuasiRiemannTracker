@@ -19,6 +19,11 @@ export default function CatalogueDetail({
   onClose: () => void;
   onSelect: (id: string) => void;
 }) {
+  const timestamp = (value: string) =>
+    new Date(value)
+      .toISOString()
+      .replace("T", " ")
+      .replace(/\.\d{3}Z$/, " UTC");
   return (
     <section className="panel proof-detail">
       <div className="panel-heading">
@@ -67,17 +72,24 @@ export default function CatalogueDetail({
         <dl>
           <dt>{r.date_label}</dt>
           <dd>
-            {formatContributionDate(r)}
-            {r.date_precision === "year" ? " (year only)" : " (UTC)"}
+            {r.date_label === "PR submitted"
+              ? timestamp(r.submitted_at)
+              : `${formatContributionDate(r)}${r.date_precision === "year" ? " (year only)" : " (UTC)"}`}
           </dd>
-          <dt>Verified here</dt>
+          <dt>First verified here</dt>
           <dd>
             {r.first_verified_at
-              ? r.first_verified_at.replace("T", " ").replace("Z", " UTC")
+              ? timestamp(r.first_verified_at)
               : historicalBaseline(r)
                 ? "No local checker run; historical reference"
                 : "Pending"}
           </dd>
+          {r.merged_at && (
+            <>
+              <dt>Merged</dt>
+              <dd>{timestamp(r.merged_at)}</dd>
+            </>
+          )}
           <dt>License</dt>
           <dd>{r.license}</dd>
         </dl>

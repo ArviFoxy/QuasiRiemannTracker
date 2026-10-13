@@ -5,6 +5,22 @@ import {
 } from "./catalogue-revisions.mjs";
 
 export const contributionDate = (r) => r.timeline_at || r.first_verified_at;
+// Only use an explicitly recorded PR submission date. Older imported results
+// keep their documented publication/announcement date when that fact is absent.
+export function withSubmissionTimeline(record) {
+  if (
+    !Number.isSafeInteger(record.pr) ||
+    record.pr <= 0 ||
+    !Number.isFinite(Date.parse(record.submitted_at))
+  )
+    return record;
+  const { date_precision, ...rest } = record;
+  return {
+    ...rest,
+    timeline_at: record.submitted_at,
+    date_label: "PR submitted",
+  };
+}
 export const historicalBaseline = (r) => r.status === "historical-baseline";
 export const formatContributionDate = (r) =>
   new Date(contributionDate(r)).toLocaleDateString("en-GB", {

@@ -575,10 +575,13 @@ function Protocol() {
       <article className="panel">
         <h2>Dates</h2>
         <p>
-          Dates are in UTC and refer to publication, announcement or the first
-          local Lean check, as indicated in the table. Hover over a date for its
-          full timestamp. Verification dates are recorded separately in the
-          result details.
+          The timeline orders verified PR contributions by submission time, not
+          by when a checker finishes. Older results without a recorded PR date
+          retain their documented publication, announcement or check date, as
+          labelled in the table. Dates are in UTC; hover for the full timestamp.
+          The first successful verification and merge dates appear separately in
+          the result details. Reruns do not reset the first verification date
+          for the same proof revision. Submission time is not a discovery date.
         </p>
       </article>
     </section>

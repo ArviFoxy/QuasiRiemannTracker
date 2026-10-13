@@ -11,7 +11,11 @@ import {
 import { join, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import { isDeepStrictEqual } from "node:util";
-import { boundLabel, validateCatalogue } from "../core/catalogue.mjs";
+import {
+  boundLabel,
+  validateCatalogue,
+  withSubmissionTimeline,
+} from "../core/catalogue.mjs";
 import { proofRevision } from "../core/catalogue-revisions.mjs";
 import {
   ADMISSION_BRANCH,
@@ -27,8 +31,8 @@ const maxRecordBytes = 8 * 1024 * 1024;
 const cachePath = ".work/admission-records.json";
 const json = (value) => JSON.stringify(value, null, 2) + "\n";
 
-function selectedAdmissions(admissions) {
-  const selected = new Map();
+function eligibleAdmissions(admissions) {
+  const unique = new Map();
   for (const admission of admissions) {
     validateAdmissionRecord(admission);
     if (!Number.isFinite(Date.parse(admission.merged_at)))
@@ -41,28 +45,55 @@ function selectedAdmissions(admissions) {
       Math.floor(Date.parse(admission.merged_at) / 1000)
     )
       continue;
-    const key = `${admission.number}/${admission.head_sha}/${admission.result_id}`;
-    const previous = selected.get(key);
-    const order =
-      previous &&
-      (Date.parse(admission.admission.archived_at) -
-        Date.parse(previous.admission.archived_at) ||
-        (BigInt(admission.admission.run_id) > BigInt(previous.admission.run_id)
-          ? 1
-          : BigInt(admission.admission.run_id) <
-              BigInt(previous.admission.run_id)
-            ? -1
-            : Number(
-                BigInt(admission.admission.run_attempt) -
-                  BigInt(previous.admission.run_attempt),
-              )));
-    if (
-      previous &&
-      admissionPath(previous) === admissionPath(admission) &&
-      !isDeepStrictEqual(previous, admission)
-    )
+    const key = admissionPath(admission);
+    const previous = unique.get(key);
+    if (previous && !isDeepStrictEqual(previous, admission))
       throw Error(`Conflicting immutable admission: ${admission.result_id}`);
-    if (!previous || order > 0) selected.set(key, admission);
+    unique.set(key, admission);
+  }
+  return [...unique.values()];
+}
+
+function archiveOrder(a, b) {
+  return (
+    Date.parse(a.admission.archived_at) - Date.parse(b.admission.archived_at) ||
+    (BigInt(a.admission.run_id) > BigInt(b.admission.run_id)
+      ? 1
+      : BigInt(a.admission.run_id) < BigInt(b.admission.run_id)
+        ? -1
+        : Number(
+            BigInt(a.admission.run_attempt) - BigInt(b.admission.run_attempt),
+          ))
+  );
+}
+
+function selectedAdmissions(admissions) {
+  const selected = new Map();
+  for (const admission of eligibleAdmissions(admissions)) {
+    const key = `${admission.number}/${admission.head_sha}/${admission.result_id}`;
+    const pair = selected.get(key);
+    if (!pair) {
+      selected.set(key, { admission, verification: admission });
+      continue;
+    }
+    // A timestamp from a different statement/source is never reusable evidence.
+    const old = pair.admission;
+    if (
+      admission.repository !== old.repository ||
+      admission.theta_exact !== old.theta_exact ||
+      admission.source_tree !== old.source_tree ||
+      admission.pr.created_at !== old.pr.created_at
+    )
+      throw Error(
+        `Conflicting admitted proof identity: ${admission.result_id}`,
+      );
+    if (archiveOrder(admission, old) > 0) pair.admission = admission;
+    if (
+      (Date.parse(admission.certificate.verified_at) -
+        Date.parse(pair.verification.certificate.verified_at) ||
+        archiveOrder(admission, pair.verification)) < 0
+    )
+      pair.verification = admission;
   }
   return [...selected.values()];
 }
@@ -76,7 +107,8 @@ export function generateCatalogue({ legacy, admissions }) {
     historical = [],
     revisions = new Map();
   for (const input of legacy) {
-    const { historical: isHistorical, ...record } = structuredClone(input);
+    const { historical: isHistorical, ...original } = structuredClone(input);
+    const record = withSubmissionTimeline(original);
     const revision = proofRevision(record);
     if (revisions.has(revision))
       throw Error(`Duplicate proof metadata: ${revision}`);
@@ -86,13 +118,17 @@ export function generateCatalogue({ legacy, admissions }) {
   const generated = new Map();
   const sorted = selectedAdmissions(admissions).sort(
     (a, b) =>
-      Date.parse(a.certificate?.verified_at) -
-        Date.parse(b.certificate?.verified_at) ||
-      String(a.result_id).localeCompare(String(b.result_id)) ||
-      String(a.head_sha).localeCompare(String(b.head_sha)) ||
-      a.number - b.number,
+      Date.parse(a.verification.certificate.verified_at) -
+        Date.parse(b.verification.certificate.verified_at) ||
+      String(a.admission.result_id).localeCompare(
+        String(b.admission.result_id),
+      ) ||
+      String(a.admission.head_sha).localeCompare(
+        String(b.admission.head_sha),
+      ) ||
+      a.admission.number - b.admission.number,
   );
-  for (const input of sorted) {
+  for (const { admission: input, verification } of sorted) {
     const admission = validateAdmissionRecord(input);
     const old = revisions.get(admission.result_id);
     if (old) {
@@ -108,7 +144,7 @@ export function generateCatalogue({ legacy, admissions }) {
       throw Error(
         `Admission conflicts with a proof revision: ${admission.result_id}`,
       );
-    const record = publicationRecord(admission);
+    const record = publicationRecord(admission, verification);
     records.push(record);
     revisions.set(admission.result_id, record);
     generated.set(admission.result_id, admission);
@@ -333,32 +369,42 @@ export async function reconcileAdmissions({
     admissions = existsSync(path) ? JSON.parse(readFileSync(path, "utf8")) : [];
   }
   if (!Array.isArray(admissions)) throw Error("Invalid admission cache");
-  admissions = selectedAdmissions(admissions).filter(
+  // Keep every eligible receipt in the offline cache. Selecting just the newest
+  // envelope here would lose the first verification on the next rebuild.
+  admissions = eligibleAdmissions(admissions).filter(
     (record) => legacyIds.has(record.result_id) || sourceTree(root, record),
   );
   const catalogue = generateCatalogue({ legacy, admissions });
   if (online) requireSourceCoverage(root, catalogue);
+  const selected = selectedAdmissions(admissions);
   const newCertificates = new Map();
   for (const record of catalogue.records) {
     if (legacyIds.has(proofRevision(record))) continue;
-    const evidence = admissions.find(
-      (admission) =>
+    const evidence = selected.find(
+      ({ admission, verification }) =>
         admission.result_id === record.id &&
         admission.head_sha === record.source_commit &&
-        admission.certificate.verified_at === record.first_verified_at,
-    )?.certificate;
+        verification.certificate.verified_at === record.first_verified_at,
+    )?.verification.certificate;
     if (!evidence) throw Error(`Missing admitted certificate: ${record.id}`);
     const path = join(root, "public", record.certificate_url);
-    if (
-      existsSync(path) &&
-      !isDeepStrictEqual(
-        certificate(JSON.parse(readFileSync(path, "utf8"))),
-        evidence,
+    if (existsSync(path)) {
+      const previous = certificate(JSON.parse(readFileSync(path, "utf8")));
+      // Permit migration from a previously published rerun only if that exact
+      // certificate is also authenticated for this source. Forgery still fails.
+      if (
+        !isDeepStrictEqual(previous, evidence) &&
+        !admissions.some(
+          (admission) =>
+            admission.result_id === record.id &&
+            admission.head_sha === record.source_commit &&
+            isDeepStrictEqual(admission.certificate, previous),
+        )
       )
-    )
-      throw Error(
-        `Published certificate conflicts with admission: ${record.id}`,
-      );
+        throw Error(
+          `Published certificate conflicts with admission: ${record.id}`,
+        );
+    }
     newCertificates.set(path, evidence);
   }
   // Validate every input before changing generated files or the offline cache.

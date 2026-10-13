@@ -45,6 +45,9 @@ test("admission uses the same publication record that a later build generates", 
   assert.deepEqual(validated, publicationRecord(admission));
   assert.equal(validated.method, admission.metadata.description);
   assert.deepEqual(validated.builds_on, ["fixture-baseline"]);
+  assert.equal(validated.timeline_at, admission.pr.created_at);
+  assert.equal(validated.date_label, "PR submitted");
+  assert.equal(validated.first_verified_at, admission.certificate.verified_at);
   assert.equal(
     catalogue.records.length,
     1,
@@ -59,9 +62,7 @@ for (const scenario of ["unknown", "later", "same-time"])
       admission.metadata.builds_on = ["unpublished-proof"];
     else
       catalogue.records[0].timeline_at =
-        scenario === "later"
-          ? "2030-10-05T00:00:00Z"
-          : admission.certificate.verified_at;
+        scenario === "later" ? "2030-10-05T00:00:00Z" : admission.pr.created_at;
     assert.throws(
       () => validatePublication(catalogue, admission),
       /Unknown or later catalogue predecessor/,

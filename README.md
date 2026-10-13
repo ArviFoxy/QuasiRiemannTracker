@@ -27,6 +27,16 @@ from existing proof metadata in `proofs/` and the admission records of merged
 submissions. Small verification records in `public/certificates/` link each
 checked bound to its source commit and verification report.
 
+Verified PR contributions are plotted at their PR submission time. Older
+entries without a recorded PR submission date retain their documented date
+and label; a submission date is not a mathematical discovery date. Verification
+and merge dates are shown separately in the details. Metadata comes from the
+latest admitted version before merge, while the first verification date and
+linked certificate come from the earliest authenticated success for the same
+PR head, bound and source tree. Metadata edits and reruns cannot reset that date.
+The offline admission cache retains all eligible receipts; refresh it through
+the normal online main-branch build to recover older receipts from the archive.
+
 ## Submit
 
 1. Add Lean source under `submissions/<result-id>/src/Candidate/`, with theorem

@@ -7,6 +7,7 @@ import {
   historicalBaseline,
   statusLabel,
   formatContributionDate,
+  withSubmissionTimeline,
 } from "../core/catalogue.mjs";
 import {
   catalogueProofRecords,
@@ -35,6 +36,21 @@ const revisionCatalogue = () => {
     historical_records: [original],
   };
 };
+
+test("recorded PR dates determine the timeline without changing verification history or historical dates", () => {
+  const original = record({ pr: 41 });
+  const updated = withSubmissionTimeline(original);
+  assert.equal(updated.timeline_at, original.submitted_at);
+  assert.equal(updated.date_label, "PR submitted");
+  assert.equal(updated.first_verified_at, original.first_verified_at);
+  assert.equal(original.timeline_at, "2030-10-02T00:00:00Z");
+  for (const value of [
+    record({ pr: null }),
+    record({ pr: 8, submitted_at: "" }),
+    historicalRecord({ pr: 5, submitted_at: "" }),
+  ])
+    assert.deepEqual(withSubmissionTimeline(value), value);
+});
 
 test("a contribution displays its current revision and keeps the original proof metadata", () => {
   const data = validateCatalogue(revisionCatalogue());

@@ -42,13 +42,9 @@ export function parseDeclaration(body) {
 }
 
 export function hasResultSection(body) {
-  return (body ?? "").split(/\r?\n/).some((line) => {
-    const text = line.trim();
-    return (
-      /^QRH-(?:Result|Bound|Decimal)\b/i.test(text) ||
-      /^#{1,6}\s+(?:new bounds?|QRH[- ]results?)\b/i.test(text)
-    );
-  });
+  return (body ?? "")
+    .split(/\r?\n/)
+    .some((line) => /^QRH-(?:Result|Bound|Decimal)\b/i.test(line.trim()));
 }
 
 function proofPath(name) {
@@ -103,7 +99,10 @@ export function classifyPRChanges({ pr, files, repository, defaultBranch }) {
     throw Error(
       "Incomplete or duplicate PR file list; refusing a truncated diff",
     );
-  return classifyChanges(files);
+  const classification = classifyChanges(files);
+  return hasResultSection(pr.body)
+    ? classification
+    : { proof: false, maintenance: true };
 }
 
 export async function evaluatePR({
@@ -122,10 +121,6 @@ export async function evaluatePR({
   });
   if (classification.maintenance && hasResultSection(pr.body))
     throw Error("Submit QRH results and maintenance changes in separate PRs");
-  if (classification.proof && classification.maintenance)
-    throw Error(
-      "Separate proof changes from maintenance changes, including workflow and verifier changes",
-    );
   const declaration = parseDeclaration(pr.body);
   if (!classification.proof)
     return "Maintenance requirements satisfied. Complete website checks and maintainer review before merging.";

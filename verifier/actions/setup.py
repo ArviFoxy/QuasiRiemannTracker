@@ -1,6 +1,6 @@
 """Build the pinned checker environment before any submitted code executes."""
 from pathlib import Path
-import hashlib, json, os, shutil, subprocess, sys
+import hashlib, json, os, shlex, shutil, subprocess, sys, time
 ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / 'verification'
 ENV_ROOT = Path(os.environ.get('QRH_WORKER_ROOT', str(OUT / 'environment'))).resolve()
@@ -8,7 +8,12 @@ ENV_ROOT.mkdir(parents=True, exist_ok=True)
 PINS = json.loads((ROOT/'verifier/pins.json').read_text())
 sha = lambda p: hashlib.file_digest(open(p, 'rb'), 'sha256').hexdigest()
 def run(*args, cwd=None, env=None):
-    subprocess.run(list(map(str,args)), cwd=cwd, env=env, check=True)
+    command = list(map(str,args))
+    suffix = f' ... ({len(command)-8} more arguments)' if len(command) > 8 else ''
+    print('Worker setup: '+shlex.join(command[:8])+suffix, flush=True)
+    started = time.monotonic()
+    subprocess.run(command, cwd=cwd, env=env, check=True)
+    print(f'Worker setup command completed in {time.monotonic()-started:.1f}s', flush=True)
 def clone(url, rev, dest):
     if not dest.exists():
         run('git','init',dest)
@@ -76,6 +81,7 @@ for name in json.loads((OUT/'imports.json').read_text()):
         if (project/(name.replace('.','/')+'.lean')).is_file():
             modules.add(name); break
         name = name.rsplit('.',1)[0]
+print(f'Build {len(modules)} protected upstream import targets and their dependencies', flush=True)
 if modules: run(source/'bin/lake','build',*sorted(modules),cwd=project,env=env)
 # Import Mathlib exactly as the canonical challenge does, before checking source.
 (project/'Challenge.lean').write_text('import Mathlib\n')

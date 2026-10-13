@@ -1,6 +1,6 @@
 """Replay prepared standard submission with Palomar's unmodified sandbox and kernels."""
 from pathlib import Path
-import argparse, datetime, hashlib, json, os, re, shutil, sys
+import argparse, datetime, hashlib, json, os, re, shutil, sys, time
 
 if sys.flags.optimize or os.getuid() == 0:
     raise SystemExit('Use unoptimized Python as an unprivileged worker user')
@@ -49,7 +49,9 @@ print('Authenticate pinned library snapshot',flush=True)
 check_libraries()
 v._BWRAP = Path(profile.get('bwrap', '/usr/bin/bwrap'))
 v.VERIFICATION_LIMITS = {**v.VERIFICATION_LIMITS,'memory_high_percent':75,'memory_max_percent':85,'tasks_max':256}
-v.install_execution_deadline(budget_seconds=3600)
+# Compilation, export and the three serial kernel checks share this deadline.
+# Keep the Actions check step longer so timeout evidence can still be retained.
+v.install_execution_deadline(budget_seconds=7200)
 bundled = {name:judge/'bin'/name for name in v.TOOLCHAIN_TOOLS}
 approved_tools=json.loads(args.tool_pins.read_text())
 selected_tools={'source_lean':old/'bin/lean','exporter':exporter,**{'judge_'+name:path for name,path in bundled.items()}}
@@ -100,12 +102,15 @@ candidate_env={**env,'LEAN_PATH':':'.join(map(str,[work/'candidate-lib',*libs]))
 stage('candidate mount controls')
 v.verify_sandbox_confinement(source/'denied-write',work/'denied-read',positive_read=source/'src/Candidate/Main.lean',python=python,touch=touch,cwd=source,environment=candidate_env,writable_directories=[work/'candidate-lib',work/'home',work/'tmp'],protected_write_directories=[source,work/'challenge-lib',*libs],readable_paths=[source,work/'challenge-lib',*libs,*system],executable_paths=[old,Path('/usr')],tools=tools)
 stage('compile standard candidate')
-for module in contract['build_order']:
+for index, module in enumerate(contract['build_order'], 1):
+    print(f"Compile {index}/{len(contract['build_order'])}: {module}", flush=True)
+    started = time.monotonic()
     assert re.fullmatch(r'Candidate(?:\.[A-Z][A-Za-z0-9_]*)+',module)
     relative = module.replace('.','/')
     output = work/'candidate-lib'/(relative+'.olean')
     output.parent.mkdir(parents=True,exist_ok=True)
     log('compile-'+module,v.sandboxed_run([str(old/'bin/lean'),'-o',str(output),relative+'.lean'],cwd=source/'src',environment=candidate_env,writable_directories=[work/'candidate-lib',work/'home',work/'tmp'],readable_paths=[*libs,*system],executable_paths=[old,Path('/usr')],tools=tools,timeout=600))
+    print(f'Compiled {module} in {time.monotonic()-started:.1f}s', flush=True)
 solution_env={**env,'LEAN_PATH':':'.join(map(str,[work/'solution-lib',work/'candidate-lib',*libs]))}
 stage('compile and export standard solution wrapper')
 log('solution-compile',v.sandboxed_run([str(old/'bin/lean'),'-o',str(work/'solution-lib/Solution.olean'),'Solution.lean'],cwd=work/'solution-src',environment=solution_env,writable_directories=[work/'solution-lib',work/'home',work/'tmp'],readable_paths=[work/'candidate-lib',*libs,*system],executable_paths=[old,Path('/usr')],tools=tools,timeout=600))
@@ -113,7 +118,7 @@ log('solution-export',v.export_module('Solution',targets,output=work/'exports/So
 v.verify_export(work/'exports/Solution.export')
 assert sha(work/'exports/Challenge.export') == challenge_hash
 stage('Comparator and Lean, NanoDa, con-ron')
-result=v.judge_exports(lake=bundled['lake'],config=work/'comparator.json',challenge_export=work/'exports/Challenge.export',solution_export=work/'exports/Solution.export',scratch=work/'judge',bwrap=v._BWRAP,lean_prefix=judge,environment=env,tools=tools,timeout=1800)
+result=v.judge_exports(lake=bundled['lake'],config=work/'comparator.json',challenge_export=work/'exports/Challenge.export',solution_export=work/'exports/Solution.export',scratch=work/'judge',bwrap=v._BWRAP,lean_prefix=judge,environment=env,tools=tools,timeout=3600)
 log('judge',result)
 transcript=result.stdout+'\n'+result.stderr
 assert 'Your solution is okay!' in transcript and all(k+' kernel accepts the solution' in transcript for k in ['Lean default','nanoda','con-ron'])

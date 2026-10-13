@@ -62,7 +62,8 @@ jobs:
       fail-fast: false
       matrix:
         result: ${{ fromJSON(needs.prepare.outputs.matrix) }}
-    timeout-minutes: 150
+    # Leave time for setup, replay, and artifact upload before finalization.
+    timeout-minutes: 270
     permissions:
       contents: read
     steps:
@@ -100,13 +101,13 @@ jobs:
         id: setup
         if: steps.prerequisites.outcome == 'success'
         continue-on-error: true
-        timeout-minutes: 85
+        timeout-minutes: 120
         run: python3 verifier/actions/setup.py
       - name: Check the canonical theorem with Comparator and all three kernels
         id: check
         if: steps.setup.outcome == 'success'
         continue-on-error: true
-        timeout-minutes: 65
+        timeout-minutes: 125
         run: python3 verifier/actions/run.py
       - name: Record worker completion
         if: always()

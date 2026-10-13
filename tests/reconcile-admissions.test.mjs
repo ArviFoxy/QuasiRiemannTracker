@@ -20,6 +20,8 @@ import {
   admissionRecord,
 } from "../verifier/admission-archive.mjs";
 import { workerCertificate } from "../verifier/certificate.mjs";
+import { recordHistory } from "../core/rational.mjs";
+import { timelineRecords } from "../core/catalogue.mjs";
 
 const repository = "owner/repository";
 const hex = (character) => character.repeat(40);
@@ -570,17 +572,183 @@ test("metadata edits publish the latest admitted version before merge and ignore
     JSON.parse(
       readFileSync(join(data.root, "public", published.certificate_url)),
     ),
-    latest.certificate,
+    data.envelope.certificate,
   );
   assert.deepEqual(
     JSON.parse(readFileSync(join(data.root, ".work/admission-records.json"))),
     [
+      data.admission,
       {
         ...latest,
         merged_at: data.merged.merged_at,
         merge_commit_sha: data.merged.merge_commit_sha,
       },
     ],
+  );
+});
+
+function rerun(
+  original,
+  {
+    attempt = 2,
+    verifiedAt = "2026-10-13T00:20:00Z",
+    archivedAt = "2026-10-13T00:21:00Z",
+  } = {},
+) {
+  const value = structuredClone(original);
+  value.admission.run_attempt = String(attempt);
+  value.admission.archived_at = archivedAt;
+  const report = JSON.parse(value.report_json);
+  report.verified_at = verifiedAt;
+  const bytes = Buffer.from(JSON.stringify(report));
+  value.certificate = workerCertificate(
+    value,
+    report,
+    `https://github.com/${repository}/actions/runs/${value.admission.run_id}/attempts/${attempt}`,
+    bytes,
+  );
+  value.report_json = bytes.toString();
+  return value;
+}
+
+test("reruns retain the first success, latest metadata and every receipt through online and offline rebuilds", async (t) => {
+  const data = fixture(t);
+  const later = rerun(data.envelope);
+  later.metadata.title = "Corrected attribution";
+  later.pr.body = later.pr.body.replace(
+    JSON.stringify(metadata),
+    JSON.stringify(later.metadata),
+  );
+  // An existing deployment selected the rerun; migration may replace only this
+  // exact authenticated certificate, not a fabricated or unrelated receipt.
+  const path = join(data.root, "public/certificates/candidate-proof.json");
+  mkdirSync(join(data.root, "public/certificates"), { recursive: true });
+  writeFileSync(path, JSON.stringify(later.certificate));
+  const catalogue = await online(
+    data,
+    mockApi(data, { records: [later, data.envelope] }),
+  );
+  const record = catalogue.records.find(
+    (r) => r.id === data.envelope.result_id,
+  );
+  assert.equal(record.first_verified_at, data.envelope.certificate.verified_at);
+  assert.equal(record.timeline_at, data.envelope.pr.created_at);
+  assert.equal(record.title, later.metadata.title);
+  assert.deepEqual(JSON.parse(readFileSync(path)), data.envelope.certificate);
+  assert.equal(
+    JSON.parse(readFileSync(join(data.root, ".work/admission-records.json")))
+      .length,
+    2,
+  );
+  assert.deepEqual(await reconcileAdmissions({ root: data.root }), catalogue);
+  // Input order cannot determine the first verification or metadata selection.
+  assert.deepEqual(
+    await online(data, mockApi(data, { records: [data.envelope, later] })),
+    catalogue,
+  );
+});
+
+test("the earliest verification is selected by success time rather than archive order", (t) => {
+  const data = fixture(t);
+  const earlierSuccess = rerun(data.admission, {
+    verifiedAt: "2026-10-12T23:00:00Z",
+  });
+  const result = generateCatalogue({
+    legacy: [data.legacy],
+    admissions: [data.admission, earlierSuccess],
+  });
+  assert.equal(
+    result.records.at(-1).first_verified_at,
+    earlierSuccess.certificate.verified_at,
+  );
+});
+
+test("a conflicting source tree cannot lend its earlier verification date to a rerun", (t) => {
+  const data = fixture(t);
+  const different = rerun(data.admission);
+  different.source_tree = hex("f");
+  assert.throws(
+    () =>
+      generateCatalogue({
+        legacy: [data.legacy],
+        admissions: [data.admission, different],
+      }),
+    /Conflicting admitted proof identity/,
+  );
+});
+
+test("a stale source head cannot lend its first verification date to the merged revision", async (t) => {
+  const data = fixture(t);
+  const stale = structuredClone(data.envelope);
+  stale.head_sha = hex("f");
+  const report = JSON.parse(stale.report_json);
+  report.reviewed_pr_head = stale.head_sha;
+  report.verified_at = "2026-10-12T12:00:00Z";
+  const bytes = Buffer.from(JSON.stringify(report));
+  stale.certificate = workerCertificate(
+    stale,
+    report,
+    stale.certificate.report_url,
+    bytes,
+  );
+  stale.report_json = bytes.toString();
+  const result = await online(
+    data,
+    mockApi(data, { records: [stale, data.envelope] }),
+  );
+  assert.equal(
+    result.records.at(-1).first_verified_at,
+    data.envelope.certificate.verified_at,
+  );
+});
+
+test("submission chronology preserves an intermediate record even when the stronger proof verifies first", (t) => {
+  const data = fixture(t);
+  const first = data.admission;
+  const second = structuredClone(first);
+  second.number = second.pr.number = 27;
+  second.result_id = "stronger-proof";
+  second.theta_exact = "3/4";
+  second.source_path = "submissions/stronger-proof/src";
+  second.pr.created_at = "2026-10-12T01:00:00Z";
+  second.pr.body = second.pr.body
+    .replaceAll("candidate-proof", "stronger-proof")
+    .replace("4/5", "3/4")
+    .replace("QRH-Decimal: 0.8", "QRH-Decimal: 0.75");
+  const report = JSON.parse(second.report_json);
+  report.result_id = second.result_id;
+  report.theta_exact = second.theta_exact;
+  report.verified_at = "2026-10-12T23:59:33Z";
+  const bytes = Buffer.from(JSON.stringify(report));
+  second.certificate = workerCertificate(
+    second,
+    report,
+    second.certificate.report_url,
+    bytes,
+  );
+  second.report_json = bytes.toString();
+  const result = generateCatalogue({
+    legacy: [data.legacy],
+    admissions: [second, first],
+  });
+  assert.deepEqual(
+    recordHistory(timelineRecords(result.records)).map((r) => [
+      r.id,
+      r.is_record,
+    ]),
+    [
+      [data.legacy.id, true],
+      [first.result_id, true],
+      [second.result_id, true],
+    ],
+  );
+  assert.equal(
+    result.records[1].first_verified_at,
+    first.certificate.verified_at,
+  );
+  assert.equal(
+    result.records[2].first_verified_at,
+    second.certificate.verified_at,
   );
 });
 

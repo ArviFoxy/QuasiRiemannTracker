@@ -540,6 +540,10 @@ export default function Chart({
           Drag to pan · scroll to zoom
         </span>
       </div>
+      <p className="chart-note">
+        PR submission dates where recorded; verification dates are shown
+        separately.
+      </p>
       {tiny && (
         <p className="chart-note">Local axis origin θ₀ = {fraction(low)}.</p>
       )}

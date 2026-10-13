@@ -9,15 +9,18 @@ import { rational } from "../core/rational.mjs";
 import { certificate } from "./certificate.mjs";
 import { validateSubmissionMetadata } from "./submission-metadata.mjs";
 
-export function publicationRecord(admission) {
+export function publicationRecord(admission, verification = admission) {
   const metadata = validateSubmissionMetadata(admission.metadata);
-  const evidence = certificate(admission.certificate);
+  // Metadata can be corrected in a later admitted rerun. Proof provenance is
+  // taken from the earliest authenticated success for this identical revision.
+  const evidence = certificate(verification.certificate);
   if (
     evidence.result_id !== admission.result_id ||
     evidence.theta_exact !== admission.theta_exact ||
     evidence.source_repository !== admission.repository ||
     evidence.source_commit !== admission.head_sha ||
-    admission.source_path !== `submissions/${admission.result_id}/src`
+    admission.source_path !== `submissions/${admission.result_id}/src` ||
+    verification.source_tree !== admission.source_tree
   )
     throw Error("Publication record differs from its verified source");
   const fraction = /^(\d+)\/(\d+)$/.exec(admission.theta_exact);
@@ -48,8 +51,8 @@ export function publicationRecord(admission) {
     repository: admission.repository,
     source_commit: admission.head_sha,
     first_verified_at: evidence.verified_at,
-    timeline_at: evidence.verified_at,
-    date_label: "Independent sandboxed verification",
+    timeline_at: admission.pr.created_at,
+    date_label: "PR submitted",
     entrypoint: { module: "Candidate.Main", declaration: "Candidate.bound" },
     verification_note: `Comparator checked the canonical all-Dirichlet statement at ${admission.theta_exact} for the submitted commit. Lean, NanoDa and con-ron accepted the proof in the standard sandbox.`,
     certificate_url: certificateUrl,
@@ -82,8 +85,7 @@ export function validatePublication(catalogue, admission) {
     const predecessor = catalogue.records.find((old) => old.id === id);
     if (
       !predecessor ||
-      Date.parse(predecessor.timeline_at) >=
-        Date.parse(record.first_verified_at)
+      Date.parse(predecessor.timeline_at) >= Date.parse(record.timeline_at)
     )
       throw Error(`Unknown or later catalogue predecessor: ${id}`);
   }

@@ -39,9 +39,17 @@ export function maintenancePlan({
   admittedCatalogue,
   readAdmittedCertificate,
 }) {
-  const oldBaseJSON = read("base", "catalogue/results.json");
   if (
-    !oldBaseJSON &&
+    files.some(
+      (file) =>
+        /^(proofs|public\/proofs)\//.test(file.filename) &&
+        file.status !== "removed",
+    )
+  )
+    throw Error(
+      "Submission source and metadata belong in submissions/<result-id>/",
+    );
+  if (
     files.some(
       (file) =>
         ["catalogue/results.json", "public/catalogue.json"].includes(
@@ -50,66 +58,61 @@ export function maintenancePlan({
     )
   )
     throw Error(
-      "Catalogue JSON is generated output; edit proof metadata instead",
+      "Catalogue JSON is generated output; edit submissions/<result-id>/metadata.json instead",
     );
-  // Older commits have a tracked catalogue. New commits contain one metadata
-  // file per legacy proof; current admissions come from the trusted archive.
-  const baseMetadata = new Set(
-    [...list("base", "proofs/"), ...list("base", "submissions/")]
-      .filter(
-        (path) =>
-          /^(?:proofs|submissions)\/[^/]+\/metadata\.json$/.test(path) &&
-          JSON.parse(read("base", path)).id,
-      )
-      .map((path) => path.split("/")[1]),
-  );
-  const oldBaseIds = new Set(
-    oldBaseJSON
-      ? catalogueProofRecords(JSON.parse(oldBaseJSON)).map(proofRevision)
-      : [],
-  );
-  const archived = (
-    admittedCatalogue ? catalogueProofRecords(admittedCatalogue) : []
-  ).filter(
-    (record) =>
-      !baseMetadata.has(proofRevision(record)) &&
-      !oldBaseIds.has(proofRevision(record)),
-  );
+  const archived = admittedCatalogue
+    ? catalogueProofRecords(admittedCatalogue)
+    : [];
   const archiveIds = new Set(archived.map(proofRevision));
   const metadataCatalogue = (side) => {
-    const old = read(side, "catalogue/results.json");
-    if (old) return JSON.parse(old);
     const records = [],
       historical_records = [];
-    for (const path of [
-      ...list(side, "proofs/"),
-      ...list(side, "submissions/"),
-    ].filter((path) =>
-      /^(?:proofs|submissions)\/[^/]+\/metadata\.json$/.test(path),
+    for (const path of list(side, "submissions/").filter((path) =>
+      /^submissions\/[^/]+\/metadata\.json$/.test(path),
     )) {
       const input = JSON.parse(read(side, path));
       if (!input.id) {
         validateSubmissionMetadata(input);
+        const id = path.split("/")[1];
+        const admitted =
+          admittedCatalogue &&
+          catalogueProofRecords(admittedCatalogue).find(
+            (r) => proofRevision(r) === id,
+          );
+        if (!admitted)
+          throw Error(
+            `Cannot determine the exact bound for ${id}; provide a QRH result declaration`,
+          );
+        records.push(admitted);
         continue;
       }
+      const admitted = archived.find(
+        (record) => proofRevision(record) === input.id,
+      );
+      if (admitted && !JSON.parse(read("base", path) || "null")?.id)
+        throw Error(`Metadata duplicates an admitted proof: ${input.id}`);
       const { historical, dependencies, ...record } = input;
-      if (path.split("/")[1] !== proofRevision(record))
+      if (path !== `submissions/${proofRevision(record)}/metadata.json`)
         throw Error("Proof metadata path differs from its revision");
       (historical === true ? historical_records : records).push(record);
-    }
-    for (const record of archived) {
-      if (
-        [...records, ...historical_records].some(
-          (entry) => proofRevision(entry) === proofRevision(record),
-        )
-      )
-        throw Error(`Metadata duplicates an admitted proof: ${record.id}`);
-      records.push(record);
     }
     return { schema_version: 1, records, historical_records };
   };
   const base = metadataCatalogue("base");
   const head = validateCatalogue(metadataCatalogue("head"));
+  const submissionPaths = new Set(list("head", "submissions/"));
+  const ids = new Set([...submissionPaths].map((p) => p.split("/")[1]));
+  for (const id of ids) {
+    for (const file of ["metadata.json", "src/Candidate/Main.lean"])
+      if (
+        !submissionPaths.has(`submissions/${id}/${file}`) ||
+        read("head", `submissions/${id}/${file}`) === null
+      )
+        throw Error(`Submission ${id} requires ${file}`);
+  }
+  for (const record of catalogueProofRecords(head))
+    if (!ids.has(proofRevision(record)))
+      throw Error(`Missing Lean submission: ${proofRevision(record)}`);
   const old = new Map(
     catalogueProofRecords(base).map((r) => [proofRevision(r), r]),
   );
@@ -184,7 +187,8 @@ export function maintenancePlan({
       ...(f.previous_filename ? [f.previous_filename] : []),
     ]) {
       const m = /^submissions\/([^/]+)\//.exec(path);
-      if (m) sourceIds.add(m[1]);
+      if (m && path !== `submissions/${m[1]}/metadata.json`)
+        sourceIds.add(m[1]);
       else if (
         /\.lean$/i.test(path) &&
         !/^(verifier|core|tests)\//.test(path) &&
@@ -206,23 +210,18 @@ export function maintenancePlan({
         );
     }
   }
-  const ids = new Set(
-    list("head", "submissions/").map((path) => path.split("/")[1]),
-  );
   const graph = new Map();
   for (const id of ids) {
     const file = `submissions/${id}/metadata.json`;
-    const deps = submissionDependencies(JSON.parse(read("head", file) || "{}"));
+    const deps = submissionDependencies(JSON.parse(read("head", file)));
     for (const dep of deps)
       if (!ids.has(dep))
         throw Error(`Missing submission dependency: ${id} -> ${dep}`);
     graph.set(id, deps);
     const before = read("base", file);
     if (
-      !isDeepStrictEqual(
-        submissionDependencies(JSON.parse(before || "{}")),
-        deps,
-      )
+      !before ||
+      !isDeepStrictEqual(submissionDependencies(JSON.parse(before)), deps)
     )
       sourceIds.add(id);
   }

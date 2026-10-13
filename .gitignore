@@ -11,3 +11,6 @@ playwright-report/
 /evidence/
 /catalogue/results.json
 /public/catalogue.json
+
+# Deployment materializes certificates for newly admitted results.
+/public/certificates/*.json

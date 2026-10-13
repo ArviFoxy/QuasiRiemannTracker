@@ -12,7 +12,7 @@ import {
 export function parseDeclaration(body) {
   const fields = new Map();
   for (const line of (body ?? "").split(/\r?\n/)) {
-    if (!line.trim().startsWith("QRH-")) continue;
+    if (!/^QRH-/i.test(line.trim())) continue;
     const match = /^QRH-(Result|Bound|Decimal): ([^\r\n]+)$/.exec(line.trim());
     if (!match) throw Error("Malformed or unknown QRH declaration field");
     if (fields.has(match[1])) throw Error("Duplicate QRH declaration field");

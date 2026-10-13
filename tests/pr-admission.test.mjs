@@ -96,6 +96,11 @@ test("a new-bound declaration preserves the exact claimed value", () => {
 
 for (const [description, body, message] of [
   [
+    "incorrectly cased fields",
+    newBound.toLowerCase(),
+    "Malformed or unknown QRH declaration field",
+  ],
+  [
     "the obsolete maintenance type",
     "QRH-Type: maintenance",
     "Malformed or unknown QRH declaration field",

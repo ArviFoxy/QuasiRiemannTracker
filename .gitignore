@@ -9,3 +9,5 @@ playwright-report/
 /verification/
 /verification-context/
 /evidence/
+/catalogue/results.json
+/public/catalogue.json

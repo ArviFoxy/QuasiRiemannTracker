@@ -1,17 +1,15 @@
 import { test, expect } from "@playwright/test";
-import { readFileSync } from "node:fs";
+import {
+  catalogue as fixtureCatalogue,
+  routeCatalogue,
+} from "./catalogue-fixture";
 
-const catalogue = JSON.parse(
-  readFileSync(
-    new URL("../../catalogue/results.json", import.meta.url),
-    "utf8",
-  ),
-);
+const catalogue = fixtureCatalogue();
 
 test("verified proof badges open solution sources and contribution dates retain their meaning", async ({
   page,
-  request,
 }) => {
+  await routeCatalogue(page, catalogue);
   await page.goto("/");
   await expect(
     page.getByRole("button", { name: "Date", exact: true }),
@@ -25,9 +23,7 @@ test("verified proof badges open solution sources and contribution dates retain 
       await expect(badge).toHaveAttribute("href", /\.lean$/);
       const href = (await badge.getAttribute("href"))!;
       expect(href).toBe(record.solution_url);
-      expect(new URL(href).pathname).toMatch(
-        /\/blob\/[a-f0-9]{40}\/.+\.lean$/,
-      );
+      expect(new URL(href).pathname).toMatch(/\/blob\/[a-f0-9]{40}\/.+\.lean$/);
     } else if (record.status === "historical-baseline") {
       await expect(row.locator(".tag.historical")).toHaveText(
         "Historical baseline",

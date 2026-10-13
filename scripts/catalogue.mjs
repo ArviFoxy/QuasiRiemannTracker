@@ -5,9 +5,8 @@ import {
   proofRevision,
 } from "../core/catalogue-revisions.mjs";
 import { certificate } from "../verifier/certificate.mjs";
-const data = validateCatalogue(
-  JSON.parse(readFileSync("catalogue/results.json", "utf8")),
-);
+import { reconcileAdmissions } from "./reconcile-admissions.mjs";
+const data = validateCatalogue(await reconcileAdmissions());
 for (const record of catalogueProofRecords(data)) {
   if (record.status !== "framework-verified") continue;
   const name = `certificates/${proofRevision(record)}.json`;

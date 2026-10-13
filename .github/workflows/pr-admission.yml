@@ -36,10 +36,16 @@ jobs:
         with:
           ref: ${{ github.workflow_sha }}
           persist-credentials: false
+          fetch-depth: 0
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version: 22.17.0
       - run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Build the current admitted catalogue
+        run: node scripts/reconcile-admissions.mjs --online
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          QRH_DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
       - name: Classify the PR and prepare verification
         id: prepare
         run: node verifier/check-pr.mjs
@@ -48,6 +54,9 @@ jobs:
           QRH_PR: ${{ github.event.pull_request.number || inputs.pr }}
           QRH_DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
           QRH_PHASE: prepare
+      - name: Preserve the catalogue used for admission
+        if: steps.prepare.outputs.verify == 'true'
+        run: cp catalogue/results.json verification-context/catalogue.json
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: steps.prepare.outputs.verify == 'true'
         with:
@@ -140,7 +149,9 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     permissions:
-      contents: read
+      # Only this trusted publisher can archive small verification records.
+      # Candidate proof workers retain read-only repository access.
+      contents: write
       pull-requests: read
       checks: write
     steps:
@@ -162,6 +173,8 @@ jobs:
           pattern: proof-verification-${{ github.run_attempt }}-*
           path: verification-results/
       - name: Publish verification for the current PR head
+        # Decimal comparisons use generated metadata, never a maintained catalogue.
+        # The publisher also archives new admissions before marking them accepted.
         run: node verifier/actions/finalize.mjs
         env:
           GITHUB_TOKEN: ${{ github.token }}

@@ -4,6 +4,7 @@ import { spawnSync } from "node:child_process";
 import { mkdtempSync, mkdirSync, writeFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { record as catalogueRecord } from "./fixtures/catalogue.mjs";
 const repository = "GTimG/QuasiRiemannTracker",
   head = "a".repeat(40);
 const entrypoint = new URL("../verifier/actions/finalize.mjs", import.meta.url)
@@ -17,13 +18,28 @@ function fixture() {
     theta_exact: "1/1",
   };
   const pr = {
+    number: 15,
     state: "open",
+    title: "A verified candidate bound",
+    created_at: "2026-10-12T00:00:00Z",
+    user: { login: "contributor" },
     head: { sha: head },
     base: { sha: "b".repeat(40), ref: "main", repo: { full_name: repository } },
-    body: "QRH-Result: candidate-proof\nQRH-Bound: 1/1\nQRH-Decimal: 1.0",
+    body: 'QRH-Result: candidate-proof\nQRH-Bound: 1/1\nQRH-Decimal: 1.0\n\n```qrh-metadata\n{"title":"A candidate bound","authors":[{"name":"Contributor"}],"description":"An independently verified proof."}\n```',
     changed_files: 1,
   };
   return {
+    catalogue: {
+      schema_version: 1,
+      records: [
+        catalogueRecord({
+          id: "previous-bound",
+          timeline_at: "2026-10-12T00:00:00Z",
+          first_verified_at: "2026-10-12T01:00:00Z",
+          certificate_url: "certificates/previous-bound.json",
+        }),
+      ],
+    },
     context: {
       expected,
       expectations: [expected],
@@ -61,7 +77,7 @@ function fixture() {
 function run(t, data, env = {}) {
   const cwd = mkdtempSync(join(tmpdir(), "qrh-finalize-"));
   t.after(() => rmSync(cwd, { recursive: true, force: true }));
-  for (const dir of ["verification-context", "verification", "catalogue"])
+  for (const dir of ["verification-context", "verification"])
     mkdirSync(join(cwd, dir));
   writeFileSync(
     join(cwd, "verification-context/context.json"),
@@ -102,21 +118,19 @@ function run(t, data, env = {}) {
       }
     }
   writeFileSync(
-    join(cwd, "catalogue/results.json"),
-    JSON.stringify({
-      records: [
-        {
-          id: "previous-bound",
-          status: "framework-verified",
-          theta: { numerator: "7", denominator: "8" },
-        },
-      ],
-    }),
+    join(cwd, "verification-context/catalogue.json"),
+    JSON.stringify(data.catalogue),
   );
   const script = `
- const requests=[];globalThis.fetch=async(url,options={})=>{
+ const requests=[];let prReads=0;globalThis.fetch=async(url,options={})=>{
  const request={url:String(url),method:options.method??"GET",body:options.body?JSON.parse(options.body):undefined};requests.push(request);
- if(request.method==="GET" && request.url==="https://api.github.com/repos/${repository}/pulls/15")return {ok:true,status:200,json:async()=>JSON.parse(process.env.CURRENT_PR)};
+ if(request.method==="GET" && request.url==="https://api.github.com/repos/${repository}/pulls/15")return {ok:true,status:200,json:async()=>JSON.parse(prReads++ && process.env.FINAL_PR ? process.env.FINAL_PR : process.env.CURRENT_PR)};
+ if(request.method==="GET" && request.url.includes("/git/trees/")){
+ const key=request.url.split("/").at(-1);
+ const entry=key==="${head}"?{path:"submissions",sha:"${"d".repeat(40)}"}:key==="${"d".repeat(40)}"?{path:"candidate-proof",sha:"${"e".repeat(40)}"}:{path:"src",sha:"${"f".repeat(40)}"};
+ return {ok:true,status:200,json:async()=>({tree:[{...entry,type:"tree",mode:"040000"}]})};}
+ if(request.method==="GET" && request.url.endsWith("/git/ref/heads/admission-records"))return {ok:false,status:404};
+ if(request.method==="POST" && /\\/git\\/(blobs|trees|commits|refs)$/.test(request.url))return process.env.ARCHIVE_FAILURE ? {ok:false,status:403} : {ok:true,status:201,json:async()=>({sha:"${"9".repeat(40)}"})};
  if(request.method==="PATCH" && request.url==="https://api.github.com/repos/${repository}/check-runs/456")return {ok:true,status:200};
  throw Error("Unexpected request");};
  let error;try{await import(${JSON.stringify(entrypoint)});}catch(e){error=e.message;process.exitCode=1;}
@@ -154,6 +168,70 @@ test("publisher accepts current-run proof without reading local receipts", (t) =
   assert.match(
     published.output.summary,
     /Proof verification accepts candidate-proof at 1\/1/,
+  );
+  const archived = result.requests.findIndex((r) =>
+    r.url.endsWith("/git/refs"),
+  );
+  assert.ok(archived > 0, "archive is durable before publishing success");
+  assert.ok(archived < result.requests.length - 1);
+});
+test("archive failure prevents a successful admission check", (t) => {
+  const result = run(t, fixture(), { ARCHIVE_FAILURE: "1" });
+  assert.equal(result.status, 1);
+  assert.equal(result.requests.at(-1).body.conclusion, "failure");
+  assert.match(
+    result.requests.at(-1).body.output.summary,
+    /archive request failed: HTTP 403/,
+  );
+});
+test("new-bound admission requires publication metadata before archival", (t) => {
+  const data = fixture();
+  data.context.pr.body = data.current.body = data.current.body.split("\n\n")[0];
+  const result = run(t, data);
+  assert.equal(result.status, 1);
+  assert.equal(result.requests.at(-1).body.conclusion, "failure");
+  assert.match(result.requests.at(-1).body.output.summary, /metadata/i);
+  assert.ok(result.requests.every((r) => !r.url.includes("/git/")));
+});
+
+test("an unpublished predecessor fails admission before writing an archive", (t) => {
+  const data = fixture();
+  data.context.pr.body = data.current.body = data.current.body.replace(
+    '"description":"An independently verified proof."',
+    '"description":"An independently verified proof.","builds_on":["missing-proof"]',
+  );
+  const result = run(t, data);
+  assert.equal(result.status, 1);
+  assert.equal(result.requests.at(-1).body.conclusion, "failure");
+  assert.match(
+    result.requests.at(-1).body.output.summary,
+    /Unknown or later catalogue predecessor/,
+  );
+  assert.ok(result.requests.every((r) => !r.url.includes("/git/")));
+});
+
+test("a previously published result ID cannot receive new-bound admission", (t) => {
+  const data = fixture();
+  data.catalogue.records[0].id = "candidate-proof";
+  const result = run(t, data);
+  assert.equal(result.status, 1);
+  assert.equal(result.requests.at(-1).body.conclusion, "failure");
+  assert.match(
+    result.requests.at(-1).body.output.summary,
+    /Result ID already published/,
+  );
+  assert.ok(result.requests.every((r) => !r.url.includes("/git/")));
+});
+test("a PR changed during archival cannot receive admission success", (t) => {
+  const data = fixture();
+  const changed = structuredClone(data.current);
+  changed.head.sha = "f".repeat(40);
+  const result = run(t, data, { FINAL_PR: JSON.stringify(changed) });
+  assert.equal(result.status, 1);
+  assert.equal(result.requests.at(-1).body.conclusion, "failure");
+  assert.match(
+    result.requests.at(-1).body.output.summary,
+    /changed while archiving/,
   );
 });
 for (const field of ["head", "body", "base"])

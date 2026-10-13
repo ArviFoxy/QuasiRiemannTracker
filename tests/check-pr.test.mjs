@@ -36,6 +36,24 @@ function fixture(files = [{ filename: "README.md", status: "modified" }]) {
   };
 }
 
+test("missing publication metadata fails before queuing a proof worker", (t) => {
+  const data = fixture([
+    {
+      filename: "submissions/example-bound/src/Candidate/Main.lean",
+      status: "added",
+    },
+  ]);
+  data.pr.body =
+    "QRH-Result: example-bound\nQRH-Bound: 7/8\nQRH-Decimal: 0.875";
+  data.omitMetadata = true;
+  const result = run(t, data, { QRH_PHASE: "prepare" });
+  assertFailure(
+    result,
+    "New bounds require exactly one fenced qrh-metadata JSON block in the PR body",
+  );
+  assert.equal(result.context, null);
+});
+
 // This child replaces fetch before importing the executable module. The mock
 // handles every API read and write and rejects unknown requests.
 const harness = `
@@ -105,6 +123,17 @@ console.log("MOCK_RESULT=" + JSON.stringify({ requests, importError }));
 `;
 
 function run(t, data, overrides = {}) {
+  data = structuredClone(data);
+  if (!data.omitMetadata) {
+    for (const pr of [data.pr, data.current].filter(Boolean)) {
+      if (
+        pr.body?.includes("QRH-Result:") &&
+        !pr.body.includes("```qrh-metadata")
+      )
+        pr.body +=
+          '\n\n```qrh-metadata\n{"title":"Fixture result","authors":[{"name":"Fixture author"}],"description":"Synthetic proof description."}\n```';
+    }
+  }
   const cwd = mkdtempSync(join(tmpdir(), "qrh-check-pr-"));
   t.after(() => rmSync(cwd, { recursive: true, force: true }));
   mkdirSync(join(cwd, "verifier"));

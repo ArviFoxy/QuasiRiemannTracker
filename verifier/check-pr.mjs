@@ -3,7 +3,12 @@
 import { mkdirSync, writeFileSync, appendFileSync } from "node:fs";
 import { api } from "./github-api.mjs";
 import { prFiles } from "./pr-files.mjs";
-import { classifyPRChanges, evaluatePR } from "./pr-admission.mjs";
+import {
+  classifyPRChanges,
+  evaluatePR,
+  parseDeclaration,
+} from "./pr-admission.mjs";
+import { parseSubmissionMetadata } from "./submission-metadata.mjs";
 import { syncPRLabels } from "./pr-labels.mjs";
 
 const repo = process.env.GITHUB_REPOSITORY;
@@ -86,6 +91,7 @@ try {
     defaultBranch,
   });
   await syncPRLabels(repo, number, classification);
+  if (parseDeclaration(pr.body)) parseSubmissionMetadata(pr.body);
   summary = await evaluatePR({
     pr,
     files,

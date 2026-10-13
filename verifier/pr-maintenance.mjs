@@ -1,6 +1,6 @@
 // Candidate commits supply data; validators and worker code come from the base.
 import { execFileSync } from "node:child_process";
-import { mkdtempSync, rmSync } from "node:fs";
+import { existsSync, readFileSync, mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { isDeepStrictEqual } from "node:util";
@@ -27,11 +27,72 @@ export function maintenancePaths(files) {
     );
 }
 
-export function maintenancePlan({ files, read, list }) {
-  const base = JSON.parse(read("base", "catalogue/results.json"));
-  const head = validateCatalogue(
-    JSON.parse(read("head", "catalogue/results.json")),
+export function maintenancePlan({
+  files,
+  read,
+  list,
+  admittedCatalogue,
+  readAdmittedCertificate,
+}) {
+  const oldBaseJSON = read("base", "catalogue/results.json");
+  if (
+    !oldBaseJSON &&
+    files.some(
+      (file) =>
+        ["catalogue/results.json", "public/catalogue.json"].includes(
+          file.filename,
+        ) && file.status !== "removed",
+    )
+  )
+    throw Error(
+      "Catalogue JSON is generated output; edit proof metadata instead",
+    );
+  // Older commits have a tracked catalogue. New commits contain one metadata
+  // file per legacy proof; current admissions come from the trusted archive.
+  const baseMetadata = new Set(
+    list("base", "proofs/").filter((path) =>
+      /^proofs\/[^/]+\/metadata\.json$/.test(path),
+    ),
   );
+  const oldBaseIds = new Set(
+    oldBaseJSON
+      ? catalogueProofRecords(JSON.parse(oldBaseJSON)).map(proofRevision)
+      : [],
+  );
+  const archived = (
+    admittedCatalogue ? catalogueProofRecords(admittedCatalogue) : []
+  ).filter(
+    (record) =>
+      !baseMetadata.has(`proofs/${proofRevision(record)}/metadata.json`) &&
+      !oldBaseIds.has(proofRevision(record)),
+  );
+  const archiveIds = new Set(archived.map(proofRevision));
+  const metadataCatalogue = (side) => {
+    const old = read(side, "catalogue/results.json");
+    if (old) return JSON.parse(old);
+    const records = [],
+      historical_records = [];
+    for (const path of list(side, "proofs/").filter((path) =>
+      /^proofs\/[^/]+\/metadata\.json$/.test(path),
+    )) {
+      const { historical, ...record } = JSON.parse(read(side, path));
+      if (path !== `proofs/${proofRevision(record)}/metadata.json`)
+        throw Error("Proof metadata path differs from its revision");
+      (historical === true ? historical_records : records).push(record);
+    }
+    for (const record of archived) {
+      if (
+        [...records, ...historical_records].some(
+          (entry) => proofRevision(entry) === proofRevision(record),
+        )
+      )
+        throw Error(`Metadata duplicates an admitted proof: ${record.id}`);
+      records.push(record);
+    }
+    return { schema_version: 1, records, historical_records };
+  };
+  const base = metadataCatalogue("base");
+  const head = validateCatalogue(metadataCatalogue("head"));
   const old = new Map(
     catalogueProofRecords(base).map((r) => [proofRevision(r), r]),
   );
@@ -45,7 +106,7 @@ export function maintenancePlan({ files, read, list }) {
     const record = records.get(id) || old.get(id);
     if (!record)
       throw Error(
-        `Cannot determine the exact bound for ${id}; add its catalogue entry`,
+        `Cannot determine the exact bound for ${id}; provide its proof metadata or a QRH result declaration`,
       );
     required.set(id, { result_id: id, theta_exact: boundLabel(record) });
   };
@@ -69,7 +130,10 @@ export function maintenancePlan({ files, read, list }) {
     const name = `public/certificates/${id}.json`;
     if (record.certificate_url !== `certificates/${id}.json`)
       throw Error(`Missing verification record: ${id}`);
-    const c = certificate(JSON.parse(read("head", name)));
+    const certificateData = (side) =>
+      read(side, name) ||
+      (archiveIds.has(id) ? readAdmittedCertificate?.(id) : null);
+    const c = certificate(JSON.parse(certificateData("head")));
     if (
       c.result_id !== id ||
       c.theta_exact !== boundLabel(record) ||
@@ -81,7 +145,7 @@ export function maintenancePlan({ files, read, list }) {
       !isDeepStrictEqual(c.bound_interval, record.bound_interval)
     )
       throw Error(`Verification record differs from catalogue: ${id}`);
-    const previous = read("base", name);
+    const previous = certificateData("base");
     if (previous) {
       const normalize = (value) => ({
         ...value,
@@ -128,7 +192,11 @@ export function maintenancePlan({ files, read, list }) {
   for (const id of sourceIds) {
     if (list("head", `submissions/${id}/`).length) requireProof(id);
   }
-  if (files.some((f) => f.filename === "public/catalogue.json")) {
+  if (
+    files.some(
+      (f) => f.filename === "public/catalogue.json" && f.status !== "removed",
+    )
+  ) {
     const published = JSON.parse(read("head", "public/catalogue.json"));
     if (!isDeepStrictEqual(published, head))
       throw Error("Published catalogue differs from catalogue/results.json");
@@ -140,10 +208,7 @@ export function maintenancePlan({ files, read, list }) {
   );
 }
 
-export async function maintenanceVerification(
-  _root,
-  { pr, files, repository },
-) {
+export async function maintenanceVerification(root, { pr, files, repository }) {
   if (!maintenancePaths(files)) return [];
   if (
     !/^[\w.-]+\/[\w.-]+$/.test(repository) ||
@@ -194,7 +259,19 @@ export async function maintenanceVerification(
       refs.base,
       refs.head,
     ]);
-    return maintenancePlan({ files, read, list });
+    const cataloguePath = join(root, "catalogue/results.json");
+    return maintenancePlan({
+      files,
+      read,
+      list,
+      admittedCatalogue: existsSync(cataloguePath)
+        ? JSON.parse(readFileSync(cataloguePath, "utf8"))
+        : undefined,
+      readAdmittedCertificate: (id) => {
+        const path = join(root, `public/certificates/${id}.json`);
+        return existsSync(path) ? readFileSync(path, "utf8") : null;
+      },
+    });
   } finally {
     rmSync(directory, { recursive: true, force: true });
   }

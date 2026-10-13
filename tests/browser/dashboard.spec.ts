@@ -1,23 +1,21 @@
 import { test, expect } from "@playwright/test";
 import { readFileSync } from "node:fs";
 import { cmp } from "../../core/rational.mjs";
-const liveRecords = JSON.parse(
-  readFileSync(
-    new URL("../../catalogue/results.json", import.meta.url),
-    "utf8",
-  ),
-).records;
-const verifiedCount = liveRecords.filter(
+import { catalogue, routeCatalogue } from "./catalogue-fixture";
+const fixtureRecords = catalogue().records;
+const verifiedCount = fixtureRecords.filter(
   (record: { status: string }) => record.status === "framework-verified",
 ).length;
-const pendingCount = liveRecords.filter(
+const pendingCount = fixtureRecords.filter(
   (record: { status: string }) => record.status === "verification-pending",
 ).length;
-const recordsByBound = [...liveRecords].sort((a, b) => cmp(a.theta, b.theta));
+const recordsByBound = [...fixtureRecords].sort((a, b) =>
+  cmp(a.theta, b.theta),
+);
 const bestVerified = recordsByBound.find(
   (record) => record.status === "framework-verified",
 );
-const plottedCount = liveRecords.filter((record: { status: string }) =>
+const plottedCount = fixtureRecords.filter((record: { status: string }) =>
   ["framework-verified", "historical-baseline"].includes(record.status),
 ).length;
 const chartFixtures = () =>
@@ -27,104 +25,78 @@ const chartFixtures = () =>
       "utf8",
     ),
   );
-test("verified results expose their exact source and minimal verification record", async ({
+test.beforeEach(async ({ page }) => {
+  await routeCatalogue(page);
+});
+
+test("verified results expose the source and verification links supplied by the catalogue", async ({
   page,
-  request,
 }) => {
   await page.goto("/");
-  for (const record of liveRecords) {
+  for (const record of fixtureRecords.filter(
+    (record) => record.status === "framework-verified",
+  )) {
     await page.getByRole("button", { name: record.title, exact: true }).click();
-    const link = page.getByRole("link", {
-      name: "Verification record",
-      exact: true,
-    });
-    await expect(link).toHaveAttribute("href", "/" + record.certificate_url);
-    const response = await request.get((await link.getAttribute("href"))!);
-    expect(response.ok()).toBe(true);
-    const certificate = await response.json();
-    expect(certificate.theta_exact).toBe(
-      record.exact_bound ||
-        record.theta.numerator + "/" + record.theta.denominator,
-    );
-    expect(certificate.verified_at).toBe(record.first_verified_at);
-    expect(certificate.kernels).toEqual(["Lean default", "nanoda", "con-ron"]);
+    await expect(
+      page.getByRole("link", { name: "Verification record", exact: true }),
+    ).toHaveAttribute("href", "/" + record.certificate_url);
     await expect(
       page.getByRole("link", { name: "Checked Lean solution", exact: true }),
-    ).toHaveAttribute("href", record.solution_url);
+    ).toHaveAttribute("href", record.solution_url!);
   }
 });
-test("current results, verification statuses and source downloads", async ({
+
+test("mixed verification statuses and exact bounds render from the supplied catalogue", async ({
   page,
-  request,
 }, info) => {
   await page.goto("/");
-  await expect(page.locator("tbody tr")).toHaveCount(liveRecords.length);
+  await expect(page.locator("tbody tr")).toHaveCount(fixtureRecords.length);
   await page.getByRole("button", { name: "Fit chart", exact: true }).click();
   await expect(page.locator("[data-dot]")).toHaveCount(plottedCount);
   await expect(page.locator("tbody .tag.teal")).toHaveCount(verifiedCount);
   await expect(page.locator("tbody .tag.amber")).toHaveCount(pendingCount);
+  const algebraic = fixtureRecords.find(
+    (record) => record.id === "fixture-algebraic",
+  )!;
   await page
-    .getByRole("button", {
-      name: "Baiying Liu · optimized parameters",
-      exact: true,
-    })
+    .getByRole("button", { name: algebraic.title, exact: true })
     .click();
   await expect(page.locator(".proof-detail")).toContainText(
     "(1507 − 2√921) / 1653",
   );
   await expect(page.locator(".proof-detail")).toContainText(
-    liveRecords.find((record: { id: string }) => record.id === "liu-20261008")
-      .status === "framework-verified"
-      ? "Verified in our framework"
-      : "Verification pending",
+    "Verification pending",
   );
-  await expect(page.locator(".proof-detail")).not.toContainText(
-    "Signed verification receipt",
-  );
+  await expect(
+    page.getByRole("link", { name: "Verification record", exact: true }),
+  ).toHaveCount(0);
   await page
-    .getByRole("button", {
-      name: "ProofCouncil · certified uniform descent",
-      exact: true,
-    })
+    .getByRole("button", { name: bestVerified.title, exact: true })
     .click();
-  await expect(page.locator(".proof-detail")).toContainText(
-    "874957019421/1000000000000",
-  );
-  await expect(page.locator(".proof-detail")).toContainText(
-    "Tim Gehrunger · ProofCouncil",
-  );
-  await page
-    .getByRole("button", {
-      name: "nielstron · exact algebraic endpoint",
-      exact: true,
-    })
-    .click();
+  await expect(page.locator(".proof-detail")).toContainText("87489/100000");
+  await expect(page.locator(".proof-detail")).toContainText("Example team");
   await expect(page.locator(".proof-detail")).toContainText(
     "Verified in our framework",
-  );
-  await expect(page.locator(".proof-detail")).toContainText(
-    "874957019420098946128603850561452983/1000000000000000000000000000000000000",
-  );
-  await expect(page.locator(".proof-detail")).toContainText(
-    "657e³−954e²+21e+20=0",
-  );
-  await expect(page.locator(".proof-detail")).not.toContainText(
-    "Signed verification receipt",
   );
   await page.getByRole("button", { name: "Close proof details" }).click();
   await page.evaluate(() => window.scrollTo(0, 0));
   await page.screenshot({
-    path: `evidence/screenshots/${info.project.name}-live.png`,
+    path: `evidence/screenshots/${info.project.name}-catalogue-fixture.png`,
     fullPage: true,
   });
 });
 test("selection, exact sorting and zoom", async ({ page }, info) => {
   await page.goto("/");
   await page
-    .getByRole("button", { name: "OpenAI · seven eighths", exact: true })
+    .getByRole("button", {
+      name: "Example author · Initial bound",
+      exact: true,
+    })
     .click();
   await expect(page.locator(".proof-detail")).toContainText("7/8");
-  await expect(page.locator(".proof-detail")).toContainText("con-ron");
+  await expect(page.locator(".proof-detail")).toContainText(
+    "Checked by the example verifier.",
+  );
   await page.getByRole("button", { name: "Close proof details" }).click();
   const plot = page.getByRole("group", { name: /Interactive bound timeline/ });
   await plot.focus();
@@ -252,28 +224,26 @@ test("a stronger pending submission stays in the table and cannot move the verif
   const before = await page.locator(".verified-frontier").getAttribute("d");
   const best = await page.locator(".best-bound").textContent();
   const pending = {
-    ...liveRecords.find(
-      (r: { id: string }) => r.id === "cycle25-quartic-20261010",
-    ),
+    ...fixtureRecords.find((r: { id: string }) => r.id === "fixture-newest"),
     id: "pending-test-only",
     title: "Pending test contribution",
     status: "verification-pending",
     first_verified_at: "",
     builds_on: [],
     theta: { numerator: "1", denominator: "2" },
-    timeline_at: "2026-10-11T00:00:00Z",
+    timeline_at: "2030-10-11T00:00:00Z",
     date_label: "Submitted",
   };
   await page.route("**/catalogue.json", (route) =>
     route.fulfill({
       json: {
         schema_version: 1,
-        records: [...liveRecords, pending],
+        records: [...fixtureRecords, pending],
       },
     }),
   );
   await page.reload();
-  await expect(page.locator("tbody tr")).toHaveCount(liveRecords.length + 1);
+  await expect(page.locator("tbody tr")).toHaveCount(fixtureRecords.length + 1);
   await expect(page.locator("[data-dot]")).toHaveCount(pointCount);
   await expect(page.locator('[data-id="pending-test-only"]')).toHaveCount(0);
   await expect(page.locator(".best-bound")).toHaveText(best!);

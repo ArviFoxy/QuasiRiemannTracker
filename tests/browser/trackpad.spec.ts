@@ -1,10 +1,12 @@
 import { test, expect } from "@playwright/test";
+import { routeCatalogue } from "./catalogue-fixture";
 
 test("diagonal trackpad gestures preserve both pan and zoom", async ({
   page,
   isMobile,
 }) => {
   test.skip(isMobile, "Desktop trackpad interaction");
+  await routeCatalogue(page);
   await page.goto("/");
   const plot = page.getByRole("group", { name: /Interactive bound timeline/ });
   const curve = plot.locator(".verified-frontier");

@@ -470,7 +470,9 @@ export default function App() {
               </li>
               <li>
                 Start the PR body with QRH-Result, QRH-Bound and QRH-Decimal.
-                Proof checks run automatically, including on drafts.
+                Include the template’s qrh-metadata JSON block with the result
+                title, authors and description. Proof checks run automatically,
+                including on drafts.
               </li>
               <li>
                 After review and merge, the website updates automatically.

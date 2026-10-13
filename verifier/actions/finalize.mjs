@@ -6,6 +6,9 @@ import { parseDeclaration } from "../pr-admission.mjs";
 import { validateDecimalApproximation } from "../pr-decimal.mjs";
 import { verificationResult } from "./result.mjs";
 import { workerCertificate } from "../certificate.mjs";
+import { archiveAdmission } from "../admission-archive.mjs";
+import { parseSubmissionMetadata } from "../submission-metadata.mjs";
+import { validatePublication } from "../publication-record.mjs";
 const c = JSON.parse(readFileSync("verification-context/context.json", "utf8"));
 if (
   c.repository !== process.env.GITHUB_REPOSITORY ||
@@ -36,9 +39,15 @@ try {
       "PR head, base or declaration changed during verification; rerun admission",
     );
   const declaration = parseDeclaration(p.body);
+  const metadata = declaration ? parseSubmissionMetadata(p.body) : null;
+  const catalogue = declaration
+    ? JSON.parse(readFileSync("verification-context/catalogue.json", "utf8"))
+    : null;
   const expectations = c.expectations;
   if (!Array.isArray(expectations) || !expectations.length)
     throw Error("Verification context has no proof targets");
+  if (declaration && expectations.length !== 1)
+    throw Error("A new-bound declaration must have exactly one proof target");
   const summaries = [];
   mkdirSync("verification/certificates", { recursive: true });
   for (const expected of expectations) {
@@ -61,7 +70,7 @@ try {
       validateDecimalApproximation({
         ...declaration,
         bound_interval: report.bound_interval,
-        catalogue: JSON.parse(readFileSync("catalogue/results.json", "utf8")),
+        catalogue,
       });
     const record =
       attempt.status === "accepted"
@@ -72,10 +81,29 @@ try {
             readFileSync(join(directory, "run/result.json")),
           )
         : report;
+    if (declaration)
+      validatePublication(catalogue, {
+        ...expected,
+        metadata,
+        certificate: record,
+        source_path: `submissions/${expected.result_id}/src`,
+        pr: p,
+      });
     writeFileSync(
       `verification/certificates/${expected.result_id}.json`,
       JSON.stringify(record, null, 2) + "\n",
     );
+    if (declaration)
+      await archiveAdmission({
+        context: c,
+        pr: p,
+        expected,
+        record,
+        reportBytes:
+          attempt.status === "accepted"
+            ? readFileSync(join(directory, "run/result.json"))
+            : null,
+      });
     summaries.push(
       `Proof verification accepts ${expected.result_id} at ${expected.theta_exact} for this exact PR head.`,
     );
@@ -84,6 +112,11 @@ try {
         "A matching independently verified local run supplied the result because hosted verification was unavailable.",
       );
   }
+  if (
+    identity(await api(`repos/${c.repository}/pulls/${c.expected.number}`)) !==
+    identity(c.pr)
+  )
+    throw Error("PR changed while archiving verification; rerun admission");
   conclusion = "success";
   summary = summaries.join(" ");
   if (declaration)

@@ -1,8 +1,8 @@
 import { test, expect } from "@playwright/test";
-import { readFileSync } from "node:fs";
 import { cmp, decimal } from "../../core/rational.mjs";
+import { catalogue as fixtureCatalogue } from "./catalogue-fixture";
 
-const catalogue = JSON.parse(readFileSync("catalogue/results.json", "utf8"));
+const catalogue = fixtureCatalogue();
 const verified = catalogue.records.filter(
   (record: { status: string }) => record.status === "framework-verified",
 );
@@ -135,14 +135,12 @@ test("all points stay in the chart while default zoom fits the verified frontier
   await expect(dateTicks).toHaveText(initialDates);
 });
 
-test("a verified theta-one baseline connects to OpenAI while the default zoom stays below one", async ({
+test("a verified theta-one baseline connects to the next bound while default zoom stays below one", async ({
   page,
 }) => {
-  const openai = verified.find(
-    (record: { id: string }) => record.id === "openai-baseline",
-  );
+  const initial = verified[0];
   const classical = {
-    ...openai,
+    ...initial,
     id: "verified-classical-fixture",
     title: "Verified classical baseline",
     theta: { numerator: "1", denominator: "1" },
@@ -159,7 +157,7 @@ test("a verified theta-one baseline connects to OpenAI while the default zoom st
         records: [
           classical,
           ...catalogue.records.filter(
-            (r: { id: string }) => r.id !== "classical-euler-product",
+            (r: { id: string }) => r.status !== "historical-baseline",
           ),
         ],
       },
@@ -181,7 +179,7 @@ test("a verified theta-one baseline connects to OpenAI while the default zoom st
     return [await circle.getAttribute("cx"), await circle.getAttribute("cy")];
   };
   const [x1, y1] = await coordinates(classical.id),
-    [x2, y2] = await coordinates("openai-baseline");
+    [x2, y2] = await coordinates(initial.id);
   expect(await chart.locator(".verified-frontier").getAttribute("d")).toMatch(
     new RegExp(`^M ${x1} ${y1} H ${x2} V ${y2}`.replaceAll(".", "\\.")),
   );

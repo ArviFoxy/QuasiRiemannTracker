@@ -1,5 +1,5 @@
 import { test, expect, type Page } from "@playwright/test";
-import { readFileSync } from "node:fs";
+import { catalogue, routeCatalogue } from "./catalogue-fixture";
 
 async function expectReadableLabels(page: Page) {
   const problems = await page.locator(".chart").evaluate((svg) => {
@@ -45,16 +45,13 @@ test("nearby chart names stay readable through resizing and zoom", async ({
   page,
   isMobile,
 }) => {
+  await routeCatalogue(page);
   await page.goto("/");
-  await expect(
-    page.locator('[data-id="cycle25-quartic-20261010"]'),
-  ).toBeVisible();
+  await expect(page.locator('[data-id="fixture-newest"]')).toBeVisible();
   if (!isMobile) {
-    const newest = page.locator(
-      '[data-id="cycle25-quartic-20261010"] .point-label',
-    );
+    const newest = page.locator('[data-id="fixture-newest"] .point-label');
     const previous = page.locator(
-      '[data-id="nielstron-20261009-tightening"] .point-label',
+      '[data-id="fixture-improvement"] .point-label',
     );
     await expect(newest).toBeVisible();
     await expect(previous).toBeVisible();
@@ -92,10 +89,10 @@ test("nearby chart names stay readable through resizing and zoom", async ({
     await expectReadableLabels(page);
     await page.screenshot({ path: ".work/labels-mobile.png", fullPage: true });
   }
-  await page
-    .locator('[data-id="nielstron-20261009-tightening"]')
-    .press("Enter");
-  await expect(page.locator(".proof-detail")).toContainText("nielstron");
+  await page.locator('[data-id="fixture-improvement"]').press("Enter");
+  await expect(page.locator(".proof-detail")).toContainText(
+    "Example researcher",
+  );
 });
 
 test("a crowded cluster retains its newest name and every selectable dot", async ({
@@ -107,16 +104,16 @@ test("a crowded cluster retains its newest name and every selectable dot", async
     "Narrow screens use the accessible dots and table without persistent labels.",
   );
   // Crowd the chart only in an intercepted test response; never publish fixtures.
-  const data = JSON.parse(readFileSync("catalogue/results.json", "utf8"));
+  const data = catalogue();
   const source = data.records.find(
-    (r: { id: string }) => r.id === "nielstron-20261009-tightening",
+    (r: { id: string }) => r.id === "fixture-improvement",
   );
   const cluster = Array.from({ length: 8 }, (_, i) => ({
     ...source,
     id: `label-fixture-${i}`,
     title:
       i === 7 ? "Newest crowded contribution" : `Crowded contribution ${i}`,
-    timeline_at: new Date(Date.UTC(2026, 9, 10) + i).toISOString(),
+    timeline_at: new Date(Date.UTC(2030, 9, 10) + i).toISOString(),
     builds_on: [],
   }));
   await page.route("**/catalogue.json", (route) =>

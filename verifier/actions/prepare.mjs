@@ -2,6 +2,7 @@
 import { execFileSync } from "node:child_process";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { submission } from "../manifest.mjs";
+import { upstreamImports } from "./imports.mjs";
 const c = JSON.parse(readFileSync("verification-context/context.json", "utf8"));
 const e = c.expected;
 mkdirSync("verification", { recursive: true });
@@ -87,8 +88,7 @@ try {
   // Only the pinned upstream OAI modules named in the source are built; source is data here.
   const imports = new Set();
   for (const f of s.files.filter((f) => f.path.endsWith(".lean"))) {
-    for (const m of f.bytes.toString().matchAll(/\bOAI(?:\.[A-Za-z0-9_]+)+/g))
-      imports.add(m[0]);
+    for (const name of upstreamImports(f.bytes.toString())) imports.add(name);
   }
   writeFileSync(
     "verification/imports.json",

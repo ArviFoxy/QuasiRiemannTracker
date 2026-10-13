@@ -266,14 +266,14 @@ test("requires a result declaration for PR #15's proof change", async () => {
   input.pr.number = 15;
   await rejectsBeforeEvidence(
     input,
-    "Proof, submission or catalogue changes require QRH-Result, QRH-Bound, QRH-Decimal and independently checked evidence",
+    "Proof, submission or catalogue changes require QRH-Result, QRH-Bound, QRH-Decimal and a checkable proof",
   );
 });
 
 test("requires result metadata for proof submissions", async () => {
   await rejectsBeforeEvidence(
     options(maintenance, [file("proofs/candidate/Main.lean")]),
-    "Proof, submission or catalogue changes require QRH-Result, QRH-Bound, QRH-Decimal and independently checked evidence",
+    "Proof, submission or catalogue changes require QRH-Result, QRH-Bound, QRH-Decimal and a checkable proof",
   );
 });
 
@@ -313,7 +313,7 @@ test("PR #8's result metadata and maintenance changes fail the mixed-change requ
   );
 });
 
-test("PR #8's proof-only 29/33 submission reaches the missing trusted replay requirement", async () => {
+test("PR #8's proof-only 29/33 submission reaches the live verification requirement", async () => {
   const input = options(
     newBound
       .replace(resultId, "single-prime-29-33-20261010")
@@ -324,13 +324,12 @@ test("PR #8's proof-only 29/33 submission reaches the missing trusted replay req
   input.pr.number = 8;
   delete input.validateEvidence;
   await assert.rejects(run(input), {
-    message:
-      "PR admission: archive an independent maintainer replay on the base branch for this exact PR head, result ID and bound",
+    message: "Proof verification has not run for this PR head",
   });
 });
 
 for (const draft of [false, true]) {
-  test(`PR #15's declaration requires a trusted replay as ${draft ? "a draft" : "ready for review"}`, async () => {
+  test(`PR #15's declaration requires live verification as ${draft ? "a draft" : "ready for review"}`, async () => {
     const input = options(
       newBound.replace(resultId, "gao-local-moment-20261011"),
       [
@@ -342,8 +341,7 @@ for (const draft of [false, true]) {
     input.pr.draft = draft;
     delete input.validateEvidence;
     await assert.rejects(run(input), {
-      message:
-        "PR admission: archive an independent maintainer replay on the base branch for this exact PR head, result ID and bound",
+      message: "Proof verification has not run for this PR head",
     });
   });
 
@@ -388,7 +386,7 @@ for (const [theta, decimal] of [
     input.validateEvidence = mock.fn(() => ({ theta_exact: theta }));
     assert.equal(
       await run(input),
-      `Independent maintainer evidence accepts ${resultId} at ${theta} for this exact PR head. Decimal ${decimal} accurately approximates the exact bound.`,
+      `Proof verification accepts ${resultId} at ${theta} for this exact PR head. Decimal ${decimal} accurately approximates the exact bound.`,
     );
     assert.equal(input.validateEvidence.mock.callCount(), 1);
     assert.deepEqual(input.validateEvidence.mock.calls[0].arguments, [

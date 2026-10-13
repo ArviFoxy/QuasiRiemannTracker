@@ -224,7 +224,7 @@ test("publishes admission failure when a required label write fails", (t) => {
 });
 
 for (const draft of [false, true]) {
-  test(`PR #15 publishes the missing trusted replay failure as ${draft ? "a draft" : "ready for review"}`, (t) => {
+  test(`PR #15 publishes the live verification failure as ${draft ? "a draft" : "ready for review"}`, (t) => {
     const data = fixture([
       { filename: "proofs/candidate/Main.lean", status: "added" },
     ]);
@@ -232,10 +232,7 @@ for (const draft of [false, true]) {
     data.pr.body =
       "QRH-Result: gao-local-moment-20261011\nQRH-Bound: 4374433/5000000\nQRH-Decimal: 0.87488660";
     const result = run(t, data);
-    assertFailure(
-      result,
-      "PR admission: archive an independent maintainer replay on the base branch for this exact PR head, result ID and bound",
-    );
+    assertFailure(result, "Proof verification has not run for this PR head");
     assert.deepEqual(
       result.labelWrites.map((request) => request.body?.labels),
       [["new-bound"]],
@@ -253,7 +250,7 @@ for (const [description, maintenanceFiles, message, labels] of [
   [
     "a proof-only submission",
     [],
-    "PR admission: archive an independent maintainer replay on the base branch for this exact PR head, result ID and bound",
+    "Proof verification has not run for this PR head",
     ["new-bound"],
   ],
 ]) {
@@ -277,17 +274,14 @@ for (const [description, maintenanceFiles, message, labels] of [
   });
 }
 
-test("a theta 1 submission publishes the missing trusted replay failure", (t) => {
+test("a theta 1 submission publishes the live verification failure", (t) => {
   const data = fixture([
     { filename: "proofs/theta-one/Solution.lean", status: "added" },
   ]);
   data.pr.number = 5;
   data.pr.body = "QRH-Result: theta-one\nQRH-Bound: 1/1\nQRH-Decimal: 1.0";
   const result = run(t, data);
-  assertFailure(
-    result,
-    "PR admission: archive an independent maintainer replay on the base branch for this exact PR head, result ID and bound",
-  );
+  assertFailure(result, "Proof verification has not run for this PR head");
   assert.deepEqual(
     result.labelWrites.map((request) => request.body?.labels),
     [["new-bound"]],

@@ -1,4 +1,4 @@
-name: PR admission (trusted metadata and evidence)
+name: PR admission
 on:
   pull_request_target:
     types:
@@ -13,22 +13,24 @@ on:
   workflow_dispatch:
     inputs:
       pr:
-        description: PR number to recheck after trusted evidence has been merged
+        description: PR number to verify
         type: number
         required: true
-permissions:
-  contents: read
-  pull-requests: write
-  checks: write
+permissions: {}
 concurrency:
   group: pr-admission-${{ github.event.pull_request.number || inputs.pr }}
   cancel-in-progress: true
 jobs:
-  admission:
+  prepare:
     runs-on: ubuntu-24.04
     timeout-minutes: 10
+    permissions:
+      contents: read
+      pull-requests: write
+      checks: write
+    outputs:
+      verify: ${{ steps.prepare.outputs.verify }}
     steps:
-      # Execute orchestration from the trusted default-branch workflow commit.
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           ref: ${{ github.workflow_sha }}
@@ -36,9 +38,99 @@ jobs:
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version: 22.17.0
-      - name: Label changed files and check trusted evidence for the PR head
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Classify the PR and prepare verification
+        id: prepare
         run: node verifier/check-pr.mjs
         env:
           GITHUB_TOKEN: ${{ github.token }}
           QRH_PR: ${{ github.event.pull_request.number || inputs.pr }}
           QRH_DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+          QRH_PHASE: prepare
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: steps.prepare.outputs.verify == 'true'
+        with:
+          name: verification-context-${{ github.run_attempt }}
+          path: verification-context/
+          retention-days: 30
+  verify:
+    needs: prepare
+    if: needs.prepare.outputs.verify == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 150
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.workflow_sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 22.17.0
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: verification-context-${{ github.run_attempt }}
+          path: verification-context/
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Read the exact submitted source and check its manifest
+        run: node verifier/actions/prepare.mjs
+      - name: Install worker prerequisites
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends meson ninja-build libcap-dev pkg-config zstd libgmp-dev python3-yaml
+          sudo loginctl enable-linger "$(id -un)"
+          echo "XDG_RUNTIME_DIR=/run/user/$(id -u)" >> "$GITHUB_ENV"
+          echo "DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$(id -u)/bus" >> "$GITHUB_ENV"
+      - name: Build the pinned checking environment
+        timeout-minutes: 85
+        run: python3 verifier/actions/setup.py
+      - name: Check the canonical theorem with Comparator and all three kernels
+        timeout-minutes: 65
+        run: python3 verifier/actions/run.py
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: proof-verification-${{ github.run_attempt }}
+          path: |
+            verification/attempt.json
+            verification/run/logs/
+            verification/run/result.json
+            verification/run/controls.json
+            verification/run/contract.json
+            verification/run/phases.json
+            verification/run/exports/
+          if-no-files-found: warn
+          retention-days: 30
+  admission:
+    needs: [prepare, verify]
+    if: always() && needs.prepare.outputs.verify == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      pull-requests: read
+      checks: write
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.workflow_sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 22.17.0
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: verification-context-${{ github.run_attempt }}
+          path: verification-context/
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        continue-on-error: true
+        with:
+          name: proof-verification-${{ github.run_attempt }}
+          path: verification/
+      - name: Publish verification for the current PR head
+        run: node verifier/actions/finalize.mjs
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          QRH_VERIFICATION_RESULT: ${{ needs.verify.result }}

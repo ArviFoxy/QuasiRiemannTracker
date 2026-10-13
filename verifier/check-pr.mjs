@@ -1,5 +1,6 @@
 // Run this entrypoint from the trusted default-branch checkout.
 // Read candidate file paths as data from the API or immutable Git commits.
+import { mkdirSync, writeFileSync, appendFileSync } from "node:fs";
 import { api } from "./github-api.mjs";
 import { prFiles } from "./pr-files.mjs";
 import { classifyPRChanges, evaluatePR } from "./pr-admission.mjs";
@@ -48,9 +49,9 @@ const check = await writeCheck("check-runs", "POST", {
   status: "in_progress",
   details_url: `https://github.com/${repo}/actions/runs/${process.env.GITHUB_RUN_ID}`,
   output: {
-    title: "Checking PR declaration and independent proof evidence",
+    title: "Checking PR declaration and proof",
     summary:
-      "Classifying changed files and validating declarations against trusted maintainer evidence.",
+      "Classifying changed files and preparing verification of the submitted proof.",
   },
 });
 const identity = (p) =>
@@ -67,6 +68,13 @@ const identity = (p) =>
     p.body,
     p.changed_files,
   ]);
+class VerificationRequired extends Error {
+  constructor(expected) {
+    super("Proof verification is queued");
+    this.expected = expected;
+  }
+}
+let queued = false;
 let conclusion = "failure",
   summary;
 try {
@@ -84,6 +92,13 @@ try {
     repository: repo,
     defaultBranch,
     root: process.cwd(),
+    ...(process.env.QRH_PHASE === "prepare"
+      ? {
+          validateEvidence: (_root, expected) => {
+            throw new VerificationRequired(expected);
+          },
+        }
+      : {}),
   });
   const current = await api(`repos/${repo}/pulls/${number}`);
   if (identity(pr) !== identity(current))
@@ -92,19 +107,44 @@ try {
     );
   conclusion = "success";
 } catch (error) {
-  summary = `Admission failed: ${error.message}\n\nSee CONTRIBUTING.md and docs/GITHUB.md for admission requirements.`;
-  process.exitCode = 1;
+  if (error instanceof VerificationRequired) {
+    queued = true;
+    mkdirSync("verification-context", { recursive: true });
+    writeFileSync(
+      "verification-context/context.json",
+      JSON.stringify(
+        {
+          expected: error.expected,
+          pr,
+          check_id: check.id,
+          repository: repo,
+          defaultBranch,
+          run_id: process.env.GITHUB_RUN_ID,
+          run_attempt: process.env.GITHUB_RUN_ATTEMPT,
+          workflow_sha: process.env.GITHUB_WORKFLOW_SHA,
+        },
+        null,
+        2,
+      ) + "\n",
+    );
+    appendFileSync(process.env.GITHUB_OUTPUT, "verify=true\n");
+    summary = "Checking the submitted proof in an isolated worker.";
+  } else {
+    summary = `Admission failed: ${error.message}\n\nSee CONTRIBUTING.md and docs/GITHUB.md for admission requirements.`;
+    process.exitCode = 1;
+  }
 }
-await writeCheck(`check-runs/${check.id}`, "PATCH", {
-  status: "completed",
-  conclusion,
-  completed_at: new Date().toISOString(),
-  output: {
-    title:
-      conclusion === "success"
-        ? "PR admission requirements satisfied"
-        : "PR admission failed",
-    summary,
-  },
-});
+if (!queued)
+  await writeCheck(`check-runs/${check.id}`, "PATCH", {
+    status: "completed",
+    conclusion,
+    completed_at: new Date().toISOString(),
+    output: {
+      title:
+        conclusion === "success"
+          ? "PR admission requirements satisfied"
+          : "PR admission failed",
+      summary,
+    },
+  });
 console.log(summary);

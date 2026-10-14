@@ -1,6 +1,6 @@
 {
   "schema": "proof-publication-redactions-v1",
-  "scope": "Publication derivatives of historical evidence. These changes redact private machine locations without changing proof inputs, mathematical statements, recorded original hashes, or verification results. No fresh proof run is claimed.",
+  "scope": "Publication derivatives of historical evidence. Private machine locations are removed from text and compressed receipt contents; proof sources, original recorded hash values and verification results remain unchanged. No proof run for this metadata revision is claimed.",
   "original_published_commit": "0a73e73348befd36061ff251e43540c1b11135bc",
   "proof_sources_changed": false,
   "protected_verifier_files_changed": false,
@@ -98,6 +98,25 @@
       "recorded_verification_hashes_unchanged": true
     },
     {
+      "path": "local-verification/replay-report.json.gz",
+      "original_sha256": "b31c3a2cf0fb865523dde3f9b2a4a0639ca7a4d3fb131da63965e9b8d3a697be",
+      "published_sha256": "9d19945044bfd3a35e6d29155da49c835e272494313d85234996564a3bbb997b",
+      "original_git_blob": "75797c438405409f7f53dda125294106ba364368",
+      "published_git_blob": "e4dc358e5f92b96609a362338a2c1bcde01bb3ba",
+      "transformation": "private_machine_location_redaction_only",
+      "recorded_verification_hashes_unchanged": true,
+      "disclosure_occurrences_removed": 2261,
+      "container": "gzip",
+      "member": "replay-report.json",
+      "original_member_sha256": "3a89c5a14fec8a9d89974683b3ecbdc95a55dbca9dd8e68b29f344ed0981b1c3",
+      "published_member_sha256": "8cd5b3d07c416c28069228425683387fb25099e4ae1dd27ee370679011817a5b",
+      "compression": {
+        "level": 9,
+        "mtime": 0,
+        "filename_header": false
+      }
+    },
+    {
       "path": "local-verification/tool-hashes.json",
       "original_sha256": "9246b4367ac70de49a8692f54017540bb24fdf28c900e4a2d514b94987d67926",
       "published_sha256": "e65342408e47275475304c094a07192a13fbbb8cf6f47e5de6a4445c9c75f58d",
@@ -133,5 +152,7 @@
       "transformation": "private_machine_location_redaction_only",
       "recorded_verification_hashes_unchanged": true
     }
-  ]
+  ],
+  "compressed_receipt_redaction_base_commit": "e070640a09f718d4de71f4f3ee8cfac9d42c6002",
+  "compressed_receipt_archives_changed": true
 }

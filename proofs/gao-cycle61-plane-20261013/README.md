@@ -21,3 +21,5 @@ Zhongpai Gao, with AI assistance, prepared this parameter refinement and note by
 Historical source comments and local-verification receipts record their original frozen scope. The current verification-summary.json and CI-REPAIR.md identify the revised source and its pending verification status.
 
 Historical verification JSON files in this folder are redacted publication copies. Their original recorded hashes remain unchanged; the [publication redaction manifest](publication-redactions.json) binds each original artifact to its redacted copy. Proof source bytes and verification results are unchanged.
+
+Text and compressed local-verification receipts are redacted publication derivatives. The [publication redaction manifest](publication-redactions.json) binds their original and published file hashes, and both decompressed member hashes for gzip receipts. Original recorded verification hashes and verdicts describe the historical proof runs. This metadata-only revision preserves every Lean source byte and protected verifier file; it has not received a fresh exact-head hosted proof check.

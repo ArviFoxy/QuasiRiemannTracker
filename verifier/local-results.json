@@ -34,5 +34,23 @@
     "schema_version": 1,
     "source_repository": "GTimG/QuasiRiemannTracker",
     "source_commit": "0b97bfdae9f026d9446d077952b2b4980700e742"
+  },
+  {
+    "schema_version": 1,
+    "result_id": "gao-cycle61-plane-20261013",
+    "theta_exact": "4374299/5000000",
+    "verified_at": "2026-10-14T10:07:04.865497+00:00",
+    "source_repository": "GTimG/QuasiRiemannTracker",
+    "source_commit": "9e0008692e77836a9a61cff25c808727d6d6690d",
+    "kernels": [
+      "Lean default",
+      "nanoda",
+      "con-ron"
+    ],
+    "report_url": "https://github.com/GTimG/QuasiRiemannTracker/blob/e238cab21d1ab48cfa17cff8f06ea11f0aaf3f7e/verifier/standard/receipts/pr43-9e000869-20261014/result.json",
+    "report_sha256": "83caa5da50d8ea98b1eb16c17d1a3ff01eff96c93334ae1cc3ed235f1c93250c",
+    "repository": "GTimG/QuasiRiemannTracker",
+    "number": 43,
+    "head_sha": "9e0008692e77836a9a61cff25c808727d6d6690d"
   }
 ]

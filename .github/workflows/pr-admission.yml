@@ -139,6 +139,7 @@ jobs:
           name: proof-verification-${{ github.run_attempt }}-${{ matrix.result }}
           path: |
             verification/worker-status.json
+            verification/build-cache-status.json
             verification/attempt.json
             verification/run/logs/
             verification/run/result.json

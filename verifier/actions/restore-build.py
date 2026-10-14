@@ -3,7 +3,7 @@ from pathlib import Path
 import hashlib, json, os, re, shutil, subprocess, tempfile, urllib.request
 import sys
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from standard.build_cache import MAX_BYTES, digest, build_inputs
+from standard.build_cache import MAX_BYTES, digest, build_inputs, compatibility_error
 
 RELEASE = 'https://github.com/GTimG/QuasiRiemannTracker/releases/download/submission-build-cache-v1/'
 KEY = Path(__file__).resolve().parents[1]/'standard/build-cache-public.pem'
@@ -37,6 +37,7 @@ def main():
     profile_path = out/'profile.json'
     profile = json.loads(profile_path.read_text())
     profile.pop('candidate_cache', None)
+    status = {'status':'miss'}
     try:
         with tempfile.TemporaryDirectory(dir=out, prefix='build-download-') as tmp:
             directory = Path(tmp)
@@ -46,9 +47,13 @@ def main():
             prepared = out/'prepared'
             inputs = build_inputs(json.loads((prepared/'contract.json').read_text()), profile,
                 json.loads((prepared/'libraries.json').read_text()), json.loads((out/'tool-pins.json').read_text()))
-            if index.get('environment') != inputs['environment'] or not any(
-                    index.get('modules', {}).get(m) == k for m,k in inputs['modules'].items()):
-                raise ValueError('No compatible modules in the server cache')
+            status.update(cache_environment=index.get('environment'), worker_environment=inputs['environment'])
+            if reason := compatibility_error(index, inputs):
+                raise ValueError(reason)
+            matches = sum(index.get('modules', {}).get(m) == k for m,k in inputs['modules'].items())
+            status.update(matching_modules=matches, required_modules=len(inputs['modules']))
+            if not matches:
+                raise ValueError('Compiler and libraries match; no submitted module matches the server cache')
             archive = directory/index['archive']
             download(RELEASE+index['archive'], archive, index['size'])
             if archive.stat().st_size != index['size'] or digest(archive) != index['sha256']:
@@ -57,9 +62,12 @@ def main():
             shutil.move(archive, destination)
             profile['candidate_cache'] = {'path':str(destination), 'sha256':index['sha256'],
                 'url':RELEASE+index['archive'], 'signer':digest(KEY)}
-            print('Authenticated server build; checking module compatibility during replay', flush=True)
+            status.update(status='hit', archive_sha256=index['sha256'])
+            print(f'Authenticated server build: {matches}/{len(inputs["modules"])} compatible modules; checking archive during replay', flush=True)
     except (ValueError, KeyError, TypeError, OSError, subprocess.SubprocessError) as error:
-        print(f'Build cache unavailable ({type(error).__name__}); compiling submitted source',flush=True)
+        status['reason'] = f'{type(error).__name__}: {error}'
+        print(f'Build cache unavailable ({status["reason"]}); compiling submitted source',flush=True)
+    (out/'build-cache-status.json').write_text(json.dumps(status,indent=2)+'\n')
     profile_path.write_text(json.dumps(profile,indent=2)+'\n')
 
 

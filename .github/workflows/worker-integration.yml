@@ -39,6 +39,8 @@ jobs:
           echo "DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$(id -u)/bus" >> "$GITHUB_ENV"
       - name: Build the pinned checking environment
         run: python3 verifier/actions/setup.py
+      - name: Inspect the published compilation cache
+        run: python3 verifier/actions/restore-build.py
       - name: Verify theta one
         run: python3 verifier/actions/run.py
       - name: Require the incomplete proof to fail for its forbidden axiom
@@ -49,6 +51,7 @@ jobs:
           name: worker-integration
           path: |
             verification/attempt.json
+            verification/build-cache-status.json
             verification/accepted-attempt.json
             verification/certificate.json
             verification/accepted-run/logs/

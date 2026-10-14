@@ -84,7 +84,10 @@ their importers compile again. Every result still runs Comparator and all three
 kernels. An unavailable or incompatible cache triggers a source build.
 
 The server publisher runs from a protected checkout after an isolated build has
-passed verification. Copy its `candidate-lib/`, `contract.json`, `result.json`,
+passed verification. Run `verifier/actions/setup.py` to prepare the server's
+checking environment with the same Lake build products as GitHub workers.
+Cache restoration reports compatibility differences in the job log and
+`build-cache-status.json` artifact. Copy its `candidate-lib/`, `contract.json`, `result.json`,
 profile and prepared `libraries.json` to the host, then run:
 
 ```sh

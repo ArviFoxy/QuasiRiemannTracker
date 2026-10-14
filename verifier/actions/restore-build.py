@@ -47,6 +47,7 @@ def main():
             prepared = out/'prepared'
             inputs = build_inputs(json.loads((prepared/'contract.json').read_text()), profile,
                 json.loads((prepared/'libraries.json').read_text()), json.loads((out/'tool-pins.json').read_text()))
+            (out/'build-cache-inputs.json').write_text(json.dumps(inputs,sort_keys=True)+'\n')
             status.update(cache_environment=index.get('environment'), worker_environment=inputs['environment'])
             if reason := compatibility_error(index, inputs):
                 raise ValueError(reason)

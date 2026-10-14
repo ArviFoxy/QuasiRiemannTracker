@@ -45,7 +45,9 @@ jobs:
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: build-cache-integration
-          path: verification/build-cache-status.json
+          path: |
+            verification/build-cache-status.json
+            verification/build-cache-inputs.json
           retention-days: 7
       - name: Verify theta one
         run: python3 verifier/actions/run.py

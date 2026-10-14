@@ -42,7 +42,8 @@ def main():
     index.write_text(json.dumps({'schema_version':1, 'sha256':sha, 'archive':destination.name,
         'size':destination.stat().st_size, 'created_at':datetime.datetime.now(datetime.timezone.utc).isoformat(),
         'source_head':contract['head_sha'], 'report_sha256':digest(run/'result.json'),
-        'module_count':len(inputs['modules']), 'environment':inputs['environment'], 'modules':inputs['modules']}, sort_keys=True)+'\n')
+        'module_count':len(inputs['modules']), 'environment':inputs['environment'], 'modules':inputs['modules'],
+        'compiler':inputs['compiler'], 'libraries':inputs['libraries']}, sort_keys=True)+'\n')
     signature = args.out/'cache.sig'
     subprocess.run(['openssl','pkeyutl','-sign','-inkey',str(args.key),'-rawin',
                     '-in',str(index),'-out',str(signature)], check=True)

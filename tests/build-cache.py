@@ -4,7 +4,7 @@ import copy, importlib.util, io, json, os, subprocess, sys, tarfile, tempfile, u
 from unittest.mock import patch
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT/'verifier'))
-from standard.build_cache import build_inputs, pack_cache, restore_cache, digest
+from standard.build_cache import build_inputs, pack_cache, restore_cache, digest, compatibility_error
 spec = importlib.util.spec_from_file_location('restore_build', ROOT/'verifier/actions/restore-build.py')
 restore = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(restore)
@@ -67,6 +67,32 @@ class CacheTests(unittest.TestCase):
             {'/one/Mathlib.olean':'mathlib','/two/Index.ilean':'editor-data'}, {'source_lean':'compiler'})
         self.assertEqual(self.inputs, grouped)
 
+    def test_companion_files_invalidate_and_explain_server_worker_mismatch(self):
+        worker = build_inputs(self.contract, {'libraries':['/worker/lib']},
+            {'/worker/lib/Mathlib.olean':'mathlib', '/worker/lib/Mathlib.olean.private':'private'},
+            {'source_lean':'compiler'})
+        self.assertNotEqual(worker['environment'], self.inputs['environment'])
+        self.assertIn('1 worker-only library files: Mathlib.olean.private',
+                      compatibility_error(self.inputs, worker))
+        with self.assertRaisesRegex(ValueError, 'Mathlib.olean.private'):
+            restore_cache(self.archive, self.root/'restored', worker)
+        self.assertFalse((self.root/'restored').exists())
+
+    def test_library_precedence_and_directory_boundaries(self):
+        grouped = build_inputs(self.contract, {'libraries':['/z/first','/a/second']},
+            {'/z/first/Mathlib.olean':'mathlib', '/a/second/Mathlib.olean':'shadowed',
+             '/z/first-other/Extra.olean':'outside'}, {'source_lean':'compiler'})
+        self.assertEqual(self.inputs, grouped)
+
+    def test_mismatch_identifies_changed_and_missing_libraries(self):
+        worker = build_inputs(self.contract, {'libraries':['/worker/lib']},
+            {'/worker/lib/Mathlib.olean':'changed','/worker/lib/Extra.olean':'extra'},
+            {'source_lean':'other-compiler'})
+        reason = compatibility_error(worker, self.inputs)
+        self.assertIn('source compiler differs', reason)
+        self.assertIn('1 cache-only library files: Extra.olean', reason)
+        self.assertIn('1 changed library files: Mathlib.olean', reason)
+
     def rewrite(self, transform):
         with tarfile.open(self.archive) as source:
             members = [(m, source.extractfile(m).read()) for m in source]
@@ -117,6 +143,10 @@ class CacheTests(unittest.TestCase):
                 restore.main()
                 self.assertEqual(download.call_count, 2)
             self.assertNotIn('candidate_cache',json.loads((out/'profile.json').read_text()))
+            status = json.loads((out/'build-cache-status.json').read_text())
+            self.assertEqual(status['status'], 'miss')
+            self.assertIn('compiler or libraries differ', status['reason'])
+            self.assertEqual(status['worker_environment'], self.inputs['environment'])
         finally:
             os.chdir(previous)
 

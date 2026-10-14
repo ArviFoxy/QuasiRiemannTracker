@@ -39,6 +39,16 @@ jobs:
           echo "DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$(id -u)/bus" >> "$GITHUB_ENV"
       - name: Build the pinned checking environment
         run: python3 verifier/actions/setup.py
+      - name: Inspect the published compilation cache
+        run: python3 verifier/actions/restore-build.py
+      - name: Publish cache diagnostics
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: build-cache-integration
+          path: |
+            verification/build-cache-status.json
+            verification/build-cache-inputs.json
+          retention-days: 7
       - name: Verify theta one
         run: python3 verifier/actions/run.py
       - name: Require the incomplete proof to fail for its forbidden axiom
@@ -49,6 +59,7 @@ jobs:
           name: worker-integration
           path: |
             verification/attempt.json
+            verification/build-cache-status.json
             verification/accepted-attempt.json
             verification/certificate.json
             verification/accepted-run/logs/

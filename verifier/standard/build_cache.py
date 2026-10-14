@@ -23,13 +23,14 @@ def build_inputs(contract, profile, inventory, tools):
     # Flatten the search path, preserving first-match resolution. Paths and
     # package grouping vary between the server and hosted workers. Only compiler
     # products affect imports; Lake traces and editor indexes are workspace data.
-    libraries = [Path(p) for p in profile['libraries']]
+    libraries = [str(Path(p)).rstrip('/')+'/' for p in profile['libraries']]
+    products = [(str(Path(filename)), sha) for filename, sha in sorted(inventory.items())
+                if filename.endswith((*SUFFIXES, '.so', '.ir', '.ir.sig'))]
     normalized = {}
     for lib in libraries:
-        for filename, sha in sorted(inventory.items()):
-            path = Path(filename)
-            if path.is_relative_to(lib) and path.name.endswith((*SUFFIXES, '.so', '.ir', '.ir.sig')):
-                normalized.setdefault(path.relative_to(lib).as_posix(), sha)
+        for filename, sha in products:
+            if filename.startswith(lib):
+                normalized.setdefault(filename[len(lib):], sha)
     if not normalized:
         raise ValueError('Empty build dependency inventory')
     environment = hash_json({'recipe': RECIPE, 'compiler': tools['source_lean'],
@@ -57,6 +58,26 @@ def approved_names(inputs):
                for m,k in inputs['modules'].items()):
         raise ValueError('Invalid cache module identity')
     return {m.replace('.', '/')+suffix for m in inputs['modules'] for suffix in SUFFIXES}
+
+
+def compatibility_error(cached, inputs):
+    if cached.get('environment') != inputs['environment']:
+        details = []
+        if 'compiler' in cached and cached['compiler'] != inputs['compiler']:
+            details.append('source compiler differs')
+        if 'libraries' in cached:
+            previous, current = cached['libraries'], inputs['libraries']
+            for label, names in [
+                ('worker-only library files', current.keys() - previous.keys()),
+                ('cache-only library files', previous.keys() - current.keys()),
+                ('changed library files', {n for n in previous.keys() & current.keys()
+                                           if previous[n] != current[n]}),
+            ]:
+                if names:
+                    details.append(f'{len(names)} {label}: '+', '.join(sorted(names)[:5]))
+        return 'Build cache compiler or libraries differ'+(': '+'; '.join(details) if details else
+            f' (cache {cached.get("environment")}, worker {inputs["environment"]})')
+    return None
 
 
 def pack_cache(library, archive, inputs):
@@ -107,10 +128,8 @@ def restore_cache(archive, library, inputs):
         manifest = json.load(source.extractfile(entry))
         cached = manifest['inputs']
         allowed = approved_names(cached)
-        if cached['environment'] != inputs['environment']:
-            different = sorted(n for n in cached.get('libraries', {}).keys() | inputs['libraries'].keys()
-                               if cached.get('libraries', {}).get(n) != inputs['libraries'].get(n))
-            raise ValueError('Build cache compiler or libraries differ: '+', '.join(different[:5]))
+        if reason := compatibility_error(cached, inputs):
+            raise ValueError(reason)
         if set(manifest['files']) != set(members) or not set(members) <= allowed:
             raise ValueError('Build cache inventory differs')
         required = {m.replace('.', '/')+'.olean' for m in cached['modules']}

@@ -1,0 +1,121 @@
+{
+  "OAI.NumberTheory.DirichletL.Detector.FinalAssembly": {
+    "module": "OAI.NumberTheory.DirichletL.Detector.FinalAssembly",
+    "path": "OAI/NumberTheory/DirichletL/Detector/FinalAssembly.lean",
+    "sha256": "e16f7a984e46edcda6c21efe9c21d4798d421ff332cc81ec394998102af53490",
+    "bytes": 2418,
+    "origin": "approved-openai-source"
+  },
+  "OAI.NumberTheory.DirichletL.Detector.FinalAssemblyArithmetic": {
+    "module": "OAI.NumberTheory.DirichletL.Detector.FinalAssemblyArithmetic",
+    "path": "OAI/NumberTheory/DirichletL/Detector/FinalAssemblyArithmetic.lean",
+    "sha256": "c5211fe2bbd37895cbad269e5f4508776e71781c28fc00461b2f3d654cf50c18",
+    "bytes": 6763,
+    "origin": "approved-openai-source"
+  },
+  "OAI.NumberTheory.DirichletL.Detector.FinalAssemblyCertifiedBands": {
+    "module": "OAI.NumberTheory.DirichletL.Detector.FinalAssemblyCertifiedBands",
+    "path": "OAI/NumberTheory/DirichletL/Detector/FinalAssemblyCertifiedBands.lean",
+    "sha256": "d41f3d2a7fc675a1e72e02ff0be668a774120dc97ff007f04593d4a28c7e0675",
+    "bytes": 8626,
+    "origin": "approved-openai-source"
+  },
+  "OAI.NumberTheory.DirichletL.Detector.FinalAssemblyChosenData": {
+    "module": "OAI.NumberTheory.DirichletL.Detector.FinalAssemblyChosenData",
+    "path": "OAI/NumberTheory/DirichletL/Detector/FinalAssemblyChosenData.lean",
+    "sha256": "3bba00cc2d9fd6a48badfac7e69be7bb2785f887b3b0c689b6c3660b18ce9450",
+    "bytes": 4514,
+    "origin": "approved-openai-source"
+  },
+  "OAI.NumberTheory.DirichletL.Detector.FinalAssemblyClass": {
+    "module": "OAI.NumberTheory.DirichletL.Detector.FinalAssemblyClass",
+    "path": "OAI/NumberTheory/DirichletL/Detector/FinalAssemblyClass.lean",
+    "sha256": "344795c52e44f4f3dcafe367e387a30d6a78c9dabd5a0c69c16f35b60498d5c0",
+    "bytes": 8166,
+    "origin": "approved-openai-source"
+  },
+  "OAI.NumberTheory.DirichletL.Detector.FinalAssemblyCollected": {
+    "module": "OAI.NumberTheory.DirichletL.Detector.FinalAssemblyCollected",
+    "path": "OAI/NumberTheory/DirichletL/Detector/FinalAssemblyCollected.lean",
+    "sha256": "4fa961e930f14f25d4567262636b362300052804c2be761a190770182b2978a6",
+    "bytes": 11950,
+    "origin": "approved-openai-source"
+  },
+  "OAI.NumberTheory.DirichletL.Detector.FinalAssemblyFixedHigh": {
+    "module": "OAI.NumberTheory.DirichletL.Detector.FinalAssemblyFixedHigh",
+    "path": "OAI/NumberTheory/DirichletL/Detector/FinalAssemblyFixedHigh.lean",
+    "sha256": "1bc465b2b62cc50a3ad6a8c701ba1944691b2d2e41652f13e36e608b64d629bf",
+    "bytes": 5424,
+    "origin": "approved-openai-source"
+  },
+  "OAI.NumberTheory.DirichletL.Detector.FinalAssemblyHigh": {
+    "module": "OAI.NumberTheory.DirichletL.Detector.FinalAssemblyHigh",
+    "path": "OAI/NumberTheory/DirichletL/Detector/FinalAssemblyHigh.lean",
+    "sha256": "51fff0db37a0e2cab919256b87ac4456ca601991e02fbf8543e2d4e1573cb5e4",
+    "bytes": 10354,
+    "origin": "approved-openai-source"
+  },
+  "OAI.NumberTheory.DirichletL.Detector.FinalAssemblyIntegral": {
+    "module": "OAI.NumberTheory.DirichletL.Detector.FinalAssemblyIntegral",
+    "path": "OAI/NumberTheory/DirichletL/Detector/FinalAssemblyIntegral.lean",
+    "sha256": "171b9c78de833f76c7a82b31acacbda7c662bc16ee0b624475e7f507a0c69897",
+    "bytes": 6440,
+    "origin": "approved-openai-source"
+  },
+  "OAI.NumberTheory.DirichletL.Detector.FinalAssemblyMomentInput": {
+    "module": "OAI.NumberTheory.DirichletL.Detector.FinalAssemblyMomentInput",
+    "path": "OAI/NumberTheory/DirichletL/Detector/FinalAssemblyMomentInput.lean",
+    "sha256": "74edb2e0b51c5913639bde386c51c45083817dabfd1e7fbf4afa46f693436ba7",
+    "bytes": 3760,
+    "origin": "approved-openai-source"
+  },
+  "OAI.NumberTheory.DirichletL.Detector.FinalAssemblyNormalized": {
+    "module": "OAI.NumberTheory.DirichletL.Detector.FinalAssemblyNormalized",
+    "path": "OAI/NumberTheory/DirichletL/Detector/FinalAssemblyNormalized.lean",
+    "sha256": "2a7b16ed73fe873328ef130b532f6a5f98e2ed7e09aa697d7fc9355c1deba300",
+    "bytes": 7018,
+    "origin": "approved-openai-source"
+  },
+  "OAI.NumberTheory.DirichletL.Detector.FinalAssemblySourceCount": {
+    "module": "OAI.NumberTheory.DirichletL.Detector.FinalAssemblySourceCount",
+    "path": "OAI/NumberTheory/DirichletL/Detector/FinalAssemblySourceCount.lean",
+    "sha256": "e98e4fb99e2d1809acfbf2c7630d71c7a1ef1d37d19ce9be5a28e58959811f07",
+    "bytes": 8847,
+    "origin": "approved-openai-source"
+  },
+  "OAI.NumberTheory.DirichletL.Detector.FinalAssemblyUnconditional": {
+    "module": "OAI.NumberTheory.DirichletL.Detector.FinalAssemblyUnconditional",
+    "path": "OAI/NumberTheory/DirichletL/Detector/FinalAssemblyUnconditional.lean",
+    "sha256": "0f52159a2929e7b20646f8394589d25a1a637c2f78746ad9d1447871577af615",
+    "bytes": 1607,
+    "origin": "approved-openai-source"
+  },
+  "OAI.NumberTheory.DirichletL.Energy.CertifiedExistence": {
+    "module": "OAI.NumberTheory.DirichletL.Energy.CertifiedExistence",
+    "path": "OAI/NumberTheory/DirichletL/Energy/CertifiedExistence.lean",
+    "sha256": "2d48b75fdd14ba8eabb428f79f98e0a6e532c28083075bacf16e1d57f020d7a9",
+    "bytes": 2698,
+    "origin": "approved-openai-source"
+  },
+  "OAI.NumberTheory.DirichletL.PrimeRows.HighFromMoments": {
+    "module": "OAI.NumberTheory.DirichletL.PrimeRows.HighFromMoments",
+    "path": "OAI/NumberTheory/DirichletL/PrimeRows/HighFromMoments.lean",
+    "sha256": "f4cd678e0f726d2d08f51bc8f45db8035411e121954067a8cd42face02304d80",
+    "bytes": 10417,
+    "origin": "approved-openai-source"
+  },
+  "OAI.NumberTheory.DirichletL.PrimeRows.NonfloorCollected": {
+    "module": "OAI.NumberTheory.DirichletL.PrimeRows.NonfloorCollected",
+    "path": "OAI/NumberTheory/DirichletL/PrimeRows/NonfloorCollected.lean",
+    "sha256": "158f5a3d94c14d6f927d5aba0323785d4e7f843d41ef905bb04535741b79ca4a",
+    "bytes": 11944,
+    "origin": "approved-openai-source"
+  },
+  "OAI.NumberTheory.DirichletL.PrimeRows.NonfloorTransport": {
+    "module": "OAI.NumberTheory.DirichletL.PrimeRows.NonfloorTransport",
+    "path": "OAI/NumberTheory/DirichletL/PrimeRows/NonfloorTransport.lean",
+    "sha256": "43c466c09b82882eff832604a9371bfc03ac6894aaefbff9f8903bc7e680306e",
+    "bytes": 8921,
+    "origin": "approved-openai-source"
+  }
+}

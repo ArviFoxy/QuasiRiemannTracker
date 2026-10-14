@@ -1,0 +1,12 @@
+{
+  "status": "PASS",
+  "canonical_upstream_commit": "fd4aeeb2ee4fc729c18d98444fed42fd0529eeeb",
+  "canonical_source_sha256": "8fb13ad977bca104591fcbc6ef01a58496e7385053c9b1445f95749afc0eff54",
+  "theta_exact": "4374299/5000000",
+  "generated_source_sha256": "10ef948d0a6bc1d956d38963a262c8e4323db2a6045ecd253f6662f9cd1c9dbb",
+  "mathematical_change": "Only 7/8 replaced by the submitted normalized rational",
+  "other_changes": "Theorem and enclosing namespace renamed for the comparator entrypoint",
+  "current_main_statement_compatible": true,
+  "trusted_verifier_commit": "43cc0ac1d57025c6e8df702b98c89a565820758e",
+  "reviewed_current_main": "06af0070ecfdaeb901a2639c7437963afcfbea55"
+}

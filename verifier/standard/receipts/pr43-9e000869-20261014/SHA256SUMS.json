@@ -1,0 +1,17 @@
+{
+  "Challenge.lean": "10ef948d0a6bc1d956d38963a262c8e4323db2a6045ecd253f6662f9cd1c9dbb",
+  "README.md": "9ca87c5478f871424e7c0e3ce8afad8b9df54f76568657e10d5671a66bad2d31",
+  "Solution.lean": "3c02800840d9f1d07830c0a65bbcccabbe97bfa85bffff0b6e7dc3c61cb9edb7",
+  "audit.json": "bb7651312363e1c051fd89db6f477a81dc9866a65b5d21622aec38fc500c750b",
+  "challenge-audit.json": "5730db350b70706999c910d53452cabd5e3cf90f142e840b8c44642f6f99fea7",
+  "contract.json": "81f975297f2429c705191bd1c9919c560167cddfbb664f40cfd72da56e5c77d9",
+  "controls.json": "83782e525741e374d2ea9378ad8728baab7fcbd86178673c7e0d14373e179bac",
+  "dependency-pins.json": "c1e20e057400d2d2c0ec73d08f620c0d20da48d431adbad46f723d8381eb9151",
+  "extra-oai-manifest.json": "2d24c8c3e645b221a72a250ef0fdea44318a2b6cd19edefb2334feddc37777a2",
+  "judge.log": "03626eb5dc6949d63f00d29ad33212ee0c0239da32f445cd26fd55609f1f78fd",
+  "logs.json": "e60e37980d883fe87bedb7489dd11bed7bdfa49d9abd576db5f01e8d5d23bb5c",
+  "phases.json": "51b2777a8f6d3550429ca3af45c4a8e78c1932b513e6d33dbe332eb7f989e31f",
+  "replay-driver.txt": "3e3d91f54907d1969365e776bf00505fde1d85b7a3c6b72fe703cd8ad1a43fe0",
+  "result.json": "83caa5da50d8ea98b1eb16c17d1a3ff01eff96c93334ae1cc3ed235f1c93250c",
+  "tool-pins.json": "2fe2e75e2a28d99ac1faefc44e127b44910730b4bcda303b5e0c5202c24895f2"
+}

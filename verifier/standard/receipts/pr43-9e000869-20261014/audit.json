@@ -1,0 +1,33 @@
+{
+  "status": "PASS",
+  "head_sha": "9e0008692e77836a9a61cff25c808727d6d6690d",
+  "theta_exact": "4374299/5000000",
+  "verified_at": "2026-10-14T10:07:04.865497+00:00",
+  "report_sha256": "83caa5da50d8ea98b1eb16c17d1a3ff01eff96c93334ae1cc3ed235f1c93250c",
+  "modules_freshly_compiled": 206,
+  "additional_upstream_modules_freshly_compiled": 17,
+  "candidate_cache_reused": false,
+  "trusted_verifier_revision": "43cc0ac1d57025c6e8df702b98c89a565820758e",
+  "local_driver_adjustment": "Memory limits reduced to 2% high / 3% maximum on the larger ETH host; compile and proof timeouts unchanged.",
+  "current_main_challenge_compatible": true,
+  "kernels": [
+    "Lean default",
+    "nanoda",
+    "con-ron"
+  ],
+  "axioms": [
+    "Classical.choice",
+    "Quot.sound",
+    "propext"
+  ],
+  "sandbox_controls": "PASS",
+  "evidence_transport": "Authenticated SSH; returned files checked against outside-sandbox receipt",
+  "source_to_object_limitations": "Approved upstream compiled objects reused only after matching the preserved dependency manifests; 17 missing OpenAI modules compiled from immutable upstream sources. All 206 submitted modules compiled fresh and the complete exported proof checked independently.",
+  "source_tree": "dac69e9b279a815a406df814c58d39d45bfb8591",
+  "source_tree_checked_against_git": true,
+  "publication_scope": "Original worker report, source contract, complete UTF-8 log contents, checker policy and dependency pins. Host-specific library inventory and setup diagnostics retained privately.",
+  "dependency_object_manifests": {
+    "trusted-library-manifest.json": "23ca1673dd72ffcf3e823b758a56f63f86ff2017b5c522152165a20917606bb0",
+    "additional-library-manifest.json": "caee8e74e9c6a56d3de0908cd46e07d248048599cc53cf7bdd1005696d6a7bcf"
+  }
+}

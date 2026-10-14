@@ -78,6 +78,12 @@ class CacheTests(unittest.TestCase):
             restore_cache(self.archive, self.root/'restored', worker)
         self.assertFalse((self.root/'restored').exists())
 
+    def test_library_precedence_and_directory_boundaries(self):
+        grouped = build_inputs(self.contract, {'libraries':['/z/first','/a/second']},
+            {'/z/first/Mathlib.olean':'mathlib', '/a/second/Mathlib.olean':'shadowed',
+             '/z/first-other/Extra.olean':'outside'}, {'source_lean':'compiler'})
+        self.assertEqual(self.inputs, grouped)
+
     def test_mismatch_identifies_changed_and_missing_libraries(self):
         worker = build_inputs(self.contract, {'libraries':['/worker/lib']},
             {'/worker/lib/Mathlib.olean':'changed','/worker/lib/Extra.olean':'extra'},

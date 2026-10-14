@@ -23,13 +23,14 @@ def build_inputs(contract, profile, inventory, tools):
     # Flatten the search path, preserving first-match resolution. Paths and
     # package grouping vary between the server and hosted workers. Only compiler
     # products affect imports; Lake traces and editor indexes are workspace data.
-    libraries = [Path(p) for p in profile['libraries']]
+    libraries = [str(Path(p)).rstrip('/')+'/' for p in profile['libraries']]
+    products = [(str(Path(filename)), sha) for filename, sha in sorted(inventory.items())
+                if filename.endswith((*SUFFIXES, '.so', '.ir', '.ir.sig'))]
     normalized = {}
     for lib in libraries:
-        for filename, sha in sorted(inventory.items()):
-            path = Path(filename)
-            if path.is_relative_to(lib) and path.name.endswith((*SUFFIXES, '.so', '.ir', '.ir.sig')):
-                normalized.setdefault(path.relative_to(lib).as_posix(), sha)
+        for filename, sha in products:
+            if filename.startswith(lib):
+                normalized.setdefault(filename[len(lib):], sha)
     if not normalized:
         raise ValueError('Empty build dependency inventory')
     environment = hash_json({'recipe': RECIPE, 'compiler': tools['source_lean'],

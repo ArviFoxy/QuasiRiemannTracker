@@ -26,8 +26,10 @@ Each `submissions/<result-id>/` directory contains `metadata.json` and its Lean
 source in `src/`. Website deployment combines this metadata with
 merged admission records to generate the catalogue. Generated catalogue JSON is
 ignored by Git. Local development and preview builds generate the same files.
-Small verification records in `public/certificates/` link each checked bound to
-its source commit and verification report.
+Builds generate small verification records in `public/certificates/` that link
+each checked bound to its source commit and verification report. These files are
+ignored by Git. Historical report URLs and hashes live in the corresponding
+submission's `metadata.json`; new submissions use their admission records.
 
 Verified PR contributions are plotted at their PR submission time. Older
 entries without a recorded PR submission date retain their documented date

@@ -66,5 +66,9 @@
   "solution_url": "https://github.com/GTimG/QuasiRiemannTracker/blob/d716ecaae80f7823a5b8314916364fdfa0d133fb/public/proofs/akashlevy-20261009-weighted-numerator/Solution.lean",
   "dependencies": [
     "openai-baseline"
-  ]
+  ],
+  "verification": {
+    "report_url": "https://github.com/GTimG/QuasiRiemannTracker/blob/d716ecaae80f7823a5b8314916364fdfa0d133fb/public/proofs/akashlevy-20261010-safe-replay/result.json",
+    "report_sha256": "487e7118c8b7479d8711e03e039e4446abceadfa84f520525b515bd271a9ff82"
+  }
 }

@@ -57,5 +57,11 @@
   "solution_url": "https://github.com/GTimG/QuasiRiemannTracker/blob/d716ecaae80f7823a5b8314916364fdfa0d133fb/public/proofs/palomar-20261009/qrh/src/Solution.lean",
   "dependencies": [
     "openai-baseline"
-  ]
+  ],
+  "verification": {
+    "report_url": "https://github.com/GTimG/QuasiRiemannTracker/blob/d716ecaae80f7823a5b8314916364fdfa0d133fb/public/proofs/palomar-20261009/qrh/result.json",
+    "report_sha256": "7c25b8df68deec815b59ff8553bb3db5570cbd01af9142e5ed42719557643118",
+    "source_repository": "GTimG/QuasiRiemannTracker",
+    "source_commit": "d716ecaae80f7823a5b8314916364fdfa0d133fb"
+  }
 }

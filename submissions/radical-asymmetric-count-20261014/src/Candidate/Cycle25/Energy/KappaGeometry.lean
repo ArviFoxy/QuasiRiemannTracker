@@ -1,5 +1,5 @@
 import Candidate.Cycle25.Energy.ReflectionRetainedLength
-import OAI.NumberTheory.DirichletL.Energy.WidthRanges
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Energy.WidthRanges
 
 namespace Cycle25.Energy
 

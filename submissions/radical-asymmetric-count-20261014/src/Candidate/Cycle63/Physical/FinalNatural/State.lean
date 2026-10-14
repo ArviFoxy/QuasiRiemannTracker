@@ -1,7 +1,7 @@
 import Candidate.Cycle63.Physical.FinalRadius
 import Candidate.Cycle63.Moment.LowBranch.DaughterState
-import OAI.NumberTheory.DirichletL.Energy.ChildState
-import OAI.NumberTheory.DirichletL.Moments.CommonExceptionalGates
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Energy.ChildState
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.CommonExceptionalGates
 
 set_option autoImplicit false
 namespace OAI.SevenEighths.Cycle63FinalNatural

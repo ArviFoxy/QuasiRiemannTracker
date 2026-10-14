@@ -1,9 +1,9 @@
 /- Ported from Cycle25 transport, weighted upstream PR6 and OpenAI/math; Apache-2.0 attribution retained. -/
 import Candidate.Cycle63.Assembly.Transport.GeometryFacts
 import Candidate.Cycle63.Assembly.Transport.CubeFloorSaving
-import OAI.NumberTheory.DirichletL.PrimeRows.CubeFloorCollected
-import OAI.NumberTheory.DirichletL.PrimeRows.CubeFloorSaving
-import OAI.NumberTheory.DirichletL.PrimeRows.CubeBinPartition
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.PrimeRows.CubeFloorCollected
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.PrimeRows.CubeFloorSaving
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.PrimeRows.CubeBinPartition
 namespace OAI
 
 noncomputable section

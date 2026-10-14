@@ -1,6 +1,6 @@
 import Candidate.Cycle25.Assembly.SourceData
-import OAI.NumberTheory.DirichletL.Moments.NaturalRowSourceFamily
-import OAI.NumberTheory.DirichletL.Moments.DetectorDictionarySource
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.NaturalRowSourceFamily
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.DetectorDictionarySource
 
 set_option autoImplicit false
 set_option maxHeartbeats 40000

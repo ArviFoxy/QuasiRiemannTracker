@@ -1,6 +1,6 @@
 import Candidate.Cycle63.Assembly.Low.Geometry
-import OAI.NumberTheory.DirichletL.Detector.LowSlotScales
-import OAI.NumberTheory.DirichletL.Detector.RayPoolGood
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Detector.LowSlotScales
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Detector.RayPoolGood
 import Candidate.Cycle63.Assembly.Low.Detector.LowSlotScales
 /-! Adapted from OpenAI/math family003, module Detector.LowOriginalPools at openai/math fd4aeeb2e
 (the pruned source fork c388e88e6 no longer has it, so this file imports that module's own

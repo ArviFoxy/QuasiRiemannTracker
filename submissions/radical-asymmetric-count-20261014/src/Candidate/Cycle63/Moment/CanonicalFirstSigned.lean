@@ -1,6 +1,6 @@
 import Candidate.Cycle63.Moment.SignedPrimeProducts
-import OAI.NumberTheory.DirichletL.Moments.FirstCanonicalFamily
-import OAI.NumberTheory.DirichletL.Moments.SecondCanonical
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.FirstCanonicalFamily
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.SecondCanonical
 
 set_option autoImplicit false
 set_option maxHeartbeats 800000

@@ -1,7 +1,7 @@
 import Candidate.Cycle63.Physical.InitialMass.GeometryMainLowAggregate
 import Candidate.Cycle63.Physical.InitialMass.GeometryShiftedHeight
 import Candidate.Cycle63.Physical.InitialMass.GeometryHighPayment
-import OAI.NumberTheory.DirichletL.Moments.FirstChildProfileControl
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.FirstChildProfileControl
 
 set_option autoImplicit false
 set_option maxHeartbeats 800000

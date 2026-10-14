@@ -1,5 +1,5 @@
 import Candidate.Cycle25.Assembly.Count.FromMoments
-import OAI.NumberTheory.DirichletL.Hecke.DetectorFixedAmplitudeCount
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Hecke.DetectorFixedAmplitudeCount
 namespace OAI
 noncomputable section
 open scoped Classical BigOperators ContDiff

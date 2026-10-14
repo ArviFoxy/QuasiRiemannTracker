@@ -1,5 +1,5 @@
 import Candidate.Cycle63.Assembly.Low.Geometry
-import OAI.NumberTheory.DirichletL.PrimeRows.CubeNormalizer
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.PrimeRows.CubeNormalizer
 
 set_option autoImplicit false
 

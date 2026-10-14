@@ -5,7 +5,7 @@ Licensed under Apache-2.0; see UPSTREAM_LICENSE.
 Modifications: κ ≥ 7/10 positive stages; complete zero-slot endpoint supplied independently.
 -/
 import Candidate.Cycle25.Energy.CappedAnalyticSuccessor
-import OAI.NumberTheory.DirichletL.Energy.CappedRadialTransport
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Energy.CappedRadialTransport
 
 namespace OAI
 

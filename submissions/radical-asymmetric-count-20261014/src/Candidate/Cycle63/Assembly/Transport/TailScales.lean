@@ -1,7 +1,7 @@
 /- Adapted from WeightedQRH (weighted upstream PR6), preserving the original proof structure. -/
 import Candidate.Cycle63.Assembly.Transport.GeometryFacts
-import OAI.NumberTheory.DirichletL.PrimeRows.TailScales
-import OAI.NumberTheory.DirichletL.PrimeRows.DyadIntegral
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.PrimeRows.TailScales
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.PrimeRows.DyadIntegral
 namespace OAI
 
 noncomputable section

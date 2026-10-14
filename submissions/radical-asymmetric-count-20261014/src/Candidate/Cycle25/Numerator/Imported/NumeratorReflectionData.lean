@@ -1,7 +1,7 @@
 import Candidate.Cycle25.Numerator.Imported.RowConductor
-import OAI.NumberTheory.DirichletL.PrimeRows.RowCount
-import OAI.NumberTheory.DirichletL.PrimeRows.RowPartition
-import OAI.NumberTheory.DirichletL.Moments.RetainedWeightedSource
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.PrimeRows.RowCount
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.PrimeRows.RowPartition
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.RetainedWeightedSource
 
 /-! A fixed reflection presentation for each actual physical row. The same
 combined conductor is used both in coefficient damping and in reflection. -/

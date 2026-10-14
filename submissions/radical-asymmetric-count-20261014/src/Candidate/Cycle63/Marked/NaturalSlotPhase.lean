@@ -1,5 +1,5 @@
-import OAI.NumberTheory.DirichletL.Energy.SlotHeight
-import OAI.NumberTheory.DirichletL.Moments.CommonMaskExpansion
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Energy.SlotHeight
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.CommonMaskExpansion
 
 set_option autoImplicit false
 namespace OAI.SevenEighths.Cycle63MarkedPlain

@@ -1,4 +1,4 @@
-import OAI.NumberTheory.DirichletL.Moments.FirstReferenceSource
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.FirstReferenceSource
 
 /-! The actual first-source labels stay in the Hilbert index. This bridge
 does not supply an analytic energy estimate; it transports jointly proved

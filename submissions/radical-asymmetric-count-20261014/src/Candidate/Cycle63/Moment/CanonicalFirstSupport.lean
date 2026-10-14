@@ -1,6 +1,6 @@
 import Candidate.Cycle63.Moment.CanonicalFirstNorm
-import OAI.NumberTheory.DirichletL.Moments.FirstDiscardedEnergy
-import OAI.NumberTheory.DirichletL.Moments.RankinRadical
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.FirstDiscardedEnergy
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.RankinRadical
 
 set_option autoImplicit false
 set_option maxHeartbeats 800000

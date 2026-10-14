@@ -1,5 +1,5 @@
 import Candidate.Cycle25.Numerator.Imported.NumeratorActualError
-import OAI.NumberTheory.DirichletL.Detector.SelectedPrimeIndexed
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Detector.SelectedPrimeIndexed
 
 /-! Summing actual positive error coefficient majorants over a physical prime slot. -/
 noncomputable section

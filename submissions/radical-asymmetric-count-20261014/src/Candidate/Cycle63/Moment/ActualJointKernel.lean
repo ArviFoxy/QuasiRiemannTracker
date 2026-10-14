@@ -1,6 +1,6 @@
 import Candidate.Cycle63.Moment.JointKernel
-import OAI.NumberTheory.DirichletL.Moments.SecondSectorChildren
-import OAI.NumberTheory.DirichletL.Moments.PlainChildEnergy
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.SecondSectorChildren
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.PlainChildEnergy
 
 set_option autoImplicit false
 set_option maxHeartbeats 800000

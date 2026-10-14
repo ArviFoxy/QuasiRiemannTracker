@@ -1,6 +1,6 @@
-import OAI.NumberTheory.DirichletL.Moments.InductionEnergy
-import OAI.NumberTheory.DirichletL.Moments.CommonMaskExpansion
-import OAI.NumberTheory.DirichletL.Moments.DetectorDictionary
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.InductionEnergy
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.CommonMaskExpansion
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.DetectorDictionary
 
 set_option autoImplicit false
 namespace OAI.SevenEighths.Cycle63MarkedPlain

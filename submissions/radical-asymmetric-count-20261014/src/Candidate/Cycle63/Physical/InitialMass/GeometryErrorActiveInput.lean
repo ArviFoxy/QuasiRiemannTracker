@@ -1,5 +1,5 @@
 import Candidate.Cycle63.Physical.InitialMass.Decomposition
-import OAI.NumberTheory.DirichletL.Moments.AmplificationChildSourceCaps
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.AmplificationChildSourceCaps
 
 set_option autoImplicit false
 set_option maxHeartbeats 800000

@@ -1,10 +1,10 @@
-import OAI.NumberTheory.DirichletL.Detector.DetectorPlainMarkedFineField
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Detector.DetectorPlainMarkedFineField
 import Candidate.Cycle25.Assembly.Count.MomentDetectorPlainMomentParameters
-import OAI.NumberTheory.DirichletL.ParametersHighDataFine
-import OAI.NumberTheory.DirichletL.Moments.DetectorPlainMomentParameters
-import OAI.NumberTheory.DirichletL.Moments.DetectorPlainRelativeClass
-import OAI.NumberTheory.DirichletL.Moments.DetectorPlainProfileControl
-import OAI.NumberTheory.DirichletL.Hecke.DetectorDyadicGeometry
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.ParametersHighDataFine
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.DetectorPlainMomentParameters
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.DetectorPlainRelativeClass
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.DetectorPlainProfileControl
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Hecke.DetectorDyadicGeometry
 namespace OAI
 
 noncomputable section

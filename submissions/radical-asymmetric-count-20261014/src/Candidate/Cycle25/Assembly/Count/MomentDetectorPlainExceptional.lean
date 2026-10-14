@@ -1,8 +1,8 @@
-import OAI.NumberTheory.DirichletL.Moments.DetectorPlainExceptional
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.DetectorPlainExceptional
 import Candidate.Cycle25.Assembly.Count.MomentDetectorPlainCapacity
-import OAI.NumberTheory.DirichletL.Moments.DetectorPlainFiberSource
-import OAI.NumberTheory.DirichletL.Moments.DetectorEnergyInitialState
-import OAI.NumberTheory.DirichletL.Moments.NaturalFixedRaySourceFreeExceptional
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.DetectorPlainFiberSource
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.DetectorEnergyInitialState
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.NaturalFixedRaySourceFreeExceptional
 namespace OAI
 
 noncomputable section

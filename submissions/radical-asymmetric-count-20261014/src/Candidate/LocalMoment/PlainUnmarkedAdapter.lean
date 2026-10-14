@@ -1,8 +1,8 @@
 import Candidate.LocalMoment.UnmarkedDensity
-import OAI.NumberTheory.DirichletL.Detector.DetectorPlainUnmarkedField
-import OAI.NumberTheory.DirichletL.Energy.CertifiedExistence
-import OAI.NumberTheory.DirichletL.Moments.OriginalReflectionErrorMass
-import OAI.NumberTheory.DirichletL.Moments.NaturalFixedRaySourceDetectorCancellation
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Detector.DetectorPlainUnmarkedField
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Energy.CertifiedExistence
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.OriginalReflectionErrorMass
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.NaturalFixedRaySourceDetectorCancellation
 
 set_option autoImplicit false
 

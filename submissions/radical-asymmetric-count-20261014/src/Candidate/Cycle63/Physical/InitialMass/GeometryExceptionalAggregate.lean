@@ -1,8 +1,8 @@
 import Candidate.Cycle63.Physical.InitialMass.GeometryExceptionalScalar
 import Candidate.Cycle63.Physical.InitialMass.GeometryExceptionalAdmission
 import Candidate.Cycle63.Physical.InitialMass.GeometryZeroPayment
-import OAI.NumberTheory.DirichletL.Moments.FirstMixedRightTransport
-import OAI.NumberTheory.DirichletL.Moments.AmplificationAllocationCost
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.FirstMixedRightTransport
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.AmplificationAllocationCost
 
 set_option autoImplicit false
 set_option maxHeartbeats 300000

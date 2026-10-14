@@ -1,5 +1,5 @@
 import Candidate.Cycle25.Energy.Physical.PhysicalMomentInput
-import OAI.NumberTheory.DirichletL.Energy.ReferenceChildProfiles
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Energy.ReferenceChildProfiles
 
 namespace OAI
 noncomputable section

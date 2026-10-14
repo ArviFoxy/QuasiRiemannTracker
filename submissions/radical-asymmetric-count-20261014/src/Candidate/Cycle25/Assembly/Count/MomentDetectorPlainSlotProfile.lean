@@ -1,9 +1,9 @@
-import OAI.NumberTheory.DirichletL.Moments.DetectorPlainSlotProfile
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.DetectorPlainSlotProfile
 import Candidate.Cycle25.Assembly.Count.MomentDetectorEnergyInitialState
-import OAI.NumberTheory.DirichletL.Moments.DetectorDictionaryUniformHeight
-import OAI.NumberTheory.DirichletL.Moments.DetectorDictionarySlots
-import OAI.NumberTheory.DirichletL.Detector.FinalAssemblyData
-import OAI.NumberTheory.DirichletL.Moments.RetainedEnergy
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.DetectorDictionaryUniformHeight
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.DetectorDictionarySlots
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Detector.FinalAssemblyData
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.RetainedEnergy
 namespace OAI
 
 noncomputable section

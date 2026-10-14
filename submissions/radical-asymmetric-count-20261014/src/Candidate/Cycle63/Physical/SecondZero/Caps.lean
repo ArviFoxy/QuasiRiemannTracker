@@ -1,6 +1,6 @@
 /- Copyright (c) 2026 Hailey Collet. Released under Apache 2.0. -/
 import Candidate.Cycle63.Physical.SecondZero.Source
-import OAI.NumberTheory.DirichletL.Moments.AmplificationChildSourceCaps
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.AmplificationChildSourceCaps
 
 set_option autoImplicit false
 namespace OAI.SevenEighths.Cycle63SecondZero

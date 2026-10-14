@@ -1,8 +1,8 @@
-import OAI.NumberTheory.DirichletL.Detector.FinalAssemblyData
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Detector.FinalAssemblyData
 import Candidate.Cycle25.Assembly.MomentData
-import OAI.NumberTheory.DirichletL.ParametersFixedSource
-import OAI.NumberTheory.DirichletL.Detector.FinalAssemblySource
-import OAI.NumberTheory.DirichletL.Detector.FinalAssemblyCountParameters
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.ParametersFixedSource
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Detector.FinalAssemblySource
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Detector.FinalAssemblyCountParameters
 namespace OAI
 
 noncomputable section

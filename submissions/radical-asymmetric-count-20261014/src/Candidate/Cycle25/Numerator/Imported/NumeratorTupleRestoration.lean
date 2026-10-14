@@ -1,5 +1,5 @@
 import Candidate.Cycle25.Numerator.Imported.NumeratorActualError
-import OAI.NumberTheory.DirichletL.PrimeRows.WeightedTuple
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.PrimeRows.WeightedTuple
 
 /-! Exact finite error expansion of the original numerator, without division
 by a local correction factor or changing any selected-prime zero extension. -/

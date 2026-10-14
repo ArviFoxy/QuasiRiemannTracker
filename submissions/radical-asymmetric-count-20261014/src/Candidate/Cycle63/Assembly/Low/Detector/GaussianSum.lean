@@ -1,7 +1,7 @@
 import Candidate.Cycle63.Assembly.Low.Detector.GaussianTail
 import Candidate.Cycle63.Assembly.Low.Geometry
-import OAI.NumberTheory.DirichletL.Detector.LowCommonBound
-import OAI.NumberTheory.DirichletL.Detector.LowGaussianSum
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Detector.LowCommonBound
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Detector.LowGaussianSum
 
 set_option autoImplicit false
 

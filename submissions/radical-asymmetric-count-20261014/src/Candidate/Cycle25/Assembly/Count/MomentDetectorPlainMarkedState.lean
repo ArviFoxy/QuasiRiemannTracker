@@ -1,9 +1,9 @@
-import OAI.NumberTheory.DirichletL.Moments.DetectorPlainMarkedState
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.DetectorPlainMarkedState
 import Candidate.Cycle25.Assembly.Count.MomentDetectorPlainExceptional
-import OAI.NumberTheory.DirichletL.Moments.DetectorPlainStateDictionary
-import OAI.NumberTheory.DirichletL.Moments.DetectorPlainCapacity
-import OAI.NumberTheory.DirichletL.Energy.Bands
-import OAI.NumberTheory.DirichletL.Hecke.DetectorRawBranches
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.DetectorPlainStateDictionary
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.DetectorPlainCapacity
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Energy.Bands
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Hecke.DetectorRawBranches
 namespace OAI
 
 noncomputable section

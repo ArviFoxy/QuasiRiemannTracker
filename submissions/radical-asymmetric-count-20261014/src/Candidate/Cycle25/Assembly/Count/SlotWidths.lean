@@ -1,4 +1,4 @@
-import OAI.NumberTheory.DirichletL.Detector.DetectorBatch
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Detector.DetectorBatch
 namespace OAI.SevenEighths.Cycle25WeightedHighRowFamily
 noncomputable section
 open scoped BigOperators

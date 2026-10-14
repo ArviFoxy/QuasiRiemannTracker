@@ -1,6 +1,6 @@
 import Candidate.LocalMoment.UnmarkedBatch
-import OAI.NumberTheory.DirichletL.Detector.DetectorInverseRawField
-import OAI.NumberTheory.DirichletL.Hecke.DetectorClassBudget
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Detector.DetectorInverseRawField
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Hecke.DetectorClassBudget
 
 set_option autoImplicit false
 

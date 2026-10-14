@@ -1,7 +1,7 @@
 /- Adapted from weighted upstream PR6; original notices and transparent FullWContour definitions retained. -/
 import Candidate.Cycle63.Assembly.Transport.GeometryFacts
 import Candidate.Cycle25.Numerator.Imported.FullWFiniteError
-import OAI.NumberTheory.DirichletL.PrimeRows.CubeFiniteError
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.PrimeRows.CubeFiniteError
 
 /-! Summable physical row/tuple errors for the full-w transport at the new
 lengths, with arbitrary power savings chosen after the height exponent. -/

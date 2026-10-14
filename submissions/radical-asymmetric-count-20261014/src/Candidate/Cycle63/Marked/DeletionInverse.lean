@@ -1,6 +1,6 @@
-import OAI.NumberTheory.DirichletL.Dictionary.InverseMarkedReferenceDeletedEnergy
-import OAI.NumberTheory.DirichletL.Dictionary.InverseMarkedUniform
-import OAI.NumberTheory.DirichletL.Moments.CommonMaskExpansion
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Dictionary.InverseMarkedReferenceDeletedEnergy
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Dictionary.InverseMarkedUniform
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.CommonMaskExpansion
 
 set_option autoImplicit false
 set_option maxHeartbeats 1600000

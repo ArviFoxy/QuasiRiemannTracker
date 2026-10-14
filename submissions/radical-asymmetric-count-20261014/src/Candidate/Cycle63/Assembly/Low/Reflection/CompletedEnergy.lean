@@ -1,7 +1,7 @@
 import Candidate.Cycle63.Assembly.Low.Geometry
 import Candidate.Cycle63.Assembly.Low.Reflection.FrozenEnergy
-import OAI.NumberTheory.DirichletL.Reflection.LowCompletedRows
-import OAI.NumberTheory.DirichletL.Reflection.LowOriginalEnergy
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Reflection.LowCompletedRows
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Reflection.LowOriginalEnergy
 
 set_option autoImplicit false
 

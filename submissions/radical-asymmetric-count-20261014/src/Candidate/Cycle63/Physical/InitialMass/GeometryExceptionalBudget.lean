@@ -1,11 +1,11 @@
 import Candidate.Cycle63.Physical.InitialMass.GeometryExceptionalSplit
 import Candidate.Cycle63.Physical.InitialMass.GeometryPuncture
 import Candidate.Cycle63.Physical.ExceptionalReference
-import OAI.NumberTheory.DirichletL.Moments.SecondExceptionalFixedQSource
-import OAI.NumberTheory.DirichletL.Moments.FirstExceptionalChildPaid
-import OAI.NumberTheory.DirichletL.Moments.SecondUniformSubsetSource
-import OAI.NumberTheory.DirichletL.Moments.FirstChildProfileControl
-import OAI.NumberTheory.DirichletL.Moments.FirstPhysicalSourceAllocationControl
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.SecondExceptionalFixedQSource
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.FirstExceptionalChildPaid
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.SecondUniformSubsetSource
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.FirstChildProfileControl
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.FirstPhysicalSourceAllocationControl
 
 set_option autoImplicit false
 set_option maxHeartbeats 1000000

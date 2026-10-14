@@ -1,7 +1,7 @@
 /- Ported from Cycle25 transport, weighted upstream PR6 and OpenAI/math; Apache-2.0 attribution retained. -/
 import Candidate.Cycle63.Assembly.Transport.GeometryFacts
 import Candidate.Cycle63.Assembly.Transport.NormalizedTransportSaving
-import OAI.NumberTheory.DirichletL.PrimeRows.CentralSupportedSplit
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.PrimeRows.CentralSupportedSplit
 import Candidate.Cycle63.Assembly.Transport.CubeFloorCollected
 namespace OAI
 

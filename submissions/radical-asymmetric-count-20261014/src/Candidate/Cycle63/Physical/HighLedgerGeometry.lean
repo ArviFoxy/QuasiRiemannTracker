@@ -1,7 +1,7 @@
 import Candidate.Cycle63.Physical.HighFrequency
 import Candidate.Cycle63.Physical.NonexceptionalLedger
 import Candidate.Cycle63.Physical.FinalCapacity.Geometry
-import OAI.NumberTheory.DirichletL.Moments.CommonHarmonicMass
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.CommonHarmonicMass
 
 set_option autoImplicit false
 namespace OAI.SevenEighths.Cycle63HighGeometry

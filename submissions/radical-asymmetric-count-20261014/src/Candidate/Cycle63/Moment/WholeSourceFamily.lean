@@ -1,5 +1,5 @@
 import Candidate.Cycle63.Moment.HighSourceEnergy
-import OAI.NumberTheory.DirichletL.Hecke.DetectorFamilyInclusion
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Hecke.DetectorFamilyInclusion
 
 set_option autoImplicit false
 set_option maxHeartbeats 800000

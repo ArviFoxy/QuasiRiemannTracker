@@ -1,6 +1,6 @@
 import Candidate.Cycle25.Assembly.HighDataFine
 import Candidate.Cycle25.Numerator.PhysicalFront
-import OAI.NumberTheory.DirichletL.PrimeRows.CubePhaseBins
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.PrimeRows.CubePhaseBins
 
 /-! The original canonical prime-amplitude estimates, specialized to the new
 source slots and the two external heights of the full-w representation. -/

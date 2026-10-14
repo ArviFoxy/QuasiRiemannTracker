@@ -1,5 +1,5 @@
 import Candidate.Cycle63.Assembly.Count.BaselineMoments
-import OAI.NumberTheory.DirichletL.Detector.FinalAssemblyMomentInput
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Detector.FinalAssemblyMomentInput
 
 namespace OAI.SevenEighths.Cycle63DetectorCount
 noncomputable section

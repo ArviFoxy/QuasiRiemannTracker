@@ -2,7 +2,7 @@
 import Candidate.Cycle63.Assembly.Transport.GeometryFacts
 import Candidate.Cycle63.Assembly.Transport.PrincipalRemainderTransport
 import Candidate.Cycle63.Assembly.Transport.PrincipalSignal
-import OAI.NumberTheory.DirichletL.Detector.PrincipalRemainderBounds
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Detector.PrincipalRemainderBounds
 noncomputable section
 
 open scoped Classical BigOperators Topology

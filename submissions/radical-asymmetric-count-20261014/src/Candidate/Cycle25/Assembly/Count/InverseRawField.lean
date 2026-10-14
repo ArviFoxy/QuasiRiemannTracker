@@ -1,8 +1,8 @@
 import Candidate.Cycle25.Assembly.SourceData
-import OAI.NumberTheory.DirichletL.Dictionary.InverseRawReference
-import OAI.NumberTheory.DirichletL.Dictionary.InverseRawUniform
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Dictionary.InverseRawReference
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Dictionary.InverseRawUniform
 import Candidate.Cycle25.Assembly.Count.Parameters
-import OAI.NumberTheory.DirichletL.Detector.DetectorMomentData
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Detector.DetectorMomentData
 
 namespace OAI
 

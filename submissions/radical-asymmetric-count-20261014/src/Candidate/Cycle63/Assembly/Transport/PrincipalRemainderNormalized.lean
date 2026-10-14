@@ -3,7 +3,7 @@ import Candidate.Cycle63.Assembly.Transport.GeometryFacts
 import Candidate.Cycle63.Assembly.Transport.PrincipalRemainderPhysicalBounds
 import Candidate.Cycle63.Assembly.Transport.PrincipalRemainderResidueActual
 import Candidate.Cycle63.Assembly.Transport.PrincipalRemainderRayThresholds
-import OAI.NumberTheory.DirichletL.Detector.PrincipalNormalized
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Detector.PrincipalNormalized
 noncomputable section
 open scoped Classical BigOperators Topology ContDiff
 open Complex Filter

@@ -1,4 +1,4 @@
-import OAI.NumberTheory.DirichletL.Moments.DivisorRetained
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.DivisorRetained
 
 namespace Cycle63.Physical
 

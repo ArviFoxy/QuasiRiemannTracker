@@ -1,8 +1,8 @@
 import Candidate.Cycle63.Assembly.Low.Detector.GaussianSum
 import Candidate.Cycle63.Assembly.Low.Geometry
 import Candidate.Cycle63.Assembly.Low.Normalizer
-import OAI.NumberTheory.DirichletL.Detector.LowNormalized
-import OAI.NumberTheory.DirichletL.Detector.LowWindowBound
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Detector.LowNormalized
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Detector.LowWindowBound
 
 set_option autoImplicit false
 

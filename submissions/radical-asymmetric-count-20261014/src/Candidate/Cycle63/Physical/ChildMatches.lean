@@ -1,5 +1,5 @@
 import Candidate.Cycle63.Moment.LowBranch.ChildDictionary
-import OAI.NumberTheory.DirichletL.Moments.AmplificationChildSourceCaps
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.AmplificationChildSourceCaps
 
 set_option autoImplicit false
 namespace OAI.SevenEighths.Cycle63ChildMatches

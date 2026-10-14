@@ -1,6 +1,6 @@
-import OAI.NumberTheory.DirichletL.Detector.DetectorPlainUnmarkedRestrictedField
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Detector.DetectorPlainUnmarkedRestrictedField
 import Candidate.Cycle25.Assembly.Count.MomentDetectorPlainUnmarkedField
-import OAI.NumberTheory.DirichletL.Detector.DetectorPlainUnmarkedField
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Detector.DetectorPlainUnmarkedField
 namespace OAI
 
 noncomputable section

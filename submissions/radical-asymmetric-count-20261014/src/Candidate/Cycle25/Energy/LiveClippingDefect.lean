@@ -4,9 +4,9 @@ Upstream source: Energy/LiveClippingDefect.lean.
 Licensed under Apache-2.0; see UPSTREAM_LICENSE.
 Modifications: fresh namespace and the κ ≥ 7/10 comparison/clipping geometry.
 -/
-import OAI.NumberTheory.DirichletL.Energy.OriginalSource
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Energy.OriginalSource
 import Candidate.Cycle25.Energy.ReferenceLowWindow
-import OAI.NumberTheory.DirichletL.Energy.ReferenceLowReflectionError
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Energy.ReferenceLowReflectionError
 
 import Candidate.Cycle25.Energy.ReferenceLowBranchGeometry
 import Candidate.Cycle25.Energy.ReferenceState

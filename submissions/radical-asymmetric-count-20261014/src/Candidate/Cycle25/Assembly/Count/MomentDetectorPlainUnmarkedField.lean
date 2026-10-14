@@ -1,9 +1,9 @@
 import Candidate.Cycle25.Assembly.Count.Parameters
-import OAI.NumberTheory.DirichletL.Detector.DetectorPlainUnmarkedField
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Detector.DetectorPlainUnmarkedField
 import Candidate.Cycle25.Assembly.Count.MomentDetectorPlainMomentParameters
-import OAI.NumberTheory.DirichletL.Moments.DetectorPlainMomentParameters
-import OAI.NumberTheory.DirichletL.Moments.DetectorPlainProfileControl
-import OAI.NumberTheory.DirichletL.Hecke.DetectorDyadicGeometry
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.DetectorPlainMomentParameters
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.DetectorPlainProfileControl
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Hecke.DetectorDyadicGeometry
 namespace OAI
 
 noncomputable section

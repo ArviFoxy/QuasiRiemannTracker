@@ -1,6 +1,6 @@
 /- Ported from Cycle25.Transport weighted upstream PR6 and OpenAI/math; Apache-2.0 attribution retained. -/
 import Candidate.Cycle63.Assembly.Transport.GeometryFacts
-import OAI.NumberTheory.DirichletL.Hecke.SignalBounds
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Hecke.SignalBounds
 
 /-! Original Hecke signal contour shift with the improved analyticity boundary. -/
 noncomputable section

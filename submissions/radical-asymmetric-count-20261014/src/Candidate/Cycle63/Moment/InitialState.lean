@@ -1,5 +1,5 @@
-import OAI.NumberTheory.DirichletL.Moments.DetectorEnergyInitialState
-import OAI.NumberTheory.DirichletL.Moments.NaturalFixedRaySourceCharacters
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.DetectorEnergyInitialState
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.NaturalFixedRaySourceCharacters
 
 set_option autoImplicit false
 

@@ -4,8 +4,8 @@ Upstream source: Moments/ReflectionRetainedLength.lean.
 Licensed under Apache-2.0; see UPSTREAM_LICENSE.
 Modifications: fresh namespace and the κ ≥ 7/10 comparison/clipping geometry.
 -/
-import OAI.NumberTheory.DirichletL.Moments.ReflectionLength
-import OAI.NumberTheory.DirichletL.Moments.ReflectedTruncation
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.ReflectionLength
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.ReflectedTruncation
 
 namespace OAI
 

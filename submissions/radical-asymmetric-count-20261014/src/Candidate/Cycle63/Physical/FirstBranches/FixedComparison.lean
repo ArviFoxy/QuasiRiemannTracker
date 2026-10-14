@@ -1,7 +1,7 @@
 import Candidate.Cycle63.Physical.FirstBranches.Actual
 import Candidate.Cycle63.Moment.InitialState
-import OAI.NumberTheory.DirichletL.Energy.ReferenceScalarReserve
-import OAI.NumberTheory.DirichletL.Energy.ReferenceProfileBudget
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Energy.ReferenceScalarReserve
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Energy.ReferenceProfileBudget
 
 namespace OAI.SevenEighths.Cycle63FirstActual
 noncomputable section

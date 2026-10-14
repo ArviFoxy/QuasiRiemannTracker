@@ -1,5 +1,5 @@
 import Candidate.Cycle63.Assembly.Low.Geometry
-import OAI.NumberTheory.DirichletL.Detector.LowGramScale
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Detector.LowGramScale
 
 set_option autoImplicit false
 

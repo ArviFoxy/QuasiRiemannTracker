@@ -1,7 +1,7 @@
 import Candidate.Cycle63.Physical.FirstBranches.ChildUniform
-import OAI.NumberTheory.DirichletL.Energy.ReferenceLowWindow
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Energy.ReferenceLowWindow
 import Candidate.Cycle63.Physical.FirstBranches.Homogeneous
-import OAI.NumberTheory.DirichletL.Energy.ReferenceLowError
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Energy.ReferenceLowError
 
 namespace OAI
 

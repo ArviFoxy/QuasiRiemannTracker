@@ -1,7 +1,7 @@
 import Candidate.Cycle63.Assembly.Low.Geometry
 import Candidate.Cycle63.Assembly.Low.Reflection.FullBudget
-import OAI.NumberTheory.DirichletL.Reflection.LowMemberBudget
-import OAI.NumberTheory.DirichletL.Reflection.LowMemberGeometry
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Reflection.LowMemberBudget
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Reflection.LowMemberGeometry
 
 set_option autoImplicit false
 

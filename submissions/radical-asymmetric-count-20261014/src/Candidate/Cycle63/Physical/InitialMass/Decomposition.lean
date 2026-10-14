@@ -1,6 +1,6 @@
-import OAI.NumberTheory.DirichletL.Moments.FirstAnnularInputAmplification
-import OAI.NumberTheory.DirichletL.Moments.FirstCommonSourceBudget
-import OAI.NumberTheory.DirichletL.Moments.FirstReferenceSource
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.FirstAnnularInputAmplification
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.FirstCommonSourceBudget
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.FirstReferenceSource
 import Lean
 
 set_option autoImplicit false

@@ -1,4 +1,4 @@
-import OAI.NumberTheory.DirichletL.Hecke.DetectorRowCountCrossing
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Hecke.DetectorRowCountCrossing
 
 /-! Variable plain-moment coefficient for Cycle25. Adapted from pinned
 OpenAI DetectorRowCountCrossing (Apache-2.0); original definitions preserved. -/

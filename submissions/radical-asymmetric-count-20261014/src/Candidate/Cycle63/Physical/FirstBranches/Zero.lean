@@ -1,5 +1,5 @@
-import OAI.NumberTheory.DirichletL.Moments.SourceInputZeroUniform
-import OAI.NumberTheory.DirichletL.Moments.AddedZeroUniform
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.SourceInputZeroUniform
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.AddedZeroUniform
 
 namespace OAI.SevenEighths.Cycle63FirstZero
 noncomputable section

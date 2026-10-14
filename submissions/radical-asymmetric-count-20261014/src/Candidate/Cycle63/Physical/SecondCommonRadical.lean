@@ -1,5 +1,5 @@
-import OAI.NumberTheory.DirichletL.Moments.SecondCanonicalFrequency
-import OAI.NumberTheory.DirichletL.Moments.RankinRadical
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.SecondCanonicalFrequency
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.RankinRadical
 
 namespace Cycle63.Physical
 

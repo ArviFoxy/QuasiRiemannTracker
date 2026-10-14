@@ -7,9 +7,9 @@ Modifications: κ ≥ 7/10 positive stages; complete zero-slot endpoint supplied
 import Candidate.Cycle25.Energy.CappedLowStage
 import Candidate.Cycle25.Energy.NaturalHighStage
 import Candidate.ZetaZeroFree.Analytic.Moments.Unconditional
-import OAI.NumberTheory.DirichletL.Energy.CappedSuccessorPacking
-import OAI.NumberTheory.DirichletL.Energy.CappedRequests
-import OAI.NumberTheory.DirichletL.Energy.CappedBandTransport
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Energy.CappedSuccessorPacking
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Energy.CappedRequests
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Energy.CappedBandTransport
 
 import Candidate.Cycle25.Energy.PositiveHighBound
 

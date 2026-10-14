@@ -1,4 +1,4 @@
-import OAI.NumberTheory.DirichletL.Energy.PaidBands
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Energy.PaidBands
 
 /-! Low-bin source payment: remove slots only on the restricted rows,
 then apply the incumbent moment to the remaining exact natural state. -/

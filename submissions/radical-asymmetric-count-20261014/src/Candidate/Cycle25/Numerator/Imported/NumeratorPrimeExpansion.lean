@@ -1,5 +1,5 @@
 import Candidate.Cycle25.Numerator.Imported.NumeratorEulerExpansion
-import OAI.NumberTheory.DirichletL.PrimeRows.FirstProduct
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.PrimeRows.FirstProduct
 
 /-! Absolute Dirichlet expansion of the actual unramified correction product. -/
 noncomputable section

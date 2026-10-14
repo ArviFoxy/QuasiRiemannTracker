@@ -1,4 +1,4 @@
-import OAI.NumberTheory.DirichletL.Moments.Cauchy
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.Cauchy
 
 set_option autoImplicit false
 set_option maxHeartbeats 800000

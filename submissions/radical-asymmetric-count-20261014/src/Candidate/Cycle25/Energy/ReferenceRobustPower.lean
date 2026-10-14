@@ -5,8 +5,8 @@ Licensed under Apache-2.0; see UPSTREAM_LICENSE.
 Modifications: fresh namespace and the κ ≥ 7/10 comparison/clipping geometry.
 -/
 import Candidate.Cycle25.Energy.ReferenceRobustOriginal
-import OAI.NumberTheory.DirichletL.Energy.ReferenceScalarReserve
-import OAI.NumberTheory.DirichletL.Energy.ReferenceProfileBudget
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Energy.ReferenceScalarReserve
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Energy.ReferenceProfileBudget
 
 import Candidate.Cycle25.Energy.ReferenceState
 import Candidate.Cycle25.Energy.LiveClippingDefect

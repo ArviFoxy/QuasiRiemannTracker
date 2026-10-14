@@ -1,4 +1,4 @@
-import OAI.NumberTheory.DirichletL.Detector.FinalAssemblyUnconditional
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Detector.FinalAssemblyUnconditional
 import Candidate.Cycle63.Arithmetic.Constants
 
 /-! Only the original 7/8 endpoint is used to initialize the supremum.

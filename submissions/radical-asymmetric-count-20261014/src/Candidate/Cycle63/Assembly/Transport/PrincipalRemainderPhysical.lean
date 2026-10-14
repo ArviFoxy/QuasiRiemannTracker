@@ -1,7 +1,7 @@
 /- Ported from Cycle25.Transport weighted upstream PR6 and OpenAI/math; Apache-2.0 attribution retained. -/
 import Candidate.Cycle63.Assembly.Transport.GeometryFacts
 import Candidate.Cycle63.Assembly.Transport.PrincipalRemainderTransport
-import OAI.NumberTheory.DirichletL.Detector.PrincipalPhysical
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Detector.PrincipalPhysical
 noncomputable section
 open scoped Classical BigOperators
 open Complex MeasureTheory

@@ -3,7 +3,7 @@ import Candidate.Cycle63.Physical.InitialMass.GeometryErrorAbsoluteBox
 import Candidate.Cycle63.Physical.InitialMass.GeometryErrorOrdinaryContraction
 import Candidate.Cycle63.Physical.InitialMass.SecondRatioBox
 import Candidate.Cycle63.Physical.InitialMass.GeometryAffineExceptionalGates
-import OAI.NumberTheory.DirichletL.Moments.AllocatedChildCapacity
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.AllocatedChildCapacity
 
 set_option autoImplicit false
 set_option Elab.async false

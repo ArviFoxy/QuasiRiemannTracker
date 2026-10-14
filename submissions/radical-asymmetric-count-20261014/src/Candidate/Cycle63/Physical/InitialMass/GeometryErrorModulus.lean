@@ -1,5 +1,5 @@
 import Candidate.Cycle63.Physical.InitialMass.GeometryErrorActiveInput
-import OAI.NumberTheory.DirichletL.Moments.SecondRadicalBudget
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.SecondRadicalBudget
 
 set_option autoImplicit false
 set_option maxHeartbeats 900000

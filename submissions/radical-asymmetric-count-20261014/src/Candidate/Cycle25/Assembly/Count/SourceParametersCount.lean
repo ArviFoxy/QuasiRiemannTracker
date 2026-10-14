@@ -1,6 +1,6 @@
-import OAI.NumberTheory.DirichletL.PrimeRows.NonfloorBudget
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.PrimeRows.NonfloorBudget
 import Candidate.Cycle25.Assembly.Count.Parameters
-import OAI.NumberTheory.DirichletL.Detector.FinalAssemblyCountParameters
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Detector.FinalAssemblyCountParameters
 
 namespace OAI
 

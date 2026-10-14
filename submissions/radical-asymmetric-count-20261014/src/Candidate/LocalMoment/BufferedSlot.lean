@@ -1,5 +1,5 @@
-import OAI.NumberTheory.DirichletL.Hecke.PrimeRay
-import OAI.NumberTheory.DirichletL.Moments.NaturalFixedRaySourceSlots
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Hecke.PrimeRay
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.NaturalFixedRaySourceSlots
 
 /-! Buffered pointwise payment for the literal natural prime slots.  The
 additional common puncture remains inside the actual row character. -/

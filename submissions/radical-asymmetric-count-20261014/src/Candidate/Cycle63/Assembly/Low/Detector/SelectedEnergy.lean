@@ -1,8 +1,8 @@
 import Candidate.Cycle63.Assembly.Low.Detector.LowCentralGeometry
 import Candidate.Cycle63.Assembly.Low.Geometry
 import Candidate.Cycle63.Assembly.Low.Reflection.CompletedEnergy
-import OAI.NumberTheory.DirichletL.Detector.LowNominalEnergy
-import OAI.NumberTheory.DirichletL.Detector.LowSelectedBound
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Detector.LowNominalEnergy
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Detector.LowSelectedBound
 
 set_option autoImplicit false
 

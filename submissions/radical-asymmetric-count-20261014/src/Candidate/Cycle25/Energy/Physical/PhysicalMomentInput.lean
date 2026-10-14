@@ -1,8 +1,8 @@
 import Candidate.Cycle25.Energy.Physical.PhysicalMoment
 import Candidate.Cycle25.Energy.Endpoint
-import OAI.NumberTheory.DirichletL.Energy.ReferenceChild
-import OAI.NumberTheory.DirichletL.Moments.OneReflectionEnergy
-import OAI.NumberTheory.DirichletL.Moments.DetectorPlainRelativeClass
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Energy.ReferenceChild
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.OneReflectionEnergy
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.DetectorPlainRelativeClass
 
 namespace OAI
 noncomputable section

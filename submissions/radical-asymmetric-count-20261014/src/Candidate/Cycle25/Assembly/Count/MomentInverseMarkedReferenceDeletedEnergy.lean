@@ -1,8 +1,8 @@
-import OAI.NumberTheory.DirichletL.Dictionary.InverseMarkedReferenceDeletedEnergy
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Dictionary.InverseMarkedReferenceDeletedEnergy
 import Candidate.Cycle25.Assembly.Count.MomentInverseMarkedReferencePrimeGates
-import OAI.NumberTheory.DirichletL.Dictionary.InverseMarkedReferencePaddedEnergy
-import OAI.NumberTheory.DirichletL.Dictionary.InverseMarkedReferencePrimeGates
-import OAI.NumberTheory.DirichletL.Dictionary.InverseMarkedReferenceShift
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Dictionary.InverseMarkedReferencePaddedEnergy
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Dictionary.InverseMarkedReferencePrimeGates
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Dictionary.InverseMarkedReferenceShift
 namespace OAI
 
 noncomputable section

@@ -1,8 +1,8 @@
 import Candidate.Cycle63.Assembly.Low.Geometry
 import Candidate.Cycle63.Assembly.Low.Reflection.ExponentRows
-import OAI.NumberTheory.DirichletL.Reflection.LowRetained
-import OAI.NumberTheory.DirichletL.Reflection.LowRetainedBudget
-import OAI.NumberTheory.DirichletL.Reflection.LowSector
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Reflection.LowRetained
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Reflection.LowRetainedBudget
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Reflection.LowSector
 
 set_option autoImplicit false
 

@@ -1,7 +1,7 @@
-import OAI.NumberTheory.DirichletL.Moments.DetectorPlainCapacity
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.DetectorPlainCapacity
 import Candidate.Cycle25.Assembly.Count.MomentDetectorPlainSlotProfile
-import OAI.NumberTheory.DirichletL.Moments.RelativeCapacityRemoval
-import OAI.NumberTheory.DirichletL.Moments.DetectorPlainSlotProfile
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.RelativeCapacityRemoval
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.DetectorPlainSlotProfile
 namespace OAI
 
 noncomputable section

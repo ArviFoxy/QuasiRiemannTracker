@@ -1,7 +1,7 @@
 import Candidate.Cycle63.Marked.DeletionSlots
-import OAI.NumberTheory.DirichletL.Moments.CommonMaskEnergy
-import OAI.NumberTheory.DirichletL.Moments.WholeSlotDeletion
-import OAI.NumberTheory.DirichletL.Hecke.PrimeAnnular
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.CommonMaskEnergy
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.WholeSlotDeletion
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Hecke.PrimeAnnular
 
 set_option autoImplicit false
 set_option maxHeartbeats 1600000

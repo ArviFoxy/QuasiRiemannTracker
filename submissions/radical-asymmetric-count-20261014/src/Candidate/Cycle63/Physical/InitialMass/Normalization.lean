@@ -1,5 +1,5 @@
 import Candidate.Cycle63.Physical.TerminalRadius
-import OAI.NumberTheory.DirichletL.Moments.FirstPhysicalSourceNormalization
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.FirstPhysicalSourceNormalization
 
 set_option autoImplicit false
 namespace OAI.SevenEighths.Cycle63InitialMass

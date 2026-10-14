@@ -4,7 +4,7 @@ import Candidate.Cycle63.Physical.InitialMass.GeometryAffineCaps
 import Candidate.Cycle63.Physical.InitialMass.GeometryMeshChoice
 import Candidate.Cycle63.Physical.InitialHeight
 import Candidate.Cycle63.Numerator.Fourth.Input
-import OAI.NumberTheory.DirichletL.Moments.FirstPhysicalZeroRadius
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.FirstPhysicalZeroRadius
 
 set_option autoImplicit false
 set_option maxHeartbeats 800000

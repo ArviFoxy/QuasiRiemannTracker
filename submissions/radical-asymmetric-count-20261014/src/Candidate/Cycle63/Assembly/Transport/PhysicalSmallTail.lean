@@ -1,9 +1,9 @@
 /- Ported from Cycle25 transport and OpenAI/math; Apache-2.0 attribution retained. -/
 /- Adapted from WeightedQRH (weighted upstream PR6), preserving the original proof structure. -/
 import Candidate.Cycle63.Assembly.Transport.GeometryFacts
-import OAI.NumberTheory.DirichletL.PrimeRows.PhysicalSmallTail
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.PrimeRows.PhysicalSmallTail
 import Candidate.Cycle63.Assembly.Transport.SmallTail
-import OAI.NumberTheory.DirichletL.PrimeRows.PhysicalDyad
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.PrimeRows.PhysicalDyad
 namespace OAI
 
 noncomputable section

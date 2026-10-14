@@ -1,6 +1,6 @@
 import Candidate.Cycle25.Numerator.Imported.Parameters
-import OAI.NumberTheory.DirichletL.Detector.RowRadicalConductor
-import OAI.NumberTheory.DirichletL.Moments.UniformReflectionApproximation
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Detector.RowRadicalConductor
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.UniformReflectionApproximation
 
 /-! A radical-sized presentation of the actual physical row, with its exact
 smoothed sums and the same reflected character coefficients. The radical

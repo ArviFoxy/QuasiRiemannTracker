@@ -1,5 +1,5 @@
 import Candidate.Cycle63.Moment.LowBranch.Main
-import OAI.NumberTheory.DirichletL.Moments.AmplifiedRetainedRadius
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.AmplifiedRetainedRadius
 
 set_option autoImplicit false
 namespace OAI.SevenEighths.Cycle63Moment.LowBranch

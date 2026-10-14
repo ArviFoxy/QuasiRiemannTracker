@@ -1,6 +1,6 @@
-import OAI.NumberTheory.DirichletL.Moments.DetectorEnergyInitialState
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.DetectorEnergyInitialState
 import Candidate.Cycle25.Assembly.SourceData
-import OAI.NumberTheory.DirichletL.Moments.NaturalFixedRaySourceFreeExceptional
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.NaturalFixedRaySourceFreeExceptional
 namespace OAI
 
 noncomputable section

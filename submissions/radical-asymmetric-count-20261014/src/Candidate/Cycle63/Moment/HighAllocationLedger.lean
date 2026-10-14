@@ -1,5 +1,5 @@
 import Candidate.Cycle63.Physical.AllocationClipping
-import OAI.NumberTheory.DirichletL.Moments.AllocatedChildCapacity
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.AllocatedChildCapacity
 
 set_option autoImplicit false
 namespace OAI.SevenEighths.Cycle63Moment

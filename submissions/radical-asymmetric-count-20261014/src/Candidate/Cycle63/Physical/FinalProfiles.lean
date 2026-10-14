@@ -1,4 +1,4 @@
-import OAI.NumberTheory.DirichletL.Energy.AllocatedProfiles
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Energy.AllocatedProfiles
 
 set_option autoImplicit false
 namespace OAI.SevenEighths.Cycle63FinalProfiles

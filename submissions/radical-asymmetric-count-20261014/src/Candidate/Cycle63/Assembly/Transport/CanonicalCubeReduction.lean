@@ -2,9 +2,9 @@
 /- Adapted from WeightedQRH (weighted upstream PR6), preserving the original proof structure. -/
 import Candidate.Cycle63.Assembly.Transport.GeometryFacts
 import Candidate.Cycle63.Assembly.Transport.CubeFiniteError
-import OAI.NumberTheory.DirichletL.PrimeRows.CanonicalCubeReduction
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.PrimeRows.CanonicalCubeReduction
 import Candidate.Cycle63.Assembly.Transport.CanonicalReduction
-import OAI.NumberTheory.DirichletL.PrimeRows.CubeFiniteIntegral
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.PrimeRows.CubeFiniteIntegral
 namespace OAI
 
 noncomputable section

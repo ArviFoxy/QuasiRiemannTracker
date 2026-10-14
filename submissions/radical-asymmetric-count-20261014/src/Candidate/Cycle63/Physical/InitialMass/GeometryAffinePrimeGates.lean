@@ -1,7 +1,7 @@
 /- Copyright (c) 2026 Hailey Collet. Released under Apache 2.0. -/
 import Candidate.Cycle63.Physical.InitialMass.GeometryErrorCoprime
 import Candidate.Cycle63.Arithmetic.LocalReserves
-import OAI.NumberTheory.DirichletL.Moments.PrimeElements
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.PrimeElements
 
 set_option autoImplicit false
 namespace OAI.SevenEighths.Cycle63InitialMass

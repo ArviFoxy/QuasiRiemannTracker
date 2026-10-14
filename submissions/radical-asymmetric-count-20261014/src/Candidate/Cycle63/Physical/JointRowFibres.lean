@@ -1,5 +1,5 @@
-import OAI.NumberTheory.DirichletL.Moments.RankinSubset
-import OAI.NumberTheory.DirichletL.Moments.SecondDiagonal
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.RankinSubset
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.SecondDiagonal
 
 namespace Cycle63.Physical
 

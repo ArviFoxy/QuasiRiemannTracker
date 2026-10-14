@@ -1,5 +1,5 @@
 import Candidate.Cycle63.Marked.NaturalMarkedPlain
-import OAI.NumberTheory.DirichletL.Moments.DetectorPlainProfileControl
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.DetectorPlainProfileControl
 
 set_option autoImplicit false
 namespace OAI.SevenEighths.Cycle63MarkedPlain

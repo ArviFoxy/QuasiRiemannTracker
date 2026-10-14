@@ -1,5 +1,5 @@
 import Candidate.Cycle63.Moment.FirstSourceEncoding
-import OAI.NumberTheory.DirichletL.Moments.RankinLabels
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.RankinLabels
 
 set_option autoImplicit false
 set_option maxHeartbeats 1000000

@@ -1,8 +1,8 @@
 /- Ported from Cycle25 transport, weighted upstream PR6 and OpenAI/math; Apache-2.0 attribution retained. -/
 import Candidate.Cycle63.Assembly.Transport.GeometryFacts
-import OAI.NumberTheory.DirichletL.PrimeRows.CubeFloorArithmetic
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.PrimeRows.CubeFloorArithmetic
 import Candidate.Cycle63.Assembly.Transport.CubeSlotExponent
-import OAI.NumberTheory.DirichletL.Detector.CentralCubeNorm
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Detector.CentralCubeNorm
 
 /-! Adapted from pinned OpenAI/math source; only physical slot geometry changes.
 Original analytic inputs remain explicit and unchanged. -/

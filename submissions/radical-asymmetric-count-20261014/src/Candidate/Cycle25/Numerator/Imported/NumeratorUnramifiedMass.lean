@@ -1,5 +1,5 @@
 import Candidate.Cycle25.Numerator.Imported.NumeratorRamifiedMass
-import OAI.NumberTheory.DirichletL.Detector.HighRowsCentralSelected
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Detector.HighRowsCentralSelected
 
 /-! Coefficient masses for the original unramified correction and error. -/
 noncomputable section

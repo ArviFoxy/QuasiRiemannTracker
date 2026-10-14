@@ -1,7 +1,7 @@
 import Candidate.Cycle63.Moment.SecondNaturalMask
 import Candidate.Cycle63.Moment.WholeSourceFamily
-import OAI.NumberTheory.DirichletL.Moments.SecondExceptionalFamily
-import OAI.NumberTheory.DirichletL.Moments.SecondFamilyTransport
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.SecondExceptionalFamily
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.SecondFamilyTransport
 
 set_option autoImplicit false
 

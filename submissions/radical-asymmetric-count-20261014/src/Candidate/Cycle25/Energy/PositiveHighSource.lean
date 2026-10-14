@@ -4,11 +4,11 @@ Upstream source: Energy/PositiveHighSource.lean.
 Licensed under Apache-2.0; see UPSTREAM_LICENSE.
 Modifications: fresh namespace and the κ ≥ 7/10 comparison/clipping geometry.
 -/
-import OAI.NumberTheory.DirichletL.Energy.NaturalInputMatches
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Energy.NaturalInputMatches
 import Candidate.Cycle25.Energy.OriginalHighReflectionSymmetric
 import Candidate.Cycle25.Energy.ReferenceLivePower
-import OAI.NumberTheory.DirichletL.Energy.FixedRadialReduction
-import OAI.NumberTheory.DirichletL.Energy.PhysicalEntry
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Energy.FixedRadialReduction
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Energy.PhysicalEntry
 
 import Candidate.Cycle25.Energy.ReferenceState
 

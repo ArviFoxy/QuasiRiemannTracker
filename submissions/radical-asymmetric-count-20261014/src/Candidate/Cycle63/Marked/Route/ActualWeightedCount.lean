@@ -1,6 +1,6 @@
 import Candidate.Cycle63.Marked.Route.ActualMarkedGates
 import Candidate.Cycle63.Marked.AnnularPool
-import OAI.NumberTheory.DirichletL.Hecke.DetectorClassBudget
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Hecke.DetectorClassBudget
 
 set_option autoImplicit false
 set_option maxHeartbeats 1800000

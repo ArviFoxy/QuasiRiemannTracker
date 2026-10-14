@@ -1,4 +1,4 @@
-import OAI.NumberTheory.DirichletL.Moments.ReflectionWeightedEnergy
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.ReflectionWeightedEnergy
 
 namespace OAI
 noncomputable section

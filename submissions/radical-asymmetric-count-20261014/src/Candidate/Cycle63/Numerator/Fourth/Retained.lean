@@ -1,7 +1,7 @@
 import Candidate.Cycle63.Numerator.Fourth.Hybrid
 import Candidate.Cycle25.Energy.Physical.RetainedGeometry
 import Candidate.Cycle25.Numerator.ReflectionRetained
-import OAI.NumberTheory.DirichletL.Energy.ReferenceLowWindow
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Energy.ReferenceLowWindow
 
 namespace OAI
 noncomputable section

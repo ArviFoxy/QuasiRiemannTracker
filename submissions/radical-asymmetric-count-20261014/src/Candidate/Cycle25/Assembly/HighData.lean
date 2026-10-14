@@ -1,7 +1,7 @@
 import Candidate.Cycle25.Assembly.MomentData
 import Candidate.Cycle25.Assembly.SlotLengths
-import OAI.NumberTheory.DirichletL.ParametersDetectorScales
-import OAI.NumberTheory.DirichletL.Hecke.ZeroSupremum
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.ParametersDetectorScales
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Hecke.ZeroSupremum
 
 noncomputable section
 open scoped BigOperators

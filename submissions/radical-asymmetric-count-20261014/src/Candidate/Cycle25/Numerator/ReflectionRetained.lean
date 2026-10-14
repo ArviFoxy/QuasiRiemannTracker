@@ -1,6 +1,6 @@
 import Candidate.Cycle25.Numerator.ReflectionProfiles
 import Candidate.Cycle25.Numerator.ReflectionMass
-import OAI.NumberTheory.DirichletL.Moments.UniformRetainedEnergy
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.UniformRetainedEnergy
 
 namespace OAI
 noncomputable section

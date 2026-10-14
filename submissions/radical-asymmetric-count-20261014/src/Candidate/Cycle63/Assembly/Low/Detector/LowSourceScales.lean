@@ -1,5 +1,5 @@
 import Candidate.Cycle63.Assembly.Low.Geometry
-import OAI.NumberTheory.DirichletL.Detector.LowSourceScales
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Detector.LowSourceScales
 import Candidate.Cycle63.Assembly.Low.Detector.LowGramScale
 /-! Adapted from OpenAI/math family003, pinned original module Detector.LowSourceScales.
 Changed physical geometry and explicit compensation bookkeeping; upstream is unchanged.

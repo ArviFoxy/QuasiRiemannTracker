@@ -1,5 +1,5 @@
 import Candidate.Cycle25.Numerator.Imported.RowConductor
-import OAI.NumberTheory.DirichletL.PrimeRows.RowCount
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.PrimeRows.RowCount
 
 noncomputable section
 set_option maxHeartbeats 800000

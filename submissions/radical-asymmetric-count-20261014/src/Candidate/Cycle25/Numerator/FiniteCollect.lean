@@ -1,6 +1,6 @@
 import Candidate.Cycle25.Numerator.ActualBin
 import Candidate.Cycle25.Numerator.FreeScalarBound
-import OAI.NumberTheory.DirichletL.Detector.CentralClassPartition
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Detector.CentralClassPartition
 
 /-! The literal finite row/error-subset collection after numerator bounds. -/
 noncomputable section

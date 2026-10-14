@@ -1,8 +1,8 @@
-import OAI.NumberTheory.DirichletL.Moments.NaturalFixedRaySourceFixedIdeal
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.NaturalFixedRaySourceFixedIdeal
 import Candidate.Cycle25.Assembly.SourceData
-import OAI.NumberTheory.DirichletL.Moments.NaturalFixedRaySourceFiber
-import OAI.NumberTheory.DirichletL.Detector.FinalAssemblyData
-import OAI.NumberTheory.DirichletL.Moments.NaturalFixedRaySourceInternal
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.NaturalFixedRaySourceFiber
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Detector.FinalAssemblyData
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.NaturalFixedRaySourceInternal
 namespace OAI
 
 noncomputable section

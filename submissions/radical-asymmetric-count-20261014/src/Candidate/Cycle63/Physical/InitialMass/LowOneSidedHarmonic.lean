@@ -1,4 +1,4 @@
-import OAI.NumberTheory.DirichletL.Moments.CommonHarmonicMass
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.CommonHarmonicMass
 
 set_option autoImplicit false
 set_option maxHeartbeats 1200000

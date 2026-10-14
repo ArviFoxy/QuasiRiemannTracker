@@ -1,7 +1,7 @@
-import OAI.NumberTheory.DirichletL.Detector.SourceAmplitudeClasses
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Detector.SourceAmplitudeClasses
 import Candidate.Cycle25.Assembly.Count.SourceBatch
 import Candidate.Cycle25.Assembly.Count.Endpoint
-import OAI.NumberTheory.DirichletL.Hecke.DetectorAmplitudeFirst
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Hecke.DetectorAmplitudeFirst
 
 /-! Adapted from pinned OpenAI/math source; only physical slot geometry changes.
 Original analytic inputs remain explicit and unchanged. -/

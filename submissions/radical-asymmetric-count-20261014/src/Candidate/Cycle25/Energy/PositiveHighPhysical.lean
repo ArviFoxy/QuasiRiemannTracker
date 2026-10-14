@@ -4,7 +4,7 @@ Upstream source: Energy/PositiveHighPhysical.lean.
 Licensed under Apache-2.0; see UPSTREAM_LICENSE.
 Modifications: fresh namespace and the κ ≥ 7/10 comparison/clipping geometry.
 -/
-import OAI.NumberTheory.DirichletL.Energy.CanonicalHighPhysical
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Energy.CanonicalHighPhysical
 import Candidate.Cycle25.Energy.PositiveBalancedAdmission
 import Candidate.Cycle25.Energy.PositiveHighSourceBound
 import Candidate.Cycle25.Energy.FirstSourceParameters

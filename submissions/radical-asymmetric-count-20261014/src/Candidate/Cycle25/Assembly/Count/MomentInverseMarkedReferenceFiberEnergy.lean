@@ -1,7 +1,7 @@
-import OAI.NumberTheory.DirichletL.Dictionary.InverseMarkedReferenceFiberEnergy
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Dictionary.InverseMarkedReferenceFiberEnergy
 import Candidate.Cycle25.Assembly.Count.MomentInverseMarkedReferenceDeletedEnergy
-import OAI.NumberTheory.DirichletL.Dictionary.InverseMarkedReferenceDeletedEnergy
-import OAI.NumberTheory.DirichletL.Dictionary.InverseMarkedPhysicalRows
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Dictionary.InverseMarkedReferenceDeletedEnergy
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Dictionary.InverseMarkedPhysicalRows
 namespace OAI
 
 noncomputable section

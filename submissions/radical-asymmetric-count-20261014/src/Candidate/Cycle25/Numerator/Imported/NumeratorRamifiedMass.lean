@@ -1,5 +1,5 @@
 import Candidate.Cycle25.Numerator.Imported.NumeratorPolynomialMass
-import OAI.NumberTheory.DirichletL.Detector.HighRowsCentralStrictSelected
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Detector.HighRowsCentralStrictSelected
 
 /-! Actual coefficient bounds for ramified local errors.  The certified original
 regular-error estimate is uniform on a vertical line.  Exact finite-degree

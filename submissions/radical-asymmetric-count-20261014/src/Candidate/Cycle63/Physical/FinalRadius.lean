@@ -1,6 +1,6 @@
 import Candidate.Cycle63.Physical.ExceptionalReference
-import OAI.NumberTheory.DirichletL.Moments.SecondRetainedWidth
-import OAI.NumberTheory.DirichletL.Moments.AmplificationChildSourceCaps
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.SecondRetainedWidth
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.AmplificationChildSourceCaps
 
 namespace OAI.SevenEighths.Cycle63FinalRadius
 noncomputable section

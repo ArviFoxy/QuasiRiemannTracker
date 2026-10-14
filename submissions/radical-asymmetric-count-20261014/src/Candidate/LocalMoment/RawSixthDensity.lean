@@ -1,6 +1,6 @@
 import Candidate.LocalMoment.SixthRowMask
-import OAI.NumberTheory.DirichletL.PrimeRows.RowPartition
-import OAI.NumberTheory.DirichletL.QuadraticSieve.DyadicColumns
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.PrimeRows.RowPartition
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.QuadraticSieve.DyadicColumns
 
 namespace OAI
 noncomputable section

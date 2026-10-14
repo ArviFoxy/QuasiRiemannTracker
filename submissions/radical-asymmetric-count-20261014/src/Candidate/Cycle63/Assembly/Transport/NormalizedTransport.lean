@@ -1,10 +1,10 @@
 /- Ported from Cycle25 transport, weighted upstream PR6 and OpenAI/math; Apache-2.0 attribution retained. -/
 import Candidate.Cycle63.Assembly.Transport.GeometryFacts
-import OAI.NumberTheory.DirichletL.PrimeRows.NormalizedTransport
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.PrimeRows.NormalizedTransport
 import Candidate.Cycle63.Assembly.Transport.CanonicalRayCube
 import Candidate.Cycle63.Assembly.Low.Normalizer
 import Candidate.Cycle63.Assembly.Transport.PrincipalRemainderNormalized
-import OAI.NumberTheory.DirichletL.PrimeRows.CubeNormalizer
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.PrimeRows.CubeNormalizer
 namespace OAI
 
 noncomputable section

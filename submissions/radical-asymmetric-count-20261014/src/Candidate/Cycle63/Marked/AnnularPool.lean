@@ -1,5 +1,5 @@
 import Candidate.Cycle63.Marked.NaturalSlotHeight
-import OAI.NumberTheory.DirichletL.Moments.PrimeSlot
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.PrimeSlot
 
 set_option autoImplicit false
 namespace OAI.SevenEighths.Cycle63MarkedPlain

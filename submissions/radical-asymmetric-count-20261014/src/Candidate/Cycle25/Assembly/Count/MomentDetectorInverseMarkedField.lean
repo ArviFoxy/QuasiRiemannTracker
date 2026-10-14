@@ -1,8 +1,8 @@
-import OAI.NumberTheory.DirichletL.Detector.DetectorInverseMarkedField
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Detector.DetectorInverseMarkedField
 import Candidate.Cycle25.Assembly.Count.MomentInverseMarkedReferenceFiberEnergy
-import OAI.NumberTheory.DirichletL.Dictionary.InverseMarkedReferenceFiberEnergy
-import OAI.NumberTheory.DirichletL.Dictionary.InverseMarkedUniform
-import OAI.NumberTheory.DirichletL.Hecke.DetectorDyadicGeometry
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Dictionary.InverseMarkedReferenceFiberEnergy
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Dictionary.InverseMarkedUniform
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Hecke.DetectorDyadicGeometry
 namespace OAI
 
 noncomputable section

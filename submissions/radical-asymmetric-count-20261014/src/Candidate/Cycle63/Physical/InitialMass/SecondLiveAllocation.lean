@@ -1,5 +1,5 @@
 import Candidate.Cycle63.Physical.InitialMass.SecondRetainedAssembly
-import OAI.NumberTheory.DirichletL.Moments.OriginalChildEnergy
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.OriginalChildEnergy
 
 set_option autoImplicit false
 set_option maxHeartbeats 500000

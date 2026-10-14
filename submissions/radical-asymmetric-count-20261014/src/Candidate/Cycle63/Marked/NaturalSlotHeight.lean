@@ -1,6 +1,6 @@
 import Candidate.Cycle63.Marked.AnnularHeight
-import OAI.NumberTheory.DirichletL.Moments.CommonMaskExpansion
-import OAI.NumberTheory.DirichletL.Hecke.PrimeAnnular
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.CommonMaskExpansion
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Hecke.PrimeAnnular
 
 set_option autoImplicit false
 namespace OAI.SevenEighths.Cycle63MarkedHeight

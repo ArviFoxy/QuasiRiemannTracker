@@ -1,8 +1,8 @@
 /- Ported from Cycle25 transport, weighted upstream PR6 and OpenAI/math; Apache-2.0 attribution retained. -/
 import Candidate.Cycle63.Assembly.Transport.GeometryFacts
-import OAI.NumberTheory.DirichletL.PrimeRows.CubeSlotExponent
-import OAI.NumberTheory.DirichletL.PrimeRows.CubeFixedPrimes
-import OAI.NumberTheory.DirichletL.Hecke.DetectorPhysicalSelection
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.PrimeRows.CubeSlotExponent
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.PrimeRows.CubeFixedPrimes
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Hecke.DetectorPhysicalSelection
 
 /-! Adapted from pinned OpenAI/math source; only physical slot geometry changes.
 Original analytic inputs remain explicit and unchanged. -/

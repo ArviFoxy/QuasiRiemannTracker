@@ -1,8 +1,8 @@
 import Candidate.Cycle63.Assembly.Low.Detector.LowCentralGeometry
 import Candidate.Cycle63.Assembly.Low.Detector.TupleBound
 import Candidate.Cycle63.Assembly.Low.Geometry
-import OAI.NumberTheory.DirichletL.Detector.LowGaussianDyad
-import OAI.NumberTheory.DirichletL.Detector.LowRemoteMass
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Detector.LowGaussianDyad
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Detector.LowRemoteMass
 
 set_option autoImplicit false
 

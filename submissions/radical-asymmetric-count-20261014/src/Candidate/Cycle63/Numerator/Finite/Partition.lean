@@ -1,5 +1,5 @@
 import Candidate.Cycle25.Numerator.Imported.FullWFiniteError
-import OAI.NumberTheory.DirichletL.PrimeRows.NonfloorDyadic
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.PrimeRows.NonfloorDyadic
 
 set_option autoImplicit false
 namespace Cycle63.FiniteNumerator

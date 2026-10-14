@@ -2,7 +2,7 @@
 import Candidate.Cycle63.Assembly.Transport.GeometryFacts
 import Candidate.Cycle63.Assembly.Transport.PrincipalRemainderRegion
 import Candidate.Cycle63.Assembly.Transport.PrincipalSlots
-import OAI.NumberTheory.DirichletL.Detector.FiniteProductBounds
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Detector.FiniteProductBounds
 noncomputable section
 open scoped Classical BigOperators Topology
 open Complex Set MeasureTheory

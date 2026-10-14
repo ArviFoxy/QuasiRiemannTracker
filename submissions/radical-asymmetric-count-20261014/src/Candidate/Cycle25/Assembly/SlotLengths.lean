@@ -1,5 +1,5 @@
 import Candidate.Cycle25.Assembly.Parameters
-import OAI.NumberTheory.DirichletL.ParametersSlotLengths
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.ParametersSlotLengths
 namespace Cycle25.HighParameters
 noncomputable section
 open scoped BigOperators

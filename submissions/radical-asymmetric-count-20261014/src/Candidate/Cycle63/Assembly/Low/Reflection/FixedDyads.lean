@@ -1,8 +1,8 @@
 import Candidate.Cycle63.Assembly.Low.Geometry
 import Candidate.Cycle63.Assembly.Low.Reflection.ExponentRows
 import Candidate.Cycle63.Assembly.Low.Reflection.MemberBudget
-import OAI.NumberTheory.DirichletL.Reflection.LowDyads
-import OAI.NumberTheory.DirichletL.Reflection.LowFixedMember
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Reflection.LowDyads
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Reflection.LowFixedMember
 
 set_option autoImplicit false
 

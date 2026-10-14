@@ -1,6 +1,6 @@
 import Candidate.LocalMoment.SignedRows
-import OAI.NumberTheory.DirichletL.Moments.NaturalFixedRaySourceCharacters
-import OAI.NumberTheory.DirichletL.Moments.Mask
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.NaturalFixedRaySourceCharacters
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.Mask
 
 set_option autoImplicit false
 

@@ -2,8 +2,8 @@
 import Candidate.Cycle63.Physical.InitialMass.GeometryTailChild
 import Candidate.Cycle63.Physical.InitialMass.GeometryErrorSecondSplit
 import Candidate.Cycle63.Physical.InitialMass.GeometryTailPayment
-import OAI.NumberTheory.DirichletL.Moments.AmplificationAllocationCost
-import OAI.NumberTheory.DirichletL.Moments.FirstExceptionalPrefactorActual
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.AmplificationAllocationCost
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.FirstExceptionalPrefactorActual
 
 set_option autoImplicit false
 set_option maxHeartbeats 2000000

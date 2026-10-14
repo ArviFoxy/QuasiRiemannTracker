@@ -1,8 +1,8 @@
 /- Copyright (c) 2026 Hailey Collet. Released under Apache 2.0. -/
 import Candidate.Cycle63.Physical.SecondZero.Caps
 import Candidate.Cycle63.Physical.TerminalLedger
-import OAI.NumberTheory.DirichletL.Moments.AmplifiedRetainedRadius
-import OAI.NumberTheory.DirichletL.Moments.AmplificationErrorEnergy
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.AmplifiedRetainedRadius
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.AmplificationErrorEnergy
 
 set_option autoImplicit false
 set_option maxHeartbeats 2000000

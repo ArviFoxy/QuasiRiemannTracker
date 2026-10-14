@@ -1,6 +1,6 @@
 import Candidate.Cycle63.Physical.InitialMass.FirstLowLabelCount
 import Candidate.Cycle63.Physical.InitialMass.LowOneSidedHarmonic
-import OAI.NumberTheory.DirichletL.Moments.DivisorBoundary
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.DivisorBoundary
 
 set_option autoImplicit false
 set_option maxHeartbeats 1000000

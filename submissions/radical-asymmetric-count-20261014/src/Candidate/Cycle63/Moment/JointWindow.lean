@@ -1,5 +1,5 @@
-import OAI.NumberTheory.DirichletL.Moments.CommonSectorWindow
-import OAI.NumberTheory.DirichletL.Moments.ExceptionalIndexedWindow
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.CommonSectorWindow
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.ExceptionalIndexedWindow
 
 set_option autoImplicit false
 set_option maxHeartbeats 800000

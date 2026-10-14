@@ -1,5 +1,5 @@
 import Candidate.Cycle63.Physical.FinalCapacity.Physical
-import OAI.NumberTheory.DirichletL.Moments.FirstAmplificationChoice
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.FirstAmplificationChoice
 
 set_option autoImplicit false
 set_option maxHeartbeats 800000

@@ -1,7 +1,7 @@
 import Candidate.Cycle25.Assembly.HighDataFine
 import Candidate.Cycle25.Assembly.Mesh
-import OAI.NumberTheory.DirichletL.Hecke.DetectorSlotSelection
-import OAI.NumberTheory.DirichletL.Hecke.DetectorPhysicalSelection
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Hecke.DetectorSlotSelection
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Hecke.DetectorPhysicalSelection
 
 /-!
 Greedy prime-slot selection for the reflected numerator. Error slots have gain zero,

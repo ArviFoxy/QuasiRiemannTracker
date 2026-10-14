@@ -1,6 +1,6 @@
 import Candidate.Cycle63.Moment.InitialState
 import Candidate.Cycle63.Arithmetic.Constants
-import OAI.NumberTheory.DirichletL.Energy.Bands
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Energy.Bands
 
 set_option autoImplicit false
 

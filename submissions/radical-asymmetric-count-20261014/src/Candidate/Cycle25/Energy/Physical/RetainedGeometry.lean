@@ -1,6 +1,6 @@
 import Candidate.Cycle25.Numerator.ReflectionRetained
 import Candidate.Cycle25.Numerator.Imported.RowConductor
-import OAI.NumberTheory.DirichletL.Moments.ReflectionRetainedLength
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.ReflectionRetainedLength
 
 namespace OAI
 noncomputable section

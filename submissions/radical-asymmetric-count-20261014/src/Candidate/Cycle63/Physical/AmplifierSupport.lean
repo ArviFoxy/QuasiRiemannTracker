@@ -1,5 +1,5 @@
 import Candidate.Cycle63.Arithmetic.LocalReserves
-import OAI.NumberTheory.DirichletL.Moments.FirstAmplificationChoice
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.FirstAmplificationChoice
 
 namespace Cycle63.Physical
 noncomputable section

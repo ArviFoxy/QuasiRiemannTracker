@@ -1,8 +1,8 @@
-import OAI.NumberTheory.DirichletL.Detector.PrimeConstants
-import OAI.NumberTheory.DirichletL.Moments.FirstColumns
-import OAI.NumberTheory.DirichletL.Moments.AmplificationShortening
-import OAI.NumberTheory.DirichletL.Moments.SecondSourceMask
-import OAI.NumberTheory.DirichletL.Moments.SecondCanonicalNonunit
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Detector.PrimeConstants
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.FirstColumns
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.AmplificationShortening
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.SecondSourceMask
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.SecondCanonicalNonunit
 
 namespace OAI
 noncomputable section

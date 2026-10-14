@@ -1,9 +1,9 @@
 /- Ported from Cycle25 transport and OpenAI/math; Apache-2.0 attribution retained. -/
 /- Adapted from WeightedQRH (weighted upstream PR6), preserving the original proof structure. -/
 import Candidate.Cycle63.Assembly.Transport.GeometryFacts
-import OAI.NumberTheory.DirichletL.PrimeRows.CubeErrorSaving
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.PrimeRows.CubeErrorSaving
 import Candidate.Cycle63.Assembly.Transport.CentralErrorSaving
-import OAI.NumberTheory.DirichletL.PrimeRows.CentralCube
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.PrimeRows.CentralCube
 namespace OAI
 noncomputable section
 open scoped Classical BigOperators

@@ -3,7 +3,7 @@ from pathlib import Path
 import hashlib, json, os, re, shutil, subprocess, tempfile, urllib.request
 import sys
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from standard.build_cache import MAX_BYTES, digest
+from standard.build_cache import MAX_BYTES, digest, build_inputs
 
 RELEASE = 'https://github.com/GTimG/QuasiRiemannTracker/releases/download/submission-build-cache-v1/'
 KEY = Path(__file__).resolve().parents[1]/'standard/build-cache-public.pem'
@@ -40,9 +40,15 @@ def main():
     try:
         with tempfile.TemporaryDirectory(dir=out, prefix='build-download-') as tmp:
             directory = Path(tmp)
-            download(RELEASE+'cache.json', directory/'cache.json', 16384)
+            download(RELEASE+'cache.json', directory/'cache.json', 16*1024*1024)
             download(RELEASE+'cache.sig', directory/'cache.sig', 1024)
             index = authenticate(directory/'cache.json', directory/'cache.sig')
+            prepared = out/'prepared'
+            inputs = build_inputs(json.loads((prepared/'contract.json').read_text()), profile,
+                json.loads((prepared/'libraries.json').read_text()), json.loads((out/'tool-pins.json').read_text()))
+            if index.get('environment') != inputs['environment'] or not any(
+                    index.get('modules', {}).get(m) == k for m,k in inputs['modules'].items()):
+                raise ValueError('No compatible modules in the server cache')
             archive = directory/index['archive']
             download(RELEASE+index['archive'], archive, index['size'])
             if archive.stat().st_size != index['size'] or digest(archive) != index['sha256']:

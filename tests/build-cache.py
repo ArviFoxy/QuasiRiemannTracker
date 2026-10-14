@@ -1,6 +1,7 @@
 """Regression and archive authentication tests adapted from PR #35."""
 from pathlib import Path
-import copy, importlib.util, io, json, subprocess, sys, tarfile, tempfile, unittest
+import copy, importlib.util, io, json, os, subprocess, sys, tarfile, tempfile, unittest
+from unittest.mock import patch
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT/'verifier'))
 from standard.build_cache import build_inputs, pack_cache, restore_cache, digest
@@ -100,6 +101,24 @@ class CacheTests(unittest.TestCase):
         changed['module_dependencies']['Submissions.base.Main']=['Candidate.Main']
         with self.assertRaisesRegex(ValueError,'ordering'):
             self.inputs_for(changed)
+
+    def test_incompatible_signed_index_skips_large_download(self):
+        out = self.root/'verification'
+        (out/'prepared').mkdir(parents=True)
+        (out/'profile.json').write_text(json.dumps({'libraries':['/worker/lib']}))
+        (out/'prepared/contract.json').write_text(json.dumps(self.contract))
+        (out/'prepared/libraries.json').write_text(json.dumps({'/worker/lib/Mathlib.olean':'mathlib'}))
+        (out/'tool-pins.json').write_text(json.dumps({'source_lean':'compiler'}))
+        previous = Path.cwd()
+        try:
+            os.chdir(self.root)
+            with patch.object(restore, 'download') as download, patch.object(restore, 'authenticate',
+                    return_value={'environment':'different','modules':{}}):
+                restore.main()
+                self.assertEqual(download.call_count, 2)
+            self.assertNotIn('candidate_cache',json.loads((out/'profile.json').read_text()))
+        finally:
+            os.chdir(previous)
 
     def test_signature_binds_archive_and_rejects_wrong_key(self):
         key, public = self.root/'key.pem',self.root/'public.pem'

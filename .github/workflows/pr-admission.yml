@@ -115,6 +115,11 @@ jobs:
         continue-on-error: true
         timeout-minutes: 120
         run: python3 verifier/actions/setup.py
+      - name: Restore authenticated server compilation
+        if: steps.setup.outcome == 'success'
+        timeout-minutes: 10
+        continue-on-error: true
+        run: python3 verifier/actions/restore-build.py
       - name: Check the canonical theorem with Comparator and all three kernels
         id: check
         if: steps.setup.outcome == 'success'
@@ -144,6 +149,11 @@ jobs:
             verification/run/judge/logs/
           if-no-files-found: warn
           retention-days: 30
+      - name: Require successful worker verification
+        if: always() && steps.check.outcome != 'success'
+        run: |
+          echo "Proof verification failed; see the worker diagnostics above."
+          exit 1
   admission:
     needs: [prepare, verify]
     if: always() && needs.prepare.outputs.verify == 'true'

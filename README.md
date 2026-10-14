@@ -76,3 +76,25 @@ URL prefix when hosting under a subdirectory.
 
 Project code is licensed under [Apache-2.0](LICENSE). Third-party proofs and
 dependencies retain their original licenses and attribution; see [NOTICE](NOTICE).
+
+Workers automatically reuse server-built submission modules from the signed
+`submission-build-cache-v1` release. Cache keys bind each module to its Lean source,
+imported submission modules, compiler and library contents. Changed modules and
+their importers compile again. Every result still runs Comparator and all three
+kernels. An unavailable or incompatible cache triggers a source build.
+
+The server publisher runs from a protected checkout after an isolated build has
+passed verification. Copy its `candidate-lib/`, `contract.json`, `result.json`,
+profile and prepared `libraries.json` to the host, then run:
+
+```sh
+python3 verifier/actions/publish-build.py \
+  --run /path/to/completed-run --profile /path/to/profile.json \
+  --libraries /path/to/libraries.json --key /path/to/host-signing-key.pem \
+  --out /path/to/cache-output --publish
+```
+
+The signing key and GitHub credentials stay on the host. The public key is pinned
+in `verifier/standard/build-cache-public.pem`; key rotation requires updating that
+pin. The publisher accepts locally produced worker records supplied by the server
+operator. Submitter-provided files must go through the isolated source build.

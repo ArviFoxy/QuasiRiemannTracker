@@ -22,10 +22,12 @@ tests and production build.
 
 ## Data
 
-Proof sources live in `submissions/`. The build generates `public/catalogue.json`
-from existing proof metadata in `proofs/` and the admission records of merged
-submissions. Small verification records in `public/certificates/` link each
-checked bound to its source commit and verification report.
+Each `submissions/<result-id>/` directory contains `metadata.json` and its Lean
+source in `src/`. Website deployment combines this metadata with
+merged admission records to generate the catalogue. Generated catalogue JSON is
+ignored by Git. Local development and preview builds generate the same files.
+Small verification records in `public/certificates/` link each checked bound to
+its source commit and verification report.
 
 Verified PR contributions are plotted at their PR submission time. Older
 entries without a recorded PR submission date retain their documented date
@@ -53,14 +55,41 @@ the normal online main-branch build to recover older receipts from the archive.
    ```
 
    Give enough decimal digits to differ from the current best verified bound.
-   Equal bounds accept any supported decimal precision. Fill in the template's
-   `qrh-metadata` block with the title, authors, description, and source credits.
+   Equal bounds accept any supported decimal precision. Add `submissions/<result-id>/metadata.json` with the title, authors, description,
+   and source credits:
+
+   ```json
+   {
+     "title": "Result title",
+     "authors": [{ "name": "Your name" }],
+     "description": "Method and attribution to previous work."
+   }
+   ```
+
+   Optional fields: `dependencies` (source revision IDs), `license`,
+   `builds_on` (existing result IDs), and
+   `references` (objects with `label` and HTTPS `url`).
 
 3. GitHub Actions checks the exact PR head, including drafts. Comparator checks
    the statement and allowed axioms against the
    [canonical target](verifier/upstream-challenge.lean), with the submitted bound
    substituted for $7/8$. Lean, NanoDa, and con-ron must all accept the proof.
    After review and merge, the website adds the result automatically.
+
+Reusable modules live in `src/Submissions/<result_id>/`, with hyphens in the
+result ID replaced by underscores. Declare direct source dependencies in
+`metadata.json`, for example `"dependencies": ["openai-baseline"]`, then import:
+
+```lean
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Nonvanishing
+```
+
+The baseline contains the relevant OpenAI proof sources at the revision recorded
+in [NOTICE](NOTICE). Every submission can use them through this dependency.
+`Submissions.openai_baseline.Main` also exposes its bound theorem. A dependency
+and its transitive imports are built from the same PR commit. Changes to shared
+source or dependency declarations trigger checks for all dependent results.
+Independent modules compile concurrently within the worker's CPU and memory limits.
 
 Verified bounds of any strength are eligible for admission. Improving bounds
 advance the best verified bound shown on the site. Maintenance PRs use a plain

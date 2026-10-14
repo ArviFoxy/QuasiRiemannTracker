@@ -1,0 +1,9 @@
+'OAI.SevenEighths.Cycle61InitialMass.actual_weighted_source_main_paid' depends on axioms: [propext,
+'OAI.SevenEighths.Cycle61InitialMass.actual_weighted_source_geometry_budget_of_error' depends on axioms: [propext,
+'OAI.SevenEighths.Cycle61InitialMass.actual_weighted_source_geometry_budget' depends on axioms: [propext,
+'Cycle61.FinalAssembly.chosen_affine_input' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Cycle61.FinalAssembly.beta_le_rational' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Cycle61Verification.allDirichlet' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Cycle61Verification.zeta' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Cycle61Verification.allHecke' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Cycle61Verification.zetaTotal' depends on axioms: [propext, Classical.choice, Quot.sound]

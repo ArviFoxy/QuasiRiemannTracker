@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "repository": "GTimG/QuasiRiemannTracker",
+  "number": 43,
+  "head_sha": "9e0008692e77836a9a61cff25c808727d6d6690d",
+  "result_id": "gao-cycle61-plane-20261013",
+  "theta_exact": "4374299/5000000",
+  "source_path": "submissions/gao-cycle61-plane-20261013/src",
+  "source_tree": "dac69e9b279a815a406df814c58d39d45bfb8591",
+  "metadata": {
+    "title": "Refine the Cycle61 zero-free boundary to 0.8748598",
+    "authors": [
+      {
+        "name": "Zhongpai Gao",
+        "url": "https://github.com/Gaozhongpai"
+      }
+    ],
+    "description": "A Cycle61 parameter refinement at the canonical all-moduli Dirichlet boundary 4374299/5000000, adapting Hailey Collet’s complete source. It couples the density split and source/amplification parameters, propagates exact reserves through the actual analytic consumers, and supplies global quadratic row certificates. The 206-module source splits the slow B167/B176 compilation units. Prepared with AI assistance; original attribution and Apache-2.0 notices retained.",
+    "license": "Apache-2.0; inherited source notices and dependency licenses retained.",
+    "builds_on": [
+      "openai-baseline",
+      "akashlevy-20261009-weighted-numerator",
+      "cycle25-quartic-20261010",
+      "cycle61-c0125139"
+    ],
+    "references": [
+      {
+        "label": "Cycle61 source (PR #42)",
+        "url": "https://github.com/GTimG/QuasiRiemannTracker/pull/42"
+      },
+      {
+        "label": "Exact Cycle61 source snapshot",
+        "url": "https://github.com/HaileyStorm/QuasiRiemannTracker/tree/fb6d4fd11aeaff0b37dd96bad3b274ce28a5c08b/submissions/cycle61-c0125139/src/Candidate"
+      },
+      {
+        "label": "Gao local-refinement predecessor",
+        "url": "https://github.com/GTimG/QuasiRiemannTracker/pull/15"
+      },
+      {
+        "label": "Three-page mathematical note",
+        "url": "https://github.com/Gaozhongpai/QuasiRiemannTracker/blob/752fd1952a4dec6ef92181f6abc20e41269ff9b7/proofs/gao-cycle61-plane-20261013/paper.pdf"
+      },
+      {
+        "label": "Complete Lean source",
+        "url": "https://github.com/Gaozhongpai/QuasiRiemannTracker/blob/0a73e73348befd36061ff251e43540c1b11135bc/submissions/gao-cycle61-plane-20261013/src/Candidate/Main.lean"
+      },
+      {
+        "label": "Independent maintainer verification and logs (14 October 2026)",
+        "url": "https://github.com/GTimG/QuasiRiemannTracker/blob/e238cab21d1ab48cfa17cff8f06ea11f0aaf3f7e/verifier/standard/receipts/pr43-9e000869-20261014/README.md"
+      }
+    ]
+  },
+  "certificate": {
+    "schema_version": 1,
+    "result_id": "gao-cycle61-plane-20261013",
+    "theta_exact": "4374299/5000000",
+    "verified_at": "2026-10-14T10:07:04.865497+00:00",
+    "source_repository": "GTimG/QuasiRiemannTracker",
+    "source_commit": "9e0008692e77836a9a61cff25c808727d6d6690d",
+    "kernels": [
+      "Lean default",
+      "nanoda",
+      "con-ron"
+    ],
+    "report_url": "https://github.com/GTimG/QuasiRiemannTracker/blob/e238cab21d1ab48cfa17cff8f06ea11f0aaf3f7e/verifier/standard/receipts/pr43-9e000869-20261014/result.json",
+    "report_sha256": "83caa5da50d8ea98b1eb16c17d1a3ff01eff96c93334ae1cc3ed235f1c93250c",
+    "repository": "GTimG/QuasiRiemannTracker",
+    "number": 43,
+    "head_sha": "9e0008692e77836a9a61cff25c808727d6d6690d"
+  },
+  "report_json": null,
+  "pr": {
+    "number": 43,
+    "title": "Prove the all-Dirichlet boundary 0.8748598",
+    "body": "QRH-Result: gao-cycle61-plane-20261013\r\nQRH-Bound: 4374299/5000000\r\nQRH-Decimal: 0.8748598\r\n\r\n```qrh-metadata\r\n{\r\n  \"title\": \"Refine the Cycle61 zero-free boundary to 0.8748598\",\r\n  \"authors\": [\r\n    {\r\n      \"name\": \"Zhongpai Gao\",\r\n      \"url\": \"https://github.com/Gaozhongpai\"\r\n    }\r\n  ],\r\n  \"description\": \"A Cycle61 parameter refinement at the canonical all-moduli Dirichlet boundary 4374299/5000000, adapting Hailey Collet’s complete source. It couples the density split and source/amplification parameters, propagates exact reserves through the actual analytic consumers, and supplies global quadratic row certificates. The 206-module source splits the slow B167/B176 compilation units. Prepared with AI assistance; original attribution and Apache-2.0 notices retained.\",\r\n  \"license\": \"Apache-2.0; inherited source notices and dependency licenses retained.\",\r\n  \"builds_on\": [\r\n    \"openai-baseline\",\r\n    \"akashlevy-20261009-weighted-numerator\",\r\n    \"cycle25-quartic-20261010\",\r\n    \"cycle61-c0125139\"\r\n  ],\r\n  \"references\": [\r\n    {\r\n      \"label\": \"Cycle61 source (PR #42)\",\r\n      \"url\": \"https://github.com/GTimG/QuasiRiemannTracker/pull/42\"\r\n    },\r\n    {\r\n      \"label\": \"Exact Cycle61 source snapshot\",\r\n      \"url\": \"https://github.com/HaileyStorm/QuasiRiemannTracker/tree/fb6d4fd11aeaff0b37dd96bad3b274ce28a5c08b/submissions/cycle61-c0125139/src/Candidate\"\r\n    },\r\n    {\r\n      \"label\": \"Gao local-refinement predecessor\",\r\n      \"url\": \"https://github.com/GTimG/QuasiRiemannTracker/pull/15\"\r\n    },\r\n    {\r\n      \"label\": \"Three-page mathematical note\",\r\n      \"url\": \"https://github.com/Gaozhongpai/QuasiRiemannTracker/blob/752fd1952a4dec6ef92181f6abc20e41269ff9b7/proofs/gao-cycle61-plane-20261013/paper.pdf\"\r\n    },\r\n    {\r\n      \"label\": \"Complete Lean source\",\r\n      \"url\": \"https://github.com/Gaozhongpai/QuasiRiemannTracker/blob/0a73e73348befd36061ff251e43540c1b11135bc/submissions/gao-cycle61-plane-20261013/src/Candidate/Main.lean\"\r\n    },\r\n    {\r\n      \"label\": \"Independent maintainer verification and logs (14 October 2026)\",\r\n      \"url\": \"https://github.com/GTimG/QuasiRiemannTracker/blob/e238cab21d1ab48cfa17cff8f06ea11f0aaf3f7e/verifier/standard/receipts/pr43-9e000869-20261014/README.md\"\r\n    }\r\n  ]\r\n}\r\n```\r\n\r\nThis refines the canonical all-moduli Dirichlet boundary to **0.8748598**, adapting Hailey Collet’s complete Cycle61 source. It couples the density split and source/amplification parameters, propagates exact reserves through the actual analytic consumers, and supplies global quadratic row certificates.\r\n\r\n[Paper (3 pages)](https://github.com/Gaozhongpai/QuasiRiemannTracker/blob/752fd1952a4dec6ef92181f6abc20e41269ff9b7/proofs/gao-cycle61-plane-20261013/paper.pdf) · [Complete Lean source](https://github.com/Gaozhongpai/QuasiRiemannTracker/blob/0a73e73348befd36061ff251e43540c1b11135bc/submissions/gao-cycle61-plane-20261013/src/Candidate/Main.lean)\r\n\r\n**Compilation repair:** the previous hosted attempt timed out at B167. B167/B176 are now split, with scoped tactic optimization in B176. All 14 changed or added modules compile locally; all 43 original public declaration types match. The revised source has 206 modules. Full replay and independent Comparator/three-kernel verification are pending for this revision. [Current verification status](https://github.com/Gaozhongpai/QuasiRiemannTracker/blob/0a73e73348befd36061ff251e43540c1b11135bc/proofs/gao-cycle61-plane-20261013/verification-summary.json).\r\n\r\nThe prior 194-module source passed full local replay, five final standard-axiom audits and independent Comparator/Lean/NanoDa/con-ron checks. [Historical verification receipts](https://github.com/Gaozhongpai/QuasiRiemannTracker/blob/0a73e73348befd36061ff251e43540c1b11135bc/proofs/gao-cycle61-plane-20261013/local-verification/r6-verification-summary.json). Tracker hosted admission and maintainer approval remain pending.\r\n\r\nZhongpai Gao, with AI assistance. Hailey Collet’s Cycle61 construction and the retained OpenAI/Levy/Collet/Gao predecessors keep their attribution. Apache-2.0; original notices retained.\r\n\r\n\r\n**Maintainer verification update (14 October 2026):** exact tracker revision `9e0008692e77836a9a61cff25c808727d6d6690d` has now passed independent compilation of all 206 modules and acceptance by Comparator, Lean, NanoDa and con-ron, with only the standard permitted axioms. [Verification receipt and logs](https://github.com/GTimG/QuasiRiemannTracker/blob/e238cab21d1ab48cfa17cff8f06ea11f0aaf3f7e/verifier/standard/receipts/pr43-9e000869-20261014/README.md). The earlier pending-status descriptions above are historical; protected tracker admission is being refreshed against this independently verified revision.\r\n",
+    "created_at": "2026-10-13T21:06:27Z",
+    "author": {
+      "login": "Gaozhongpai",
+      "url": "https://github.com/Gaozhongpai"
+    },
+    "base_ref": "main"
+  },
+  "admission": {
+    "run_id": "38550339701",
+    "run_attempt": "1",
+    "workflow_sha": "435419e768ff5e65dd83ec4e27bb40ce758afe29",
+    "check_id": 115806622392,
+    "archived_at": "2026-10-14T11:43:34.727Z"
+  }
+}

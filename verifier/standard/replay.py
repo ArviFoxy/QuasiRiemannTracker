@@ -56,7 +56,7 @@ v._BWRAP = Path(profile.get('bwrap', '/usr/bin/bwrap'))
 v.VERIFICATION_LIMITS = {**v.VERIFICATION_LIMITS,'memory_high_percent':75,'memory_max_percent':85,'tasks_max':256}
 # Compilation, export and all three kernel checks share this deadline.
 # Keep the Actions check step longer so timeout evidence can still be retained.
-v.install_execution_deadline(budget_seconds=7200)
+v.install_execution_deadline(budget_seconds=10800)
 bundled = {name:judge/'bin'/name for name in v.TOOLCHAIN_TOOLS}
 approved_tools=json.loads(args.tool_pins.read_text())
 selected_tools={'source_lean':old/'bin/lean','exporter':exporter,**{'judge_'+name:path for name,path in bundled.items()}}
@@ -144,7 +144,7 @@ def compile_one(module, module_threads):
         writable_directories=[scratch/'out', scratch/'home', scratch/'tmp'],
         readable_paths=[work/'candidate-lib', *libs, *system], executable_paths=[old, Path('/usr')],
         # Large Lean modules can spend over ten minutes serializing their output.
-        # The shared two-hour execution deadline still bounds the entire replay.
+        # The shared three-hour execution deadline bounds the entire replay.
         tools=tools, timeout=1800,
         resource_properties=(f"MemoryMax={max(1024**3, capacity['memory_bytes'] * 3 // 4 * module_threads // jobs)}",)))
     publish_module(output, work/'candidate-lib'/(relative+'.olean'))

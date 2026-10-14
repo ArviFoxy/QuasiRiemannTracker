@@ -120,6 +120,13 @@ jobs:
         timeout-minutes: 10
         continue-on-error: true
         run: python3 verifier/actions/restore-build.py
+      - name: Publish cache diagnostics
+        if: always() && steps.setup.outcome == 'success'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: build-cache-${{ github.run_attempt }}-${{ matrix.result }}
+          path: verification/build-cache-status.json
+          retention-days: 7
       - name: Check the canonical theorem with Comparator and all three kernels
         id: check
         if: steps.setup.outcome == 'success'

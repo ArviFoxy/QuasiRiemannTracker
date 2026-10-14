@@ -44,5 +44,9 @@
   "verification_note": "Comparator verified the all-Dirichlet, zeta and finite-order Eisenstein Hecke statements and their definitions. Lean, NanoDa and con-ron accepted the exported proofs.",
   "certificate_url": "certificates/openai-baseline.json",
   "solution_url": "https://github.com/GTimG/QuasiRiemannTracker/blob/d716ecaae80f7823a5b8314916364fdfa0d133fb/public/proofs/palomar-20261009/openai/src/Solution.lean",
-  "dependencies": []
+  "dependencies": [],
+  "verification": {
+    "report_url": "https://github.com/GTimG/QuasiRiemannTracker/blob/d716ecaae80f7823a5b8314916364fdfa0d133fb/public/proofs/palomar-20261009/openai/result.json",
+    "report_sha256": "1e63efa78f0cea4c2afee6634d16a9c848d61f02e9cad1634e01736dc024cdad"
+  }
 }

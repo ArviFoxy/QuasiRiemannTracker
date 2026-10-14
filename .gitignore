@@ -12,5 +12,5 @@ playwright-report/
 /catalogue/results.json
 /public/catalogue.json
 
-# Deployment materializes certificates for newly admitted results.
+# Builds generate public verification records from metadata and admissions.
 /public/certificates/*.json

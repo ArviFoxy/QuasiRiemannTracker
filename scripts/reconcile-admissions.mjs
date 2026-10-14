@@ -17,13 +17,19 @@ import {
   validateCatalogue,
   withSubmissionTimeline,
 } from "../core/catalogue.mjs";
-import { proofRevision } from "../core/catalogue-revisions.mjs";
+import {
+  catalogueProofRecords,
+  proofRevision,
+} from "../core/catalogue-revisions.mjs";
 import {
   ADMISSION_BRANCH,
   admissionPath,
   validateAdmissionRecord,
 } from "../verifier/admission-archive.mjs";
-import { certificate } from "../verifier/certificate.mjs";
+import {
+  certificate,
+  historicalCertificate,
+} from "../verifier/certificate.mjs";
 import { validateSubmissionMetadata } from "../verifier/submission-metadata.mjs";
 import { submissionFiles } from "../verifier/manifest.mjs";
 import { publicationRecord } from "../verifier/publication-record.mjs";
@@ -117,6 +123,7 @@ export function generateCatalogue({
     const {
       historical: isHistorical,
       dependencies,
+      verification,
       ...original
     } = structuredClone(input);
     const record = withSubmissionTimeline(original);
@@ -405,14 +412,19 @@ export async function reconcileAdmissions({
   }
   const selected = selectedAdmissions(admissions);
   const newCertificates = new Map();
-  for (const record of catalogue.records) {
-    if (legacyIds.has(proofRevision(record))) continue;
-    const evidence = selected.find(
-      ({ admission, verification }) =>
-        admission.result_id === record.id &&
-        admission.head_sha === record.source_commit &&
-        verification.certificate.verified_at === record.first_verified_at,
-    )?.verification.certificate;
+  for (const record of catalogueProofRecords(catalogue)) {
+    if (record.status !== "framework-verified") continue;
+    const id = proofRevision(record);
+    if (record.certificate_url !== `certificates/${id}.json`)
+      throw Error(`Invalid verification record path: ${id}`);
+    const evidence = legacyIds.has(id)
+      ? historicalCertificate(submissions.get(id))
+      : selected.find(
+          ({ admission, verification }) =>
+            admission.result_id === record.id &&
+            admission.head_sha === record.source_commit &&
+            verification.certificate.verified_at === record.first_verified_at,
+        )?.verification.certificate;
     if (!evidence) throw Error(`Missing admitted certificate: ${record.id}`);
     const path = join(root, "public", record.certificate_url);
     if (existsSync(path)) {

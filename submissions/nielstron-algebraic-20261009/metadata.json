@@ -54,5 +54,9 @@
     "nielstron-20261009-tightening",
     "openai-baseline",
     "proofcouncil-20261009"
-  ]
+  ],
+  "verification": {
+    "report_url": "https://github.com/GTimG/QuasiRiemannTracker/blob/d716ecaae80f7823a5b8314916364fdfa0d133fb/public/proofs/nielstron-algebraic-20261009-kernels/result.json",
+    "report_sha256": "879d1ad4a9532d9a6cb75b9a6179cdea8fed3eb03eabd8f9ab4c00a2add9c68f"
+  }
 }

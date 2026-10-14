@@ -58,5 +58,9 @@
   "attribution_note": "The point uses 1922, the printing year shown in Hardy and Littlewood’s Partitio numerorum III; the publisher catalogues the volume in 1923. The paper supplies an early fixed-half-plane formulation and the timeline anchor. The Euler-product bound was already classical.",
   "certificate_url": "certificates/classical-euler-product.json",
   "solution_url": "https://github.com/GTimG/QuasiRiemannTracker/blob/d716ecaae80f7823a5b8314916364fdfa0d133fb/verifier/standard/receipts/classical-first-20261012/solution-src/Solution.lean",
-  "dependencies": []
+  "dependencies": [],
+  "verification": {
+    "report_url": "https://github.com/GTimG/QuasiRiemannTracker/blob/d716ecaae80f7823a5b8314916364fdfa0d133fb/verifier/standard/receipts/classical-first-20261012/result.json",
+    "report_sha256": "21bab08a0f75ef5352a2937a97c98cd49abcd504fe31a740f89dc2cdac1572a9"
+  }
 }

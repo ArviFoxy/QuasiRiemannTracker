@@ -67,7 +67,7 @@ tools = v.tool_snapshot([*bundled.values(),v._BWRAP,old/'bin/lean',exporter,pyth
 capacity = worker_capacity()
 threads = capacity['threads']
 print(f'Proof compilation: using {threads} Lean threads', flush=True)
-env = {'PATH':str(old/'bin')+':/usr/bin:/bin','HOME':str(work/'home'),'TMPDIR':str(work/'tmp'),'LANG':'C.UTF-8','LEAN_NUM_THREADS':str(threads),'LEAN_ABORT_ON_PANIC':'1'}
+env = {'PATH':str(old/'bin')+':/usr/bin:/bin','HOME':str(work/'home'),'TMPDIR':str(work/'tmp'),'LANG':'C.UTF-8','LEAN_ABORT_ON_PANIC':'1'}
 system = v.system_readable_paths()
 phases=[]
 def stage(name):
@@ -102,7 +102,7 @@ config={'challenge_module':'Challenge','solution_module':'Solution','theorem_nam
 targets=v.comparator_export_targets(config,v.primitive_targets(judge))
 challenge_env={**env,'LEAN_PATH':':'.join(map(str,[work/'challenge-lib',*libs]))}
 stage('compile and freeze canonical challenge')
-log('challenge-compile',v.sandboxed_run([str(old/'bin/lean'),'-o',str(work/'challenge-lib/Challenge.olean'),'Challenge.lean'],cwd=work/'challenge-src',environment=challenge_env,writable_directories=[work/'challenge-lib',work/'home',work/'tmp'],readable_paths=[*libs,*system],executable_paths=[old,Path('/usr')],tools=tools,timeout=600))
+log('challenge-compile',v.sandboxed_run([str(old/'bin/lean'),f'-j{threads}','-o',str(work/'challenge-lib/Challenge.olean'),'Challenge.lean'],cwd=work/'challenge-src',environment=challenge_env,writable_directories=[work/'challenge-lib',work/'home',work/'tmp'],readable_paths=[*libs,*system],executable_paths=[old,Path('/usr')],tools=tools,timeout=600))
 log('challenge-export',v.export_module('Challenge',targets,output=work/'exports/Challenge.export',leanexport=exporter,cwd=work/'challenge-src',environment=challenge_env,readable_paths=[work/'challenge-lib',*libs,*system],executable_paths=[old,exporter,Path('/usr')],tools=tools,timeout=600))
 v.verify_export(work/'exports/Challenge.export')
 challenge_hash=sha(work/'exports/Challenge.export')
@@ -136,13 +136,16 @@ def compile_one(module, module_threads):
     for part in ['out', 'home', 'tmp']:
         (scratch/part).mkdir(parents=True, exist_ok=True)
     output = scratch/'out'/('module.olean')
-    environment = {**candidate_env, 'HOME':str(scratch/'home'), 'TMPDIR':str(scratch/'tmp'), 'LEAN_NUM_THREADS':str(module_threads)}
+    environment = {**candidate_env, 'HOME':str(scratch/'home'), 'TMPDIR':str(scratch/'tmp')}
     print(f'Compile {module} ({module_threads} threads)', flush=True)
-    log('compile-'+module, v.sandboxed_run([str(old/'bin/lean'), '-o', str(output), relative+'.lean'],
+    # Palomar filters LEAN_NUM_THREADS from the environment; pass Lean's CLI option.
+    log('compile-'+module, v.sandboxed_run([str(old/'bin/lean'), f'-j{module_threads}', '-o', str(output), relative+'.lean'],
         cwd=source/'src', environment=environment,
         writable_directories=[scratch/'out', scratch/'home', scratch/'tmp'],
         readable_paths=[work/'candidate-lib', *libs, *system], executable_paths=[old, Path('/usr')],
-        tools=tools, timeout=600,
+        # Large Lean modules can spend over ten minutes serializing their output.
+        # The shared two-hour execution deadline still bounds the entire replay.
+        tools=tools, timeout=1800,
         resource_properties=(f"MemoryMax={max(1024**3, capacity['memory_bytes'] * 3 // 4 * module_threads // jobs)}",)))
     publish_module(output, work/'candidate-lib'/(relative+'.olean'))
     shutil.rmtree(scratch)
@@ -153,7 +156,7 @@ dependencies = contract.get('module_dependencies', {name:order[max(0, i-1):i] fo
 compile_modules(order, dependencies, compile_one, jobs=jobs)
 solution_env={**env,'LEAN_PATH':':'.join(map(str,[work/'solution-lib',work/'candidate-lib',*libs]))}
 stage('compile and export standard solution wrapper')
-log('solution-compile',v.sandboxed_run([str(old/'bin/lean'),'-o',str(work/'solution-lib/Solution.olean'),'Solution.lean'],cwd=work/'solution-src',environment=solution_env,writable_directories=[work/'solution-lib',work/'home',work/'tmp'],readable_paths=[work/'candidate-lib',*libs,*system],executable_paths=[old,Path('/usr')],tools=tools,timeout=600))
+log('solution-compile',v.sandboxed_run([str(old/'bin/lean'),f'-j{threads}','-o',str(work/'solution-lib/Solution.olean'),'Solution.lean'],cwd=work/'solution-src',environment=solution_env,writable_directories=[work/'solution-lib',work/'home',work/'tmp'],readable_paths=[work/'candidate-lib',*libs,*system],executable_paths=[old,Path('/usr')],tools=tools,timeout=600))
 log('solution-export',v.export_module('Solution',targets,output=work/'exports/Solution.export',leanexport=exporter,cwd=work/'solution-src',environment=solution_env,readable_paths=[work/'solution-lib',work/'candidate-lib',*libs,*system],executable_paths=[old,exporter,Path('/usr')],tools=tools,timeout=600))
 v.verify_export(work/'exports/Solution.export')
 assert sha(work/'exports/Challenge.export') == challenge_hash

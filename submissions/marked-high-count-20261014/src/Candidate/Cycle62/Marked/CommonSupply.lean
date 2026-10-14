@@ -1,4 +1,4 @@
-import OAI.NumberTheory.DirichletL.Moments.CommonRawScale
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.CommonRawScale
 
 namespace OAI.SevenEighths.Cycle62CommonSupply
 noncomputable section

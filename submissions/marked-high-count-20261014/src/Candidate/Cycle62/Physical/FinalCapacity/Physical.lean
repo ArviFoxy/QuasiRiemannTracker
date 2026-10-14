@@ -1,6 +1,6 @@
 import Candidate.Cycle62.Physical.FinalCapacity.Final
 import Candidate.Cycle62.Moment.LowBranch.SideGeometry
-import OAI.NumberTheory.DirichletL.Moments.CommonHeightEnvelope
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.CommonHeightEnvelope
 
 set_option autoImplicit false
 set_option maxHeartbeats 800000

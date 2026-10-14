@@ -1,7 +1,7 @@
 import Candidate.Cycle25.Energy.Physical.SourceState
-import OAI.NumberTheory.DirichletL.PrimeRows.Moments
-import OAI.NumberTheory.DirichletL.Moments.PositiveSummability
-import OAI.NumberTheory.DirichletL.Moments.DetectorEnergyInitialState
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.PrimeRows.Moments
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.PositiveSummability
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.DetectorEnergyInitialState
 
 namespace OAI
 noncomputable section

@@ -1,5 +1,5 @@
 import Candidate.Cycle62.Marked.WholeFamilyAnchor
-import OAI.NumberTheory.DirichletL.Moments.NaturalFixedRaySourceInternal
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.NaturalFixedRaySourceInternal
 
 set_option autoImplicit false
 namespace OAI.SevenEighths.Cycle62MarkedPlain

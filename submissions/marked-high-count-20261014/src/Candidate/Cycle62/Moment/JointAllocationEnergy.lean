@@ -1,5 +1,5 @@
 import Candidate.Cycle62.Moment.JointColumnExtraction
-import OAI.NumberTheory.DirichletL.Moments.AllocationCost
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.AllocationCost
 
 set_option autoImplicit false
 namespace OAI.SevenEighths.Cycle62Moment

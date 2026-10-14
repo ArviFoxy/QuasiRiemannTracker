@@ -1,7 +1,7 @@
 /- Copyright (c) 2026 Hailey Collet. Released under Apache 2.0. -/
 import Candidate.Cycle62.Physical.InitialMass.GeometryWidth
 import Candidate.Cycle62.Physical.InitialMass.GeometryHighSelected
-import OAI.NumberTheory.DirichletL.Moments.SecondActualWidth
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.SecondActualWidth
 
 set_option autoImplicit false
 set_option maxHeartbeats 400000

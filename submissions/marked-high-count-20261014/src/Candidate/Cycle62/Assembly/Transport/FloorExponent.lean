@@ -1,6 +1,6 @@
 /- Ported from Cycle25 transport and OpenAI/math; Apache-2.0 attribution retained. -/
 import Candidate.Cycle62.Assembly.Transport.GeometryFacts
-import OAI.NumberTheory.DirichletL.Detector.CentralCubeNorm
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Detector.CentralCubeNorm
 noncomputable section
 namespace Cycle62.Transport
 def centralScale (a e : ℝ) : ℝ := lx*(4/25)+(a+16*e-33/50)+ly*(-a-6*e)

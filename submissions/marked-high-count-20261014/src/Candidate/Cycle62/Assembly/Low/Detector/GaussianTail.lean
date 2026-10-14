@@ -1,7 +1,7 @@
 import Candidate.Cycle62.Assembly.Low.Detector.GaussianFoundation
 import Candidate.Cycle62.Assembly.Low.Geometry
-import OAI.NumberTheory.DirichletL.Detector.LowGaussianCentral
-import OAI.NumberTheory.DirichletL.Detector.LowGaussianRemote
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Detector.LowGaussianCentral
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Detector.LowGaussianRemote
 
 set_option autoImplicit false
 

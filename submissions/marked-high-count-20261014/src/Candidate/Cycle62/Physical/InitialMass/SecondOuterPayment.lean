@@ -1,5 +1,5 @@
 import Candidate.Cycle62.Physical.InitialMass.SecondBalancedScalar
-import OAI.NumberTheory.DirichletL.Moments.SecondInputCapacitySource
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.SecondInputCapacitySource
 
 set_option autoImplicit false
 set_option maxHeartbeats 1000000

@@ -4,10 +4,10 @@ Upstream source: Energy/FirstSourceParameters.lean.
 Licensed under Apache-2.0; see UPSTREAM_LICENSE.
 Modifications: fresh namespace and the κ ≥ 7/10 comparison/clipping geometry.
 -/
-import OAI.NumberTheory.DirichletL.Energy.FirstActualFrequencyBudget
-import OAI.NumberTheory.DirichletL.Energy.FirstLiveAdmission
-import OAI.NumberTheory.DirichletL.Energy.WidthRanges
-import OAI.NumberTheory.DirichletL.Energy.StageMargins
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Energy.FirstActualFrequencyBudget
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Energy.FirstLiveAdmission
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Energy.WidthRanges
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Energy.StageMargins
 
 namespace OAI
 

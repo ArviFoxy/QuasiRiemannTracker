@@ -1,6 +1,6 @@
 import Candidate.Cycle62.Marked.DeletionCount
-import OAI.NumberTheory.DirichletL.Moments.CommonMaskExpansion
-import OAI.NumberTheory.DirichletL.Moments.NaturalRowSourceMask
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.CommonMaskExpansion
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.NaturalRowSourceMask
 
 set_option autoImplicit false
 set_option maxHeartbeats 1200000

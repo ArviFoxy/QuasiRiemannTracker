@@ -1,6 +1,6 @@
 import Candidate.Cycle25.Numerator.SourcePrimeBins
 import Candidate.Cycle25.Assembly.Count.MaskedCount
-import OAI.NumberTheory.DirichletL.PrimeRows.NonfloorDictionary
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.PrimeRows.NonfloorDictionary
 import Candidate.Cycle25.Numerator.SlotSelection
 
 /-! A single selected prime subset for every row in an actual full amplitude

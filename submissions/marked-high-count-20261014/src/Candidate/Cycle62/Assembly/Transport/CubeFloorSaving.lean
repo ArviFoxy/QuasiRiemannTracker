@@ -1,6 +1,6 @@
 /- Ported from Cycle25 transport, weighted upstream PR6 and OpenAI/math; Apache-2.0 attribution retained. -/
 import Candidate.Cycle62.Assembly.Transport.GeometryFacts
-import OAI.NumberTheory.DirichletL.PrimeRows.CubeFloorSaving
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.PrimeRows.CubeFloorSaving
 import Candidate.Cycle62.Assembly.Transport.FloorExponent
 import Candidate.Cycle62.Assembly.Low.Normalizer
 import Candidate.Cycle62.Assembly.Transport.CubeFloorNormalized

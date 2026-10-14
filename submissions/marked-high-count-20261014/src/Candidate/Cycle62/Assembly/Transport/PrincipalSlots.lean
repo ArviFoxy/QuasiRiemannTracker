@@ -1,7 +1,7 @@
 /- Ported from Cycle25.Transport weighted upstream PR6 and OpenAI/math; Apache-2.0 attribution retained. -/
 import Candidate.Cycle62.Assembly.Transport.GeometryFacts
 import Candidate.Cycle62.Assembly.Transport.PrincipalRemainderRegion
-import OAI.NumberTheory.DirichletL.PrincipalSlotEstimate
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.PrincipalSlotEstimate
 
 /-!
 Principal slot bounds for the original compensated Euler factors at the new

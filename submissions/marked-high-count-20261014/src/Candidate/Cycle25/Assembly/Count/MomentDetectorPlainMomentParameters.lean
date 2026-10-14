@@ -1,7 +1,7 @@
-import OAI.NumberTheory.DirichletL.Moments.DetectorPlainMomentParameters
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.DetectorPlainMomentParameters
 import Candidate.Cycle25.Assembly.Count.MomentDetectorPlainMarkedState
-import OAI.NumberTheory.DirichletL.Moments.DetectorPlainMarkedState
-import OAI.NumberTheory.DirichletL.Moments.DetectorPlainUnmarkedState
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.DetectorPlainMarkedState
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.DetectorPlainUnmarkedState
 namespace OAI
 
 noncomputable section

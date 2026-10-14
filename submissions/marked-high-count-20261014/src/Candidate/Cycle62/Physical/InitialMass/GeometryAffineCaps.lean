@@ -1,6 +1,6 @@
 import Candidate.Cycle62.Physical.InitialMass.SourceCaps
 import Candidate.Cycle62.Physical.InitialMass.GeometryAdmission
-import OAI.NumberTheory.DirichletL.Energy.InputParentCapacity
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Energy.InputParentCapacity
 
 set_option autoImplicit false
 set_option maxHeartbeats 1000000

@@ -2,7 +2,7 @@
 import Candidate.Cycle62.Numerator.FiniteError.CubeTransfer
 import Candidate.Cycle62.Assembly.Transport.CanonicalRayCube
 import Candidate.Cycle62.Assembly.Low.Normalizer
-import OAI.NumberTheory.DirichletL.PrimeRows.CubeNormalizer
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.PrimeRows.CubeNormalizer
 
 namespace OAI
 noncomputable section

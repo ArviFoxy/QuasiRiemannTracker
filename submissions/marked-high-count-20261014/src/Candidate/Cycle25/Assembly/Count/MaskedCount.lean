@@ -1,6 +1,6 @@
 import Candidate.Cycle25.Assembly.Count.Endpoint
-import OAI.NumberTheory.DirichletL.Hecke.DetectorPhysicalSelection
-import OAI.NumberTheory.DirichletL.Hecke.DetectorAmplitudeFirst
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Hecke.DetectorPhysicalSelection
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Hecke.DetectorAmplitudeFirst
 namespace OAI.SevenEighths.Cycle25DetectorRowCount
 noncomputable section
 open HeckeDetectorPhysicalSelection

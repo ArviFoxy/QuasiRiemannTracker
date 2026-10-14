@@ -1,6 +1,6 @@
 import Candidate.Cycle62.Moment.JointHighDensity
-import OAI.NumberTheory.DirichletL.Moments.AbsoluteEnergy
-import OAI.NumberTheory.DirichletL.Moments.FirstAmplificationChoice
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.AbsoluteEnergy
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.FirstAmplificationChoice
 
 set_option autoImplicit false
 set_option maxHeartbeats 800000

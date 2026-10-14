@@ -1,6 +1,6 @@
-import OAI.NumberTheory.DirichletL.Hecke.SignalIdentity
-import OAI.NumberTheory.DirichletL.Hecke.PrimitiveSupremum
-import OAI.NumberTheory.DirichletL.Hecke.Dirichlet
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Hecke.SignalIdentity
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Hecke.PrimitiveSupremum
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Hecke.Dirichlet
 
 /-!
 The continuation and actual L-function transfer for a variable boundary.

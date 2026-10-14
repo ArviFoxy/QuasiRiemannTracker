@@ -1,8 +1,8 @@
 import Candidate.Cycle62.Assembly.Low.Detector.LowReflectedLength
 import Candidate.Cycle62.Assembly.Low.Geometry
-import OAI.NumberTheory.DirichletL.Reflection.LowBranchSum
-import OAI.NumberTheory.DirichletL.Reflection.LowCaps
-import OAI.NumberTheory.DirichletL.Reflection.LowExponent
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Reflection.LowBranchSum
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Reflection.LowCaps
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Reflection.LowExponent
 
 set_option autoImplicit false
 

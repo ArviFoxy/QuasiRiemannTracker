@@ -1,6 +1,6 @@
 import Candidate.Cycle62.Moment.CanonicalPhaseCharacter
 import Candidate.Cycle62.Density.NaturalMaskTransport
-import OAI.NumberTheory.DirichletL.Detector.LowPuncture
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Detector.LowPuncture
 
 set_option autoImplicit false
 

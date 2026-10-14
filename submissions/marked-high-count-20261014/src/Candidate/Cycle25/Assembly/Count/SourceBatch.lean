@@ -1,7 +1,7 @@
 import Candidate.Cycle25.Assembly.Count.SlotWidths
-import OAI.NumberTheory.DirichletL.Detector.SourceBatch
-import OAI.NumberTheory.DirichletL.Detector.DetectorBatch
-import OAI.NumberTheory.DirichletL.PrimeRows.CubeSupportedWitness
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Detector.SourceBatch
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Detector.DetectorBatch
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.PrimeRows.CubeSupportedWitness
 
 /-! Adapted from pinned OpenAI/math source; only physical slot geometry changes.
 Original analytic inputs remain explicit and unchanged. -/

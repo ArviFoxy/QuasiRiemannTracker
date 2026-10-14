@@ -1,5 +1,5 @@
-import OAI.NumberTheory.DirichletL.Hecke.DetectorFamilyInclusion
-import OAI.NumberTheory.DirichletL.Hecke.FiniteDeletion
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Hecke.DetectorFamilyInclusion
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Hecke.FiniteDeletion
 
 /-! Exact zero-bin transport through retained finite Euler holes.  This
 interface compares zeros, rather than asserting equality of the two

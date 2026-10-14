@@ -1,6 +1,6 @@
-import OAI.NumberTheory.DirichletL.Detector.Local
-import OAI.NumberTheory.DirichletL.Detector.Euler
-import OAI.NumberTheory.DirichletL.Detector.HighRowsClosed
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Detector.Local
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Detector.Euler
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Detector.HighRowsClosed
 import Mathlib.Tactic
 
 /-! Exact finite coefficient expansions of the original local numerator factors.

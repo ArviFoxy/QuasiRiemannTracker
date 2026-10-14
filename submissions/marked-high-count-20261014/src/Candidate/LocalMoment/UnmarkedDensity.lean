@@ -1,5 +1,5 @@
-import OAI.NumberTheory.DirichletL.Hecke.DetectorCountFromMoments
-import OAI.NumberTheory.DirichletL.Hecke.DetectorRowCountEndpoint
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Hecke.DetectorCountFromMoments
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Hecke.DetectorRowCountEndpoint
 
 /-! The unmarked zero-density source interface used by the proposed local
 physical moment.  These lemmas use only the existing unmarked plain and

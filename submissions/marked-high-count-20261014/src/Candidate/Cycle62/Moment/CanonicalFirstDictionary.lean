@@ -1,6 +1,6 @@
 import Candidate.Cycle62.Moment.CanonicalFirstSigned
-import OAI.NumberTheory.DirichletL.Moments.ChildRows
-import OAI.NumberTheory.DirichletL.Hecke.PrimeScale
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.ChildRows
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Hecke.PrimeScale
 
 set_option autoImplicit false
 

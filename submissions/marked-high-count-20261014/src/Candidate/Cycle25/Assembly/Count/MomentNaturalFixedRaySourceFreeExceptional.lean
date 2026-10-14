@@ -1,7 +1,7 @@
-import OAI.NumberTheory.DirichletL.Moments.NaturalFixedRaySourceFreeExceptional
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.NaturalFixedRaySourceFreeExceptional
 import Candidate.Cycle25.Assembly.Count.MomentNaturalFixedRaySourceFixedIdeal
-import OAI.NumberTheory.DirichletL.Moments.NaturalFixedRaySourceFixedIdeal
-import OAI.NumberTheory.DirichletL.Hecke.ExceptionalRows
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.NaturalFixedRaySourceFixedIdeal
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Hecke.ExceptionalRows
 namespace OAI
 
 noncomputable section

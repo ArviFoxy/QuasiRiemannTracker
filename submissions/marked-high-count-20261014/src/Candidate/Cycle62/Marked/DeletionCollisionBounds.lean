@@ -1,6 +1,6 @@
 import Candidate.Cycle62.Marked.DeletionInverseSlots
 import Candidate.Cycle62.Marked.DeletionCollisionAlgebra
-import OAI.NumberTheory.DirichletL.Moments.SecondDiagonal
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.SecondDiagonal
 
 set_option autoImplicit false
 set_option maxHeartbeats 1600000

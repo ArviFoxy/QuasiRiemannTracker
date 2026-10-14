@@ -2,7 +2,7 @@
 import Candidate.Cycle62.Physical.InitialMass.SecondRatioContraction
 import Candidate.Cycle62.Physical.InitialMass.SecondDyadEnvelope
 import Candidate.Cycle62.Physical.FinalCapacity.Geometry
-import OAI.NumberTheory.DirichletL.Moments.SecondExceptionalFamily
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.SecondExceptionalFamily
 
 set_option autoImplicit false
 set_option maxHeartbeats 1200000

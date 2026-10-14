@@ -1,10 +1,10 @@
 /- Ported from Cycle25 transport, weighted upstream PR6 and OpenAI/math; Apache-2.0 attribution retained. -/
 import Candidate.Cycle62.Assembly.Transport.GeometryFacts
-import OAI.NumberTheory.DirichletL.PrimeRows.CubeFloorGlobal
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.PrimeRows.CubeFloorGlobal
 import Candidate.Cycle62.Assembly.Transport.FloorExponent
 import Candidate.Cycle62.Assembly.Low.Normalizer
 import Candidate.Cycle62.Assembly.Transport.CubeFloorArithmetic
-import OAI.NumberTheory.DirichletL.PrimeRows.CubeFloorDyadic
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.PrimeRows.CubeFloorDyadic
 namespace OAI
 
 noncomputable section

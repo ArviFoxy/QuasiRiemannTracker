@@ -2,8 +2,8 @@
 /- Adapted from WeightedQRH (weighted upstream PR6), preserving the original proof structure. -/
 import Candidate.Cycle62.Assembly.Transport.GeometryFacts
 import Candidate.Cycle62.Assembly.Transport.CanonicalCubeReduction
-import OAI.NumberTheory.DirichletL.PrimeRows.CanonicalCubeChoice
-import OAI.NumberTheory.DirichletL.PrimeRows.CanonicalCubeBins
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.PrimeRows.CanonicalCubeChoice
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.PrimeRows.CanonicalCubeBins
 namespace OAI
 
 noncomputable section

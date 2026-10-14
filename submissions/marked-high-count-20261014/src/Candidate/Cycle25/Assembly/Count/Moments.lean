@@ -1,4 +1,4 @@
-import OAI.NumberTheory.DirichletL.Hecke.DetectorRawBranches
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Hecke.DetectorRawBranches
 
 /-! Cycle25 moment contract. The analytic moments are actual physical row sums,
 with the original dictionary; κplain is separate from inverse amplification. -/

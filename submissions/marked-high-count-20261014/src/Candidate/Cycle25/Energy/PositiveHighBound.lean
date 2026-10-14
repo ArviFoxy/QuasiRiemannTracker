@@ -6,7 +6,7 @@ Modifications: fresh namespace and the κ ≥ 7/10 comparison/clipping geometry.
 -/
 import Candidate.Cycle25.Energy.PositiveHighAssemblyBounded
 import Candidate.Cycle25.Energy.PositiveHighParameters
-import OAI.NumberTheory.DirichletL.Energy.BandMonotonicity
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Energy.BandMonotonicity
 import Candidate.Cycle25.Energy.OriginalHighReflectionSymmetricBounded
 import Candidate.Cycle25.Energy.PositiveHighAssembly
 import Candidate.Cycle25.Energy.PositiveHighSourceBounded

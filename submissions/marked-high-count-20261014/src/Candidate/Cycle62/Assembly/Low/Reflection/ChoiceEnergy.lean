@@ -1,7 +1,7 @@
 import Candidate.Cycle62.Assembly.Low.Geometry
 import Candidate.Cycle62.Assembly.Low.Reflection.FixedDyads
-import OAI.NumberTheory.DirichletL.Reflection.LowChoiceEnergy
-import OAI.NumberTheory.DirichletL.Reflection.LowInactiveEnergy
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Reflection.LowChoiceEnergy
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Reflection.LowInactiveEnergy
 
 set_option autoImplicit false
 

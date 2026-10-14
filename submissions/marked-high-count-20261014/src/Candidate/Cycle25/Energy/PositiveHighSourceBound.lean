@@ -5,9 +5,9 @@ Licensed under Apache-2.0; see UPSTREAM_LICENSE.
 Modifications: fresh namespace and the κ ≥ 7/10 comparison/clipping geometry.
 -/
 import Candidate.Cycle25.Energy.PositiveHighBound
-import OAI.NumberTheory.DirichletL.Energy.LowBandSubtype
-import OAI.NumberTheory.DirichletL.Energy.ReferenceLowBands
-import OAI.NumberTheory.DirichletL.Energy.LowBandEmpty
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Energy.LowBandSubtype
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Energy.ReferenceLowBands
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Energy.LowBandEmpty
 
 import Candidate.Cycle25.Energy.PositiveHighSource
 import Candidate.Cycle25.Energy.PositiveHighAssembly

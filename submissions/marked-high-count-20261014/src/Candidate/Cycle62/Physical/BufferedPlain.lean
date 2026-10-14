@@ -1,6 +1,6 @@
 import Candidate.Cycle62.Physical.AllocationClipping
-import OAI.NumberTheory.DirichletL.Hecke.DyadicSource
-import OAI.NumberTheory.DirichletL.Hecke.DetectorCoefficientTransfer
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Hecke.DyadicSource
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Hecke.DetectorCoefficientTransfer
 
 /-! Actual normalized retained plain rows and the genuine buffered Hecke dyadic bound.
 Uses OpenAI/math family003 `Hecke.DyadicSource` without modifying frozen upstream.

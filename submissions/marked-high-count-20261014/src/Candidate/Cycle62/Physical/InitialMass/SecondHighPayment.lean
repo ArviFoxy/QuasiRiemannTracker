@@ -1,5 +1,5 @@
 import Candidate.Cycle62.Physical.InitialMass.SecondScalarNormalization
-import OAI.NumberTheory.DirichletL.Moments.FirstExceptionalPrefactorActual
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.FirstExceptionalPrefactorActual
 
 set_option autoImplicit false
 set_option maxHeartbeats 1200000

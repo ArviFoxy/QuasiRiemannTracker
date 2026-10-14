@@ -1,7 +1,7 @@
-import OAI.NumberTheory.DirichletL.Moments.OneReflectionScaleEnergy
-import OAI.NumberTheory.DirichletL.Moments.UniformReflectionProfile
-import OAI.NumberTheory.DirichletL.Moments.FrequencyScaleSupremum
-import OAI.NumberTheory.DirichletL.Moments.ReflectedNormalization
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.OneReflectionScaleEnergy
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.UniformReflectionProfile
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.FrequencyScaleSupremum
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.ReflectedNormalization
 
 namespace OAI
 noncomputable section

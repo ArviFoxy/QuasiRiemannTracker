@@ -4,9 +4,9 @@ Upstream source: Energy/ReferenceState.lean.
 Licensed under Apache-2.0; see UPSTREAM_LICENSE.
 Modifications: fresh namespace and the κ ≥ 7/10 comparison/clipping geometry.
 -/
-import OAI.NumberTheory.DirichletL.Energy.ReferenceState
-import OAI.NumberTheory.DirichletL.Energy.PhysicalEntry
-import OAI.NumberTheory.DirichletL.Moments.AllocatedNaturalRadial
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Energy.ReferenceState
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Energy.PhysicalEntry
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.AllocatedNaturalRadial
 import Candidate.Cycle25.Energy.ReflectionRetainedLength
 
 namespace OAI

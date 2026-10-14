@@ -1,5 +1,5 @@
 import Candidate.Cycle62.Moment.FirstSourceCount
-import OAI.NumberTheory.DirichletL.Moments.SecondCanonicalNonunit
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.SecondCanonicalNonunit
 
 set_option autoImplicit false
 

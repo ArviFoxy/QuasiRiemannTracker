@@ -1,6 +1,6 @@
 /- Copyright (c) 2026 Hailey Collet. Released under Apache 2.0. -/
-import OAI.NumberTheory.DirichletL.Moments.SecondSourceDiagonal
-import OAI.NumberTheory.DirichletL.Moments.SecondSourceRemainder
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.SecondSourceDiagonal
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.SecondSourceRemainder
 
 set_option autoImplicit false
 set_option maxHeartbeats 2000000

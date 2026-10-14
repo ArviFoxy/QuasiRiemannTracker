@@ -1,8 +1,8 @@
-import OAI.NumberTheory.DirichletL.Energy.ChildState
-import OAI.NumberTheory.DirichletL.Moments.NaturalFixedRaySourceNaturalPrime
-import OAI.NumberTheory.DirichletL.Hecke.FiniteDeletion
-import OAI.NumberTheory.DirichletL.Hecke.DetectorZeros
-import OAI.NumberTheory.DirichletL.Moments.WholeSlotDeletion
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Energy.ChildState
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.NaturalFixedRaySourceNaturalPrime
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Hecke.FiniteDeletion
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Hecke.DetectorZeros
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.WholeSlotDeletion
 
 namespace OAI
 noncomputable section

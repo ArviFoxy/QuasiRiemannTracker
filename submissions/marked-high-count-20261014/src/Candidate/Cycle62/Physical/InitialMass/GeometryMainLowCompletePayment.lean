@@ -5,7 +5,7 @@ import Candidate.Cycle62.Physical.InitialMass.GeometryMainHighQuantitativePaymen
 import Candidate.Cycle62.Physical.InitialMass.SecondLowSourceCaps
 import Candidate.Cycle62.Physical.InitialMass.GeometryShiftedHeight
 import Candidate.Cycle62.Physical.InitialMass.GeometryHighPayment
-import OAI.NumberTheory.DirichletL.Moments.FirstChildProfileControl
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.FirstChildProfileControl
 
 set_option autoImplicit false
 set_option maxRecDepth 2500

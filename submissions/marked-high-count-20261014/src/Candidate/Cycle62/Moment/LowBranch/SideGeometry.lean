@@ -1,6 +1,6 @@
 import Candidate.Cycle62.Moment.LowBranch.FinalDictionary
 import Candidate.Cycle62.Physical.AllocationClipping
-import OAI.NumberTheory.DirichletL.Energy.InputParentCapacity
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Energy.InputParentCapacity
 
 set_option autoImplicit false
 namespace OAI.SevenEighths.Cycle62Moment.LowBranch

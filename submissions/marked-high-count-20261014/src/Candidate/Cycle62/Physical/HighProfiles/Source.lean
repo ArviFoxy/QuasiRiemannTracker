@@ -1,6 +1,6 @@
 import Candidate.Cycle62.Physical.HighProfiles.Control
 import Candidate.Cycle62.Physical.ClippedProjectorShell
-import OAI.NumberTheory.DirichletL.Moments.EligibleEnergy
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.EligibleEnergy
 
 set_option autoImplicit false
 namespace OAI.SevenEighths.Cycle62HighProfiles

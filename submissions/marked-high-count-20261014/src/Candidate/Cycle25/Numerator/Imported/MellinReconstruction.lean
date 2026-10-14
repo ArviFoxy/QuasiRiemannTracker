@@ -1,6 +1,6 @@
-import OAI.NumberTheory.DirichletL.Hecke.DyadicContour
-import OAI.NumberTheory.DirichletL.PrimeRows.TupleGrowth
-import OAI.NumberTheory.DirichletL.Detector.MellinBoundary
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Hecke.DyadicContour
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.PrimeRows.TupleGrowth
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Detector.MellinBoundary
 import Mathlib.MeasureTheory.Integral.DominatedConvergence
 import Mathlib.Analysis.Normed.Group.FunctionSeries
 

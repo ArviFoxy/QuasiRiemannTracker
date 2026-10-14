@@ -1,7 +1,7 @@
 import Candidate.Cycle62.Physical.InitialMass.GeometrySources
 import Candidate.Cycle62.Physical.InitialMass.JointAmplification
-import OAI.NumberTheory.DirichletL.Energy.FirstAnnularAdmission
-import OAI.NumberTheory.DirichletL.Moments.WholeDivisorShell
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Energy.FirstAnnularAdmission
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.WholeDivisorShell
 
 set_option autoImplicit false
 set_option maxHeartbeats 800000

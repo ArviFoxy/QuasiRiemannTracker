@@ -1,4 +1,4 @@
-import OAI.NumberTheory.DirichletL.Detector.FinalAssemblyUnconditional
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Detector.FinalAssemblyUnconditional
 import Candidate.Cycle62.Assembly.Geometry
 
 set_option autoImplicit false

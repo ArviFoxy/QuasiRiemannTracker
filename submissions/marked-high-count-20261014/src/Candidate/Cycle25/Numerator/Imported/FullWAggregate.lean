@@ -1,5 +1,5 @@
 import Candidate.Cycle25.Numerator.Imported.FullWFiniteError
-import OAI.NumberTheory.DirichletL.PrimeRows.CubeFiniteIntegral
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.PrimeRows.CubeFiniteIntegral
 
 /-! The actual weighted physical finite sum with the full numerator integral. -/
 noncomputable section

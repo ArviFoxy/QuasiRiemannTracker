@@ -1,5 +1,5 @@
 import Candidate.Cycle25.Assembly.Count.Crossing
-import OAI.NumberTheory.DirichletL.Hecke.DetectorRowCount
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Hecke.DetectorRowCount
 
 namespace OAI
 

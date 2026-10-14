@@ -1,6 +1,6 @@
 import Candidate.Cycle62.Moment.JointColumnExtraction
 import Candidate.Cycle62.Physical.BufferedPlain
-import OAI.NumberTheory.DirichletL.Moments.SlotNormalization
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.SlotNormalization
 
 set_option autoImplicit false
 namespace OAI.SevenEighths.Cycle62Moment

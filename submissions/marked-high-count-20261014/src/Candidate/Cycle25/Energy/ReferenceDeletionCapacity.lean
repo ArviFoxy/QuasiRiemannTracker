@@ -4,9 +4,9 @@ Upstream source: Energy/ReferenceDeletionCapacity.lean.
 Licensed under Apache-2.0; see UPSTREAM_LICENSE.
 Modifications: fresh namespace and the κ ≥ 7/10 comparison/clipping geometry.
 -/
-import OAI.NumberTheory.DirichletL.Energy.ReferenceDeletionBudget
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Energy.ReferenceDeletionBudget
 import Candidate.Cycle25.Energy.ReferenceState
-import OAI.NumberTheory.DirichletL.Energy.Bands
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Energy.Bands
 
 namespace OAI
 

@@ -1,5 +1,5 @@
 import Candidate.Cycle62.Moment.LowBranch.Slot
-import OAI.NumberTheory.DirichletL.Energy.CapacityRemoval
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Energy.CapacityRemoval
 
 set_option autoImplicit false
 namespace OAI.SevenEighths.Cycle62Moment.LowBranch

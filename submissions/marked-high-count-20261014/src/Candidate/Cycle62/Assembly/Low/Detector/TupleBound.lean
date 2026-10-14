@@ -2,8 +2,8 @@ import Candidate.Cycle62.Assembly.Low.Detector.InverseEnergy
 import Candidate.Cycle62.Assembly.Low.Detector.LowNominalGeometry
 import Candidate.Cycle62.Assembly.Low.Detector.LowSlotScales
 import Candidate.Cycle62.Assembly.Low.Geometry
-import OAI.NumberTheory.DirichletL.Detector.LowCentralTuple
-import OAI.NumberTheory.DirichletL.Detector.LowUnselectedMass
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Detector.LowCentralTuple
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Detector.LowUnselectedMass
 
 set_option autoImplicit false
 

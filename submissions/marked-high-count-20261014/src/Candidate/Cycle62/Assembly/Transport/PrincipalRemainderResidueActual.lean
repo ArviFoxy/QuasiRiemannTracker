@@ -2,7 +2,7 @@
 import Candidate.Cycle62.Assembly.Transport.GeometryFacts
 import Candidate.Cycle62.Assembly.Transport.PrincipalRemainderFiniteProduct
 import Candidate.Cycle62.Assembly.Transport.PrincipalSignal
-import OAI.NumberTheory.DirichletL.Detector.PrincipalResidueActual
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Detector.PrincipalResidueActual
 noncomputable section
 open scoped Classical BigOperators
 open Complex MeasureTheory

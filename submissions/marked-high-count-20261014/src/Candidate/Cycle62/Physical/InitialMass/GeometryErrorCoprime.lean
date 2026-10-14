@@ -1,5 +1,5 @@
 import Candidate.Cycle62.Physical.InitialMass.SecondSourceControls
-import OAI.NumberTheory.DirichletL.Moments.AmplificationSlotGap
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.AmplificationSlotGap
 
 set_option autoImplicit false
 set_option maxHeartbeats 900000

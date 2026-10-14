@@ -1,5 +1,5 @@
 import Candidate.Cycle62.Moment.LowBranch.Gate
-import OAI.NumberTheory.DirichletL.Moments.PrimeHeight
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.PrimeHeight
 
 set_option autoImplicit false
 namespace OAI.SevenEighths.Cycle62Moment

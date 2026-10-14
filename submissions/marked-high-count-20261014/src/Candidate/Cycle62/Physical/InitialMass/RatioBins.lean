@@ -1,6 +1,6 @@
 import Candidate.Cycle62.Physical.InitialMass.Decomposition
-import OAI.NumberTheory.DirichletL.Moments.FirstSourceConductorCaps
-import OAI.NumberTheory.DirichletL.Energy.FirstAnnularAdmission
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.FirstSourceConductorCaps
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Energy.FirstAnnularAdmission
 
 set_option autoImplicit false
 set_option maxHeartbeats 0

@@ -1,7 +1,7 @@
 import Candidate.Cycle62.Marked.GenericFiberCount
 import Candidate.Cycle62.Marked.Route.VariableSupply
-import OAI.NumberTheory.DirichletL.Hecke.DetectorFiberPartition
-import OAI.NumberTheory.DirichletL.Hecke.DetectorNoSlotPlainCount
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Hecke.DetectorFiberPartition
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Hecke.DetectorNoSlotPlainCount
 
 noncomputable section
 open scoped Classical BigOperators

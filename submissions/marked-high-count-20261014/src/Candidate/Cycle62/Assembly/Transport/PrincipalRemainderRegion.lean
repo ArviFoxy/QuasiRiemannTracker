@@ -1,6 +1,6 @@
 /- Ported from Cycle25.Transport weighted upstream PR6 and OpenAI/math; Apache-2.0 attribution retained. -/
 import Candidate.Cycle62.Assembly.Transport.GeometryFacts
-import OAI.NumberTheory.DirichletL.Detector.GlobalCorrection
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Detector.GlobalCorrection
 
 /-!
 Extension of the original OpenAI local Euler estimates to the narrower

@@ -2,7 +2,7 @@
 import Candidate.Cycle62.Physical.InitialMass.GeometryErrorColumn
 import Candidate.Cycle62.Physical.InitialMass.GeometryErrorActiveInput
 import Candidate.Cycle62.Physical.InitialMass.GeometryErrorAdmission
-import OAI.NumberTheory.DirichletL.Moments.PrimeElements
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.PrimeElements
 
 set_option autoImplicit false
 set_option maxHeartbeats 1600000

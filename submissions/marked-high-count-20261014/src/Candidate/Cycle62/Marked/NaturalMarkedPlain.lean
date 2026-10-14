@@ -1,4 +1,4 @@
-import OAI.NumberTheory.DirichletL.Energy.Bands
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Energy.Bands
 import Candidate.Cycle62.Marked.FinitePositiveEnergy
 
 set_option autoImplicit false

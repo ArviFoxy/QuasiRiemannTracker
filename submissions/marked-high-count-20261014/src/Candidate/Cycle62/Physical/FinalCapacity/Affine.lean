@@ -1,5 +1,5 @@
 import Candidate.Cycle62.Moment.CellGeometry
-import OAI.NumberTheory.DirichletL.Energy.InputParentCapacity
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Energy.InputParentCapacity
 
 set_option autoImplicit false
 namespace OAI.SevenEighths.Cycle62FinalCapacity

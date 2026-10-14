@@ -1,6 +1,6 @@
 import Candidate.Cycle25.Numerator.Imported.Parameters
 import Candidate.Cycle25.Numerator.Imported.FullWTransport
-import OAI.NumberTheory.DirichletL.PrimeRows.CubeFiniteError
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.PrimeRows.CubeFiniteError
 
 /-! Summable physical row/tuple errors for the full-w transport at the new
 lengths, with arbitrary power savings chosen after the height exponent. -/

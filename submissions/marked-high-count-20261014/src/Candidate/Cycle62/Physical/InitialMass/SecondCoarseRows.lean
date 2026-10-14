@@ -1,5 +1,5 @@
 import Candidate.Cycle62.Moment.JointColumnExtraction
-import OAI.NumberTheory.DirichletL.Moments.InductionEnergy
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.InductionEnergy
 
 set_option autoImplicit false
 set_option maxHeartbeats 1800000

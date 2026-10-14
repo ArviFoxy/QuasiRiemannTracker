@@ -1,6 +1,6 @@
 import Candidate.Cycle62.Moment.ActualJointKernel
 import Candidate.Cycle62.Moment.JointWindowFamily
-import OAI.NumberTheory.DirichletL.Moments.SecondPhysicalBlock
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.SecondPhysicalBlock
 
 set_option autoImplicit false
 set_option maxHeartbeats 800000

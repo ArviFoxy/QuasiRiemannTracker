@@ -1,6 +1,6 @@
 import Candidate.Cycle62.Assembly.Count.Geometry
 import Candidate.Cycle25.Assembly.Count.Parameters
-import OAI.NumberTheory.DirichletL.Detector.FinalAssemblySource
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Detector.FinalAssemblySource
 
 namespace OAI.SevenEighths.Cycle62DetectorCount
 noncomputable section

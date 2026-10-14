@@ -1,5 +1,5 @@
 import Candidate.Cycle62.Physical.ClippedProjectorShell
-import OAI.NumberTheory.DirichletL.Moments.CommonPairedSource
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.CommonPairedSource
 
 set_option autoImplicit false
 set_option maxHeartbeats 800000

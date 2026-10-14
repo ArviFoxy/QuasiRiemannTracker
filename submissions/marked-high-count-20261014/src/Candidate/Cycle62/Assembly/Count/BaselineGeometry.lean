@@ -1,7 +1,7 @@
 import Candidate.Cycle62.Assembly.Count.Data
 import Candidate.Cycle25.Assembly.MomentData
 import Candidate.Cycle25.Assembly.Mesh
-import OAI.NumberTheory.DirichletL.ParametersSlotLengths
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.ParametersSlotLengths
 
 namespace OAI.SevenEighths.Cycle62DetectorCount
 noncomputable section

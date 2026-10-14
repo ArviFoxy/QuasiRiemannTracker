@@ -1,7 +1,7 @@
 /- Ported from Cycle25 transport and OpenAI/math; Apache-2.0 attribution retained. -/
 /- Adapted from WeightedQRH (weighted upstream PR6), preserving the original proof structure. -/
 import Candidate.Cycle62.Assembly.Transport.GeometryFacts
-import OAI.NumberTheory.DirichletL.PrimeRows.CubeFiniteError
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.PrimeRows.CubeFiniteError
 import Candidate.Cycle62.Assembly.Transport.CubeErrorSaving
 import Candidate.Cycle62.Assembly.Transport.CentralFiniteError
 namespace OAI

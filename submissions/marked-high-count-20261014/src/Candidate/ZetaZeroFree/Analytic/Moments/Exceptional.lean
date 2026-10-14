@@ -1,6 +1,6 @@
 import Candidate.ZetaZeroFree.Analytic.Moments.Plain
-import OAI.NumberTheory.DirichletL.Energy.CertifiedExistence
-import OAI.NumberTheory.DirichletL.Moments.DetectorPlainStateDictionary
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Energy.CertifiedExistence
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.DetectorPlainStateDictionary
 
 namespace ZetaZeroFree.Analytic.Moments
 

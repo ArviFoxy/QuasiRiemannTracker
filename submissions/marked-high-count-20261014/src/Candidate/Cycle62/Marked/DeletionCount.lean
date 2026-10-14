@@ -1,4 +1,4 @@
-import OAI.NumberTheory.DirichletL.Hecke.DeletionBounds
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Hecke.DeletionBounds
 
 set_option autoImplicit false
 namespace OAI.SevenEighths.Deletion26

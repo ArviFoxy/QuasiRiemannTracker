@@ -1,9 +1,9 @@
 import Candidate.Cycle25.Numerator.Imported.NumeratorTupleRestoration
 import Candidate.Cycle25.Assembly.SourceData
-import OAI.NumberTheory.DirichletL.Detector.RayPhaseAmplitude
-import OAI.NumberTheory.DirichletL.Detector.RayPoolThresholds
-import OAI.NumberTheory.DirichletL.PrimeRows.RowCount
-import OAI.NumberTheory.DirichletL.PrimeRows.NonfloorDyadic
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Detector.RayPhaseAmplitude
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Detector.RayPoolThresholds
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.PrimeRows.RowCount
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.PrimeRows.NonfloorDyadic
 
 /-! Exact front factors of the reconstructed numerator and source-pool geometry.
 All prime amplitudes retain their original canonical zero extensions. -/

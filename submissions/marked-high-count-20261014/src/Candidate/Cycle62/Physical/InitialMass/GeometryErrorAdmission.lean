@@ -4,7 +4,7 @@ import Candidate.Cycle62.Physical.InitialMass.GeometryErrorCoprime
 import Candidate.Cycle62.Physical.InitialMass.GeometryErrorModulus
 import Candidate.Cycle62.Physical.InitialMass.GeometryErrorRetained
 import Candidate.Cycle62.Physical.FinalError.Geometry
-import OAI.NumberTheory.DirichletL.Moments.FirstMixedRightTransport
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.FirstMixedRightTransport
 
 set_option autoImplicit false
 set_option maxHeartbeats 2000000

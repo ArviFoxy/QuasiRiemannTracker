@@ -5,7 +5,7 @@ Licensed under Apache-2.0; see UPSTREAM_LICENSE.
 Modifications: fresh namespace and the κ ≥ 7/10 comparison/clipping geometry.
 -/
 import Candidate.Cycle25.Energy.OriginalHighReflectionDeleted
-import OAI.NumberTheory.DirichletL.Energy.ReferenceDeletionEnergy
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Energy.ReferenceDeletionEnergy
 
 import Candidate.Cycle25.Energy.OriginalHighReflectionGeometry
 import Candidate.Cycle25.Energy.ReferenceState

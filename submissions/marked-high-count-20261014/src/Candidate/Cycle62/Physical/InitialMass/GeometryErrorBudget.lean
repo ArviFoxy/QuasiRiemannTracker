@@ -2,7 +2,7 @@
 import Candidate.Cycle62.Physical.InitialMass.GeometryErrorColumnFamily
 import Candidate.Cycle62.Physical.InitialMass.GeometryErrorScalarPayment
 import Candidate.Cycle62.Physical.InitialMass.SecondLowLabelBudget
-import OAI.NumberTheory.DirichletL.Moments.AmplificationAllocationCost
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.AmplificationAllocationCost
 
 set_option autoImplicit false
 set_option maxHeartbeats 1600000

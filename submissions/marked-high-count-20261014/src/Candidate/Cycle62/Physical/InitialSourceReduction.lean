@@ -1,8 +1,8 @@
 import Candidate.Cycle62.Physical.FirstBranches.RawComparison
-import OAI.NumberTheory.DirichletL.Energy.NaturalInputMatches
-import OAI.NumberTheory.DirichletL.Energy.FixedRadialReduction
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Energy.NaturalInputMatches
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Energy.FixedRadialReduction
 import Candidate.Cycle62.Moment.InitialAffineContract
-import OAI.NumberTheory.DirichletL.Energy.OriginalProfileControl
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Energy.OriginalProfileControl
 
 namespace OAI.SevenEighths.Cycle62InitialSource
 noncomputable section

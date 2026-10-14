@@ -1,6 +1,6 @@
 import Candidate.Cycle25.Numerator.Imported.NumeratorTupleRestoration
-import OAI.NumberTheory.DirichletL.PrimeRows.CentralTargetCost
-import OAI.NumberTheory.DirichletL.Detector.PhysicalAnalytic
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.PrimeRows.CentralTargetCost
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Detector.PhysicalAnalytic
 
 /-! The calibrated scalar left after the quotient-free numerator expansion.
 It contains no correction packet and consequently incurs no correction norm cost. -/

@@ -1,4 +1,4 @@
-import OAI.NumberTheory.DirichletL.ParametersHighData
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.ParametersHighData
 namespace Cycle25.Weighted
 structure MomentData where
   N : ℕ

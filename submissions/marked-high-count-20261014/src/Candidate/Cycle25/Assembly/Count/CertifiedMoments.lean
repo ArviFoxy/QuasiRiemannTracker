@@ -2,7 +2,7 @@ import Candidate.Cycle25.Assembly.Count.MomentInput
 import Candidate.Cycle25.Assembly.Count.MomentDetectorInverseFields
 import Candidate.Cycle25.Assembly.Count.MomentDetectorPlainMarkedFineField
 import Candidate.Cycle25.Assembly.Count.MomentDetectorPlainUnmarkedRestrictedField
-import OAI.NumberTheory.DirichletL.Detector.FinalAssemblyMomentMono
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Detector.FinalAssemblyMomentMono
 namespace OAI.SevenEighths.Cycle25ProbeFinalAssemblyCertifiedBands
 noncomputable section
 open scoped Classical BigOperators SchwartzMap ComplexConjugate

@@ -2,8 +2,8 @@
 /- Adapted from WeightedQRH (weighted upstream PR6), preserving the original proof structure. -/
 import Candidate.Cycle62.Assembly.Transport.GeometryFacts
 import Candidate.Cycle62.Assembly.Transport.TailScales
-import OAI.NumberTheory.DirichletL.PrimeRows.SmallTail
-import OAI.NumberTheory.DirichletL.PrimeRows.SmallSum
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.PrimeRows.SmallTail
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.PrimeRows.SmallSum
 namespace OAI
 
 noncomputable section

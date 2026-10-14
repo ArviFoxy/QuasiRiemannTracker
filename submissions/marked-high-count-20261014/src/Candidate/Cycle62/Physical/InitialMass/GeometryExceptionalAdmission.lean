@@ -3,8 +3,8 @@ import Candidate.Cycle62.Physical.InitialMass.GeometryAffineCaps
 import Candidate.Cycle62.Physical.InitialMass.GeometrySecondCaps
 import Candidate.Cycle62.Physical.InitialMass.GeometryErrorAdmission
 import Candidate.Cycle62.Physical.InitialMass.GeometryErrorTail
-import OAI.NumberTheory.DirichletL.Moments.FirstSourceConductorCaps
-import OAI.NumberTheory.DirichletL.Moments.SecondExceptionalSourceCaps
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.FirstSourceConductorCaps
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.SecondExceptionalSourceCaps
 
 set_option autoImplicit false
 set_option maxHeartbeats 1600000

@@ -1,6 +1,6 @@
 /- Copyright (c) 2026 Hailey Collet. Released under Apache 2.0. -/
 import Candidate.Cycle62.Physical.InitialMass.SecondRetainedContraction
-import OAI.NumberTheory.DirichletL.Moments.SourceInputReindex
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.SourceInputReindex
 
 set_option autoImplicit false
 set_option maxHeartbeats 800000

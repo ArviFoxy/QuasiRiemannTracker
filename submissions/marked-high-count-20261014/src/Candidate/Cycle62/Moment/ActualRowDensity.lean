@@ -1,6 +1,6 @@
 import Candidate.Cycle62.Moment.CanonicalFirstDictionary
 import Candidate.Cycle62.Density.NaturalMaskTransport
-import OAI.NumberTheory.DirichletL.Moments.NaturalRowSourceDictionary
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.NaturalRowSourceDictionary
 
 set_option autoImplicit false
 

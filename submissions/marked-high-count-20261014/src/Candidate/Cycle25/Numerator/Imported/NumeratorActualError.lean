@@ -1,7 +1,7 @@
 import Candidate.Cycle25.Numerator.Imported.NumeratorCorrectionExpansion
 import Candidate.Cycle25.Numerator.Imported.NumeratorErrorMass
-import OAI.NumberTheory.DirichletL.PrimeRows.CentralNormalized
-import OAI.NumberTheory.DirichletL.PrimeRows.RestoreCorrection
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.PrimeRows.CentralNormalized
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.PrimeRows.RestoreCorrection
 
 /-! Quotient-free physical error factors, with coefficients independent of w. -/
 noncomputable section

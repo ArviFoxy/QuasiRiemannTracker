@@ -1,4 +1,4 @@
-import OAI.NumberTheory.DirichletL.Detector.FinalAssemblyMomentMono
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Detector.FinalAssemblyMomentMono
 import Candidate.Cycle62.Assembly.Count.Data
 import Candidate.Cycle25.Assembly.Count.SourceMomentInput
 

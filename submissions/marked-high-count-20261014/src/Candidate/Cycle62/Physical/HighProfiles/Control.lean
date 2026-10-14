@@ -1,5 +1,5 @@
 import Candidate.Cycle62.Physical.FinalProfiles
-import OAI.NumberTheory.DirichletL.Mellin.UniformKernelBounds
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Mellin.UniformKernelBounds
 
 set_option autoImplicit false
 namespace OAI.SevenEighths.Cycle62HighProfiles

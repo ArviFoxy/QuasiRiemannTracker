@@ -1,5 +1,5 @@
 import Candidate.Cycle62.Physical.InitialMass.SecondActive
-import OAI.NumberTheory.DirichletL.Moments.CommonSectorWindow
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.CommonSectorWindow
 
 set_option autoImplicit false
 set_option maxHeartbeats 800000

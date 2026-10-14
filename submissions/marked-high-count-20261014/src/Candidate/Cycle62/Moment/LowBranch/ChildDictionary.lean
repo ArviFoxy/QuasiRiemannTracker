@@ -1,6 +1,6 @@
 import Candidate.Cycle62.Moment.LowBranch.DaughterState
-import OAI.NumberTheory.DirichletL.Moments.AmplificationChildInput
-import OAI.NumberTheory.DirichletL.Moments.AllocatedRayDictionary
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.AmplificationChildInput
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.AllocatedRayDictionary
 
 set_option autoImplicit false
 namespace OAI.SevenEighths.Cycle62Moment.LowBranch

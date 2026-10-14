@@ -1,6 +1,6 @@
-import OAI.NumberTheory.DirichletL.PrimeRows.BufferedIntegral
-import OAI.NumberTheory.DirichletL.PrimeRows.CentralCube
-import OAI.NumberTheory.DirichletL.PrimeRows.NonprincipalBoundary
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.PrimeRows.BufferedIntegral
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.PrimeRows.CentralCube
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.PrimeRows.NonprincipalBoundary
 
 /-! Full-w contour transport on the retained s,z rectangle. The extension of
 BufferedGrowth/BufferedIntegral below leaves the actual row kernel unchanged,

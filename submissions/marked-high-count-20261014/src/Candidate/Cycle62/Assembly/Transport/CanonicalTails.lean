@@ -2,8 +2,8 @@
 /- Adapted from WeightedQRH (weighted upstream PR6), preserving the original proof structure. -/
 import Candidate.Cycle62.Assembly.Transport.GeometryFacts
 import Candidate.Cycle62.Assembly.Transport.PhysicalLargeTail
-import OAI.NumberTheory.DirichletL.PrimeRows.CanonicalTails
-import OAI.NumberTheory.DirichletL.PrimeRows.PhysicalPartition
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.PrimeRows.CanonicalTails
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.PrimeRows.PhysicalPartition
 import Candidate.Cycle62.Assembly.Transport.PhysicalSmallTail
 namespace OAI
 

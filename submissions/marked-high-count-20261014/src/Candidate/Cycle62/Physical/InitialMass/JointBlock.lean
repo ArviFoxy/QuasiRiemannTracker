@@ -2,7 +2,7 @@ import Candidate.Cycle62.Physical.JointSourceAssembly
 import Candidate.Cycle62.Physical.InitialMass.Decomposition
 import Candidate.Cycle62.Physical.InitialMass.RatioBins
 import Candidate.Cycle62.Moment.JointKernel
-import OAI.NumberTheory.DirichletL.Moments.FirstPhysicalSource
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.FirstPhysicalSource
 
 set_option autoImplicit false
 set_option maxHeartbeats 800000

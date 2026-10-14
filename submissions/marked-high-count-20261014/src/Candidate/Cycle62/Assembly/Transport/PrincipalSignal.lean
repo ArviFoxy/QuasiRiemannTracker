@@ -2,7 +2,7 @@
 import Candidate.Cycle62.Assembly.Transport.GeometryFacts
 import Candidate.Cycle62.Assembly.Transport.PrincipalSlots
 import Candidate.Cycle62.Assembly.Transport.SignalShift
-import OAI.NumberTheory.DirichletL.PrincipalSignalComparison
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.PrincipalSignalComparison
 
 /-! Principal residues and the actual Hecke signal for the new physical lengths.
 Adapted from the original OpenAI PrincipalSignalComparison proof. Unchanged

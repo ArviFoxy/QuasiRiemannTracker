@@ -1,6 +1,6 @@
 import Candidate.Cycle62.Assembly.Low.Detector.Normalized
 import Candidate.Cycle62.Assembly.Low.Normalizer
-import OAI.NumberTheory.DirichletL.Detector.Physical
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Detector.Physical
 
 set_option autoImplicit false
 

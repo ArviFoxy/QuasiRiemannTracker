@@ -1,7 +1,7 @@
 /- Ported from Cycle25.Transport weighted upstream PR6 and OpenAI/math; Apache-2.0 attribution retained. -/
 import Candidate.Cycle62.Assembly.Transport.GeometryFacts
 import Candidate.Cycle62.Assembly.Transport.PrincipalRemainderFiniteProduct
-import OAI.NumberTheory.DirichletL.Detector.FiniteProductX
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Detector.FiniteProductX
 noncomputable section
 open scoped Classical BigOperators Topology
 open Complex Set MeasureTheory

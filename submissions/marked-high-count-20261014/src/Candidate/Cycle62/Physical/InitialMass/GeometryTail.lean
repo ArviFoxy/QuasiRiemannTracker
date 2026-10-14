@@ -1,4 +1,4 @@
-import OAI.NumberTheory.DirichletL.Moments.SourceInputTailUniform
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.SourceInputTailUniform
 
 set_option autoImplicit false
 set_option maxHeartbeats 3000000

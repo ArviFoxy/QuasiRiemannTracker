@@ -1,8 +1,8 @@
-import OAI.NumberTheory.DirichletL.Detector.DetectorMomentPrimeGeometry
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Detector.DetectorMomentPrimeGeometry
 import Candidate.Cycle25.Assembly.SourceData
-import OAI.NumberTheory.DirichletL.Detector.DetectorMomentFiberGates
-import OAI.NumberTheory.DirichletL.Inversion.InitialPhysicalSlots
-import OAI.NumberTheory.DirichletL.Detector.RayPoolDisjoint
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Detector.DetectorMomentFiberGates
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Inversion.InitialPhysicalSlots
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Detector.RayPoolDisjoint
 namespace OAI
 
 noncomputable section

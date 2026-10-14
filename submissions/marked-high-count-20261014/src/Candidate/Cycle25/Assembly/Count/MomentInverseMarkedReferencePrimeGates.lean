@@ -1,7 +1,7 @@
-import OAI.NumberTheory.DirichletL.Dictionary.InverseMarkedReferencePrimeGates
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Dictionary.InverseMarkedReferencePrimeGates
 import Candidate.Cycle25.Assembly.Count.MomentDetectorMomentPrimeGeometry
-import OAI.NumberTheory.DirichletL.Dictionary.InverseMarkedReferenceDeleted
-import OAI.NumberTheory.DirichletL.Detector.DetectorMomentPrimeGeometry
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Dictionary.InverseMarkedReferenceDeleted
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Detector.DetectorMomentPrimeGeometry
 namespace OAI
 
 noncomputable section

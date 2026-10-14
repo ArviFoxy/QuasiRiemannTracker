@@ -1,7 +1,7 @@
 import Candidate.Cycle62.Assembly.Low.Probe
 import Candidate.Cycle62.Assembly.Transport.PrincipalRemainderNormalized
 import Candidate.Cycle62.Assembly.Transport.TailScales
-import OAI.NumberTheory.DirichletL.PrimeRows.CanonicalReduction
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.PrimeRows.CanonicalReduction
 
 set_option autoImplicit false
 

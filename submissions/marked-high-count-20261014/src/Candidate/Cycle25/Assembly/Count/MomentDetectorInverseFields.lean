@@ -1,8 +1,8 @@
-import OAI.NumberTheory.DirichletL.Detector.DetectorInverseFields
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Detector.DetectorInverseFields
 import Candidate.Cycle25.Assembly.Count.MomentDetectorInverseMarkedField
 import Candidate.Cycle25.Assembly.Count.InverseRawField
-import OAI.NumberTheory.DirichletL.Detector.DetectorInverseRawField
-import OAI.NumberTheory.DirichletL.Detector.DetectorInverseMarkedField
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Detector.DetectorInverseRawField
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Detector.DetectorInverseMarkedField
 namespace OAI
 
 noncomputable section

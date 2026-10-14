@@ -3,7 +3,7 @@ Copyright (c) 2026 Hailey Collet. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 -/
 import Candidate.LocalMoment.RestrictedIncumbent
-import OAI.NumberTheory.DirichletL.Moments.Counting
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.Counting
 
 set_option autoImplicit false
 namespace OAI.SevenEighths.Cycle62Physical

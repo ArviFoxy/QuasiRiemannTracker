@@ -1,5 +1,5 @@
-import OAI.NumberTheory.DirichletL.Moments.AllocatedChildCapacity
-import OAI.NumberTheory.DirichletL.Moments.AmplificationChildSourceCaps
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.AllocatedChildCapacity
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.AmplificationChildSourceCaps
 import Candidate.Cycle62.Physical.ClippedProjectorShell
 
 set_option autoImplicit false

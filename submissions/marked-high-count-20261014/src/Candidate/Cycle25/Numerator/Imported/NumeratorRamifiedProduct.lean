@@ -1,5 +1,5 @@
 import Candidate.Cycle25.Numerator.Imported.NumeratorPrimeExpansion
-import OAI.NumberTheory.DirichletL.PrimeRows.FirstContinuation
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.PrimeRows.FirstContinuation
 
 /-! Finite coefficient expansion and subpower mass of the actual ramified product. -/
 noncomputable section

@@ -1,6 +1,6 @@
-import OAI.NumberTheory.DirichletL.Detector.SixthDecomposition
-import OAI.NumberTheory.DirichletL.Hecke.InverseAmplificationFamily
-import OAI.NumberTheory.DirichletL.Hecke.MaskDescent
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Detector.SixthDecomposition
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Hecke.InverseAmplificationFamily
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Hecke.MaskDescent
 import Candidate.LocalMoment.FiniteDeletionBins
 
 /-! Exact raw-row sixth decomposition, with all Euler punctures retained. -/

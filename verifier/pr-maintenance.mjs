@@ -14,7 +14,7 @@ import {
   proofRevision,
 } from "../core/catalogue-revisions.mjs";
 import { validateSubmissionMetadata } from "./submission-metadata.mjs";
-import { certificate } from "./certificate.mjs";
+import { certificate, historicalCertificate } from "./certificate.mjs";
 
 export function maintenancePaths(files) {
   return files
@@ -52,13 +52,15 @@ export function maintenancePlan({
   if (
     files.some(
       (file) =>
-        ["catalogue/results.json", "public/catalogue.json"].includes(
+        (["catalogue/results.json", "public/catalogue.json"].includes(
           file.filename,
-        ) && file.status !== "removed",
+        ) ||
+          file.filename.startsWith("public/certificates/")) &&
+        file.status !== "removed",
     )
   )
     throw Error(
-      "Catalogue JSON is generated output; edit submissions/<result-id>/metadata.json instead",
+      "Catalogue and certificate JSON are generated output; edit submissions/<result-id>/metadata.json instead",
     );
   const archived = admittedCatalogue
     ? catalogueProofRecords(admittedCatalogue)
@@ -91,7 +93,7 @@ export function maintenancePlan({
       );
       if (admitted && !JSON.parse(read("base", path) || "null")?.id)
         throw Error(`Metadata duplicates an admitted proof: ${input.id}`);
-      const { historical, dependencies, ...record } = input;
+      const { historical, dependencies, verification, ...record } = input;
       if (path !== `submissions/${proofRevision(record)}/metadata.json`)
         throw Error("Proof metadata path differs from its revision");
       (historical === true ? historical_records : records).push(record);
@@ -150,9 +152,18 @@ export function maintenancePlan({
     const name = `public/certificates/${id}.json`;
     if (record.certificate_url !== `certificates/${id}.json`)
       throw Error(`Missing verification record: ${id}`);
-    const certificateData = (side) =>
-      read(side, name) ||
-      (archiveIds.has(id) ? readAdmittedCertificate?.(id) : null);
+    const certificateData = (side) => {
+      const metadata = JSON.parse(
+        read(side, `submissions/${id}/metadata.json`) || "null",
+      );
+      if (metadata?.id && metadata.verification)
+        return JSON.stringify(historicalCertificate(metadata));
+      // Read earlier committed receipts when comparing a migration's base.
+      return (
+        read(side, name) ||
+        (archiveIds.has(id) ? readAdmittedCertificate?.(id) : null)
+      );
+    };
     const c = certificate(JSON.parse(certificateData("head")));
     if (
       c.result_id !== id ||
@@ -197,16 +208,6 @@ export function maintenancePlan({
       )
         throw Error(
           `Place maintained proof source in submissions/<result-id>/src: ${path}`,
-        );
-    }
-    if (
-      f.filename.startsWith("public/certificates/") &&
-      f.status !== "removed"
-    ) {
-      const c = certificate(JSON.parse(read("head", f.filename)));
-      if (!records.has(c.result_id))
-        throw Error(
-          `Verification record has no catalogue result: ${c.result_id}`,
         );
     }
   }

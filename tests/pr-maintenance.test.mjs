@@ -86,24 +86,35 @@ test("changing a proof metadata bound alone fails for its mismatched verificatio
     /Verification record differs from catalogue: fixture-baseline/,
   );
 });
-test("changing the bound and certificate together still requires kernel verification", () => {
+test("changing the bound with generated verification records requires kernel verification", () => {
   const data = fixture([
     modified("submissions/fixture-baseline/metadata.json"),
-    modified("public/certificates/fixture-baseline.json"),
   ]);
   data.head["submissions/fixture-baseline/metadata.json"].theta = {
     numerator: "3",
     denominator: "2",
   };
-  data.head["public/certificates/fixture-baseline.json"].theta_exact = "3/2";
+  const { report_url, report_sha256 } =
+    data.base["public/certificates/fixture-baseline.json"];
+  data.head["submissions/fixture-baseline/metadata.json"].verification = {
+    report_url,
+    report_sha256,
+  };
+  delete data.head["public/certificates/fixture-baseline.json"];
   assert.deepEqual(maintenancePlan(data), [
     { result_id: "fixture-baseline", theta_exact: "3/2" },
   ]);
 });
-test("changing certificate report provenance requires proof verification", () => {
-  const data = fixture([modified("public/certificates/fixture-baseline.json")]);
-  data.head["public/certificates/fixture-baseline.json"].report_sha256 =
-    "e".repeat(64);
+test("changing report provenance in metadata requires proof verification", () => {
+  const data = fixture([
+    modified("submissions/fixture-baseline/metadata.json"),
+  ]);
+  data.head["submissions/fixture-baseline/metadata.json"].verification = {
+    report_url:
+      data.base["public/certificates/fixture-baseline.json"].report_url,
+    report_sha256: "e".repeat(64),
+  };
+  delete data.head["public/certificates/fixture-baseline.json"];
   assert.deepEqual(maintenancePlan(data), [
     { result_id: "fixture-baseline", theta_exact: "7/8" },
   ]);
@@ -178,8 +189,12 @@ test("proof source must use the standard submission layout", () => {
     /(Place maintained proof source in submissions|Submission source and metadata belong in submissions)/,
   );
 });
-test("generated catalogue files cannot be reintroduced to bypass proof metadata", () => {
-  for (const path of ["catalogue/results.json", "public/catalogue.json"]) {
+test("generated catalogue and certificate files cannot be committed", () => {
+  for (const path of [
+    "catalogue/results.json",
+    "public/catalogue.json",
+    "public/certificates/fixture-baseline.json",
+  ]) {
     const data = fixture([{ filename: path, status: "added" }]);
     data.head[path] = structuredClone(catalogue);
     assert.throws(
@@ -199,12 +214,18 @@ test("removing a required verification record fails before proof scheduling", ()
   assert.throws(() => maintenancePlan(data), /Invalid verification record/);
 });
 
-test("reformatting certificate fields preserves verification", () => {
-  const data = fixture([modified("public/certificates/fixture-baseline.json")]);
+test("moving historical report provenance to metadata preserves verification", () => {
   const path = "public/certificates/fixture-baseline.json";
-  data.head[path] = Object.fromEntries(
-    Object.entries(data.head[path]).reverse(),
-  );
+  const data = fixture([
+    { filename: path, status: "removed" },
+    modified("submissions/fixture-baseline/metadata.json"),
+  ]);
+  const { report_url, report_sha256 } = data.base[path];
+  data.head["submissions/fixture-baseline/metadata.json"].verification = {
+    report_url,
+    report_sha256,
+  };
+  delete data.head[path];
   assert.deepEqual(maintenancePlan(data), []);
 });
 

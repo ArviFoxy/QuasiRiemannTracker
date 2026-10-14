@@ -59,5 +59,9 @@
     "argonaut-20261008",
     "cycle25-quartic-20261010",
     "openai-baseline"
-  ]
+  ],
+  "verification": {
+    "report_url": "https://github.com/GTimG/QuasiRiemannTracker/blob/d716ecaae80f7823a5b8314916364fdfa0d133fb/verifier/standard/receipts/single-prime-first-20261012/result.json",
+    "report_sha256": "d1b1cc3f51f7e86cb7e0de6cc1d6e6ab2b04c2999a1b708c4f31bb5bf98ee0da"
+  }
 }

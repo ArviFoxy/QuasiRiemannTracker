@@ -3,14 +3,19 @@ import path from "node:path";
 import { rational } from "../core/rational.mjs";
 import { sha256 } from "./common.mjs";
 
-export function manifest({ id, theta }) {
+import { submissionDependencies } from "./submission-dependencies.mjs";
+import { exactBound } from "../core/exact-bound.mjs";
+export function manifest({ id, theta, exact_bound }) {
   if (!/^[a-z][a-z0-9-]{2,63}$/.test(id ?? ""))
     throw Error("Invalid submission ID");
   rational(theta.numerator, theta.denominator);
   if (BigInt(theta.numerator) <= 0n) throw Error("Bound must be positive");
+  const { lean, ...bound } = exactBound(
+    exact_bound ?? `${theta.numerator}/${theta.denominator}`,
+  );
   return {
     id,
-    theta,
+    ...bound,
     entrypoint: { module: "Candidate.Main", declaration: "Candidate.bound" },
   };
 }
@@ -27,7 +32,7 @@ export function safePath(p) {
     throw Error("Unsafe path");
   return p;
 }
-export function submission(dir, declaration) {
+export function submissionFiles(dir) {
   if (lstatSync(dir).isSymbolicLink()) throw Error("Symlink submission");
   const base = realpathSync(dir),
     files = [];
@@ -42,23 +47,28 @@ export function submission(dir, declaration) {
       if (stat.isDirectory()) {
         if (
           file !== "src" &&
-          !/^src\/Candidate(?:\/[A-Z][A-Za-z0-9_]*)*$/.test(file)
+          !/^src\/(?:Candidate|Submissions)(?:\/[A-Za-z_][A-Za-z0-9_]*)*$/.test(
+            file,
+          )
         )
           throw Error("Unapproved directory");
         walk(file);
         continue;
       }
       if (
-        !/^src\/Candidate\/(?:[A-Z][A-Za-z0-9_]*\/)*[A-Z][A-Za-z0-9_]*\.lean$/.test(
+        file !== "metadata.json" &&
+        !/^src\/(?:Candidate|Submissions)\/(?:[A-Za-z_][A-Za-z0-9_]*\/)*[A-Za-z_][A-Za-z0-9_]*\.lean$/.test(
           file,
         )
       )
-        throw Error("Submissions contain only Lean source: " + file);
+        throw Error(
+          "Submissions contain metadata.json and Lean source: " + file,
+        );
       total += stat.size;
       if (
-        total > 10 * 1024 * 1024 ||
+        total > 64 * 1024 * 1024 ||
         stat.size > 2 * 1024 * 1024 ||
-        files.length >= 256
+        files.length >= 8192
       )
         throw Error("Submission size limit");
       const bytes = readFileSync(full);
@@ -68,9 +78,24 @@ export function submission(dir, declaration) {
   walk();
   if (!files.some((f) => f.path === "src/Candidate/Main.lean"))
     throw Error("Missing src/Candidate/Main.lean");
+  const metadataFile = files.find((f) => f.path === "metadata.json");
+  // Existing submissions acquire metadata in the following source migration.
+  if (!metadataFile)
+    files.push({
+      path: "metadata.json",
+      bytes: Buffer.from("{}"),
+      sha256: sha256("{}"),
+    });
+  if (metadataFile && metadataFile.bytes.length > 65536)
+    throw Error("Submission metadata is too large");
+  if (metadataFile)
+    submissionDependencies(JSON.parse(metadataFile.bytes.toString()));
   return {
-    manifest: manifest(declaration),
     files,
     inventory: files.map(({ path, sha256 }) => ({ path, sha256 })),
   };
+}
+
+export function submission(dir, declaration) {
+  return { ...submissionFiles(dir), manifest: manifest(declaration) };
 }

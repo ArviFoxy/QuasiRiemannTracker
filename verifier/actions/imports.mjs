@@ -1,5 +1,5 @@
 // Read dependency names as data; setup builds only files in the pinned library.
-export function upstreamImports(source) {
+export function leanImports(source) {
   let clean = "",
     depth = 0,
     quoted = false;
@@ -41,9 +41,12 @@ export function upstreamImports(source) {
   }
   const result = new Set();
   for (const match of clean.matchAll(
-    /^\s*(?:public\s+)?(?:meta\s+)?import\s+([A-Z][A-Za-z0-9_.]*(?:\s+[A-Z][A-Za-z0-9_.]*)*)/gm,
+    /^[ \t]*(?:(?:public|meta|private)[ \t]+)*import\s+([A-Z][A-Za-z0-9_.]*(?:\s+[A-Z][A-Za-z0-9_.]*)*)/gm,
   ))
-    for (const name of match[1].split(/\s+/))
-      if (/^OAI(?:\.[A-Za-z0-9_]+)+$/.test(name)) result.add(name);
+    for (const name of match[1].trim().split(/\s+/))
+      if (/^[A-Za-z_][A-Za-z0-9_]*(?:\.[A-Za-z_][A-Za-z0-9_]*)*$/.test(name))
+        result.add(name);
   return [...result].sort();
 }
+export const upstreamImports = (source) =>
+  leanImports(source).filter((name) => name.startsWith("OAI."));

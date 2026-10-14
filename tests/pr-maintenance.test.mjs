@@ -238,3 +238,17 @@ test("proof metadata filenames must match the immutable revision they describe",
   data.head["proofs/fixture-baseline/metadata.json"].id = "different-revision";
   assert.throws(() => maintenancePlan(data), /metadata path differs/);
 });
+
+test("moving metadata beside an existing Lean proof preserves its exact verification target", () => {
+  const id = "fixture-baseline";
+  const oldPath = `proofs/${id}/metadata.json`;
+  const newPath = `submissions/${id}/metadata.json`;
+  const data = fixture([
+    { filename: newPath, previous_filename: oldPath, status: "renamed" },
+  ]);
+  data.head[newPath] = data.head[oldPath];
+  delete data.head[oldPath];
+  assert.deepEqual(maintenancePlan(data), [
+    { result_id: id, theta_exact: "7/8" },
+  ]);
+});

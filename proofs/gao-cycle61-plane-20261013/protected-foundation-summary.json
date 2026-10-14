@@ -26,8 +26,8 @@
     "OAI.NumberTheory.DirichletL.Detector.FinalAssemblySourceCount"
   ],
   "module_count": 2923,
-  "old_pristine_library": "/mnt/UIIUSA/zhongpai/code/llm/RH/build/tracker_weighted_numerator_2026-10-10/local_replay/original-profile-v1/pristine-OAI-library",
-  "old_pristine_manifest": "/mnt/UIIUSA/zhongpai/code/llm/RH/build/tracker_weighted_numerator_2026-10-10/local_replay/original-profile-v1/pristine-object-input-manifest.json",
+  "old_pristine_library": "${RH_REPOSITORY_ROOT}/build/tracker_weighted_numerator_2026-10-10/local_replay/original-profile-v1/pristine-OAI-library",
+  "old_pristine_manifest": "${RH_REPOSITORY_ROOT}/build/tracker_weighted_numerator_2026-10-10/local_replay/original-profile-v1/pristine-object-input-manifest.json",
   "old_pristine_manifest_sha256": "2be242e105ee9d40e87f74810c9d05ae256c689cff252b3af284f9f7dcad8c8f",
   "schema": "isolated-protected-foundation-v1",
   "scope": "Exact public protected source identities and inherited pristine object-byte snapshots; missing protected modules freshly compiled with source/compiler/import/log/object receipts. Entire Candidate/kernel verification is separate.",
@@ -36,5 +36,14 @@
   "status": "FULL_PROOF_PENDING",
   "updated_at": "2026-10-13T17:30:00.819442+00:00",
   "protected_component_status": "PASS_ISOLATED_PRISTINE_INPUTS_AND_FRESH_PROTECTED_MODULES",
-  "original_receipt_sha256": "a2cf36a48da2f5c6a892570d2f1c4b3d937db657c99deef7f50770799ccfccfd"
+  "original_receipt_sha256": "a2cf36a48da2f5c6a892570d2f1c4b3d937db657c99deef7f50770799ccfccfd",
+  "publication_redaction": {
+    "schema": "historical-artifact-publication-redaction-v1",
+    "transformation": "private_machine_location_redaction_only",
+    "original_artifact_sha256": "71e344fd341002a294534f0562bb70950f9e9c78933d1b562e81b014526203d6",
+    "original_published_commit": "0a73e73348befd36061ff251e43540c1b11135bc",
+    "original_recorded_hashes_retained": true,
+    "proof_or_kernel_rerun_performed": false,
+    "disclosure": "This JSON is a redacted publication derivative of the original verification artifact. Existing recorded hashes identify original unredacted artifacts; they are not hashes of this publication copy. See publication-redactions.json for the original-to-publication digest mapping."
+  }
 }

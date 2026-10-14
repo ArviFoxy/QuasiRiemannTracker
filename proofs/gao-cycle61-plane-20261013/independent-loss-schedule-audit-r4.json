@@ -2,7 +2,7 @@
   "schema": "cycle61-r4-independent-loss-schedule-source-review-v1",
   "status": "PASS_R4_SEVEN_SCOPED_LOSS_UNIT_CONTACTS_NOT_FULL_PROOF",
   "reviewed_at": "2026-10-13T18:50:06.349312+00:00",
-  "candidate": "/mnt/UIIUSA/zhongpai/code/llm/RH/build/affine_next_target_2026-10-13/candidate-8748598-r4",
+  "candidate": "${RH_REPOSITORY_ROOT}/build/affine_next_target_2026-10-13/candidate-8748598-r4",
   "theta_exact": "4374299/5000000",
   "source_module_count": 194,
   "source_snapshot": [
@@ -990,7 +990,7 @@
       "module": "Cycle61.Physical.InitialMass.GeometryLossSchedule",
       "start": 12448,
       "end": 12457,
-      "text": "min (\u03b5affine/128) (min ((1/3750000)*Mmin/128) (min (Mmin/128) (1/128)))"
+      "text": "min (εaffine/128) (min ((1/3750000)*Mmin/128) (min (Mmin/128) (1/128)))"
     },
     {
       "bundle": "B138",
@@ -998,7 +998,7 @@
       "module": "Cycle61.Physical.InitialMass.GeometryLossSchedule",
       "start": 12958,
       "end": 12967,
-      "text": "have h\u2081 := min_le_left (\u03b5affine/128) (min ((1/3750000)*Mmin/128) (min (Mmin/128) (1/128)))"
+      "text": "have h₁ := min_le_left (εaffine/128) (min ((1/3750000)*Mmin/128) (min (Mmin/128) (1/128)))"
     },
     {
       "bundle": "B138",
@@ -1071,5 +1071,14 @@
     "audit_target_count": 14,
     "all_standard_axioms": true,
     "matches_current_source": true
+  },
+  "publication_redaction": {
+    "schema": "historical-artifact-publication-redaction-v1",
+    "transformation": "private_machine_location_redaction_only",
+    "original_artifact_sha256": "a20bfe6f9f4d86c44172954133ba044285db24614c496c793b8833d35fb1ce2c",
+    "original_published_commit": "0a73e73348befd36061ff251e43540c1b11135bc",
+    "original_recorded_hashes_retained": true,
+    "proof_or_kernel_rerun_performed": false,
+    "disclosure": "This JSON is a redacted publication derivative of the original verification artifact. Existing recorded hashes identify original unredacted artifacts; they are not hashes of this publication copy. See publication-redactions.json for the original-to-publication digest mapping."
   }
 }

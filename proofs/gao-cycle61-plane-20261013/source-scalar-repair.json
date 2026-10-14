@@ -2,7 +2,7 @@
   "schema": "cycle61-r2-derived-scalar-transform-v1",
   "status": "PASS_REVIEWED_SCALAR_CONTACT_REPAIR_PENDING_ACTUAL_B060_AND_FULL_REPLAY",
   "theta_exact": "4374299/5000000",
-  "candidate": "/mnt/UIIUSA/zhongpai/code/llm/RH/build/affine_next_target_2026-10-13/candidate-8748598-r2",
+  "candidate": "${RH_REPOSITORY_ROOT}/build/affine_next_target_2026-10-13/candidate-8748598-r2",
   "v1_pin_sha256": "710a7b3a2a6d2a4852438734920f90255ccb06a5e56e7c992e92be987f63f7d1",
   "scalar_map_sha256": "c142a042152e278eb9a4892881b599a953a3d7f89271a0add5258d2f572a4deb",
   "published_helper_scalar_count": 47,
@@ -1093,5 +1093,14 @@
   "all_mapped_active_scalar_contacts_updated": true,
   "all_source_rhs_mathematically_verified": false,
   "full_proof_verified": false,
-  "v1_source_pin_unchanged": true
+  "v1_source_pin_unchanged": true,
+  "publication_redaction": {
+    "schema": "historical-artifact-publication-redaction-v1",
+    "transformation": "private_machine_location_redaction_only",
+    "original_artifact_sha256": "96b1919d1842d2e645136b902d90eef9f297bfe45fe84387f691214e4009518d",
+    "original_published_commit": "0a73e73348befd36061ff251e43540c1b11135bc",
+    "original_recorded_hashes_retained": true,
+    "proof_or_kernel_rerun_performed": false,
+    "disclosure": "This JSON is a redacted publication derivative of the original verification artifact. Existing recorded hashes identify original unredacted artifacts; they are not hashes of this publication copy. See publication-redactions.json for the original-to-publication digest mapping."
+  }
 }

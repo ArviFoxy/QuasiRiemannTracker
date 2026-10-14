@@ -19,3 +19,5 @@ For reproduction, use the tracker's protected verification workflow and its curr
 Zhongpai Gao, with AI assistance, prepared this parameter refinement and note by adapting Hailey Collet's Cycle61 source at `fb6d4fd11aeaff0b37dd96bad3b274ce28a5c08b`, submitted in [PR #42](https://github.com/GTimG/QuasiRiemannTracker/pull/42). The full analytic construction and mathematical predecessors retain their authorship. See [provenance](PROVENANCE.md), [refinement notice](NOTICE.refinement), retained [upstream attribution](UPSTREAM_PROVENANCE.md) and [licenses](licenses/). Apache-2.0.
 
 Historical source comments and local-verification receipts record their original frozen scope. The current verification-summary.json and CI-REPAIR.md identify the revised source and its pending verification status.
+
+Historical verification JSON files in this folder are redacted publication copies. Their original recorded hashes remain unchanged; the [publication redaction manifest](publication-redactions.json) binds each original artifact to its redacted copy. Proof source bytes and verification results are unchanged.

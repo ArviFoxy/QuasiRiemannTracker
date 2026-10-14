@@ -12,7 +12,7 @@
   "baseline_proposal_pr": "https://github.com/GTimG/QuasiRiemannTracker/pull/42",
   "baseline_hosted_admission_reproduced": false,
   "baseline_pin_sha256": "53d8edb99bcef344a64e2a9d4d5712e4078e7a98f9d85af7d9a7bc2e04d24fc8",
-  "review_gate": "/mnt/UIIUSA/zhongpai/code/llm/RH/build/affine_next_target_2026-10-13/analysis/cycle61/final-source-gate-r6.json",
+  "review_gate": "${RH_REPOSITORY_ROOT}/build/affine_next_target_2026-10-13/analysis/cycle61/final-source-gate-r6.json",
   "review_gate_sha256": "a5ddcd34415710931f67ede2dcad90dec48e4fbe1ab73c5b9adcc5680c6d8316",
   "modules": [
     {
@@ -1905,5 +1905,14 @@
     }
   ],
   "scope": "Frozen Cycle61 successor at4374299/5000000. The auxiliary main-amplifier coefficient bound and its exact11 consumers use3072; source exponents andcanonicalfamilyhypotheses unchanged. Independent fullscope/diff audit andactualBudgetJoin component pass; full194source replay andfreshComparator/threekernel verification remainpending. No acceptedrecordclaim.",
-  "previous_failed_source_pin_sha256": "20ec334fba4a79ad813446e39815411d4ff990996ffe9f476a5f6501c0283e1e"
+  "previous_failed_source_pin_sha256": "20ec334fba4a79ad813446e39815411d4ff990996ffe9f476a5f6501c0283e1e",
+  "publication_redaction": {
+    "schema": "historical-artifact-publication-redaction-v1",
+    "transformation": "private_machine_location_redaction_only",
+    "original_artifact_sha256": "3a915629c082fdfdd9813bfe2ded75482d795c99e34dabcb9b4f1d3bdee720e4",
+    "original_published_commit": "0a73e73348befd36061ff251e43540c1b11135bc",
+    "original_recorded_hashes_retained": true,
+    "proof_or_kernel_rerun_performed": false,
+    "disclosure": "This JSON is a redacted publication derivative of the original verification artifact. Existing recorded hashes identify original unredacted artifacts; they are not hashes of this publication copy. See publication-redactions.json for the original-to-publication digest mapping."
+  }
 }

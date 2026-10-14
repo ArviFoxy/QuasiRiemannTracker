@@ -1,7 +1,7 @@
 {
   "schema": "cycle61-r4-b138-actual-pilot-v1",
   "status": "PASS_ACTUAL_B138_PILOT_STANDARD_AXIOMS",
-  "source": "/mnt/UIIUSA/zhongpai/code/llm/RH/build/affine_next_target_2026-10-13/candidate-8748598-r4/src/Candidate/Bundles/B138.lean",
+  "source": "${RH_REPOSITORY_ROOT}/build/affine_next_target_2026-10-13/candidate-8748598-r4/src/Candidate/Bundles/B138.lean",
   "source_sha256": "d3cba0eb9029bb14dbd1f3d86ea2bdffdee0927242e917b00548a4a291326d66",
   "compiler_sha256": "e8baaa71855a616dc351028f3ad2200051b0671f423a1696a100e809302d5550",
   "source_replay_exit_code": 0,
@@ -164,5 +164,14 @@
   "audit_target_count": 14,
   "all_standard_axioms": true,
   "compiled_object_sha256": "c3be0f3ec8b5f9f9fdbf316e3ce20acb70c3e6a85707be0a4c52715e661e83e8",
-  "finished_utc": "2026-10-13T18:49:11.611940+00:00"
+  "finished_utc": "2026-10-13T18:49:11.611940+00:00",
+  "publication_redaction": {
+    "schema": "historical-artifact-publication-redaction-v1",
+    "transformation": "private_machine_location_redaction_only",
+    "original_artifact_sha256": "f694e21ebd14db7d96a97b85237b081c08c013ed7845794ceabb590aef82c224",
+    "original_published_commit": "0a73e73348befd36061ff251e43540c1b11135bc",
+    "original_recorded_hashes_retained": true,
+    "proof_or_kernel_rerun_performed": false,
+    "disclosure": "This JSON is a redacted publication derivative of the original verification artifact. Existing recorded hashes identify original unredacted artifacts; they are not hashes of this publication copy. See publication-redactions.json for the original-to-publication digest mapping."
+  }
 }

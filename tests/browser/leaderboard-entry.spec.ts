@@ -8,7 +8,10 @@ test("entries expand in place, toggle with the keyboard, and restore focus on cl
   const data = catalogue();
   await routeCatalogue(page, data);
   await page.goto("/");
-  await page.getByRole("button", { name: "Leaderboard", exact: false }).click();
+  await page
+    .getByRole("navigation", { name: "Research views" })
+    .getByRole("button", { name: "Leaderboard", exact: false })
+    .click();
   const record = data.records[0];
   const toggle = page.getByRole("button", { name: record.title, exact: true });
   const entry = page.locator(`#entry-${record.id}`);
@@ -49,7 +52,10 @@ test("mobile metadata and method each occupy one row, with full text available o
     "A submitted method description with enough detail to exceed one line on a narrow screen. The full explanation remains available in the expanded entry.";
   await routeCatalogue(page, data);
   await page.goto("/");
-  await page.getByRole("button", { name: "Leaderboard", exact: false }).click();
+  await page
+    .getByRole("navigation", { name: "Research views" })
+    .getByRole("button", { name: "Leaderboard", exact: false })
+    .click();
   const entry = page.locator(`#entry-${record.id}`);
   for (const width of [320, 390, 430]) {
     await page.setViewportSize({ width, height: 844 });

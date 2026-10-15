@@ -53,7 +53,7 @@ test("mixed verification statuses and exact bounds render from the supplied cata
   await expect(page.locator(".leaderboard-entry")).toHaveCount(
     fixtureRecords.length,
   );
-  await page.getByRole("button", { name: "Fit chart", exact: true }).click();
+  await page.getByRole("button", { name: "Fit leaderboard", exact: true }).click();
   await expect(page.locator("[data-dot]")).toHaveCount(plottedCount);
   await expect(page.locator(".leaderboard .tag.teal")).toHaveCount(
     verifiedCount,
@@ -107,7 +107,7 @@ test("selection, exact sorting and zoom", async ({ page }, info) => {
   await page.keyboard.press("ArrowRight");
   await page.keyboard.press("Home");
   await page.getByRole("button", { name: "Zoom in", exact: true }).click();
-  await page.getByRole("button", { name: "Fit chart", exact: true }).click();
+  await page.getByRole("button", { name: "Fit leaderboard", exact: true }).click();
   await expect(
     page.locator(".leaderboard-entry").first().locator(".entry-decimal"),
   ).toHaveText(decimal(bestVerified.theta, 14));

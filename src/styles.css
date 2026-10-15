@@ -264,6 +264,69 @@ main {
   color: var(--muted);
   font-variant-numeric: tabular-nums;
 }
+.milestones {
+  max-width: 860px;
+}
+.milestones h2 {
+  margin: 0 0 12px;
+  font-size: 1.5rem;
+}
+.milestones-intro {
+  color: var(--muted);
+  max-width: 660px;
+}
+.milestone-list {
+  padding: 0;
+  margin: 28px 0 0;
+  list-style: none;
+}
+.milestone-list > li {
+  display: grid;
+  grid-template-columns: 110px minmax(0, 1fr);
+  gap: 28px;
+  padding: 24px 0;
+  border-top: 1px solid var(--line);
+}
+.milestone-value {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-family: var(--mono);
+}
+.milestone-value strong {
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+.milestone-value small {
+  color: var(--muted);
+}
+.milestone-swatch {
+  width: 44px;
+  border-top: 2px solid #82959e;
+  margin: 8px 0;
+}
+.milestone-swatch.dashed {
+  border-top-style: dashed;
+}
+.milestone-list h3 {
+  font-size: 1.125rem;
+  margin: 8px 0 12px;
+}
+.milestone-list p {
+  line-height: 1.65;
+  margin: 0 0 12px;
+}
+.milestone-source {
+  font-size: 0.8125rem;
+}
+.milestone-label {
+  font: 12px var(--mono);
+  fill: #536872;
+  stroke: #fff;
+  stroke-width: 4px;
+  paint-order: stroke;
+  pointer-events: none;
+}
 .icon {
   min-width: 36px;
   min-height: 36px;
@@ -972,10 +1035,21 @@ dialog .protocol-grid h2 {
     padding-top: 28px;
   }
   .view-nav {
-    gap: 22px;
+    gap: 12px;
   }
   .view-nav button {
-    font-size: 0.8125rem;
+    font-size: 0.75rem;
+    gap: 4px;
+  }
+  .milestone-list > li {
+    grid-template-columns: 72px minmax(0, 1fr);
+    gap: 16px;
+  }
+  .milestone-value strong {
+    font-size: 1.125rem;
+  }
+  .milestone-list p {
+    font-size: 0.875rem;
   }
   h2 {
     font-size: 1.5rem;

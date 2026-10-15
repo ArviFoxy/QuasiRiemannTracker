@@ -83,7 +83,7 @@ test("nearby chart names stay readable through resizing and zoom", async ({
     }
     await page.getByRole("button", { name: "Zoom out", exact: true }).click();
     await expectReadableLabels(page);
-    await page.getByRole("button", { name: "Fit chart", exact: true }).click();
+    await page.getByRole("button", { name: "Fit leaderboard", exact: true }).click();
     await expectReadableLabels(page);
   } else {
     await expectReadableLabels(page);

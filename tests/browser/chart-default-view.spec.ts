@@ -60,7 +60,7 @@ test("all points stay in the chart while default zoom fits the verified frontier
   await page.goto("/");
 
   const chart = page.locator(".chart");
-  const fit = page.getByRole("button", { name: "Fit chart", exact: true });
+  const fit = page.getByRole("button", { name: "Fit leaderboard", exact: true });
   const summary = page.getByRole("button", {
     name: "View best verified proof",
   });

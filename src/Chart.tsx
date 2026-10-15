@@ -1,5 +1,6 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
-import { Minus, Plus, Maximize2, Move } from "lucide-react";
+import { Minus, Plus, Maximize2, Move, Search } from "lucide-react";
+import { milestones } from "./milestones";
 import {
   BASELINE,
   sub,
@@ -35,6 +36,7 @@ export default function Chart({
   onSelect: (r: Contribution) => void;
 }) {
   const [window, setWindow] = useState<[number, number]>([0, 100]),
+    [overview, setOverview] = useState(false),
     [vertical, setVertical] = useState({ scale: 1, offset: 0 }),
     [hover, setHover] = useState<Contribution | null>(null);
   const dragging = useRef<{
@@ -62,10 +64,11 @@ export default function Chart({
   const width = W - L - R,
     height = H - T - B;
   const extent = useMemo(
-    () => chartExtent(allRecords, events, false, window),
-    [allRecords, events, window],
+    () => chartExtent(allRecords, events, overview, window),
+    [allRecords, events, overview, window],
   );
-  const { low, high } = extent;
+  const low = overview ? { numerator: "1", denominator: "2" } : extent.low;
+  const high = overview ? { numerator: "1", denominator: "1" } : extent.high;
   const span = extent.end - extent.start,
     start = extent.start + (span * window[0]) / 100,
     end = extent.start + (span * window[1]) / 100;
@@ -102,6 +105,12 @@ export default function Chart({
       });
   };
   const reset = () => {
+    setOverview(false);
+    setWindow([0, 100]);
+    setVertical({ scale: 1, offset: 0 });
+  };
+  const fitMilestones = () => {
+    setOverview(true);
     setWindow([0, 100]);
     setVertical({ scale: 1, offset: 0 });
   };
@@ -182,7 +191,9 @@ export default function Chart({
         exp = Math.floor(l);
       return `${n < 0n ? "-" : ""}${(10 ** (l - exp)).toFixed(1)}e${exp}`;
     }
-    return decimal(v, 8);
+    return overview
+      ? Number(decimal(v, 4).replace("…", "")).toFixed(2)
+      : decimal(v, 8);
   };
   // Measure actual SVG text so labels respect both neighbouring names and the
   // plot edges. Keep the newest label when a dense cluster has no free space.
@@ -294,9 +305,17 @@ export default function Chart({
           </button>
           <button
             className="icon"
-            aria-label="Fit chart"
-            title="Reset to initial view"
+            aria-label="Fit leaderboard"
+            title="Fit leaderboard bounds"
             onClick={reset}
+          >
+            <Search size={16} />
+          </button>
+          <button
+            className="icon"
+            aria-label="Fit ½–1"
+            title="Fit full range: ½–1"
+            onClick={fitMilestones}
           >
             <Maximize2 size={16} />
           </button>
@@ -396,7 +415,9 @@ export default function Chart({
                 className="axis"
                 data-axis="bound"
               >
-                {allRecords.length ? tickLabel(t) : (0.9 - t * 0.4).toFixed(2)}
+                {allRecords.length || overview
+                  ? tickLabel(t)
+                  : (0.9 - t * 0.4).toFixed(2)}
               </text>
               <text
                 x={L + t * width}
@@ -418,6 +439,23 @@ export default function Chart({
             {tiny ? "Offset from θ₀ · local scale" : "θ"}
           </text>
           <g clipPath="url(#plotClip)">
+            {milestones.map((m) => (
+              <line
+                key={m.id}
+                data-milestone={m.id}
+                x1={L}
+                x2={W - R}
+                y1={y(m.theta)}
+                y2={y(m.theta)}
+                stroke="#82959e"
+                strokeWidth={1.5}
+                strokeDasharray={m.dashed ? "7 5" : undefined}
+              >
+                <title>
+                  {m.label} · {m.title}
+                </title>
+              </line>
+            ))}
             {allRecords.length > 0 && (
               <path
                 className="verified-frontier"
@@ -511,6 +549,20 @@ export default function Chart({
               );
             })}
           </g>
+          {milestones.map((m) => {
+            const py = y(m.theta);
+            return py >= T && py <= H - B ? (
+              <text
+                key={m.id}
+                x={L + 6}
+                y={py - 7}
+                textAnchor="start"
+                className="milestone-label"
+              >
+                {m.label}
+              </text>
+            ) : null;
+          })}
         </svg>
         {!allRecords.length && (
           <div className="chart-empty">

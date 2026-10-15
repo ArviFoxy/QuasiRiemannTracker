@@ -12,6 +12,7 @@ import {
 } from "../core/catalogue.mjs";
 import { publicUrl } from "./urls";
 import Leaderboard, { type SortKey } from "./Leaderboard";
+import Milestones from "./Milestones";
 import LeanCode from "./LeanCode";
 const upstream =
   "https://github.com/openai/math/blob/fd4aeeb2ee4fc729c18d98444fed42fd0529eeeb/lean/";
@@ -197,16 +198,18 @@ export default function App() {
             </div>
           </section>
           <nav className="view-nav" aria-label="Research views">
-            {["Timeline", "Leaderboard", "Protocol"].map((name) => (
-              <button
-                key={name}
-                aria-current={tab === name ? "page" : undefined}
-                onClick={() => setTab(name)}
-              >
-                {name}
-                {name === "Leaderboard" && <small>{all.length}</small>}
-              </button>
-            ))}
+            {["Timeline", "Leaderboard", "Milestones", "Protocol"].map(
+              (name) => (
+                <button
+                  key={name}
+                  aria-current={tab === name ? "page" : undefined}
+                  onClick={() => setTab(name)}
+                >
+                  {name}
+                  {name === "Leaderboard" && <small>{all.length}</small>}
+                </button>
+              ),
+            )}
           </nav>
           {error && (
             <div className="notice error" role="alert">
@@ -215,6 +218,8 @@ export default function App() {
           )}
           {tab === "Protocol" ? (
             <Protocol />
+          ) : tab === "Milestones" ? (
+            <Milestones />
           ) : (
             <>
               <div className="research-layout">

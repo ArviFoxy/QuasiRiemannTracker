@@ -6,13 +6,13 @@ export default function Milestones() {
     <section className="milestones" aria-labelledby="milestones-heading">
       <h2 id="milestones-heading">From one to the critical line</h2>
       <p className="milestones-intro">
-        The Riemann Hypothesis predicts that all nontrivial zeros of the Riemann
-        zeta function lie on the line with real part ½. The Generalized Riemann
-        Hypothesis extends this prediction to Dirichlet L-functions. The
-        quasi-Riemann hypothesis is the weaker statement that all their
-        nontrivial zeros lie in a strip between 1 − θ and θ, for some fixed
-        θ &lt; 1. By reducing θ toward ½, we approach the Generalized Riemann
-        Hypothesis. Along the way, there are a few key milestones to overcome.
+        The Riemann Hypothesis predicts that every nontrivial zero of the Riemann
+        zeta function has real part ½. The Generalized Riemann Hypothesis makes
+        the same prediction for Dirichlet L-functions. The quasi-Riemann
+        hypothesis allows their nontrivial zeros to lie anywhere in a strip
+        between 1 − θ and θ, for some fixed θ &lt; 1. Lowering θ toward ½ narrows
+        this strip until it becomes the line predicted by GRH. Getting there
+        means overcoming several barriers in the proof methods.
       </p>
       <ol className="milestone-list">
         {milestones.map((m) => (

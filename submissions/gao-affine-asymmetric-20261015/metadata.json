@@ -6,7 +6,7 @@
       "url": "https://github.com/Gaozhongpai"
     }
   ],
-  "description": "Proposed all-moduli Dirichlet boundary 21871/25000 (0.874840), awaiting full compilation and independent verification. Combines timbalud's asymmetric marked counting and coupled radical allocation (PR50) with DaysSky's affine detector-count source integration (PR56), using Hailey Collet's Cycle61 interior affine moment theorem for each detector character. Uses h=1989/2500 and lower height 159/200. Prepared with AI assistance; inherited mathematical attribution and source notices retained.",
+  "description": "Submission of the canonical all-moduli Dirichlet bound 21871/25000 (0.874840); official admission remains pending. Combines timbalud's asymmetric marked counting and coupled radical allocation (PR50) with DaysSky's affine detector-count source integration (PR56), using Hailey Collet's Cycle61 interior affine moment theorem for each detector character. Uses h=1989/2500 and lower height 159/200. Prepared with AI assistance; inherited mathematical attribution and source notices retained.",
   "license": "Apache-2.0; inherited source notices and dependency licenses retained.",
   "builds_on": [
     "openai-baseline",
@@ -14,8 +14,7 @@
     "cycle25-quartic-20261010",
     "cycle61-c0125139",
     "gao-cycle61-plane-20261013",
-    "radical-asymmetric-count-20261014",
-    "detector-affine-c0125154"
+    "radical-asymmetric-count-20261014"
   ],
   "references": [
     {

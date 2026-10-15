@@ -447,6 +447,11 @@ export default function Chart({
                   role="button"
                   tabIndex={inView ? 0 : -1}
                   aria-label={`Select ${r.title}, theta ${boundLabel(r)}`}
+                  aria-description={
+                    r.is_record
+                      ? "On the verified frontier"
+                      : "Outside the verified frontier"
+                  }
                   aria-pressed={selected === r.id}
                   onKeyDown={(e) => {
                     if (e.key === "Enter" || e.key === " ") {
@@ -474,14 +479,8 @@ export default function Chart({
                     cx={px}
                     cy={py}
                     r={selected === r.id ? 6 : 5}
-                    fill={
-                      !verifiedHere(r)
-                        ? "white"
-                        : r.is_record
-                          ? "#1d5d74"
-                          : "#7184a2"
-                    }
-                    stroke={!verifiedHere(r) ? "#ad761e" : "white"}
+                    fill={r.is_record ? "#1d5d74" : "white"}
+                    stroke={!verifiedHere(r) ? "#ad761e" : "#1d5d74"}
                     strokeWidth={2}
                   />
                   {W > 600 &&
@@ -540,10 +539,6 @@ export default function Chart({
           Drag to pan · scroll to zoom
         </span>
       </div>
-      <p className="chart-note">
-        PR submission dates where recorded; verification dates are shown
-        separately.
-      </p>
       {tiny && (
         <p className="chart-note">Local axis origin θ₀ = {fraction(low)}.</p>
       )}

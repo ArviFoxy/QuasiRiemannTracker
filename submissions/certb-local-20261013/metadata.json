@@ -16,7 +16,7 @@
   "references": [
     {
       "label": "Reserve-balanced affine local moment predecessor",
-      "url": "https://github.com/GTimG/QuasiRiemannTracker/pull/41"
+      "url": "https://github.com/GTimG/QuasiRiemannTracker/pull/38"
     },
     {
       "label": "Verified affine-capacity predecessor",

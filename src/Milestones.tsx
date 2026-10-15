@@ -1,12 +1,14 @@
 import { milestones } from "./milestones";
+import { MathJax } from "better-react-mathjax";
 
 export default function Milestones() {
   return (
     <section className="milestones" aria-labelledby="milestones-heading">
       <h2 id="milestones-heading">From one to the critical line</h2>
       <p className="milestones-intro">
-        A bound θ excludes zeros with Re(s) &gt; θ for every Dirichlet
-        L-function. Smaller values give a larger zero-free region.
+        These functions encode patterns in prime numbers. The bound tells us how
+        far to the right their zeros can lie. Lowering it brings us closer to
+        proving that every nontrivial zero lies on one central line.
       </p>
       <ol className="milestone-list">
         {milestones.map((m) => (
@@ -20,10 +22,11 @@ export default function Milestones() {
               <small>{m.decimal}</small>
             </div>
             <article>
-              <span className="eyebrow">{m.kind}</span>
               <h3>{m.title}</h3>
               <p>{m.description}</p>
-              <p>{m.significance}</p>
+              <MathJax dynamic>
+                <p>{m.technical}</p>
+              </MathJax>
               <a
                 className="milestone-source"
                 href={m.source.url}

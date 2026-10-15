@@ -7,9 +7,8 @@ export const milestones: {
   theta: Rational;
   dashed: boolean;
   title: string;
-  kind: string;
   description: string;
-  significance: string;
+  technical: string;
   source: { label: string; url: string };
 }[] = [
   {
@@ -18,12 +17,10 @@ export const milestones: {
     decimal: "1.0",
     theta: { numerator: "1", denominator: "1" },
     dashed: false,
-    title: "A fixed gap below one",
-    kind: "Classical boundary",
+    title: "Classical result",
     description:
-      "The Euler product gives nonvanishing for Re(s) > 1. A fixed θ < 1 excludes zeros from a strip of positive width, uniformly over all heights and Dirichlet characters.",
-    significance:
-      "Crossing this boundary establishes the uniform Dirichlet quasi-Riemann hypothesis, already achieved by the tracker's verified results.",
+      "The classical result puts the zeros inside a strip of width one. Beating 1 means pushing its edge inward by a fixed amount that works everywhere. This was the first major breakthrough, and the verified results here have achieved it.",
+    technical: String.raw`Absolute convergence of the Euler product gives \(L(s,\chi)\ne0\) for \(\operatorname{Re}s>1\). A uniform bound \(\theta<1\), independent of conductor and height, establishes the Dirichlet quasi-Riemann hypothesis. The functional equation then confines nontrivial zeros to \(1-\theta\le\operatorname{Re}s\le\theta\).`,
     source: {
       label: "OpenAI, introduction and continuation principle",
       url: "https://github.com/openai/math/blob/1581d4cbdd69a0faf34b2089614fe2a814316a6a/preprints/The-Quasi-Riemann-Hypothesis-September-30-2026/build/paper.tex#L45",
@@ -35,12 +32,10 @@ export const milestones: {
     decimal: "0.8666…",
     theta: { numerator: "13", denominator: "15" },
     dashed: true,
-    title: "The row-counting obstruction",
-    kind: "Barrier in the analyzed method",
+    title: "Limit of OpenAI’s method",
     description:
-      "An independent analysis of the cubic-theta method finds θ > 13/15 under its fixed normalization and exponent model. Auxiliary rows with zeros near the critical line exhaust the counting saving, even with density-hypothesis-strength counts.",
-    significance:
-      "Reaching or crossing 13/15 would require overcoming an assumption or estimate in that model. The threshold describes the analyzed proof strategy; its derivation extrapolates some estimates beyond their proved ranges.",
+      "An analysis of OpenAI’s approach places a limit near 0.8667: improving its existing counting estimates eventually stops helping. Reaching this number would require changing a structural part of the argument. That makes it a useful target for a new idea.",
+    technical: String.raw`In the analyzed cubic-theta exponent model, the normalization \(M+\ell=1\) and the near-critical-line row count \(R(0)=1\) force \(\theta>13/15\), even with density-hypothesis-strength counts. The obstruction concerns this model of the method; the analysis optimistically extends some exponent formulas beyond their proved ranges.`,
     source: {
       label: "tomoto0, barrier analysis §2",
       url: "https://github.com/tomoto0/quasi-riemann-hypothesis-7-8-verification/blob/b83a73c6cb626a391e551baafdb7d0cceafaa55a/reports/barrier_analysis.md",
@@ -52,15 +47,13 @@ export const milestones: {
     decimal: "0.75",
     theta: { numerator: "3", denominator: "4" },
     dashed: true,
-    title: "Halving the possible zero strip",
-    kind: "Intermediate milestone",
+    title: "Halfway to the critical line",
     description:
-      "At θ = 3/4, the functional equation confines nontrivial Dirichlet zeros to 1/4 ≤ Re(s) ≤ 3/4, halving the classical strip's width. Crossing 3/4 narrows it further.",
-    significance:
-      "This marks progress toward the critical line. A method-specific obstruction at θ = 3/4 needs a separate argument: the paper's internal parameter κ = 3/4 corresponds to θ = 7/8.",
+      "At ¾, the region where zeros can occur is half as wide as in the classical result. Its two edges have moved halfway toward the central line. Beating ¾ would squeeze the zeros into an even narrower region around that line.",
+    technical: String.raw`A uniform zero-free half-plane \(\operatorname{Re}s>3/4\), together with the functional equation, confines all nontrivial Dirichlet zeros to \(1/4\le\operatorname{Re}s\le3/4\). The admissible strip has width \(2\theta-1=1/2\). This threshold is a geometric milestone; a method-specific obstruction at \(\theta=3/4\) would require a separate proof.`,
     source: {
-      label: "OpenAI, functional equation and fourth-moment parameter range",
-      url: "https://github.com/openai/math/blob/1581d4cbdd69a0faf34b2089614fe2a814316a6a/preprints/The-Quasi-Riemann-Hypothesis-September-30-2026/build/paper.tex#L12532",
+      label: "OpenAI, functional-equation consequence",
+      url: "https://github.com/openai/math/blob/1581d4cbdd69a0faf34b2089614fe2a814316a6a/preprints/The-Quasi-Riemann-Hypothesis-September-30-2026/build/paper.tex#L310",
     },
   },
   {
@@ -69,12 +62,10 @@ export const milestones: {
     decimal: "0.5",
     theta: { numerator: "1", denominator: "2" },
     dashed: false,
-    title: "The critical line",
-    kind: "Goal · Dirichlet GRH",
+    title: "Generalized Riemann Hypothesis",
     description:
-      "At θ = 1/2, nonvanishing to the right and functional-equation symmetry place every nontrivial Dirichlet zero on the critical line Re(s) = 1/2.",
-    significance:
-      "Reaching this goal proves the generalized Riemann hypothesis for Dirichlet L-functions, including the Riemann hypothesis for ζ(s).",
+      "At ½, the allowed strip closes to a single line. Every nontrivial zero must lie exactly on it. Reaching this goal would prove the Riemann hypothesis and its extension to all Dirichlet L-functions, giving much sharper control over the distribution of primes.",
+    technical: String.raw`If \(L(s,\chi)\ne0\) for every Dirichlet character \(\chi\) and every \(\operatorname{Re}s>1/2\), with the principal pole excluded, functional-equation symmetry forces \(\operatorname{Re}\rho=1/2\) for every nontrivial zero \(\rho\). This is GRH for Dirichlet L-functions; the modulus-one case is RH for \(\zeta(s)\).`,
     source: {
       label: "OpenAI, introduction and functional-equation consequence",
       url: "https://github.com/openai/math/blob/1581d4cbdd69a0faf34b2089614fe2a814316a6a/preprints/The-Quasi-Riemann-Hypothesis-September-30-2026/build/paper.tex#L98",

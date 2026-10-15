@@ -36,7 +36,7 @@ export default function Chart({
   onSelect: (r: Contribution) => void;
 }) {
   const [window, setWindow] = useState<[number, number]>([0, 100]),
-    [overview, setOverview] = useState(false),
+    [overview, setOverview] = useState(true),
     [vertical, setVertical] = useState({ scale: 1, offset: 0 }),
     [hover, setHover] = useState<Contribution | null>(null);
   const dragging = useRef<{
@@ -104,7 +104,7 @@ export default function Chart({
         };
       });
   };
-  const reset = () => {
+  const fitLeaderboard = () => {
     setOverview(false);
     setWindow([0, 100]);
     setVertical({ scale: 1, offset: 0 });
@@ -114,6 +114,12 @@ export default function Chart({
     setWindow([0, 100]);
     setVertical({ scale: 1, offset: 0 });
   };
+  const pointRadius = overview ? Math.min(5, 2 * Math.sqrt(vertical.scale)) : 5;
+  // SVG paints later elements on top. Keep every filled frontier point above
+  // hollow alternatives, independently of the leaderboard's sort order.
+  const plottedRecords = [...records].sort(
+    (a, b) => Number(Boolean(a.is_record)) - Number(Boolean(b.is_record)),
+  );
   useEffect(() => {
     const element = svg.current;
     if (!element) return;
@@ -307,7 +313,7 @@ export default function Chart({
             className="icon"
             aria-label="Fit leaderboard"
             title="Fit leaderboard bounds"
-            onClick={reset}
+            onClick={fitLeaderboard}
           >
             <Search size={16} />
           </button>
@@ -327,7 +333,7 @@ export default function Chart({
           viewBox={`0 0 ${W} ${H}`}
           className="chart"
           role="group"
-          aria-label="Interactive bound timeline. Plus and minus zoom; arrows pan; Home fits best verified bounds below 1. Tab to select points."
+          aria-label="Interactive bound timeline. Plus and minus zoom; arrows pan; Home fits ½–1. Tab to select points."
           tabIndex={0}
           onKeyDown={(e) => {
             if (e.target !== e.currentTarget) return;
@@ -347,7 +353,7 @@ export default function Chart({
             if (e.key === "+" || e.key === "=")
               zoom(0.7, 0.5, 0.5, !e.shiftKey);
             if (e.key === "-") zoom(1.4, 0.5, 0.5, !e.shiftKey);
-            if (e.key === "Home") reset();
+            if (e.key === "Home") fitMilestones();
             if (e.key === "ArrowUp" || e.key === "ArrowDown")
               setVertical((v) => ({
                 ...v,
@@ -466,7 +472,7 @@ export default function Chart({
                 strokeLinejoin="round"
               />
             )}
-            {records.map((r) => {
+            {plottedRecords.map((r) => {
               const px = x(contributionDate(r)),
                 py = y(r.theta),
                 label = labels[r.id];
@@ -511,15 +517,20 @@ export default function Chart({
                   </title>
                   <circle cx={px} cy={py} r={16} fill="transparent" />
                   {selected === r.id && (
-                    <circle cx={px} cy={py} r={12} fill="#1d5d7422" />
+                    <circle
+                      cx={px}
+                      cy={py}
+                      r={pointRadius + 7}
+                      fill="#1d5d7422"
+                    />
                   )}
                   <circle
                     cx={px}
                     cy={py}
-                    r={selected === r.id ? 6 : 5}
+                    r={pointRadius + (selected === r.id ? 1 : 0)}
                     fill={r.is_record ? "#1d5d74" : "white"}
                     stroke={!verifiedHere(r) ? "#ad761e" : "#1d5d74"}
-                    strokeWidth={2}
+                    strokeWidth={overview ? 1 : 2}
                   />
                   {W > 600 &&
                     (r.timeline_at || cmp(r.theta, BASELINE) === 0) && (

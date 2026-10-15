@@ -53,7 +53,9 @@ test("mixed verification statuses and exact bounds render from the supplied cata
   await expect(page.locator(".leaderboard-entry")).toHaveCount(
     fixtureRecords.length,
   );
-  await page.getByRole("button", { name: "Fit leaderboard", exact: true }).click();
+  await page
+    .getByRole("button", { name: "Fit leaderboard", exact: true })
+    .click();
   await expect(page.locator("[data-dot]")).toHaveCount(plottedCount);
   await expect(page.locator(".leaderboard .tag.teal")).toHaveCount(
     verifiedCount,
@@ -107,7 +109,9 @@ test("selection, exact sorting and zoom", async ({ page }, info) => {
   await page.keyboard.press("ArrowRight");
   await page.keyboard.press("Home");
   await page.getByRole("button", { name: "Zoom in", exact: true }).click();
-  await page.getByRole("button", { name: "Fit leaderboard", exact: true }).click();
+  await page
+    .getByRole("button", { name: "Fit leaderboard", exact: true })
+    .click();
   await expect(
     page.locator(".leaderboard-entry").first().locator(".entry-decimal"),
   ).toHaveText(decimal(bestVerified.theta, 14));
@@ -171,6 +175,9 @@ test("sub-float bounds remain visibly separate after narrowing time, with safe w
     route.fulfill({ json: { schema_version: 1, records: fixtures.records } }),
   );
   await page.goto("/");
+  await page
+    .getByRole("button", { name: "Fit leaderboard", exact: true })
+    .click();
   const plot = page.getByRole("group", { name: /Interactive bound timeline/ });
   await plot.focus();
   for (let i = 0; i < 3; i++) await page.keyboard.press("ArrowRight");

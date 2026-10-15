@@ -19,7 +19,7 @@ export const milestones: {
     dashed: false,
     title: "Classical result",
     description:
-      "The classical result puts the zeros inside a strip of width one. Beating 1 means pushing its edge inward by a fixed amount that works everywhere. This was the first major breakthrough, and the verified results here have achieved it.",
+      "The classical result puts all nontrivial zeros in the strip between real parts 0 and 1.",
     technical: String.raw`Absolute convergence of the Euler product gives \(L(s,\chi)\ne0\) for \(\operatorname{Re}s>1\). A uniform bound \(\theta<1\), independent of conductor and height, establishes the Dirichlet quasi-Riemann hypothesis. The functional equation then confines nontrivial zeros to \(1-\theta\le\operatorname{Re}s\le\theta\).`,
     source: {
       label: "OpenAI, introduction and continuation principle",
@@ -34,7 +34,7 @@ export const milestones: {
     dashed: true,
     title: "Limit of OpenAI’s method",
     description:
-      "An analysis of OpenAI’s approach places a limit near 0.8667: improving its existing counting estimates eventually stops helping. Reaching this number would require changing a structural part of the argument. That makes it a useful target for a new idea.",
+      "OpenAI’s approach combines several refined estimates. Its bound can be improved by tuning parameters and improving the functions used to count zeros. An analysis of the current approach places its limit at 13/15 = 0.8666…: these improvements can bring the bound toward this value, but reaching or crossing it requires a new ingredient in the argument.",
     technical: String.raw`In the analyzed cubic-theta exponent model, the normalization \(M+\ell=1\) and the near-critical-line row count \(R(0)=1\) force \(\theta>13/15\), even with density-hypothesis-strength counts. The obstruction concerns this model of the method; the analysis optimistically extends some exponent formulas beyond their proved ranges.`,
     source: {
       label: "tomoto0, barrier analysis §2",

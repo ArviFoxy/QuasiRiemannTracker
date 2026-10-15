@@ -6,9 +6,13 @@ export default function Milestones() {
     <section className="milestones" aria-labelledby="milestones-heading">
       <h2 id="milestones-heading">From one to the critical line</h2>
       <p className="milestones-intro">
-        These functions encode patterns in prime numbers. The bound tells us how
-        far to the right their zeros can lie. Lowering it brings us closer to
-        proving that every nontrivial zero lies on one central line.
+        The Riemann Hypothesis predicts that all nontrivial zeros of the Riemann
+        zeta function lie on the line with real part ½. The Generalized Riemann
+        Hypothesis extends this prediction to Dirichlet L-functions. The
+        quasi-Riemann hypothesis is the weaker statement that all their
+        nontrivial zeros lie in a strip between 1 − θ and θ, for some fixed
+        θ &lt; 1. By reducing θ toward ½, we approach the Generalized Riemann
+        Hypothesis. Along the way, there are a few key milestones to overcome.
       </p>
       <ol className="milestone-list">
         {milestones.map((m) => (

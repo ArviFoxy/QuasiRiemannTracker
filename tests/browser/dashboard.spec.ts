@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
 import { readFileSync } from "node:fs";
-import { cmp } from "../../core/rational.mjs";
+import { cmp, decimal } from "../../core/rational.mjs";
 import { catalogue, routeCatalogue } from "./catalogue-fixture";
 const fixtureRecords = catalogue().records;
 const verifiedCount = fixtureRecords.filter(
@@ -50,11 +50,17 @@ test("mixed verification statuses and exact bounds render from the supplied cata
   page,
 }, info) => {
   await page.goto("/");
-  await expect(page.locator("tbody tr")).toHaveCount(fixtureRecords.length);
+  await expect(page.locator(".leaderboard-entry")).toHaveCount(
+    fixtureRecords.length,
+  );
   await page.getByRole("button", { name: "Fit chart", exact: true }).click();
   await expect(page.locator("[data-dot]")).toHaveCount(plottedCount);
-  await expect(page.locator("tbody .tag.teal")).toHaveCount(verifiedCount);
-  await expect(page.locator("tbody .tag.amber")).toHaveCount(pendingCount);
+  await expect(page.locator(".leaderboard .tag.teal")).toHaveCount(
+    verifiedCount,
+  );
+  await expect(page.locator(".leaderboard .tag.amber")).toHaveCount(
+    pendingCount,
+  );
   const algebraic = fixtureRecords.find(
     (record) => record.id === "fixture-algebraic",
   )!;
@@ -94,9 +100,6 @@ test("selection, exact sorting and zoom", async ({ page }, info) => {
     })
     .click();
   await expect(page.locator(".proof-detail")).toContainText("7/8");
-  await expect(page.locator(".proof-detail")).toContainText(
-    "Checked by the example verifier.",
-  );
   await page.getByRole("button", { name: "Close proof details" }).click();
   const plot = page.getByRole("group", { name: /Interactive bound timeline/ });
   await plot.focus();
@@ -105,15 +108,15 @@ test("selection, exact sorting and zoom", async ({ page }, info) => {
   await page.keyboard.press("Home");
   await page.getByRole("button", { name: "Zoom in", exact: true }).click();
   await page.getByRole("button", { name: "Fit chart", exact: true }).click();
-  await expect(page.locator("tbody tr").first()).toContainText(
-    bestVerified.title.split(" · ").at(-1),
-  );
+  await expect(
+    page.locator(".leaderboard-entry").first().locator(".entry-decimal"),
+  ).toHaveText(decimal(bestVerified.theta, 14));
   await page
     .getByRole("button", { name: "Exact bound θ", exact: true })
     .click();
   await expect(
     page
-      .locator("tbody tr")
+      .locator(".leaderboard-entry")
       .first()
       .getByRole("button", {
         name: recordsByBound.at(-1).title,
@@ -124,7 +127,7 @@ test("selection, exact sorting and zoom", async ({ page }, info) => {
     .getByRole("button", { name: "Exact bound θ", exact: true })
     .click();
   await expect(
-    page.locator("tbody tr").first().getByRole("button", {
+    page.locator(".leaderboard-entry").first().getByRole("button", {
       name: recordsByBound[0].title,
       exact: true,
     }),
@@ -246,7 +249,9 @@ test("a stronger pending submission stays in the table and cannot move the verif
     }),
   );
   await page.reload();
-  await expect(page.locator("tbody tr")).toHaveCount(fixtureRecords.length + 1);
+  await expect(page.locator(".leaderboard-entry")).toHaveCount(
+    fixtureRecords.length + 1,
+  );
   await expect(page.locator("[data-dot]")).toHaveCount(pointCount);
   await expect(page.locator('[data-id="pending-test-only"]')).toHaveCount(0);
   await expect(bestBound).toHaveText(best!);

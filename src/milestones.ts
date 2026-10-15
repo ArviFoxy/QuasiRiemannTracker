@@ -8,7 +8,7 @@ export const milestones: {
   dashed: boolean;
   title: string;
   description: string;
-  technical: string;
+  technical?: string;
   source: { label: string; url: string };
 }[] = [
   {
@@ -45,12 +45,11 @@ export const milestones: {
     decimal: "0.75",
     theta: { numerator: "3", denominator: "4" },
     dashed: true,
-    title: "Halfway to the critical line",
-    description: String.raw`At \(\theta=3/4\), each edge of the strip has moved halfway toward the critical line (\(\operatorname{Re}s=1/2\)), leaving half the original width (\(1/4\le\operatorname{Re}s\le3/4\)). A smaller bound would narrow it further.`,
-    technical: String.raw`A uniform zero-free half-plane \(\operatorname{Re}s>3/4\), together with the functional equation, confines all nontrivial Dirichlet zeros to \(1/4\le\operatorname{Re}s\le3/4\). The strip has width \(2\theta-1=1/2\). This describes the geometry at \(\theta=3/4\); proving a barrier in a particular method requires a separate argument.`,
+    title: "The three-quarter barrier",
+    description: String.raw`Mathematician Acer, who worked on OpenAI’s project, pointed out a further obstruction at \(\theta=3/4\). He expects overcoming this barrier in the method to require a new idea.`,
     source: {
-      label: "OpenAI, functional-equation consequence",
-      url: "https://github.com/openai/math/blob/1581d4cbdd69a0faf34b2089614fe2a814316a6a/preprints/The-Quasi-Riemann-Hypothesis-September-30-2026/build/paper.tex#L310",
+      label: "Acer, 6 October 2026",
+      url: "https://x.com/AcerFur/status/2107605089225691372",
     },
   },
   {

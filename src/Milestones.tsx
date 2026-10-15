@@ -26,9 +26,11 @@ export default function Milestones() {
               <MathJax dynamic>
                 <p>{m.description}</p>
               </MathJax>
-              <MathJax dynamic>
-                <p>{m.technical}</p>
-              </MathJax>
+              {m.technical && (
+                <MathJax dynamic>
+                  <p>{m.technical}</p>
+                </MathJax>
+              )}
               <a
                 className="milestone-source"
                 href={m.source.url}

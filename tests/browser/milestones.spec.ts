@@ -74,12 +74,15 @@ test("milestones sit between leaderboard and protocol and fit narrow screens", a
   await expect(page.locator(".milestone-list h3")).toHaveText([
     "Classical result",
     "Limit of OpenAI’s method",
-    "Halfway to the critical line",
+    "The three-quarter barrier",
     "Generalized Riemann Hypothesis",
   ]);
   await expect(page.locator(".milestone-list .eyebrow")).toHaveCount(0);
   for (const item of await page.locator(".milestone-list > li").all()) {
-    await expect(item.locator("p")).toHaveCount(2);
+    const isAcerBarrier = await item
+      .getByRole("heading", { name: "The three-quarter barrier" })
+      .count();
+    await expect(item.locator("p")).toHaveCount(isAcerBarrier ? 1 : 2);
     await expect(item.locator("mjx-container").first()).toBeVisible();
   }
   for (const width of [320, 390, 768]) {

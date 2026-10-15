@@ -5,15 +5,11 @@ export default function Milestones() {
   return (
     <section className="milestones" aria-labelledby="milestones-heading">
       <h2 id="milestones-heading">From one to the critical line</h2>
-      <p className="milestones-intro">
-        The Riemann Hypothesis predicts that every nontrivial zero of the Riemann
-        zeta function has real part ½. The Generalized Riemann Hypothesis makes
-        the same prediction for Dirichlet L-functions. The quasi-Riemann
-        hypothesis allows their nontrivial zeros to lie anywhere in a strip
-        between 1 − θ and θ, for some fixed θ &lt; 1. Lowering θ toward ½ narrows
-        this strip until it becomes the line predicted by GRH. Getting there
-        means overcoming several barriers in the proof methods.
-      </p>
+      <MathJax dynamic>
+        <p className="milestones-intro">
+          {String.raw`The Riemann Hypothesis predicts that every nontrivial zero of the Riemann zeta function has real part ½ (\(\operatorname{Re}s=1/2\)). The Generalized Riemann Hypothesis makes the same prediction for Dirichlet \(L\)-functions. The quasi-Riemann hypothesis allows their nontrivial zeros to lie anywhere in a strip between \(1-\theta\) and \(\theta\) (\(1-\theta\le\operatorname{Re}s\le\theta\)), for some fixed \(\theta<1\). Lowering \(\theta\) toward ½ narrows this strip until it becomes the line predicted by GRH (\(\theta=1/2\)). Getting there means overcoming several barriers in the proof methods.`}
+        </p>
+      </MathJax>
       <ol className="milestone-list">
         {milestones.map((m) => (
           <li key={m.id}>
@@ -27,7 +23,9 @@ export default function Milestones() {
             </div>
             <article>
               <h3>{m.title}</h3>
-              <p>{m.description}</p>
+              <MathJax dynamic>
+                <p>{m.description}</p>
+              </MathJax>
               <MathJax dynamic>
                 <p>{m.technical}</p>
               </MathJax>

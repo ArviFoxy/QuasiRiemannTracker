@@ -216,7 +216,7 @@ theorem actual_literal_first_low_target
         Z (Real.logb Z (volume src.toData)) 1 omega ξsecond (t k) Wkernel bin bidx‖ /
         (volume src.toData*actualHighPrimeCount M H Sbad Z)) ≤
       (C/(seed.absNorm : ℝ))* (1/((ref.sideCommon left).absNorm : ℝ))*
-        Z^(ref.sideTargetWidth left Z (Real.logb Z (volume src.toData))-1/30000000) := by
+        Z^(ref.sideTargetWidth left Z (Real.logb Z (volume src.toData))-1/50000) := by
   obtain ⟨ν,hν,hντ,hmain⟩ := actual_local_first_low_target M H hH W
     aslot bslot a b lo hi Mslot upper bplain₁ bplain₂ BRmask haslot hWs hW hbslot
     ha haUpper hb hMslot hBRmask hbeta hbetaTop loInput hiInput hloInput

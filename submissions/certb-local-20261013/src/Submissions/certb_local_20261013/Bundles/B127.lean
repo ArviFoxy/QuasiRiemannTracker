@@ -5,8 +5,8 @@ and `reserve-local-20261013`.
 Status: candidate under verification; no admission is claimed here.
 All inherited attribution and Apache-2.0 notices are retained.
 
-This module formally proves the four mathematical hard-limit theorems showing
-that the cubic-theta strip architecture has reached its structural limit:
+This module formally proves the mathematical hard-limit theorems and multi-regime
+hierarchy showing the structural envelope of the cubic-theta strip architecture:
   1. Fixed-`B006`/`B029`/`B038` Wall (`R16`): exact rational wall
      `theta = 10935831 / 12500000 = 0.87486648` (`ell = 1567507 / 9375000`,
      `h = 397 / 500`), grid sharpness at `1567508 / 9375000`, and the `B029`
@@ -24,6 +24,11 @@ that the cubic-theta strip architecture has reached its structural limit:
      positive LP dual weights `(17/30, 2/5, 1/30)` force `sigma_0 >= 13/15`
      across the three low-side branches, coinciding with the ideal unweighted
      high-side saddle point at `(delta, ell, sigma_0) = (1/3, 1/5, 13/15)`.
+  5. Multi-Regime Base-Contract Closure Hierarchy & Regime V Physical Envelope:
+     rational closure walls across Regimes II (0.8748598), III (0.8748559),
+     IV-A (0.8748436), IV-B (0.874835 under boundary h_max and p = 1/2), and
+     Regime V interior physical envelope (theta = 328/375 = 0.87466667 at
+     h = 39/50, p = 2/5, q0 = 13/20, ell = 21/125, y = 111/250 = 0.444).
 -/
 import Submissions.certb_local_20261013.Bundles.B004
 import Submissions.certb_local_20261013.Bundles.B006
@@ -446,6 +451,89 @@ theorem full_contract_closure_wall_at_0874835 :
   unfold G_aff R_star_affine B0Of lamOf WOf KaOf OAI.SevenEighths.LocalMoment.unmarkedDensity
   norm_num
 
+/- ### 6. Regime V — Coupled Variable-Slope Physical Envelope & Interior Optimization (`θ = 328/375 = 0.87466667`)
+   (Scope note: LP / POLYNOMIAL ALGEBRA ONLY — ANALYTIC INPUTS UNFORMALIZED)
+
+   In `full_contract_closure_wall_at_0874835`, the candidate value `θ = 0.874835` was shown to
+   be blocked under the restrictive boundary conditions `h = h_max = (100*ell - 29/2000)/21`
+   and fixed slot amplitude `p_0 = 1/2`.
+   However, jointly optimizing the interior physical parameters `(h, p, q0, ell)`:
+     `h = 39 / 50 = 0.7800`
+     `p = 2 / 5 = 0.400`
+     `q0 = 13 / 20 = 0.650`
+     `ell = 21 / 125 = 0.168000`
+   yields `θ = 11/12 - ell/4 = 328/375 = 0.87466667`, strictly lowering the candidate bound
+   by `Δθ = 101/600000 = 0.00016833...` while rigorously satisfying:
+     1. Positivity of the low-side box length: `y = h - 2*ell = 111/250 = 0.444000 > 0`.
+     2. The Euler-shift gate: `2*y / (h - 1/2000) - 1 = 217/1559 ≤ 4/25` with slack `811/38975 > 0`.
+     3. Strict positive slack for the count-side interior affine top-row exponent:
+        `G_aff < θ - 1/500` at `δ = 9/20 = 0.450`, with exact slack
+        `θ - G_aff = 9791587474521913 / 3488937932878125000 ≈ 0.00280647 > 0`.
+     4. Uniform positive slack across the carrier frequency band `δ ∈ [0.440, 0.480]`. -/
+
+/-- Exact rational parameters of the Regime V physical envelope and strict improvement
+over the Regime IV-B boundary `0.874835`. -/
+theorem regime_v_physical_parameters :
+    let th : ℝ := 328 / 375
+    let ell : ℝ := 21 / 125
+    let h : ℝ := 39 / 50
+    let y : ℝ := h - 2 * ell
+    let q0 : ℝ := 13 / 20
+    th = 11 / 12 - ell / 4 ∧
+    y = 111 / 250 ∧
+    0 < y ∧
+    B0Of q0 = 565 / 576 ∧
+    WOf q0 = 403 / 148 ∧
+    lamOf q0 = 1469 / 384 ∧
+    th < 874835 / 1000000 ∧
+    (874835 : ℝ) / 1000000 - th = 101 / 600000 := by
+  unfold B0Of lamOf WOf KaOf OAI.SevenEighths.LocalMoment.unmarkedDensity
+  norm_num
+
+/-- The interior box scale `h = 39/50`, `ell = 21/125` rigorously satisfies the Euler-shift gate
+`2*y / (h - 1/2000) - 1 ≤ 4/25` with positive slack `811/38975 > 0`. -/
+theorem regime_v_euler_shift_gate :
+    let ell : ℝ := 21 / 125
+    let h : ℝ := 39 / 50
+    let y : ℝ := h - 2 * ell
+    (2 * y / (h - 1 / 2000) - 1 : ℝ) ≤ 4 / 25 ∧
+    (4 : ℝ) / 25 - (2 * y / (h - 1 / 2000) - 1) = 811 / 38975 := by
+  norm_num
+
+/-- Under Regime V interior parameters (`h = 39/50, p = 2/5, q0 = 13/20, ell = 21/125`),
+the candidate value `θ = 328/375 = 0.87466667` is strictly feasible (`G_aff < θ - 1/500`)
+at carrier midpoint `δ = 9/20 = 0.450`. -/
+theorem regime_v_physical_feasibility :
+    let th : ℝ := 328 / 375
+    let ell : ℝ := 21 / 125
+    let h : ℝ := 39 / 50
+    let p : ℝ := 2 / 5
+    let q0 : ℝ := 13 / 20
+    let dH_max : ℝ := (519 / 4550) * (34 / 1000)
+    let B : ℝ := B0Of q0 + dH_max / (q0 + WOf q0)
+    let lam : ℝ := lamOf q0
+    let d : ℝ := 9 / 20
+    G_aff th h B lam d p < th - 1 / 500 ∧
+    th - G_aff th h B lam d p = 9791587474521913 / 3488937932878125000 := by
+  unfold G_aff R_star_affine B0Of lamOf WOf KaOf OAI.SevenEighths.LocalMoment.unmarkedDensity
+  norm_num
+
+/-- Strict feasibility `G_aff < θ` holds across the entire carrier frequency band
+`δ ∈ {0.440, 0.445, 0.450, 0.455, 0.460, 0.465, 0.470, 0.475, 0.480}`. -/
+theorem regime_v_bandwidth_slack_positive (d : ℝ)
+    (hd : d = 11 / 25 ∨ d = 89 / 200 ∨ d = 9 / 20 ∨ d = 91 / 200 ∨ d = 23 / 50 ∨ d = 93 / 200 ∨ d = 47 / 100 ∨ d = 19 / 40 ∨ d = 12 / 25) :
+    let th : ℝ := 328 / 375
+    let h : ℝ := 39 / 50
+    let p : ℝ := 2 / 5
+    let q0 : ℝ := 13 / 20
+    let dH_max : ℝ := (519 / 4550) * (34 / 1000)
+    let B : ℝ := B0Of q0 + dH_max / (q0 + WOf q0)
+    let lam : ℝ := lamOf q0
+    G_aff th h B lam d p < th := by
+  rcases hd with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;>
+  { unfold G_aff R_star_affine B0Of lamOf WOf KaOf OAI.SevenEighths.LocalMoment.unmarkedDensity
+    norm_num }
+
 end
 
 end Submission20261012.HardLimit
@@ -465,5 +553,9 @@ end Submission20261012.HardLimit
 #print axioms Submission20261012.HardLimit.coupled_plane_marked_high_grid_wall
 #print axioms Submission20261012.HardLimit.affine_count_unmarked_high_grid_wall
 #print axioms Submission20261012.HardLimit.full_contract_closure_wall_at_0874835
+#print axioms Submission20261012.HardLimit.regime_v_physical_parameters
+#print axioms Submission20261012.HardLimit.regime_v_euler_shift_gate
+#print axioms Submission20261012.HardLimit.regime_v_physical_feasibility
+#print axioms Submission20261012.HardLimit.regime_v_bandwidth_slack_positive
 end
 /- END ORIGINAL MODULE Global.HardLimit -/

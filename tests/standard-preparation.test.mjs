@@ -35,10 +35,16 @@ test("standard preparation reads the committed source and rejects symlink blobs"
     git("init", "-q");
     git("config", "user.name", "Fixture");
     git("config", "user.email", "fixture@example.test");
-    cpSync(
-      "submissions/openai-baseline",
-      join(repo, "submissions/openai-baseline"),
-      { recursive: true },
+    mkdirSync(join(repo, "submissions/openai-baseline/src/Candidate"), {
+      recursive: true,
+    });
+    writeFileSync(
+      join(repo, "submissions/openai-baseline/src/Candidate/Main.lean"),
+      "import Mathlib\n",
+    );
+    writeFileSync(
+      join(repo, "submissions/openai-baseline/metadata.json"),
+      "{}",
     );
     git("add", ".");
     git("commit", "-qm", "Fixture");

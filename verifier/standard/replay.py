@@ -1,9 +1,11 @@
 """Replay prepared standard submission with Palomar's unmodified sandbox and kernels."""
 from pathlib import Path
-import argparse, datetime, hashlib, json, os, re, shutil, sys, time
+import argparse, datetime, hashlib, json, os, re, shutil, sys, tarfile, time
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from worker_resources import worker_capacity
 from standard.judge import judge_exports
+from standard.compile import compile_modules, publish_module
+from standard.build_cache import build_inputs, restore_cache
 
 if sys.flags.optimize or os.getuid() == 0:
     raise SystemExit('Use unoptimized Python as an unprivileged worker user')
@@ -54,7 +56,7 @@ v._BWRAP = Path(profile.get('bwrap', '/usr/bin/bwrap'))
 v.VERIFICATION_LIMITS = {**v.VERIFICATION_LIMITS,'memory_high_percent':75,'memory_max_percent':85,'tasks_max':256}
 # Compilation, export and all three kernel checks share this deadline.
 # Keep the Actions check step longer so timeout evidence can still be retained.
-v.install_execution_deadline(budget_seconds=7200)
+v.install_execution_deadline(budget_seconds=10800)
 bundled = {name:judge/'bin'/name for name in v.TOOLCHAIN_TOOLS}
 approved_tools=json.loads(args.tool_pins.read_text())
 selected_tools={'source_lean':old/'bin/lean','exporter':exporter,**{'judge_'+name:path for name,path in bundled.items()}}
@@ -65,7 +67,7 @@ tools = v.tool_snapshot([*bundled.values(),v._BWRAP,old/'bin/lean',exporter,pyth
 capacity = worker_capacity()
 threads = capacity['threads']
 print(f'Proof compilation: using {threads} Lean threads', flush=True)
-env = {'PATH':str(old/'bin')+':/usr/bin:/bin','HOME':str(work/'home'),'TMPDIR':str(work/'tmp'),'LANG':'C.UTF-8','LEAN_NUM_THREADS':str(threads),'LEAN_ABORT_ON_PANIC':'1'}
+env = {'PATH':str(old/'bin')+':/usr/bin:/bin','HOME':str(work/'home'),'TMPDIR':str(work/'tmp'),'LANG':'C.UTF-8','LEAN_ABORT_ON_PANIC':'1'}
 system = v.system_readable_paths()
 phases=[]
 def stage(name):
@@ -100,26 +102,74 @@ config={'challenge_module':'Challenge','solution_module':'Solution','theorem_nam
 targets=v.comparator_export_targets(config,v.primitive_targets(judge))
 challenge_env={**env,'LEAN_PATH':':'.join(map(str,[work/'challenge-lib',*libs]))}
 stage('compile and freeze canonical challenge')
-log('challenge-compile',v.sandboxed_run([str(old/'bin/lean'),'-o',str(work/'challenge-lib/Challenge.olean'),'Challenge.lean'],cwd=work/'challenge-src',environment=challenge_env,writable_directories=[work/'challenge-lib',work/'home',work/'tmp'],readable_paths=[*libs,*system],executable_paths=[old,Path('/usr')],tools=tools,timeout=600))
+log('challenge-compile',v.sandboxed_run([str(old/'bin/lean'),f'-j{threads}','-o',str(work/'challenge-lib/Challenge.olean'),'Challenge.lean'],cwd=work/'challenge-src',environment=challenge_env,writable_directories=[work/'challenge-lib',work/'home',work/'tmp'],readable_paths=[*libs,*system],executable_paths=[old,Path('/usr')],tools=tools,timeout=600))
 log('challenge-export',v.export_module('Challenge',targets,output=work/'exports/Challenge.export',leanexport=exporter,cwd=work/'challenge-src',environment=challenge_env,readable_paths=[work/'challenge-lib',*libs,*system],executable_paths=[old,exporter,Path('/usr')],tools=tools,timeout=600))
 v.verify_export(work/'exports/Challenge.export')
 challenge_hash=sha(work/'exports/Challenge.export')
 candidate_env={**env,'LEAN_PATH':':'.join(map(str,[work/'candidate-lib',*libs]))}
 stage('candidate mount controls')
 v.verify_sandbox_confinement(source/'denied-write',work/'denied-read',positive_read=source/'src/Candidate/Main.lean',python=python,touch=touch,cwd=source,environment=candidate_env,writable_directories=[work/'candidate-lib',work/'home',work/'tmp'],protected_write_directories=[source,work/'challenge-lib',*libs],readable_paths=[source,work/'challenge-lib',*libs,*system],executable_paths=[old,Path('/usr')],tools=tools)
+cached_modules = set()
+cache = profile.get('candidate_cache')
+if cache:
+    try:
+        archive = Path(cache['path'])
+        if sha(archive) != cache['sha256']:
+            raise ValueError('Authenticated build cache changed')
+        cached_modules = restore_cache(archive, work/'candidate-lib',
+            build_inputs(contract, profile, library_inventory, approved_tools))
+        print(f'Reused {len(cached_modules)} authenticated compiled modules', flush=True)
+    except (ValueError, KeyError, TypeError, OSError, tarfile.TarError) as error:
+        print(f'Build cache miss: {error}; compiling source', flush=True)
+        shutil.rmtree(work/'candidate-lib')
+        (work/'candidate-lib').mkdir()
 stage('compile standard candidate')
-for index, module in enumerate(contract['build_order'], 1):
-    print(f"Compile {index}/{len(contract['build_order'])}: {module}", flush=True)
+jobs = threads
+print(f"Compiling up to {min(jobs, len(contract['build_order']))} modules concurrently", flush=True)
+module_started = {}
+def compile_one(module, module_threads):
+    if module in cached_modules:
+        return
     started = time.monotonic()
-    assert re.fullmatch(r'Candidate(?:\.[A-Z][A-Za-z0-9_]*)+',module)
-    relative = module.replace('.','/')
-    output = work/'candidate-lib'/(relative+'.olean')
-    output.parent.mkdir(parents=True,exist_ok=True)
-    log('compile-'+module,v.sandboxed_run([str(old/'bin/lean'),'-o',str(output),relative+'.lean'],cwd=source/'src',environment=candidate_env,writable_directories=[work/'candidate-lib',work/'home',work/'tmp'],readable_paths=[*libs,*system],executable_paths=[old,Path('/usr')],tools=tools,timeout=600))
+    retry = module in module_started
+    module_started.setdefault(module, started)
+    lean_threads = 1 if retry else module_threads
+    assert re.fullmatch(r'(?:Candidate|Submissions)(?:\.[A-Za-z_][A-Za-z0-9_]*)+', module)
+    relative = module.replace('.', '/')
+    scratch = work/'compilers'/module
+    if scratch.exists():
+        shutil.rmtree(scratch)
+    for part in ['out', 'home', 'tmp']:
+        (scratch/part).mkdir(parents=True, exist_ok=True)
+    output = scratch/'out'/('module.olean')
+    environment = {**candidate_env, 'HOME':str(scratch/'home'), 'TMPDIR':str(scratch/'tmp')}
+    memory_limit = max(1024**3, capacity['memory_bytes'] * 3 // 4 * module_threads // jobs)
+    print(f'Compile {module} ({lean_threads} threads, {memory_limit // 1024**2} MiB memory limit' + (', exclusive retry)' if retry else ')'), flush=True)
+    # Palomar filters LEAN_NUM_THREADS from the environment; pass Lean's CLI option.
+    try:
+        log('compile-'+module, v.sandboxed_run([str(old/'bin/lean'), f'-j{lean_threads}', '-o', str(output), relative+'.lean'],
+            cwd=source/'src', environment=environment,
+            writable_directories=[scratch/'out', scratch/'home', scratch/'tmp'],
+            readable_paths=[work/'candidate-lib', *libs, *system], executable_paths=[old, Path('/usr')],
+            # The retry shares the module deadline and the overall replay deadline.
+            tools=tools, timeout=max(0, 1800 - (time.monotonic() - module_started[module])),
+            resource_properties=(f"MemoryMax={memory_limit}",)))
+    except v.ResourceExhausted as error:
+        detail = f'{module}: {error}; memory limit {memory_limit} bytes'
+        (work/'logs'/('resource-'+module+'.log')).write_text(detail+'\n')
+        print(detail, flush=True)
+        raise
+    publish_module(output, work/'candidate-lib'/(relative+'.olean'))
+    shutil.rmtree(scratch)
     print(f'Compiled {module} in {time.monotonic()-started:.1f}s', flush=True)
+# Legacy contracts used a sequential order; their dependency list is a chain.
+order = contract['build_order']
+dependencies = contract.get('module_dependencies', {name:order[max(0, i-1):i] for i, name in enumerate(order)})
+compile_modules(order, dependencies, compile_one, jobs=jobs,
+    is_memory_error=lambda error: isinstance(error, v.ResourceExhausted) and 'result oom-kill)' in str(error))
 solution_env={**env,'LEAN_PATH':':'.join(map(str,[work/'solution-lib',work/'candidate-lib',*libs]))}
 stage('compile and export standard solution wrapper')
-log('solution-compile',v.sandboxed_run([str(old/'bin/lean'),'-o',str(work/'solution-lib/Solution.olean'),'Solution.lean'],cwd=work/'solution-src',environment=solution_env,writable_directories=[work/'solution-lib',work/'home',work/'tmp'],readable_paths=[work/'candidate-lib',*libs,*system],executable_paths=[old,Path('/usr')],tools=tools,timeout=600))
+log('solution-compile',v.sandboxed_run([str(old/'bin/lean'),f'-j{threads}','-o',str(work/'solution-lib/Solution.olean'),'Solution.lean'],cwd=work/'solution-src',environment=solution_env,writable_directories=[work/'solution-lib',work/'home',work/'tmp'],readable_paths=[work/'candidate-lib',*libs,*system],executable_paths=[old,Path('/usr')],tools=tools,timeout=600))
 log('solution-export',v.export_module('Solution',targets,output=work/'exports/Solution.export',leanexport=exporter,cwd=work/'solution-src',environment=solution_env,readable_paths=[work/'solution-lib',work/'candidate-lib',*libs,*system],executable_paths=[old,exporter,Path('/usr')],tools=tools,timeout=600))
 v.verify_export(work/'exports/Solution.export')
 assert sha(work/'exports/Challenge.export') == challenge_hash
@@ -134,6 +184,8 @@ assert sha(work/'exports/Challenge.export') == challenge_hash
 assert inputs == {str(p.relative_to(source)):sha(p) for p in source.rglob('*') if p.is_file()}
 check_libraries()
 stage('accepted')
-report={'status':'PASS','verified_at':datetime.datetime.now(datetime.timezone.utc).isoformat(),'reviewed_pr_head':contract['head_sha'],'source_commit':contract['source_commit'],'source_repository':contract['repository'],'result_id':manifest['id'],'theta_exact':manifest['theta']['numerator']+'/'+manifest['theta']['denominator'],'targets':config['theorem_names'],'allowed_axioms':config['permitted_axioms'],'kernels':['Lean default','nanoda','con-ron'],'judge_exit_code':result.returncode,'sandbox_preflight':'PASS','candidate_mount_preflight':'PASS','challenge_exported_before_candidate_execution':True,'receipt_outside_candidate':True,'source_files':inputs,'library_inventory_sha256':contract['library_inventory_sha256'],'driver_sha256':sha(Path(__file__)),'palomar_sha256':sha(ref/'scripts/verify_submission.py'),'tool_pins':approved_tools,'artifacts':{str(p.relative_to(work)):sha(p) for p in work.rglob('*') if p.is_file() and p.suffix in ['.log','.json','.lean','.export']}}
+report={'status':'PASS','verified_at':datetime.datetime.now(datetime.timezone.utc).isoformat(),'reviewed_pr_head':contract['head_sha'],'source_commit':contract['source_commit'],'source_repository':contract['repository'],'result_id':manifest['id'],'theta_exact':manifest.get('exact_bound',manifest['theta']['numerator']+'/'+manifest['theta']['denominator']),**({'bound_interval':manifest['bound_interval']} if 'bound_interval' in manifest else {}),'targets':config['theorem_names'],'allowed_axioms':config['permitted_axioms'],'kernels':['Lean default','nanoda','con-ron'],'judge_exit_code':result.returncode,'sandbox_preflight':'PASS','candidate_mount_preflight':'PASS','challenge_exported_before_candidate_execution':True,'receipt_outside_candidate':True,'source_files':inputs,'submission_trees':contract.get('submission_trees', {}),'library_inventory_sha256':contract['library_inventory_sha256'],'driver_sha256':sha(Path(__file__)),'palomar_sha256':sha(ref/'scripts/verify_submission.py'),'tool_pins':approved_tools,'artifacts':{str(p.relative_to(work)):sha(p) for p in work.rglob('*') if p.is_file() and p.suffix in ['.log','.json','.lean','.export']}}
+if cached_modules:
+    report['build_cache'] = {**{k:cache[k] for k in ['url','sha256','signer']}, 'modules_reused':len(cached_modules)}
 (work/'result.json').write_text(json.dumps(report,indent=2)+'\n')
 print('Accepted '+manifest['id']+' at '+contract['head_sha'],flush=True)

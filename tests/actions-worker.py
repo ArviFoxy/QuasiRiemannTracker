@@ -26,6 +26,22 @@ else:
     assert certificate['theta_exact'] == '1/1'
     assert certificate['report_sha256'] == hashlib.sha256((out/'run/result.json').read_bytes()).hexdigest()
     assert (out/'certificate.json').stat().st_size < 2048
+    # Exercise actual Lean imports from a cached source build, then mutate the
+    # source below. The old compiled theorem must never mask sorryAx.
+    sys.path.insert(0, str(root/'verifier'))
+    from standard.build_cache import build_inputs, pack_cache, digest
+    profile_path = out/'profile.json'
+    profile = json.loads(profile_path.read_text())
+    inputs = build_inputs(json.loads((out/'prepared/contract.json').read_text()), profile,
+        json.loads((out/'prepared/libraries.json').read_text()), accepted['report']['tool_pins'])
+    archive = out/'integration-build.tar.gz'
+    pack_cache(out/'run/candidate-lib', archive, inputs)
+    profile['candidate_cache'] = dict(path=str(archive), sha256=digest(archive), url='integration-test', signer='test-fixture')
+    profile_path.write_text(json.dumps(profile))
+    shutil.move(out/'run',out/'source-build-run')
+    subprocess.run(['python3','verifier/actions/run.py'],check=True)
+    reused = json.loads((out/'run/result.json').read_text())
+    assert reused['build_cache']['modules_reused'] == len(inputs['modules'])
     shutil.move(out/'run',out/'accepted-run')
     shutil.copyfile(out/'attempt.json',out/'accepted-attempt.json')
     prepared = out/'prepared'

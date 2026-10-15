@@ -78,6 +78,14 @@ test("submission layout contains Lean source with a fixed entrypoint", (t) => {
   t.after(() => rmSync(root, { recursive: true, force: true }));
   mkdirSync(join(root, "src/Candidate"), { recursive: true });
   writeFileSync(join(root, "src/Candidate/Main.lean"), "import Mathlib\n");
+  writeFileSync(
+    join(root, "metadata.json"),
+    JSON.stringify({
+      title: "Test",
+      authors: [{ name: "Author" }],
+      description: "A proof.",
+    }),
+  );
   const declaration = {
     id: "test-bound",
     theta: { numerator: "1", denominator: "1" },
@@ -88,7 +96,10 @@ test("submission layout contains Lean source with a fixed entrypoint", (t) => {
     declaration: "Candidate.bound",
   });
   writeFileSync(join(root, "manifest.json"), "{}");
-  assert.throws(() => submission(root, declaration), /only Lean source/);
+  assert.throws(
+    () => submission(root, declaration),
+    /metadata.json and Lean source/,
+  );
 });
 
 test("the certificate hash authenticates the exact archived report bytes", () => {

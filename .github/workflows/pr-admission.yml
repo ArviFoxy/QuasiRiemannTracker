@@ -72,7 +72,7 @@ jobs:
       matrix:
         result: ${{ fromJSON(needs.prepare.outputs.matrix) }}
     # Leave time for setup, replay, and artifact upload before finalization.
-    timeout-minutes: 270
+    timeout-minutes: 330
     permissions:
       contents: read
     steps:
@@ -115,11 +115,24 @@ jobs:
         continue-on-error: true
         timeout-minutes: 120
         run: python3 verifier/actions/setup.py
+      - name: Restore authenticated server compilation
+        if: steps.setup.outcome == 'success'
+        timeout-minutes: 10
+        continue-on-error: true
+        run: python3 verifier/actions/restore-build.py
+      - name: Publish cache diagnostics
+        if: always() && steps.setup.outcome == 'success'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: build-cache-${{ github.run_attempt }}-${{ matrix.result }}
+          path: |
+            verification/build-cache-status.json
+            verification/build-cache-inputs.json
+          retention-days: 7
       - name: Check the canonical theorem with Comparator and all three kernels
         id: check
         if: steps.setup.outcome == 'success'
-        continue-on-error: true
-        timeout-minutes: 125
+        timeout-minutes: 185
         run: python3 verifier/actions/run.py
       - name: Record worker completion
         if: always()
@@ -134,6 +147,7 @@ jobs:
           name: proof-verification-${{ github.run_attempt }}-${{ matrix.result }}
           path: |
             verification/worker-status.json
+            verification/build-cache-status.json
             verification/attempt.json
             verification/run/logs/
             verification/run/result.json
@@ -144,6 +158,11 @@ jobs:
             verification/run/judge/logs/
           if-no-files-found: warn
           retention-days: 30
+      - name: Require successful worker verification
+        if: always() && steps.check.outcome != 'success'
+        run: |
+          echo "Proof verification failed; see the worker diagnostics above."
+          exit 1
   admission:
     needs: [prepare, verify]
     if: always() && needs.prepare.outputs.verify == 'true'

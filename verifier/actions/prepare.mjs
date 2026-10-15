@@ -1,8 +1,7 @@
 // Fetch immutable Git objects; never check out or execute the submitted project.
 import { execFileSync } from "node:child_process";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
-import { submission } from "../manifest.mjs";
-import { upstreamImports } from "./imports.mjs";
+import { exactBound } from "../../core/exact-bound.mjs";
 const c = JSON.parse(readFileSync("verification-context/context.json", "utf8"));
 const e = c.expected;
 mkdirSync("verification", { recursive: true });
@@ -18,14 +17,13 @@ if (
   !/^[a-z][a-z0-9-]{2,63}$/.test(e.result_id)
 )
   throw Error("Invalid verification identity");
-if (!/^[0-9]+\/[0-9]+$/.test(e.theta_exact)) {
-  const reason =
-    "The standard hosted worker supports rational bounds; this exact expression requires an algebraic checking profile";
-  result("infrastructure-blocked", reason);
-  console.error(reason);
+try {
+  exactBound(e.theta_exact);
+} catch (error) {
+  result("infrastructure-blocked", error.message);
+  console.error(error.message);
   process.exit(1);
 }
-class WorkerProfileUnavailable extends Error {}
 const env = {
   PATH: process.env.PATH,
   HOME: process.env.RUNNER_TEMP || process.env.HOME,
@@ -60,7 +58,7 @@ try {
     `submissions/${e.result_id}/src/Candidate/Main.lean`,
   ]).toString();
   if (!listing)
-    throw new WorkerProfileUnavailable(
+    throw new Error(
       `Add submissions/${e.result_id}/src/Candidate/Main.lean with theorem Candidate.bound`,
     );
   // Preparation binds source and generates the theorem before provisioning libraries.
@@ -89,25 +87,15 @@ try {
   const contract = JSON.parse(
     readFileSync("verification/prepared/contract.json", "utf8"),
   );
-  const s = submission("verification/prepared/submission", contract.manifest);
-  // Only the pinned upstream OAI modules named in the source are built; source is data here.
-  const imports = new Set();
-  for (const f of s.files.filter((f) => f.path.endsWith(".lean"))) {
-    for (const name of upstreamImports(f.bytes.toString())) imports.add(name);
-  }
+  // All proof modules come from the prepared submission dependency graph.
   writeFileSync(
     "verification/imports.json",
-    JSON.stringify([...imports].sort()) + "\n",
+    JSON.stringify(contract.package_imports) + "\n",
   );
   console.log(`Prepared ${contract.manifest.id} at ${e.head_sha}`);
 } catch (error) {
   const detail = error.stderr?.toString() || error.message;
-  result(
-    error instanceof WorkerProfileUnavailable
-      ? "infrastructure-blocked"
-      : "invalid-submission",
-    detail.slice(-4000),
-  );
+  result("invalid-submission", detail.slice(-4000));
   console.error(detail);
   process.exitCode = 1;
 }

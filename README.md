@@ -43,12 +43,50 @@ the normal online main-branch build to recover older receipts from the archive.
 
 ## Submit
 
-1. Add Lean source under `submissions/<result-id>/src/Candidate/`, with theorem
+1. Start from the current `main` branch. Add Lean source under
+   `submissions/<result-id>/src/Candidate/`, with theorem
    `Candidate.bound` in `Main.lean`. Use the pinned dependencies in
    [verifier/pins.json](verifier/pins.json) and
    [verifier/standard/lake-manifest.json](verifier/standard/lake-manifest.json).
-2. Open a PR using the [submission template](.github/PULL_REQUEST_TEMPLATE.md).
-   Start its body with the result ID, exact bound, and decimal approximation:
+2. **Commit `submissions/<result-id>/metadata.json` alongside the Lean source.**
+   Admission reads this required file from the exact PR head. The submission
+   directory contains:
+
+   ```text
+   submissions/example-bound/
+     metadata.json
+     src/Candidate/Main.lean
+     src/Candidate/...           supporting Lean modules
+   ```
+
+   Use this JSON structure for a submission that imports the OpenAI baseline:
+
+   ```json
+   {
+     "title": "Result title",
+     "authors": [{ "name": "Your name" }],
+     "description": "Method and attribution to previous work.",
+     "dependencies": ["openai-baseline"]
+   }
+   ```
+
+   Required fields are `title`, `authors` (a nonempty array of objects with
+   `name` and an optional HTTPS `url`), and `description`. The description
+   explains the method and credits previous work.
+
+   Declare each directly imported submission in `dependencies`, using its
+   directory name under `submissions/`. It defaults to an empty list.
+   `builds_on` records attribution to existing result IDs; `dependencies`
+   supplies the source modules available to imports.
+
+   The other supported fields are `license` and `references` (an array of
+   objects with `label` and HTTPS `url`). The
+   [metadata validator](verifier/submission-metadata.mjs) defines the field
+   formats and size limits.
+
+3. Open a PR using the [submission template](.github/PULL_REQUEST_TEMPLATE.md).
+   Start its body with the result ID, exact bound, and decimal approximation.
+   The result ID must match the submission directory name:
 
    ```text
    QRH-Result: example-bound
@@ -57,22 +95,10 @@ the normal online main-branch build to recover older receipts from the archive.
    ```
 
    Give enough decimal digits to differ from the current best verified bound.
-   Equal bounds accept any supported decimal precision. Add `submissions/<result-id>/metadata.json` with the title, authors, description,
-   and source credits:
+   Equal bounds accept any supported decimal precision. These PR fields declare
+   the bound; the committed `metadata.json` supplies its publication metadata.
 
-   ```json
-   {
-     "title": "Result title",
-     "authors": [{ "name": "Your name" }],
-     "description": "Method and attribution to previous work."
-   }
-   ```
-
-   Optional fields: `dependencies` (source revision IDs), `license`,
-   `builds_on` (existing result IDs), and
-   `references` (objects with `label` and HTTPS `url`).
-
-3. GitHub Actions checks the exact PR head, including drafts. Comparator checks
+4. GitHub Actions checks the exact PR head, including drafts. Comparator checks
    the statement and allowed axioms against the
    [canonical target](verifier/upstream-challenge.lean), with the submitted bound
    substituted for $7/8$. Lean, NanoDa, and con-ron must all accept the proof.

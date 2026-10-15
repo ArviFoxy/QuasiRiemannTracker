@@ -94,7 +94,9 @@ the normal online main-branch build to recover older receipts from the archive.
    QRH-Decimal: 0.875
    ```
 
-   Give enough decimal digits to differ from the current best verified bound.
+   Use a reduced fraction or supported exact algebraic expression for
+   `QRH-Bound`. Give an accurate truncated `QRH-Decimal` with enough digits
+   to differ from the current best verified bound.
    Equal bounds accept any supported decimal precision. These PR fields declare
    the bound; the committed `metadata.json` supplies its publication metadata.
 

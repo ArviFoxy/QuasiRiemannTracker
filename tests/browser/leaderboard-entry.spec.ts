@@ -10,7 +10,7 @@ test("entries expand in place, toggle with the keyboard, and restore focus on cl
   await page.goto("/");
   await page
     .getByRole("navigation", { name: "Research views" })
-    .getByRole("button", { name: "Leaderboard", exact: false })
+    .getByRole("link", { name: "Leaderboard", exact: false })
     .click();
   const record = data.records[0];
   const toggle = page.getByRole("button", { name: record.title, exact: true });
@@ -54,7 +54,7 @@ test("mobile metadata and method each occupy one row, with full text available o
   await page.goto("/");
   await page
     .getByRole("navigation", { name: "Research views" })
-    .getByRole("button", { name: "Leaderboard", exact: false })
+    .getByRole("link", { name: "Leaderboard", exact: false })
     .click();
   const entry = page.locator(`#entry-${record.id}`);
   for (const width of [320, 390, 430]) {

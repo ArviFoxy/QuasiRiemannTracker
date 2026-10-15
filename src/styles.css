@@ -242,7 +242,7 @@ main {
   border-bottom: 1px solid var(--line);
   margin-bottom: 24px;
 }
-.view-nav button {
+.view-nav a {
   display: flex;
   align-items: center;
   gap: 7px;
@@ -252,10 +252,10 @@ main {
   color: #475661;
   border-bottom: 2px solid transparent;
 }
-.view-nav button:hover {
+.view-nav a:hover {
   color: var(--ink);
 }
-.view-nav button[aria-current="page"] {
+.view-nav a[aria-current="page"] {
   color: var(--teal);
   border-bottom-color: var(--teal);
   font-weight: 500;
@@ -1037,7 +1037,7 @@ dialog .protocol-grid h2 {
   .view-nav {
     gap: 12px;
   }
-  .view-nav button {
+  .view-nav a {
     font-size: 0.75rem;
     gap: 4px;
   }

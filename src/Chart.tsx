@@ -14,6 +14,7 @@ import {
 } from "../core/rational.mjs";
 import type { Contribution, Event, Rational } from "./types";
 import { chartExtent } from "../core/chart-viewport.mjs";
+import type { GraphView, HistoryMode, UpdateGraph } from "./navigation";
 import {
   contributionDate,
   formatContributionDate,
@@ -22,31 +23,70 @@ import {
   statusLabel,
   timelineRecords,
 } from "../core/catalogue.mjs";
+
+function zoomed(
+  current: GraphView,
+  factor: number,
+  anchorX = 0.5,
+  anchorY = 0.5,
+  scaleVertical = true,
+): GraphView {
+  const span = current.window[1] - current.window[0];
+  const nextSpan = Math.max(0.0001, Math.min(1e8, span * factor));
+  const anchor = current.window[0] + span * anchorX;
+  let vertical = current.vertical;
+  if (scaleVertical) {
+    const scale = Math.max(0.0001, Math.min(1e6, vertical.scale / factor));
+    const ratio = scale / vertical.scale;
+    vertical = {
+      scale,
+      offset: (1 - anchorY - 0.5) * (1 - ratio) + vertical.offset * ratio,
+    };
+  }
+  return {
+    ...current,
+    window: [anchor - nextSpan * anchorX, anchor + nextSpan * (1 - anchorX)],
+    vertical,
+  };
+}
+
 export default function Chart({
+  view,
+  onViewChange,
   records,
   allRecords,
   events,
   selected,
   onSelect,
 }: {
+  view: GraphView;
+  onViewChange: UpdateGraph;
   records: Contribution[];
   allRecords: Contribution[];
   events: Event[];
   selected: string | null;
   onSelect: (r: Contribution) => void;
 }) {
-  const [window, setWindow] = useState<[number, number]>([0, 100]),
-    [overview, setOverview] = useState(true),
-    [vertical, setVertical] = useState({ scale: 1, offset: 0 }),
-    [hover, setHover] = useState<Contribution | null>(null);
+  const { window, overview, vertical } = view;
+  const [hover, setHover] = useState<Contribution | null>(null);
+  const lastWheel = useRef(0);
   const dragging = useRef<{
     x: number;
     y: number;
     window: [number, number];
     offset: number;
+    moved: boolean;
   } | null>(null);
   const svg = useRef<SVGSVGElement>(null);
   const [W, setWidth] = useState(800);
+  useEffect(() => {
+    const endGesture = () => {
+      lastWheel.current = 0;
+      dragging.current = null;
+    };
+    globalThis.addEventListener("popstate", endGesture);
+    return () => globalThis.removeEventListener("popstate", endGesture);
+  }, []);
   useEffect(() => {
     const el = svg.current?.parentElement;
     if (!el) return;
@@ -87,33 +127,24 @@ export default function Chart({
     anchorX = 0.5,
     anchorY = 0.5,
     scaleVertical = true,
+    history: HistoryMode = "push",
   ) => {
-    setWindow((current) => {
-      const span = current[1] - current[0],
-        nextSpan = Math.max(0.0001, span * factor),
-        anchor = current[0] + span * anchorX;
-      return [anchor - nextSpan * anchorX, anchor + nextSpan * (1 - anchorX)];
-    });
-    if (scaleVertical)
-      setVertical((v) => {
-        const scale = Math.max(0.0001, Math.min(1e6, v.scale / factor)),
-          ratio = scale / v.scale;
-        return {
-          scale,
-          offset: (1 - anchorY - 0.5) * (1 - ratio) + v.offset * ratio,
-        };
-      });
+    lastWheel.current = 0;
+    onViewChange(
+      (current) => zoomed(current, factor, anchorX, anchorY, scaleVertical),
+      history,
+    );
   };
-  const fitLeaderboard = () => {
-    setOverview(false);
-    setWindow([0, 100]);
-    setVertical({ scale: 1, offset: 0 });
+  const fit = (overview: boolean) => {
+    lastWheel.current = 0;
+    onViewChange(() => ({
+      overview,
+      window: [0, 100],
+      vertical: { scale: 1, offset: 0 },
+    }));
   };
-  const fitMilestones = () => {
-    setOverview(true);
-    setWindow([0, 100]);
-    setVertical({ scale: 1, offset: 0 });
-  };
+  const fitLeaderboard = () => fit(false);
+  const fitMilestones = () => fit(true);
   const pointRadius = overview ? Math.min(5, 2 * Math.sqrt(vertical.scale)) : 5;
   // SVG paints later elements on top. Keep every filled frontier point above
   // hollow alternatives, independently of the leaderboard's sort order.
@@ -125,31 +156,37 @@ export default function Chart({
     if (!element) return;
     const wheel = (event: WheelEvent) => {
       event.preventDefault();
+      if (!event.deltaX && !event.deltaY) return;
       const bounds = element.getBoundingClientRect();
-      if (event.deltaX) {
-        setWindow((current) => {
-          const delta = (event.deltaX / width) * (current[1] - current[0]);
-          return [current[0] + delta, current[1] + delta];
-        });
-      }
-      if (event.deltaY) {
+      const now = Date.now();
+      const history = now - lastWheel.current < 400 ? "replace" : "push";
+      lastWheel.current = now;
+      onViewChange((current) => {
+        const delta =
+          (event.deltaX / width) * (current.window[1] - current.window[0]);
+        const panned: GraphView = {
+          ...current,
+          window: [current.window[0] + delta, current.window[1] + delta],
+        };
+        if (!event.deltaY) return panned;
         const unit =
           event.deltaMode === 1
             ? 16
             : event.deltaMode === 2
               ? bounds.height
               : 1;
-        zoom(
+        return zoomed(
+          panned,
           Math.exp(Math.max(-1, Math.min(1, event.deltaY * unit * 0.003))),
           Math.max(0, Math.min(1, (event.clientX - bounds.left - L) / width)),
           Math.max(0, Math.min(1, (event.clientY - bounds.top - T) / height)),
           !event.shiftKey,
         );
-      }
+      }, history);
     };
     element.addEventListener("wheel", wheel, { passive: false });
     return () => element.removeEventListener("wheel", wheel);
-  }, [window, W]);
+  }, [W, onViewChange]);
   const curve = useMemo(
     () =>
       frontierHistory(timelineRecords(allRecords.filter(verifiedHere)), events),
@@ -337,6 +374,7 @@ export default function Chart({
           tabIndex={0}
           onKeyDown={(e) => {
             if (e.target !== e.currentTarget) return;
+            lastWheel.current = 0;
             if (
               [
                 "+",
@@ -351,20 +389,38 @@ export default function Chart({
             )
               e.preventDefault();
             if (e.key === "+" || e.key === "=")
-              zoom(0.7, 0.5, 0.5, !e.shiftKey);
-            if (e.key === "-") zoom(1.4, 0.5, 0.5, !e.shiftKey);
+              zoom(0.7, 0.5, 0.5, !e.shiftKey, e.repeat ? "replace" : "push");
+            if (e.key === "-")
+              zoom(1.4, 0.5, 0.5, !e.shiftKey, e.repeat ? "replace" : "push");
             if (e.key === "Home") fitMilestones();
             if (e.key === "ArrowUp" || e.key === "ArrowDown")
-              setVertical((v) => ({
-                ...v,
-                offset: v.offset + (e.key === "ArrowUp" ? 0.1 : -0.1),
-              }));
+              onViewChange(
+                (current) => ({
+                  ...current,
+                  vertical: {
+                    ...current.vertical,
+                    offset:
+                      current.vertical.offset +
+                      (e.key === "ArrowUp" ? 0.1 : -0.1),
+                  },
+                }),
+                e.repeat ? "replace" : "push",
+              );
             if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
               const delta =
                 (window[1] - window[0]) *
                 0.1 *
                 (e.key === "ArrowLeft" ? -1 : 1);
-              setWindow([window[0] + delta, window[1] + delta]);
+              onViewChange(
+                (current) => ({
+                  ...current,
+                  window: [
+                    current.window[0] + delta,
+                    current.window[1] + delta,
+                  ],
+                }),
+                e.repeat ? "replace" : "push",
+              );
             }
           }}
           onPointerDown={(e) => {
@@ -374,6 +430,7 @@ export default function Chart({
               y: e.clientY,
               window,
               offset: vertical.offset,
+              moved: false,
             };
             e.currentTarget.setPointerCapture(e.pointerId);
           }}
@@ -391,8 +448,17 @@ export default function Chart({
                 ((e.clientX - d.x) / bounds.width) *
                 (d.window[1] - d.window[0]),
               dy = (e.clientY - d.y) / bounds.height;
-            setWindow([d.window[0] - dx, d.window[1] - dx]);
-            setVertical((v) => ({ ...v, offset: d.offset - dy }));
+            if (!dx && !dy && !d.moved) return;
+            lastWheel.current = 0;
+            onViewChange(
+              (current) => ({
+                ...current,
+                window: [d.window[0] - dx, d.window[1] - dx],
+                vertical: { ...current.vertical, offset: d.offset - dy },
+              }),
+              d.moved ? "replace" : "push",
+            );
+            d.moved = true;
           }}
         >
           <defs>

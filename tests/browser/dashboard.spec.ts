@@ -153,7 +153,7 @@ test("dialog keyboard controls, protocol, responsive overflow and no errors", as
   await expect(page.getByRole("dialog")).toBeVisible();
   await page.keyboard.press("Escape");
   await expect(page.getByRole("dialog")).not.toBeVisible();
-  await page.getByRole("button", { name: "Protocol", exact: true }).click();
+  await page.getByRole("link", { name: "Protocol", exact: true }).click();
   await expect(
     page.getByRole("heading", { name: "Requirements" }),
   ).toBeVisible();

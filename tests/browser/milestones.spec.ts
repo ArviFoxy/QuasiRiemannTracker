@@ -59,13 +59,13 @@ test("milestones sit between leaderboard and protocol and fit narrow screens", a
   await routeCatalogue(page);
   await page.goto("/");
   const nav = page.getByRole("navigation", { name: "Research views" });
-  await expect(nav.getByRole("button")).toHaveText([
+  await expect(nav.getByRole("link")).toHaveText([
     "Timeline",
     /Leaderboard/,
     "Milestones",
     "Protocol",
   ]);
-  await nav.getByRole("button", { name: "Milestones", exact: true }).click();
+  await nav.getByRole("link", { name: "Milestones", exact: true }).click();
   await expect(
     page.getByRole("heading", { name: "From one to the critical line" }),
   ).toBeVisible();
@@ -93,7 +93,7 @@ test("milestones sit between leaderboard and protocol and fit narrow screens", a
       ),
     ).toBe(true);
     await expect(
-      nav.getByRole("button", { name: "Protocol", exact: true }),
+      nav.getByRole("link", { name: "Protocol", exact: true }),
     ).toBeInViewport();
   }
 });

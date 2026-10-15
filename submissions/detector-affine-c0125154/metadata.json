@@ -10,5 +10,14 @@
   "license": "Apache-2.0",
   "builds_on": [
     "cycle61-c0125139"
+  ],
+  "dependencies": [
+    "openai-baseline"
+  ],
+  "references": [
+    {
+      "label": "Original manuscript, provenance, licenses and supporting verification material",
+      "url": "https://github.com/DaysSky/QuasiRiemannTracker/tree/a0efd9ee546b417de650f36bc8403f781706a94e/proofs/detector-affine-c0125154"
+    }
   ]
 }

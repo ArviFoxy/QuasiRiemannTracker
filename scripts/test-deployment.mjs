@@ -77,7 +77,7 @@ try {
   });
   await page.goto(origin + base);
   await page.locator(`[data-dot][data-id="${best.id}"]`).waitFor();
-  await page.getByRole("button", { name: "Fit chart", exact: true }).click();
+  await page.getByRole("button", { name: "Fit leaderboard", exact: true }).click();
   await page.waitForFunction(
     (count) => document.querySelectorAll("[data-dot]").length === count,
     plottedCount,

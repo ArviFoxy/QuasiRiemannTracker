@@ -12,7 +12,9 @@ import {
 } from "../core/catalogue.mjs";
 import { publicUrl } from "./urls";
 import Leaderboard, { type SortKey } from "./Leaderboard";
+import Milestones from "./Milestones";
 import LeanCode from "./LeanCode";
+import { tabs, useNavigation, type Tab } from "./navigation";
 const upstream =
   "https://github.com/openai/math/blob/fd4aeeb2ee4fc729c18d98444fed42fd0529eeeb/lean/";
 const leanTheorem = `theorem quasi_riemann_bound
@@ -21,9 +23,21 @@ const leanTheorem = `theorem quasi_riemann_bound
     LFunction χ s ≠ 0 := by
   sorry`;
 export default function App() {
+  const { tab, graph, setTab, setGraph, tabHref } = useNavigation();
+  const navigate = (event: React.MouseEvent<HTMLAnchorElement>, next: Tab) => {
+    if (
+      event.button ||
+      event.metaKey ||
+      event.ctrlKey ||
+      event.shiftKey ||
+      event.altKey
+    )
+      return;
+    event.preventDefault();
+    setTab(next);
+  };
   const [catalogue, setCatalogue] = useState<Contribution[]>([]),
     [repository, setRepository] = useState<string | null>(null),
-    [tab, setTab] = useState("Timeline"),
     [sort, setSort] = useState<{
       key: SortKey;
       direction: "ascending" | "descending";
@@ -139,7 +153,11 @@ export default function App() {
     <div className="shell">
       <main id="main">
         <header className="topbar">
-          <a className="brand" href="#main" onClick={() => setTab("Timeline")}>
+          <a
+            className="brand"
+            href={tabHref("Timeline")}
+            onClick={(event) => navigate(event, "Timeline")}
+          >
             <img src={publicUrl("favicon.svg")} alt="" width="36" height="36" />
             QRH Leaderboard
           </a>
@@ -197,15 +215,16 @@ export default function App() {
             </div>
           </section>
           <nav className="view-nav" aria-label="Research views">
-            {["Timeline", "Leaderboard", "Protocol"].map((name) => (
-              <button
+            {tabs.map((name) => (
+              <a
                 key={name}
+                href={tabHref(name)}
                 aria-current={tab === name ? "page" : undefined}
-                onClick={() => setTab(name)}
+                onClick={(event) => navigate(event, name)}
               >
                 {name}
                 {name === "Leaderboard" && <small>{all.length}</small>}
-              </button>
+              </a>
             ))}
           </nav>
           {error && (
@@ -215,12 +234,16 @@ export default function App() {
           )}
           {tab === "Protocol" ? (
             <Protocol />
+          ) : tab === "Milestones" ? (
+            <Milestones />
           ) : (
             <>
               <div className="research-layout">
                 <div className="research-main">
                   {tab === "Timeline" && (
                     <Chart
+                      view={graph}
+                      onViewChange={setGraph}
                       events={[]}
                       records={records.filter(
                         (record) =>

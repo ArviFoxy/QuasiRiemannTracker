@@ -8,7 +8,7 @@ const verified = catalogue.records.filter(
 );
 const best = [...verified].sort((a, b) => cmp(a.theta, b.theta))[0];
 
-test("all points stay in the chart while default zoom fits the verified frontier below one", async ({
+test("all points stay in the chart while the leaderboard fit focuses the verified frontier below one", async ({
   page,
 }) => {
   const source = verified[0];
@@ -60,12 +60,19 @@ test("all points stay in the chart while default zoom fits the verified frontier
   await page.goto("/");
 
   const chart = page.locator(".chart");
-  const fit = page.getByRole("button", { name: "Fit chart", exact: true });
+  const fit = page.getByRole("button", {
+    name: "Fit leaderboard",
+    exact: true,
+  });
   const summary = page.getByRole("button", {
     name: "View best verified proof",
   });
   const boundTicks = chart.locator('[data-axis="bound"]');
   const dateTicks = chart.locator('[data-axis="date"]');
+  await expect(chart.locator("[data-dot]").first()).toBeAttached();
+  const overviewBounds = await boundTicks.allTextContents();
+  const overviewDates = await dateTicks.allTextContents();
+  await fit.click();
 
   await expect(
     page.getByRole("group", { name: "Chart view", exact: true }),
@@ -131,11 +138,11 @@ test("all points stay in the chart while default zoom fits the verified frontier
   await chart.press("ArrowLeft");
   await chart.press("ArrowDown");
   await chart.press("Home");
-  await expect(boundTicks).toHaveText(initialBounds);
-  await expect(dateTicks).toHaveText(initialDates);
+  await expect(boundTicks).toHaveText(overviewBounds);
+  await expect(dateTicks).toHaveText(overviewDates);
 });
 
-test("a verified theta-one baseline connects to the next bound while default zoom stays below one", async ({
+test("a verified theta-one baseline connects to the next bound while leaderboard zoom stays below one", async ({
   page,
 }) => {
   const initial = verified[0];
@@ -166,6 +173,9 @@ test("a verified theta-one baseline connects to the next bound while default zoo
   await page.goto("/");
   const chart = page.locator(".chart");
   const point = chart.locator('[data-id="verified-classical-fixture"]');
+  await page
+    .getByRole("button", { name: "Fit leaderboard", exact: true })
+    .click();
   await expect(point).toHaveAttribute("aria-hidden", "true");
   for (const text of await chart
     .locator('[data-axis="bound"]')

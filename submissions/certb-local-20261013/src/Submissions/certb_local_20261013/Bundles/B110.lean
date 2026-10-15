@@ -263,7 +263,7 @@ lemma firstLowRadius_fixed_cap (q : FirstJointLabel ι) (left : Bool)
       linarith
     _ ≤ _ := Real.rpow_le_rpow_of_exponent_le hZ.le (by linarith [le_max_right (c-d) 0])
 
-def lowLocalTiny : ℝ := 1/10000000
+def lowLocalTiny : ℝ := 1/1000000000
 
 def lowLocalMesh : ℝ := min (Cycle25.Energy.commonMesh 2 0 1 (lowLocalTiny/4)) (lowLocalTiny/4)
 

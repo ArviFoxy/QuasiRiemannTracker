@@ -214,7 +214,7 @@ theorem actual_local_first_low_target
         Z (Real.logb Z (volume src.toData)) 1 omega ξ (t k) Wkernel bin bidx‖ /
         (volume src.toData*actualHighPrimeCount M H Sbad Z)) ≤
       (C/(seed.absNorm : ℝ))* (1/((ref.sideCommon left).absNorm : ℝ))*
-        Z^(ref.sideTargetWidth left Z (Real.logb Z (volume src.toData))-1/50000) := by
+        Z^(ref.sideTargetWidth left Z (Real.logb Z (volume src.toData))-1/30000000) := by
   have ht : 0 < lowLocalTiny := by norm_num [lowLocalTiny]
   obtain ⟨hmesh,hmeshInc,hmeshWidth,hmeshLoss,heCap,hεslot,hedata⟩ :=
     low_local_parameter_choices (Fintype.card α)
@@ -292,7 +292,7 @@ theorem actual_local_first_low_target
       let c := Real.logb Z (((q i).sideCommon left).absNorm : ℝ);
       let d₁ := Real.logb Z (((q i).sideCommon (!left)).absNorm : ℝ);
       -2*c+(q i).activeWidth Z+(q i).punctureWidth Z ≤ refwidth ∧
-      -2 ≤ lowLocalTiny+(1-max (c-d₁) 0-6*(3/500)-omega-1)+(3/500)-1/45000 ∧
+      -2 ≤ lowLocalTiny+(1-max (c-d₁) 0-6*(3/500)-omega-1)+(3/500)-19/30000000 ∧
       firstLowRadius (q i) left (sourceRadius src) Z A 1 omega ξ ≤ 1*Z^(2:ℝ) := by
     dsimp only
     have hgates := actual_common_gates src Rmask seed hs hz₁ hz₂ i.1.val.1 i.1.val.2 i.1.property
@@ -314,7 +314,7 @@ theorem actual_local_first_low_target
       dsimp only [refwidth]
       linarith [(hsector i hi).2.1,(hsector i hi).2.2.1,(hsector i hi).2.2.2]
     · change -2 ≤ lowLocalTiny+(1-max ((q i).sideWidth left Z-(q i).sideWidth (!left) Z) 0-
-        6*(3/500)-omega-1)+(3/500)-1/45000
+        6*(3/500)-omega-1)+(3/500)-19/30000000
       norm_num [lowLocalTiny] at homegaCap ⊢
       linarith
     · simpa only [one_mul] using firstLowRadius_fixed_cap (q i) left (sourceRadius src) Z A
@@ -338,16 +338,16 @@ theorem actual_local_first_low_target
     B₁ B₂ hB₁ hB₂ (fun x => by rw [←hp₁]; exact SchwartzMap.norm_le_seminorm ℝ _ x)
     (fun x => by rw [←hp₂]; exact SchwartzMap.norm_le_seminorm ℝ _ x)
     (by linarith) hupper ((le_abs_self _).trans hb₁) ((le_abs_self _).trans hb₂) hRN hhSmall (by linarith)
-  change _ ≤ C*Z^((ref.radicalWidth Z+lowLocalTiny)+A+refwidth+lowLocalTiny-1/45000+
+  change _ ≤ C*Z^((ref.radicalWidth Z+lowLocalTiny)+A+refwidth+lowLocalTiny-19/30000000+
     ((BRmask+1)*εmask+ν*(degree : ℝ))+lowLocalTiny+lowLocalTiny+0+lowLocalTiny)/(seed.absNorm : ℝ) at hbound
   have hallow : 0 ≤ ref.sideAllowance left Z := by
     cases left
     · exact (ref.target_auxiliary_widths_nonneg Z hZ).2.2.2.2
     · exact (ref.target_auxiliary_widths_nonneg Z hZ).2.2.2.1
-  have htarget : (ref.radicalWidth Z+lowLocalTiny)+A+refwidth+lowLocalTiny-1/45000+
+  have htarget : (ref.radicalWidth Z+lowLocalTiny)+A+refwidth+lowLocalTiny-19/30000000+
       ((BRmask+1)*εmask+ν*(degree : ℝ))+lowLocalTiny+lowLocalTiny+0+lowLocalTiny ≤
       ref.radicalWidth Z+A-2*ref.sideWidth left Z+ref.activeWidth Z+ref.punctureWidth Z+
-        ref.sideAllowance left Z-1/50000 := by
+        ref.sideAllowance left Z-1/30000000 := by
     dsimp only [refwidth]
     norm_num [lowLocalTiny] at hsmallLoss ⊢
     linarith
@@ -356,7 +356,7 @@ theorem actual_local_first_low_target
   have hh := div_le_div_of_nonneg_right (mul_le_mul (by linarith : C ≤ C+1) hpow
     (Real.rpow_nonneg (zero_lt_one.trans hZ).le _) (by positivity : 0 ≤ C+1)) (Nat.cast_nonneg seed.absNorm)
   apply hh.trans_eq
-  have heq := ref.side_target_power left Z A (C+1) (-1/50000) hZ
+  have heq := ref.side_target_power left Z A (C+1) (-1/30000000) hZ
   have h := congrArg (fun x : ℝ => x/(seed.absNorm : ℝ)) heq
   dsimp only [A] at h ⊢
   convert h using 1 <;> ring

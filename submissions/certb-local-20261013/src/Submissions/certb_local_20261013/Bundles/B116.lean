@@ -651,7 +651,7 @@ theorem actual_literal_first_nonhigh_target
       firstNonHighContribution src R seed Z hs hz₁ hz₂ upper bplain₁ bplain₂ Wkernel
         (internalQ Q η₀) χ m P (actualHighPrimeCount M H Sbad Z) τ I e bin labels left t ≤
       (C/(seed.absNorm : ℝ))*(1/(((q refIndex).sideCommon left).absNorm : ℝ))*
-        Z^((q refIndex).sideTargetWidth left Z (Real.logb Z (volume src.toData))-1/100000) := by
+        Z^((q refIndex).sideTargetWidth left Z (Real.logb Z (volume src.toData))-1/30000000) := by
   have hcut : 0 < nonHighCutoff := by norm_num [nonHighCutoff,lowLocalTiny]
   have hcutBudget : nonHighCutoff+nonHighCutoff ≤ lowLocalTiny := by norm_num [nonHighCutoff,lowLocalTiny]
   have hcutCap : nonHighCutoff ≤ lowLocalTiny := by norm_num [nonHighCutoff,lowLocalTiny]
@@ -785,19 +785,19 @@ theorem actual_literal_first_nonhigh_target
       linarith)
     t (fun k hk => (ht k hk).trans (Real.rpow_le_rpow_of_exponent_le hZ.le hνerr')) left
   let factor := (1/(seed.absNorm : ℝ))*(1/((ref.sideCommon left).absNorm : ℝ))*
-    Z^(ref.sideTargetWidth left Z A-1/100000)
-  have upgrade (c r x : ℝ) (hc : 0 ≤ c) (hr : (1/100000:ℝ) ≤ r)
+    Z^(ref.sideTargetWidth left Z A-1/30000000)
+  have upgrade (c r x : ℝ) (hc : 0 ≤ c) (hr : (1/30000000:ℝ) ≤ r)
       (hx : x ≤ (c/(seed.absNorm : ℝ))*(1/((ref.sideCommon left).absNorm : ℝ))*
         Z^(ref.sideTargetWidth left Z A-r)) : x ≤ c*factor := by
     apply hx.trans
     have hp := Real.rpow_le_rpow_of_exponent_le hZ.le (show ref.sideTargetWidth left Z A-r ≤
-      ref.sideTargetWidth left Z A-1/100000 by linarith)
+      ref.sideTargetWidth left Z A-1/30000000 by linarith)
     have hh := mul_le_mul_of_nonneg_left hp
       (by positivity : 0 ≤ (c/(seed.absNorm : ℝ))*(1/((ref.sideCommon left).absNorm : ℝ)))
     convert hh using 1 <;> dsimp [factor] <;> ring
   have hz' := upgrade Cz (1/100) _ hCz.le (by norm_num) hzBound
   have he' := upgrade Ce (1/100) _ hCe.le (by norm_num) heBound
-  have hl' := upgrade Cl (1/50000) _ hCl.le (by norm_num) hlBound
+  have hl' := upgrade Cl (1/30000000) _ hCl.le (by norm_num) hlBound
   have ht' := upgrade Ct (1/100) _ hCt.le (by norm_num) htBound
   have hr' := upgrade Cr (1/10000) _ hCr.le (by norm_num) hrBound
   have hadd := add_le_add
@@ -1034,7 +1034,7 @@ theorem actual_literal_first_annular_targets_of_high
       simp only [Ideal.one_eq_top,Ideal.absNorm_top,Nat.cast_one]
     rw [hN1,div_one]
     have hp := Real.rpow_le_rpow_of_exponent_le hZ.le
-      (show ref.sideTargetWidth left Z A-1/100000 ≤ ref.sideTargetWidth left Z A by linarith)
+      (show ref.sideTargetWidth left Z A-1/30000000 ≤ ref.sideTargetWidth left Z A by linarith)
     convert mul_le_mul_of_nonneg_left hp
       (by positivity : 0 ≤ C/((ref.sideCommon left).absNorm : ℝ)) using 1 <;> ring
   have hbound := hnormalized.trans (add_le_add hnonhigh'

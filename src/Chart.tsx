@@ -1,6 +1,6 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { Minus, Plus, Maximize2, Move, Search } from "lucide-react";
-import { milestones } from "./milestones";
+import { milestones } from "./bound-milestones";
 import {
   BASELINE,
   sub,
@@ -68,6 +68,7 @@ export default function Chart({
   onSelect: (r: Contribution) => void;
 }) {
   const { window, overview, vertical } = view;
+  const [viewedAt] = useState(Date.now);
   const [hover, setHover] = useState<Contribution | null>(null);
   const lastWheel = useRef(0);
   const dragging = useRef<{
@@ -104,16 +105,18 @@ export default function Chart({
   const width = W - L - R,
     height = H - T - B;
   const extent = useMemo(
-    () => chartExtent(allRecords, events, overview, window),
-    [allRecords, events, overview, window],
+    () => chartExtent(allRecords, events, overview, window, viewedAt),
+    [allRecords, events, overview, window, viewedAt],
   );
   const low = overview ? { numerator: "1", denominator: "2" } : extent.low;
   const high = overview ? { numerator: "1", denominator: "1" } : extent.high;
   const span = extent.end - extent.start,
     start = extent.start + (span * window[0]) / 100,
     end = extent.start + (span * window[1]) / 100;
-  const x = (at: string) =>
-    L + ((Date.parse(at) - start) / (end - start)) * width;
+  const x = (at: string | number) =>
+    L +
+    (((typeof at === "number" ? at : Date.parse(at)) - start) / (end - start)) *
+      width;
   const y = (v: Rational) => {
     const ratio = relativePosition(v, low, high);
     return (
@@ -195,6 +198,7 @@ export default function Chart({
   let path = "",
     connected = false;
   for (const p of curve) {
+    if (Date.parse(p.at) > viewedAt) break;
     const px = x(p.at);
     if (!p.theta) {
       if (connected) path += ` H ${px}`;
@@ -205,7 +209,8 @@ export default function Chart({
     path += connected ? ` H ${px} V ${py}` : `M ${px} ${py}`;
     connected = true;
   }
-  if (connected) path += ` H ${W - R}`;
+  // The empty area to the right is padding, not a prediction of future records.
+  if (connected) path += ` H ${x(viewedAt)}`;
   const tiny =
     cmp(sub(high, low), { numerator: "1", denominator: "100000000" }) < 0;
   const tickValue = (t: number) => {
@@ -370,7 +375,7 @@ export default function Chart({
           viewBox={`0 0 ${W} ${H}`}
           className="chart"
           role="group"
-          aria-label="Interactive bound timeline. Plus and minus zoom; arrows pan; Home fits ½–1. Tab to select points."
+          aria-label="Interactive bound timeline. Plus and minus zoom; arrows pan; Home fits leaderboard bounds. Tab to select points."
           tabIndex={0}
           onKeyDown={(e) => {
             if (e.target !== e.currentTarget) return;
@@ -392,7 +397,7 @@ export default function Chart({
               zoom(0.7, 0.5, 0.5, !e.shiftKey, e.repeat ? "replace" : "push");
             if (e.key === "-")
               zoom(1.4, 0.5, 0.5, !e.shiftKey, e.repeat ? "replace" : "push");
-            if (e.key === "Home") fitMilestones();
+            if (e.key === "Home") fitLeaderboard();
             if (e.key === "ArrowUp" || e.key === "ArrowDown")
               onViewChange(
                 (current) => ({

@@ -1,4 +1,4 @@
-import { milestones } from "./milestones";
+import { milestones } from "./bound-milestones";
 import { MathJax } from "better-react-mathjax";
 
 export default function Milestones() {

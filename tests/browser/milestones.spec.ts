@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 import { routeCatalogue, record } from "./catalogue-fixture";
 
-test("full range is the default and both fit controls preserve points", async ({
+test("milestone overview is opt-in and both fit controls preserve points", async ({
   page,
 }) => {
   await routeCatalogue(page);
@@ -15,6 +15,11 @@ test("full range is the default and both fit controls preserve points", async ({
     .locator('[data-axis="date"]')
     .allTextContents();
   const count = await chart.locator("[data-dot]").count();
+  for (const text of initialBounds) {
+    expect(Number(text.replace("…", ""))).toBeGreaterThan(0.874);
+    expect(Number(text.replace("…", ""))).toBeLessThan(0.876);
+  }
+  await page.getByRole("button", { name: "Fit ½–1", exact: true }).click();
   for (const id of ["one", "thirteen-fifteenths", "three-quarters", "half"]) {
     const line = chart.locator(`[data-milestone="${id}"]`);
     const y = Number(await line.getAttribute("y1"));
@@ -37,9 +42,7 @@ test("full range is the default and both fit controls preserve points", async ({
   await page
     .getByRole("button", { name: "Fit leaderboard", exact: true })
     .click();
-  await expect(chart.locator('[data-axis="bound"]')).not.toHaveText(
-    initialBounds,
-  );
+  await expect(chart.locator('[data-axis="bound"]')).toHaveText(initialBounds);
   for (const text of await chart
     .locator('[data-axis="bound"]')
     .allTextContents()) {
@@ -104,7 +107,7 @@ test("overview dots are small and filled points paint above overlapping hollow p
   const filled = record({ id: "a-frontier", title: "Frontier fixture" });
   const hollow = record({ id: "z-alternative", title: "Equal bound fixture" });
   await routeCatalogue(page, { schema_version: 1, records: [hollow, filled] });
-  await page.goto("/");
+  await page.goto("/?view=overview");
   const dots = page.locator("[data-dot]");
   await expect(dots).toHaveCount(2);
   const filledDot = page.locator('[data-dot][data-id="a-frontier"]');

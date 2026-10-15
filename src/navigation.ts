@@ -20,7 +20,7 @@ export type UpdateGraph = (
 type View = { tab: Tab; graph: GraphView };
 
 const defaultGraph = (): GraphView => ({
-  overview: true,
+  overview: false,
   window: [0, 100],
   vertical: { scale: 1, offset: 0 },
 });
@@ -36,7 +36,7 @@ function pair(value: string | null): [number, number] | null {
 function readView(url: URL): View {
   const params = url.searchParams;
   const graph = defaultGraph();
-  graph.overview = params.get("view") !== "leaderboard";
+  graph.overview = params.get("view") === "overview";
   const x = pair(params.get("x")),
     y = pair(params.get("y"));
   if (

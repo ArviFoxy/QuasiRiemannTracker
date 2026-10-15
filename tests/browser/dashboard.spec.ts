@@ -171,6 +171,13 @@ test("sub-float bounds remain visibly separate after narrowing time, with safe w
 }, info) => {
   // Synthetic values exist only in this isolated browser test response.
   const fixtures = chartFixtures();
+  await page.clock.setFixedTime(
+    Math.max(
+      ...fixtures.records.map((r: { first_verified_at: string }) =>
+        Date.parse(r.first_verified_at),
+      ),
+    ),
+  );
   await page.route("**/catalogue.json", (route) =>
     route.fulfill({ json: { schema_version: 1, records: fixtures.records } }),
   );

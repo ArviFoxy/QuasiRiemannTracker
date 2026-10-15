@@ -111,7 +111,7 @@ test("graph mode, zoom and pan survive reload, sharing and tab changes", async (
   await page.getByRole("button", { name: "Zoom out", exact: true }).click();
   await chart.focus();
   await chart.press("Home");
-  await expect.poll(() => graphSnapshot(page)).toEqual(full);
+  await expect.poll(() => graphSnapshot(page)).toEqual(fitted);
 });
 
 test("continuous wheel and drag gestures each take one history step", async ({

@@ -1,0 +1,127 @@
+{
+  "scope": "Exact upward availability domains; analytic moment premises remain explicit.",
+  "source": "../../submissions/gao-balanced-marked-20261017/src/Candidate/Target830/Count/Windows.lean",
+  "source_sha256": "5bfb0d710c8b3d805a21890aa06094094dac48740034b4449c36fc138ec19e9d",
+  "windows": [
+    {
+      "index": 0,
+      "moment": "oldWeak",
+      "density_interval": [
+        "111/256",
+        "57/128"
+      ],
+      "amplitude_interval": [
+        "63/128",
+        "1/2"
+      ]
+    },
+    {
+      "index": 1,
+      "moment": "oldWeak",
+      "density_interval": [
+        "57/128",
+        "459/1024"
+      ],
+      "amplitude_interval": [
+        "127/256",
+        "1/2"
+      ]
+    },
+    {
+      "index": 2,
+      "moment": "PR60",
+      "density_interval": [
+        "57/128",
+        "459/1024"
+      ],
+      "amplitude_interval": [
+        "255/512",
+        "1/2"
+      ]
+    },
+    {
+      "index": 3,
+      "moment": "PR60",
+      "density_interval": [
+        "459/1024",
+        "231/512"
+      ],
+      "amplitude_interval": [
+        "127/256",
+        "1/2"
+      ]
+    },
+    {
+      "index": 4,
+      "moment": "PR62",
+      "density_interval": [
+        "231/512",
+        "465/1024"
+      ],
+      "amplitude_interval": [
+        "127/256",
+        "1/2"
+      ]
+    },
+    {
+      "index": 5,
+      "moment": "A",
+      "density_interval": [
+        "465/1024",
+        "117/256"
+      ],
+      "amplitude_interval": [
+        "127/256",
+        "1/2"
+      ]
+    },
+    {
+      "index": 6,
+      "moment": "C",
+      "density_interval": [
+        "117/256",
+        "237/512"
+      ],
+      "amplitude_interval": [
+        "63/128",
+        "1/2"
+      ]
+    },
+    {
+      "index": 7,
+      "moment": "C",
+      "density_interval": [
+        "237/512",
+        "15/32"
+      ],
+      "amplitude_interval": [
+        "63/128",
+        "1/2"
+      ]
+    },
+    {
+      "index": 8,
+      "moment": "C",
+      "density_interval": [
+        "15/32",
+        "123/256"
+      ],
+      "amplitude_interval": [
+        "63/128",
+        "1/2"
+      ]
+    },
+    {
+      "index": 9,
+      "moment": "C",
+      "density_interval": [
+        "123/256",
+        "63/128"
+      ],
+      "amplitude_interval": [
+        "63/128",
+        "1/2"
+      ]
+    }
+  ]
+}

@@ -88,5 +88,23 @@
     "repository": "GTimG/QuasiRiemannTracker",
     "number": 63,
     "head_sha": "52419a826d4a8465cdeb56aaa2d471c489221d1d"
+  },
+  {
+    "schema_version": 1,
+    "result_id": "no-hardcoding-20261017",
+    "theta_exact": "874835173/1000000000",
+    "verified_at": "2026-10-17T23:31:58.056623+00:00",
+    "source_repository": "GTimG/QuasiRiemannTracker",
+    "source_commit": "edbb22b1a080c961b19e438e9e8ce6d6b3842739",
+    "kernels": [
+      "Lean default",
+      "nanoda",
+      "con-ron"
+    ],
+    "report_url": "https://github.com/GTimG/QuasiRiemannTracker/blob/71d2bbdffc5c0cc50449a88424de73233b71ef03/verifier/standard/receipts/pr64-edbb22b1-20261017/result.json",
+    "report_sha256": "590991f6564dc9e5b012d947e554354c8c0c8fa042a304a941b564cff020ceff",
+    "repository": "GTimG/QuasiRiemannTracker",
+    "number": 64,
+    "head_sha": "edbb22b1a080c961b19e438e9e8ce6d6b3842739"
   }
 ]

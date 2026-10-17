@@ -88,7 +88,7 @@ theorem scheduled_packet_certificate {beta d delta p v xi e loss height : ℝ}
     scheduledBinExponent (2*beta-1) d delta p v xi+
       kernelExponent ((1+delta)/2) e+loss <
       Assembly.signal beta-rowSaving-(beta-theta)/2-height-
-        d*Capacity.dampingRate*delta*(v+xi) := by
+        d*dampingRate*delta*(v+xi) := by
   have hh := new_supremum_deficit hbeta hupper hd hdelta hp
   have hi := scheduled_kernel_bound (kap:=2*beta-1) (e:=e) hd hdelta.1 hp hv hxi
   unfold Assembly.signal

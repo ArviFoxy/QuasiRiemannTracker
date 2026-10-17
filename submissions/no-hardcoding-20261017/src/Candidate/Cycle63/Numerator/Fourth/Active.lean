@@ -34,7 +34,7 @@ lemma fallback_scale_admissible (b Y C Cu U m:ℝ)
   have hh := (le_div_iff₀ hCu).mp (min_le_right (b*Y) (C*U^m*Y/Cu))
   simpa only [fallbackCoefficientScale,mul_comm Cu] using hh
 
-lemma eventually_new_cutoff_le_base (b:ℝ) (hb:0≤ b) :
+lemma eventually_new_cutoff_le_base (b:ℝ) (_hb:0≤ b) :
     ∀ᶠU:ℝ in atTop,1<U ∧ ∀d:ℝ,dMinus≤ d → b*U^(y/d)≤ U := by
   have he:∀ᶠU:ℝ in atTop,b≤ U^(1/20:ℝ):=
     (tendsto_rpow_atTop (by norm_num:(0:ℝ)<1/20)).eventually (eventually_ge_atTop _)

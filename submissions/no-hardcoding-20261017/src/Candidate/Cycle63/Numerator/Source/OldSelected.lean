@@ -16,7 +16,7 @@ open OAI OAI.SevenEighths Cycle25ProbeFinalAssembly ProbeHighRowFamily ProbePhys
 open ProbeRowRadicalConductor Cycle25DetectorRowCount Cycle63DetectorCount
 local notation "O" => HeckeFamily.O
 
-lemma old_source_cutoff_le_base (b : ℝ) (hb : 0<b) :
+lemma old_source_cutoff_le_base (b : ℝ) (_hb : 0<b) :
     ∀ᶠ U:ℝ in atTop,1<U ∧ ∀d:ℝ,d0≤d → b*U^(y/d)≤U^(100:ℝ) := by
   have hev := (tendsto_rpow_atTop (by norm_num : (0:ℝ)<1)).eventually (eventually_ge_atTop b)
   filter_upwards [hev,eventually_gt_atTop (1:ℝ)] with U hbU hU

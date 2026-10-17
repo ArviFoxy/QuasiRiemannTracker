@@ -359,6 +359,7 @@ theorem eventual_actual_affine_error_source_and_puncture
 
 
 set_option linter.style.haveILetI false in
+omit [DecidableEq α] in
 /-- The original finite Fourier carrier is fixed before density degrees and
 control profiles. Ambient cardinality chooses scalar fees only; all actual
 source data in the normalized consumer continue to use card T. -/
@@ -424,7 +425,7 @@ local instance affineErrorMenuSuffixSumDecidable {ι : Type*} : DecidableEq (ι�
 def GeometryAffineErrorNormalizedMenuSuffix
     (s : Input α)(Z μ δ amp Cg : ℝ)(N : ℕ)(Sp : Finset (ℕ×ℕ))(degree : ℕ)
     (η₀ : Character)(Q : Ideal O)(height mesh : ℝ)(hZ : 1<Z) : Prop :=
-  ∀(reserve : ℝ)(hreserve : 0≤frequencyLoss Z 32 (μ/64)+reserve)
+  ∀(reserve : ℝ)(_hreserve : 0≤frequencyLoss Z 32 (μ/64)+reserve)
     (reflected : Bool)(R seed : Ideal O)(t₀ : ℝ)(bin : ℤ×(Fin 5→ℤ))
     (first : GeometryLowFirstIndex reflected s R seed (Z^(1:ℝ)) Z (μ/64)
       (Real.rpow_pos_of_pos (zero_lt_one.trans hZ) _) bin)
@@ -432,34 +433,34 @@ def GeometryAffineErrorNormalizedMenuSuffix
     (hcop : ∀j I,I∈(geometryLowFirstChild reflected s R seed (Z^(1:ℝ)) Z (μ/64) (Real.rpow_pos_of_pos (zero_lt_one.trans hZ) _) bin t₀ first).slots j→IsCoprime (Ideal.span {prime}) I)
     (Bp : actualAllocations (activeInput (geometryLowFirstChild reflected s R seed (Z^(1:ℝ)) Z (μ/64) (Real.rpow_pos_of_pos (zero_lt_one.trans hZ) _) bin t₀ first)).pools ((Ideal.span {prime})^(errorIndex i+1)))
     (υ : Character)(v₀ : ℝ)(hw₁ : s.W₁ 0=0)(hw₂ : s.W₂ 0=0)(ψ : RayCharacter)
-    (hυ : υ.modulus.absNorm≤radicalBound
+    (_hυ : υ.modulus.absNorm≤radicalBound
       (childCharacter (geometryColumnCharacter reflected s R seed (Z^(1:ℝ)) Z (μ/64)
         (Real.rpow_pos_of_pos (zero_lt_one.trans hZ) _) bin first.1.val) ψ)
       fixedBadMask prime (errorMovingExponent (errorIndex i)))
-    (hf₁ : frozenCoefficient first.2.val
+    (_hf₁ : frozenCoefficient first.2.val
       (geometryColumnIdeal reflected s R seed (Z^(1:ℝ)) Z (μ/64)
         (Real.rpow_pos_of_pos (zero_lt_one.trans hZ) _) bin first.1.val) R s.ν s.W s.P≠0)
-    (hprime : 3*amp/4≤Real.logb Z (normValue prime)),
+    (_hprime : 3*amp/4≤Real.logb Z (normValue prime)),
   ∀{Menu : Type}[Fintype Menu]{Blocks : Menu→Type}[∀j,Fintype (Blocks j)],
   let Label:=Sigma Blocks
   ∀(index : Label→GeometryErrorSecondIndex reflected s R seed Z (1:ℝ) amp (μ/64) reserve (9/4:ℝ) t₀ (Fintype.card α) hZ bin first prime i Bp υ v₀),
   let datum := fun n : Label=>geometryErrorSecondDatum reflected s R seed Z (1:ℝ) amp (μ/64) reserve (9/4:ℝ) t₀ (Fintype.card α) hZ bin first prime i Bp υ v₀ hw₁ hw₂ (index n)
-  ∀(hne : ∀n : Label,(datum n).block.value ballProfile≠0)(hinj : Function.Injective index)(second : Bool),
+  ∀(hne : ∀n : Label,(datum n).block.value ballProfile≠0)(_hinj : Function.Injective index)(second : Bool),
   let alloc := fun n=>geometryErrorSelectedAllocation reflected s R seed Z (1:ℝ) amp (μ/64) reserve (9/4:ℝ) t₀ (Fintype.card α) hZ bin first prime i Bp υ v₀ hw₁ hw₂ (index n) (hne n) second
   let chains := fun n=>geometryErrorChain reflected s R seed Z (1:ℝ) (μ/64) t₀ hZ bin first prime i Bp υ v₀ hp hcop
     (if second then (datum n).D else (datum n).C) (datum n).R (alloc n)
 
-  ∀(hP : ∀n,(chains n).R₂*(chains n).E₂≠0)
-    (hPN : ∀n,(((chains n).R₂*(chains n).E₂).absNorm:ℝ)≤Z^(28:ℝ))
-    (p : Profiles (1/4:ℝ) (9/4:ℝ))(hp₁ : s.W₁=p.profile 0)(hp₂ : s.W₂=p.profile 1)
-    (a : ℝ)(ha : 0<a)(hlower : a≤s.lower)
-    (hW₁ : ∀x,s.W₁ x≠0→(1/4:ℝ)≤x)(hW₂ : ∀x,s.W₂ x≠0→(1/4:ℝ)≤x)
+  ∀(_hP : ∀n,(chains n).R₂*(chains n).E₂≠0)
+    (_hPN : ∀n,(((chains n).R₂*(chains n).E₂).absNorm:ℝ)≤Z^(28:ℝ))
+    (p : Profiles (1/4:ℝ) (9/4:ℝ))(_hp₁ : s.W₁=p.profile 0)(_hp₂ : s.W₂=p.profile 1)
+    (a : ℝ)(_ha : 0<a)(_hlower : a≤s.lower)
+    (_hW₁ : ∀x,s.W₁ x≠0→(1/4:ℝ)≤x)(_hW₂ : ∀x,s.W₂ x≠0→(1/4:ℝ)≤x)
     (windowProfile : 𝓢(ℝ,ℂ))(χ₀ : Label→RayCharacter)
-    (P : Finset (Ideal O))(weight : ℝ)(hwgt : 0≤weight)
-    (hcap : ∀n D,D∈(datum n).block.divisors.filter Squarefree→(D.absNorm:ℝ)≤Z^(3*((N:ℝ)+2)))
+    (P : Finset (Ideal O))(weight : ℝ)(_hwgt : 0≤weight)
+    (_hcap : ∀n D,D∈(datum n).block.divisors.filter Squarefree→(D.absNorm:ℝ)≤Z^(3*((N:ℝ)+2)))
     (tₑ u : ℝ),
   ∀(box : Finset (Fin 4→ℤ))
-    (hbox : ∀n : Label,actualSecondDyad
+    (_hbox : ∀n : Label,actualSecondDyad
       (geometryErrorChild reflected s R seed Z (1:ℝ) (μ/64) t₀ hZ bin first prime i Bp υ v₀)
       ((R*geometryColumnIdeal reflected s R seed (Z^(1:ℝ)) Z (μ/64)
         (Real.rpow_pos_of_pos (zero_lt_one.trans hZ) _) bin first.1.val)*

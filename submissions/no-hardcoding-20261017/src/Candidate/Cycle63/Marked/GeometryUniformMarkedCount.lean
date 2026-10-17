@@ -35,15 +35,15 @@ theorem actual_geometry_uniform_marked_count {Slot : Type} [Fintype Slot] [Decid
       ∀ᶠZ : ℝ in atTop,1 < Z ∧ ∀D : ℝ,(4/5:ℝ) ≤ D → D ≤ 130 →
       ∀index₀ : RayCharacter×RayCharacter,
       ∀{ι α Row DataLabel : Type}[Fintype ι][Fintype α][DecidableEq α][Nonempty Row][Fintype DataLabel],
-      ∀(reflected second : Bool)(s : Input ι)(hηs : s.η=excluded F₀.character R₀)
+      ∀(reflected second : Bool)(s : Input ι)(_hηs : s.η=excluded F₀.character R₀)
         (R seed : Ideal O)(K ξ : ℝ)(hK : 0<K)(bin : ℤ×(Fin 5→ℤ))
         (column : Row→FirstColumnIndex (geometryFirstSource s R seed K Z ξ hK bin))
         (datum : DataLabel→SecondInputDatum α)(first : DataLabel→FirstSourceLabel)
         (gRow : Row→secondLiveRows (fun l=>(datum l).block))
-        (hparent : ∀l,(datum (gRow l).val.1).input.η=
+        (_hparent : ∀l,(datum (gRow l).val.1).input.η=
           geometryColumnCharacter reflected s R seed K Z ξ hK bin (column l))
         (hfirst : ∀l,first (gRow l).val.1=geometryFirstLabel s R seed K Z ξ hK bin (column l))
-        (hR : ∀l,(datum (gRow l).val.1).R≠0)(ψ : Row→RayCharacter),
+        (_hR : ∀l,(datum (gRow l).val.1).R≠0)(ψ : Row→RayCharacter),
       let left:=!reflected
       let unit:=fun l=>(firstDictionaryUnit left η₀ u₀ F₀ R₀ l:O)
       let hf:=fun l=>geometry_first_frequency_ne_zero reflected η₀ u₀ F₀ R₀ hu₀

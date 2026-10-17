@@ -30,11 +30,11 @@ theorem actual_weighted_from_buffered_maxima_fixedmesh
     (hβ : (51/100:ℝ)≤HeckeZeroSupremum.beta)
     (hκβ : 2*HeckeZeroSupremum.beta-1≤Cycle63.Optimization.plainCapacityCost) :
     ∃J : ℕ,∀(dmin dmax τ ε e κw ηw : ℝ) (I : ℕ)
-    (hdmin : 0<dmin) (hdmax : dmin≤dmax) (hτ : 0<τ)
-    (hτzero : τ<dmin/2) (hτheight : 4*τ<dmin*ηw)
-    (hε : 0<ε) (hεsmall : ε≤1/1000) (he : 0<e) (he' : e<1/1000)
-    (hκw : 0<κw) (hκw' : κw≤1) (hηw : 0≤ηw)
-    (hbudget : 12*e*((22:ℝ)+2)+8*κw+2*ηw≤ε/2),
+    (_hdmin : 0<dmin) (_hdmax : dmin≤dmax) (_hτ : 0<τ)
+    (_hτzero : τ<dmin/2) (_hτheight : 4*τ<dmin*ηw)
+    (_hε : 0<ε) (_hεsmall : ε≤1/1000) (_he : 0<e) (_he' : e<1/1000)
+    (_hκw : 0<κw) (_hκw' : κw≤1) (_hηw : 0≤ηw)
+    (_hbudget : 12*e*((22:ℝ)+2)+8*κw+2*ηw≤ε/2),
     ∃C : ℝ,0<C ∧ ∀ᶠ Z : ℝ in atTop,1<Z ∧
       ∀d : ℝ,dmin≤d → d≤dmax →
       ∀B : NaturalBatch (Slot:=Slot) M H hH base anchor bad W lo hi (Z^d),

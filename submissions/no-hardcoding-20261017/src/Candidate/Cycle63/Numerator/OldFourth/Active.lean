@@ -22,7 +22,7 @@ open OAI OAI.SevenEighths HeckeFamily HeckeInverseAmplification ProbeHighRowFami
 open ProbeRowRadicalConductor
 local notation "O" => HeckeFamily.O
 
-lemma eventually_old_cutoff (b:ℝ) (hb:0≤ b) :
+lemma eventually_old_cutoff (b:ℝ) (_hb:0≤ b) :
     ∀ᶠU:ℝ in atTop,1<U ∧ ∀d:ℝ,d0≤ d → b*U^(y/d)≤ U^(100:ℝ) := by
   have he:∀ᶠU:ℝ in atTop,b≤ U^(1:ℝ):=
     (tendsto_rpow_atTop (by norm_num:(0:ℝ)<1)).eventually (eventually_ge_atTop _)

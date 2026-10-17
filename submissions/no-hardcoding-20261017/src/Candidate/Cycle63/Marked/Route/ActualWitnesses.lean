@@ -28,6 +28,7 @@ def NaturalBatch.retracted (B : NaturalBatch (Slot:=Slot) M H hH base anchor bad
       intro u hu j s hs
       simpa only [supportedRowRetraction,dite_eq_left hu] using B.plainIdentity u hu j s hs }
 
+omit [Fintype Label] [Nonempty Label] [Fintype Slot] [DecidableEq Slot] in
 theorem NaturalBatch.retracted_family (B : NaturalBatch (Slot:=Slot) M H hH base anchor bad W lo hi U)
     (u₀ : B.rows) (u : FreeRow) (hu : u∈B.rows) :
     (B.retracted u₀).family u=B.family u := by
@@ -46,6 +47,7 @@ def NaturalBatch.retracted_witnesses
         (binCutoff (B.retracted u₀).slots (B.retracted u₀).widths a binWidth bin) T allowance i :=
   fun bin u=>witness bin (supportedRowRetraction B.rows u₀ u)
 
+omit [Nonempty Label] [Fintype Slot] [DecidableEq Slot] in
 /-- The adaptive detector witnesses are constructed from actual buffered zero
 maxima, uniformly for every amplitude bin, including unused rounded bins. -/
 theorem actual_adaptive_supported_witnesses

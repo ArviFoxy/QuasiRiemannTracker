@@ -72,7 +72,7 @@ theorem geometry_affine_error_paid_source_of_receipts
     (hexceptional : cap≤Ce*control*Z^target)(hexponent : exponent+εratio≤target) :
     (56/(P.card:ℝ))*‖geometryAffineErrorRetainedSum s Ψ Z amp ξ reserve t hZ reflected key P υ‖≤
       (Ce+Co*Cb*C)*control*Z^target := by
-  letI : DecidableEq α:=Classical.decEq α
+  let : DecidableEq α:=Classical.decEq α
   obtain ⟨χ,Hratio,hH,hnorm⟩:=hnormalized
   have hnum : 0≤C*control*Z^exponent := by positivity
   have hc:=hcontract χ (fun _=>C*control*Z^exponent) Hratio (fun _ _=>hnum) hH hnorm
@@ -176,7 +176,7 @@ theorem actual_affine_error_uniform_component_payment
   refine ⟨hz.1,?_⟩
   intro hZ T η₀ θ w σ freq hσ bΦ state hη p t X₁ X₂ hX₁ hX₂ hw hwm hlo₁ hlo₂ hhi₁ hhi₂
     hwlo hwhi hcone S D hSE hdE Ψ reflected key firstHeight height hheight s μ' N' δ' amp P control exponent υ hυ
-  letI : DecidableEq T:=Classical.decEq T
+  let : DecidableEq T:=Classical.decEq T
   intro hnormalized
   have caps:=hz.2 T η₀ θ w σ freq hσ bΦ state p t X₁ X₂ hX₁ hX₂ hw hlo₁ hlo₂ hhi₁ hhi₂ hwhi
   have hcpaid:=hcZ.2 hZ T η₀ θ w σ freq hσ bΦ state hη p t X₁ X₂ hX₁ hX₂ hw hwm

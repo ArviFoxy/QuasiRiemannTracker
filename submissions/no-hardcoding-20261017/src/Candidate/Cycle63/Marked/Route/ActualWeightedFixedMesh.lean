@@ -23,6 +23,7 @@ variable {Label Slot : Type} [Fintype Label] [Nonempty Label] [Fintype Slot] [De
 variable (M : Ideal O) [NeZero M] (H : Subgroup (O⧸M)ˣ) (hH : RayOrthogonality.globalUnits M≤H)
 local instance : Finite (O⧸M) := Ring.HasFiniteQuotients.finiteQuotient (NeZero.ne M)
 
+omit [Nonempty Label] in
 theorem actual_marked_source_fields_fixedmesh
     (base anchor : Label→Character) (bad : Label→Ideal O)
     (hbadM : ∀j,bad j≤M)
@@ -137,6 +138,7 @@ theorem actual_marked_source_fields_fixedmesh
       exact Finset.prod_congr rfl (fun s _=>B.plainIdentity u (hrows hu) label s.val (hselected s.property))
     exact heq.trans (mul_le_mul_of_nonneg_right hPC (Real.rpow_nonneg (zero_lt_one.trans hU).le _))
 
+omit [Nonempty Label] in
 theorem actual_weighted_row_sum_fixedmesh
     (base anchor : Label→Character) (bad : Label→Ideal O)
     (hbadM : ∀j,bad j≤M)
@@ -157,7 +159,7 @@ theorem actual_weighted_row_sum_fixedmesh
       (∀s∈B.slots,B.widths s≤ mesh) → 0<(∑s∈B.slots,B.widths s) →
       0≤height → 2*Real.pi*allowance+(3*i:ℕ)*T≤height →
       (∀s∈B.slots,|B.relativeHeight s|≤height) → (∀u∈B.rows,|B.commonHeight u|≤height) →
-      ∀witness : ∀bin : BinLabel B.slots ((2*a-1)/2) binWidth,
+      ∀_witness : ∀bin : BinLabel B.slots ((2*a-1)/2) binWidth,
         ∀u,SupportedWitness (B.family u) U a ε (binCutoff B.slots B.widths a binWidth bin) T allowance i,
       (∀u∈B.rows,∀s∈B.slots,‖B.Q u s‖≤(U^(B.widths s))^((2*a-1)/2+binWidth)) →
       (∑u∈B.rows,‖∏s∈B.slots,B.Q u s‖^2)≤
@@ -288,7 +290,7 @@ theorem actual_weighted_row_sum_uniform_fixedmesh
       (∀s∈B.slots,B.widths s≤ mesh) → 0<(∑s∈B.slots,B.widths s) →
       0≤height → 2*Real.pi*allowance+(3*i:ℕ)*T≤height →
       (∀s∈B.slots,|B.relativeHeight s|≤height) → (∀u∈B.rows,|B.commonHeight u|≤height) →
-      ∀witness : ∀bin : BinLabel B.slots ((2*a-1)/2) binWidth,
+      ∀_witness : ∀bin : BinLabel B.slots ((2*a-1)/2) binWidth,
         ∀u,SupportedWitness (B.family u) U a ε (binCutoff B.slots B.widths a binWidth bin) T allowance i,
       (∀u∈B.rows,∀s∈B.slots,‖B.Q u s‖≤(U^(B.widths s))^((2*a-1)/2+binWidth)) →
       (∑u∈B.rows,‖∏s∈B.slots,B.Q u s‖^2)≤

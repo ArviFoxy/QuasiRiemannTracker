@@ -16,16 +16,17 @@ local notation "O" => HeckeFamily.O
 variable {Label Slot : Type} [Fintype Label] [Nonempty Label] [Fintype Slot] [DecidableEq Slot]
 variable (M : Ideal O) [NeZero M] (H : Subgroup (O⧸M)ˣ) (hH : RayOrthogonality.globalUnits M≤H)
 
+omit [Nonempty Label] [Fintype Slot] [DecidableEq Slot] in
 theorem actual_unmarked_from_buffered_maxima_uniform
     (base : Label→Character) (setup : DensityCountingSetup)
     (εm η : ℝ) (hεm : 0<εm) (hη : 0<η)
     (hβ : (51/100:ℝ)≤HeckeZeroSupremum.beta) :
     ∃J : ℕ,∀(dmin dmax τ ε e κw ηw : ℝ) (I : ℕ)
-    (hdmin : 0<dmin) (hdmax : dmin≤dmax) (hτ : 0<τ)
-    (hτzero : τ<dmin/2) (hτheight : 4*τ<dmin*ηw)
-    (hε : 0<ε) (hεsmall : ε≤1/1000) (he : 0<e) (he' : e<1/1000)
-    (hκw : 0<κw) (hκw' : κw≤1) (hηw : 0≤ηw)
-    (hbudget : 12*e*((22:ℝ)+2)+8*κw+2*ηw≤ε/2),
+    (_hdmin : 0<dmin) (_hdmax : dmin≤dmax) (_hτ : 0<τ)
+    (_hτzero : τ<dmin/2) (_hτheight : 4*τ<dmin*ηw)
+    (_hε : 0<ε) (_hεsmall : ε≤1/1000) (_he : 0<e) (_he' : e<1/1000)
+    (_hκw : 0<κw) (_hκw' : κw≤1) (_hηw : 0≤ηw)
+    (_hbudget : 12*e*((22:ℝ)+2)+8*κw+2*ηw≤ε/2),
     ∃C : ℝ,0≤C ∧ ∀ᶠ Z : ℝ in atTop,1<Z ∧
       ∀d : ℝ,dmin≤d → d≤dmax →
       ∀{anchor : Label→Character}{bad : Label→Ideal O}{W : ℝ→ℂ}{lo hi : ℝ},

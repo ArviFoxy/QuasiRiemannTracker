@@ -20,7 +20,7 @@ theorem raw_frequency_lower (M c d b a R Lc ω err q : ℝ)
 /-- Removing a sixth power of norm at most `U^κ`, for the root cutoff `κ`, preserves the frequency
 lower bound required by the continuous allocation ledger. -/
 theorem small_core_frequency_lower (M removed q qcore : ℝ)
-    (hM : 0 ≤ M) (hu : 0 ≤ removed)
+    (_hM : 0 ≤ M) (hu : 0 ≤ removed)
     (hq : Cycle63.Optimization.frequencyFactor*M-2*removed ≤ q)
     (hcore : Cycle63.Optimization.coreFactor*q ≤ qcore) :
     Cycle63.Optimization.liveFrequency*M-2*removed ≤ qcore := by

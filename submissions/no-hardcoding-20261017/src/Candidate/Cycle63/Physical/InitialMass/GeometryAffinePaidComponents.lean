@@ -20,6 +20,7 @@ variable (M : Ideal O) [NeZero M]
 local instance : Finite (O⧸M) := Ring.HasFiniteQuotients.finiteQuotient (NeZero.ne M)
 variable (H : Subgroup (O⧸M)ˣ) (hH : RayOrthogonality.globalUnits M≤H)
 
+omit [DecidableEq α] in
 /-- Both original retained terms already include their single prime payment.
 Specializing the moving state does not alter the original error witness. -/
 theorem affine_paid_subset_components_of_specs

@@ -102,21 +102,21 @@ def geometryErrorNormalizedMenuDynamicSpec {α : Type u}[Fintype α][DecidableEq
     (Sp : Finset (ℕ×ℕ))(degree : ℕ)(η₀ : Character)(Q : Ideal O)(Z : ℝ) : Prop :=
   ∀(hZ : 1<Z)(s : Input α)(θ : α→RayQuotient.Characters M H)
     (w σ freq : α→ℝ)(height mesh : ℝ)
-    (hcard : Fintype.card α≤N)(hM : ∀j,s.M j≤Cs)
-    (hm : Matches M H hH s η₀ θ w σ freq W B Z)
-    (hsη : s.η=ηseed)(hsupper : s.upper≤bs)(hsb₁ : s.b₁=bp)(hsb₂ : s.b₂=bp)
-    (hw : ∀j,0≤w j)(hwL : ∀j,w j≤Cycle25.Energy.commonMesh Mcap Bmask L εold)
-    (hmesh : 0≤mesh)(hwm : ∀j,w j≤mesh)(hσlo : ∀j,lo≤σ j)(hσhi : ∀j,σ j≤hi)
-    (hheight : 0≤height)(hfreq : ∀j,|freq j|≤height)
-    (hOrig : ∀second j,Cycle63.Physical.sourcePlainScales s.toData.toSource second j≤Z^L)
-    (hwin : ∀j,logWindow (s.lo j) (s.hi j)≤window)
-    (Mrow ξ : ℝ)(hMmin : Mmin≤Mrow)(hξ : 0≤ξ)
-    (hMcap' : Mrow+εwidth*Mrow+ξ/2≤Mcap)
-    (hslot : Cycle63.Optimization.slotFloor*Mrow≤∑j,Real.logb Z (s.P j) ∧ (∑j,Real.logb Z (s.P j))≤Cycle63.Optimization.slotTop*Mrow)
-    (haff : length Z s.X₁+length Z s.X₂+Cycle63.Arithmetic.lambda*(∑j,Real.logb Z (s.P j))≤Cycle63.Arithmetic.B*Mrow),
+    (_hcard : Fintype.card α≤N)(_hM : ∀j,s.M j≤Cs)
+    (_hm : Matches M H hH s η₀ θ w σ freq W B Z)
+    (_hsη : s.η=ηseed)(_hsupper : s.upper≤bs)(_hsb₁ : s.b₁=bp)(_hsb₂ : s.b₂=bp)
+    (_hw : ∀j,0≤w j)(_hwL : ∀j,w j≤Cycle25.Energy.commonMesh Mcap Bmask L εold)
+    (_hmesh : 0≤mesh)(_hwm : ∀j,w j≤mesh)(_hσlo : ∀j,lo≤σ j)(_hσhi : ∀j,σ j≤hi)
+    (_hheight : 0≤height)(_hfreq : ∀j,|freq j|≤height)
+    (_hOrig : ∀second j,Cycle63.Physical.sourcePlainScales s.toData.toSource second j≤Z^L)
+    (_hwin : ∀j,logWindow (s.lo j) (s.hi j)≤window)
+    (Mrow ξ : ℝ)(_hMmin : Mmin≤Mrow)(_hξ : 0≤ξ)
+    (_hMcap' : Mrow+εwidth*Mrow+ξ/2≤Mcap)
+    (_hslot : Cycle63.Optimization.slotFloor*Mrow≤∑j,Real.logb Z (s.P j) ∧ (∑j,Real.logb Z (s.P j))≤Cycle63.Optimization.slotTop*Mrow)
+    (_haff : length Z s.X₁+length Z s.X₂+Cycle63.Arithmetic.lambda*(∑j,Real.logb Z (s.P j))≤Cycle63.Arithmetic.B*Mrow),
   let cell := Cycle63.Arithmetic.cellUpper (Cycle63.Moment.originalCell ((∑j,Real.logb Z (s.P j))/Mrow))
   let amp := Mrow*Cycle63.Arithmetic.amp cell
-  ∀(reserve : ℝ)(hreserve : 0≤frequencyLoss Z 32 ξ+reserve)
+  ∀(reserve : ℝ)(_hreserve : 0≤frequencyLoss Z 32 ξ+reserve)
     (reflected : Bool)(R seed : Ideal O)(t₀ : ℝ)(bin : ℤ×(Fin 5→ℤ))
     (first : GeometryLowFirstIndex reflected s R seed (Z^Mrow) Z ξ
       (Real.rpow_pos_of_pos (zero_lt_one.trans hZ) _) bin)
@@ -124,34 +124,34 @@ def geometryErrorNormalizedMenuDynamicSpec {α : Type u}[Fintype α][DecidableEq
     (hcop : ∀j I,I∈(geometryLowFirstChild reflected s R seed (Z^Mrow) Z ξ (Real.rpow_pos_of_pos (zero_lt_one.trans hZ) _) bin t₀ first).slots j→IsCoprime (Ideal.span {prime}) I)
     (Bp : actualAllocations (activeInput (geometryLowFirstChild reflected s R seed (Z^Mrow) Z ξ (Real.rpow_pos_of_pos (zero_lt_one.trans hZ) _) bin t₀ first)).pools ((Ideal.span {prime})^(errorIndex i+1)))
     (υ : Character)(v₀ : ℝ)(hw₁ : s.W₁ 0=0)(hw₂ : s.W₂ 0=0)(ψ : RayCharacter)
-    (hυ : υ.modulus.absNorm≤radicalBound
+    (_hυ : υ.modulus.absNorm≤radicalBound
       (childCharacter (geometryColumnCharacter reflected s R seed (Z^Mrow) Z ξ
         (Real.rpow_pos_of_pos (zero_lt_one.trans hZ) _) bin first.1.val) ψ)
       fixedBadMask prime (errorMovingExponent (errorIndex i)))
-    (hf₁ : frozenCoefficient first.2.val
+    (_hf₁ : frozenCoefficient first.2.val
       (geometryColumnIdeal reflected s R seed (Z^Mrow) Z ξ
         (Real.rpow_pos_of_pos (zero_lt_one.trans hZ) _) bin first.1.val) R s.ν s.W s.P≠0)
-    (hprime : 3*amp/4≤Real.logb Z (normValue prime)),
+    (_hprime : 3*amp/4≤Real.logb Z (normValue prime)),
   ∀{Menu : Type v}[Fintype Menu]{Blocks : Menu→Type v}[∀j,Fintype (Blocks j)],
   let Label:=Sigma Blocks
   ∀(index : Label→GeometryErrorSecondIndex reflected s R seed Z Mrow amp ξ reserve bs t₀ (Fintype.card α) hZ bin first prime i Bp υ v₀),
   let datum := fun n : Label=>geometryErrorSecondDatum reflected s R seed Z Mrow amp ξ reserve bs t₀ (Fintype.card α) hZ bin first prime i Bp υ v₀ hw₁ hw₂ (index n)
-  ∀(hne : ∀n : Label,(datum n).block.value ballProfile≠0)(hinj : Function.Injective index)(second : Bool),
+  ∀(hne : ∀n : Label,(datum n).block.value ballProfile≠0)(_hinj : Function.Injective index)(second : Bool),
   let alloc := fun n=>geometryErrorSelectedAllocation reflected s R seed Z Mrow amp ξ reserve bs t₀ (Fintype.card α) hZ bin first prime i Bp υ v₀ hw₁ hw₂ (index n) (hne n) second
   let chains := fun n=>geometryErrorChain reflected s R seed Z Mrow ξ t₀ hZ bin first prime i Bp υ v₀ hp hcop
     (if second then (datum n).D else (datum n).C) (datum n).R (alloc n)
 
-  ∀(hP : ∀n,(chains n).R₂*(chains n).E₂≠0)
-    (hPN : ∀n,(((chains n).R₂*(chains n).E₂).absNorm:ℝ)≤Z^Bmask)
-    (p : Profiles ap bp)(hp₁ : s.W₁=p.profile 0)(hp₂ : s.W₂=p.profile 1)
-    (a : ℝ)(ha : 0<a)(hlower : a≤s.lower)
-    (hW₁ : ∀x,s.W₁ x≠0→ap≤x)(hW₂ : ∀x,s.W₂ x≠0→ap≤x)
+  ∀(_hP : ∀n,(chains n).R₂*(chains n).E₂≠0)
+    (_hPN : ∀n,(((chains n).R₂*(chains n).E₂).absNorm:ℝ)≤Z^Bmask)
+    (p : Profiles ap bp)(_hp₁ : s.W₁=p.profile 0)(_hp₂ : s.W₂=p.profile 1)
+    (a : ℝ)(_ha : 0<a)(_hlower : a≤s.lower)
+    (_hW₁ : ∀x,s.W₁ x≠0→ap≤x)(_hW₂ : ∀x,s.W₂ x≠0→ap≤x)
     (windowProfile : 𝓢(ℝ,ℂ))(χ₀ : Label→RayCharacter)
-    (P : Finset (Ideal O))(weight : ℝ)(hwgt : 0≤weight)
-    (hcap : ∀n D,D∈(datum n).block.divisors.filter Squarefree→(D.absNorm:ℝ)≤Z^L₂)
+    (P : Finset (Ideal O))(weight : ℝ)(_hwgt : 0≤weight)
+    (_hcap : ∀n D,D∈(datum n).block.divisors.filter Squarefree→(D.absNorm:ℝ)≤Z^L₂)
     (tₑ u : ℝ),
   ∀(box : Finset (Fin 4→ℤ))
-    (hbox : ∀n : Label,actualSecondDyad
+    (_hbox : ∀n : Label,actualSecondDyad
       (geometryErrorChild reflected s R seed Z Mrow ξ t₀ hZ bin first prime i Bp υ v₀)
       ((R*geometryColumnIdeal reflected s R seed (Z^Mrow) Z ξ
         (Real.rpow_pos_of_pos (zero_lt_one.trans hZ) _) bin first.1.val)*

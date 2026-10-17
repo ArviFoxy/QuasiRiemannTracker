@@ -15,6 +15,7 @@ local notation "O" => HeckeFamily.O
 variable {Label Slot : Type} [Fintype Label] [Nonempty Label] [Fintype Slot] [DecidableEq Slot]
 variable (M : Ideal O) [NeZero M] (H : Subgroup (O⧸M)ˣ) (hH : RayOrthogonality.globalUnits M≤H)
 
+omit [Nonempty Label] [Fintype Slot] [DecidableEq Slot] in
 theorem actual_unmarked_from_buffered_maxima
     (base : Label→Character) (setup : DensityCountingSetup)
     (εm η dmin dmax τ ε e κw ηw : ℝ) (I : ℕ)

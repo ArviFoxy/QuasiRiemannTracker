@@ -126,6 +126,7 @@ local notation "hK" => Real.rpow_pos_of_pos (zero_lt_one.trans hZ) M
 local notation "First" => GeometryLowFirstIndex (α:=α) reflected s R seed (Z^M) Z ξ hK key
 local notation "Sources" => GeometryJointErrorSourceIndex (α:=α) reflected s R seed Z M ξ t hZ key P
 
+omit [DecidableEq α] in
 private theorem geometry_error_column_eq_label (q : First) :
     geometryColumnIdeal reflected s R seed (Z^M) Z ξ hK key q.1.val=
       if reflected then (geometryFirstLabel s R seed (Z^M) Z ξ hK key q.1.val).1.2
@@ -146,6 +147,7 @@ private def geometryJointErrorRawScalarPacket (q : First)(p : elementPool P)(i :
     (geometryColumnCharacter reflected s R seed (Z^M) Z ξ hK key q.1.val) t
     (υ q p i ψ) v p.val (errorIndex i+1) Z M amp (frequencyLoss Z 32 ξ) reserve error εcommon
 
+omit [DecidableEq α] in
 private theorem geometry_joint_error_raw_scalar_packet_eq_physical
     (q : First)(p : elementPool P)(i : Fin 3)(ψ : RayCharacter) :
     geometryJointErrorRawScalarPacket reflected second s R seed Z M amp ξ reserve t v error εcommon hZ key P υ q p i ψ=
@@ -169,6 +171,7 @@ def geometryJointErrorRawScalarLabelSum (l : Sources) : ℝ :=
       Z M amp (frequencyLoss Z 32 ξ) reserve error εcommon (volume s) (volume source)
       l.2.1.val (errorIndex l.2.2.1+1)
 
+omit [DecidableEq α] in
 private theorem geometry_joint_error_raw_scalar_packet_eq_labels
     (q : First)(p : elementPool P)(i : Fin 3)(ψ : RayCharacter) :
     geometryJointErrorRawScalarPacket reflected second s R seed Z M amp ξ reserve t v error εcommon hZ key P υ q p i ψ=
@@ -229,6 +232,7 @@ theorem geometry_joint_error_raw_scalar_cost_eq_physical (n : ℕ) :
   rw [hp]
   ring
 
+omit [DecidableEq α] in
 private theorem geometry_error_source_physical_cost_nonneg
     (hz₁ : s.W₁ 0=0)(hz₂ : s.W₂ 0=0)(q : First) :
     0≤geometryErrorPhysicalCompleteCost s reflected second
@@ -267,6 +271,7 @@ theorem geometry_joint_error_raw_scalar_cost_card_mono (n N : ℕ)(hn : n≤N)
     (geometry_error_source_physical_cost_nonneg reflected second s R seed Z M amp ξ reserve t v error εcommon hZ key P υ hz₁ hz₂ q))
 
 
+omit [DecidableEq α] in
 /-- The numerical right side is exactly the frozen raw menu label conclusion.
 All analytic estimation is supplied by that named conclusion before collection. -/
 theorem geometry_joint_error_scalar_menu_collect
@@ -342,6 +347,7 @@ end Source
 
 attribute [local irreducible] Finset.univ
 
+omit [DecidableEq α] in
 /-- Normalize the row scale before specializing the dependent first carrier.
 The input remains abstract while the literal Z^1 equality is eliminated. -/
 theorem geometry_joint_error_physical_scalar_cost_one_payment
@@ -392,6 +398,7 @@ variable (H : Subgroup (O⧸rayM)ˣ) (hH : RayOrthogonality.globalUnits rayM≤H
 
 attribute [local irreducible] geometryErrorPhysicalCompleteCost geometryAllocationWeight
 set_option backward.isDefEq.respectTransparency true in
+omit [DecidableEq α] in
 /-- The genuine affine scalar theorem pays the raw joint carrier with its
 actual slot cardinality; the only carrier transport is Z^1=Z. -/
 theorem affine_error_frequency_loss_raw_scalar_bound
@@ -423,7 +430,7 @@ theorem affine_error_frequency_loss_raw_scalar_bound
       1 (Real.logb Z (volume inp)) hZ bin P phase υ (Fintype.card T)≤
     16*geometryHighFactor reflected (geometrySupportConstant (Fintype.card α) 1 (1/4) (1/4)) bin*K*
       Z^(4*εalloc+εshell-((Cycle63.Arithmetic.lowReserve/2):ℝ)) := by
-  letI : DecidableEq T:=Classical.decEq T
+  let : DecidableEq T:=Classical.decEq T
   intro inp amp P phase
   have hz₁ : inp.W₁ 0=0 := by
     by_contra hn
@@ -445,7 +452,7 @@ theorem affine_error_frequency_loss_raw_scalar_bound
   have hp:=hpaid hZ T η₀ θ w σ freq hσ bΦ state p t X₁ X₂ hX₁ hX₂
     hw hwm hlo₁ hlo₂ hhi₁ hhi₂ hwlo hwhi reflected second error εcommon reserve hecommon hloss Φ bin
     height υ₀ vheight
-  convert hp using 1 <;> rfl
+  convert hp using 1
 
 end
 end OAI.SevenEighths.Cycle63InitialMass

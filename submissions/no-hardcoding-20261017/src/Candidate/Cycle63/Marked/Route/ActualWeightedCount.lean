@@ -206,7 +206,7 @@ theorem actual_weighted_row_sum
       (∀s∈B.slots,B.widths s≤ mesh) → 0<(∑s∈B.slots,B.widths s) →
       0≤height → 2*Real.pi*allowance+(3*i:ℕ)*T≤height →
       (∀s∈B.slots,|B.relativeHeight s|≤height) → (∀u∈B.rows,|B.commonHeight u|≤height) →
-      ∀witness : ∀bin : BinLabel B.slots ((2*a-1)/2) binWidth,
+      ∀_witness : ∀bin : BinLabel B.slots ((2*a-1)/2) binWidth,
         ∀u,SupportedWitness (B.family u) U a ε (binCutoff B.slots B.widths a binWidth bin) T allowance i,
       (∀u∈B.rows,∀s∈B.slots,‖B.Q u s‖≤(U^(B.widths s))^((2*a-1)/2+binWidth)) →
       (∑u∈B.rows,‖∏s∈B.slots,B.Q u s‖^2)≤
@@ -338,7 +338,7 @@ theorem actual_weighted_row_sum_uniform
       (∀s∈B.slots,B.widths s≤ mesh) → 0<(∑s∈B.slots,B.widths s) →
       0≤height → 2*Real.pi*allowance+(3*i:ℕ)*T≤height →
       (∀s∈B.slots,|B.relativeHeight s|≤height) → (∀u∈B.rows,|B.commonHeight u|≤height) →
-      ∀witness : ∀bin : BinLabel B.slots ((2*a-1)/2) binWidth,
+      ∀_witness : ∀bin : BinLabel B.slots ((2*a-1)/2) binWidth,
         ∀u,SupportedWitness (B.family u) U a ε (binCutoff B.slots B.widths a binWidth bin) T allowance i,
       (∀u∈B.rows,∀s∈B.slots,‖B.Q u s‖≤(U^(B.widths s))^((2*a-1)/2+binWidth)) →
       (∑u∈B.rows,‖∏s∈B.slots,B.Q u s‖^2)≤

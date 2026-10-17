@@ -163,7 +163,7 @@ weighted effective width reflects their different coefficients in the length
 balance, and each selected subproduct obeys its own moment capacity. -/
 theorem fiber_exponent {d p S r m E loss eps : ℝ}
     (hd0 : Cycle63.Arithmetic.q0 ≤ d) (hd : d ≤ Cycle63.Optimization.markedBinTop)
-    (hp0 : 0 ≤ p) (hp : p ≤ 1/2) (hS : 0 ≤ S)
+    (_hp0 : 0 ≤ p) (hp : p ≤ 1/2) (hS : 0 ≤ S)
     (heps : 0 ≤ eps)
     (hlength : cutoff d p (chosenWidth S)-eps ≤ r+m)
     (hrcap : r ≤ cutoff d p (chosenWidth S)+eps)

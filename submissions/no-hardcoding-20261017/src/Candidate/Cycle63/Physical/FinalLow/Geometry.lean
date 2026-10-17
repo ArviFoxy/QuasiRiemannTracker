@@ -60,6 +60,7 @@ structure MainGeometry (s : Input α) (q : Chain s) (Z Mrow amp omega ξ b : ℝ
 def MainGeometry.radius {s : Input α} {q : Chain s} {Z Mrow amp omega ξ b : ℝ} {N : ℕ}
     (g : MainGeometry s q Z Mrow amp omega ξ b N) := mainRadius q g.D₁ g.E Z Mrow amp g.δ g.reserve ξ b N
 
+omit [DecidableEq α] in
 /-- The actual nonzero block supplies the final retained state width. -/
 theorem main_state_width {s : Input α} {q : Chain s} {Z Mrow amp omega ξ b : ℝ} {N : ℕ}
     (g : MainGeometry s q Z Mrow amp omega ξ b N) (Bmask : ℝ) (hZ : 1<Z) (hb : 0<b)

@@ -36,7 +36,7 @@ theorem actual_geometry_marked_binned_shell {α : Type} [Fintype α] [DecidableE
     (hWslotSmooth : ContDiff ℝ ∞ Wslot)
     (hMarkedBeta : (51/100:ℝ)≤HeckeZeroSupremum.beta)
     (hMarkedUpper : 2*HeckeZeroSupremum.beta-1≤Cycle63.Optimization.plainCapacityCost)
-    (B Q loss ε : ℝ) (hB : 0≤B) (hQ : 0≤Q) (hQB : Q≤B)(hQmax : Q≤130)
+    (B Q loss ε : ℝ) (hB : 0≤B) (_hQ : 0≤Q) (hQB : Q≤B)(hQmax : Q≤130)
     (hloss : 0<loss) (hε : 0<ε) {ap bp : ℝ} (hap : 0<ap)
     (N : ℕ)(Cs bs b window pad : ℝ)
     (hCs : 1≤Cs)(hbs : 1≤bs)(hb : 1≤b)(hwindow : 0≤window)(hpad : 0<pad) :
@@ -150,7 +150,7 @@ theorem actual_geometry_marked_binned_shell {α : Type} [Fintype α] [DecidableE
   intro P hboundeq hP hslot hplain hheight
   obtain ⟨F,G,Cprofile,Csrc,hF,hCprofile,hCsrc,hsource⟩ :=
     hsource P hboundeq hP.slotCap hslot hplain
-  obtain ⟨Craw,hCraw,hcount⟩ := hcount P hP hslot hplain (by convert hheight using 1 <;> norm_num)
+  obtain ⟨Craw,hCraw,hcount⟩ := hcount P hP hslot hplain (by convert hheight using 1)
   let Cpart : ℝ := (Fintype.card (RayCharacter×RayCharacter):ℝ)*(2:ℝ)^(Fintype.card α)
   have hCpart : 0<Cpart := by dsimp only [Cpart]; positivity
   refine ⟨F,G,Cprofile,Csrc*Cpart*Cmult*Craw,hF,hCprofile,by positivity,?_⟩

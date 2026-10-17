@@ -29,7 +29,7 @@ def AffineMarkedMoment (F : Fiber M H Label Slot U a ε tstar T allowance i)
         polynomial (F.family u F.label) false ((logProfile^[k]) positiveAnnular) (U^F.m) s t*
           F.physicalProduct selected u‖^2 ≤ C*U^(1+εm)
 
-theorem zS_window {m ν : ℝ} (hm : Cycle63.CountAffine.windowBottom ≤ m) (hm1 : m ≤ Cycle63.CountAffine.plainTop)
+theorem zS_window {m ν : ℝ} (_hm : Cycle63.CountAffine.windowBottom ≤ m) (hm1 : m ≤ Cycle63.CountAffine.plainTop)
     (hν : 0 ≤ ν) (hν1 : ν ≤ 1/100) :
     0 ≤ Cycle63.CountAffine.zS m-ν ∧ Cycle63.CountAffine.zS m-ν ≤ Cycle63.Optimization.slotTop ∧
       2*m+Cycle63.Arithmetic.lambda*(Cycle63.CountAffine.zS m-ν) ≤ Cycle63.Arithmetic.B := by

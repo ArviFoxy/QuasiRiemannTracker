@@ -71,6 +71,7 @@ def adaptiveFiber (rows : Finset Row) (slots : Finset Slot) (widths : Slot → �
   rows.filter (fun u => adaptiveKey slots widths Q χ U a ε T allowance binWidth i hbin witness u =
     (bin,j,J,K))
 
+omit [Fintype Label] in
 theorem adaptiveFiber_fields
     (rows : Finset Row) (slots : Finset Slot) (widths : Slot → ℝ)
     (Q : Row → Slot → ℂ) (χ : Row → Label → Character)
@@ -142,6 +143,7 @@ structure RawFiberMoments (rows : Finset Row) (slots : Finset Slot)
       polynomial (χ u label) false ((logProfile^[k]) positiveAnnular)
       (U^(Real.logb U ((2 : ℝ)^K.val))) σ freq*(∏ s∈selected,Q u s)‖^2≤C*U^(1+εm)
 
+omit [Fintype Label] in
 /-- Actual detector count for every positive slot supply. The inverse and
 plain inequalities select independent widths capped at Cycle63.Optimization.inverseWidthCap and Cycle63.Optimization.plainWidthCap;
 their weighted balance supplies the common detector cutoff. -/
@@ -397,7 +399,7 @@ theorem binCutoff_bounds {Slot : Type*} (slots : Finset Slot) (widths : Slot→�
   have hg (v : Slot) (hv : v∈slots) : 0≤g v ∧ g v≤(2*δ)/2 := by
     have hh := label_bounds (show 0≤δ/2 by positivity) hbin (bin ⟨v,hv⟩).property
     dsimp [g,binValue]
-    rw [dif_pos hv]
+    rw [dite_eq_left hv]
     constructor
     · exact hh.1
     · dsimp [δ] at *; linarith

@@ -166,8 +166,7 @@ theorem eventual_actual_geometry_main_remainder {ι : Type} [Fintype ι] [Decida
   simp only [Fintype.sum_sigma,mul_add,Finset.sum_add_distrib] at hh
   apply hh.trans
   refine add_le_add ?_ ?_
-  · trace "ADD_APPLIED"
-    apply add_le_add
+  · apply add_le_add
     · simpa only [geometryHighFactor,one_div] using hzt
     · exact htt
   · exact le_refl _

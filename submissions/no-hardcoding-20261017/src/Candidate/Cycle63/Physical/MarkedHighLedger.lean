@@ -5,17 +5,17 @@ namespace Cycle63.Physical
 noncomputable section
 open Cycle63.Arithmetic OAI.SevenEighths.LocalMoment MarkedAllocationReserve
 
-def highJointExcess (M A a δ c d p R E Bc Lc R₀ b₂ g₂ t₂ : ℝ) : ℝ :=
+def highJointExcess (M A a δ c d _p R E Bc Lc R₀ b₂ g₂ t₂ : ℝ) : ℝ :=
   M*(unmarkedDensity δ-1)+δ*A+a*(5-6*unmarkedDensity δ)+
     (1-unmarkedDensity δ)*max (c-d) 0-δ*c-(1+unmarkedDensity δ)*R-E-Bc+
     unmarkedDensity δ*Lc+R₀+g₂-t₂-(1+δ)*b₂
 
 /-- Keep the strict loss from both common allocations instead of discarding it. -/
 theorem high_joint_allocation_saving {b δ M A a c d p R E Bc Lc R₀ b₂ g₂ t₂ : ℝ}
-    (hb : Cycle63.Optimization.firstCellTop≤b ∧ b≤Cycle63.Optimization.slotTop) (hd : q0≤δ ∧ δ≤Cycle63.Optimization.markedBinTop)
-    (hM : 0≤M) (hA : A≤M*totalA b) (ha : a≤M*amp b)
+    (_hb : Cycle63.Optimization.firstCellTop≤b ∧ b≤Cycle63.Optimization.slotTop) (hd : q0≤δ ∧ δ≤Cycle63.Optimization.markedBinTop)
+    (_hM : 0≤M) (hA : A≤M*totalA b) (ha : a≤M*amp b)
     (hp : 0≤p) (hE : 0≤E) (hB : max (3*c-5*d-R) 0/6≤Bc)
-    (hpC : p≤c) (hpD : p≤d) (hRp : R≤p) (hR₀ : 0≤R₀)
+    (hpC : p≤c) (_hpD : p≤d) (hRp : R≤p) (hR₀ : 0≤R₀)
     (hLc : Lc≤5*(R-R₀)) (hnorm : 4*Lc≤5*(c+d)) (hb₂ : 0≤b₂) (ht₂ : 0≤t₂) (hg₂ : g₂≤b₂) :
     highJointExcess M A a δ c d p R E Bc Lc R₀ b₂ g₂ t₂≤
       -M*highMainReserve b δ-markedPrice*(c+b₂) := by
@@ -36,7 +36,7 @@ theorem high_joint_allocation_saving {b δ M A a c d p R E Bc Lc R₀ b₂ g₂ 
   nlinarith
 
 theorem high_joint_excess_of_reserve {b δ M A a c d p R E Bc Lc R₀ b₂ g₂ t₂ μ : ℝ}
-    (hb : Cycle63.Optimization.firstCellTop≤b ∧ b≤Cycle63.Optimization.slotTop) (hd : q0 ≤ δ ∧ δ ≤ 3/4)
+    (_hb : Cycle63.Optimization.firstCellTop≤b ∧ b≤Cycle63.Optimization.slotTop) (hd : q0 ≤ δ ∧ δ ≤ 3/4)
     (hM : 0 ≤ M) (hA : A ≤ M*totalA b) (ha : a ≤ M*amp b) (hreserve : μ≤highMainReserve b δ)
     (hp : 0 ≤ p) (hE : 0 ≤ E) (hB : 0 ≤ Bc)
     (hpC : p ≤ c) (hpD : p ≤ d) (hRp : R ≤ p) (hR₀ : 0 ≤ R₀)

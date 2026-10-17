@@ -179,7 +179,7 @@ theorem actual_affine_error_complete_payment
   refine ⟨hp.1,?_⟩
   intro hZ θ w σ freq hσ bΦ state hη p t X₁ X₂ hX₁ hX₂ hw hwm hlo₁ hlo₂ hhi₁ hhi₂
     hwlo hwhi hcone reflected key firstHeight height hheight hfreq s μ N δ amp P control υ hυ
-  letI : DecidableEq T:=Classical.decEq T
+  let : DecidableEq T:=Classical.decEq T
   have hsource:=hn hZ θ w σ freq hσ bΦ state hη p t X₁ X₂ hX₁ hX₂ hw hwm
     hlo₁ hlo₂ hhi₁ hhi₂ hwlo hwhi hcone reflected key firstHeight height hheight hfreq υ hυ
   have hside : 0≤geometryHighFactor reflected

@@ -27,7 +27,7 @@ lemma source_complex_profile_norm (D : BaselineData) (F : BaselineSourceData D) 
   rw [F.complex_eq,Complex.norm_real,Real.norm_of_nonneg (F.bounded r).1]
   exact (F.bounded r).2
 
-lemma source_cutoff_le_base (b : ℝ) (hb : 0≤b) :
+lemma source_cutoff_le_base (b : ℝ) (_hb : 0≤b) :
     ∀ᶠU:ℝ in atTop,1<U ∧ ∀d:ℝ,(1/2:ℝ)≤d → b*U^(y/d)≤U := by
   have he : ∀ᶠU:ℝ in atTop,b≤U^(1/20:ℝ) :=
     (tendsto_rpow_atTop (by norm_num : (0:ℝ)<1/20)).eventually (eventually_ge_atTop _)

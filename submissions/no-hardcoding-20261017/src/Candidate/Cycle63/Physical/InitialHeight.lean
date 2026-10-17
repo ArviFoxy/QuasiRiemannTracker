@@ -53,6 +53,7 @@ lemma initial_plain_length_cap (Z X width Mmax : ℝ) (hZ : 1 < Z) (_hX : 0 < X)
   simp only [Cycle63.CountAffine.plainLengthTop] at hL
   linarith
 
+omit [Fintype α] [DecidableEq α] [Fintype Label] in
 /-- The degree is fixed after the two genuine estimates and before the base,
 slot data, profiles, and all external frequencies and heights. -/
 theorem initial_height_extend (W : ℝ → ℂ) (bslot a b bΦ mesh lo hi Mmin Mmax extra ε τ : ℝ)

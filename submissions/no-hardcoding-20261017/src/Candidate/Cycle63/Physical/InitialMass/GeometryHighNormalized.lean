@@ -226,7 +226,7 @@ theorem actual_geometry_full_high_columns {α : Type} [Fintype α] [DecidableEq 
   let Keys:=Finset.univ.image (fun r : labels=>key r.val)
   let selected (j : Keys):κ:=(pick j).val
   have hmem (j : Keys) : selected j∈labels:=(pick j).property
-  haveI : Nonempty Keys := by
+  have : Nonempty Keys := by
     obtain ⟨l,hl⟩:=hnonempty
     exact ⟨⟨key l,Finset.mem_image.mpr ⟨⟨l,hl⟩,Finset.mem_univ _,rfl⟩⟩⟩
   have hh:=he.2 (κ:=Keys) reflected second s hη R seed W D ξ hK bin

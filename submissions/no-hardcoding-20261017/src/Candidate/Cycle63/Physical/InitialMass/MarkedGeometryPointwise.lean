@@ -44,7 +44,7 @@ theorem actual_geometry_small_allocation_frequency
     (hb : Cycle63.Optimization.firstCellTop≤b ∧ b≤Cycle63.Optimization.slotTop)
     (ha : a≤Cycle63.Arithmetic.amp b)
     (hω : frequencyLoss Z 32 ξ+reserve≤Cycle63.Optimization.frequencyLossCap)(hε : 0≤ε)
-    (hwidth : 0<width)(hQ : Q≤130) :
+    (_hwidth : 0<width)(hQ : Q≤130) :
     let l:=geometryFirstLabel s R seed K Z ξ hK bin j
     let x:=childHighCoordinates
       (actualHighCoordinates reflected left second l d₂.C d₂.D U Z 1 A a ξ reserve ε) εv

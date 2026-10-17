@@ -36,15 +36,15 @@ theorem actual_geometry_literal_marked_count {Slot : Type} [Fintype Slot] [Decid
       ∃C : ℝ,0 < C ∧
       ∀ᶠZ : ℝ in atTop,1 < Z ∧ ∀D : ℝ,(4/5:ℝ) ≤ D → D ≤ 130 →
       ∀{ι α Row DataLabel : Type}[Fintype ι][Fintype α][DecidableEq α][Nonempty Row][Fintype DataLabel],
-      ∀(reflected second : Bool)(s : Input ι)(hηs : s.η=excluded F₀.character R₀)
+      ∀(reflected second : Bool)(s : Input ι)(_hηs : s.η=excluded F₀.character R₀)
         (R seed : Ideal O)(K ξ : ℝ)(hK : 0<K)(bin : ℤ×(Fin 5→ℤ))
         (column : Row→FirstColumnIndex (geometryFirstSource s R seed K Z ξ hK bin))
         (datum : DataLabel→SecondInputDatum α)(first : DataLabel→FirstSourceLabel)
         (gRow : Row→secondLiveRows (fun l=>(datum l).block))
-        (hparent : ∀l,(datum (gRow l).val.1).input.η=
+        (_hparent : ∀l,(datum (gRow l).val.1).input.η=
           geometryColumnCharacter reflected s R seed K Z ξ hK bin (column l))
         (hfirst : ∀l,first (gRow l).val.1=geometryFirstLabel s R seed K Z ξ hK bin (column l))
-        (hR : ∀l,(datum (gRow l).val.1).R≠0)(ψ : Row→RayCharacter),
+        (_hR : ∀l,(datum (gRow l).val.1).R≠0)(ψ : Row→RayCharacter),
       let left:=!reflected
       let unit:=fun l=>(firstDictionaryUnit left η₀ u₀ F₀ R₀ l:O)
       let hf:=fun l=>geometry_first_frequency_ne_zero reflected η₀ u₀ F₀ R₀ hu₀
@@ -123,7 +123,7 @@ theorem actual_geometry_literal_marked_count {Slot : Type} [Fintype Slot] [Decid
   have hh:=he.2 D hD hD' reflected second s hηs R seed K ξ hK bin column datum first gRow
     hparent hfirst hR ψ rows hinj hindex hfirstcap st hQM hQη z hz hchar hpuncture hzrow hrow
     slots w σ v t θ a markedRawMesh i hiI ha0 ha marked_raw_mesh_gates.1.le
-    (by convert marked_raw_mesh_gates.2.1 using 1 <;> norm_num)
+    (by convert marked_raw_mesh_gates.2.1 using 1)
     (by norm_num [markedBinWidth, Cycle63.Optimization.markedBinWidth, Cycle63.Optimization.allowanceUnit];linarith) hw hwm hwr hlo hhi hwidth hradial hnext hcurrent hfreq hplainfreq
   have hρ : ρ≤1:=unmarkedDensity_le_one (by linarith) (by linarith)
   have ht : P.τ*(J:ℝ)≤μ/8:=by nlinarith [P.hτ,Nat.cast_nonneg (α:=ℝ) J]

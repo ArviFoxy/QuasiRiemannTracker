@@ -415,8 +415,8 @@ private theorem affine_error_paid_source_bridge
 /-- The paid source contract keeps the entire normalized input and exact
 retained sum. Its scalar exceptional cap is supplied by a proved payment. -/
 def GeometryErrorPaidSourceSpec
-    (A degree windowDegree : ℕ)(hc : HasCompactSupport logAnnulus)
-    (hs : ContDiff ℝ ∞ logAnnulus)(C : ℝ) : Prop :=
+    (A degree windowDegree : ℕ)(_hc : HasCompactSupport logAnnulus)
+    (_hs : ContDiff ℝ ∞ logAnnulus)(C : ℝ) : Prop :=
   ∀(reflected : Bool)(s : Input ι)(Ψ : 𝓢(ℝ,ℂ))(Z amp ξ reserve t : ℝ)
     (hZ : 1<Z)(key : ℤ×(Fin 5→ℤ))(P : Finset (Ideal O))(Qfix : Ideal O)(m : O)
     (υ : GeometryLowFirstIndex (α:=ι) reflected s (1:Ideal O) (1:Ideal O)
@@ -632,7 +632,7 @@ theorem actual_affine_error_retained_contraction
   intro hZ T η₀ θ w σ freq hσ bΦ state hη p t X₁ X₂ hX₁ hX₂ hw hwm
     hlo₁ hlo₂ hhi₁ hhi₂ hwlo hwhi hcone s beta amp P μ Ψ reflected key firstHeight
     υ hυ
-  letI : DecidableEq T := Classical.decEq T
+  let : DecidableEq T := Classical.decEq T
   have he:=hz.2 hZ T η₀ θ w σ freq hσ bΦ state hη p t X₁ X₂ hX₁ hX₂ hw hwm
     hlo₁ hlo₂ hhi₁ hhi₂ hwlo hwhi hcone Ψ reflected key firstHeight firstHeight υ hυ
   affine_error_exact affine_error_call (affine_error_apply hordinary, T),

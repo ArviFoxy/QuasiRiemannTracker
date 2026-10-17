@@ -38,14 +38,14 @@ theorem actual_whole_raw_max_weighted_fixedmesh {Slot : Type} [Fintype Slot] [De
     (hβ : (51/100:ℝ)≤ HeckeZeroSupremum.beta)
     (hκβ : 2*HeckeZeroSupremum.beta-1≤Cycle63.Optimization.plainCapacityCost) :
     ∃J : ℕ,∀(Dmin Dmax dmin dmax τ ε e κw ηw pad wmin κroot Bmask Ccap slotloss : ℝ) (I : ℕ)
-    (hDmin : 0< Dmin) (hDmax : Dmin≤ Dmax) (hκroot : 0≤κroot) (hκrootmax : κroot<1/6)
-    (hdsmall : dmin≤ Dmin*(1-6*κroot)) (hdlarge : Dmax+pad≤ dmax)
-    (hBmask : 0≤ Bmask) (hCcap : 0≤ Ccap) (hslotloss : slotloss≤ binWidth*wmin)
-    (hpad : 0< pad) (hwmin : 0< wmin) (hdmin : 0< dmin) (hdmax : dmin≤ dmax) (hτ : 0<τ)
-    (hτzero : τ< dmin/2) (hτheight : 4*τ< dmin*ηw)
-    (hε : 0<ε) (hεsmall : ε≤1/1000) (he : 0< e) (he' : e<1/1000)
-    (hκw : 0<κw) (hκw' : κw≤1) (hηw : 0≤ηw)
-    (hbudget : 12*e*((22:ℝ)+2)+8*κw+2*ηw≤ε/2),
+    (_hDmin : 0< Dmin) (_hDmax : Dmin≤ Dmax) (_hκroot : 0≤κroot) (_hκrootmax : κroot<1/6)
+    (_hdsmall : dmin≤ Dmin*(1-6*κroot)) (_hdlarge : Dmax+pad≤ dmax)
+    (_hBmask : 0≤ Bmask) (_hCcap : 0≤ Ccap) (_hslotloss : slotloss≤ binWidth*wmin)
+    (_hpad : 0< pad) (_hwmin : 0< wmin) (_hdmin : 0< dmin) (_hdmax : dmin≤ dmax) (_hτ : 0<τ)
+    (_hτzero : τ< dmin/2) (_hτheight : 4*τ< dmin*ηw)
+    (_hε : 0<ε) (_hεsmall : ε≤1/1000) (_he : 0< e) (_he' : e<1/1000)
+    (_hκw : 0<κw) (_hκw' : κw≤1) (_hηw : 0≤ηw)
+    (_hbudget : 12*e*((22:ℝ)+2)+8*κw+2*ηw≤ε/2),
       ∃C : ℝ,0<C ∧
       ∀ᶠU : ℝ in atTop,1< U ∧ ∀D : ℝ,Dmin≤ D → D≤ Dmax →
       ∀(rows : Finset NonzeroFrequency)(slots : Finset Slot)(w σ v : Slot→ℝ)

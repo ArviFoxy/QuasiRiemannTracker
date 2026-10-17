@@ -47,7 +47,7 @@ theorem actual_nonfloor_probe_transport (K : ℕ) (e δ a b B ζ saving τ ellMi
     (hheight : 2*τ < dmin*cost) (hloss : τ*(2+4*eps) < loss)
     (hcap : Cycle63.Arithmetic.h+ζ ≤ dmax-margin)
     (helllo : ∀j,dmax*rmin ≤ ell j) (hellhi : ∀j,ell j ≤ dmin*R)
-    (hζcap : ζ ≤ Cycle63.Transport.rowExtension)
+    (_hζcap : ζ ≤ Cycle63.Transport.rowExtension)
     (hfloorbudget : 26*e+(K+8)*eps+loss+mesh*Cycle63.Arithmetic.ell+nu+sigma≤1/100) :
     let : NeZero (∏P∈S,P) := ⟨fixedPrimeProduct_ne_zero S hS.prime⟩
     ∃n : ℕ,0 < n ∧ ∀η : Character,∃C : ℝ,0 < C ∧ ∀ᶠ Z : ℝ in atTop,

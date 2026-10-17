@@ -186,7 +186,7 @@ theorem geometry_marked_compensated_payment {b δ E target removed live q loss :
       (Cycle63.Optimization.liveRate δ) = Cycle63.Arithmetic.markedGrossAt b δ := by
     rfl
   rw [hgross] at hgain
-  simp only [mul_zero,add_zero,zero_add,one_mul,mul_one] at hgain
+  simp only [mul_zero,add_zero,one_mul] at hgain
   linarith only [hE,hgain,hloss,hreserve]
 
 end

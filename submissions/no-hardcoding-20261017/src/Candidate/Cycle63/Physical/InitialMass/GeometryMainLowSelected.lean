@@ -199,7 +199,7 @@ theorem actual_geometry_low_uniform_mass {ι : Type}[Fintype ι][DecidableEq ι]
   have hh:=actual_geometry_uniform_high_mass reflected N lo ap hlo hap s R seed W D Z ξ B ε
     hZ hK hε hcard hlower hs hz₁ hz₂ hsource hs₁ hs₂ bin j
   have hfactor : 0≤geometryHighFactor reflected (geometrySupportConstant N lo ap ap) bin := by
-    cases reflected <;> simp only [geometryHighFactor,ite_true,ite_false]
+    cases reflected <;> simp only [geometryHighFactor,ite_true]
     · exact mul_nonneg (mul_nonneg (by norm_num) (sq_nonneg _)) (geometryDCompensator_pos bin).le
     · exact (inv_pos.mpr (geometryDCompensator_pos bin)).le
   apply hh.trans
@@ -255,8 +255,8 @@ theorem actual_selected_low_paid_columns {α : Type} [Fintype α] [DecidableEq �
       length Z s.X₁+length Z s.X₂+Cycle63.Arithmetic.lambda*(∑j,Real.logb Z (s.P j))≤Cycle63.Arithmetic.B*Mrow →
     ∀{Label : Type}[Fintype Label],∀(reflected second : Bool)
       (first : Label→FirstSourceLabel)
-      (hf : ∀l,Supported (first l).1.1 ∧ Supported (first l).1.2)
-      (heq : ∀l,primeSupport (first l).1.1=primeSupport (first l).1.2)
+      (_hf : ∀l,Supported (first l).1.1 ∧ Supported (first l).1.2)
+      (_heq : ∀l,primeSupport (first l).1.1=primeSupport (first l).1.2)
       (Rfirst : Ideal O)
       (alloc : (l : Label)→actualAllocations s.pools
         (if reflected then (first l).1.2 else (first l).1.1))
@@ -684,7 +684,7 @@ def actual_geometry_selected_low_paid_columns {α : Type} [Fintype α] [Decidabl
           (Real.rpow_pos_of_pos (zero_lt_one.trans hZ) _) bin (firstIndex l).1.val
         let physical:=geometryHighFactor reflected (geometrySupportConstant N supply ap ap) bin
         let hphysical : 0≤physical := by
-          cases reflected <;> simp only [physical,geometryHighFactor,ite_true,ite_false]
+          cases reflected <;> simp only [physical,geometryHighFactor,ite_true]
           · exact mul_nonneg (mul_nonneg (by norm_num) (sq_nonneg _)) (geometryDCompensator_pos bin).le
           · exact (inv_pos.mpr (geometryDCompensator_pos bin)).le
         hrow χ hP hPN divisorSeed hE₂ hdivisor Ds T pad hT hDs p₀ hp₁ hp₂ hallow hcaps

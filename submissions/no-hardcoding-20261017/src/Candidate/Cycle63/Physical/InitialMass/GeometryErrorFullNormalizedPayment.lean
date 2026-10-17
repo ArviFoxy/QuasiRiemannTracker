@@ -209,12 +209,12 @@ private theorem error_indexed_image_payment {A J : Type*}[DecidableEq A][Fintype
   have hl : (∑j,cost (index j) (hp j))=∑j,f (index j) := by
     apply Finset.sum_congr rfl
     intro j _
-    simp only [f,dif_pos (hp j)]
+    simp only [f,dite_eq_left (hp j)]
   have hright : (∑a : rows,cost a.val (hr a.val a.property))=∑a∈rows,f a := by
     rw [←Finset.sum_coe_sort rows]
     apply Finset.sum_congr rfl
     intro a _
-    simp only [f,dif_pos (hr a.val a.property)]
+    simp only [f,dite_eq_left (hr a.val a.property)]
   have hi : (∑j,f (index j))=∑a∈rows,f a := by
     dsimp only [rows]
     rw [Finset.sum_image (fun _ _ _ _ h=>hinj h)]
@@ -764,7 +764,7 @@ theorem actual_geometry_error_projector_to_concrete_paid_columns {α : Type u}[F
     (W : ℝ→ℂ)(B ap bp Bmask L lo hi Mcap εold loss : ℝ)(ηseed : Character)
     (bs εwidth εpad Mmin window pad εshell : ℝ)(N : ℕ)(Cs L₂ εproj Cg : ℝ)
     (Sp : Finset (ℕ×ℕ))(degree : ℕ)(η₀ : Character)(Q : Ideal O)(Z : ℝ)
-    (hCg : 0<Cg)(hap : 0<ap)(hQ72 : internalQ Q η₀≤Ideal.span {(72:O)})
+    (_hCg : 0<Cg)(hap : 0<ap)(_hQ72 : internalQ Q η₀≤Ideal.span {(72:O)})
     (hpaid : geometryErrorProjectorPaidSpec.{u,v} (α:=α) M H hH W B ap bp Bmask L lo hi Mcap εold loss ηseed bs εwidth εpad Mmin window pad εshell N Cs L₂ εproj Cg Sp degree η₀ Q Z) :
     geometryErrorConcretePaidColumnsSpec.{u,v} (α:=α) M H hH W B ap bp Bmask L lo hi Mcap εold loss ηseed bs εwidth εpad Mmin window pad εshell N Cs L₂ εproj Cg Sp degree η₀ Q Z := by
   classical

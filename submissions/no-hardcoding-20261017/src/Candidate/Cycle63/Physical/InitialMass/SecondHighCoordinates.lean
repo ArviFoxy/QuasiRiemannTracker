@@ -52,10 +52,10 @@ theorem actual_high_coordinate_payment (reflected left second : Bool) (l : First
     let E := Real.logb Z ((firstProjectorRadical l.1.1 l.1.2 l.2.val).absNorm:ℝ)
     let p := Real.logb Z ((commonRadical l.1.1 l.1.2).absNorm:ℝ)
     let Lc := Real.logb Z ((Ideal.span {firstSourceNumerator left l}).absNorm:ℝ)
-    let b₂ := Real.logb Z ((if second then D₂ else C₂).absNorm:ℝ)
+    let _b₂ := Real.logb Z ((if second then D₂ else C₂).absNorm:ℝ)
     let ω := frequencyLoss Z 32 ξ+reserve
-    let q := M-R-max (c-d) 0+Lc-6*a-ω+ε
-    let m := Real.logb Z ((firstSourceMissing left l).absNorm:ℝ)
+    let _q := M-R-max (c-d) 0+Lc-6*a-ω+ε
+    let _m := Real.logb Z ((firstSourceMissing left l).absNorm:ℝ)
     let S := p+A-c+R+E+max (3*c-5*d-R) 0/6
     highExponentValue δ (actualHighCoordinates reflected left second l C₂ D₂ U Z M A a ξ reserve ε)≤
       S-M*((Cycle63.Arithmetic.lowReserve-(Cycle63.Arithmetic.markedPrice*Cycle63.Optimization.suppliedAt b-Cycle63.Optimization.markedLoss)))+(1-ρ)*ω+ρ*ε := by
@@ -87,10 +87,10 @@ theorem actual_high_rounded_payment (reflected left second : Bool) (l : FirstSou
     let E := Real.logb Z ((firstProjectorRadical l.1.1 l.1.2 l.2.val).absNorm:ℝ)
     let p := Real.logb Z ((commonRadical l.1.1 l.1.2).absNorm:ℝ)
     let Lc := Real.logb Z ((Ideal.span {firstSourceNumerator left l}).absNorm:ℝ)
-    let b₂ := Real.logb Z ((if second then D₂ else C₂).absNorm:ℝ)
+    let _b₂ := Real.logb Z ((if second then D₂ else C₂).absNorm:ℝ)
     let ω := frequencyLoss Z 32 ξ+reserve
-    let q := M-R-max (c-d) 0+Lc-6*a-ω+ε
-    let m := Real.logb Z ((firstSourceMissing left l).absNorm:ℝ)
+    let _q := M-R-max (c-d) 0+Lc-6*a-ω+ε
+    let _m := Real.logb Z ((firstSourceMissing left l).absNorm:ℝ)
     let S := p+A-c+R+E+max (3*c-5*d-R) 0/6
     highExponentValue δ (exponentBinUpper width (exponentBin width
       (actualHighCoordinates reflected left second l C₂ D₂ U Z M A a ξ reserve ε)))≤

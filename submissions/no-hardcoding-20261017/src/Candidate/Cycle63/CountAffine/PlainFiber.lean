@@ -31,9 +31,9 @@ theorem affine_plain_fiber_count {Row Label Slot : Type*}
     (hbins : ∀ u∈rows,∀ s∈slots,
       HeckePrimeAmplitudeBins.amplitude (U^(widths s)) ((2*a-1)/2) binWidth
         (physical M H row W b widths zs U u s)=g s)
-    (hκ : 0≤κplain) (hκ1 : κplain≤3/4) (hC : 0≤C) (hheight : 0≤height)
+    (_hκ : 0≤κplain) (hκ1 : κplain≤3/4) (hC : 0≤C) (hheight : 0≤height)
     (hfreq : 2*Real.pi*allowance+(3*i : ℕ)*T≤height)
-    (hmlo : Cycle63.CountAffine.windowBottom≤Real.logb U ((2 : ℝ)^K.val))
+    (_hmlo : Cycle63.CountAffine.windowBottom≤Real.logb U ((2 : ℝ)^K.val))
     (hmhi : Real.logb U ((2 : ℝ)^K.val)≤Cycle63.CountAffine.plainTop)
     (hcap1 : z≤Cycle63.Optimization.slotTop)
     (hcap2 : 2*Real.logb U ((2 : ℝ)^K.val)+Cycle63.Arithmetic.lambda*z≤Cycle63.Arithmetic.B)

@@ -59,8 +59,12 @@ loses. -/
 def rowSaving : ℝ := topSaving - 2*dPlusOffset
 def dPlus : ℝ := h + dPlusOffset
 def d0 : ℝ := 1/200
-/-- The proportion of the shift that the shift reserve keeps in the large-shift regime. -/
-def reserveProportion : ℝ := 1/500
+/-- The damping rate of the numerator's capacity schedule, with which the sum over its bins is
+geometric: any positive rate works; it is the allowance unit. -/
+def dampingRate : ℝ := allowanceUnit
+/-- The proportion of the shift that the shift reserve keeps in the large-shift regime: twice the
+damping rate, which it pays (`Numerator.Capacity.scheduled_capacity_damping`). -/
+def reserveProportion : ℝ := 2*dampingRate
 /-- The split between the affine-capacity regime and the shift-reserve regime of the numerator
 shifts: the smallest shift at which the shift reserve keeps the proportion `reserveProportion` for
 every shift base up to `2 y/dMinus - 1` (`Physical.large_shift_reserve`). -/
@@ -124,8 +128,8 @@ bracket dMinus_bounds (digits := 9) : dMinus using [lambda_enclosure, B_enclosur
 
 /-- The regime split of the numerator shifts. -/
 bracket t0_bounds (digits := 12) : t0 using [lambda_enclosure, B_enclosure, h_enclosure]
-  unfolding [t0, reserveProportion, y, dMinus, ell, theta, Physical.smallPlainCap,
-    CountAffine.windowBottom, CountAffine.plainTop]
+  unfolding [t0, reserveProportion, dampingRate, allowanceUnit, y, dMinus, ell, theta,
+    Physical.smallPlainCap, CountAffine.windowBottom, CountAffine.plainTop]
 
 def lowReserve : ℝ := alpha*(1 - 4*q0/3)
 
@@ -177,6 +181,7 @@ theorem four_ell_lt_h : 4 * ell < h := by
   have := h_bounds; norm_num [ell, theta]; linarith
 theorem x_add_y : x + y = 1 - ell := by unfold x y; ring
 theorem d0_pos : 0 < d0 := by norm_num [d0]
+theorem dampingRate_pos : 0 < dampingRate := allowanceUnit_pos
 theorem half_lt_dMinus : 1 / 2 < dMinus := by linarith [dMinus_bounds.1]
 theorem dMinus_lt_h : dMinus < h := by linarith [dMinus_bounds.2, h_bounds.1]
 theorem h_lt_dPlus : h < dPlus := by unfold dPlus; linarith [dPlusOffset_pos]

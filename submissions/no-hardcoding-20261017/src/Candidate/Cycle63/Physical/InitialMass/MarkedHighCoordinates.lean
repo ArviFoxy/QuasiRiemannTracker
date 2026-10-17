@@ -19,15 +19,15 @@ open CenteredMomentSectorLocalization Cycle63Moment Cycle63HighGeometry
 local notation "O" => HeckeFamily.O
 
 theorem actual_high_coordinate_excess_identity (reflected left second : Bool) (l : FirstSourceLabel)
-    (hC : Supported l.1.1) (hD : Supported l.1.2)
-    (heq : primeSupport l.1.1=primeSupport l.1.2)
-    (C₂ D₂ : Ideal O) (hC₂ : Supported C₂) (hD₂ : Supported D₂)
-    (heq₂ : primeSupport C₂=primeSupport D₂)
+    (hC : Supported l.1.1) (_hD : Supported l.1.2)
+    (_heq : primeSupport l.1.1=primeSupport l.1.2)
+    (C₂ D₂ : Ideal O) (_hC₂ : Supported C₂) (_hD₂ : Supported D₂)
+    (_heq₂ : primeSupport C₂=primeSupport D₂)
     (U : Finset (CommonIndex C₂ D₂)) (Z b δ M A a ξ reserve ε : ℝ)
-    (hZ : 1<Z) (hb : Cycle63.Optimization.firstCellTop≤b ∧ b≤Cycle63.Optimization.slotTop)
-    (hδ : Cycle63.Arithmetic.q0≤δ ∧ δ≤3/4) (hM : 0≤M)
-    (hA : A≤M*Cycle63.Arithmetic.totalA b)
-    (ha : a≤M*Cycle63.Arithmetic.amp b) :
+    (_hZ : 1<Z) (_hb : Cycle63.Optimization.firstCellTop≤b ∧ b≤Cycle63.Optimization.slotTop)
+    (_hδ : Cycle63.Arithmetic.q0≤δ ∧ δ≤3/4) (_hM : 0≤M)
+    (_hA : A≤M*Cycle63.Arithmetic.totalA b)
+    (_ha : a≤M*Cycle63.Arithmetic.amp b) :
     let ρ := LocalMoment.unmarkedDensity δ
     let c := Real.logb Z ((if reflected then l.1.2 else l.1.1).absNorm:ℝ)
     let d := Real.logb Z ((if reflected then l.1.1 else l.1.2).absNorm:ℝ)
@@ -37,8 +37,8 @@ theorem actual_high_coordinate_excess_identity (reflected left second : Bool) (l
     let Lc := Real.logb Z ((Ideal.span {firstSourceNumerator left l}).absNorm:ℝ)
     let b₂ := Real.logb Z ((if second then D₂ else C₂).absNorm:ℝ)
     let ω := frequencyLoss Z 32 ξ+reserve
-    let q := M-R-max (c-d) 0+Lc-6*a-ω+ε
-    let m := Real.logb Z ((firstSourceMissing left l).absNorm:ℝ)
+    let _q := M-R-max (c-d) 0+Lc-6*a-ω+ε
+    let _m := Real.logb Z ((firstSourceMissing left l).absNorm:ℝ)
     let S := p+A-c+R+E+max (3*c-5*d-R) 0/6
     highExponentValue δ (actualHighCoordinates reflected left second l C₂ D₂ U Z M A a ξ reserve ε)=
       S+(1-ρ)*ω+ρ*ε+Cycle63.Physical.highJointExcess M A a δ c d p R E
@@ -76,8 +76,8 @@ theorem actual_high_coordinate_allocation_payment (reflected left second : Bool)
     let Lc := Real.logb Z ((Ideal.span {firstSourceNumerator left l}).absNorm:ℝ)
     let b₂ := Real.logb Z ((if second then D₂ else C₂).absNorm:ℝ)
     let ω := frequencyLoss Z 32 ξ+reserve
-    let q := M-R-max (c-d) 0+Lc-6*a-ω+ε
-    let m := Real.logb Z ((firstSourceMissing left l).absNorm:ℝ)
+    let _q := M-R-max (c-d) 0+Lc-6*a-ω+ε
+    let _m := Real.logb Z ((firstSourceMissing left l).absNorm:ℝ)
     let S := p+A-c+R+E+max (3*c-5*d-R) 0/6
     highExponentValue δ (actualHighCoordinates reflected left second l C₂ D₂ U Z M A a ξ reserve ε)≤
       S-M*Cycle63.Physical.highMainReserve b δ-(Cycle63.Arithmetic.markedPrice)*(c+b₂)+(1-ρ)*ω+ρ*ε := by
@@ -108,10 +108,10 @@ theorem actual_high_coordinate_payment_of_reserve (reflected left second : Bool)
     let E := Real.logb Z ((firstProjectorRadical l.1.1 l.1.2 l.2.val).absNorm:ℝ)
     let p := Real.logb Z ((commonRadical l.1.1 l.1.2).absNorm:ℝ)
     let Lc := Real.logb Z ((Ideal.span {firstSourceNumerator left l}).absNorm:ℝ)
-    let b₂ := Real.logb Z ((if second then D₂ else C₂).absNorm:ℝ)
+    let _b₂ := Real.logb Z ((if second then D₂ else C₂).absNorm:ℝ)
     let ω := frequencyLoss Z 32 ξ+reserve
-    let q := M-R-max (c-d) 0+Lc-6*a-ω+ε
-    let m := Real.logb Z ((firstSourceMissing left l).absNorm:ℝ)
+    let _q := M-R-max (c-d) 0+Lc-6*a-ω+ε
+    let _m := Real.logb Z ((firstSourceMissing left l).absNorm:ℝ)
     let S := p+A-c+R+E+max (3*c-5*d-R) 0/6
     highExponentValue δ (actualHighCoordinates reflected left second l C₂ D₂ U Z M A a ξ reserve ε)≤
       S-M*μ+(1-ρ)*ω+ρ*ε := by

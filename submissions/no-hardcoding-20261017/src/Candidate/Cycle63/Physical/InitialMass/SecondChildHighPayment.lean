@@ -23,12 +23,12 @@ theorem eventual_actual_child_high_payment (N : ℕ) (lo εv : ℝ)
     ∀ᶠZ : ℝ in atTop,1<Z ∧ ∀{ι : Type}[Fintype ι]
     (s : Input ι),Fintype.card ι≤N → lo≤s.lower →
     ∀(reflected left second : Bool) (l : FirstSourceLabel)
-    (hC : Supported l.1.1) (hD : Supported l.1.2),
+    (_hC : Supported l.1.1) (_hD : Supported l.1.2),
     primeSupport l.1.1=primeSupport l.1.2 →
     ∀(Rfirst : Ideal O)(B : actualAllocations s.pools (if reflected then l.1.2 else l.1.1))
     (χ : Character)(t : ℝ),
     frozenCoefficient B.val (if reflected then l.1.2 else l.1.1) Rfirst s.ν s.W s.P≠0 →
-    ∀(C₂ D₂ : Ideal O)(hC₂ : Supported C₂)(hD₂ : Supported D₂),
+    ∀(C₂ D₂ : Ideal O)(_hC₂ : Supported C₂)(_hD₂ : Supported D₂),
     primeSupport C₂=primeSupport D₂ →
     ∀(U : Finset (CommonIndex C₂ D₂))(b δ M a ξ reserve ε : ℝ),
     Cycle63.Optimization.firstCellTop≤b ∧ b≤Cycle63.Optimization.slotTop →

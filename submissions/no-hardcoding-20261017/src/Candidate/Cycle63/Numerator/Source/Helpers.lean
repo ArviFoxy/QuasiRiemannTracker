@@ -175,14 +175,14 @@ theorem countingR_antitone {κ δ x y : ℝ} (hk : 7/10 ≤ κ) (hk1 : κ ≤ 3/
   unfold countingR
   by_cases hrx : Cycle63.CountAffine.inRegion δ x
   · have hry := Cycle63.CountAffine.inRegion_up hrx hxy hy
-    rw [if_pos hrx, if_pos hry]
+    rw [ite_eq_left hrx, ite_eq_left hry]
     have hnb : Cycle63.CountAffine.newBranch κ δ y ≤ Cycle63.CountAffine.newBranch κ δ x := by
       unfold Cycle63.CountAffine.newBranch
       exact max_le_max (max_le_max (Cycle63.CountAffine.RStar_anti hrx hxy hy)
           (Cycle63.CountAffine.RStarC_anti hrx hxy hy))
         (plainOld_p_anti (by linarith) hδ (by norm_num [Cycle63.CountAffine.plainTop]) hxy)
     exact min_le_min hold hnb
-  · rw [if_neg hrx]
+  · rw [ite_eq_right hrx]
     split_ifs with hry
     · exact (min_le_left _ _).trans hold
     · exact hold

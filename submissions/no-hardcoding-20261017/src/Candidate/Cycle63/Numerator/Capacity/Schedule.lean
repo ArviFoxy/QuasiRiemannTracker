@@ -12,10 +12,6 @@ def scheduledCapacity (d v : ℝ) : ℝ :=
   if v ≤ 2*t0 then Physical.affineCapacity d (v/2)
   else Physical.oldCapacity (Physical.shiftBase d) (v/2)
 
-def dampingRate : ℝ := 1/1000
-
-theorem dampingRate_pos : 0 < dampingRate := by norm_num [dampingRate]
-
 theorem zeroCapacity_eq_shiftBase (d : ℝ) :
     zeroCapacity d = (Physical.shiftBase d-(1-B))/lambda := by
   unfold zeroCapacity Physical.affineCapacity Physical.plainScale Physical.shiftBase
@@ -84,7 +80,7 @@ theorem scheduled_capacity_damping {d v q delta : ℝ}
     have hq2 := mul_le_mul_of_nonneg_right hqdelta hw0
     have hdw := mul_le_mul_of_nonneg_left hw1 hdelta
     have hnonneg := mul_nonneg hdelta hv
-    unfold dampingRate
+    unfold dampingRate Cycle63.Optimization.allowanceUnit
     nlinarith
   · rw [scheduledCapacity, ite_eq_right hsmall]
     have ht : t0 ≤ v/2 := by linarith [lt_of_not_ge hsmall]
@@ -93,19 +89,19 @@ theorem scheduled_capacity_damping {d v q delta : ℝ}
     rw [Physical.shiftReserve, ← zeroCapacity_eq_shiftBase d] at hreserve
     let loss := zeroCapacity d-Physical.oldCapacity (Physical.shiftBase d) (v/2)
     have ht0 : 0 ≤ v/2 := by linarith
-    change (v/2)/500 ≤ (v/2)/2-(1/4)*loss at hreserve
+    change reserveProportion*(v/2) ≤ (v/2)/2-(1/4)*loss at hreserve
     change q*zeroCapacity d/2+dampingRate*delta*v ≤
       delta*v/4+q*Physical.oldCapacity (Physical.shiftBase d) (v/2)/2
     by_cases hloss : 0 ≤ loss
     · have hqmul := mul_le_mul_of_nonneg_right hqdelta hloss
       have hdmul := mul_le_mul_of_nonneg_left hreserve hdelta
       dsimp only [loss] at hqmul hdmul
-      norm_num [dampingRate] at *
+      norm_num [dampingRate, reserveProportion, Cycle63.Optimization.allowanceUnit] at *
       nlinarith
     · have hqmul := mul_nonpos_of_nonneg_of_nonpos hq (le_of_not_ge hloss)
       have hdmul := mul_nonneg hdelta hv
       dsimp only [loss] at hqmul
-      norm_num [dampingRate]
+      norm_num [dampingRate, Cycle63.Optimization.allowanceUnit]
       nlinarith
 
 end

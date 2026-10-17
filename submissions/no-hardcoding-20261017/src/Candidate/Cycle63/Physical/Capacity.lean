@@ -7,7 +7,7 @@ with row length `d ∈ [dMinus, dPlus]` and shift `t ∈ [0, t0]`.
 The window conditions are stated with their exact limits: the plain length lies in
 `(windowBottom, plainTop)`, the slot capacity lies above `slotFloor` and below `smallPlainCap`, the largest
 width for which the old capacity holds below the window, and the shift reserve at the largest shift
-base keeps the proportional part `t/500`. Inequalities between the constants are proved from their
+base keeps the proportional part `reserveProportion * t`. Inequalities between the constants are proved from their
 interval enclosures (`bracket`), those over the row length by `rat_pos`. -/
 
 namespace Cycle63.Physical
@@ -216,7 +216,7 @@ theorem oldCapacity_budget (b t : ℝ) :
     ring
 
 theorem large_shift_reserve {b t : ℝ} (hb : b ≤ shiftBase dMinus) (ht : t0 ≤ t) :
-    t / 500 ≤ shiftReserve b t := by
+    reserveProportion * t ≤ shiftReserve b t := by
   have hl := lambda_bounds'
   have hlam : 0 < lambda := by linarith [hl.1]
   have hB1 : B < 1 := by linarith [B_bounds.2]
@@ -228,6 +228,9 @@ theorem large_shift_reserve {b t : ℝ} (hb : b ≤ shiftBase dMinus) (ht : t0 �
     have hfrac : (b - (1 - B)) / (4 * lambda) ≤ t / 7 := by
       rw [div_le_div_iff₀ (by positivity) (by norm_num)]
       nlinarith [mul_le_mul_of_nonneg_left hl.1.le htp.le]
+    have hshare : reserveProportion * t ≤ t / 500 := by
+      norm_num [reserveProportion, dampingRate, Cycle63.Optimization.allowanceUnit]
+      linarith
     linarith
   · have hu : 2 * t ≤ b := le_of_lt (lt_of_not_ge hclip)
     rw [shiftReserve_unclipped hu]
@@ -237,19 +240,21 @@ theorem large_shift_reserve {b t : ℝ} (hb : b ≤ shiftBase dMinus) (ht : t0 �
       rw [sub_neg, div_lt_div_iff₀ (by norm_num) (by positivity)]
       linarith [hl.2]
     -- `t0` is the shift at which the reserve at the largest base equals its proportional part.
-    have hcorner : 0 ≤ (7 / 18 - 1 / 500) * t0 + shiftBase dMinus * (1 / 18 - 1 / (4 * lambda))
+    have hcorner : 0 ≤ (7 / 18 - reserveProportion) * t0 + shiftBase dMinus * (1 / 18 - 1 / (4 * lambda))
         + (1 - B) / (4 * lambda) := by
       apply le_of_eq
       have hd : dMinus ≠ 0 := (physical_d_pos le_rfl).ne'
-      unfold t0 reserveProportion shiftBase
+      unfold t0 reserveProportion dampingRate Cycle63.Optimization.allowanceUnit shiftBase
       field_simp
       ring
-    have hid : (7 / 18) * t + b / 18 - (b - (1 - B)) / (4 * lambda) - t / 500 =
-        (7 / 18 - 1 / 500) * t + b * (1 / 18 - 1 / (4 * lambda)) + (1 - B) / (4 * lambda) := by
+    have hid : (7 / 18) * t + b / 18 - (b - (1 - B)) / (4 * lambda) - reserveProportion * t =
+        (7 / 18 - reserveProportion) * t + b * (1 / 18 - 1 / (4 * lambda)) + (1 - B) / (4 * lambda) := by
       field_simp
       ring
     have hb' := mul_le_mul_of_nonpos_right hb hcoef.le
-    nlinarith [mul_le_mul_of_nonneg_left ht (by norm_num : (0 : ℝ) ≤ 7 / 18 - 1 / 500)]
+    have hshare : (0 : ℝ) ≤ 7 / 18 - reserveProportion := by
+      norm_num [reserveProportion, dampingRate, Cycle63.Optimization.allowanceUnit]
+    nlinarith [mul_le_mul_of_nonneg_left ht hshare]
 
 end
 

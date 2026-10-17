@@ -20,7 +20,7 @@ theorem scheduled_bin_damping {kap d delta p v xi : ℝ}
     (hp : 0 ≤ p ∧ p ≤ 1/2) (hv : 0 ≤ v) (hxi : 0 ≤ xi) :
     scheduledBinExponent kap d delta p v xi ≤
       numeratorExponent kap d (newCapacity d) delta p+d*delta*xi/4-
-        d*Capacity.dampingRate*delta*(v+xi) := by
+        d*dampingRate*delta*(v+xi) := by
   have hdpos := Physical.physical_d_pos hd.1
   have hq : 0 ≤ delta*p := mul_nonneg hdelta hp.1
   have hq1 : delta*p ≤ delta/2 := by nlinarith [mul_le_mul_of_nonneg_left hp.2 hdelta]
@@ -48,7 +48,7 @@ theorem scheduled_kernel_bound {kap d delta p v xi e : ℝ}
     (hp : 0 ≤ p ∧ p ≤ 1/2) (hv : 0 ≤ v) (hxi : 0 ≤ xi) :
     scheduledBinExponent kap d delta p v xi+kernelExponent ((1+delta)/2) e ≤
       newExponentAt kap d delta p+Assembly.signalShift+16*e+d*delta*xi/4-
-        d*Capacity.dampingRate*delta*(v+xi) := by
+        d*dampingRate*delta*(v+xi) := by
   have hh := scheduled_bin_damping (kap:=kap) hd hdelta hp hv hxi
   have hi := numerator_kernel_exponent kap d (newCapacity d) delta p e
   unfold newExponentAt

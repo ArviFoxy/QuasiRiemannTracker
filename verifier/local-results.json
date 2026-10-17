@@ -70,5 +70,23 @@
     "repository": "GTimG/QuasiRiemannTracker",
     "number": 48,
     "head_sha": "57ca0662b4ddeb2a75c0e302d0350cc65cf67c12"
+  },
+  {
+    "schema_version": 1,
+    "result_id": "gao-balanced-marked-20261017",
+    "theta_exact": "87483/100000",
+    "verified_at": "2026-10-17T11:32:52.190604+00:00",
+    "source_repository": "GTimG/QuasiRiemannTracker",
+    "source_commit": "52419a826d4a8465cdeb56aaa2d471c489221d1d",
+    "kernels": [
+      "Lean default",
+      "nanoda",
+      "con-ron"
+    ],
+    "report_url": "https://github.com/GTimG/QuasiRiemannTracker/blob/7ae053f42b59f65790c4b66bb6a2ae0f5a32474a/verifier/standard/receipts/pr63-52419a82-20261017/result.json",
+    "report_sha256": "459cd6948c5e2b0f2021e6ab2e0c7fd1dacff72122d91cc6503a9d7bee4af4d4",
+    "repository": "GTimG/QuasiRiemannTracker",
+    "number": 63,
+    "head_sha": "52419a826d4a8465cdeb56aaa2d471c489221d1d"
   }
 ]

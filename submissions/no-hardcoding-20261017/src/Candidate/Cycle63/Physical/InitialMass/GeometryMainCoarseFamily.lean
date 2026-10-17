@@ -181,25 +181,25 @@ theorem actual_geometry_main_all_height_coarse_family {α : Type}[Fintype α][De
     have hh : LocalMoment.rawFrequencyNorm (nonzeroJointSourceRow (key (pick k)))≤Z^(B+5*B+loss) :=
       (hsupport k).1
     cases second
-    · exact hh.trans (Real.rpow_le_rpow_of_exponent_le hZ.le (by dsimp [SB]; linarith))
+    · exact hh.trans (Real.rpow_le_rpow_of_exponent_le hZ.le (by dsimp [SB]; linarith only [hB, hloss, hξε]))
     · rw [show encoded k=reflectedNonzeroJointLabel (key (pick k)) by rfl,reflected_joint_norm]
-      exact hh.trans (Real.rpow_le_rpow_of_exponent_le hZ.le (by dsimp [SB]; linarith))
+      exact hh.trans (Real.rpow_le_rpow_of_exponent_le hZ.le (by dsimp [SB]; linarith only [hB, hloss, hξε]))
   have hnorm (k : κ) : ((encoded k).val.1.1.1.absNorm:ℝ)≤Z^(8*SB) ∧
       ((encoded k).val.1.1.2.absNorm:ℝ)≤Z^(8*SB) ∧
       ((encoded k).val.2.1.1.absNorm:ℝ)≤Z^(8*SB) ∧ ((encoded k).val.2.1.2.absNorm:ℝ)≤Z^(8*SB) := by
     have hn:=actual_geometry_norm_caps s R seed (Z^Dfirst) Z ξ B hseed hs₁ hs₂ hsource (col k).1.val
-    have hb : Z^B≤Z^(8*SB):=Real.rpow_le_rpow_of_exponent_le hZ.le (by dsimp [SB]; linarith)
-    have hb' : Z^SB≤Z^(8*SB):=Real.rpow_le_rpow_of_exponent_le hZ.le (by linarith)
+    have hb : Z^B≤Z^(8*SB):=Real.rpow_le_rpow_of_exponent_le hZ.le (by dsimp [SB]; linarith only [hB, hloss, hξε])
+    have hb' : Z^SB≤Z^(8*SB):=Real.rpow_le_rpow_of_exponent_le hZ.le (by linarith only [hSB])
     cases second <;> exact ⟨(hn 0).2.trans hb,(hn 1).2.trans hb,
       (hvgates k).2.2.1.trans hb',(hvgates k).2.2.2.trans hb'⟩
   have hscalarcap (k : κ) : ‖scalar k‖^2*(∏i,(source (chooseRow k).val.1.1).M i)^2*
       ((E k).absNorm:ℝ)^(ε-1)≤Cscalar*Z^scalarCap := by
     have hscalarpoint := hscalar.2 s hα hlow reflected left second R seed W Dfirst ξ a reserve SB εmass ε Cs hK
       hSB hem hε.le hCs hM hseed hs₁ hs₂
-      (hsource.trans (Real.rpow_le_rpow_of_exponent_le hZ.le (by dsimp [SB]; linarith)))
+      (hsource.trans (Real.rpow_le_rpow_of_exponent_le hZ.le (by dsimp [SB]; linarith only [hB, hloss, hξε])))
       hsap₁ hsap₂
-      (hMbox.trans (by dsimp [SB]; linarith)) (hA.trans (by dsimp [SB]; linarith))
-      (habox.trans (by dsimp [SB]; linarith)) (hω.trans (by dsimp [SB]; linarith))
+      (hMbox.trans (by dsimp [SB]; linarith only [hB, hloss, hξε])) (hA.trans (by dsimp [SB]; linarith only [hB, hloss, hξε]))
+      (habox.trans (by dsimp [SB]; linarith only [hB, hloss, hξε])) (hω.trans (by dsimp [SB]; linarith only [hB, hloss, hξε]))
       bin (col k) R (alloc (chooseRow k).val.1.1) (χ (chooseRow k).val.1.1) t (halloc _)
       (v k).C (v k).D (v k).hC (v k).hD (v k).sameSupport ⟨(hvgates k).2.2.1,(hvgates k).2.2.2⟩ (v k).inactive
     exact (congrArg (fun x : ℝ=>x*(∏i,(source (chooseRow k).val.1.1).M i)^2*
@@ -216,7 +216,7 @@ theorem actual_geometry_main_all_height_coarse_family {α : Type}[Fintype α][De
         · change ((Ideal.span {jointSourceRow left u₀ unit (reflectedJointLabel (key (pick k)).val)}*
               firstSourceMissing left (key (pick k)).val.1).absNorm:ℝ)≤Z^(B+6*B+loss)
           simpa only [reflected_joint_row,Ideal.span_singleton_neg] using (hsupport k).2.2
-      exact hg.trans (Real.rpow_le_rpow_of_exponent_le hZ.le (by dsimp [SB]; linarith)))
+      exact hg.trans (Real.rpow_le_rpow_of_exponent_le hZ.le (by dsimp [SB]; linarith only [hB, hloss, hξε])))
     (fun k _=>hnorm k) (fun k _=>by cases second <;> exact (hsupport k).2.1)
     s hM he.1 he.2.2.2.1 he.2.2.2.2.2 hwin hscales hP
     (fun k=>C (chooseRow k).val.1.1) (fun _=>R) (fun k=>alloc (chooseRow k).val.1.1)

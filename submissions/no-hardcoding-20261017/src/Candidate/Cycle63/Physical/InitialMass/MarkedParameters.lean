@@ -46,8 +46,8 @@ theorem marked_raw_mesh_gates :
       markedRawMesh≤ markedRate := by
   have h := markedPlainMesh_pos (show (3/4:ℝ)≤Cycle63.Optimization.plainCapacityCost by
     norm_num [Cycle63.Optimization.plainCapacityCost])
-    (show 0< markedRate by norm_num [markedRate, Cycle63.Optimization.markedRate, Cycle63.Optimization.geometryLossCap, Cycle63.Optimization.lowReserveWeight])
-  exact ⟨lt_min h (by norm_num [markedRate, Cycle63.Optimization.markedRate, Cycle63.Optimization.geometryLossCap, Cycle63.Optimization.lowReserveWeight]),min_le_left _ _,min_le_right _ _⟩
+    (show 0< markedRate by norm_num [markedRate, Cycle63.Optimization.markedRate, Cycle63.Optimization.geometryLossCap, Cycle63.Optimization.lowReserveWeight, Cycle63.Optimization.allowanceUnit])
+  exact ⟨lt_min h (by norm_num [markedRate, Cycle63.Optimization.markedRate, Cycle63.Optimization.geometryLossCap, Cycle63.Optimization.lowReserveWeight, Cycle63.Optimization.allowanceUnit]),min_le_left _ _,min_le_right _ _⟩
 
 theorem marked_geometry_mesh_gates (oldMesh : ℝ) (hold : 0<oldMesh) :
     0< markedGeometryMesh oldMesh ∧ markedGeometryMesh oldMesh≤oldMesh ∧
@@ -72,7 +72,7 @@ theorem marked_height_gates (oldHeight : ℝ) (h : 0<oldHeight) :
       markedHeight oldHeight< markedCoreMin/2 ∧
       4*markedHeight oldHeight< markedCoreMin*markedWitnessRate := by
   have hc : 0< markedCoreMin := markedCoreMin_pos
-  have hw : 0< markedWitnessRate := by norm_num [markedWitnessRate, markedRate, Cycle63.Optimization.markedRate, Cycle63.Optimization.geometryLossCap, Cycle63.Optimization.lowReserveWeight]
+  have hw : 0< markedWitnessRate := by norm_num [markedWitnessRate, markedRate, Cycle63.Optimization.markedRate, Cycle63.Optimization.geometryLossCap, Cycle63.Optimization.lowReserveWeight, Cycle63.Optimization.allowanceUnit]
   have hpos : 0< markedHeight oldHeight := by unfold markedHeight;positivity
   have hcap : markedHeight oldHeight≤ markedCoreMin/4 :=
     (min_le_right _ _).trans (min_le_left _ _)
@@ -92,7 +92,7 @@ theorem marked_height_preserves_budget (oldHeight μ : ℝ) (J : ℕ)
 theorem marked_buffer_budget (μ e : ℝ) (hμ : μ≤Cycle63.Optimization.geometryLossCap)
     (he : e≤μ/294912) :
     12*e*((22:ℝ)+2)+8*markedWitnessRate+2*markedWitnessRate≤ markedRate/2 := by
-  norm_num [markedWitnessRate, markedRate, Cycle63.Optimization.markedRate, Cycle63.Optimization.geometryLossCap, Cycle63.Optimization.lowReserveWeight] at hμ ⊢
+  norm_num [markedWitnessRate, markedRate, Cycle63.Optimization.markedRate, Cycle63.Optimization.geometryLossCap, Cycle63.Optimization.lowReserveWeight, Cycle63.Optimization.allowanceUnit] at hμ ⊢
   linarith
 
 /-- The original slot error already fits the tiny-width amplitude gate. -/
@@ -182,7 +182,7 @@ theorem marked_raw_error_budget (D S ρ mesh μ normfee heightfee : ℝ)
       131*(156*markedRate+mesh+markedRate+markedRate)+markedPad*ρ+normfee+heightfee≤
         Cycle63.Optimization.markedLoss := by
   norm_num [markedRate,markedBinWidth,Cycle63.Optimization.markedBinWidth,markedPad,
-    Cycle63.Optimization.markedRate, Cycle63.Optimization.markedPad, Cycle63.Optimization.markedLoss,
+    Cycle63.Optimization.markedRate, Cycle63.Optimization.markedPad, Cycle63.Optimization.markedLoss, Cycle63.Optimization.markedLossAt,
     Cycle63.Optimization.geometryLossCap, Cycle63.Optimization.lowReserveWeight,
     Cycle63.Optimization.slotTop, Cycle63.Optimization.allowanceUnit] at hS hmesh hμ ⊢
   linarith
@@ -200,7 +200,7 @@ theorem marked_raw_exponent_paid (D S ρ δ mesh μ normfee heightfee : ℝ)
         (D*markedRootCutoff*(6*(ρ+markedRate)-1-(Cycle63.Optimization.tailSlack)))+normfee+heightfee≤
       D*ρ+δ*S-Cycle63.Optimization.liveRate δ*min S ((Cycle63.Optimization.inverseWidthCap)*((1-6*markedRootCutoff)*D))+
         Cycle63.Optimization.markedLoss := by
-  rw [marked_tail_dominates D ρ markedRate S δ hD0 hδ hρδ (by norm_num [markedRate, Cycle63.Optimization.markedRate, Cycle63.Optimization.geometryLossCap, Cycle63.Optimization.lowReserveWeight])]
+  rw [marked_tail_dominates D ρ markedRate S δ hD0 hδ hρδ (by norm_num [markedRate, Cycle63.Optimization.markedRate, Cycle63.Optimization.geometryLossCap, Cycle63.Optimization.lowReserveWeight, Cycle63.Optimization.allowanceUnit])]
   have h := marked_raw_error_budget D S ρ mesh μ normfee heightfee hD hS hρ hmesh hμ hnorm hheight
   nlinarith
 

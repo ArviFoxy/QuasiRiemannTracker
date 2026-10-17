@@ -78,7 +78,7 @@ def amplifierFloor : ℝ := amp firstCellTop
 
 bracket amplifierFloor_bounds (digits := 9) : amplifierFloor
   using [q0_enclosure, lambda_enclosure, B_enclosure, firstCellTop_bounds]
-  unfolding [amplifierFloor, amp, g, Ka, amplifierRatio, alpha, lowReserveWeight]
+  unfolding [amplifierFloor, amp, g, Ka, amplifierRatio, alpha, lowReserveWeight, allowanceUnit]
 
 theorem amplifierFloor_pos : 0 < amplifierFloor := by linarith [amplifierFloor_bounds.1]
 
@@ -105,7 +105,7 @@ theorem low_reserve (b : ℝ) :
   exact low_reserve_cancel hq (g b) alpha
 
 theorem lowReserve_pos : 0 < lowReserve := by
-  unfold lowReserve alpha lowReserveWeight
+  unfold lowReserve alpha lowReserveWeight allowanceUnit
   nlinarith [q0_bounds.2]
 
 /-- The HIGH reserve at the bin split in the cell `b` is the room `lowReserve` minus the net saving
@@ -113,11 +113,7 @@ of the supplied width at the price: the slope makes the price channel tight in e
 theorem high_reserve (b : ℝ) :
     1 - rho0 - q0 * totalA b - amp b * (5 - 6 * rho0) =
       lowReserve - (markedPrice * suppliedAt b - markedLoss) := by
-  have hpos : 0 < q0 + weight q0 := by
-    have hq := q0_bounds
-    unfold weight amplifierRatio density
-    rat_pos [hq]
-  have h := price_tight q0 b hpos.ne'
+  have h := price_tight q0_pos q0_lt b
   have hp : markedPrice = priceEndRate q0 := by rw [markedPrice_eq]; rfl
   rw [hp]
   unfold cellHigh cellAmplifier lowReserveAt at h
@@ -191,7 +187,7 @@ theorem high_derivative_reserve {b : ℝ} (hb : Cycle63.Optimization.firstCellTo
     apply le_of_lt; rat_pos [hq]
   have hgrowth : reserveGrowth =
       50 * (1 - 6 * amp slotTop) / (3 * (5 - 2 * q0) ^ 2) - totalA slotTop := by
-    unfold reserveGrowth priceEndGrowth cellAmplifier amp g totalA Ka lambda alpha B
+    unfold reserveGrowth priceEndGrowth priceEndGrowthIn cellAmplifier amp g totalA Ka lambda alpha B
     rfl
   have h5 : (5:ℝ) - 2 * q0 ≠ 0 := by linarith [hq.2]
   have hid : 50 * (1 - 6 * amp b) / (3 * (5 - 2 * q0) ^ 2) - totalA b - reserveGrowth =

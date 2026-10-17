@@ -1,5 +1,6 @@
 /- The `rat_pos` tactic: proves `a < b` for rational expressions in variables confined to intervals,
 by the kernel-evaluated Bernstein test of `Cycle63.Certificate.RatExpr`. Released under Apache 2.0. -/
+import Candidate.Cycle63.Certificate.IntervalCoeffs
 import Candidate.Cycle63.Certificate.RatExpr
 
 set_option autoImplicit false
@@ -126,7 +127,7 @@ def denoteIdentity (e pt rhs : Expr) : TacticM Expr := do
     evalTactic (← `(tactic| simp only [Cycle63.Certificate.RatExpr.denote,
       Cycle63.Certificate.RatExpr.ptOfList, List.getD_cons_zero, List.getD_cons_succ]))
     evalTactic (← `(tactic| all_goals push_cast))
-    evalTactic (← `(tactic| all_goals ring)))
+    evalTactic (← `(tactic| all_goals first | with_reducible rfl | ring)))
   unless rest.isEmpty do throwError "rat_pos: the expression identity left goals"
   return proof
 
@@ -146,6 +147,12 @@ the box where they hold: the box is bisected up to depth `n` (default 8), and ea
 shows `b - a > 0` or shows some `bⱼ - aⱼ < 0`. -/
 syntax (name := ratPosTac) "rat_pos" (ratPosOption)* " [" term,* "]" (&"given" " [" term,* "]")? :
   tactic
+
+unsafe def evalBoolUnsafe (e : Expr) : MetaM Bool := evalExpr Bool (mkConst ``Bool) e
+
+/-- The value of a closed Boolean term, by compiled code. -/
+@[implemented_by evalBoolUnsafe]
+opaque evalBool (e : Expr) : MetaM Bool
 
 /-- The first `min` or `max` of two real numbers in an expression. -/
 def findMinMax? (e : Expr) : Option Expr :=
@@ -198,8 +205,12 @@ def findMinMax? (e : Expr) : Option Expr :=
     entries := entries.push (← endsOfHyp (← inferType (← elabTerm h none)))
   let atoms := entries.map (·.1)
   let mut boxElems : Array Expr := #[]
-  for (lo, hi) in ← resolveEnds entries do
+  let ends ← resolveEnds entries
+  for (lo, hi) in ends do
     boxElems := boxElems.push (← mkAppM ``Prod.mk #[← mkRatLit lo, ← mkRatLit hi])
+  -- The trailing variables confined to intervals of width at most `10⁻⁶` are reduced to the
+  -- midpoints of interval enclosures instead of being expanded in the Bernstein basis.
+  let thin := (ends.toList.reverse.takeWhile fun (lo, hi) => hi - lo ≤ 1/1000000).length
   let goal ← getMainGoal
   let gty := (← instantiateMVars (← goal.getType)).consumeMData
   let (a, b) ← match gty.getAppFnArgs with
@@ -223,10 +234,14 @@ def findMinMax? (e : Expr) : Option Expr :=
     conds := conds.push ce
     condProofs := condProofs.push (← mkAppM ``LE.le.trans_eq #[hnn, ← mkEqSymm heq])
   let condList ← mkListLit (mkConst ``RatExpr) conds.toList
-  let check ← if constraints.isEmpty then
-      mkAppM ``RatExpr.ratPos #[mkApp (mkConst ``coeffsN) k, e, box, d]
+  let checkWith (C : Expr) : MetaM Expr := if constraints.isEmpty then
+      mkAppM ``RatExpr.ratPos #[C, e, box, d]
     else
-      mkAppM ``RatExpr.ratPosOn #[mkApp (mkConst ``coeffsN) k, condList, e, box, d, mkNatLit split]
+      mkAppM ``RatExpr.ratPosOn #[C, condList, e, box, d, mkNatLit split]
+  let mixed := mkApp2 (mkConst ``reducedCoeffs) (mkNatLit thin) (mkNatLit (atoms.size - thin))
+  let C ← if thin > 0 && (← evalBool (← checkWith mixed)) then pure mixed
+    else pure (mkApp (mkConst ``coeffsN) k)
+  let check ← checkWith C
   let hcheck ← mkFreshExprSyntheticOpaqueMVar (← mkEq check (mkConst ``Bool.true))
   let rest ← Tactic.run hcheck.mvarId! (evalTactic (← `(tactic| decide +kernel)))
   unless rest.isEmpty do throwError "rat_pos: the kernel check left goals"
@@ -246,12 +261,12 @@ def findMinMax? (e : Expr) : Option Expr :=
   unless rest.isEmpty do throwError "rat_pos: the box hypotheses left goals"
   let he ← denoteIdentity e pt (← mkAppM ``HSub.hSub #[b, a])
   let proof ← if constraints.isEmpty then
-      mkAppM ``RatExpr.lt_of_ratPos #[k, e, box, d, hcheck, pt, hbox, he]
+      mkAppM ``RatExpr.lt_of_ratPos #[C, e, box, d, hcheck, pt, hbox, he]
     else do
       let hconds ← condProofs.foldrM (init := mkConst ``True.intro)
         (fun p acc => mkAppM ``And.intro #[p, acc])
       mkAppM ``RatExpr.lt_of_ratPosOn
-        #[k, condList, e, box, d, mkNatLit split, hcheck, pt, hbox, hconds, he]
+        #[C, condList, e, box, d, mkNatLit split, hcheck, pt, hbox, hconds, he]
   goal.assign proof
   replaceMainGoal []
 

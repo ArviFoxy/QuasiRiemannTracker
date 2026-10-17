@@ -14,7 +14,7 @@ theorem geometry_loss_below_marked_cap (εaffine : ℝ) :
   refine h.trans ?_
   have hq := Cycle63.Arithmetic.q0_bounds.1
   unfold Cycle63.Arithmetic.lowReserve Cycle63.Arithmetic.alpha Cycle63.Optimization.geometryLossCap
-    Cycle63.Optimization.lowReserveWeight
+    Cycle63.Optimization.lowReserveWeight Cycle63.Optimization.allowanceUnit
   linarith
 
 

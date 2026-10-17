@@ -327,17 +327,17 @@ theorem ratPosOn_sound {R : Type} (C : Coeffs R) (cs : List RatExpr) (e : RatExp
 def ptOfList (vs : List ℝ) : ℕ → ℝ := fun i => vs.getD i 0
 
 /-- The form used by the `rat_pos` tactic. -/
-theorem lt_of_ratPos (k : ℕ) (e : RatExpr) (box : List (ℚ × ℚ)) (d : ℕ)
-    (h : ratPos (coeffsN k) e box d = true) (x : ℕ → ℝ) (hx : InBox box x) {a b : ℝ}
+theorem lt_of_ratPos {R : Type} (C : Coeffs R) (e : RatExpr) (box : List (ℚ × ℚ)) (d : ℕ)
+    (h : ratPos C e box d = true) (x : ℕ → ℝ) (hx : InBox box x) {a b : ℝ}
     (he : e.denote x = b - a) : a < b := by
-  have := ratPos_sound (coeffsN k) e box d h x hx
+  have := ratPos_sound C e box d h x hx
   linarith
 
 /-- The form used by the `rat_pos` tactic with constraint hypotheses. -/
-theorem lt_of_ratPosOn (k : ℕ) (cs : List RatExpr) (e : RatExpr) (box : List (ℚ × ℚ)) (d n : ℕ)
-    (h : ratPosOn (coeffsN k) cs e box d n = true) (x : ℕ → ℝ) (hx : InBox box x)
-    (hc : AllNonneg cs x) {a b : ℝ} (he : e.denote x = b - a) : a < b := by
-  have := ratPosOn_sound (coeffsN k) cs e d n box h x hx hc
+theorem lt_of_ratPosOn {R : Type} (C : Coeffs R) (cs : List RatExpr) (e : RatExpr)
+    (box : List (ℚ × ℚ)) (d n : ℕ) (h : ratPosOn C cs e box d n = true) (x : ℕ → ℝ)
+    (hx : InBox box x) (hc : AllNonneg cs x) {a b : ℝ} (he : e.denote x = b - a) : a < b := by
+  have := ratPosOn_sound C cs e d n box h x hx hc
   linarith
 
 end RatExpr

@@ -32,10 +32,11 @@ The marked saving in the cell `b` of the slot sum (`b - cellMesh ≤ Σ w ≤ b`
 price channel, the price times the supplied width `b - cellMesh - supplyLoss`, and the capped live
 channel, the live rate times the live cap. The slope `movingSlope` makes the HIGH reserve plus the
 price channel the same in every cell, so the intercept of the price channel is one number
-(`priceIntercept`); the capped live channel binds only in the top cell. The bin split is the point
-where both channels are tight in the top cell: the root of `capResidual`, the product of the inverse
-width cap and the core factor that balances the capped live channel at `q`, less the one that the
-count provides with the bin top of `q`. -/
+(`priceInterceptIn`); the capped live channel binds only in the top cell `s` of the slot window. For a
+window top `s` the bin split is the point where both channels are tight in the top cell: the root
+of `capResidualIn · s`, the product of the inverse width cap and the core factor that balances the
+capped live channel at `q`, less the one that the count provides with the bin top of `q`. The window
+top itself is computed in `WindowTop`. -/
 
 /-- Capacity cost per unit of plain slot width in the plain moment: `2 β - 1 ≤ 3/4` for the zeros
 of real part `β ≤ 7/8` of the baseline region. -/
@@ -60,9 +61,56 @@ def liveRate (d : ℝ) : ℝ := liveRatio*halfGain d
 `ρ ≥ 23/62`, so that `4 ρ - 1` is the larger of its two rates (`ledgerPrice`). -/
 def priceEndRate (q : ℝ) : ℝ := q - (4*density q - 1)
 
+/-- Numerator of the moving slope. -/
+def slopeNum (q : ℝ) : ℝ := 430*q^2 - 399*q + 135
+
+/-- Denominator of the moving slope. -/
+def slopeDen (q : ℝ) : ℝ := q*(24*q^2 - 34*q + 35)
+
 /-- The slope of the affine plain moment at the bin split `q` for which the price bound of the HIGH
-reserve is the same in every cell: the cancellation slope lowered by the price over `q + W`. -/
-def movingSlope (q : ℝ) : ℝ := slope q - priceEndRate q/(q + weight q)
+reserve is the same in every cell: the cancellation slope lowered by the price over `q + W`
+(`movingSlope_eq`), as one fraction. -/
+def movingSlope (q : ℝ) : ℝ := slopeNum q/slopeDen q
+
+/-- The sum of the bin split and the weight of the amplified slots is positive below `3/4`. -/
+theorem plane_sum_pos {q : ℝ} (h0 : 0 < q) (h1 : q < 3/4) : 0 < q + weight q := by
+  have h5 : (5:ℝ) - 2*q ≠ 0 := by linarith
+  have h9 : (9:ℝ) - 12*q ≠ 0 := by linarith
+  have hw := plane_sum_closed h5 h9 1
+  rw [one_mul] at hw
+  have hN : (9 - 12*q)*(5 - 2*q) + 2*1*(22*q - 5) = planeQuadratic q := by unfold planeQuadratic; ring
+  rw [hw, hN]
+  exact div_pos (mul_pos h0 (planeQuadratic_pos q)) (mul_pos (by linarith) (by linarith))
+
+/-- The moving slope is the cancellation slope lowered by the price over `q + W`. -/
+theorem movingSlope_eq {q : ℝ} (h0 : 0 < q) (h1 : q < 3/4) :
+    movingSlope q = slope q - priceEndRate q/(q + weight q) := by
+  have hE : (0:ℝ) < 24*q^2 - 34*q + 35 := planeQuadratic_pos q
+  have h5' : (5:ℝ) - q*2 ≠ 0 := by linarith
+  have h9' : (9:ℝ) - q*12 ≠ 0 := by linarith
+  have hsum : (q + weight q)*((9 - 12*q)*(5 - 2*q)) = q*(24*q^2 - 34*q + 35) := by
+    unfold weight amplifierRatio density
+    field_simp
+    ring
+  have hW := plane_sum_pos h0 h1
+  have hγ : priceEndRate q*(3*(5 - 2*q)) = -(6*q^2 - 73*q + 45) := by
+    unfold priceEndRate density
+    field_simp
+    ring
+  unfold movingSlope slopeNum slopeDen
+  rw [slope_closed h0 h1]
+  unfold planeQuadratic
+  symm
+  rw [eq_div_iff (by positivity), sub_mul]
+  have e1 : 24*q*(q + 5)/(24*q^2 - 34*q + 35)*(q*(24*q^2 - 34*q + 35)) = 24*q^2*(q + 5) := by
+    rw [div_mul_eq_mul_div, div_eq_iff hE.ne']
+    ring
+  have e2 : priceEndRate q/(q + weight q)*(q*(24*q^2 - 34*q + 35)) =
+      priceEndRate q*((9 - 12*q)*(5 - 2*q)) := by
+    rw [← hsum, div_mul_eq_mul_div, div_eq_iff hW.ne']
+    ring
+  rw [e1, e2]
+  linear_combination (-(3 - 4*q))*hγ
 
 /-- The slot width that the marked count credits in the cell with upper edge `b`: the cell's lower
 edge less the width lost to the two common allocations and to the tiny-slot discard. -/
@@ -79,22 +127,59 @@ def cellHigh (q B b : ℝ) : ℝ :=
 /-- The LOW reserve `alpha (1 - 4 q/3)` at the bin split `q`. -/
 def lowReserveAt (q : ℝ) : ℝ := lowReserveWeight*(1 - 4*q/3)
 
+/-- Numerator of the price intercept over `q (24 q^2 - 34 q + 35)^2`, for slot sums up to
+`s`. -/
+def interceptNum (q s : ℝ) : ℝ :=
+  96*q^4 + 344*q^3 - 540*q^2 + 700*q
+    + cellMesh*(-4752*q^4 + 26732*q^3 - 30316*q^2 + 11505*q - 1350)
+    + lowReserveWeight*(768*q^5 + 2176*q^4 - 6384*q^3 + 8840*q^2 - 4200*q)
+    + supplyLoss*(-576*q^5 + 8256*q^4 - 20956*q^3 + 27656*q^2 - 18555*q + 4725)
+    + markedLossAt s*(-576*q^4 + 2688*q^3 - 4572*q^2 + 4260*q - 1575)
+
+/-- Denominator of the price intercept. -/
+def interceptDen (q : ℝ) : ℝ := q*(24*q^2 - 34*q + 35)^2
+
 /-- The intercept at which the HIGH reserve, credited with the supplied width at the price, keeps
-the loss and the LOW reserve in every cell (with the moving slope this is one number). -/
-def priceIntercept (q : ℝ) : ℝ :=
-  (1 - density q + weight q - q*(movingSlope q - 1)*cellMesh - lowReserveWeight*(5 - 6*density q)
-    - priceEndRate q*(cellMesh + supplyLoss) - markedLoss - lowReserveAt q)/(q + weight q)
+the loss for slot sums up to `s` and the LOW reserve in every cell (`priceInterceptIn_eq`; with
+the moving slope this is one number), as one fraction. -/
+def priceInterceptIn (q s : ℝ) : ℝ := interceptNum q s/interceptDen q
+
+/-- The price intercept before its denominators are cleared. -/
+theorem priceInterceptIn_eq {q : ℝ} (h0 : 0 < q) (h1 : q < 3/4) (s : ℝ) :
+    priceInterceptIn q s =
+      (1 - density q + weight q - q*(movingSlope q - 1)*cellMesh - lowReserveWeight*(5 - 6*density q)
+        - priceEndRate q*(cellMesh + supplyLoss) - markedLossAt s - lowReserveAt q)/(q + weight q) := by
+  have h5 : (5:ℝ) - 2*q ≠ 0 := by linarith
+  have h9 : (9:ℝ) - 12*q ≠ 0 := by linarith
+  have hq : q ≠ 0 := h0.ne'
+  have hE := (planeQuadratic_pos q).ne'
+  have hw := plane_sum_closed h5 h9 1
+  rw [one_mul] at hw
+  have hN : (9 - 12*q)*(5 - 2*q) + 2*1*(22*q - 5) = planeQuadratic q := by unfold planeQuadratic; ring
+  rw [hN] at hw
+  have hsl : movingSlope q = (430*q^2 - 399*q + 135)/(q*planeQuadratic q) := rfl
+  have h5' := h5; ring_nf at h5'
+  have h9' := h9; ring_nf at h9'
+  have hd : interceptDen q = q*planeQuadratic q^2 := by unfold interceptDen planeQuadratic; ring
+  rw [show priceInterceptIn q s = interceptNum q s/interceptDen q from rfl]
+  symm
+  unfold lowReserveAt priceEndRate
+  rw [hw, hsl, weight_closed h5 h9, hd]
+  unfold density
+  field_simp
+  unfold interceptNum planeQuadratic
+  ring
 
 /-- The growth rate of the HIGH reserve per unit of zero parameter above the bin split `q`, in the
-top cell of the slot window, at the price intercept. -/
-def priceEndGrowth (q : ℝ) : ℝ :=
-  50*(1 - 6*cellAmplifier q (priceIntercept q) slotTop)/(3*(5 - 2*q)^2)
-    - (priceIntercept q - (movingSlope q - 1)*(slotTop - cellMesh))
+top cell `s` of the slot window, at the price intercept. -/
+def priceEndGrowthIn (q s : ℝ) : ℝ :=
+  50*(1 - 6*cellAmplifier q (priceInterceptIn q s) s)/(3*(5 - 2*q)^2)
+    - (priceInterceptIn q s - (movingSlope q - 1)*(s - cellMesh))
 
 /-- The smallest bin top at which the growth of the HIGH reserve above the bin split `q` pays the
-net saving of the price end in the top cell. -/
-def priceEndBinTop (q : ℝ) : ℝ :=
-  q + (priceEndRate q*suppliedAt slotTop - markedLoss)/priceEndGrowth q
+net saving of the price end in the top cell `s`. -/
+def priceEndBinTopIn (q s : ℝ) : ℝ :=
+  q + (priceEndRate q*suppliedAt s - markedLossAt s)/priceEndGrowthIn q s
 
 /-- The cap unit `u = 1 - c_L` at the bin top `d`: the largest one for which the count bound holds
 at `d` with the caps `w_I = u/2` and `w_P = u/(6 κ_p)`. -/
@@ -108,70 +193,26 @@ def rootCutoffAt (d w : ℝ) : ℝ :=
 /-- The inverse width cap times the core factor at the bin top `d`. -/
 def coreCapAt (d : ℝ) : ℝ := capUnitAt d/2*(1 - 6*rootCutoffAt d (capUnitAt d/2))
 
-/-- The frequency factor `1 - 6 amp - ω` of the live slots at the top cell, at the price intercept
-of the bin split `q`. -/
-def frequencyFactorAt (q : ℝ) : ℝ :=
-  1 - 6*cellAmplifier q (priceIntercept q) slotTop - frequencyLossCap
+/-- The frequency factor `1 - 6 amp - ω` of the live slots at the top cell `s`, at the price
+intercept of the bin split `q`. -/
+def frequencyFactorIn (q s : ℝ) : ℝ :=
+  1 - 6*cellAmplifier q (priceInterceptIn q s) s - frequencyLossCap
 
 /-- The product of the inverse width cap and the core factor at which the capped live channel keeps
-the loss and the LOW reserve in the top cell at the price intercept of the bin split `q`. -/
-def balancedCoreCap (q : ℝ) : ℝ :=
-  (lowReserveAt q + markedLoss - cellHigh q (priceIntercept q) slotTop)/
-    (liveRate q*frequencyFactorAt q)
+the loss and the LOW reserve in the top cell `s` at the price intercept of the bin split `q`. -/
+def balancedCoreCapIn (q s : ℝ) : ℝ :=
+  (lowReserveAt q + markedLossAt s - cellHigh q (priceInterceptIn q s) s)/
+    (liveRate q*frequencyFactorIn q s)
 
 /-- The product of the inverse width cap and the core factor that balances the capped live channel
-at the bin split `q`, less the one that the marked count provides with the bin top of `q`. -/
-def capResidual (q : ℝ) : ℝ := balancedCoreCap q - coreCapAt (priceEndBinTop q)
+in the top cell `s` at the bin split `q`, less the one that the marked count provides with the bin
+top of `q`. -/
+def capResidualIn (q s : ℝ) : ℝ := balancedCoreCapIn q s - coreCapAt (priceEndBinTopIn q s)
 
-/-- The bin split: the point of the split range at which the capped live channel and the price
-channel of the marked saving meet in the top cell, with the caps that the count provides. -/
-def markedSplit : ℝ := Certificate.firstNonneg capResidual (1/2) (37/50)
-
-/-- The top of the range of bins in which the marked count is used. -/
-def markedBinTop : ℝ := priceEndBinTop markedSplit
-
-/-- The cap unit `1 - c_L` at the bin top. -/
-def capUnit : ℝ := capUnitAt markedBinTop
-
-/-- Width cap of the inverse slots. -/
-def inverseWidthCap : ℝ := capUnit/2
-
-/-- Width cap of the plain slots. -/
-def plainWidthCap : ℝ := capUnit/(6*plainCapacityCost)
-
-/-- The chosen width at the caps: the inverse cap counted twice and the plain cap once. -/
-def chosenWidthCap : ℝ := (2*inverseWidthCap + plainWidthCap)/3
-
-/-- Slope `c_L` of the lower bound `1 - c_L δ` of the marked count. -/
-def countSlope : ℝ := 1 - capUnit
-
-/-- Length cap of the inverse fibers. -/
-def inverseLengthCap : ℝ := countSlope
-
-/-- Length cap of the plain fibers. -/
-def plainLengthCap : ℝ := countSlope/2
-
-/-- The large-root cutoff of the marked count. -/
-def markedRootCutoff : ℝ := rootCutoffAt markedBinTop inverseWidthCap
-
-/-- The core factor `1 - 6 κ` of the live frequency, for the root cutoff `κ`. -/
-def coreFactor : ℝ := 1 - 6*markedRootCutoff
-
-/-- The largest amplifier length on the cell range: the one of the top cell. -/
-def amplifierCap : ℝ := cellAmplifier markedSplit (priceIntercept markedSplit) slotTop
-
-/-- The frequency factor of the live slots at the largest amplifier length. -/
-def frequencyFactor : ℝ := 1 - 6*amplifierCap - frequencyLossCap
-
-/-- The frequency of the live slots: the core factor times the frequency factor. -/
-def liveFrequency : ℝ := coreFactor*frequencyFactor
-
-/-- The live width cap: the inverse width cap at the live frequency. -/
-def liveCap : ℝ := inverseWidthCap*liveFrequency
-
-/-- The smallest growth rate of the HIGH reserve per unit of zero parameter above the bin split on
-the cell range: the one of the top cell. -/
-def reserveGrowth : ℝ := priceEndGrowth markedSplit
+/-- The bin split for the window top `s`: the point of the split range at which the capped live
+channel and the price channel of the marked saving meet in the top cell `s`, with the caps that the
+count provides. -/
+def splitIn (s : ℝ) : ℝ := Certificate.firstNonneg (fun q => capResidualIn q s) (1/2) (37/50)
 
 end
 

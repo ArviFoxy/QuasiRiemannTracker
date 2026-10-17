@@ -21,7 +21,7 @@ namespace Cycle63.Arithmetic
 noncomputable section
 open Cycle63.Optimization
 
-def theta : ℝ := 874835173/1000000000
+def theta : ℝ := 874835060/1000000000
 def c : ℝ := 1 - theta
 /-- Collet's LOW/HIGH bin split: where both channels of the marked saving are tight in the top cell. -/
 def q0 : ℝ := markedSplit
@@ -73,13 +73,12 @@ bracket q0_enclosure (digits := 14) : q0 using [markedSplit_enclosure] unfolding
 bracket q0_bounds (digits := 9) : q0 using [q0_enclosure] unfolding []
 
 bracket lambda_enclosure (digits := 14) : lambda using [q0_enclosure]
-  unfolding [lambda, movingSlope, Cycle63.Optimization.slope, weight, amplifierRatio, density,
-    priceEndRate]
+  unfolding [lambda, movingSlope, slopeNum, slopeDen]
 
 bracket B_enclosure (digits := 14) : B using [q0_enclosure]
-  unfolding [B, priceIntercept, lowReserveAt, movingSlope, Cycle63.Optimization.slope, weight,
-    amplifierRatio, density, priceEndRate, markedLoss, markedRate, markedPad, slotTop, cellMesh,
-    lowReserveWeight, supplyLoss, commonAllocationLoss, tinySlotLoss, geometryLossCap, markedBinWidth, allowanceUnit]
+  unfolding [B, priceIntercept, priceInterceptIn, interceptNum, interceptDen, markedLoss, markedLossAt, markedRate,
+    markedPad, slotTop, cellMesh, lowReserveWeight, supplyLoss, commonAllocationLoss, tinySlotLoss,
+    geometryLossCap, markedBinWidth, allowanceUnit]
 
 bracket deltaStar_enclosure (digits := 13) : deltaStar lambda B using [lambda_enclosure, B_enclosure]
   unfolding [deltaStar, rootA2, rootA1, rootA0, rootDisc, discrim]
@@ -185,12 +184,12 @@ theorem dPlus_lt_one : dPlus < 1 := by
   have := h_bounds; have := dPlusOffset_bounds; unfold dPlus; linarith
 theorem kappaStar_mem : 7 / 10 ≤ kappaStar ∧ kappaStar ≤ 3 / 4 := by
   constructor <;> norm_num [kappaStar, theta]
-theorem alpha_pos : 0 < alpha := by norm_num [alpha, lowReserveWeight]
+theorem alpha_pos : 0 < alpha := by norm_num [alpha, lowReserveWeight, allowanceUnit]
 
 /-- The LOW reserve is small enough for the analytic payments: half of it is below `1/100`. -/
 theorem lowReserve_le : lowReserve ≤ 1/50 := by
   have hq := q0_bounds
-  unfold lowReserve alpha lowReserveWeight
+  unfold lowReserve alpha lowReserveWeight allowanceUnit
   linarith
 
 theorem lambda_bounds' : 39/10 < lambda ∧ lambda < 401/100 :=
@@ -204,16 +203,15 @@ theorem q0_lt : q0 < 3/4 := by linarith [q0_bounds.2]
 
 /-- The slope in closed form, `(430 q0^2 - 399 q0 + 135)/(q0 E(q0))` with
 `E(q) = 24 q^2 - 34 q + 35`. -/
-theorem lambda_closed : lambda = (430*q0^2 - 399*q0 + 135)/(q0*(24*q0^2 - 34*q0 + 35)) :=
-  movingSlope_closed q0_pos q0_lt
+theorem lambda_closed : lambda = (430*q0^2 - 399*q0 + 135)/(q0*(24*q0^2 - 34*q0 + 35)) := rfl
 
 /-- Rewrites the computed parameters as rational functions of the bin split, for `rat_pos`. -/
 macro "unfold_parameters" : tactic => `(tactic|
-  (simp only [Cycle63.Arithmetic.B, Cycle63.Optimization.priceIntercept,
+  (simp only [Cycle63.Arithmetic.B, Cycle63.Optimization.priceIntercept, Cycle63.Optimization.priceInterceptIn,
     Cycle63.Optimization.lowReserveAt, Cycle63.Arithmetic.lambda_closed,
-    Cycle63.Optimization.movingSlope, Cycle63.Optimization.slope, Cycle63.Optimization.weight,
+    Cycle63.Optimization.interceptNum, Cycle63.Optimization.interceptDen,
     Cycle63.Optimization.priceEndRate, Cycle63.Arithmetic.Ka, Cycle63.Arithmetic.markedPrice_eq,
-    Cycle63.Optimization.markedLoss, Cycle63.Optimization.markedRate, Cycle63.Optimization.markedPad, Cycle63.Arithmetic.rho0, Cycle63.Arithmetic.alpha,
+    Cycle63.Optimization.markedLoss, Cycle63.Optimization.markedLossAt, Cycle63.Optimization.markedRate, Cycle63.Optimization.markedPad, Cycle63.Arithmetic.rho0, Cycle63.Arithmetic.alpha,
     Cycle63.Optimization.lowReserveWeight, Cycle63.Optimization.cellMesh,
     Cycle63.Optimization.slotFloor, Cycle63.Optimization.supplyLoss,
     Cycle63.Optimization.commonAllocationLoss, Cycle63.Optimization.tinySlotLoss,
@@ -221,7 +219,7 @@ macro "unfold_parameters" : tactic => `(tactic|
     Cycle63.Arithmetic.lowReserve,
     Cycle63.Optimization.suppliedAt, Cycle63.Optimization.slotTop,
     Cycle63.Optimization.amplifierRatio, Cycle63.Optimization.density,
-    Cycle63.Optimization.allowanceUnit, Cycle63.Optimization.firstCellTop]))
+    Cycle63.Optimization.firstCellTop]))
 
 theorem B_pos : 0 < B := by linarith [B_bounds.1]
 

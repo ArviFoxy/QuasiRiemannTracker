@@ -49,7 +49,7 @@ theorem geometry_affine_marked_uniform_schedule {α : Type} [Fintype α] [Decida
     change 2*τ<(P₀ ∅).d*(P₀ ∅).vslot
     linarith [(hgates ∅).1]
   let g := geometryAffineLowScheduleOfHigh (P ∅) μ hμ
-    (hμcap.trans (by norm_num [Cycle63.Optimization.geometryLossCap, Cycle63.Optimization.lowReserveWeight])) rates.2.2.1 rfl rfl hcutoff
+    (hμcap.trans (by norm_num [Cycle63.Optimization.geometryLossCap, Cycle63.Optimization.lowReserveWeight, Cycle63.Optimization.allowanceUnit])) rates.2.2.1 rfl rfl hcutoff
   refine ⟨τ,hτ,hle.trans hτcap,hnew.2.2.1,hnew.2.2.2,g,rfl,rfl,rfl,?_⟩
   intro T
   have hg := hgates T

@@ -107,7 +107,7 @@ theorem actual_affine_high_uniform_literal_schedule_of_fibers
   refine ⟨hp.1,?_⟩
   apply affine_main_high_spec_of_receipts (α:=T) M H hH W hW.continuous hWs hbeta
     P μ δ (geometryAffineHighTarget μ δ) (excluded F₀.character R₀) Cs Sp degree K
-    η₀ Q hQM hQ72 Z hμ (hμcap.trans (by norm_num [Cycle63.Optimization.geometryLossCap, Cycle63.Optimization.lowReserveWeight])) hf.2 _ hp.2
+    η₀ Q hQM hQ72 Z hμ (hμcap.trans (by norm_num [Cycle63.Optimization.geometryLossCap, Cycle63.Optimization.lowReserveWeight, Cycle63.Optimization.allowanceUnit])) hf.2 _ hp.2
   unfold GeometryAffineMainLowSourceSpec
   intro θ η w σ freq hσ b state p t X₁ X₂ hX₁ hX₂ hw hlo₁ hlo₂ hhi₁ hhi₂ hslots inp
   exact geometry_affine_source_gates_actual_card inp p (Fintype.card α) Cs Z

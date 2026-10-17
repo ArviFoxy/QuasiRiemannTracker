@@ -438,7 +438,7 @@ theorem actual_affine_high_selected_small_height_of_fibers
           (excluded F₀.character R₀) Cs Sp 0 K η₀ Q hQM hQ72 Z := by
   intro δ
   have hμ1 : μ ≤ 1/1000 := hμcap.trans (by
-    norm_num [Cycle63.Optimization.geometryLossCap, Cycle63.Optimization.lowReserveWeight])
+    norm_num [Cycle63.Optimization.geometryLossCap, Cycle63.Optimization.lowReserveWeight, Cycle63.Optimization.allowanceUnit])
   have rates:=geometry_final_dictionary_budgets μ 31 3 4 3 130 (3*((Nbudget:ℝ)+2)) Nbudget
     hμ (by norm_num) (by norm_num) (by norm_num) (by norm_num) (by norm_num) (by positivity)
   have hδ : 0<δ:=rates.1
@@ -707,7 +707,7 @@ theorem actual_affine_high_selected_all_height_of_fibers
   have hδ : 0<δ:=(geometry_final_dictionary_budgets μ 31 3 4 3 130 (3*((Nbudget:ℝ)+2)) Nbudget hμ
     (by norm_num) (by norm_num) (by norm_num) (by norm_num) (by norm_num) (by positivity)).1
   obtain ⟨Kc,hKc,hcoarse⟩:=actual_affine_high_selected_coarse (α:=α) M H hH
-    η₀ u₀ F₀ R₀ hu₀ W hbeta P μ δ Cs (excluded F₀.character R₀) hμ (hμcap.trans (by norm_num [Cycle63.Optimization.geometryLossCap, Cycle63.Optimization.lowReserveWeight])) hδ hCs
+    η₀ u₀ F₀ R₀ hu₀ W hbeta P μ δ Cs (excluded F₀.character R₀) hμ (hμcap.trans (by norm_num [Cycle63.Optimization.geometryLossCap, Cycle63.Optimization.lowReserveWeight, Cycle63.Optimization.allowanceUnit])) hδ hCs
   obtain ⟨degree,hsplice⟩:=geometry_affine_high_selected_height_splice (α:=α) M H hH W hbeta P μ δ
     (geometryAffineHighTarget μ δ) (geometryAffineHighCoarseExponent μ δ (Fintype.card α))
     (excluded F₀.character R₀) Cs Sp

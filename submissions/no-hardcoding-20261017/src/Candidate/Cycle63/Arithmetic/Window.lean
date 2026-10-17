@@ -45,14 +45,6 @@ theorem small_slot_complement :
     (2 : ℝ) * CountAffine.plainTop + (9 / 2) * Cycle63.Optimization.slotFloor ≤ 1 := by
   norm_num [CountAffine.plainTop, Cycle63.Optimization.slotFloor]
 
-/-- The share of a width `M` left for the padding in the comparison branch of Collet's moment,
-after the lengths `M/4` and `M/2` and the slot capacity `(9/2) slotTop M`. -/
-def comparisonPadding : ℝ := 1/4 - (9/2)*Cycle63.Optimization.slotTop
-
-/-- The padding share covers the padding `M/100` of the comparison branch. -/
-theorem comparisonPadding_ge : 1/100 ≤ comparisonPadding := by
-  norm_num [comparisonPadding, Cycle63.Optimization.slotTop]
-
 end
 
 end Cycle63.Physical

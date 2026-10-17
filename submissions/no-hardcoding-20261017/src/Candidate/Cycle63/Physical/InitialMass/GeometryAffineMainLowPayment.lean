@@ -67,7 +67,7 @@ theorem affine_main_low_target_lower (g : GeometryAffineLowSchedule) (N : ℕ)
   have hN : 0≤2*g.δ*31*(N:ℝ) := by positivity
   have hs : 0≤3*((N:ℝ)+2)*3*g.δ := by positivity
   have hlow : Cycle63.Arithmetic.lowReserve ≤ 1 := by
-    unfold Cycle63.Arithmetic.lowReserve Cycle63.Arithmetic.alpha Cycle63.Optimization.lowReserveWeight
+    unfold Cycle63.Arithmetic.lowReserve Cycle63.Arithmetic.alpha Cycle63.Optimization.lowReserveWeight Cycle63.Optimization.allowanceUnit
     nlinarith [Cycle63.Arithmetic.q0_bounds.1]
   linarith
 

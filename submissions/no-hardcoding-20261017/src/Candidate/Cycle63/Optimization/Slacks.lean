@@ -1,6 +1,7 @@
 /- The small allowances of the proof, defined once, and the losses derived from them.
 Released under Apache 2.0. -/
 import Mathlib.Tactic
+import Candidate.Cycle63.Certificate.Bracket
 
 set_option autoImplicit false
 
@@ -9,57 +10,28 @@ namespace Cycle63.Optimization
 noncomputable section
 
 /-- The unit of the allowances of the analytic argument that only have to be positive: the cell
-mesh and the allowance of the large-root tail. -/
+mesh, the allowance of the large-root tail and the weight of the LOW reserve. -/
 def allowanceUnit : ℝ := 1/100000000
 
-/-- Weight `alpha` of the LOW reserve `alpha (1 - 4 q0/3)`. Any positive weight works; it is well
-below the bin width of the marked count, since the tiny-slot loss is proportional to it over the bin
-width (`tinySlotLoss`). -/
-def lowReserveWeight : ℝ := 1/400000
+/-- Weight `alpha` of the LOW reserve `alpha (1 - 4 q0/3)`. Any positive weight works; it is the
+allowance unit. The slacks of the marked ledger are proportional to it (`geometryLossCap`). -/
+def lowReserveWeight : ℝ := allowanceUnit
 
 /-- Width of the cells of the slot sum in the HIGH reserve. -/
 def cellMesh : ℝ := allowanceUnit
-
-/-- Width of the bins of the marked count. Any positive width works; the tiny-slot loss falls with
-it (`tinySlotLoss`) while the bin-width term of the marked loss grows with it (`markedLoss`). -/
-def markedBinWidth : ℝ := 1/100000
 
 /-- Bottom of the slot window of Collet's affine moment: the smallest total slot width for which
 the affine moment is proved. -/
 def slotFloor : ℝ := 17/500
 
-/-- Top of the slot window of Collet's affine moment. -/
-def slotTop : ℝ := 1/25
-
 theorem slotFloor_pos : 0 < slotFloor := by norm_num [slotFloor]
-
-theorem slotTop_le_one : slotTop ≤ 1 := by norm_num [slotTop]
 
 /-- The upper edge of the first cell of the slot window. -/
 def firstCellTop : ℝ := slotFloor + cellMesh
 
-/-- The number of cells of the slot window. -/
-def cellCount : ℕ := ⌈(slotTop - slotFloor)/cellMesh⌉₊
-
-/-- The cells tile the slot window. -/
-theorem cellCount_mul : (cellCount : ℝ)*cellMesh = slotTop - slotFloor := by
-  unfold cellCount
-  norm_num [slotTop, slotFloor, cellMesh, allowanceUnit, Nat.ceil_ofNat]
-
 theorem cellMesh_pos : 0 < cellMesh := by
   unfold cellMesh allowanceUnit
   norm_num
-
-theorem one_le_cellCount : 1 ≤ cellCount := by
-  have h := cellCount_mul
-  have hm := cellMesh_pos
-  have hpos : (0:ℝ) < cellCount := by
-    by_contra hc
-    have h0 : (cellCount : ℝ) ≤ 0 := not_lt.mp hc
-    have : (cellCount : ℝ)*cellMesh ≤ 0 := mul_nonpos_of_nonpos_of_nonneg h0 hm.le
-    unfold slotTop slotFloor at h
-    linarith
-  exact_mod_cast hpos
 
 /-- The allowance `tailEps` of the large-root tail gain `κ (6 ρ - 1 - tailEps)` of the marked count:
 the allowance unit. -/
@@ -74,6 +46,14 @@ def geometryLossCap : ℝ := lowReserveWeight*(1 - 4*(1/2)/3)/128
 the geometry loss unit `μ ≤ geometryLossCap` (`eventual_geometry_small_frequency`). -/
 def frequencyLossCap : ℝ := 33*geometryLossCap/128
 
+/-- Width of the bins of the marked count. Any positive width works; the tiny-slot loss
+`62 geometryLossCap/(2048 w)` falls with it (`tinySlotLoss`) while the bin-width term `2 w s` of the
+marked loss for slot sums up to `s` grows with it (`markedLossAt`). It is the width at which the two
+are equal, where their sum is smallest, for slot sums up to the first cell top (the start of the
+window-top iteration, which depends on the width), rounded up to eight digits. -/
+bracket_up markedBinWidth (digits := 8) : Real.sqrt (62*geometryLossCap/(4096*firstCellTop))
+  unfolding [geometryLossCap, lowReserveWeight, firstCellTop, slotFloor, cellMesh, allowanceUnit]
+
 /-- The rate of the marked count: the smallest one for which the selector buffer
 `e ≤ geometryLossCap/294912` and the witness rates `markedRate/128` fit in half of it
 (`marked_buffer_budget`). -/
@@ -82,11 +62,11 @@ def markedRate : ℝ := geometryLossCap/432
 /-- The pad of the marked count's raw exponent: any positive number works; it is the marked rate. -/
 def markedPad : ℝ := markedRate
 
-/-- Analytic loss charged to the marked saving: the raw error budget of the marked count at raw
-exponent up to `130`, slot width up to `slotTop` and geometry loss unit up to `geometryLossCap`
+/-- Analytic loss charged to the marked saving for slot sums up to `s`: the raw error budget of
+the marked count at raw exponent up to `130` and geometry loss unit up to `geometryLossCap`
 (`marked_raw_error_budget`). -/
-def markedLoss : ℝ :=
-  130*markedRate + 2*markedBinWidth*slotTop + 131*(159*markedRate) + markedPad +
+def markedLossAt (s : ℝ) : ℝ :=
+  130*markedRate + 2*markedBinWidth*s + 131*(159*markedRate) + markedPad +
     geometryLossCap/32 + geometryLossCap/8
 
 /-- The total width of the tiny slots that the marked ledger discards: the smallest one for which
@@ -106,16 +86,16 @@ theorem allowanceUnit_pos : 0 < allowanceUnit := by
   norm_num
 
 theorem geometryLossCap_pos : 0 < geometryLossCap := by
-  unfold geometryLossCap lowReserveWeight
+  unfold geometryLossCap lowReserveWeight allowanceUnit
   norm_num
 
 theorem markedRate_pos : 0 < markedRate := by
   unfold markedRate
   linarith [geometryLossCap_pos]
 
-theorem markedLoss_pos : 0 < markedLoss := by
-  unfold markedLoss markedPad markedBinWidth slotTop
-  linarith [geometryLossCap_pos, markedRate_pos, allowanceUnit_pos]
+theorem markedLossAt_pos {s : ℝ} (hs : 0 ≤ s) : 0 < markedLossAt s := by
+  unfold markedLossAt markedPad markedBinWidth
+  linarith [geometryLossCap_pos, markedRate_pos]
 
 theorem commonAllocationLoss_pos : 0 < commonAllocationLoss := geometryLossCap_pos
 

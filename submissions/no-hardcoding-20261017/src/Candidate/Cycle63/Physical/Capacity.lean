@@ -7,8 +7,8 @@ with row length `d ∈ [dMinus, dPlus]` and shift `t ∈ [0, t0]`.
 The window conditions are stated with their exact limits: the plain length lies in
 `(windowBottom, plainTop)`, the slot capacity lies above `slotFloor` and below `smallPlainCap`, the largest
 width for which the old capacity holds below the window, and the shift reserve at the largest shift
-base keeps the proportional part `t/500`. These are proved over the enclosures of the bin split and
-the row length by `rat_pos`. -/
+base keeps the proportional part `t/500`. Inequalities between the constants are proved from their
+interval enclosures (`bracket`), those over the row length by `rat_pos`. -/
 
 namespace Cycle63.Physical
 
@@ -22,6 +22,19 @@ def shiftBase (d : ℝ) : ℝ := 2 * y / d - 1
 def oldCapacity (b t : ℝ) : ℝ := max 0 ((b - 2 * t) / (9 / 2))
 def shiftReserve (b t : ℝ) : ℝ :=
   t / 2 - (1 / 4) * ((b - (1 - B)) / lambda - oldCapacity b t)
+
+/-- An enclosure of the largest plain length `1 - y/dPlus + t0`. -/
+bracket plainScaleTop_bounds (digits := 12) : 1 - y / dPlus + t0
+  using [h_enclosure, dPlusOffset_bounds, t0_bounds] unfolding [y, ell, theta, dPlus]
+
+/-- An enclosure of the smallest slot capacity, the one at the largest plain length. -/
+bracket affineCapacityLow_bounds (digits := 12) : (B - 2 * (1 - y / dPlus + t0)) / lambda
+  using [B_enclosure, lambda_enclosure, plainScaleTop_bounds] unfolding []
+
+/-- An enclosure of the slot supply left at the largest row length and the largest capacity. -/
+bracket supplyLeft_bounds (digits := 12) : ell - dPlus * ((B - 2 * (1 - y / dMinus)) / lambda)
+  using [B_enclosure, lambda_enclosure, h_enclosure, dPlusOffset_bounds, dMinus_bounds]
+  unfolding [ell, theta, dPlus, y]
 
 theorem physical_d_pos {d : ℝ} (hd : dMinus ≤ d) : 0 < d := by
   have := half_lt_dMinus
@@ -53,13 +66,10 @@ theorem plainScale_interior {d t : ℝ}
   have hlo : Cycle63.CountAffine.windowBottom < 1 - y / dMinus := by
     unfold y ell theta Cycle63.CountAffine.windowBottom
     rat_pos [hh, hdm]
-  have hq := q0_bounds
-  have hoff := dPlusOffset_bounds
   have hhi : 1 - y / dPlus + t0 < Cycle63.CountAffine.plainTop := by
-    unfold t0 reserveProportion dMinus y dPlus ell theta Physical.smallPlainCap
-      CountAffine.windowBottom CountAffine.plainTop
-    unfold_parameters
-    rat_pos [hq, hh, hoff]
+    have := plainScaleTop_bounds.2
+    unfold Cycle63.CountAffine.plainTop
+    linarith
   constructor <;> linarith [hn.1, hn.2]
 
 /-- The slot capacity is decreasing in the plain length. -/
@@ -77,14 +87,10 @@ theorem affineCapacity_interior {d t : ℝ}
     (hd : dMinus ≤ d ∧ d ≤ dPlus) (ht : 0 ≤ t ∧ t ≤ t0) :
     Cycle63.Optimization.slotFloor < affineCapacity d t ∧ affineCapacity d t ≤ smallPlainCap := by
   have hz := affineCapacity_bounds hd ht
-  have hq := q0_bounds
-  have hh := h_bounds
-  have hoff := dPlusOffset_bounds
-  have ht0 := t0_bounds
   have hlo : Cycle63.Optimization.slotFloor < (B - 2 * (1 - y / dPlus + t0)) / lambda := by
-    unfold y dPlus ell theta
-    unfold_parameters
-    rat_pos [hq, hh, hoff, ht0]
+    have := affineCapacityLow_bounds.1
+    unfold Cycle63.Optimization.slotFloor
+    linarith
   have hhi : (B - 2 * (1 - y / dMinus)) / lambda ≤ smallPlainCap := by
     have hl := lambda_pos
     have hy := y_pos
@@ -155,14 +161,7 @@ theorem capacity_supply {d t : ℝ}
     linarith [(affineCapacity_interior hd ht).1, Cycle63.Optimization.slotFloor_pos]
   have hdp : 0 ≤ dPlus := (physical_d_pos hd.1).le.trans hd.2
   have hprod := mul_le_mul hd.2 hz.2 hzp hdp
-  have hq := q0_bounds
-  have hh := h_bounds
-  have hdm := dMinus_bounds
-  have hoff := dPlusOffset_bounds
-  have hsup : 0 < ell - dPlus * ((B - 2 * (1 - y / dMinus)) / lambda) := by
-    unfold y dPlus ell theta
-    unfold_parameters
-    rat_pos [hq, hh, hdm, hoff]
+  have hsup := supplyLeft_bounds.1
   linarith
 
 theorem shiftBase_bounds {d : ℝ} (hd : dMinus ≤ d ∧ d ≤ dPlus) :
@@ -220,11 +219,7 @@ theorem large_shift_reserve {b t : ℝ} (hb : b ≤ shiftBase dMinus) (ht : t0 �
     t / 500 ≤ shiftReserve b t := by
   have hl := lambda_bounds'
   have hlam : 0 < lambda := by linarith [hl.1]
-  have hB1 : B < 1 := by
-    have hq := q0_bounds
-    rw [← sub_pos]
-    unfold_parameters
-    rat_pos [hq]
+  have hB1 : B < 1 := by linarith [B_bounds.2]
   have ht0 : (0 : ℝ) < t0 := lt_of_lt_of_le (by norm_num) t0_bounds.1
   have htp : 0 < t := lt_of_lt_of_le ht0 ht
   by_cases hclip : b ≤ 2 * t

@@ -123,17 +123,11 @@ outward to `d` decimal digits (default 8); the kernel checks the enclosure and
 syntax (name := bracketCmd) (docComment)? "bracket " ident (bracketOption)* " : " term
   (" via " term)? (" using " "[" term,* "]")? " unfolding " "[" ident,* "]" : command
 
-@[command_elab bracketCmd] def elabBracket : CommandElab := fun stx => do
-  let doc? : Option (TSyntax ``Lean.Parser.Command.docComment) :=
-    if stx[0].getNumArgs = 0 then none else some ⟨stx[0][0]⟩
-  let name : Ident := ⟨stx[2]⟩
-  let e : Term := ⟨stx[5]⟩
-  let via? : Option Term := if stx[6].getNumArgs = 0 then none else some ⟨stx[6][1]⟩
-  let hyps : Array Term := if stx[7].getNumArgs = 0 then #[] else stx[7][2].getSepArgs.map (⟨·⟩)
-  let unfolds : Array Ident := stx[10].getSepArgs.map (⟨·⟩)
+/-- Reads the `precision` and `digits` options of `bracket` and `bracket_up`. -/
+def bracketOptions (options : Array Syntax) : CommandElabM (ℕ × ℕ) := do
   let mut precision : ℕ := 64
   let mut digits : ℕ := 8
-  for option in stx[3].getArgs do
+  for option in options do
     let value ← match option[3].isNatLit? with
       | some v => pure v
       | none => throwError "bracket: option {option} has no numeral value"
@@ -141,6 +135,12 @@ syntax (name := bracketCmd) (docComment)? "bracket " ident (bracketOption)* " : 
     | "precision" => precision := value
     | "digits" => digits := value
     | other => throwError "bracket: unknown option {other}"
+  return (precision, digits)
+
+/-- Elaborates the theorem `name : lo ≤ e ∧ e ≤ hi` of `bracket` and returns its bounds. -/
+def bracketTheorem (doc? : Option (TSyntax ``Lean.Parser.Command.docComment)) (name : Ident)
+    (e : Term) (via? : Option Term) (hyps : Array Term) (unfolds : Array Ident)
+    (precision digits : ℕ) : CommandElabM (ℚ × ℚ) := do
   let unfoldNames ← liftCoreM <| unfolds.mapM fun i => realizeGlobalConstNoOverloadWithInfo i
   let exprName := (← getCurrNamespace) ++ name.getId ++ `cexpr
   let (ce, boxes, enclosure) ← liftTermElabM do
@@ -211,7 +211,7 @@ syntax (name := bracketCmd) (docComment)? "bracket " ident (bracketOption)* " : 
         delta $exprId:ident
         simp only [Cycle63.Certificate.CExpr.denote, Cycle63.Certificate.CExpr.ptOfList,
           Cycle63.Certificate.boundedTerm, List.getD_cons_zero, List.getD_cons_succ, $lemmas,*] <;>
-          push_cast <;> ring_nf
+          push_cast <;> first | with_reducible rfl | ring_nf
       obtain ⟨hlo, hhi⟩ := Cycle63.Certificate.CExpr.bounds_of_within $prec $boxList $exprId $loRat
         $hiRat (by decide +kernel) (Cycle63.Certificate.CExpr.ptOfList $atomList) $boxProof
       rw [hden] at hlo hhi
@@ -220,5 +220,40 @@ syntax (name := bracketCmd) (docComment)? "bracket " ident (bracketOption)* " : 
       rw [hloCast] at hlo
       rw [hhiCast] at hhi
       exact ⟨hlo, hhi⟩))
+  return (lo, hi)
+
+@[command_elab bracketCmd] def elabBracket : CommandElab := fun stx => do
+  let doc? : Option (TSyntax ``Lean.Parser.Command.docComment) :=
+    if stx[0].getNumArgs = 0 then none else some ⟨stx[0][0]⟩
+  let via? : Option Term := if stx[6].getNumArgs = 0 then none else some ⟨stx[6][1]⟩
+  let hyps : Array Term := if stx[7].getNumArgs = 0 then #[] else stx[7][2].getSepArgs.map (⟨·⟩)
+  let (precision, digits) ← bracketOptions stx[3].getArgs
+  discard <| bracketTheorem doc? ⟨stx[2]⟩ ⟨stx[5]⟩ via? hyps (stx[10].getSepArgs.map (⟨·⟩))
+    precision digits
+
+/-- `bracket_up name : e using [h₁, …] unfolding [c₁, …]` defines `name` as the upper end `hi` of
+the enclosure of `e` that `bracket` computes, rounded up to `d` decimal digits (option `digits`,
+default 8): it proves `name_enclosure : lo ≤ e ∧ e ≤ hi`, defines `name : ℝ := hi` and proves
+`name_ge : e ≤ name`. -/
+syntax (name := bracketUpCmd) (docComment)? "bracket_up " ident (bracketOption)* " : " term
+  (" using " "[" term,* "]")? " unfolding " "[" ident,* "]" : command
+
+@[command_elab bracketUpCmd] def elabBracketUp : CommandElab := fun stx => do
+  let doc? : Option (TSyntax ``Lean.Parser.Command.docComment) :=
+    if stx[0].getNumArgs = 0 then none else some ⟨stx[0][0]⟩
+  let name : Ident := ⟨stx[2]⟩
+  let e : Term := ⟨stx[5]⟩
+  let hyps : Array Term := if stx[6].getNumArgs = 0 then #[] else stx[6][2].getSepArgs.map (⟨·⟩)
+  let (precision, digits) ← bracketOptions stx[3].getArgs
+  let enclosureName := mkIdent (name.getId.appendAfter "_enclosure")
+  let (_, hi) ← bracketTheorem none enclosureName e none hyps (stx[9].getSepArgs.map (⟨·⟩))
+    precision digits
+  let hiReal ← liftMacroM <| rationalSyntax hi (← `(ℝ))
+  let geName := mkIdent (name.getId.appendAfter "_ge")
+  elabCommand (← `(command| $[$doc?:docComment]? noncomputable def $name : ℝ := $hiReal))
+  elabCommand (← `(command|
+    theorem $geName : $e ≤ $name := by
+      unfold $name:ident
+      exact ($enclosureName).2))
 
 end Cycle63.Certificate

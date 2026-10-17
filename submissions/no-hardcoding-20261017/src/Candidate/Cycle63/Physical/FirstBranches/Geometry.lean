@@ -1,6 +1,7 @@
 import Candidate.Cycle63.Physical.AllocationClipping
 import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Energy.ReferenceLowWindow
 import Candidate.Cycle63.Arithmetic.Window
+import Candidate.Cycle63.Optimization.WindowTop
 
 namespace OAI.SevenEighths.Cycle63FirstGeometry
 noncomputable section

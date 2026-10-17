@@ -1,7 +1,7 @@
 /- The bin split and the caps of the marked count: the residual of the caps increases on the split
 range, so the bin split is its root, and the constraints the caps meet with equality.
 Released under Apache 2.0. -/
-import Candidate.Cycle63.Optimization.MarkedCaps
+import Candidate.Cycle63.Optimization.WindowTop
 import Candidate.Cycle63.Certificate.MonoTactic
 
 set_option autoImplicit false
@@ -12,13 +12,99 @@ namespace Cycle63.Optimization
 noncomputable section
 open Cycle63.Certificate
 
+/-! The marked ledger at the window top `slotTop`. -/
+
+/-- The analytic loss charged to the marked saving, for slot sums up to the window top. -/
+def markedLoss : ℝ := markedLossAt slotTop
+
+theorem markedLoss_pos : 0 < markedLoss := markedLossAt_pos (by norm_num [slotTop])
+
+/-- The price intercept at the bin split `q`, for the window top. -/
+def priceIntercept (q : ℝ) : ℝ := priceInterceptIn q slotTop
+
+/-- The price intercept before its denominators are cleared. -/
+theorem priceIntercept_eq {q : ℝ} (h0 : 0 < q) (h1 : q < 3/4) :
+    priceIntercept q =
+      (1 - density q + weight q - q*(movingSlope q - 1)*cellMesh - lowReserveWeight*(5 - 6*density q)
+        - priceEndRate q*(cellMesh + supplyLoss) - markedLoss - lowReserveAt q)/(q + weight q) :=
+  priceInterceptIn_eq h0 h1 slotTop
+
+/-- The growth rate of the HIGH reserve per unit of zero parameter above the bin split `q`, in the
+top cell of the slot window, at the price intercept. -/
+def priceEndGrowth (q : ℝ) : ℝ := priceEndGrowthIn q slotTop
+
+/-- The smallest bin top at which the growth of the HIGH reserve above the bin split `q` pays the
+net saving of the price end in the top cell. -/
+def priceEndBinTop (q : ℝ) : ℝ := priceEndBinTopIn q slotTop
+
+/-- The frequency factor of the live slots at the top cell, at the price intercept of the bin
+split `q`. -/
+def frequencyFactorAt (q : ℝ) : ℝ := frequencyFactorIn q slotTop
+
+/-- The product of the inverse width cap and the core factor at which the capped live channel keeps
+the loss and the LOW reserve in the top cell at the price intercept of the bin split `q`. -/
+def balancedCoreCap (q : ℝ) : ℝ := balancedCoreCapIn q slotTop
+
+/-- The residual of the caps in the top cell of the slot window. -/
+def capResidual (q : ℝ) : ℝ := capResidualIn q slotTop
+
+/-- The bin split: the point of the split range at which the capped live channel and the price
+channel of the marked saving meet in the top cell, with the caps that the count provides. -/
+def markedSplit : ℝ := splitIn slotTop
+
+/-- The top of the range of bins in which the marked count is used. -/
+def markedBinTop : ℝ := priceEndBinTop markedSplit
+
+/-- The cap unit `1 - c_L` at the bin top. -/
+def capUnit : ℝ := capUnitAt markedBinTop
+
+/-- Width cap of the inverse slots. -/
+def inverseWidthCap : ℝ := capUnit/2
+
+/-- Width cap of the plain slots. -/
+def plainWidthCap : ℝ := capUnit/(6*plainCapacityCost)
+
+/-- The chosen width at the caps: the inverse cap counted twice and the plain cap once. -/
+def chosenWidthCap : ℝ := (2*inverseWidthCap + plainWidthCap)/3
+
+/-- Slope `c_L` of the lower bound `1 - c_L δ` of the marked count. -/
+def countSlope : ℝ := 1 - capUnit
+
+/-- Length cap of the inverse fibers. -/
+def inverseLengthCap : ℝ := countSlope
+
+/-- Length cap of the plain fibers. -/
+def plainLengthCap : ℝ := countSlope/2
+
+/-- The large-root cutoff of the marked count. -/
+def markedRootCutoff : ℝ := rootCutoffAt markedBinTop inverseWidthCap
+
+/-- The core factor `1 - 6 κ` of the live frequency, for the root cutoff `κ`. -/
+def coreFactor : ℝ := 1 - 6*markedRootCutoff
+
+/-- The largest amplifier length on the cell range: the one of the top cell. -/
+def amplifierCap : ℝ := cellAmplifier markedSplit (priceIntercept markedSplit) slotTop
+
+/-- The frequency factor of the live slots at the largest amplifier length. -/
+def frequencyFactor : ℝ := 1 - 6*amplifierCap - frequencyLossCap
+
+/-- The frequency of the live slots: the core factor times the frequency factor. -/
+def liveFrequency : ℝ := coreFactor*frequencyFactor
+
+/-- The live width cap: the inverse width cap at the live frequency. -/
+def liveCap : ℝ := inverseWidthCap*liveFrequency
+
+/-- The smallest growth rate of the HIGH reserve per unit of zero parameter above the bin split on
+the cell range: the one of the top cell. -/
+def reserveGrowth : ℝ := priceEndGrowth markedSplit
+
 /-- The balancing core cap increases with the bin split. -/
 theorem balancedCoreCap_mono :
     StrictMonoOn (fun q => balancedCoreCap q) (Set.Icc (1/2) (37/50)) ∧
       ContinuousOn (fun q => balancedCoreCap q) (Set.Icc (1/2) (37/50)) := by
-  simp only [balancedCoreCap, frequencyFactorAt, cellAmplifier, cellHigh, priceIntercept, lowReserveAt,
-    movingSlope, priceEndRate, slope, weight, amplifierRatio, density, slotTop, cellMesh,
-    lowReserveWeight, markedLoss, markedRate, markedPad, supplyLoss, commonAllocationLoss, tinySlotLoss, geometryLossCap,
+  simp only [balancedCoreCap, balancedCoreCapIn, frequencyFactorIn, cellAmplifier, cellHigh, priceInterceptIn, interceptNum, interceptDen, lowReserveAt,
+    movingSlope, slopeNum, slopeDen, amplifierRatio, density, slotTop, cellMesh,
+    lowReserveWeight, markedLossAt, markedRate, markedPad, supplyLoss, commonAllocationLoss, tinySlotLoss, geometryLossCap,
     markedBinWidth, allowanceUnit,
     liveRate, liveRatio, chosenPerUnit, plainCapacityCost, halfGain, frequencyLossCap]
   rat_mono []
@@ -27,24 +113,24 @@ theorem balancedCoreCap_mono :
 theorem priceEndBinTop_mono :
     StrictMonoOn (fun q => priceEndBinTop q) (Set.Icc (1/2) (37/50)) ∧
       ContinuousOn (fun q => priceEndBinTop q) (Set.Icc (1/2) (37/50)) := by
-  simp only [priceEndBinTop, priceEndGrowth, cellAmplifier, priceIntercept, lowReserveAt,
-    movingSlope, suppliedAt, priceEndRate, slope, weight, amplifierRatio, density, slotTop, cellMesh,
-    lowReserveWeight, markedLoss, markedRate, markedPad, supplyLoss, commonAllocationLoss, tinySlotLoss, geometryLossCap,
+  simp only [priceEndBinTop, priceEndBinTopIn, priceEndGrowthIn, cellAmplifier, priceInterceptIn, interceptNum, interceptDen,
+    movingSlope, slopeNum, slopeDen, suppliedAt, priceEndRate, amplifierRatio, density, slotTop, cellMesh,
+    lowReserveWeight, markedLossAt, markedRate, markedPad, supplyLoss, commonAllocationLoss, tinySlotLoss, geometryLossCap,
     markedBinWidth, allowanceUnit]
   rat_mono []
 
 /-- The bin top of the price end at the bottom of the split range. -/
 bracket priceEndBinTop_low (digits := 6) : priceEndBinTop (1/2)
-  unfolding [priceEndBinTop, priceEndGrowth, cellAmplifier, cellHigh, priceIntercept, lowReserveAt,
-    movingSlope, suppliedAt, priceEndRate, slope, weight, amplifierRatio, density, slotTop, cellMesh,
-    lowReserveWeight, markedLoss, markedRate, markedPad, supplyLoss, commonAllocationLoss, tinySlotLoss, geometryLossCap,
+  unfolding [priceEndBinTop, priceEndBinTopIn, priceEndGrowth, priceEndGrowthIn, cellAmplifier, cellHigh, priceIntercept, priceInterceptIn, interceptNum, interceptDen, lowReserveAt,
+    movingSlope, slopeNum, slopeDen, suppliedAt, priceEndRate, amplifierRatio, density, slotTop, cellMesh,
+    lowReserveWeight, markedLoss, markedLossAt, markedRate, markedPad, supplyLoss, commonAllocationLoss, tinySlotLoss, geometryLossCap,
     markedBinWidth, allowanceUnit]
 
 /-- The bin top of the price end at the top of the split range. -/
 bracket priceEndBinTop_high (digits := 6) : priceEndBinTop (37/50)
-  unfolding [priceEndBinTop, priceEndGrowth, cellAmplifier, cellHigh, priceIntercept, lowReserveAt,
-    movingSlope, suppliedAt, priceEndRate, slope, weight, amplifierRatio, density, slotTop, cellMesh,
-    lowReserveWeight, markedLoss, markedRate, markedPad, supplyLoss, commonAllocationLoss, tinySlotLoss, geometryLossCap,
+  unfolding [priceEndBinTop, priceEndBinTopIn, priceEndGrowth, priceEndGrowthIn, cellAmplifier, cellHigh, priceIntercept, priceInterceptIn, interceptNum, interceptDen, lowReserveAt,
+    movingSlope, slopeNum, slopeDen, suppliedAt, priceEndRate, amplifierRatio, density, slotTop, cellMesh,
+    lowReserveWeight, markedLoss, markedLossAt, markedRate, markedPad, supplyLoss, commonAllocationLoss, tinySlotLoss, geometryLossCap,
     markedBinWidth, allowanceUnit]
 
 /-- The bin tops of the split range. -/
@@ -61,42 +147,31 @@ theorem coreCapAt_anti :
 /-- The residual of the caps increases on the split range: the balancing core cap rises, and the
 core cap that the count provides falls since the bin top rises. -/
 theorem capResidual_mono :
-    StrictMonoOn capResidual (Set.Icc (1/2) (37/50)) ∧
-      ContinuousOn capResidual (Set.Icc (1/2) (37/50)) := by
-  obtain ⟨hB, hBc⟩ := balancedCoreCap_mono
-  obtain ⟨hD, hDc⟩ := priceEndBinTop_mono
-  obtain ⟨hC, hCc⟩ := coreCapAt_anti
-  have hmaps : Set.MapsTo priceEndBinTop (Set.Icc (1/2) (37/50)) binTopRange := fun q hq =>
-    ⟨hD.monotoneOn ⟨le_rfl, by norm_num⟩ hq hq.1, hD.monotoneOn hq ⟨by norm_num, le_rfl⟩ hq.2⟩
-  refine ⟨fun x hx y hy hxy => ?_, ?_⟩
-  · have hCxy := hC (hmaps hx) (hmaps hy) (hD hx hy hxy)
-    have hBxy := hB hx hy hxy
-    simp only at hCxy hBxy
-    unfold capResidual
-    linarith
-  · unfold capResidual
-    exact hBc.sub (hCc.comp hDc hmaps)
+    StrictMonoOn (fun q => capResidualIn q slotTop) (Set.Icc (1/2) (37/50)) ∧
+      ContinuousOn (fun q => capResidualIn q slotTop) (Set.Icc (1/2) (37/50)) :=
+  capResidualIn_mono_of balancedCoreCap_mono priceEndBinTop_mono coreCapAt_anti
 
 /-- The bin split is the root of the residual of the caps. -/
-bracket_root markedSplit_spec (digits := 14) : capResidual on (1/2) (37/50) by capResidual_mono
-  unfolding [capResidual, balancedCoreCap, frequencyFactorAt, coreCapAt, capUnitAt, rootCutoffAt, tailSlack, allowanceUnit, priceEndBinTop, priceEndGrowth, cellAmplifier, cellHigh, priceIntercept, lowReserveAt,
-    movingSlope, suppliedAt, priceEndRate, slope, weight, amplifierRatio, density, slotTop, cellMesh,
-    lowReserveWeight, markedLoss, markedRate, markedPad, supplyLoss, commonAllocationLoss, tinySlotLoss, geometryLossCap,
+bracket_root markedSplit_spec (digits := 14) : (fun q => capResidualIn q slotTop) on (1/2) (37/50)
+  by capResidual_mono
+  unfolding [capResidual, capResidualIn, balancedCoreCap, balancedCoreCapIn, frequencyFactorAt, frequencyFactorIn, coreCapAt, capUnitAt, rootCutoffAt, tailSlack, priceEndBinTop, priceEndBinTopIn, priceEndGrowth, priceEndGrowthIn, cellAmplifier, cellHigh, priceIntercept, priceInterceptIn, interceptNum, interceptDen, lowReserveAt,
+    movingSlope, slopeNum, slopeDen, suppliedAt, priceEndRate, amplifierRatio, density, slotTop, cellMesh,
+    lowReserveWeight, markedLoss, markedLossAt, markedRate, markedPad, supplyLoss, commonAllocationLoss, tinySlotLoss, geometryLossCap,
     markedBinWidth, allowanceUnit,
     liveRate, liveRatio, chosenPerUnit, plainCapacityCost, halfGain, frequencyLossCap]
 
 /-- An enclosure of the bin split. -/
 bracket markedSplit_enclosure (digits := 14) : markedSplit using [markedSplit_spec.1]
-  unfolding [markedSplit]
+  unfolding [markedSplit, splitIn]
 
 theorem capResidual_markedSplit : capResidual markedSplit = 0 := markedSplit_spec.2
 
 /-! The constants at the bin split: enclosures, and the constraints met with equality. -/
 
 bracket markedBinTop_bounds (digits := 9) : markedBinTop using [markedSplit_enclosure]
-  unfolding [markedBinTop, priceEndBinTop, priceEndGrowth, cellAmplifier, cellHigh, priceIntercept, lowReserveAt,
-    movingSlope, suppliedAt, priceEndRate, slope, weight, amplifierRatio, density, slotTop, cellMesh,
-    lowReserveWeight, markedLoss, markedRate, markedPad, supplyLoss, commonAllocationLoss, tinySlotLoss, geometryLossCap,
+  unfolding [markedBinTop, priceEndBinTop, priceEndBinTopIn, priceEndGrowth, priceEndGrowthIn, cellAmplifier, cellHigh, priceIntercept, priceInterceptIn, interceptNum, interceptDen, lowReserveAt,
+    movingSlope, slopeNum, slopeDen, suppliedAt, priceEndRate, amplifierRatio, density, slotTop, cellMesh,
+    lowReserveWeight, markedLoss, markedLossAt, markedRate, markedPad, supplyLoss, commonAllocationLoss, tinySlotLoss, geometryLossCap,
     markedBinWidth, allowanceUnit]
 
 bracket capUnit_bounds (digits := 9) : capUnit using [markedBinTop_bounds]
@@ -119,24 +194,24 @@ bracket markedRootCutoff_bounds (digits := 9) : markedRootCutoff
     plainCapacityCost, halfGain, density, tailSlack, allowanceUnit]
 
 bracket amplifierCap_bounds (digits := 9) : amplifierCap using [markedSplit_enclosure]
-  unfolding [amplifierCap, priceEndBinTop, priceEndGrowth, cellAmplifier, cellHigh, priceIntercept, lowReserveAt,
-    movingSlope, suppliedAt, priceEndRate, slope, weight, amplifierRatio, density, slotTop, cellMesh,
-    lowReserveWeight, markedLoss, markedRate, markedPad, supplyLoss, commonAllocationLoss, tinySlotLoss, geometryLossCap,
+  unfolding [amplifierCap, priceEndBinTop, priceEndBinTopIn, priceEndGrowth, priceEndGrowthIn, cellAmplifier, cellHigh, priceIntercept, priceInterceptIn, interceptNum, interceptDen, lowReserveAt,
+    movingSlope, slopeNum, slopeDen, suppliedAt, priceEndRate, amplifierRatio, density, slotTop, cellMesh,
+    lowReserveWeight, markedLoss, markedLossAt, markedRate, markedPad, supplyLoss, commonAllocationLoss, tinySlotLoss, geometryLossCap,
     markedBinWidth, allowanceUnit]
 
 bracket coreFactor_bounds (digits := 9) : coreFactor using [markedRootCutoff_bounds]
   unfolding [coreFactor]
 
 bracket frequencyFactor_bounds (digits := 9) : frequencyFactor using [amplifierCap_bounds]
-  unfolding [frequencyFactor, frequencyLossCap, geometryLossCap, lowReserveWeight]
+  unfolding [frequencyFactor, frequencyLossCap, geometryLossCap, lowReserveWeight, allowanceUnit]
 
 bracket liveFrequency_bounds (digits := 9) : liveFrequency
   using [coreFactor_bounds, frequencyFactor_bounds] unfolding [liveFrequency]
 
 bracket reserveGrowth_bounds (digits := 9) : reserveGrowth using [markedSplit_enclosure]
-  unfolding [reserveGrowth, priceEndBinTop, priceEndGrowth, cellAmplifier, cellHigh, priceIntercept, lowReserveAt,
-    movingSlope, suppliedAt, priceEndRate, slope, weight, amplifierRatio, density, slotTop, cellMesh,
-    lowReserveWeight, markedLoss, markedRate, markedPad, supplyLoss, commonAllocationLoss, tinySlotLoss, geometryLossCap,
+  unfolding [reserveGrowth, priceEndBinTop, priceEndBinTopIn, priceEndGrowth, priceEndGrowthIn, cellAmplifier, cellHigh, priceIntercept, priceInterceptIn, interceptNum, interceptDen, lowReserveAt,
+    movingSlope, slopeNum, slopeDen, suppliedAt, priceEndRate, amplifierRatio, density, slotTop, cellMesh,
+    lowReserveWeight, markedLoss, markedLossAt, markedRate, markedPad, supplyLoss, commonAllocationLoss, tinySlotLoss, geometryLossCap,
     markedBinWidth, allowanceUnit]
 
 /-- The live cap is the one at which the capped live channel is tight in the top cell. -/
@@ -145,7 +220,7 @@ theorem liveCap_eq_balanced :
   have h := capResidual_markedSplit
   have hcore : coreCapAt (priceEndBinTop markedSplit) = inverseWidthCap*coreFactor := rfl
   have hb : balancedCoreCap markedSplit = inverseWidthCap*coreFactor := by
-    unfold capResidual at h
+    change balancedCoreCap markedSplit - coreCapAt (priceEndBinTop markedSplit) = 0 at h
     rw [← hcore]
     linarith
   have hf : frequencyFactor = frequencyFactorAt markedSplit := rfl
@@ -156,9 +231,9 @@ theorem liveCap_eq_balanced :
 /-- An enclosure of the live cap, through the balancing core cap of the bin split. -/
 bracket liveCap_bounds (digits := 13) : liveCap via liveCap_eq_balanced
   using [markedSplit_enclosure]
-  unfolding [balancedCoreCap, frequencyFactorAt, priceEndBinTop, priceEndGrowth, cellAmplifier, cellHigh, priceIntercept, lowReserveAt,
-    movingSlope, suppliedAt, priceEndRate, slope, weight, amplifierRatio, density, slotTop, cellMesh,
-    lowReserveWeight, markedLoss, markedRate, markedPad, supplyLoss, commonAllocationLoss, tinySlotLoss, geometryLossCap,
+  unfolding [balancedCoreCap, balancedCoreCapIn, frequencyFactorAt, frequencyFactorIn, priceEndBinTop, priceEndBinTopIn, priceEndGrowth, priceEndGrowthIn, cellAmplifier, cellHigh, priceIntercept, priceInterceptIn, interceptNum, interceptDen, lowReserveAt,
+    movingSlope, slopeNum, slopeDen, suppliedAt, priceEndRate, amplifierRatio, density, slotTop, cellMesh,
+    lowReserveWeight, markedLoss, markedLossAt, markedRate, markedPad, supplyLoss, commonAllocationLoss, tinySlotLoss, geometryLossCap,
     markedBinWidth, allowanceUnit,
     liveRate, liveRatio, chosenPerUnit, plainCapacityCost, halfGain, frequencyLossCap]
 
@@ -233,54 +308,22 @@ theorem bin_top_growth :
   have hg' : priceEndGrowth markedSplit ≠ 0 := by
     have : 0 < reserveGrowth := by linarith [hg.1]
     exact this.ne'
-  unfold markedBinTop reserveGrowth priceEndBinTop
+  unfold markedBinTop reserveGrowth priceEndBinTop priceEndBinTopIn priceEndGrowth markedLoss
+  unfold priceEndGrowth at hg'
   rw [add_sub_cancel_left, div_mul_cancel₀ _ hg']
 
-/-- The moving slope in closed form. -/
-theorem movingSlope_closed {q : ℝ} (h0 : 0 < q) (h1 : q < 3/4) :
-    movingSlope q = (430*q^2 - 399*q + 135)/(q*(24*q^2 - 34*q + 35)) := by
-  have hE : (0:ℝ) < 24*q^2 - 34*q + 35 := planeQuadratic_pos q
-  have h5 : (0:ℝ) < 5 - 2*q := by linarith
-  have h9 : (0:ℝ) < 9 - 12*q := by linarith
-  have h5' : (5:ℝ) - q*2 ≠ 0 := by linarith
-  have h9' : (9:ℝ) - q*12 ≠ 0 := by linarith
-  have hE' : (35:ℝ) - q*34 + q^2*24 ≠ 0 := by nlinarith
-  have hsum : (q + weight q)*((9 - 12*q)*(5 - 2*q)) = q*(24*q^2 - 34*q + 35) := by
-    unfold weight amplifierRatio density
-    field_simp
-    ring
-  have hW : 0 < q + weight q := by
-    have hpos : 0 < (q + weight q)*((9 - 12*q)*(5 - 2*q)) := by rw [hsum]; positivity
-    exact pos_of_mul_pos_left hpos (by positivity)
-  have hγ : priceEndRate q*(3*(5 - 2*q)) = -(6*q^2 - 73*q + 45) := by
-    unfold priceEndRate density
-    field_simp
-    ring
-  have hs := slope_closed h0 h1
-  unfold movingSlope
-  rw [hs]
-  unfold planeQuadratic
-  rw [eq_div_iff (by positivity), sub_mul]
-  have e1 : 24*q*(q + 5)/(24*q^2 - 34*q + 35)*(q*(24*q^2 - 34*q + 35)) = 24*q^2*(q + 5) := by
-    rw [div_mul_eq_mul_div, div_eq_iff hE.ne']
-    ring
-  have e2 : priceEndRate q/(q + weight q)*(q*(24*q^2 - 34*q + 35)) =
-      priceEndRate q*((9 - 12*q)*(5 - 2*q)) := by
-    rw [← hsum, div_mul_eq_mul_div, div_eq_iff hW.ne']
-    ring
-  rw [e1, e2]
-  linear_combination (-(3 - 4*q))*hγ
-
-/-- With the moving slope, the price channel is tight in every cell at the price intercept. -/
-theorem price_tight (q b : ℝ) (hq : q + weight q ≠ 0) :
+/-- With the moving the price channel is tight in every cell at the price intercept. -/
+theorem price_tight {q : ℝ} (h0 : 0 < q) (h1 : q < 3/4) (b : ℝ) :
     cellHigh q (priceIntercept q) b + priceEndRate q*suppliedAt b - markedLoss - lowReserveAt q = 0 := by
+  have hq := (plane_sum_pos h0 h1).ne'
   have hB : priceIntercept q*(q + weight q) =
       1 - density q + weight q - q*(movingSlope q - 1)*cellMesh - lowReserveWeight*(5 - 6*density q)
         - priceEndRate q*(cellMesh + supplyLoss) - markedLoss - lowReserveAt q := by
-    unfold priceIntercept
+    rw [priceIntercept_eq h0 h1]
     exact div_mul_cancel₀ _ hq
   have hlam : movingSlope q*(q + weight q) = q + 9/2*weight q - priceEndRate q := by
-    unfold movingSlope slope
+    rw [movingSlope_eq h0 h1]
+    unfold slope
     rw [sub_mul, div_mul_cancel₀ _ hq, div_mul_cancel₀ _ hq]
   have hW : weight q = amplifierRatio q*(5 - 6*density q) := rfl
   unfold cellHigh cellAmplifier suppliedAt
@@ -296,24 +339,21 @@ theorem cap_tight :
     unfold liveRate liveRatio chosenPerUnit plainCapacityCost halfGain
     rat_pos [hq]
   have hF : 0 < frequencyFactorAt markedSplit := by
-    simp only [frequencyFactorAt, cellAmplifier, priceIntercept, lowReserveAt,
-      movingSlope, priceEndRate, slope, weight, amplifierRatio, density, slotTop,
-      cellMesh, lowReserveWeight, markedLoss, markedRate, markedPad, supplyLoss, commonAllocationLoss, tinySlotLoss,
+    simp only [frequencyFactorAt, frequencyFactorIn, cellAmplifier, priceInterceptIn, interceptNum, interceptDen,
+      movingSlope, slopeNum, slopeDen, amplifierRatio, slotTop,
+      cellMesh, lowReserveWeight, markedLossAt, markedRate, markedPad, supplyLoss, commonAllocationLoss, tinySlotLoss,
       geometryLossCap, markedBinWidth, allowanceUnit, frequencyLossCap]
     rat_pos [hq]
   rw [liveCap_eq_balanced]
-  unfold balancedCoreCap
+  unfold balancedCoreCap balancedCoreCapIn frequencyFactorAt priceIntercept markedLoss
+  unfold frequencyFactorAt at hF
   field_simp [hr.ne', hF.ne']
   ring
 
 /-- At the bin split the price channel and the capped live channel are equal in the top cell. -/
 theorem price_eq_live_top : priceEndRate markedSplit*suppliedAt slotTop = liveRate markedSplit*liveCap := by
   have hq := markedSplit_enclosure
-  have hw : markedSplit + weight markedSplit ≠ 0 := by
-    apply ne_of_gt
-    unfold weight amplifierRatio density
-    rat_pos [hq]
-  have h1 := price_tight markedSplit slotTop hw
+  have h1 := price_tight (by linarith [hq.1]) (by linarith [hq.2]) slotTop
   have h2 := cap_tight
   linarith
 

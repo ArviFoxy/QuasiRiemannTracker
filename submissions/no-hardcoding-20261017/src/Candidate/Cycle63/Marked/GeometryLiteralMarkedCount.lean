@@ -89,11 +89,11 @@ theorem actual_geometry_literal_marked_count {Slot : Type} [Fintype Slot] [Decid
           (Cycle63.Optimization.liveRate (2*a-1))*min S ((Cycle63.Optimization.inverseWidthCap)*((Cycle63.Optimization.coreFactor)*D))+Cycle63.Optimization.markedLoss) := by
   obtain ⟨J,hraw⟩:=actual_geometry_literal_raw_max_fixedmesh (Slot:=Slot) M H hH
     η₀ u₀ F₀ R₀ hu₀ index₀ Bfirst setup W lo hi bΦ markedRate markedBinWidth
-    markedRate markedRate Cycle63.Optimization.tailSlack (by norm_num [markedRate, Cycle63.Optimization.markedRate, Cycle63.Optimization.geometryLossCap, Cycle63.Optimization.lowReserveWeight])
+    markedRate markedRate Cycle63.Optimization.tailSlack (by norm_num [markedRate, Cycle63.Optimization.markedRate, Cycle63.Optimization.geometryLossCap, Cycle63.Optimization.lowReserveWeight, Cycle63.Optimization.allowanceUnit])
     (by norm_num [Cycle63.Optimization.tailSlack, Cycle63.Optimization.allowanceUnit])
     (by norm_num [Cycle63.Optimization.tailSlack, Cycle63.Optimization.allowanceUnit])
     hWs hW hbΦ hrad (by norm_num [markedBinWidth, Cycle63.Optimization.markedBinWidth, Cycle63.Optimization.allowanceUnit])
-    (by norm_num [markedRate, Cycle63.Optimization.markedRate, Cycle63.Optimization.geometryLossCap, Cycle63.Optimization.lowReserveWeight]) (by norm_num [markedRate, Cycle63.Optimization.markedRate, Cycle63.Optimization.geometryLossCap, Cycle63.Optimization.lowReserveWeight]) hβ hκβ
+    (by norm_num [markedRate, Cycle63.Optimization.markedRate, Cycle63.Optimization.geometryLossCap, Cycle63.Optimization.lowReserveWeight, Cycle63.Optimization.allowanceUnit]) (by norm_num [markedRate, Cycle63.Optimization.markedRate, Cycle63.Optimization.geometryLossCap, Cycle63.Optimization.lowReserveWeight, Cycle63.Optimization.allowanceUnit]) hβ hκβ
   refine ⟨J,?_⟩
   intro P hP hslot hplain hheight
   have hBholes : 0≤2*Bfirst+P.Bmask+1:=by linarith [hP.mask]
@@ -104,12 +104,12 @@ theorem actual_geometry_literal_marked_count {Slot : Type} [Fintype Slot] [Decid
     (by unfold markedRootCutoff; linarith [Cycle63.Optimization.markedRootCutoff_bounds.1])
     (by unfold markedRootCutoff; linarith [Cycle63.Optimization.markedRootCutoff_bounds.2])
     (by unfold markedCoreMin markedRootCutoff Cycle63.Optimization.coreFactor; linarith)
-    (by norm_num [markedPad, Cycle63.Optimization.markedPad, Cycle63.Optimization.markedRate, Cycle63.Optimization.geometryLossCap, Cycle63.Optimization.lowReserveWeight]) hBholes hP.slotLoss (by norm_num [markedPad, Cycle63.Optimization.markedPad, Cycle63.Optimization.markedRate, Cycle63.Optimization.geometryLossCap, Cycle63.Optimization.lowReserveWeight])
+    (by norm_num [markedPad, Cycle63.Optimization.markedPad, Cycle63.Optimization.markedRate, Cycle63.Optimization.geometryLossCap, Cycle63.Optimization.lowReserveWeight, Cycle63.Optimization.allowanceUnit]) hBholes hP.slotLoss (by norm_num [markedPad, Cycle63.Optimization.markedPad, Cycle63.Optimization.markedRate, Cycle63.Optimization.geometryLossCap, Cycle63.Optimization.lowReserveWeight, Cycle63.Optimization.allowanceUnit])
     (marked_tiny_width_gates N).1 markedCoreMin_pos
     (by unfold markedCoreMin; linarith [Cycle63.Optimization.coreFactor_bounds.2])
-    hP.heightZero hP.heightWitness (by norm_num [markedRate, Cycle63.Optimization.markedRate, Cycle63.Optimization.geometryLossCap, Cycle63.Optimization.lowReserveWeight]) (by norm_num [markedRate, Cycle63.Optimization.markedRate, Cycle63.Optimization.geometryLossCap, Cycle63.Optimization.lowReserveWeight])
-    (by norm_num [markedWitnessRate, markedRate, Cycle63.Optimization.markedRate, Cycle63.Optimization.geometryLossCap, Cycle63.Optimization.lowReserveWeight]) (by norm_num [markedWitnessRate, markedRate, Cycle63.Optimization.markedRate, Cycle63.Optimization.geometryLossCap, Cycle63.Optimization.lowReserveWeight])
-    (by norm_num [markedWitnessRate, markedRate, Cycle63.Optimization.markedRate, Cycle63.Optimization.geometryLossCap, Cycle63.Optimization.lowReserveWeight]) hP.buffer
+    hP.heightZero hP.heightWitness (by norm_num [markedRate, Cycle63.Optimization.markedRate, Cycle63.Optimization.geometryLossCap, Cycle63.Optimization.lowReserveWeight, Cycle63.Optimization.allowanceUnit]) (by norm_num [markedRate, Cycle63.Optimization.markedRate, Cycle63.Optimization.geometryLossCap, Cycle63.Optimization.lowReserveWeight, Cycle63.Optimization.allowanceUnit])
+    (by norm_num [markedWitnessRate, markedRate, Cycle63.Optimization.markedRate, Cycle63.Optimization.geometryLossCap, Cycle63.Optimization.lowReserveWeight, Cycle63.Optimization.allowanceUnit]) (by norm_num [markedWitnessRate, markedRate, Cycle63.Optimization.markedRate, Cycle63.Optimization.geometryLossCap, Cycle63.Optimization.lowReserveWeight, Cycle63.Optimization.allowanceUnit])
+    (by norm_num [markedWitnessRate, markedRate, Cycle63.Optimization.markedRate, Cycle63.Optimization.geometryLossCap, Cycle63.Optimization.lowReserveWeight, Cycle63.Optimization.allowanceUnit]) hP.buffer
   refine ⟨C*(1+2*Real.pi+6*(bufferCount P.e+1:ℕ))^J,by positivity,?_⟩
   filter_upwards [hraw] with Z he
   refine ⟨he.1,?_⟩

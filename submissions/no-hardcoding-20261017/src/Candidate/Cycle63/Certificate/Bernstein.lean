@@ -310,6 +310,14 @@ def posOnSplit {R : Type} (C : Coeffs R) (p : R) : List (ℚ × ℚ) → ℕ →
       (posOnSplit C p (splitBox box (widestIndex box)).1 d &&
         posOnSplit C p (splitBox box (widestIndex box)).2 d)
 
+/-- The bisection test passes on a box when it passes on both halves; the two halves can then be
+checked separately. -/
+theorem posOnSplit_of_halves {R : Type} (C : Coeffs R) (p : R) (box : List (ℚ × ℚ)) (d : ℕ)
+    (h₁ : posOnSplit C p (splitBox box (widestIndex box)).1 d = true)
+    (h₂ : posOnSplit C p (splitBox box (widestIndex box)).2 d = true) :
+    posOnSplit C p box (d + 1) = true := by
+  simp only [posOnSplit, h₁, h₂, Bool.and_self, Bool.or_true]
+
 theorem posOnSplit_sound {R : Type} (C : Coeffs R) (p : R) : ∀ (box : List (ℚ × ℚ)) (d : ℕ),
     posOnSplit C p box d = true → ∀ x, InBox box x → 0 < C.eval p x
   | box, 0, h, x, hx => C.posOn_sound p box h x hx

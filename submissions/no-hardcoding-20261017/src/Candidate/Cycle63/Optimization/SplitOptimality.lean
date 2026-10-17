@@ -45,45 +45,6 @@ def levelAt (lam B T : ℝ) : ℝ := rootPoly lam B (deltaL lam T)
 
 /-! ### Closed forms in the bin split -/
 
-/-- Numerator of the moving slope. -/
-def slopeNum (q : ℝ) : ℝ := 430*q^2 - 399*q + 135
-
-/-- Denominator of the moving slope. -/
-def slopeDen (q : ℝ) : ℝ := q*(24*q^2 - 34*q + 35)
-
-/-- Numerator of the price intercept over `q (24 q^2 - 34 q + 35)^2`. -/
-def interceptNum (q : ℝ) : ℝ :=
-  96*q^4 + 344*q^3 - 540*q^2 + 700*q
-    + cellMesh*(-4752*q^4 + 26732*q^3 - 30316*q^2 + 11505*q - 1350)
-    + lowReserveWeight*(768*q^5 + 2176*q^4 - 6384*q^3 + 8840*q^2 - 4200*q)
-    + supplyLoss*(-576*q^5 + 8256*q^4 - 20956*q^3 + 27656*q^2 - 18555*q + 4725)
-    + markedLoss*(-576*q^4 + 2688*q^3 - 4572*q^2 + 4260*q - 1575)
-
-/-- Denominator of the price intercept. -/
-def interceptDen (q : ℝ) : ℝ := q*(24*q^2 - 34*q + 35)^2
-
-theorem priceIntercept_closed {q : ℝ} (h0 : 0 < q) (h1 : q < 3/4) :
-    priceIntercept q = interceptNum q/interceptDen q := by
-  have h5 : (5:ℝ) - 2*q ≠ 0 := by linarith
-  have h9 : (9:ℝ) - 12*q ≠ 0 := by linarith
-  have hq : q ≠ 0 := h0.ne'
-  have hE := (planeQuadratic_pos q).ne'
-  have hw := plane_sum_closed h5 h9 1
-  rw [one_mul] at hw
-  have hN : (9 - 12*q)*(5 - 2*q) + 2*1*(22*q - 5) = planeQuadratic q := by unfold planeQuadratic; ring
-  rw [hN] at hw
-  have hsl : movingSlope q = (430*q^2 - 399*q + 135)/(q*planeQuadratic q) := by
-    rw [movingSlope_closed h0 h1]; rfl
-  have h5' := h5; ring_nf at h5'
-  have h9' := h9; ring_nf at h9'
-  have hd : interceptDen q = q*planeQuadratic q^2 := by unfold interceptDen planeQuadratic; ring
-  unfold priceIntercept lowReserveAt priceEndRate
-  rw [hw, hsl, weight_closed h5 h9, hd]
-  unfold density
-  field_simp
-  unfold interceptNum planeQuadratic
-  ring
-
 /-- The point where the bound formula equals `T`, at the slope `a/b`, has numerator `a (9 T - 7)`. -/
 theorem deltaL_div (a b T : ℝ) (hb : b ≠ 0) (hf : (7 - 6*T)*a + (11 - 12*T)*b ≠ 0) :
     deltaL (a/b) T = a*(9*T - 7)/((7 - 6*T)*a + (11 - 12*T)*b) := by
@@ -108,7 +69,7 @@ theorem rootPoly_div (a b c d e f : ℝ) (hb : b ≠ 0) (hd : d ≠ 0) (hf : f �
 
 /-- The level function along the price intercept, in closed form. -/
 def priceLevelClosed (q T : ℝ) : ℝ :=
-  rootPolyCleared (slopeNum q) (slopeDen q) (interceptNum q) (interceptDen q)
+  rootPolyCleared (slopeNum q) (slopeDen q) (interceptNum q slotTop) (interceptDen q)
       (slopeNum q*(9*T - 7)) ((7 - 6*T)*slopeNum q + (11 - 12*T)*slopeDen q) /
     (slopeDen q^2*interceptDen q*((7 - 6*T)*slopeNum q + (11 - 12*T)*slopeDen q)^2)
 
@@ -119,8 +80,8 @@ theorem priceLevelClosed_mono :
   have hq := q0_bounds
   have hT := thetaClass_bounds
   simp only [priceLevelClosed, rootPolyCleared, slopeNum, slopeDen, interceptNum, interceptDen,
-    cellMesh, lowReserveWeight, supplyLoss, commonAllocationLoss, tinySlotLoss, geometryLossCap,
-    markedBinWidth, markedLoss, markedRate, markedPad, slotTop, allowanceUnit]
+    slotTop, cellMesh, lowReserveWeight, supplyLoss, commonAllocationLoss, tinySlotLoss, geometryLossCap,
+    markedBinWidth, markedLossAt, markedRate, markedPad, allowanceUnit]
   rat_mono [hq, hT]
 
 /-- The intercept at which the level function at the slope `a/b` and the zero parameter `e/f`
@@ -194,16 +155,15 @@ theorem levelDen_pos {q T : ℝ} (h0 : 0 < q) (hT : T < 7/8) : 0 < levelDen q T 
   unfold levelDen; linarith
 
 /-- The level function along the price intercept equals its closed form. -/
-theorem priceLevel_closed {q T : ℝ} (h0 : 0 < q) (h1 : q < 3/4) (hT : T < 7/8) :
+theorem priceLevel_closed {q T : ℝ} (h0 : 0 < q) (hT : T < 7/8) :
     levelAt (movingSlope q) (priceIntercept q) T = priceLevelClosed q T := by
   have hE : (0:ℝ) < 24*q^2 - 34*q + 35 := planeQuadratic_pos q
   have hb : slopeDen q ≠ 0 := by unfold slopeDen; positivity
   have hd : interceptDen q ≠ 0 := by unfold interceptDen; positivity
   have hf := (levelDen_pos h0 hT).ne'
-  have hsl : movingSlope q = slopeNum q/slopeDen q := movingSlope_closed h0 h1
   unfold levelDen at hf
-  unfold levelAt
-  rw [hsl, priceIntercept_closed h0 h1, deltaL_div _ _ T hb hf, rootPoly_div _ _ _ _ _ _ hb hd hf]
+  unfold levelAt movingSlope priceIntercept priceInterceptIn
+  rw [deltaL_div _ _ T hb hf, rootPoly_div _ _ _ _ _ _ hb hd hf]
   rfl
 
 /-- Left of the bin split the level function of the price intercept is negative. -/
@@ -213,8 +173,7 @@ theorem price_level_neg {q : ℝ} (hq : 1/2 ≤ q) (hlt : q < q0) :
   have hT2 : thetaMin lambda B < 7/8 := by linarith [thetaClass_bounds.2]
   have hm := priceLevelClosed_mono.1 ⟨hq, hlt.le⟩ ⟨by linarith [hq0.1], le_rfl⟩ hlt
   simp only at hm
-  rw [← priceLevel_closed (by linarith) (by linarith [hq0.2]) hT2,
-    ← priceLevel_closed (by linarith [hq0.1]) (by linarith [hq0.2]) hT2] at hm
+  rw [← priceLevel_closed (by linarith) hT2, ← priceLevel_closed (by linarith [hq0.1]) hT2] at hm
   exact hm.trans_eq levelAt_split
 
 /-- Far right of the bin split the level function of the price intercept is negative too: there the
@@ -222,11 +181,11 @@ price channel alone keeps the class bound above the one at the bin split. -/
 theorem far_level_neg {q : ℝ} (hq : 7/10 ≤ q) (hq' : q ≤ 37/50) :
     levelAt (movingSlope q) (priceIntercept q) (thetaMin lambda B) < 0 := by
   have hT := thetaClass_bounds
-  rw [priceLevel_closed (by linarith) (by linarith) (by linarith [hT.2])]
+  rw [priceLevel_closed (by linarith) (by linarith [hT.2])]
   have hqi : q ∈ Set.Icc (7/10:ℝ) (37/50) := ⟨hq, hq'⟩
   simp only [priceLevelClosed, rootPolyCleared, slopeNum, slopeDen, interceptNum, interceptDen,
-    cellMesh, lowReserveWeight, supplyLoss, commonAllocationLoss, tinySlotLoss, geometryLossCap,
-    markedBinWidth, markedLoss, markedRate, markedPad, slotTop, allowanceUnit]
+    slotTop, cellMesh, lowReserveWeight, supplyLoss, commonAllocationLoss, tinySlotLoss, geometryLossCap,
+    markedBinWidth, markedLossAt, markedRate, markedPad, allowanceUnit]
   rat_pos [hqi, hT]
 
 /-! ### Right of the bin split: the capped live channel
@@ -365,7 +324,7 @@ theorem balancedCurve_mono :
   have hT := thetaClass_bounds
   simp only [balancedCurve, highConstAt, frequencyConstAt, interceptLevelNum, interceptLevelDen,
     levelInterceptNum, levelInterceptDen, levelDen, slopeNum, slopeDen, lowReserveAt, weight,
-    amplifierRatio, density, slotTop, cellMesh, lowReserveWeight, allowanceUnit, markedLoss,
+    amplifierRatio, density, slotTop, cellMesh, lowReserveWeight, allowanceUnit, markedLoss, markedLossAt,
     markedRate, markedPad, geometryLossCap, markedBinWidth, frequencyLossCap, liveRate, liveRatio,
     chosenPerUnit, plainCapacityCost, halfGain]
   rat_mono [hq, hT]
@@ -374,9 +333,8 @@ theorem balancedCurve_mono :
 
 /-- The moving slope on the split range lies in `[7/2, 9/2]`. -/
 theorem movingSlope_mem {q : ℝ} (hq : q ∈ splitRange) : 7/2 ≤ movingSlope q ∧ movingSlope q ≤ 9/2 := by
-  obtain ⟨h0, h1⟩ := mem_splitRange hq
   have hq' : q ∈ Set.Icc (1/2:ℝ) (37/50) := hq
-  rw [movingSlope_closed h0 h1]
+  unfold movingSlope slopeNum slopeDen
   constructor <;> (apply le_of_lt; rat_pos [hq'])
 
 /-- At slopes in `[7/2, 9/2]` the level point of the class bound at the bin split lies in `(0, 3/5)`,
@@ -423,17 +381,16 @@ theorem levelAt_strictMono {lam x x' : ℝ} (hlam : 7/2 ≤ lam ∧ lam ≤ 9/2)
   nlinarith [mul_pos (sub_pos.mpr hxx) hcoef]
 
 /-- The level intercept is the root of the level function at the moving slope. -/
-theorem rightIntercept_level {q T : ℝ} (h0 : 0 < q) (h1 : q < 3/4) (hT' : T < 7/8)
+theorem rightIntercept_level {q T : ℝ} (h0 : 0 < q) (hT' : T < 7/8)
     (hG : interceptLevelDen q T ≠ 0) :
     levelAt (movingSlope q) (rightIntercept q T) T = 0 := by
   have hE : (0:ℝ) < 24*q^2 - 34*q + 35 := planeQuadratic_pos q
   have hb : slopeDen q ≠ 0 := by unfold slopeDen; positivity
   have hf := (levelDen_pos h0 hT').ne'
-  have hsl : movingSlope q = slopeNum q/slopeDen q := movingSlope_closed h0 h1
   unfold interceptLevelDen at hG
   unfold levelAt rightIntercept
   unfold levelDen at hf hG ⊢
-  rw [hsl, deltaL_div _ _ T hb hf, rootPoly_div _ _ _ _ _ _ hb hG hf, rootPolyCleared_levelIntercept,
+  rw [movingSlope, deltaL_div _ _ T hb hf, rootPoly_div _ _ _ _ _ _ hb hG hf, rootPolyCleared_levelIntercept,
     zero_div]
 
 /-- The level intercept at the moving slope in closed form, as used in the curve certificates. -/
@@ -446,11 +403,10 @@ theorem frac_clear (a b c d A G : ℝ) (hG : G ≠ 0) :
   rw [← mul_div_mul_right _ _ hG]
   congr 1 <;> field_simp
 
-theorem balanced_curve_eq {q T : ℝ} (h0 : 0 < q) (h1 : q < 3/4) (hG : interceptLevelDen q T ≠ 0) :
+theorem balanced_curve_eq {q T : ℝ} (hG : interceptLevelDen q T ≠ 0) :
     balancedAt q (rightIntercept q T) = balancedCurve q T := by
-  have hsl : movingSlope q = slopeNum q/slopeDen q := movingSlope_closed h0 h1
   rw [balancedAt_affine, rightIntercept_eq, frac_clear _ _ _ _ _ _ hG, cellHigh_zero, frequencyAt_zero,
-    hsl]
+    movingSlope]
   unfold balancedCurve
   congr 1
   ring
@@ -466,11 +422,8 @@ theorem interceptLevelDen_pos {q : ℝ} (hq : q ∈ Set.Icc q0 (7/10)) :
 theorem binTop_coef_pos {q : ℝ} (hq : q ∈ Set.Icc q0 (7/10)) :
     0 < (q + weight q)*growthAt q 0 + (growthAt q 0 - growthAt q 1)*(lowReserveAt q - cellHigh q 0 slotTop) := by
   have hq0 := q0_bounds
-  have h0 : 0 < q := by linarith [hq.1, hq0.1]
-  have h1 : q < 3/4 := by linarith [hq.2]
-  have hsl : movingSlope q = slopeNum q/slopeDen q := movingSlope_closed h0 h1
-  have h5 : (5:ℝ) - 2*q ≠ 0 := by linarith
-  rw [growthAt_fall q h5, cellHigh_zero, growthAt_zero, hsl]
+  have h5 : (5:ℝ) - 2*q ≠ 0 := by linarith [hq.2]
+  rw [growthAt_fall q h5, cellHigh_zero, growthAt_zero, movingSlope]
   simp only [highConstAt, growthConstAt, growthSlope, slopeNum, slopeDen, lowReserveAt, weight,
     amplifierRatio, density, slotTop, cellMesh, lowReserveWeight, allowanceUnit]
   rat_pos [hq, hq0]
@@ -480,12 +433,9 @@ theorem balanced_coef_pos {q : ℝ} (hq : q ∈ Set.Icc q0 (7/10)) :
     0 < (q + weight q)*(liveRate q*frequencyAt q 0) +
       liveRate q*(6*amplifierRatio q)*(lowReserveAt q + markedLoss - cellHigh q 0 slotTop) := by
   have hq0 := q0_bounds
-  have h0 : 0 < q := by linarith [hq.1, hq0.1]
-  have h1 : q < 3/4 := by linarith [hq.2]
-  have hsl : movingSlope q = slopeNum q/slopeDen q := movingSlope_closed h0 h1
-  rw [cellHigh_zero, frequencyAt_zero, hsl]
+  rw [cellHigh_zero, frequencyAt_zero, movingSlope]
   simp only [highConstAt, frequencyConstAt, slopeNum, slopeDen, lowReserveAt, weight, amplifierRatio,
-    density, slotTop, cellMesh, lowReserveWeight, allowanceUnit, markedLoss, markedRate, markedPad,
+    density, slotTop, cellMesh, lowReserveWeight, allowanceUnit, markedLoss, markedLossAt, markedRate, markedPad,
     geometryLossCap, markedBinWidth, frequencyLossCap, liveRate, liveRatio, chosenPerUnit,
     plainCapacityCost, halfGain]
   rat_pos [hq, hq0]
@@ -495,19 +445,16 @@ theorem price_growth_frequency_pos {q : ℝ} (hq : q ∈ Set.Icc q0 (7/10)) :
     0 < growthAt q 0 - (growthAt q 0 - growthAt q 1)*priceIntercept q ∧
       0 < liveRate q*frequencyAt q 0 - liveRate q*(6*amplifierRatio q)*priceIntercept q := by
   have hq0 := q0_bounds
-  have h0 : 0 < q := by linarith [hq.1, hq0.1]
-  have h1 : q < 3/4 := by linarith [hq.2]
-  have hsl : movingSlope q = slopeNum q/slopeDen q := movingSlope_closed h0 h1
-  have h5 : (5:ℝ) - 2*q ≠ 0 := by linarith
-  rw [growthAt_fall q h5, growthAt_zero, frequencyAt_zero, hsl, priceIntercept_closed h0 h1]
+  have h5 : (5:ℝ) - 2*q ≠ 0 := by linarith [hq.2]
+  rw [growthAt_fall q h5, growthAt_zero, frequencyAt_zero, movingSlope, priceIntercept, priceInterceptIn]
   constructor
   · simp only [growthConstAt, growthSlope, slopeNum, slopeDen, interceptNum, interceptDen, amplifierRatio,
       slotTop, cellMesh, lowReserveWeight, allowanceUnit, supplyLoss, commonAllocationLoss, tinySlotLoss,
-      geometryLossCap, markedBinWidth, markedLoss, markedRate, markedPad]
+      geometryLossCap, markedBinWidth, markedLossAt, markedRate, markedPad]
     rat_pos [hq, hq0]
   · simp only [frequencyConstAt, slopeNum, slopeDen, interceptNum, interceptDen, amplifierRatio, slotTop,
       cellMesh, lowReserveWeight, allowanceUnit, supplyLoss, commonAllocationLoss, tinySlotLoss,
-      geometryLossCap, markedBinWidth, markedLoss, markedRate, markedPad, frequencyLossCap, liveRate,
+      geometryLossCap, markedBinWidth, markedLossAt, markedRate, markedPad, frequencyLossCap, liveRate,
       liveRatio, chosenPerUnit, plainCapacityCost, halfGain]
     rat_pos [hq, hq0]
 
@@ -518,7 +465,7 @@ theorem rightIntercept_split : rightIntercept q0 (thetaMin lambda B) = B := by
   have hq := q0_bounds
   have hlam : 7/2 ≤ lambda ∧ lambda ≤ 9/2 := movingSlope_mem ⟨by linarith [hq.1], by linarith [hq.2]⟩
   have h1 := rightIntercept_level (q := q0) (T := thetaMin lambda B) (by linarith [hq.1])
-    (by linarith [hq.2]) (by linarith [thetaClass_bounds.2])
+    (by linarith [thetaClass_bounds.2])
     (interceptLevelDen_pos ⟨le_rfl, by linarith [hq.2]⟩).ne'
   have h2 := levelAt_split
   by_contra hne
@@ -531,19 +478,19 @@ theorem rightIntercept_split : rightIntercept q0 (thetaMin lambda B) = B := by
     linarith
 
 /-- The bin top of the ledger's intercept at a bin split is the price end's bin top. -/
-theorem binTopAt_price (q : ℝ) (hq : q + weight q ≠ 0) :
+theorem binTopAt_price {q : ℝ} (h0 : 0 < q) (h1 : q < 3/4) :
     binTopAt q (priceIntercept q) = priceEndBinTop q := by
-  have h := price_tight q slotTop hq
+  have h := price_tight h0 h1 slotTop
+  unfold markedLoss at h
   unfold binTopAt priceEndBinTop
   congr 2
   linarith
 
-theorem binTop_curve_eq {q T : ℝ} (h0 : 0 < q) (h1 : q < 3/4) (hG : interceptLevelDen q T ≠ 0) :
+theorem binTop_curve_eq {q T : ℝ} (h1 : q < 3/4) (hG : interceptLevelDen q T ≠ 0) :
     binTopAt q (rightIntercept q T) = binTopCurve q T := by
-  have hsl : movingSlope q = slopeNum q/slopeDen q := movingSlope_closed h0 h1
   have h5 : (5:ℝ) - 2*q ≠ 0 := by linarith
   rw [binTopAt_affine, rightIntercept_eq, frac_clear _ _ _ _ _ _ hG, growthAt_fall q h5, cellHigh_zero,
-    growthAt_zero, hsl]
+    growthAt_zero, movingSlope]
   rfl
 
 /-- The weight of the amplified slots is positive on the split range. -/
@@ -590,7 +537,6 @@ theorem cap_fails {q x : ℝ} (hq : q0 < q) (hq' : q ≤ 7/10) (hxP : x ≤ pric
     nlinarith [mul_nonneg hF1.le (sub_nonneg.mpr hxP)]
   have hfl : 0 < liveRate q*frequencyAt q 0 - liveRate q*(6*amplifierRatio q)*xl := by
     nlinarith [mul_nonneg hF1.le (sub_nonneg.mpr hxlP)]
-  have hW : q + weight q ≠ 0 := (add_pos h0 (weight_pos (by linarith [hq0.1]) h1)).ne'
   -- The bin top rises with the intercept and, along the level intercept, with the bin split.
   have hbt1 : binTopAt q xl ≤ binTopAt q x := by
     rw [binTopAt_affine, binTopAt_affine]
@@ -598,16 +544,15 @@ theorem cap_fails {q x : ℝ} (hq : q0 < q) (hq' : q ≤ 7/10) (hxP : x ≤ pric
   have hbt2 : markedBinTop < binTopAt q xl := by
     have hm := binTopCurve_mono.1 hq0I hqI hq
     simp only at hm
-    rw [← binTop_curve_eq h0 h1 (interceptLevelDen_pos hqI).ne',
-      ← binTop_curve_eq (by linarith [hq0.1]) (by linarith [hq0.2]) (interceptLevelDen_pos hq0I).ne',
+    rw [← binTop_curve_eq h1 (interceptLevelDen_pos hqI).ne',
+      ← binTop_curve_eq (by linarith [hq0.2]) (interceptLevelDen_pos hq0I).ne',
       rightIntercept_split] at hm
-    have hp := binTopAt_price q0
-      (add_pos (by linarith [hq0.1]) (weight_pos (by linarith [hq0.1]) (by linarith [hq0.2]))).ne'
+    have hp := binTopAt_price (q := q0) (by linarith [hq0.1]) (by linarith [hq0.2])
     have hB : binTopAt q0 B = markedBinTop := hp
     rw [hB] at hm
     exact hm
   have hbt3 : binTopAt q x ≤ priceEndBinTop q := by
-    rw [← binTopAt_price q hW, binTopAt_affine, binTopAt_affine]
+    rw [← binTopAt_price h0 h1, binTopAt_affine, binTopAt_affine]
     linarith [frac_mono (binTop_coef_pos hqI) hxP hgx hgP]
   -- The bin tops lie in the range where the core cap falls.
   have hmono := priceEndBinTop_mono.1
@@ -629,9 +574,8 @@ theorem cap_fails {q x : ℝ} (hq : q0 < q) (hq' : q ≤ 7/10) (hxP : x ≤ pric
   have hbal2 : balancedCoreCap q0 < balancedAt q xl := by
     have hm := balancedCurve_mono.1 hq0I hqI hq
     simp only at hm
-    rw [← balanced_curve_eq h0 h1 (interceptLevelDen_pos hqI).ne',
-      ← balanced_curve_eq (by linarith [hq0.1]) (by linarith [hq0.2]) (interceptLevelDen_pos hq0I).ne',
-      rightIntercept_split] at hm
+    rw [← balanced_curve_eq (interceptLevelDen_pos hqI).ne',
+      ← balanced_curve_eq (interceptLevelDen_pos hq0I).ne', rightIntercept_split] at hm
     exact hm
   have hbal0 : balancedCoreCap q0 = coreCapAt markedBinTop := by
     have h := capResidual_markedSplit
@@ -681,8 +625,8 @@ theorem markedSplit_optimal {q x : ℝ} (hq : q ∈ splitRange) (hx : 0 < x) (ha
       apply lt_thetaMin_of_level hlam hx
       have hqI : q ∈ Set.Icc q0 (7/10) := ⟨hgt.le, hnear⟩
       have h := levelAt_strictMono hlam hbelow
-      rw [rightIntercept_level (by linarith [hq0.1]) (by linarith)
-        (by linarith [thetaClass_bounds.2]) (interceptLevelDen_pos hqI).ne'] at h
+      rw [rightIntercept_level (by linarith [hq0.1]) (by linarith [thetaClass_bounds.2])
+        (interceptLevelDen_pos hqI).ne'] at h
       exact h
     · apply le_of_lt
       apply lt_thetaMin_of_level hlam hx
@@ -694,8 +638,7 @@ theorem markedSplit_admissible : Admissible q0 B := by
   refine ⟨le_rfl, ?_⟩
   have h : cellHigh q0 B slotTop + liveRate q0*liveCap - markedLoss - lowReserveAt q0 = 0 := cap_tight
   have hbt : binTopAt q0 B = markedBinTop :=
-    binTopAt_price q0
-      (add_pos (by linarith [hq0.1]) (weight_pos (by linarith [hq0.1]) (by linarith [hq0.2]))).ne'
+    binTopAt_price (q := q0) (by linarith [hq0.1]) (by linarith [hq0.2])
   have hc : coreCapAt markedBinTop = inverseWidthCap*coreFactor := rfl
   have hf : frequencyAt q0 B = frequencyFactor := rfl
   have hlive : liveRate q0*coreCapAt markedBinTop*frequencyAt q0 B = liveRate q0*liveCap := by

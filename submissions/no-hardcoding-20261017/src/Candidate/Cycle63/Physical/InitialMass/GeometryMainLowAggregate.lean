@@ -498,7 +498,7 @@ theorem eventual_actual_selected_low_second_payment
     0≤εcommon → (∀l,CenteredMomentOriginalCommonHarmonic.sourceRadius (src l)≤Z^Bnorm) →
     ∀(rows : Finset ((l : Label)×ActualSecondBlockIndex (src l) (R l) (seed l)
       (K l) (Tsec l) Z ξ))
-      (hU : ∀q∈rows,q.2.2.1∈inactiveSubsets q.2.1.val.val.1 q.2.1.val.val.2)
+      (hU : ∀q∈rows,ActualSecondBlockIndex.IsInactive q.2)
       (box : Finset (Fin 4→ℤ)),
     (∀q∈rows,actualSecondDyad (src q.1) (R q.1) (seed q.1)
       (K q.1) (Tsec q.1) Z ξ q.2∈box) →
@@ -592,7 +592,7 @@ theorem eventual_actual_selected_low_second_paid
     (∀l,T≤((seed l).absNorm:ℝ) ∧ ((seed l).absNorm:ℝ)<2*T) →
     ∀(rows : Finset ((l : Label)×ActualSecondBlockIndex (src l) (R l) (seed l)
       (K l) (Tsec l) Z ξ))
-      (hU : ∀q∈rows,q.2.2.1∈inactiveSubsets q.2.1.val.val.1 q.2.1.val.val.2)
+      (hU : ∀q∈rows,ActualSecondBlockIndex.IsInactive q.2)
       (box : Finset (Fin 4→ℤ)),
     (∀q∈rows,actualSecondDyad (src q.1) (R q.1) (seed q.1)
       (K q.1) (Tsec q.1) Z ξ q.2∈box) →

@@ -57,11 +57,11 @@ theorem overlapping_direct_energy {I Row : Type} [Fintype I] [DecidableEq I]
           if ∀j : {q // ¬singletonBlock r q},p≠t j then
             a v (singletonRepresentative r q) p else 0)‖^2)≤cK*E := by
     let J := {q // singletonBlock r q}
-    letI : DecidableEq J := Classical.decEq J
+    let : DecidableEq J := Classical.decEq J
     let f : J→I := singletonRepresentative r
     have hf : Function.Injective f := singletonRepresentative_injective r
     by_cases hJ : Nonempty J
-    · letI : Nonempty J := hJ
+    · let : Nonempty J := hJ
       have hcolor (col : atoms→J) :
           (∑v∈rows,‖D v*(∏q : J,∑p : atoms,
             if col p=q then
@@ -100,8 +100,8 @@ theorem overlapping_direct_energy {I Row : Type} [Fintype I] [DecidableEq I]
           simp only [hkeep]
           by_cases hc : col p=q <;> by_cases ht : ∀j : {q // ¬singletonBlock r q},p≠t j
           <;> by_cases hl : p.val∈L (f q)
-          <;> simp only [hc,ht,hl,and_self,and_false,false_and,true_and,and_true,ite_true,ite_false,mul_zero]
-          all_goals split_ifs <;> simp only [mul_zero]
+          <;> simp only [hc,ht,hl,and_self,and_false,false_and,true_and,ite_true,ite_false,mul_zero]
+          all_goals split_ifs; simp only []
         have hbound := hsep f hf L' hsub hdis
         simpa only [hid] using hbound
       have hh := RepeatedPrimeSlots.injective_coloring_energy rows
@@ -113,7 +113,7 @@ theorem overlapping_direct_energy {I Row : Type} [Fintype I] [DecidableEq I]
         (show (Fintype.card J:ℝ)≤(K:ℝ) by exact_mod_cast (singleton_card_le r).trans hK).trans (le_max_right _ _)
       exact (pow_le_pow_left₀ (Nat.cast_nonneg _) hc _).trans
         (pow_le_pow_right₀ (le_max_left _ _) (Nat.mul_le_mul_left 2 ((singleton_card_le r).trans hK)))
-    · letI : IsEmpty J := not_nonempty_iff.mp hJ
+    · let : IsEmpty J := not_nonempty_iff.mp hJ
       have hdis : (((Finset.univ : Finset J) : Set J).PairwiseDisjoint (fun q=>L (f q))) := by
         intro q
         exact isEmptyElim q

@@ -67,7 +67,7 @@ theorem actual_high_coordinate_payment (reflected left second : Bool) (l : First
   have hz := zero_lt_one.trans hZ
   simp only [←Real.rpow_sub hz,←Real.rpow_add hz] at hh
   have he := (Real.rpow_le_rpow_left_iff hZ).mp hh
-  convert he using 1 <;> dsimp [highExponentValue,actualHighCoordinates] <;> ring
+  convert he using 1; dsimp [highExponentValue,actualHighCoordinates]; ring
 
 /-- Upward bin rounding keeps the strict high reserve, with an explicit loss. -/
 theorem actual_high_rounded_payment (reflected left second : Bool) (l : FirstSourceLabel)

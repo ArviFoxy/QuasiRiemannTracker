@@ -63,6 +63,7 @@ theorem collisionBlock_nonempty (r : Setoid I) (q : Quotient r) :
   obtain ⟨i,rfl⟩ := Quotient.exists_rep q
   exact ⟨i,by simp [collisionBlock]⟩
 
+omit [Fintype A] in
 theorem product_over_collision_blocks (r : Setoid I) (a : I→A→R) (p : Quotient r→A) :
     (∏i,a i (p (Quotient.mk r i))) =
       ∏q : Quotient r,∏i∈collisionBlock r q,a i (p q) := by
@@ -96,6 +97,7 @@ variable (P : I→Prop)
 def joinAssignments (s : {i // P i}→A) (t : {i // ¬P i}→A) (i : I) : A :=
   if h : P i then s ⟨i,h⟩ else t ⟨i,h⟩
 
+omit [Fintype I] [Fintype A] in
 theorem injective_joinAssignments (s : {i // P i}→A) (t : {i // ¬P i}→A) :
     Function.Injective (joinAssignments P s t) ↔
       Function.Injective s ∧ Function.Injective t ∧ ∀i j,s i≠t j := by
@@ -128,6 +130,7 @@ def assignmentSplit : (I→A) ≃ ({i // P i}→A)×({i // ¬P i}→A) where
   left_inv x := by funext i;simp [joinAssignments]
   right_inv st := by ext i <;> simp [joinAssignments,i.property]
 
+omit [Fintype A] in
 theorem joinAssignments_product (a : I→A→R) (s : {i // P i}→A) (t : {i // ¬P i}→A) :
     (∏i,a i (joinAssignments P s t i)) = (∏i : {i // P i},a i.val (s i))*
       (∏j : {i // ¬P i},a j.val (t j)) := by
@@ -153,18 +156,18 @@ theorem injectiveTuplePolynomial_split (a : I→A→R) :
   apply Finset.sum_congr (by ext;simp)
   intro t ht
   by_cases hti : Function.Injective t
-  · rw [if_pos hti,Finset.mul_sum]
+  · rw [ite_eq_left hti,Finset.mul_sum]
     apply Finset.sum_congr (by ext;simp)
     intro s hs
     change (if Function.Injective (joinAssignments P s t) then ∏i,a i (joinAssignments P s t i) else 0)=_
     simp only [joinAssignments_product,injective_joinAssignments]
     by_cases hsi : Function.Injective s
-    · rw [if_pos hsi,Fintype.prod_ite_zero]
+    · rw [ite_eq_left hsi,Fintype.prod_ite_zero]
       by_cases hc : ∀i : {i // P i},∀j : {i // ¬P i},s i≠t j
       · simp [hsi,hti,hc,mul_comm]
-      · simp only [hsi,hti,hc,and_true,true_and,ite_false,mul_zero]
+      · simp only [hsi,hti,hc,true_and,ite_false,mul_zero]
     · simp only [hsi,false_and,ite_false,mul_zero]
-  · rw [if_neg hti]
+  · rw [ite_eq_right hti]
     apply Finset.sum_eq_zero
     intro s hs
     change (if Function.Injective (joinAssignments P s t) then _ else 0)=0

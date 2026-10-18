@@ -27,7 +27,7 @@ theorem affine_retained_fixed_profile {D : Cycle25.Weighted.MomentData}
     (di : ℕ) (control : Finset (ℕ×ℕ)) (Ci : ℝ) (hCi : 0<Ci)
     (hinput : ∀ᶠU:ℝ in atTop,AffineAt F bΦ mesh affineError U di control Ci)
     (G:𝓢(ℝ,ℂ)) (loss Cscale Ccond xi:ℝ)
-    (hloss:0 < loss) (hCscale:0 < Cscale) (hCcond:0 < Ccond) (hxi:0 < xi) :
+    (hloss:0 < loss) (hCscale:0 < Cscale) (_hCcond:0 < Ccond) (hxi:0 < xi) :
     ∃degree:ℕ, ∃C:ℝ, 0 < C ∧ ∀ᶠU:ℝ in atTop,
       1 < U ∧ ∀rows:Finset FreeRow,
       (∀u∈rows, U^(1/100:ℝ) ≤ rowNorm u ∧ rowNorm u ≤ U) →

@@ -21,6 +21,7 @@ variable (M : Ideal O) [NeZero M]
 local instance : Finite (O⧸M) := Ring.HasFiniteQuotients.finiteQuotient (NeZero.ne M)
 variable (H : Subgroup (O⧸M)ˣ) (hH : RayOrthogonality.globalUnits M≤H)
 
+omit [Fintype α] in
 /-- A direct marked finite-row plain moment from the incumbent analytic
 induction, with arbitrary fixed relative anchor and common slot profile.
 It can therefore be applied to each common-profile interpolation node. -/
@@ -62,8 +63,10 @@ theorem actual_finite_marked_plain
   exact hfinite.trans (hinput slots θ w σ v t height hw hwm hσlo hσhi hheight hv
     st hQ hst p X₁ X₂ hX₁ hX₂ hXL₁ hXL₂ hcap)
 
+omit [Fintype α] in
 /-- The finite marked source estimate in the exact detector-polynomial and
 natural-slot representation. The slot height is independent of the detector
+omit [Fintype α] in
 height: it is absorbed in the arbitrary bounded external shifts `v`. -/
 theorem actual_finite_marked_polynomials
     (W : ℝ→ℂ) (bslot a b bΦ Bmask L Lslot lo hi Mcap ε κ U : ℝ)
@@ -112,6 +115,8 @@ theorem actual_finite_marked_polynomials
   intro s hs
   exact naturalSlot_of_row st.character (χ u) st.mask 1 u (hrow u hu) _ _ _
 
+omit [Fintype α] in
+omit [Fintype α] in
 /-- Injective finite row parametrizations, including the sixth-power-free row type,
 preserve the literal finite marked plain moment. -/
 theorem actual_finite_marked_polynomials_of_injective {Row : Type*}

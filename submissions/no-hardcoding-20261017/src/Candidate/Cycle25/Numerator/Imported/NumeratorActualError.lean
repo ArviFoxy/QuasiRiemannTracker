@@ -23,7 +23,7 @@ theorem cubic_vector_mass (c : CubicCoefficients) (Q : ℝ≥0) (w : ℂ)
     (∑ j : Fin 4, ‖c.vector j * ((Q : ℂ) ^ (-w)) ^ j.val‖) =
       c.mass ((Q : ℝ) ^ (-w.re)) := by
   simp [CubicCoefficients.vector,CubicCoefficients.mass,cubicMass,
-    Fin.sum_univ_four,norm_mul,norm_pow,
+    Fin.sum_univ_four,norm_pow,
     Complex.norm_cpow_eq_rpow_re_of_pos hQ,Complex.neg_re]
 
 def actualRamifiedErrorCoefficients (η : Character) (u : FreeRow) (P : PrimeIdeal)
@@ -57,7 +57,7 @@ theorem actual_error_expansion (η : Character) (u : FreeRow) (P : PrimeIdeal)
       (actualErrorCoefficients η u P hs x z).eval ((P.val.absNorm : ℂ)^(-w)) := by
   by_cases hd : P.val ∣ Ideal.span {u.val}
   · simp only [rawErrorSlot,row_phase_ramified u P hd,star_zero,mul_zero,add_zero,
-      actualErrorCoefficients,if_pos hd]
+      actualErrorCoefficients,ite_eq_left hd]
     rw [continuedCompensatedLocal_ramified η u P hs hd]
     dsimp only [actualRamifiedErrorCoefficients]
     erw [ramified_error_expansion]
@@ -71,8 +71,8 @@ theorem actual_error_expansion (η : Character) (u : FreeRow) (P : PrimeIdeal)
       (coordR_norm_le _ (by linarith) _ x z hA).trans_lt
         ((rpow_le_half _ _ hQ (by linarith)).trans_lt (by norm_num))
     obtain ⟨hRn,hVn,hDn⟩ := unramified_denominators _ _ _ _ x z hQ hA heta.le hv.le hx hz
-    simp only [rawErrorSlot,actualErrorCoefficients,if_neg hd,
-      supportedCorrection,dif_pos hs,if_neg hd]
+    simp only [rawErrorSlot,actualErrorCoefficients,
+      supportedCorrection,dite_eq_left hs,ite_eq_right hd]
     rw [continuedCompensatedLocal_unramified η u P hs hd x w z hV hR]
     exact unramified_error_expansion _ _ _ _ x w z (by linarith) hRn hVn hDn heta hv
 
@@ -91,7 +91,7 @@ theorem actual_ramified_error_mass (η : Character) (u : FreeRow) (P : PrimeIdea
   let p := primaryGenerator P.val
   have hp : Prime p := supported_primeGenerator_prime P hs
   have hspan : Ideal.span {p} = P.val := span_primaryGenerator_of_supported P.val hs
-  letI : (Ideal.span {p} : Ideal O).IsMaximal := PrincipalIdealRing.isMaximal_of_irreducible hp.irreducible
+  let : (Ideal.span {p} : Ideal O).IsMaximal := PrincipalIdealRing.isMaximal_of_irreducible hp.irreducible
   have hsp : Supported (Ideal.span {p}) := hspan.symm ▸ hs
   have hg := supported_prime_data p hp hsp
   have hh := ramified_error_coefficient_mass p hp hg.1 hg.2
@@ -133,19 +133,19 @@ theorem actual_error_coefficient_mass (η : Character) (u : FreeRow) (P : PrimeI
   by_cases hd : P.val ∣ Ideal.span {u.val}
   · have hh := actual_ramified_error_mass η u P hs x z alpha eps rho hQ
       halpha halpha1 heps heps1 hx hz hrho hrho1 hline
-    simp only [actualErrorCoefficients,if_pos hd,errorSize,repeatedDeficit,hd,true_and,
+    simp only [actualErrorCoefficients,errorSize,repeatedDeficit,hd,true_and,
       primeScale] at *
     split_ifs with hj
     · simp only [ite_eq_left hj] at hh
       simp only [NNReal.coe_natCast]
-      exact hh.trans (by gcongr <;> norm_num)
+      exact hh.trans (by gcongr; norm_num)
     · simp only [ite_eq_right hj,mul_one] at hh
       simp only [NNReal.coe_one,Real.one_rpow,mul_one]
-      exact hh.trans (by gcongr <;> norm_num)
+      exact hh.trans (by gcongr; norm_num)
   · have heta := PrincipalSignalComparison.idealCoeff_norm_one_of_coprime η P.val P.property.ne_zero hη
     have hv := row_phase_norm_one_of_not_dvd u P hs hd
-    simp only [actualErrorCoefficients,if_neg hd,errorSize,repeatedDeficit,hd,false_and,
-      if_false,NNReal.coe_one,Real.one_rpow,mul_one]
+    simp only [actualErrorCoefficients,errorSize,repeatedDeficit,hd,false_and,
+      ite_false,NNReal.coe_one,Real.one_rpow,mul_one]
     exact unramified_error_coefficient_mass _ alpha eps (1 / 2 - rho) _ _ _ x z
       hQ halpha halpha1 heps heps1 (actualAPhase_norm_le_one η _) heta hv hx hz hline
 

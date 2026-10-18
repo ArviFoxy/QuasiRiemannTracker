@@ -49,7 +49,7 @@ theorem finite_positive_energy {Slot : Type*} [Fintype Slot] [DecidableEq Slot]
           (Φ (‖eisEmbedding u‖^2/K)).re else 0) := by
       apply Finset.sum_congr rfl
       intro u hu
-      rw [if_pos (hkeep u hu),hone u hu,Complex.one_re,mul_one]
+      rw [ite_eq_left (hkeep u hu),hone u hu,Complex.one_re,mul_one]
     _ ≤ _ := he
 
 /-- The literal natural slot is the source slot whenever their row

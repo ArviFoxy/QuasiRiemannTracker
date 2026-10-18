@@ -47,7 +47,7 @@ theorem combined_le_radical (D : PhysicalReflectionData S hS u) :
 
 theorem radical_le_row (u : FreeRow) :
     (Ideal.span {u.val}:Ideal O).radical.absNorm≤(Ideal.span {u.val}:Ideal O).absNorm := by
-  letI : Finite (O ⧸ (Ideal.span {u.val}:Ideal O)) := Ring.HasFiniteQuotients.finiteQuotient
+  let : Finite (O ⧸ (Ideal.span {u.val}:Ideal O)) := Ring.HasFiniteQuotients.finiteQuotient
     (Ideal.span_singleton_eq_bot.not.mpr u.property.1)
   exact FiniteConductor.absNorm_le_of_le (show (Ideal.span {u.val}:Ideal O)≤(Ideal.span {u.val}:Ideal O).radical from Ideal.le_radical)
 

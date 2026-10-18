@@ -21,6 +21,7 @@ theorem row_pullback (labels : Finset Label) (row : Label→Raw)
   obtain ⟨l,hl,he⟩:=Finset.mem_image.mp hu
   exact Function.invFunOn_eq ⟨l,hl,he⟩
 
+omit [DecidableEq Raw] in
 theorem pullback_row (labels : Finset Label) (row : Label→Raw)
     (hinj : Set.InjOn row (↑labels:Set Label)) {l : Label} (hl : l∈labels) :
     pullback labels row (row l)=l := hinj.leftInvOn_invFunOn hl

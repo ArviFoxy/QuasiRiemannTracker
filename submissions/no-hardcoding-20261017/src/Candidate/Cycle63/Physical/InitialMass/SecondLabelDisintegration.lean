@@ -71,7 +71,7 @@ theorem second_block_nonzero_inactive (d : SecondBlockSource)(W : 𝓢(ℝ,ℂ))
 def actualSecondSupportedLabel {ι : Type*}[Fintype ι](s : Input ι)
     (R seed : Ideal O)(K Tsec Z ξ : ℝ)
     (q : ActualSecondBlockIndex s R seed K Tsec Z ξ)
-    (hU : q.2.1∈inactiveSubsets q.1.val.val.1 q.1.val.val.2) : FirstSourceLabel :=
+    (hU : ActualSecondBlockIndex.IsInactive q) : FirstSourceLabel :=
   ⟨q.1.val.val,⟨q.2.1,hU⟩⟩
 
 /-- An original-nonzero selected block subset has genuine supported labels.
@@ -81,11 +81,12 @@ theorem actual_second_original_nonzero_supported {α : Type*}[Fintype α][Decida
     (hz₁ : s.W₁ 0=0)(hz₂ : s.W₂ 0=0)(K Tsec Z ξ : ℝ)(hK : 0<K)
     (W : 𝓢(ℝ,ℂ))(rows : Finset (ActualSecondBlockIndex s R seed K Tsec Z ξ))
     (hn : ∀q∈rows,(actualSecondBlockDatum slots s R seed hseed hz₁ hz₂ K Tsec Z ξ hK q).block.value W≠0) :
-    ∀q∈rows,q.2.1∈inactiveSubsets q.1.val.val.1 q.1.val.val.2 := by
+    ∀q∈rows,ActualSecondBlockIndex.IsInactive q := by
   intro q hq
   have hh := second_block_nonzero_inactive
     (actualSecondBlockDatum slots s R seed hseed hz₁ hz₂ K Tsec Z ξ hK q).block W (hn q hq)
-  simpa only [actualSecondBlockDatum,actualSecondInputDatum,SecondInputDatum.block,originalSecondBlock] using hh
+  simpa only [ActualSecondBlockIndex.IsInactive,actualSecondBlockDatum,actualSecondInputDatum,
+    SecondInputDatum.block,originalSecondBlock] using hh
 
 /-- Full supported arithmetic labels of the original live ideal pairs. -/
 def actualSecondLabels {ι : Type*}[Fintype ι](s : Input ι)(R seed : Ideal O) :
@@ -97,7 +98,7 @@ def actualSecondLabels {ι : Type*}[Fintype ι](s : Input ι)(R seed : Ideal O) 
 lemma actual_second_supported_label_mem {ι : Type*}[Fintype ι](s : Input ι)
     (R seed : Ideal O)(K Tsec Z ξ : ℝ)
     (q : ActualSecondBlockIndex s R seed K Tsec Z ξ)
-    (hU : q.2.1∈inactiveSubsets q.1.val.val.1 q.1.val.val.2) :
+    (hU : ActualSecondBlockIndex.IsInactive q) :
     actualSecondSupportedLabel s R seed K Tsec Z ξ q hU∈actualSecondLabels s R seed := by
   exact Finset.mem_image.mpr ⟨⟨q.1,⟨q.2.1,hU⟩⟩,Finset.mem_univ _,rfl⟩
 
@@ -120,7 +121,7 @@ label set. Original block filters and ratio-fiber filters remain in `rows`. -/
 theorem actual_second_label_dyad_image_sum {ι : Type*}[Fintype ι](s : Input ι)
     (R seed : Ideal O)(K Tsec Z ξ : ℝ)
     (rows : Finset (ActualSecondBlockIndex s R seed K Tsec Z ξ))
-    (hU : ∀q∈rows,q.2.1∈inactiveSubsets q.1.val.val.1 q.1.val.val.2)
+    (hU : ∀q∈rows,ActualSecondBlockIndex.IsInactive q)
     (cost : FirstSourceLabel→(Fin 4→ℤ)→ℝ) :
     let code:=fun q : rows=>(actualSecondSupportedLabel s R seed K Tsec Z ξ q.val
       (hU q.val q.property),actualSecondDyad s R seed K Tsec Z ξ q.val);
@@ -138,7 +139,7 @@ may contain the complete residual-projector and common-allocation sums. -/
 theorem actual_second_positive_disintegration {ι : Type*}[Fintype ι](s : Input ι)
     (R seed : Ideal O)(K Tsec Z ξ : ℝ)
     (rows : Finset (ActualSecondBlockIndex s R seed K Tsec Z ξ))
-    (hU : ∀q∈rows,q.2.1∈inactiveSubsets q.1.val.val.1 q.1.val.val.2)
+    (hU : ∀q∈rows,ActualSecondBlockIndex.IsInactive q)
     (box : Finset (Fin 4→ℤ))
     (hbox : ∀q∈rows,actualSecondDyad s R seed K Tsec Z ξ q∈box)
     (cost : FirstSourceLabel→(Fin 4→ℤ)→ℝ)
@@ -188,7 +189,7 @@ theorem actual_second_positive_subpower {α : Type*}[Fintype α][DecidableEq α]
       (_hz₁ : s.W₁ 0=0)(_hz₂ : s.W₂ 0=0)(K Tsec ξ : ℝ)(_hK : 0<K),
       Z^(-D₀)≤K → K≤Z^A → frequencyRadius Tsec Z ξ≤Cr*Z^L → sourceRadius s≤Z^B →
     ∀(rows : Finset (ActualSecondBlockIndex s R seed K Tsec Z ξ))
-      (hU : ∀q∈rows,q.2.1∈inactiveSubsets q.1.val.val.1 q.1.val.val.2)
+      (hU : ∀q∈rows,ActualSecondBlockIndex.IsInactive q)
       (cost : FirstSourceLabel→ℝ),
       (∀l∈actualSecondLabels s R seed,0≤cost l) →
       (∑q : rows,cost (actualSecondSupportedLabel s R seed K Tsec Z ξ q.val (hU q.val q.property)))≤
@@ -249,7 +250,7 @@ theorem actual_second_joint_positive_disintegration {α Label : Type*}
     (R seed : Label→Ideal O)(K Tsec : Label→ℝ)(Z ξ : ℝ)
     (rows : Finset ((l : Label)×ActualSecondBlockIndex (s l) (R l) (seed l)
       (K l) (Tsec l) Z ξ))
-    (hU : ∀q∈rows,q.2.2.1∈inactiveSubsets q.2.1.val.val.1 q.2.1.val.val.2)
+    (hU : ∀q∈rows,ActualSecondBlockIndex.IsInactive q.2)
     (box : Finset (Fin 4→ℤ))
     (hbox : ∀q∈rows,actualSecondDyad (s q.1) (R q.1) (seed q.1)
       (K q.1) (Tsec q.1) Z ξ q.2∈box)
@@ -311,7 +312,7 @@ theorem actual_second_joint_positive_subpower {α : Type*}[Fintype α][Decidable
       (∀l,frequencyRadius (Tsec l) Z ξ≤Cr*Z^L) → (∀l,sourceRadius (s l)≤Z^B) →
     ∀(rows : Finset ((l : Label)×ActualSecondBlockIndex (s l) (R l) (seed l)
       (K l) (Tsec l) Z ξ))
-      (hU : ∀q∈rows,q.2.2.1∈inactiveSubsets q.2.1.val.val.1 q.2.1.val.val.2)
+      (hU : ∀q∈rows,ActualSecondBlockIndex.IsInactive q.2)
       (cost : Label→FirstSourceLabel→ℝ),
       (∀l,∀v∈actualSecondLabels (s l) (R l) (seed l),0≤cost l v) →
       (∑q : rows,cost q.val.1

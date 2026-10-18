@@ -106,7 +106,7 @@ lemma inverse_annular_norm_eq {D : Cycle25.Weighted.MomentData}
     (fun x=>conj (scaleTest (fun y:ℝ=>(annulus y:ℂ)) j x)) X 0 (-2*Real.pi*v) hX
   simp only [Complex.conj_conj,neg_mul,neg_neg] at hh
   rw [hh,numerator_polynomial_eq_moment F.S F.exclusions.prime F.exclusions.bad]
-  congr 2 <;> ring
+  congr 2; ring
 
 end SevenEighths.Cycle25WeightedNumeratorPhysical
 end

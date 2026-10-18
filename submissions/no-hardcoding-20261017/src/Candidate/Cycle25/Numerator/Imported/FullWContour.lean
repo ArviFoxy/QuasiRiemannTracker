@@ -180,7 +180,7 @@ theorem buffered_w_integral_eq {K : ℕ}
       ∫t : ℝ,continuedPhysicalRowKernel S hS hmax P hPS η u W0 W1 X Y Z x ((r:ℂ)+t*I) z := by
   obtain ⟨C,hC,hbound⟩ := calibrated_buffered_strip_growth e a B H i he he' ha haTop hB hH
     S hS hfirst hmax _ (contourTupleOutside S P hPS) η u hu ψ hbin
-  have hf : FirstTail ((8*e)/2) S := by convert hfirst using 1 <;> ring
+  have hf : FirstTail ((8*e)/2) S := by convert hfirst using 1; ring
   apply nonprincipal_w_integral_eq_of_polynomial (8*e) (by positivity) S hS hf hmax P hPS η u hu
     W0 W1 a1 b1 ha1 hW1 X Y Z hY x z l r (9*C) 2 (by positivity) hlr
     (by linarith) (by linarith) hz (by linarith)

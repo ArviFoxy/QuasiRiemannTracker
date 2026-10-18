@@ -16,7 +16,7 @@ def Avoids (χ : Character) (R : Ideal O) : Prop :=
 theorem excluded_avoids (η : Character) (R : Ideal O) (hR : R≠0) :
     Avoids (excluded η R) R := by
   intro I hI
-  rw [excluded_ideal _ _ hR,if_neg hI]
+  rw [excluded_ideal _ _ hR,ite_eq_right hI]
 
 theorem avoids_product {η : Character} {R : Ideal O} (hη : Avoids η R) (ν : Character) :
     Avoids (η.product ν) R := by
@@ -33,8 +33,8 @@ theorem avoids_excluded_redundant {χ : Character} {R : Ideal O} (hχ : Avoids �
     idealCoeff (excluded χ S) I=idealCoeff χ I := by
   rw [excluded_ideal _ _ hS]
   by_cases hc : IsCoprime I S
-  · exact if_pos hc
-  · rw [if_neg hc]
+  · exact ite_eq_left hc
+  · rw [ite_eq_right hc]
     exact (hχ I (fun h=>hc (h.of_isCoprime_of_dvd_right hSR))).symm
 
 theorem avoids_slot_excluded_redundant {χ : Character} {R : Ideal O} (hχ : Avoids χ R)

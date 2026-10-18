@@ -15,6 +15,7 @@ variable {ι : Type*} [Fintype ι] [DecidableEq ι]
 def labelPrimes (T : ι → Finset ProbePhysical.PrimeIdeal) (P : ∀ i, T i) :
     Finset ProbePhysical.PrimeIdeal := Finset.univ.image (fun i => (P i).val)
 
+omit [DecidableEq ι] in
 theorem labelSupported (S : Finset (Ideal O)) (hS : SourceExclusions S)
     (T : ι → Finset ProbePhysical.PrimeIdeal) (hT : ∀ i P, P ∈ T i → P.val ∉ S)
     (P : ∀ i, T i) : ∀ Q ∈ labelPrimes T P, Supported Q.val := by
@@ -48,6 +49,7 @@ def labelPacketCoefficient (S : Finset (Ideal O)) (hS : SourceExclusions S)
 def labelPacketScale (S : Finset (Ideal O)) (u : FreeRow) (T : ι → Finset ProbePhysical.PrimeIdeal)
     (e : LabelPacketIndex S u T) : ℝ≥0 := errorPacketScale S u (labelPrimes T e.1) e.2
 
+omit [DecidableEq ι] in
 theorem labelPacketScale_one_le (S : Finset (Ideal O)) (u : FreeRow)
     (T : ι → Finset ProbePhysical.PrimeIdeal) (e : LabelPacketIndex S u T) :
     1 ≤ labelPacketScale S u T e := errorPacketScale_one_le S u (labelPrimes T e.1) e.2
@@ -55,10 +57,10 @@ theorem labelPacketScale_one_le (S : Finset (Ideal O)) (u : FreeRow)
 /-- Uniform in every error-label tuple, row, finite exclusion set and height. -/
 theorem actual_label_packet_mass (epsilon : ℝ) (hepsilon : 0 < epsilon) :
     ∃ C : ℝ, 0 < C ∧ ∀ (S : Finset (Ideal O)) (hS : SourceExclusions S)
-      (firsteps : ℝ) (hfirst : FirstTail firsteps S) (η : Character) (u : FreeRow)
+      (firsteps : ℝ) (_hfirst : FirstTail firsteps S) (η : Character) (u : FreeRow)
       (T : ι → Finset ProbePhysical.PrimeIdeal) (hT : ∀ i P, P ∈ T i → P.val ∉ S)
-      (hdis : ∀ P : ∀ i, T i, Function.Injective (fun i => (P i).val))
-      (hη : ∀ i P, P ∈ T i → IsCoprime P.val η.modulus)
+      (_hdis : ∀ P : ∀ i, T i, Function.Injective (fun i => (P i).val))
+      (_hη : ∀ i P, P ∈ T i → IsCoprime P.val η.modulus)
       (weight : ∀ i, T i → ℂ) (x z : ℂ) (alpha eps rho Ccond Cu : ℝ),
       (51 / 100 : ℝ) ≤ alpha → alpha ≤ 1 → 0 < eps → eps ≤ 1 / 1000 →
       x.re = alpha + 16 * eps → z.re = 17 / 50 → 0 ≤ rho → rho ≤ 1 →

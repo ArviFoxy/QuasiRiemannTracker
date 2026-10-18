@@ -52,7 +52,7 @@ theorem dilationBox_spec (U xi : ℝ) (hU : 1 ≤ U) (hxi : 0 ≤ xi)
     U^((dilationBox U xi n t : ℝ)*xi) ≤ t ∧
       t ≤ U^(((dilationBox U xi n t : ℝ)+1)*xi) := by
   have he := exponent_boxes_cover U xi hU hxi n t ht hupper
-  rw [dilationBox,dif_pos he]
+  rw [dilationBox,dite_eq_left he]
   exact (Classical.choose_spec he).2
 
 theorem dilation_weight_bound (U xi : ℝ) (hU : 1 ≤ U) (hxi : 0 ≤ xi)

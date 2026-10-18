@@ -88,7 +88,7 @@ theorem actual_physical_mass_from_geometry_budgets {ι : Type*}[Fintype ι][Deci
     (W : 𝓢(ℝ,ℂ))(decay degree windowDegree : ℕ)
     (hc : HasCompactSupport logAnnulus)(hsm : ContDiff ℝ ∞ logAnnulus) :
     ∃C : ℝ,0≤C ∧ ∀(s : Input ι)(R seed : Ideal O)(K Z ξ B M A : ℝ)
-      (hK : 0<K)(hZ : 1<Z)(N : ℕ)(a b : ℝ),0<a → Fintype.card ι≤N →
+      (hK : 0<K)(_hZ : 1<Z)(N : ℕ)(a b : ℝ),0<a → Fintype.card ι≤N →
       a≤s.lower → s.upper≤b → Squarefree seed → s.W₁ 0=0 → s.W₂ 0=0 →
       CenteredMomentOriginalCommonHarmonic.sourceRadius s≤Z^B →
       ∀E H : ℤ×(Fin 5→ℤ)→ℝ,(∀key∈commonGeometryBins s R seed K Z ξ,0≤E key) →

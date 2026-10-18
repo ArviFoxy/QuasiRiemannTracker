@@ -217,6 +217,7 @@ theorem actual_geometry_error_chain_fields (reflected : Bool) (s : Input α) (R 
       HEq chain.extracted (geometryErrorChild reflected s R seed Z Mrow ξ t hZ bin q p i Bp υ v) ∧ chain.E₂=E₂ ∧ chain.R₂=R₂ ∧ HEq chain.B₂ B₂ :=
   ⟨rfl,rfl,HEq.rfl,rfl,rfl,rfl,rfl,rfl,HEq.rfl,rfl,rfl,HEq.rfl,rfl,rfl,HEq.rfl⟩
 
+omit [DecidableEq α] in
 /-- The original actual error-source summand equals the exact unpruned
 extracted dictionary used by the geometry constructor. -/
 theorem actual_geometry_error_active_source (reflected : Bool) (s : Input α) (R seed : Ideal O)
@@ -315,6 +316,24 @@ def geometryErrorNonzeroBlocks (reflected : Bool) (s : Input α) (R seed : Ideal
     (hw₁ : s.W₁ 0=0) (hw₂ : s.W₂ 0=0) : Finset
     (GeometryErrorSecondIndex reflected s R seed Z Mrow amp ξ reserve b t N hZ bin q p i Bp υ v) :=
   Finset.univ.filter (fun n=>((geometryErrorSecondDatum reflected s R seed Z Mrow amp ξ reserve b t N hZ bin q p i Bp υ v hw₁ hw₂) n).block.value ballProfile≠0)
+
+/-- A second index whose block is nonzero, as an element of the nonzero blocks. Built once here, the
+membership proof keeps the statements that use it small. -/
+def geometryErrorNonzeroBlock (reflected : Bool) (s : Input α) (R seed : Ideal O)
+    (Z Mrow amp ξ reserve b t : ℝ) (N : ℕ) (hZ : 1<Z) (bin : ℤ×(Fin 5→ℤ))
+    (q : GeometryLowFirstIndex reflected s R seed (Z^Mrow) Z ξ
+      (Real.rpow_pos_of_pos (zero_lt_one.trans hZ) _) bin)
+    (p : O) (i : Fin 3)
+    (Bp : actualAllocations (activeInput
+      (geometryLowFirstChild reflected s R seed (Z^Mrow) Z ξ
+        (Real.rpow_pos_of_pos (zero_lt_one.trans hZ) _) bin t q)).pools
+          ((Ideal.span {p})^(errorIndex i+1))) (υ : Character) (v : ℝ)
+    (hw₁ : s.W₁ 0=0) (hw₂ : s.W₂ 0=0)
+    (n : GeometryErrorSecondIndex reflected s R seed Z Mrow amp ξ reserve b t N hZ bin q p i Bp υ v)
+    (hne : (geometryErrorSecondDatum reflected s R seed Z Mrow amp ξ reserve b t N hZ bin q p i Bp υ v hw₁ hw₂ n).block.value
+      ballProfile≠0) :
+    geometryErrorNonzeroBlocks reflected s R seed Z Mrow amp ξ reserve b t N hZ bin q p i Bp υ v hw₁ hw₂ :=
+  ⟨n,Finset.mem_filter.mpr ⟨Finset.mem_univ _,hne⟩⟩
 
 set_option linter.defProp false in
 /-- Literal specialization of the proved nonzero-block filter identity.

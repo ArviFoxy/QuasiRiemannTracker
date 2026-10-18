@@ -36,7 +36,7 @@ theorem actual_ramified_coefficient_mass (η : Character) (u : FreeRow) (P : Pri
   let p := primaryGenerator P.val
   have hp : Prime p := supported_primeGenerator_prime P hs
   have hspan : Ideal.span {p} = P.val := span_primaryGenerator_of_supported P.val hs
-  letI : (Ideal.span {p} : Ideal O).IsMaximal := PrincipalIdealRing.isMaximal_of_irreducible hp.irreducible
+  let : (Ideal.span {p} : Ideal O).IsMaximal := PrincipalIdealRing.isMaximal_of_irreducible hp.irreducible
   have hsp : Supported (Ideal.span {p}) := hspan.symm ▸ hs
   have hg := supported_prime_data p hp hsp
   have hh := ramified_correction_coefficient_mass p hp hg.1 hg.2
@@ -108,7 +108,7 @@ theorem ramified_product_coefficient_mass (S : Finset (Ideal O)) (hS : SourceExc
     have hn := Complex.norm_cpow_eq_rpow_re_of_pos hpos (-(sigma : ℂ))
     simp only [Complex.neg_re, Complex.ofReal_re] at hn
     rw [← hn]
-    simp only [Complex.neg_re, Complex.ofReal_re, ← norm_mul]
+    simp only [← norm_mul]
     unfold ramifiedTupleCoefficient ramifiedTupleScale
     have hh := map_prod (positiveCpowHom (-(sigma : ℂ))) (fun P : ramifiedPrimes S u =>
       primeScale P.val ^ (j P).val) Finset.univ

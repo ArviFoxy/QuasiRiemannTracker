@@ -282,14 +282,14 @@ theorem tNum_half_eq (δ : ℝ) :
   field_simp
   ring
 
-theorem RStar_half_eq {δ : ℝ} (hδ : 0 < δ) (hd : 0 < Optimization.cutoffDen lambda δ) :
+theorem RStar_half_eq {δ : ℝ} (hδ : 0 < δ) (_hd : 0 < Optimization.cutoffDen lambda δ) :
     CountAffine.RStar δ (1/2) = Optimization.count lambda B δ := by
   have hl : 0 < lambda := lambda_pos
   have ht : CountAffine.tStar δ (1/2) = Optimization.cutoff lambda B δ := by
     unfold CountAffine.tStar
     rw [tNum_half_eq, tDen_half_eq]
     unfold Optimization.cutoff
-    unfold Optimization.cutoffDen at hd ⊢
+    unfold Optimization.cutoffDen at _hd ⊢
     field_simp
   unfold CountAffine.RStar Optimization.count
   rw [ht]

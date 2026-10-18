@@ -131,7 +131,7 @@ theorem actual_geometry_literal_marked_count {Slot : Type} [Fintype Slot] [Decid
     (∑l∈rows,(∏s∈slots,max 1 ‖labeledRawSlot M H hH η₀ W Z w σ v t θ χ l s‖)^2)
     (bufferCount P.e) J he.1.le P.hτ.le hC.le (by linarith) hD' hS ⟨ha0, ha⟩ (le_of_eq rfl) hρ hμcap
     hnorm ht (by simpa only [add_assoc] using hh)
-  convert hb using 1 <;> norm_num [markedRootCutoff, Cycle63.Optimization.coreFactor]
+  convert hb using 1; norm_num [markedRootCutoff, Cycle63.Optimization.coreFactor]
 
 end
 end OAI.SevenEighths.Cycle63MarkedPlain

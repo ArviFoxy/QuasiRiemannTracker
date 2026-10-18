@@ -23,7 +23,7 @@ theorem actual_low_scalar_payment (reflected second : Bool) (l : FirstSourceLabe
     (C₂ D₂ : Ideal O)(hC₂ : Supported C₂)(U : Finset (CommonIndex C₂ D₂))
     (Z M A a ξ reserve error : ℝ)(hZ : 1<Z) :
     let c := Real.logb Z ((if reflected then l.1.2 else l.1.1).absNorm:ℝ)
-    let d := Real.logb Z ((if reflected then l.1.1 else l.1.2).absNorm:ℝ)
+    let _d := Real.logb Z ((if reflected then l.1.1 else l.1.2).absNorm:ℝ)
     let R := Real.logb Z ((Ideal.span {activeConductor l.1.1 l.1.2}).absNorm:ℝ)
     let E := Real.logb Z ((firstProjectorRadical l.1.1 l.1.2 l.2.val).absNorm:ℝ)
     let b₂ := Real.logb Z ((if second then D₂ else C₂).absNorm:ℝ)

@@ -21,7 +21,7 @@ theorem actual_second_weighted_shell_windows {α : Type*} [Fintype α] [Decidabl
     ∃K : ℝ,0<K ∧ ∀{κ : Type*}(rows : Finset κ)(slots : κ→Finset α)
       (s : (k : κ)→Input (slots k)) (C R seed : κ→Ideal O)
       (hC : ∀k,Supported (C k)) (Ds : κ→Finset (Ideal O))
-      (η : κ→Character) (t θ X : κ→ℝ) (hX : ∀k,0<X k)
+      (η : κ→Character) (t θ X : κ→ℝ) (_hX : ∀k,0<X k)
       (z : κ→O) (scalar : κ→ℂ)
       (V : ℝ→ℂ) (hc : HasCompactSupport V) (hs : ContDiff ℝ ∞ V)
       (J : ℕ) (E T : ℝ),0≤E → 1≤T →
@@ -90,7 +90,7 @@ theorem actual_second_weighted_shell_windows {α : Type*} [Fintype α] [Decidabl
     (fun q hq=>(hDs q.1 (Finset.mem_sigma.mp hq).1 q.2 (Finset.mem_sigma.mp hq).2).1)
     hbudget
   simp only [pairs,Finset.sum_sigma] at hw
-  convert hw using 1 <;> ring
+  convert hw using 1; ring
 
 end
 end OAI.SevenEighths.Cycle63InitialMass

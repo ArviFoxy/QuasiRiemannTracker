@@ -76,6 +76,7 @@ def coarseRowSize (s : Data ι)(second : Bool) : ℝ :=
   max 1 (Cycle63.Physical.sourcePlainScales s.toSource second 0)*
     max 1 (Cycle63.Physical.sourcePlainScales s.toSource second 1)*∏i,max 1 (s.P i)
 
+omit [DecidableEq ι] in
 lemma coarse_row_size_nonneg (s : Data ι)(second : Bool) : 0≤coarseRowSize s second := by
   unfold coarseRowSize
   positivity

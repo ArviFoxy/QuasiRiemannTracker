@@ -20,7 +20,7 @@ theorem quadratic_vector_mass (c : QuadraticCoefficients) (Q : ℝ≥0) (w : ℂ
     (∑ j : Fin 3, ‖c.vector j * ((Q : ℂ) ^ (-w)) ^ j.val‖) =
       c.mass ((Q : ℝ) ^ (-w.re)) := by
   simp [QuadraticCoefficients.vector, QuadraticCoefficients.mass, quadraticMass,
-    Fin.sum_univ_three, norm_mul, norm_pow,
+    Fin.sum_univ_three, norm_pow,
     Complex.norm_cpow_eq_rpow_re_of_pos hQ, Complex.neg_re]
 
 def primeScale (P : PrimeIdeal) : ℝ≥0 := P.val.absNorm
@@ -53,7 +53,6 @@ theorem actual_unramified_local_expansion (η : Character) (u : FreeRow) (x w z 
     rw [quadratic_vector_eval]
     change idealUnramifiedCorrection η u P x w z = _
     dsimp only [idealUnramifiedCorrection]
-    change _ = 1 + (unramifiedDefectCoefficients _ _ _ _ _ _).eval _
     simpa only [primeScale, NNReal.coe_natCast, Complex.ofReal_natCast] using
       (eq_add_of_sub_eq he).trans (add_comm _ _)
 

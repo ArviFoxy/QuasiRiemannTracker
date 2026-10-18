@@ -23,6 +23,12 @@ abbrev ActualSecondBlockIndex {ι : Type*} [Fintype ι]
     (U : Finset (CommonIndex p.val.val.1 p.val.val.2)) ×
       SourceBlocks p.val.val.1 p.val.val.2 U K (frequencyRadius Tsec Z ξ) (sourceRadius s)
 
+/-- The source set of a second-block index is one of the inactive subsets of its common pair. Stated
+through this predicate, the condition keeps the statements that assume it small. -/
+def ActualSecondBlockIndex.IsInactive {ι : Type*} [Fintype ι] {s : Input ι} {R seed : Ideal O}
+    {K Tsec Z ξ : ℝ} (q : ActualSecondBlockIndex s R seed K Tsec Z ξ) : Prop :=
+  q.2.1 ∈ CenteredMomentFirstDiscardedEnergy.inactiveSubsets q.1.val.val.1 q.1.val.val.2
+
 variable {α : Type*} [Fintype α] [DecidableEq α]
 
 def actualSecondBlockDatum (slots : Finset α) (s : Input slots) (R seed : Ideal O)

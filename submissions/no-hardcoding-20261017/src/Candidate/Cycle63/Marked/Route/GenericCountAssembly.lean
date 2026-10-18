@@ -232,7 +232,7 @@ theorem fiber_count (rows : Finset Row) (hne : rows.Nonempty)
     exact hh.trans (hmono (by rw [←hmean]; nlinarith))
   have hh := count_from_four_powers hA hU ha0 ha hp0 hp hL.le hε
     (show t-ε≤r+m by linarith [hlength.1]) hlength.2.1 hI hP hIM hPM
-  convert hh using 1 <;> dsimp [A,δ,p,s,S] <;> congr 2 <;> ring
+  convert hh using 1; dsimp [A,δ,p,s,S]; congr 2; ring
 
 
 
@@ -343,7 +343,7 @@ theorem weighted_row_sum (rows : Finset Row) (slots : Finset Slot)
         (155*ε+mesh+εm) hU ha0 ha hbin hA hw hL
         (fun u hu=>(hfields u hu).2.2.2.2)
         (fun u hu=>hQ u (hfields u hu).1) (by simpa only [A,add_assoc] using hc)
-      convert hh using 1 <;> dsimp [E] <;> congr 2 <;> ring
+      convert hh using 1; dsimp [E]; congr 2; ring
     · have he : F=∅ := Finset.not_nonempty_iff_eq_empty.mp hne
       change (∑u∈F,‖∏s∈slots,Q u s‖^2)≤A*U^E
       rw [he,Finset.sum_empty]

@@ -36,7 +36,7 @@ theorem existing_schedule_marked_gates
       (min_le_right (geometryFinalDictionaryRate μ 31 3 4 3 B L N/(32*(1+1)))
         (geometryFinalPlainRate μ 31/(48*(1+2))))
     change highBuffer 1 1 _ _≤_ at hh
-    convert hh using 1 <;> norm_num [geometryFinalPlainRate] <;> ring
+    convert hh using 1; norm_num [geometryFinalPlainRate]; ring
   have hs := marked_slot_loss_gate μ (geometryFinalDictionaryRate μ 31 3 4 3 B L N) N hμcap
     (min_le_right _ _)
   have hr := geometry_final_dictionary_budgets μ 31 3 4 3 B L N hμ

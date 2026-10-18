@@ -22,12 +22,12 @@ theorem eventual_actual_child_low_payment (N : ℕ) (lo εv : ℝ)
     ∀ᶠZ : ℝ in atTop,1<Z ∧ ∀{ι : Type}[Fintype ι]
     (s : Input ι),Fintype.card ι≤N → lo≤s.lower →
     ∀(reflected second : Bool) (l : FirstSourceLabel)
-    (hC : Supported l.1.1) (hD : Supported l.1.2),
+    (_hC : Supported l.1.1) (_hD : Supported l.1.2),
     primeSupport l.1.1=primeSupport l.1.2 →
     ∀(Rfirst : Ideal O)(B : actualAllocations s.pools (if reflected then l.1.2 else l.1.1))
     (χ : Character)(t : ℝ),
     frozenCoefficient B.val (if reflected then l.1.2 else l.1.1) Rfirst s.ν s.W s.P≠0 →
-    ∀(C₂ D₂ : Ideal O)(hC₂ : Supported C₂)(hD₂ : Supported D₂)
+    ∀(C₂ D₂ : Ideal O)(_hC₂ : Supported C₂)(_hD₂ : Supported D₂)
       (U : Finset (CommonIndex C₂ D₂))(M a ξ reserve error : ℝ),
     let A := Real.logb Z (volume s)
     let b₂ := Real.logb Z ((if second then D₂ else C₂).absNorm:ℝ)
@@ -77,7 +77,7 @@ theorem eventual_actual_child_low_payment (N : ℕ) (lo εv : ℝ)
       (normalizer C₂ D₂ U/Z^(Real.logb Z ((if second then D₂ else C₂).absNorm:ℝ)))*
       Z^(Cycle63FinalCapacity.secondNominal M Z a (frequencyLoss Z 32 ξ+reserve)
         (if reflected then l.1.2 else l.1.1) (if reflected then l.1.1 else l.1.2) C₂ D₂ U+a+error)) := by ring
-    _=_ := by rw [hp,←mul_div_assoc,←Real.rpow_add hZ]; congr 2 <;> ring
+    _=_ := by rw [hp,←mul_div_assoc,←Real.rpow_add hZ]; congr 2; ring
 
 /-- Include the common-allocation small-power cost while retaining the
 reciprocal norm required by the one-sided Rankin estimate. -/
@@ -86,16 +86,16 @@ theorem eventual_actual_child_low_mass_payment (N : ℕ) (lo εv : ℝ)
     ∀ᶠZ : ℝ in atTop,1<Z ∧ ∀{ι : Type}[Fintype ι]
     (s : Input ι),Fintype.card ι≤N → lo≤s.lower →
     ∀(reflected second : Bool) (l : FirstSourceLabel)
-    (hC : Supported l.1.1) (hD : Supported l.1.2),
+    (_hC : Supported l.1.1) (_hD : Supported l.1.2),
     primeSupport l.1.1=primeSupport l.1.2 →
     ∀(Rfirst : Ideal O)(B : actualAllocations s.pools (if reflected then l.1.2 else l.1.1))
     (χ : Character)(t : ℝ),
     frozenCoefficient B.val (if reflected then l.1.2 else l.1.1) Rfirst s.ν s.W s.P≠0 →
-    ∀(C₂ D₂ : Ideal O)(hC₂ : Supported C₂)(hD₂ : Supported D₂)
+    ∀(C₂ D₂ : Ideal O)(_hC₂ : Supported C₂)(_hD₂ : Supported D₂)
       (U : Finset (CommonIndex C₂ D₂))(M a ξ reserve error εcommon Bnorm : ℝ),0≤εcommon →
     ((if second then D₂ else C₂).absNorm:ℝ)≤Z^Bnorm →
     let A := Real.logb Z (volume s)
-    let b₂ := Real.logb Z ((if second then D₂ else C₂).absNorm:ℝ)
+    let _b₂ := Real.logb Z ((if second then D₂ else C₂).absNorm:ℝ)
     let nominal := Cycle63FinalCapacity.secondNominal M Z a (frequencyLoss Z 32 ξ+reserve)
       (if reflected then l.1.2 else l.1.1) (if reflected then l.1.1 else l.1.2) C₂ D₂ U
     Z^(-a)*(firstMainRadius reflected (Z^M) (volume s) Z ξ (3*a) reserve l/volume (child s
@@ -133,7 +133,7 @@ theorem eventual_actual_child_low_mass_payment (N : ℕ) (lo εv : ℝ)
     (div_nonneg (Real.rpow_nonneg hzpos.le
       (lowGeometryExponent reflected Z (Real.logb Z (volume s)) l+error+εv)) hn.le)
   apply le_trans _ (hupper.trans_eq ?_)
-  · convert hp using 1 <;> dsimp only [n] <;> ring
+  · convert hp using 1; dsimp only [n]; ring
   · rw [div_mul_eq_mul_div,←Real.rpow_add hzpos]
 
 end

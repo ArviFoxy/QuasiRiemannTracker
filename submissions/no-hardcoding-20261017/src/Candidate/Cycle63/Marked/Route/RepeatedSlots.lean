@@ -17,6 +17,7 @@ variable {A I : Type*} [Fintype A] [Fintype I]
 /-- A coloring which gives every member of a tuple its prescribed slot color. -/
 def Compatible (x : I → A) (c : A → I) : Prop := ∀ i, c (x i) = i
 
+omit [Fintype A] [Fintype I] in
 theorem compatible_injective {x : I → A} {c : A → I}
     (h : Compatible x c) : Function.Injective x := by
   intro i j hij
@@ -33,7 +34,7 @@ def compatibleEquiv (x : I → A) (hx : Function.Injective x) :
   have extend_on (f : {a : A // a ∉ Set.range x} → I) (i : I) :
       extend f (x i) = i := by
     dsimp [extend]
-    rw [dif_pos (Set.mem_range_self i)]
+    rw [dite_eq_left (Set.mem_range_self i)]
     exact hx (Classical.choose_spec (Set.mem_range_self i))
   refine {
     toFun := fun c a => c.val a.val
@@ -49,12 +50,12 @@ def compatibleEquiv (x : I → A) (hx : Function.Injective x) :
     · obtain ⟨i,rfl⟩ := h
       exact (extend_on (fun a => c.val a.val) i).trans (c.property i).symm
     · dsimp only [extend]
-      rw [dif_neg h]
+      rw [dite_eq_right h]
   · intro f
     funext a
     change extend f a.val = f a
     dsimp only [extend]
-    rw [dif_neg a.property]
+    rw [dite_eq_right a.property]
 
 theorem card_compatible (x : I → A) (hx : Function.Injective x) :
     Fintype.card {c : A → I // Compatible x c} =
@@ -70,7 +71,7 @@ theorem card_compatible (x : I → A) (hx : Function.Injective x) :
 theorem card_compatible_of_not_injective (x : I → A) (hx : ¬Function.Injective x) :
     Fintype.card {c : A → I // Compatible x c} = 0 := by
   classical
-  letI : IsEmpty {c : A → I // Compatible x c} :=
+  let : IsEmpty {c : A → I // Compatible x c} :=
     ⟨fun c => hx (compatible_injective c.property)⟩
   exact Fintype.card_eq_zero
 
@@ -97,8 +98,8 @@ theorem sum_colored_products {R : Type*} [CommSemiring R] (a : I → A → R) :
     simp [Compatible]
   rw [hc]
   by_cases hx : Function.Injective x
-  · rw [if_pos hx, card_compatible x hx]
-  · rw [if_neg hx, card_compatible_of_not_injective x hx]
+  · rw [ite_eq_left hx, card_compatible x hx]
+  · rw [ite_eq_right hx, card_compatible_of_not_injective x hx]
     simp
 
 end RepeatedPrimeSlots

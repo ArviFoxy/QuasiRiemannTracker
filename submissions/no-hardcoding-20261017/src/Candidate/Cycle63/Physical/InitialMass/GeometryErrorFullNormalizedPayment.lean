@@ -160,7 +160,7 @@ theorem actual_second_indexed_positive_disintegration {ι Label : Type*}
     [Fintype ι][Fintype Label](s : Input ι)(R seed : Ideal O)(K Tsec Z ξ : ℝ)
     (index : Label→ActualSecondBlockIndex s R seed K Tsec Z ξ)
     (hinj : Function.Injective index)
-    (hU : ∀n,(index n).2.1∈inactiveSubsets (index n).1.val.val.1 (index n).1.val.val.2)
+    (hU : ∀n,ActualSecondBlockIndex.IsInactive (index n))
     (box : Finset (Fin 4→ℤ))(hbox : ∀n,actualSecondDyad s R seed K Tsec Z ξ (index n)∈box)
     (cost : FirstSourceLabel→ℝ)(hcost : ∀l∈actualSecondLabels s R seed,0≤cost l) :
     (∑n,cost (actualSecondSupportedLabel s R seed K Tsec Z ξ (index n) (hU n)))≤
@@ -330,7 +330,7 @@ theorem actual_error_indexed_normalized_to_datum_columns {α Label : Type*}
   intro d datum c w
   convert actual_error_indexed_normalized_to_admitted_columns slots s R seed hseed hz₁ hz₂
     K Tsec Z ξ hK index P weight hw prime i N a ap ha hap hcard hlower hW₁ hW₂
-    W χ₀ Q hQ second t u using 1 <;> rfl
+    W χ₀ Q hQ second t u using 1; rfl
 
 set_option maxHeartbeats 20000 in
 theorem actual_error_indexed_given_datum_normalized_to_columns {α Label : Type*}

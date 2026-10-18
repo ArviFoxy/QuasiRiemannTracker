@@ -79,7 +79,7 @@ theorem discardedSchwartz_fixed_profile (xi saving b Ccond : ℝ)
 
 lemma fourth_norm_add (a b : ℂ) : ‖a+b‖^4≤8*(‖a‖^4+‖b‖^4) := by
   exact (pow_le_pow_left₀ (norm_nonneg _) (norm_add_le a b) 4).trans
-    (by convert add_pow_le (norm_nonneg a) (norm_nonneg b) 4 using 1 <;> norm_num)
+    (by convert add_pow_le (norm_nonneg a) (norm_nonneg b) 4 using 1; norm_num)
 
 theorem weighted_fourth_add {ι : Type*} (s : Finset ι) (R T Q : ι→ℂ) (Er Et : ℝ)
     (hr : (∑i∈s,‖R i‖^4*‖Q i‖^2)≤Er)
@@ -96,7 +96,7 @@ theorem weighted_fourth_add {ι : Type*} (s : Finset ι) (R T Q : ι→ℂ) (Er 
 /-- Polynomial pointwise tails are negligible even with all selected factors. -/
 theorem selected_tail_fourth {ι : Type*} (s : Finset ι) (T Q : ι→ℂ)
     (U r q saving Ccard Ctail Cslot : ℝ) (hU : 0<U)
-    (hc : 0≤Ccard) (ht : 0≤Ctail) (hq : 0≤Cslot)
+    (_hc : 0≤Ccard) (_ht : 0≤Ctail) (_hq : 0≤Cslot)
     (hcard : (s.card:ℝ)≤Ccard*U^r)
     (htail : ∀i∈s,‖T i‖≤Ctail*U^(-saving))
     (hslot : ∀i∈s,‖Q i‖≤Cslot*U^q) :

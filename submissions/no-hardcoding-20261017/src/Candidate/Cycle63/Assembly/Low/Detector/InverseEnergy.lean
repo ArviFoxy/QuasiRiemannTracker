@@ -130,7 +130,7 @@ theorem low_physical_inverse_normalized (η : HeckeFamily.Character) (S : Finset
     rw [lowPhysicalScale_source _ Z L hz]
     exact low_inverse_sqrt_normalized q C B Z L (lowUnselectedLength ell J) (lowUnselectedLength ell J+507*ε) (1+‖t‖)
       (∑z∈R,‖row σ z‖^2) degree hq ZC.le hB.le hz hL (le_add_of_nonneg_right (norm_nonneg t))
-      (Finset.sum_nonneg (fun _ _=>sq_nonneg _)) (by convert he σ using 1 <;> congr 2 <;> ring) hLhi
+      (Finset.sum_nonneg (fun _ _=>sq_nonneg _)) (by convert he σ using 1; congr 2; ring) hLhi
   change (Real.sqrt Q)⁻¹/(2*Real.pi)*(∑σ : RayRing,Real.sqrt (∑z∈R,‖row σ z‖^2))≤_
   calc
     _=(∑σ : RayRing,Real.sqrt (∑z∈R,‖row σ z‖^2)/Real.sqrt Q)/(2*Real.pi) := by

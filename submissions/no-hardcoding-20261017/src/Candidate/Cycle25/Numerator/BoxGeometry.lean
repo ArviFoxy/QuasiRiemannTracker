@@ -24,7 +24,7 @@ below the fixed L=2 empty-slot endpoint, uniformly in all actual high dyads. -/
 theorem reflected_box_geometry (d v boxWidth annulusSlack:ℝ)
     (hd:(1/2:ℝ) ≤ d) (hdmax:d ≤ Cycle25.h+Cycle25.rowExtension)
     (hv:0 ≤ v) (hvmax:v ≤ 1+boxWidth) (hbox:0 ≤ boxWidth)
-    (hann:0 ≤ annulusSlack) (hsmall:2*boxWidth+annulusSlack ≤ 1/2) :
+    (_hann:0 ≤ annulusSlack) (hsmall:2*boxWidth+annulusSlack ≤ 1/2) :
     0 ≤ 1-Cycle25.ly/d+v+boxWidth ∧
       (1-Cycle25.ly/d+v+boxWidth)+annulusSlack ≤ 2 := by
   obtain ⟨hylo,hyhi⟩ := physical_y_range d hd hdmax
@@ -141,7 +141,7 @@ lemma coefficient_box_index_range (xi:ℝ) (hxi:0 < xi) (j:ℕ)
     (mul_le_mul_of_nonneg_right hjr hxi.le).trans (coefficientBoxCount_extent xi hxi).2.le⟩
 
 /-- A fixed source cutoff fits below U uniformly in every weighted high dyad. -/
-theorem eventually_physical_cutoff_le_base (b:ℝ) (hb:0 ≤ b) :
+theorem eventually_physical_cutoff_le_base (b:ℝ) (_hb:0 ≤ b) :
     ∀ᶠU:ℝ in Filter.atTop, 1 < U ∧ ∀d:ℝ,(1/2:ℝ) ≤ d →
       b*U^(Cycle25.ly/d) ≤ U := by
   have he : ∀ᶠU:ℝ in Filter.atTop, b ≤ U^(1/20:ℝ) :=

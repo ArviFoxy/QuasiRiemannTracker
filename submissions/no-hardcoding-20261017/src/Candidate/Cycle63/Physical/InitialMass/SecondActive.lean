@@ -37,7 +37,7 @@ theorem actual_second_active_expression {Label : Type*} (s : Label→SecondBlock
         · simp [hq,secondSectorTerm,CanonicalSectorSource.signedWeight]
         · simp [h₀,h₁,hL,hq]
       · simp [h₀,h₁,hL,secondSectorTerm,CanonicalSectorSource.signedWeight,
-          SecondBlockSource.sector,UniqueFactorizationMonoid.moebius_of_not_squarefree hL]
+          SecondBlockSource.sector]
 
 theorem actual_second_active_squarefree {Label : Type*} (s : Label→SecondBlockSource)
     (L : Label→Ideal O) (rows : Finset (Label×O)) (k : Label×O)

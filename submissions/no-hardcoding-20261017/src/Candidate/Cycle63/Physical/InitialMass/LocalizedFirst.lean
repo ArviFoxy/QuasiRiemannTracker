@@ -31,7 +31,7 @@ theorem actual_first_active_expression {Label : Type*} [Fintype Label]
     · by_cases hL : Squarefree q.2.1.val
       · simp [h₀,h₁,hL]
       · simp [h₀,h₁,hL,firstJointWeight,
-          UniqueFactorizationMonoid.moebius_of_not_squarefree hL]
+          ]
 
 def firstActiveEnergyPair {Label : Type*} [Fintype Label]
     (s : Label→FirstBlockSource) (weight : Label→ℂ) (V : Fin 4→ℝ→ℂ) (t : ℝ) : ℝ :=

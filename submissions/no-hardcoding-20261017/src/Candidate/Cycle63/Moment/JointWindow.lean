@@ -18,6 +18,7 @@ local notation "O" => HeckeFamily.O
 local instance {ι : Type*} : DecidableEq (ι ⊕ Fin 2) := Classical.decEq _
 variable {ι : Type*} [Fintype ι] [DecidableEq ι]
 
+omit [DecidableEq ι] in
 theorem actual_window_column_integral (s : Input ι) (C : Ideal O) (hC : Supported C)
     (R seed L : Ideal O) (η : Character) (t θ X : ℝ) (hX : 0 < X)
     (V : ℝ → ℂ) (hc : HasCompactSupport V) (hs : ContDiff ℝ ∞ V) (z : O) :
@@ -29,6 +30,7 @@ theorem actual_window_column_integral (s : Input ι) (C : Ideal O) (hC : Support
     (coefficient s C hC R seed L) η t θ X hX V hc hs z
   simpa only [sourceGenerator_span, windowColumn, coefficient_polynomial] using hh
 
+omit [DecidableEq ι] in
 theorem actual_window_column_integrable (s : Input ι) (C : Ideal O) (hC : Supported C)
     (R seed L : Ideal O) (η : Character) (t θ X : ℝ) (hX : 0 < X)
     (V : ℝ → ℂ) (hc : HasCompactSupport V) (hs : ContDiff ℝ ∞ V) (z : O) :
@@ -39,7 +41,9 @@ theorem actual_window_column_integrable (s : Input ι) (C : Ideal O) (hC : Suppo
     (coefficient s C hC R seed L) η t θ X hX V hc hs z
   simpa only [sourceGenerator_span, coefficient_polynomial] using hh
 
+omit [DecidableEq ι] in
 /-- The common Mellin densities are integrated after summing the matched actual
+omit [DecidableEq ι] in
 source coordinates. Characters, masks, heights and scales may vary by coordinate. -/
 theorem actual_joint_window_pair {κ : Type*}
     (rows : Finset κ) (s v : κ → Input ι)

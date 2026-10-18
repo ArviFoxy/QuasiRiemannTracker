@@ -77,7 +77,7 @@ theorem greedy_low_selection {α : Type*}
       have hF : l₁+l₂+6*κbase*(∑ i ∈ J, w i)-width ≤ F := le_max_left _ _
       nlinarith
   · have hp := mul_le_mul_of_nonneg_left (hbound.trans (min_le_right _ _)) hl
-    convert hp using 1 <;> dsimp only [F] <;> ring
+    convert hp using 1; dsimp only [F]; ring
 
 /-- Canonical children have an exact width, possibly smaller than the nominal
 ledger width.  Pay width and defect together instead of dropping that deficit. -/

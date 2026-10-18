@@ -198,6 +198,7 @@ def geometryJointErrorPhysicalScalarCost (n : ℕ) : ℝ :=
       (geometryColumnCharacter reflected s R seed (Z^M) Z ξ hK key q.1.val) t P (υ q) v
       Z M amp (frequencyLoss Z 32 ξ) reserve error εcommon
 
+omit [DecidableEq α] in
 /-- Sigma collection reproduces the genuine physical complete cost exactly. -/
 theorem geometry_joint_error_raw_scalar_cost_eq_physical (n : ℕ) :
   geometryJointErrorRawScalarCost reflected second s R seed Z M amp ξ reserve b t v error εcommon
@@ -245,6 +246,8 @@ private theorem geometry_error_source_physical_cost_nonneg
     (actual_first_live_squarefree (geometryFirstSource s R seed (Z^M) Z ξ hK key)
       (fun _=>CenteredMomentLogDyadic.logAnnulus) q.1.val q.1.property) hz₁ hz₂
 
+omit [DecidableEq α] in
+omit [DecidableEq α] in
 /-- The positivity comes from the genuine physical supported-label cost. -/
 theorem geometry_joint_error_raw_scalar_cost_nonneg (n : ℕ)
     (hz₁ : s.W₁ 0=0)(hz₂ : s.W₂ 0=0) :
@@ -256,6 +259,8 @@ theorem geometry_joint_error_raw_scalar_cost_nonneg (n : ℕ)
     (geometryAllocationWeight_nonneg reflected s R seed (Z^M) Z ξ Mprice Aprice hK key phase n b q.1.val q.2)
     (geometry_error_source_physical_cost_nonneg reflected second s R seed Z M amp ξ reserve t v error εcommon hZ key P υ hz₁ hz₂ q))
 
+omit [DecidableEq α] in
+omit [DecidableEq α] in
 /-- Only the outer allocation payment is enlarged. The raw source and its
 actual-cardinality Fourier data remain fixed. -/
 theorem geometry_joint_error_raw_scalar_cost_card_mono (n N : ℕ)(hn : n≤N)
@@ -295,6 +300,7 @@ theorem geometry_joint_error_scalar_menu_collect
       simp only [Finset.mul_sum]
       exact Finset.sum_congr rfl (fun l _=>by ring)
 
+omit [DecidableEq α] in
 /-- Join a genuine physical scalar payment after the exact source carrier is
 collected. There is no extra first-label, ray, or extraction-allocation fee. -/
 theorem geometry_joint_error_scalar_menu_physical_payment
@@ -316,6 +322,7 @@ theorem geometry_joint_error_scalar_menu_physical_payment
     Mprice Aprice hZ key P phase υ n menu analytic lower boxCard hmenu).trans
     (mul_le_mul_of_nonneg_left (hc.trans hphysical) (mul_nonneg ha (div_nonneg hb hl.le)))
 
+omit [DecidableEq α] in
 /-- Collect the exact source menu, pay the physical sum, and separate all
 Mellin heights while retaining the explicit box cost. -/
 theorem geometry_joint_error_scalar_menu_height_box_payment
@@ -389,7 +396,7 @@ theorem geometry_joint_error_physical_scalar_cost_one_payment
   have hp:=hpow (Real.rpow_pos_of_pos (zero_lt_one.trans hZ) (1:ℝ)) υ
   unfold geometryJointErrorPhysicalScalarCost geometryJointErrorFirstAllocation geometryErrorTransportAllocation
   simp only [Fintype.sum_sigma]
-  convert hp using 1 <;> rfl
+  convert hp using 1; rfl
 
 open Filter CenteredMomentCommonProfile CenteredMomentEnergyState CenteredMomentEnergyBands Cycle63FinalProfiles
 open CenteredMomentOriginalCommonHarmonic Cycle63InitialSource CenteredMomentLogDyadic

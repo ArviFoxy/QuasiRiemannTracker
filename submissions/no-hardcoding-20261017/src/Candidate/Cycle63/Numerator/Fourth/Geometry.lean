@@ -17,7 +17,7 @@ lemma physical_y_range {d : ℝ} (hd : dMinus≤ d ∧ d≤ dPlus) :
   exact y_lt_half.trans (half_lt_dMinus.trans_le hd.1)
 
 lemma coefficient_box_geometry {d xi slack : ℝ} (hd : dMinus≤ d ∧ d≤ dPlus)
-    (hx : 0<xi) (hs : 0≤ slack) (hsmall : 2*xi+slack≤1/2)
+    (hx : 0<xi) (_hs : 0≤ slack) (hsmall : 2*xi+slack≤1/2)
     (j : ℕ) (hj : j∈Finset.range (coefficientBoxCount xi+1)) :
     0≤1-y/d+(j:ℝ)*xi+xi ∧ (1-y/d+(j:ℝ)*xi+xi)+slack≤2 := by
   have hy:=physical_y_range hd

@@ -77,7 +77,7 @@ theorem setoid_card_le (K : ℕ) (hK : Fintype.card I≤K) :
   have h := Fintype.card_le_of_injective (fun r : Setoid I=>r.r)
     (fun _ _ hh=>Setoid.eq_iff_rel_eq.mpr hh)
   have heq : Fintype.card (I→I→Prop)=2^(Fintype.card I*Fintype.card I) := by
-    simp [Fintype.card_fun,pow_mul]
+    simp [pow_mul]
   rw [heq] at h
   exact h.trans (Nat.pow_le_pow_right (by decide) (Nat.mul_self_le_mul_self hK))
 

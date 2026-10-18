@@ -297,7 +297,7 @@ theorem actual_geometry_literal_high_shell {α : Type} [Fintype α] [DecidableEq
       unmarked (fun ls hls hd hs=>marked ls hls (by linarith) hs)
     simpa only [max_self] using hh
   change (∑l∈labels,summand l)≤_
-  convert hresult using 1 <;> dsimp only [factor,ht,rest] <;> ring
+  convert hresult using 1; dsimp only [factor,ht,rest]; ring
 
 end
 end OAI.SevenEighths.Cycle63InitialMass

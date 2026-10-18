@@ -47,6 +47,7 @@ theorem actual_second_nonzero_coefficients (s : SecondBlockSource) (W : 𝓢(ℝ
 
 variable {ι : Type*} [Fintype ι] [DecidableEq ι]
 
+omit [DecidableEq ι] in
 /-- The original punctured source-coefficient identity forces a live
 common allocation. The allocation does not depend on a Fourier row. -/
 theorem actual_second_coefficient_live_allocation (s : Input ι) (R seed C : Ideal O)

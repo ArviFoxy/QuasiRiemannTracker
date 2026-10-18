@@ -475,7 +475,7 @@ def actual_affine_low_selected_payment
     (g.μ/8) (9/4) t (Fintype.card α) hZ bin caps.zero₁ caps.zero₂ original second
   have hOriginal:=affine_low_selected_original_mem reflected s 1 1 Z 1 amp (g.μ/64) (g.μ/8) (9/4) t
     (Fintype.card α) hZ bin caps.zero₁ caps.zero₂ firstIndex
-  have hU : ∀r∈rows,r.2.2.1∈inactiveSubsets r.2.1.val.val.1 r.2.1.val.val.2 :=
+  have hU : ∀r∈rows,ActualSecondBlockIndex.IsInactive r.2 :=
     fun r hr=>actual_main_low_selected_inactive reflected s 1 1 Z 1 amp (g.μ/64) (g.μ/8) (9/4) t
       (Fintype.card α) hZ bin caps.zero₁ caps.zero₂ firstIndex ⟨r,hr⟩
   have hbox : ∀r∈rows,actualSecondDyad (childSrc r.1)

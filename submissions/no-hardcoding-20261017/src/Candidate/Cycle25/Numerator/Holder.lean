@@ -16,7 +16,7 @@ theorem sum_fourth_le_card_cube {ι : Type*} (s : Finset ι) (f : ι → ℝ) :
     (∑ i ∈ s, f i) ^ 4 ≤ (s.card : ℝ) ^ 3 * ∑ i ∈ s, f i ^ 4 := by
   have h₁ := Finset.sum_mul_sq_le_sq_mul_sq s f (fun _ => (1 : ℝ))
   have h₂ := Finset.sum_mul_sq_le_sq_mul_sq s (fun i => f i ^ 2) (fun _ => (1 : ℝ))
-  simp only [mul_one, one_pow, Finset.sum_const, nsmul_eq_mul, mul_one] at h₁ h₂
+  simp only [mul_one, one_pow, Finset.sum_const, nsmul_eq_mul] at h₁ h₂
   have h₁' : ((∑ i ∈ s, f i) ^ 2) ^ 2 ≤
       ((∑ i ∈ s, f i ^ 2) * (s.card : ℝ)) ^ 2 := by
     exact pow_le_pow_left₀ (sq_nonneg _) h₁ 2
@@ -53,7 +53,7 @@ theorem weighted_row_holder {ι : Type*} (s : Finset ι) (S Q : ι → ℂ)
 /-- Full prime factors may be removed using their upper amplitude bound, while the
 selected factors remain in the fourth moment. -/
 theorem weighted_row_holder_with_full {ι : Type*} (s : Finset ι) (S Q P : ι → ℂ)
-    (L A : ℝ) (hL : 0 ≤ L) (hA : 0 ≤ A)
+    (L A : ℝ) (hL : 0 ≤ L) (_hA : 0 ≤ A)
     (hQ : ∀ i ∈ s, L ≤ ‖Q i‖) (hP : ∀ i ∈ s, ‖P i‖ ≤ A) :
     L ^ 2 * (∑ i ∈ s, ‖S i * P i‖) ^ 4 ≤
       A ^ 4 * (s.card : ℝ) ^ 3 * ∑ i ∈ s, ‖S i‖ ^ 4 * ‖Q i‖ ^ 2 := by

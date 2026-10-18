@@ -74,7 +74,7 @@ theorem actual_child_selected_coarse_shell {α : Type}[Fintype α][DecidableEq �
     (coarseFixedControl N Cs b bs*control) T hZ (mul_nonneg hfixed.le hcontrol) hT key hinj labels
     hrow hsupported heq hsupport hnorm hmissing index src z Ds (fun _=>B₁) (fun _=>B₂)
     (fun _ _=>⟨hB₁,hB₂⟩) (fun _ _ x=>⟨hW₁ x,hW₂ x⟩) ?_ ?_ hDs
-  · convert hh using 1 <;> ring
+  · convert hh using 1; ring
   · intro l hl
     exact (actual_two_common_coarse_control N Cs b bs cap Z B₁ B₂ hCs hb hbs hcap
       (by linarith) hB₁ hB₂ s hα hM hupper hb₁ hb₂ hscales hP

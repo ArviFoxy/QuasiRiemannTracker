@@ -14,8 +14,10 @@ open Cycle63.Arithmetic
 is used: one minus twice the slot supply `7/37` of the inverse marked moment. -/
 def inverseFloor : ℝ := 23/37
 
-/-- The tolerance of the cutoff at the crossing of the two short counts. -/
-def crossingSlack : ℝ := 1/100
+/-- The tolerance of the cutoff at the crossing of the two short counts. The count takes the
+count error `ε` as the tolerance (`merged_count_bound`), so it is the bound `ε ≤ 1/1000` of the count
+contracts. -/
+def crossingSlack : ℝ := 1/1000
 
 /-- The least cutoff for which a plain witness below the window forces an inverse witness of
 length at least `inverseFloor`. -/

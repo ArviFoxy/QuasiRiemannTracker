@@ -131,7 +131,7 @@ theorem actual_joint_column_extraction {Label : Type*}
     (ε : ℝ) (hε : 0 < ε) :
     ∃ K : ℝ, 0 < K ∧ ∀ (source : Label → Input ι)
       (C R seed L : Label → Ideal O) (hC : ∀ l, Supported (C l))
-      (hseed : ∀ l, seed l ∣ C l) (hL : ∀ l, Squarefree (L l))
+      (_hseed : ∀ l, seed l ∣ C l) (_hL : ∀ l, Squarefree (L l))
       (rows : Finset (Label×O)) (weight : Label×O → ℝ),
       (∀ k ∈ rows, 0 ≤ weight k) →
       (∑ k ∈ rows, weight k*

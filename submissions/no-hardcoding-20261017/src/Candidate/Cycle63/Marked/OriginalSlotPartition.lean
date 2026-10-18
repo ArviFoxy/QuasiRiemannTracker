@@ -12,18 +12,21 @@ variable {ι : Type*} [Fintype ι] [DecidableEq ι]
 def originalSlots {J : Type*} [Fintype J] (f : J→ι) : Finset ι :=
   Finset.univ.image f
 
+omit [Fintype ι] in
 theorem prod_originalSlots {J : Type*} [Fintype J] (f : J→ι)
     (hf : Function.Injective f) {R : Type*} [CommMonoid R] (g : ι→R) :
     (∏j,g (f j))=∏i∈originalSlots f,g i := by
   rw [originalSlots,Finset.prod_image]
   exact fun _ _ _ _ h => hf h
 
+omit [Fintype ι] in
 theorem sum_originalSlots {J : Type*} [Fintype J] (f : J→ι)
     (hf : Function.Injective f) (g : ι→ℝ) :
     (∑j,g (f j))=∑i∈originalSlots f,g i := by
   rw [originalSlots,Finset.sum_image]
   exact fun _ _ _ _ h => hf h
 
+omit [Fintype ι] [DecidableEq ι] in
 /-- Both common allocations only take subtypes, so their surviving index map
 is injective independently of the values of either allocation. -/
 theorem double_subtype_injective (s : Finset ι) (t : Finset s) :
@@ -31,11 +34,15 @@ theorem double_subtype_injective (s : Finset ι) (t : Finset s) :
   intro a b h
   exact Subtype.ext (Subtype.ext h)
 
+omit [Fintype ι] in
+omit [Fintype ι] in
 theorem double_subtype_prod (s : Finset ι) (t : Finset s)
     {R : Type*} [CommMonoid R] (g : ι→R) :
     (∏i : t,g i.val.val)=∏i∈originalSlots (fun i : t=>i.val.val),g i :=
   prod_originalSlots _ (double_subtype_injective s t) g
+omit [Fintype ι] in
 
+omit [Fintype ι] in
 theorem double_subtype_sum (s : Finset ι) (t : Finset s) (g : ι→ℝ) :
     (∑i : t,g i.val.val)=∑i∈originalSlots (fun i : t=>i.val.val),g i :=
   sum_originalSlots _ (double_subtype_injective s t) g

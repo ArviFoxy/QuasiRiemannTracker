@@ -96,7 +96,7 @@ theorem integratedDyadValue_zero_of_no_labels {K : ℕ}
     (W : Fin K→ℝ→ℂ) (Yp : Fin K→ℝ) (x z : ℂ) (W1 : SchwartzMap ℝ ℂ) (Y : ℝ)
     (hempty : ¬Nonempty (∀i,T i)) :
     FullWContour.integratedDyadValue S hS hmax η R T hT W Yp W1 Y x z = 0 := by
-  letI : IsEmpty (∀i,T i) := not_nonempty_iff.mp hempty
+  let : IsEmpty (∀i,T i) := not_nonempty_iff.mp hempty
   simp only [FullWContour.integratedDyadValue,Finset.univ_eq_empty,Finset.sum_empty,Finset.sum_const_zero]
 
 end Cycle25.Numerator

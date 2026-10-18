@@ -131,7 +131,7 @@ theorem actual_error_side_saving (η τ : Character) (m : O)
     (k : ℕ) (hk : k=1 ∨ k=6 ∨ k=7) :
     let c := Real.logb Z ((commonPart I J).absNorm:ℝ)
     let d := Real.logb Z ((commonPart J I).absNorm:ℝ)
-    let p := Real.logb Z ((commonRadical I J).absNorm:ℝ)
+    let _p := Real.logb Z ((commonRadical I J).absNorm:ℝ)
     let R := Real.logb Z ((Ideal.span {activeConductor I J}).absNorm:ℝ)
     let K0 := nominalLog I J E K X Z
     2*(c+errorRemoval p0 Z k)/3-3*sigma/2-5*(delta+reserve)/6≤

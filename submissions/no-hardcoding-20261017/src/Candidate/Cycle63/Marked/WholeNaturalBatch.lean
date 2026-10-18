@@ -24,7 +24,7 @@ theorem natural_initial_element (η : Character) (u : O) (hu : u≠0) (n : O) :
         (CenteredMomentSecondHeightFamily.fixedBadMask*ConcretePrimeRowBridge.idealGenerator 1) 1 (1*u) n := by
   have hh:=(naturalRow η u hu).masked_element 1 one_ne_zero n
   rw [excluded_element _ (naturalRow η u hu).element_zero 1 one_ne_zero,
-    if_pos (isCoprime_one_right)] at hh
+    ite_eq_left (isCoprime_one_right)] at hh
   simpa only [one_mul] using hh
 
 /-- The actual common relative-ray amplitudes give the literal source batch

@@ -116,7 +116,7 @@ theorem errorLabelNumerator_zero_of_no_labels {K : ℕ}
     (W : Fin K→ℝ→ℂ) (Yp : Fin K→ℝ) (x z : ℂ) (W1 : ℝ→ℂ) (Y : ℝ)
     (hempty : ¬Nonempty (∀ i:J,T i.val)) :
     errorLabelNumerator S hS η u J T hT W Yp x z W1 Y = 0 := by
-  letI : IsEmpty (∀ i:J,T i.val) := not_nonempty_iff.mp hempty
+  let : IsEmpty (∀ i:J,T i.val) := not_nonempty_iff.mp hempty
   simp only [errorLabelNumerator,Finset.univ_eq_empty,Finset.sum_empty]
 
 end Cycle25.Numerator

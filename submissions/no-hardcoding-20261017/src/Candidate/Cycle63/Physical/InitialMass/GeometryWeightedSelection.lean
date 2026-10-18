@@ -52,7 +52,7 @@ theorem actual_geometry_weighted_main_selection (N : ℕ)(Cs b ε : ℝ)
     ∃D : ℝ,0<D ∧ ∀{ι : Type*}[Fintype ι][DecidableEq ι](s : Input ι),
       Fintype.card ι≤N → (∀i,s.M i≤Cs) →
       ∀(reflected : Bool)(R seed : Ideal O)(K Z ξ M A sigma reserve t : ℝ)
-        (hK : 0<K)(hZ : 0<Z)(key : ℤ×(Fin 5→ℤ))
+        (hK : 0<K)(_hZ : 0<Z)(key : ℤ×(Fin 5→ℤ))
         (weight : Cycle63JointSource.SourceCoordinate s R seed K Z ξ→ℂ)
         (rows : Finset (FirstColumnIndex (geometryFirstSource s R seed K Z ξ hK key)))
         (E : ℝ),

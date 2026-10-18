@@ -81,7 +81,7 @@ theorem lowUnselectedMass_bound (K : ℕ) (M : ℝ) (hM : 0≤M) :
 /-- The unselected prime norm supplies the exact power needed by the relaxed energy. -/
 theorem lowUnselectedMass_decay (K : ℕ) (M a : ℝ) (hM : 0≤M) (ha : 0<a) :
     ∃C : ℝ,0<C ∧ ∀(ell : Fin K→ℝ)(Z : ℝ),0<Z→
-    ∀(T : Fin K→Finset PrimeIdeal)(hT : ∀i P,P∈T i→Supported P.val),
+    ∀(T : Fin K→Finset PrimeIdeal)(_hT : ∀i P,P∈T i→Supported P.val),
     (∀i n,n∈canonicalSlotSupport (T i)→a*Z^(ell i)≤elementNorm n)→
     ∀(J : Finset (Fin K))(W : Fin K→ℝ→ℂ)(P : Fin K→ℝ),
     (∀i x,‖W i x‖≤M)→

@@ -30,6 +30,7 @@ lemma exceptional_side_power (Z V I P R E S : ℝ) (hZ : 1<Z)
 variable {ι : Type*} [Fintype ι] [DecidableEq ι]
 local instance geometryExceptionalScalarSumDecidable : DecidableEq (ι⊕Fin 2) := Classical.decEq _
 
+omit [DecidableEq ι] in
 /-- The actual side normalization already contains the entire presented
 conductor. The radical factor is retained for the arithmetic label sum. -/
 theorem actual_geometry_exceptional_denominator (reflected : Bool)
@@ -65,20 +66,20 @@ theorem actual_geometry_exceptional_denominator (reflected : Bool)
       Real.logb Z ((Ideal.span {primeSubsetGenerator (fun P : CommonIndex src.C src.D=>P.val)
         src.inactive}).absNorm:ℝ)+S)=_
     rw [exceptional_side_power Z _ _ _ _ _ S hZ hV hC hP hR hE,hq]
-    simp only [I,geometryColumnIdeal,Bool.false_eq_true,ite_false,ite_true]
+    simp only [I,geometryColumnIdeal,Bool.false_eq_true,ite_false]
     dsimp only [src] at hC hD ⊢
     field_simp [hC.ne',hD.ne']
-    <;> ring
+   
   · change Z^(Real.logb Z ((commonRadical src.C src.D).absNorm:ℝ)+
       Real.logb Z (volume s.toData)-Real.logb Z (src.D.absNorm:ℝ)+
       Real.logb Z ((Ideal.span {activeConductor src.C src.D}).absNorm:ℝ)+
       Real.logb Z ((Ideal.span {primeSubsetGenerator (fun P : CommonIndex src.C src.D=>P.val)
         src.inactive}).absNorm:ℝ)+S)=_
     rw [exceptional_side_power Z _ _ _ _ _ S hZ hV hD hP hR hE,hq]
-    simp only [I,geometryColumnIdeal,Bool.false_eq_true,ite_false,ite_true]
+    simp only [I,geometryColumnIdeal,ite_true]
     dsimp only [src] at hC hD ⊢
     field_simp [hC.ne',hD.ne']
-    <;> ring
+   
 
 /-- Squared geometry scalars match the exceptional reference denominator.
 Physical D appears as D on the left and 1/D on the reflected right. -/
@@ -114,17 +115,17 @@ theorem actual_geometry_exceptional_scalar (reflected : Bool)
   have hpower := Real.rpow_pos_of_pos (zero_lt_one.trans hZ) S
   have hp := actual_geometry_exceptional_denominator reflected s R seed (Z^M) Z ξ hK hZ key j
   cases reflected
-  · simp only [Bool.false_eq_true,ite_false,ite_true] at hp ⊢
+  · simp only [Bool.false_eq_true,ite_false] at hp ⊢
     change Z^(leftExponent (Real.logb Z (volume s.toData)) v)=_ at hp
     have hh := div_le_div_of_nonneg_right
       (actual_geometry_left_scalar_sq s R seed W M Z ξ hZ a₁ a₂ ha₁ ha₂ hs₁ hs₂ key j) hC.le
     apply hh.trans_eq
     change (_*(src.C.absNorm:ℝ)*(src.D.absNorm:ℝ)/Z^(leftExponent _ v))/(src.C.absNorm:ℝ)=_
     rw [hp]
-    simp only [src,χ,I,v,S,geometryColumnIdeal,Bool.false_eq_true,ite_false,ite_true] at *
+    simp only [src,χ,I,v,S,geometryColumnIdeal,Bool.false_eq_true,ite_false] at *
     field_simp [hC.ne',hD.ne',hP.ne',hq.ne',hV.ne',hfixed.ne',hη.ne',hpower.ne']
-    <;> ring
-  · simp only [Bool.false_eq_true,ite_false,ite_true] at hp ⊢
+   
+  · simp only [ite_true] at hp ⊢
     change Z^(rightExponent (Real.logb Z (volume s.toData)) v)=_ at hp
     have he : ‖geometryColumnScalar true s R seed (Z^M) Z ξ M
         (Real.logb Z (volume s.toData)) hK key
@@ -136,9 +137,9 @@ theorem actual_geometry_exceptional_scalar (reflected : Bool)
         Real.sq_sqrt (Real.rpow_nonneg (zero_lt_one.trans hZ).le _),one_div]
     apply le_of_eq
     rw [he,hp]
-    simp only [src,χ,I,v,S,geometryColumnIdeal,Bool.false_eq_true,ite_false,ite_true] at *
+    simp only [src,χ,I,v,S,geometryColumnIdeal,ite_true] at *
     field_simp [hC.ne',hD.ne',hP.ne',hq.ne',hV.ne',hfixed.ne',hη.ne',hpower.ne']
-    <;> ring
+   
 
 /-- The actual allocation weight pays the presented exceptional denominator
 while retaining the physical side factor and arithmetic radical. -/
@@ -189,7 +190,7 @@ theorem actual_geometry_exceptional_allocation_weight (reflected : Bool)
   dsimp only
   split_ifs
   · have hh := mul_le_mul_of_nonneg_right hg ht
-    convert hh using 1 <;> dsimp only [T,I] <;> ring
+    convert hh using 1; dsimp only [T,I]; ring
   · exact mul_nonneg hu ht
 
 end

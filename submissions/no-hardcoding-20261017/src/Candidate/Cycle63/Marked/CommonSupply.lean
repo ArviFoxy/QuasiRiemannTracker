@@ -22,6 +22,7 @@ theorem common_slot_width_split (B : Tuple ι) (P : ι → ℝ)
   rw [Real.logb_prod _ _ (fun (i : liveIndices B) _ => (hP i).ne')] at he
   exact he
 
+omit [Fintype ι] in
 theorem plainNorm_ge_one (B : Tuple ι) (hB : ∀ i,B i≠0) : 1 ≤ plainNorm B := by
   have hn (j : Fin 2) : (1:ℝ) ≤ (B (Sum.inr j)).absNorm := by
     exact_mod_cast Nat.one_le_iff_ne_zero.mpr (Ideal.absNorm_eq_zero_iff.not.mpr (hB _))

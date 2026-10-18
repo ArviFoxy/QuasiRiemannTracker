@@ -23,6 +23,7 @@ variable (M : Ideal O) [NeZero M]
 local instance : Finite (O ⧸ M) := Ring.HasFiniteQuotients.finiteQuotient (NeZero.ne M)
 variable (H : Subgroup (O ⧸ M)ˣ)
 
+omit [NeZero M] in
 /-- Absolute finite ideal counting gives a uniform slot bound even at tiny
 scales and arbitrarily large frequencies. No zero-family condition is used. -/
 theorem ray_slot_coarse (W : ℝ → ℂ) (a b lo hi : ℝ) (ha : 0 < a)
@@ -81,7 +82,9 @@ theorem ray_slot_coarse (W : ℝ → ℂ) (a b lo hi : ℝ) (ha : 0 < a)
     _ = K^2*P^2 := mul_pow _ _ _
     _ ≤ _ := mul_le_mul_of_nonneg_right (le_max_right 1 _) (sq_nonneg P)
 
+omit [NeZero M] in
 /-- The natural masked relative coefficient is transported exactly; the
+omit [NeZero M] in
 puncture mask is never removed in applying the absolute ray bound. -/
 theorem natural_slot_coarse (W : ℝ → ℂ) (a b lo hi : ℝ) (ha : 0 < a)
     (hWs : Function.support W ⊆ Set.Icc a b) (hW : Continuous W) :

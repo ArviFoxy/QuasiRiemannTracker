@@ -296,7 +296,7 @@ theorem actual_geometry_literal_marked_high_shell {α : Type} [Fintype α] [Deci
     hmissing hi hibuffer hcard hM hb₁ hb₂ hupperB hwin C₁ (fun _=>R) B₁ χ₁ t₁ hf₁ E R₂ pick t w σ v θ p Ds cap A
     hcap hmatches hscales (by exact le_refl _) hpadallow hf₂ hmask hwidth hradial hupper
     hw hmesh hsupplyUpper hwr hσlo hσhi hfreq hplainfreq hW hDs hdyad hcontrol hx3 hrawError hpoint
-  convert hh using 1 <;> ring_nf
+  convert hh using 1; ring_nf
 
 end
 end OAI.SevenEighths.Cycle63InitialMass

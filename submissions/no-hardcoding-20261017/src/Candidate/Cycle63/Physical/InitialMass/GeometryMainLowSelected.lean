@@ -278,7 +278,7 @@ theorem actual_selected_low_paid_columns {α : Type} [Fintype α] [DecidableEq �
     (∀l,Tfirst≤((seed l).absNorm:ℝ) ∧ ((seed l).absNorm:ℝ)<2*Tfirst) →
     ∀(rows : Finset ((l : Label)×ActualSecondBlockIndex (childSrc l) (R l) (seed l)
       (K l) (Tsec l) Z ξ))
-      (hU : ∀r∈rows,r.2.2.1∈inactiveSubsets r.2.1.val.val.1 r.2.1.val.val.2)
+      (hU : ∀r∈rows,ActualSecondBlockIndex.IsInactive r.2)
       (box : Finset (Fin 4→ℤ)),
     (∀r∈rows,actualSecondDyad (childSrc r.1) (R r.1) (seed r.1)
       (K r.1) (Tsec r.1) Z ξ r.2∈box) →
@@ -534,7 +534,7 @@ theorem actual_geometry_low_paid_fields
       (Real.rpow_pos_of_pos (zero_lt_one.trans hZ) _) bin)
     (hw₁ : s.W₁ 0=0)(hw₂ : s.W₂ 0=0)
     (n : GeometryLowSecondIndex reflected s R seed Z Mrow amp ξ reserve b t N hZ bin j)
-    (hU : n.2.1∈inactiveSubsets n.1.val.val.1 n.1.val.val.2)
+    (hU : ActualSecondBlockIndex.IsInactive n)
     (second : Bool)
     (B₂ : actualAllocations
       (geometryLowFirstChild reflected s R seed (Z^Mrow) Z ξ
@@ -641,7 +641,7 @@ def actual_geometry_selected_low_paid_columns {α : Type} [Fintype α] [Decidabl
           hsource (Tfirst p exponent : ℝ) hTfirst hp hs₀ hs₀0 hinj hfirstseed hfirstnorm hrad hgeom hfirstshell
           (rows : Finset ((l : Label)×ActualSecondBlockIndex (childSrc l) (Rchild l) (seed l)
             (K l) (Tsec l) Z ξ))
-          (hU : ∀r∈rows,r.2.2.1∈inactiveSubsets r.2.1.val.val.1 r.2.1.val.val.2)
+          (hU : ∀r∈rows,ActualSecondBlockIndex.IsInactive r.2)
           (box : Finset (Fin 4→ℤ)) hbox=>
         let datum:=fun r : rows=>geometryLowSecondDatum reflected s R seed₀ Z Mrow amp ξ reserve bs t
           (Fintype.card α) hZ bin (firstIndex r.val.1) hw₁ hw₂ r.val.2

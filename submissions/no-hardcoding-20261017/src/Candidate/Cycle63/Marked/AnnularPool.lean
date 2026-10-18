@@ -30,8 +30,8 @@ theorem naturalSlot_annular_filter (χ : Character) (pool : Finset (Ideal O))
   apply Finset.sum_congr rfl
   intro I hI
   by_cases ha : (I.absNorm:ℝ)/P∈Icc (1:ℝ) 2
-  · exact if_pos ha
-  · rw [if_neg ha]
+  · exact ite_eq_left ha
+  · rw [ite_eq_right ha]
     have hw : W ((I.absNorm:ℝ)/P)=0 := by
       by_contra hn
       exact ha (hW hn)

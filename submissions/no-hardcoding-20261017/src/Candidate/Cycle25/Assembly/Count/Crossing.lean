@@ -15,7 +15,7 @@ def plainExponent (δ p κ t r : ℝ) : ℝ := 1-δ*(b p κ+(2-2*b p κ)*(t-r))
 def shortExponent (δ p κ t : ℝ) : ℝ := 1-δ+δ*coefficient p κ*(3/2-t)
 abbrev longExponent := HeckeDetectorRowCount.longExponent
 
-lemma b_bounds {p κ : ℝ} (hp : 0≤p) (hp1 : p≤1/2)
+lemma b_bounds {p κ : ℝ} (hp : 0≤p) (_hp1 : p≤1/2)
     (hk : 7/10≤κ) (hk1 : κ≤3/4) :
     0≤b p κ ∧ 4*p/9≤b p κ ∧ b p κ≤10*p/21 ∧ b p κ≤p := by
   have hd : 0<3*κ := by linarith

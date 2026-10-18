@@ -36,7 +36,7 @@ open Cycle25ProbeDetectorPlainUnmarkedField CenteredMomentEnergyCappedWidthInduc
 Cycle25 certificate; fixed inducing characters are removed by the dictionary. -/
 theorem terminal_zero_input {D : Cycle25.Weighted.MomentData}
     (S : Cycle25ProbeFinalAssembly.WeightedSourceData D) (κplain : ℝ)
-    (hk : 7/10≤κplain) (hk1 : κplain≤3/4)
+    (hk : 7/10≤κplain) (_hk1 : κplain≤3/4)
     (hbeta : 51/100≤HeckeZeroSupremum.beta) (hκbeta : 2*HeckeZeroSupremum.beta-1≤κplain) :
     ∃degree:ℕ,∃control:Finset (ℕ×ℕ),∀η₀:Character,∃A:ℝ,0<A ∧ ∀ᶠU:ℝ in atTop,
       ZeroAt (internalQ (weighted_sourceFixedIdeal S) η₀) (1/4) (9/4) weighted_radialSupportUpper

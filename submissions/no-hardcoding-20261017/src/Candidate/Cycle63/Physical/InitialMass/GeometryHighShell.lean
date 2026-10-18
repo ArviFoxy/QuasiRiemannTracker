@@ -38,14 +38,14 @@ theorem actual_geometry_selected_high_shell {α : Type} [Fintype α] [DecidableE
       ∃F G : Finset (ℕ×ℕ),∃Cprofile C : ℝ,(0,0)∈F ∧ 0<Cprofile ∧ 0<C ∧
       ∀ᶠZ : ℝ in atTop,2≤Z ∧
       ∀{κ DataLabel : Type}[Nonempty κ][Fintype DataLabel],
-      ∀(reflected second : Bool)(s : Input α)(hη : s.η=excluded F₀.character R₀)
+      ∀(reflected second : Bool)(s : Input α)(_hη : s.η=excluded F₀.character R₀)
         (R seed : Ideal O)(K ξ : ℝ)(hK : 0<K)(bin : ℤ×(Fin 5→ℤ))
         (column : κ→FirstColumnIndex (geometryFirstSource s R seed K Z ξ hK bin))
         (datum : DataLabel→SecondInputDatum α)(first : DataLabel→FirstSourceLabel)
         (row : κ→secondLiveRows (fun l=>(datum l).block))
-        (hparent : ∀l,(datum (row l).val.1).input.η=geometryColumnCharacter reflected s R seed K Z ξ hK bin (column l))
+        (_hparent : ∀l,(datum (row l).val.1).input.η=geometryColumnCharacter reflected s R seed K Z ξ hK bin (column l))
         (hfirst : ∀l,first (row l).val.1=geometryFirstLabel s R seed K Z ξ hK bin (column l))
-        (hR : ∀l,(datum (row l).val.1).R≠0)(ψ : κ→RayCharacter),
+        (_hR : ∀l,(datum (row l).val.1).R≠0)(ψ : κ→RayCharacter),
       let left := !reflected
       let unit := fun l=>(firstDictionaryUnit left η₀ u₀ F₀ R₀ l:O)
       let hf := fun l=>geometry_first_frequency_ne_zero reflected η₀ u₀ F₀ R₀ hu₀ s R seed K Z ξ hK bin (column l) datum first (row l) (hfirst l)
@@ -59,10 +59,10 @@ theorem actual_geometry_selected_high_shell {α : Type} [Fintype α] [DecidableE
       ∀ st : κ → NaturalState Z P.Bmask P.bΦ,
       ∀ (hQM : ∀ l, (st l).fixedModulus ≤ M) (hQη : ∀ l, (st l).fixedModulus ≤ η₀.modulus)
         (z : κ → O) (hz : ∀ l, (st l).radial.keep (z l))
-        (hchar : ∀l,(st l).character=(datum (row l).val.1).τ (ψ l))
-        (hpuncture : ∀l,(st l).puncture=(datum (row l).val.1).R*
+        (_hchar : ∀l,(st l).character=(datum (row l).val.1).τ (ψ l))
+        (_hpuncture : ∀l,(st l).puncture=(datum (row l).val.1).R*
           (if second then (datum (row l).val.1).D else (datum (row l).val.1).C))
-        (hrow : ∀l,z l=if second then -(row l).val.2.2.2.val else (row l).val.2.2.2.val),
+        (_hrow : ∀l,z l=if second then -(row l).val.2.2.2.val else (row l).val.2.2.2.val),
       (∀ l ∈ labels, rawFrequencyNorm (nonzeroJointSourceRow (key l)) ≤ Z^q ∧
         a ≤ HeckeDetectorZeros.zeroMaximum
           (wholeSourceFamily M H hH η₀ (excluded

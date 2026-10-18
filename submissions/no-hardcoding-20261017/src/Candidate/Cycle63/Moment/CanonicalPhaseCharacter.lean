@@ -29,20 +29,20 @@ def firstPhaseCharacter (C D : Ideal O) (hC : Supported C)
     (t : ActiveIndex C D → ℕ) : RayCharacter where
   toFun x := if IsUnit x then firstPhaseTable C D t x else 0
   map_one' := by
-    rw [if_pos isUnit_one]
+    rw [ite_eq_left isUnit_one]
     change firstPhaseTable C D t (Ideal.Quotient.mk _ 1) = 1
     simp only [firstPhaseTable_mk, sexticReciprocityPhase_one_right _
       (firstSignedPrime_supported C D hC _), one_pow, Finset.prod_const_one]
   map_mul' x y := by
     by_cases hx : IsUnit x <;> by_cases hy : IsUnit y
-    · simp only [if_pos hx, if_pos hy, if_pos (hx.mul hy), firstPhaseTable_mul]
+    · simp only [ite_eq_left hx, ite_eq_left hy, ite_eq_left (hx.mul hy), firstPhaseTable_mul]
     · have hxy : ¬IsUnit (x*y) := fun h => hy (isUnit_of_mul_isUnit_right h)
-      simp only [if_pos hx, if_neg hy, if_neg hxy, mul_zero]
+      simp only [ite_eq_left hx, ite_eq_right hy, ite_eq_right hxy, mul_zero]
     · have hxy : ¬IsUnit (x*y) := fun h => hx (isUnit_of_mul_isUnit_left h)
-      simp only [if_neg hx, if_pos hy, if_neg hxy, zero_mul]
+      simp only [ite_eq_right hx, ite_eq_left hy, ite_eq_right hxy, zero_mul]
     · have hxy : ¬IsUnit (x*y) := fun h => hx (isUnit_of_mul_isUnit_left h)
-      simp only [if_neg hx, if_neg hy, if_neg hxy, zero_mul]
-  map_nonunit' x hx := if_neg hx
+      simp only [ite_eq_right hx, ite_eq_right hy, ite_eq_right hxy, zero_mul]
+  map_nonunit' x hx := ite_eq_right hx
 
 theorem actual_first_phase_character (C D : Ideal O) (hC : Supported C)
     (t : ActiveIndex C D → ℕ) (n : O) (hn : Supported (Ideal.span {n})) :
@@ -56,7 +56,7 @@ theorem actual_first_phase_character (C D : Ideal O) (hC : Supported C)
     · exact False.elim (by norm_num at hmask)
   change (if IsUnit (Ideal.Quotient.mk _ n) then firstPhaseTable C D t
     (Ideal.Quotient.mk _ n) else 0) = _
-  rw [if_pos hunit, firstPhaseTable_mk]
+  rw [ite_eq_left hunit, firstPhaseTable_mk]
 
 theorem actual_first_left_single_dictionary (η : Character) (C D : Ideal O)
     (hC : Supported C) (ξ : RayCharacter) :

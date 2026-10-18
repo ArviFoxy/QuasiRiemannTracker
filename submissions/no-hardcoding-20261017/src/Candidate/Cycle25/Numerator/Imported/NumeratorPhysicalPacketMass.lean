@@ -15,10 +15,10 @@ variable {ι : Type} [Fintype ι] [DecidableEq ι]
 theorem actual_physical_label_mass (epsilon c d B : ℝ)
     (hepsilon : 0 < epsilon) (hc : 0 < c) (hd : 0 < d) (hB : 0 ≤ B) :
     ∃ C : ℝ, 0 < C ∧ ∀ (S : Finset (Ideal O)) (hS : SourceExclusions S)
-      (firsteps : ℝ) (hfirst : FirstTail firsteps S) (η : Character) (u : FreeRow)
+      (firsteps : ℝ) (_hfirst : FirstTail firsteps S) (η : Character) (u : FreeRow)
       (T : ι → Finset ProbePhysical.PrimeIdeal) (hT : ∀ i P, P ∈ T i → P.val ∉ S)
-      (hdis : ∀ P : ∀ i, T i, Function.Injective (fun i => (P i).val))
-      (hη : ∀ i P, P ∈ T i → IsCoprime P.val η.modulus)
+      (_hdis : ∀ P : ∀ i, T i, Function.Injective (fun i => (P i).val))
+      (_hη : ∀ i P, P ∈ T i → IsCoprime P.val η.modulus)
       (W : ι → ℝ → ℂ) (Y : ι → ℝ),
       (∀ i, 1 ≤ Y i) → (∀ i, Function.support (W i) ⊆ Set.Icc c d) →
       (∀ i y, ‖W i y‖ ≤ B) → ∀ (x z : ℂ) (alpha eps rho Ccond Cu : ℝ),

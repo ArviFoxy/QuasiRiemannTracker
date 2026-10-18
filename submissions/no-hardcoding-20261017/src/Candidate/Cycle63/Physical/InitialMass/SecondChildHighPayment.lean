@@ -95,7 +95,7 @@ theorem eventual_actual_child_high_payment (N : ℕ) (lo εv : ℝ)
         Real.logb Z ((Ideal.span {firstSourceNumerator left l}).absNorm:ℝ)-6*a-
         (frequencyLoss Z 32 ξ+reserve)+ε)+
       δ*(A-c-Real.logb Z ((if second then D₂ else C₂).absNorm:ℝ)))).le
-  convert hh'' using 1 <;> ring
+  convert hh'' using 1; ring
 
 end
 end OAI.SevenEighths.Cycle63InitialMass

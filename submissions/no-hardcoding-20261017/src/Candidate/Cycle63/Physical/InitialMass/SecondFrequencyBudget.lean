@@ -37,7 +37,7 @@ theorem eventual_actual_joint_frequency_budget (u₀ : O)(b ε : ℝ)(N : ℕ)
     (hb : 0<b)(hε : 0<ε) :
     ∀ᶠZ : ℝ in atTop,1<Z ∧ ∀(reflected left : Bool)(unit : FirstSourceLabel→Oˣ)
       (l : NonzeroJointSourceLabel left u₀ (fun k=>(unit k:O)))
-      (hC : Supported l.val.1.1.1)(hD : Supported l.val.1.1.2),
+      (_hC : Supported l.val.1.1.1)(_hD : Supported l.val.1.1.2),
       primeSupport l.val.1.1.1=primeSupport l.val.1.1.2 →
       ∀(K V a δ reserve ξ : ℝ),0<K → 0<V → ξ≤ε →
       let C := l.val.1.1.1

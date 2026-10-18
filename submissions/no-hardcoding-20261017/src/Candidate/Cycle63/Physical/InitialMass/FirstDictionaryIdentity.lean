@@ -39,8 +39,8 @@ theorem actual_fixed_pair_left_dictionary (η : Character)(u₀ : O)(F₀ : Natu
     l.1.1 l.1.2 hC l.2.val)
   revert G
   unfold firstDictionaryUnit
-  rw [dif_pos hC]
-  simp only [↓reduceIte,firstSourceNumerator]
+  rw [dite_eq_left hC]
+  simp only [firstSourceNumerator]
   intro G
   exact hu ξ₁ F.left F.left_modulus (fixed_pair_left_element F) G I
 
@@ -59,8 +59,8 @@ theorem actual_fixed_pair_right_dictionary (η : Character)(u₀ : O)(F₀ : Nat
     l.1.1 l.1.2 hC l.2.val)
   revert G
   unfold firstDictionaryUnit
-  rw [dif_pos hC]
-  simp only [↓reduceIte,firstSourceNumerator]
+  rw [dite_eq_left hC]
+  simp only [firstSourceNumerator]
   intro G
   exact hu ξ₂ F.right F.right_modulus (fixed_pair_right_element F) G I
 

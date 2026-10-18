@@ -30,7 +30,7 @@ theorem weighted_fourth_selection {ι : Type*} [Fintype ι] {α : ι → Type*}
   have hnorm (i : ι) (a : α i) : ‖f i a‖ ≤ Real.sqrt (Real.sqrt (v i)) := by
     apply (Real.le_sqrt (norm_nonneg _) (Real.sqrt_nonneg _)).mpr
     apply (Real.le_sqrt (sq_nonneg _) (hv0 i)).mpr
-    convert hv i a using 1 <;> ring
+    convert hv i a using 1; ring
   have hw (i : ι) : Summable (fun a => ‖w i a*f i a‖) := by
     apply ((hs i).mul_right (Real.sqrt (Real.sqrt (v i)))).of_nonneg_of_le (fun _ => norm_nonneg _)
     intro a

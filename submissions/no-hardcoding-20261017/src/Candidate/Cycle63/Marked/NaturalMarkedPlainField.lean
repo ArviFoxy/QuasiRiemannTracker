@@ -18,6 +18,7 @@ variable (M : Ideal O) [NeZero M]
 local instance : Finite (O⧸M) := Ring.HasFiniteQuotients.finiteQuotient (NeZero.ne M)
 variable (H : Subgroup (O⧸M)ˣ) (hH : RayOrthogonality.globalUnits M≤H)
 
+omit [Fintype α] in
 /-- Fixed-scale actual marked plain field, with the literal row presentation.
 The scalar capacity is exactly the marked detector capacity; the fixed base
 character consumes only its arbitrarily small conductor allowance `δ`. -/

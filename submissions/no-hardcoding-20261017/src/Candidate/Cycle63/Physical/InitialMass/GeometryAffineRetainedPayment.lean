@@ -28,7 +28,7 @@ theorem geometry_affine_main_contracted_payment
     hratio hlow hhigh
   apply hcontract.trans
   have hs := add_le_add hexceptional (mul_le_mul_of_nonneg_left hp hCo)
-  convert hs using 1 <;> ring
+  convert hs using 1; ring
 
 /-- The error family already contains its single prime average in the joint
 weight. Its contraction and finite ratio image therefore need no further
@@ -52,7 +52,7 @@ theorem geometry_affine_error_contracted_payment
   have hs := add_le_add hexceptional
     (mul_le_mul_of_nonneg_left (hratio.trans hp) hCo)
   apply hcontract.trans
-  convert hs using 1 <;> ring
+  convert hs using 1; ring
 
 end
 end OAI.SevenEighths.Cycle63InitialMass

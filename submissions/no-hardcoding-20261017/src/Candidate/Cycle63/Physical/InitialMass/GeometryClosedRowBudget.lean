@@ -54,7 +54,7 @@ theorem actual_geometry_closed_row_budget (η₀ : Character)(u₀ : O)(F₀ : N
       let label := fun q : Index=>first q.1
       let left := !reflected
       let unit := fun l=>(firstDictionaryUnit left η₀ u₀ F₀ R₀ l:O)
-      let hunit : ∀l,unit l≠0 := fun l=>Units.ne_zero _
+      let hunit : ∀l,unit l≠0 := fun _l=>Units.ne_zero _
       let hf : ∀r : secondLiveRows block,jointFirstFrequency left u₀ unit (secondEncodedRow block label r)≠0 :=
         fun r=>actual_joint_first_frequency_ne_zero left u₀ unit (secondEncodedRow block label r)
           hu₀ (hunit _) (geometryFirstSource s R seed K Z ξ hK bin (column r.val.1.1).val.1).hC
@@ -89,7 +89,7 @@ theorem actual_geometry_closed_row_budget (η₀ : Character)(u₀ : O)(F₀ : N
   dsimp only at hh
   change CenteredMomentSectorLocalization.normValue (jointSourceRow left u₀ unit
     (secondEncodedRow block label r.val))≤_
-  convert hh.1 using 1 <;> congr 1 <;> ring
+  convert hh.1 using 1 <;> congr 1; ring
 
 end
 end OAI.SevenEighths.Cycle63InitialMass

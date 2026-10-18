@@ -115,7 +115,7 @@ theorem original_row_fullW_arbitrary_saving (K : ℕ) (τ saving b ζ : ℝ)
       apply div_le_div_of_nonneg_right _ (pow_nonneg (height_pos _).le _)
       exact mul_le_mul (mul_le_mul_of_nonneg_left hcost hC) hscale (by positivity) (by positivity)
     _ = (C*(b^K)^3*(η.modulus.absNorm:ℝ)^2)*(Z^(8+3*ell)/height H^N) := by
-      have hh : Z^(6+3*ell)*Z^(2:ℝ)=Z^(8+3*ell) := by rw [←Real.rpow_add hZ0];congr 1;push_cast;ring
+      have hh : Z^(6+3*ell)*Z^(2:ℝ)=Z^(8+3*ell) := by rw [←Real.rpow_add hZ0];congr 1;ring
       rw [←hh]
       ring
     _ ≤ (C*(b^K)^3*(η.modulus.absNorm:ℝ)^2)*(Z^(8+3*ell)/Z^(τ*N)) := by

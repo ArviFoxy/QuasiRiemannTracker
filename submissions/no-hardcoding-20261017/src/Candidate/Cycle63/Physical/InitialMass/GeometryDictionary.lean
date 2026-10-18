@@ -55,7 +55,7 @@ theorem actual_geometry_column_dictionary {ι : Type*} [Fintype ι]
     revert G
     unfold firstDictionaryUnit
     have hc : Supported (geometryFirstLabel s R seed K Z ξ hK key j).1.1 := src.hC
-    rw [dif_pos hc]
+    rw [dite_eq_left hc]
     intro G
     exact hu j.2.2.1 F.left hm' he G I
   · have hu := Classical.choose_spec (uniform_first_right_natural_parent_mask η₀ u₀ F₀ R₀
@@ -68,7 +68,7 @@ theorem actual_geometry_column_dictionary {ι : Type*} [Fintype ι]
     revert G
     unfold firstDictionaryUnit
     have hc : Supported (geometryFirstLabel s R seed K Z ξ hK key j).1.1 := src.hC
-    rw [dif_pos hc]
+    rw [dite_eq_left hc]
     intro G
     exact hu j.2.2.2⁻¹ F.right hm' he G I
 

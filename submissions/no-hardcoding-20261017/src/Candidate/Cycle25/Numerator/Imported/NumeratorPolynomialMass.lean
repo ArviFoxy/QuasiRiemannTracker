@@ -132,7 +132,7 @@ theorem cubic_coefficients_of_four_bounds (a b c d : ℂ) (B : ℝ)
       (Complex.I * cubic a b c d (-Complex.I))) / 4 := by
     simp [cubic, Complex.I_sq, hI3]
     ring_nf
-    simp [Complex.I_sq, hI3, hI4]
+    simp [Complex.I_sq, hI4]
     ring
   have hc : c = (cubic a b c d 1 + cubic a b c d (-1) +
       -(cubic a b c d Complex.I) + -(cubic a b c d (-Complex.I))) / 4 := by
@@ -144,7 +144,7 @@ theorem cubic_coefficients_of_four_bounds (a b c d : ℂ) (B : ℝ)
       (-Complex.I * cubic a b c d (-Complex.I))) / 4 := by
     simp [cubic, Complex.I_sq, hI3]
     ring_nf
-    simp [Complex.I_sq, hI3, hI4]
+    simp [Complex.I_sq, hI4]
     ring
   refine ⟨?_, ?_, ?_, ?_⟩
   · rw [ha]

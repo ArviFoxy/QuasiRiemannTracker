@@ -54,7 +54,7 @@ theorem high_source_full_slot_envelope (D : HighSourceDatum M H P η₀ Z Dict)
     D.projector D.allocation D.z
     (C*(∏k∈liveIndices D.projector D.allocation,‖D.slotAmplitude hH k‖^2))
     (δ*(D.total P-∑k∈liveIndices D.projector D.allocation,D.w k)+error)
-    (hrow.trans_eq (by change C*_ * _=_;ring))
+    (hrow.trans_eq (by ring))
   apply hb.trans
   calc
     _≤(C*D.fullSlotWeight hH)*Z^(δ*(Real.logb Z (preVolume D.source)-∑k,D.w k)+error) := by

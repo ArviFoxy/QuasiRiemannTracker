@@ -43,7 +43,7 @@ theorem certified_retained_fixed_profile {D : Cycle25.Weighted.MomentData}
     (hbeta : (51/100:ℝ) ≤ HeckeZeroSupremum.beta)
     (hκbeta : 2*HeckeZeroSupremum.beta-1 ≤ κ)
     (G:𝓢(ℝ,ℂ)) (loss Cscale Ccond xi:ℝ)
-    (hloss:0 < loss) (hCscale:0 < Cscale) (hCcond:0 < Ccond) (hxi:0 < xi) :
+    (hloss:0 < loss) (hCscale:0 < Cscale) (_hCcond:0 < Ccond) (hxi:0 < xi) :
     ∃degree:ℕ, ∃C:ℝ, 0 < C ∧ ∀ᶠU:ℝ in atTop,
       1 < U ∧ ∀rows:Finset FreeRow,
       (∀u∈rows, U^(1/100:ℝ) ≤ rowNorm u ∧ rowNorm u ≤ U) →

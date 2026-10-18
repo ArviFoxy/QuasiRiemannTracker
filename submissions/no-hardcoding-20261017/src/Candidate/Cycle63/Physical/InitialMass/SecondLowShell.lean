@@ -47,7 +47,7 @@ theorem actual_finite_final_positive (s : Data ι) (second : Bool)
     · exact le_rfl))
   apply Finset.sum_le_sum
   intro z hz
-  rw [if_pos (hkeep z hz),mul_comm (weight z)]
+  rw [ite_eq_left (hkeep z hz),mul_comm (weight z)]
   exact mul_le_mul_of_nonneg_left (hweight z hz) (sq_nonneg _)
 
 /-- Integrate the two positive rectangles before summing residual allocations. -/

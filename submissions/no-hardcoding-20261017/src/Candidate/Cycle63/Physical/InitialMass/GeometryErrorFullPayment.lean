@@ -230,7 +230,7 @@ def actual_geometry_error_scalar_disintegration
   let Tsec := geometryErrorFourierScale reflected s R seed Z Mrow amp ξ reserve b N hZ bin q p i
   let firstLabel := geometryFirstLabel s R seed (Z^Mrow) Z ξ
     (Real.rpow_pos_of_pos (zero_lt_one.trans hZ) _) bin q.1.val
-  let hU : ∀n∈rows,n.2.1∈inactiveSubsets n.1.val.val.1 n.1.val.val.2 :=
+  let hU : ∀n∈rows,ActualSecondBlockIndex.IsInactive n :=
     fun n hn=>second_block_nonzero_inactive
       (geometryErrorSecondDatum reflected s R seed Z Mrow amp ξ reserve b t N hZ bin q p i Bp υ v hw₁ hw₂ n).block
       ballProfile (hne n hn)

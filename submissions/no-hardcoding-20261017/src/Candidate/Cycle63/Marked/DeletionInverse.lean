@@ -218,7 +218,7 @@ theorem direct_reference_energy (W : ℝ → ℂ) (ao bo : ℝ) (hao : 0<ao)
     _ = (divs.card : ℝ)^2*C*U^(1+εm)*((1+‖θ‖)^degree)^2 := by
       simp only [Finset.sum_const,nsmul_eq_mul]
       ring
-    _ ≤ _ := by gcongr <;> linarith
+    _ ≤ _ := by gcongr; linarith
 
 /-- Actual marked inverse moments at every detector derivative and height,
 for arbitrary bounded coefficients on separated prime pools. All analytic

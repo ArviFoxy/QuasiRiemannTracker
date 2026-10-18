@@ -20,14 +20,14 @@ theorem eventually_geometry_marked_packet
     (Bfirst Bmask bΦ : ℝ) :
     ∀ᶠ Z : ℝ in atTop,1<Z ∧
       ∀{ι α Label : Type}[Fintype ι][Fintype α][DecidableEq α][Fintype Label],
-      ∀(reflected second : Bool)(s : Input ι)(hη : s.η=excluded F₀.character R₀)
+      ∀(reflected second : Bool)(s : Input ι)(_hη : s.η=excluded F₀.character R₀)
         (R seed : Ideal O)(K ξ : ℝ)(hK : 0<K)(bin : ℤ×(Fin 5→ℤ))
         (column : FirstColumnIndex (geometryFirstSource s R seed K Z ξ hK bin))
         (datum : Label→SecondInputDatum α)(first : Label→FirstSourceLabel)
         (row : secondLiveRows (fun l=>(datum l).block))
-        (hparent : (datum row.val.1).input.η=geometryColumnCharacter reflected s R seed K Z ξ hK bin column)
+        (_hparent : (datum row.val.1).input.η=geometryColumnCharacter reflected s R seed K Z ξ hK bin column)
         (hfirst : first row.val.1=geometryFirstLabel s R seed K Z ξ hK bin column)
-        (hR : (datum row.val.1).R≠0)(ψ : RayCharacter),
+        (_hR : (datum row.val.1).R≠0)(ψ : RayCharacter),
       ((geometryFirstSource s R seed K Z ξ hK bin column.1).C.absNorm:ℝ)≤Z^Bfirst→
       ∀(st : NaturalState Z Bmask bΦ)(z : O)(hz : st.radial.keep z),
       st.character=(datum row.val.1).τ ψ→

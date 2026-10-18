@@ -137,7 +137,7 @@ theorem rowClosedMarked_affine (eta a X W V rho : ℂ) (j : ℕ) :
   unfold rowClosedMarked rowBaseFinite
   simp only [Fin.sum_univ_two, Fin.val_zero, Fin.val_one]
   norm_num only [rowMarkedTerm, Nat.reduceMul, Nat.reduceAdd, Nat.reduceEqDiff,
-    if_false, rowWeightedScalar, weightedScalar, pow_zero, pow_one,
+    ite_false, rowWeightedScalar, weightedScalar, pow_zero, pow_one,
     zero_pow, one_pow, mul_one, one_mul, mul_zero, zero_mul, zero_add, add_zero]
   ring
 

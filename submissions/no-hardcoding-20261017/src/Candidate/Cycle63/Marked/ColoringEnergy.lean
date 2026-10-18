@@ -77,7 +77,7 @@ theorem injective_coloring_energy {Row A I : Type*} [Fintype A] [Fintype I]
         if Function.Injective x then ∏ i, a u i (x i) else 0) = 0 := by
       apply Finset.sum_eq_zero
       intro x _
-      rw [if_neg (fun hi => hx ⟨x,hi⟩)]
+      rw [ite_eq_right (fun hi => hx ⟨x,hi⟩)]
     simp only [hzero,mul_zero,norm_zero,zero_pow (by decide : 2≠0),Finset.sum_const_zero]
     positivity
 

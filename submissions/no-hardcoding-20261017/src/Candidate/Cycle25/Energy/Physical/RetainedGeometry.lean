@@ -25,7 +25,7 @@ lemma actual_dual_scale_bound (τ ψ : Character) (X B : ℝ) (hX : 0 < X)
 
 /-- A uniform logarithmic scale interval for every retained annulus and every
 rowwise coefficient dilation, under only its combined-scale bound. -/
-theorem eventually_retained_log_interval (C xi : ℝ) (hC : 0 < C) (hxi : 0 < xi) :
+theorem eventually_retained_log_interval (C xi : ℝ) (_hC : 0 < C) (hxi : 0 < xi) :
     ∀ᶠU:ℝ in atTop, 1 < U ∧ ∀(τ ψ:Character) (X m:ℝ), 0 < X →
       (ψ.modulus.absNorm:ℝ)*(Ideal.absNorm (∏P∈sourcePrimes τ ψ,P):ℝ) ≤ C*U^m*X →
       ∀a:CenteredMomentReflectionWeightedEnergy.Index (sourcePrimes τ ψ),

@@ -187,7 +187,7 @@ theorem eventual_actual_first_label_error_tail {α : Type}[Fintype α][Decidable
     ∃F : Finset (ℕ×ℕ),∃Ct : ℝ,0<Ct ∧ ∀ᶠZ : ℝ in atTop,1<Z ∧
     ∀(s : Input α)(R seed : Ideal O),Fintype.card α≤N → (∀i,s.M i≤Cs) → s.upper≤b →
     ∀p : Profiles lo hi,s.W₁=p.profile 0 → s.W₂=p.profile 1 →
-    ∀(M a δ reserve t : ℝ)(hZ : 1<Z),0≤M → M≤B → 0≤a → a≤B → 0≤δ → 0≤reserve →
+    ∀(M a δ reserve t : ℝ)(_hZ : 1<Z),0≤M → M≤B → 0≤a → a≤B → 0≤δ → 0≤reserve →
       δ+reserve≤B → |Real.logb Z (volume s)|≤B →
     ∀(reflected : Bool)(l : FirstSourceLabel),Supported l.1.1 → Supported l.1.2 →
       CompletedGauss.primeSupport l.1.1=CompletedGauss.primeSupport l.1.2 →
@@ -363,7 +363,7 @@ theorem eventual_actual_first_label_error_tail_sum {α : Type}[Fintype α][Decid
     ∃F : Finset (ℕ×ℕ),∃Ct : ℝ,0<Ct ∧ ∀ᶠZ : ℝ in atTop,1<Z ∧
     ∀(s : Input α)(R seed : Ideal O),Fintype.card α≤N → (∀i,s.M i≤Cs) → s.upper≤b →
     ∀p : Profiles lo hi,s.W₁=p.profile 0 → s.W₂=p.profile 1 →
-    ∀(M a δ reserve t : ℝ)(hZ : 1<Z),0≤M → M≤B → 0≤a → a≤B → 0≤δ → 0≤reserve →
+    ∀(M a δ reserve t : ℝ)(_hZ : 1<Z),0≤M → M≤B → 0≤a → a≤B → 0≤δ → 0≤reserve →
       δ+reserve≤B → |Real.logb Z (volume s)|≤B →
     ∀(reflected : Bool)(l : FirstSourceLabel),Supported l.1.1 → Supported l.1.2 →
       CompletedGauss.primeSupport l.1.1=CompletedGauss.primeSupport l.1.2 →

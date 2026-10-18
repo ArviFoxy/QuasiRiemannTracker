@@ -57,9 +57,9 @@ theorem actual_pair_source_identity {ι : Type*} [Fintype ι] [DecidableEq ι]
 /-- Restricting the actual nonnegative radial energy to a finite physical row set. -/
 theorem finite_actual_pair_le_energy {ι : Type*} [Fintype ι] [DecidableEq ι]
     (rows : Finset FreeRow) (η : Character) (Q : Ideal O)
-    (Φ : 𝓢(ℝ,ℂ)) (U bΦ δ : ℝ) (hU : 1 ≤ U) (hδ : 0 ≤ δ)
-    (hs : Function.support (Φ:ℝ→ℂ) ⊆ Set.Iic bΦ) (hp : ∀x, 0 ≤ (Φ x).re)
-    (hη : (η.modulus.absNorm:ℝ) ≤ U^δ)
+    (Φ : 𝓢(ℝ,ℂ)) (U bΦ δ : ℝ) (hU : 1 ≤ U) (_hδ : 0 ≤ δ)
+    (_hs : Function.support (Φ:ℝ→ℂ) ⊆ Set.Iic bΦ) (hp : ∀x, 0 ≤ (Φ x).re)
+    (_hη : (η.modulus.absNorm:ℝ) ≤ U^δ)
     (hrows : ∀u∈rows, rowNorm u ≤ U)
     (hkeep : ∀u∈rows, initialKeep η Q u.val)
     (hone : ∀x∈Set.Icc (0:ℝ) 1, Φ x = 1)
@@ -97,7 +97,7 @@ theorem finite_actual_pair_le_energy {ι : Type*} [Fintype ι] [DecidableEq ι]
       rw [eisEmbedding_norm_sq_eq_absNorm_span]
       exact hrows u hu
     dsimp [f]
-    rw [if_pos (hkeep u hu),hone _ hx,Complex.one_re,mul_one]
+    rw [ite_eq_left (hkeep u hu),hone _ hx,Complex.one_re,mul_one]
     rw [actual_pair_source_identity η u W₁ W₂ slots β P X₁ X₂ hX₁ hX₂ hP]
   calc
     _ = ∑u∈rows, f u.val := Finset.sum_congr rfl (fun u hu => (he u hu).symm)

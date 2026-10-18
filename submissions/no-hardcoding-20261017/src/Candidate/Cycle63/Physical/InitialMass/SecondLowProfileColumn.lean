@@ -131,7 +131,7 @@ theorem actual_live_main_low_profile_column
     have hc:=common_retained_cost_nonneg src q.E₂ q.R₂ D z
     have hbnd:=mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hd hK.le)
       (mul_nonneg (hnonneg z hz) hc)
-    convert hbnd using 1 <;> ring
+    convert hbnd using 1; ring
   apply hmajor.trans
   apply (mul_le_mul_of_nonneg_left hh (by positivity : 0≤K*(2*T)^εshell)).trans_eq
   rw [show 3*εshell=εshell+2*εshell by ring,Real.rpow_add hT0 εshell (2*εshell)]

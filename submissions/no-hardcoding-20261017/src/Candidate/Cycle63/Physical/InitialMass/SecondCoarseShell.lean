@@ -14,6 +14,8 @@ def coarseAllocationControl (s : Data ι)(B₁ B₂ : ℝ) : ℝ :=
   (2*(max 1 s.b₁*max 1 s.b₂))*(∏i,s.M i)^2*(coarseRowControl s B₁ B₂)^2*
     (coarseRowSize s false+coarseRowSize s true)
 
+omit [DecidableEq ι] in
+omit [DecidableEq ι] in
 lemma coarse_allocation_control_nonneg (s : Data ι)(B₁ B₂ : ℝ) :
     0≤coarseAllocationControl s B₁ B₂ := by
   unfold coarseAllocationControl

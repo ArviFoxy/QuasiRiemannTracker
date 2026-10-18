@@ -79,7 +79,7 @@ theorem actual_main_low_selected_inactive {Label : Type*} [Fintype Label]
     (firstIndex : Label→GeometryLowFirstIndex reflected s R seed (Z^Mrow) Z ξ
       (Real.rpow_pos_of_pos (zero_lt_one.trans hZ) _) key)
     (r : mainLowSelectedNonzeroRows reflected s R seed Z Mrow amp ξ reserve b t N hZ key hz₁ hz₂ firstIndex) :
-    r.val.2.2.1∈inactiveSubsets r.val.2.1.val.val.1 r.val.2.1.val.val.2 := by
+    ActualSecondBlockIndex.IsInactive r.val.2 := by
   exact (actual_geometry_main_original_admission reflected s R seed Z Mrow amp ξ reserve b t N hZ key
     hz₁ hz₂ (mainLowSelectedOriginal reflected s R seed Z Mrow amp ξ reserve b t N hZ key hz₁ hz₂
       firstIndex r)).2

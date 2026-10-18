@@ -20,7 +20,7 @@ coarse frequency cap and the full row-times-missing-radical support cap.
 The threshold is chosen before every moving source and row. -/
 theorem eventual_geometry_joint_support (η₀ : Character)(u₀ : O)(F₀ : NaturalRow η₀ u₀)
     (R₀ : Ideal O)(hu₀ : u₀≠0)(b ε : ℝ)(N : ℕ)(hb : 0<b)(hε : 0<ε) :
-    ∀ᶠZ : ℝ in atTop,∀hZ : 1<Z,
+    ∀ᶠZ : ℝ in atTop,∀_hZ : 1<Z,
       ∀{ι α Label : Type}[Fintype ι][DecidableEq ι][Fintype α][DecidableEq α][Fintype Label]
         (reflected : Bool)(s : Input ι)(R seed : Ideal O)(K ξ a reserve M A : ℝ)(hK : 0<K),
       Squarefree seed → s.W₁ 0=0 → s.W₂ 0=0 → sourceRadius s≤Z^A → K≤Z^M →
@@ -67,7 +67,7 @@ theorem eventual_geometry_joint_support (η₀ : Character)(u₀ : O)(F₀ : Nat
   have hm := joint_missing_support_cap (!reflected) u₀ unit l hc hd Z (M+5*A+ε) A
     (zero_lt_one.trans hZ) hn hCcap
   refine ⟨hn,hm.1,?_⟩
-  convert hm.2 using 1 <;> congr 1 <;> ring
+  convert hm.2 using 1; congr 1; ring
 
 end
 end OAI.SevenEighths.Cycle63InitialMass

@@ -218,7 +218,7 @@ lemma low_actual_scale_caps (J I Q Q₀ : Ideal Eis) (hJ : J≠0) (hI : I≠0) (
       QP ≤ 2*Z^ell0 := by linarith
       _ ≤ Z*Z^ell0 := mul_le_mul_of_nonneg_right hZ (Real.rpow_nonneg hz.le _)
       _ = Z^(1+ell0) := by rw [Real.rpow_add hz,Real.rpow_one]
-      _ ≤ _ := Real.rpow_le_rpow_of_exponent_le hz1 (by norm_num; linarith [Cycle63.Arithmetic.ell_pos,Cycle63.Arithmetic.ell_lt_fifth])
+      _ ≤ _ := Real.rpow_le_rpow_of_exponent_le hz1 (by linarith [Cycle63.Arithmetic.ell_pos,Cycle63.Arithmetic.ell_lt_fifth])
   · rw [←Real.rpow_neg hz.le]
     exact Real.rpow_le_rpow_of_exponent_le hz1 (by have hs := (abs_le.mp hshift).1;linarith)
 lemma low_reflection_parameters (η : ℝ) (hη : 0<η) :

@@ -64,7 +64,7 @@ noncomputable def geometryErrorSelectedAllocation :
     let d := geometryErrorSecondDatum reflected s R seed Z Mrow amp ξ reserve b t N hZ bin q p i Bp υ v hw₁ hw₂ n
     actualAllocations d.input.pools (if second then d.D else d.C) :=
   let nz : geometryErrorNonzeroBlocks reflected s R seed Z Mrow amp ξ reserve b t N hZ bin q p i Bp υ v hw₁ hw₂ :=
-    ⟨n,Finset.mem_filter.mpr ⟨Finset.mem_univ _,hne⟩⟩
+    (geometryErrorNonzeroBlock reflected s R seed Z Mrow amp ξ reserve b t N hZ bin q p i Bp υ v hw₁ hw₂ n hne)
   Classical.choose (actual_geometry_error_live_common_allocation reflected s R seed Z Mrow amp ξ reserve b t N hZ bin q p i Bp υ v hw₁ hw₂ nz second)
 
 theorem geometryErrorSelectedAllocation_nonzero :
@@ -72,7 +72,7 @@ theorem geometryErrorSelectedAllocation_nonzero :
     frozenCoefficient (geometryErrorSelectedAllocation reflected s R seed Z Mrow amp ξ reserve b t N hZ bin q p i Bp υ v hw₁ hw₂ n hne second).val
       (if second then d.D else d.C) d.R d.input.ν d.input.W d.input.P≠0 :=
   Classical.choose_spec (actual_geometry_error_live_common_allocation reflected s R seed Z Mrow amp ξ reserve b t N hZ bin q p i Bp υ v hw₁ hw₂
-    ⟨n,Finset.mem_filter.mpr ⟨Finset.mem_univ _,hne⟩⟩ second)
+    (geometryErrorNonzeroBlock reflected s R seed Z Mrow amp ξ reserve b t N hZ bin q p i Bp υ v hw₁ hw₂ n hne) second)
 
 
 variable (hp : p≠0)
@@ -96,7 +96,7 @@ noncomputable def geometryErrorSelectedGeometry :
       (if second then d.D else d.C) d.R (geometryErrorSelectedAllocation reflected s R seed Z Mrow amp ξ reserve b t N hZ bin q p i Bp υ v hw₁ hw₂ n hne second))
       Z Mrow amp (frequencyLoss Z 32 ξ+reserve) ξ b (fixedFactor:ℝ) N :=
   geometryErrorActualGeometry reflected s R seed Z Mrow amp ξ reserve b t N hZ bin q p i Bp υ v
-    hp hcop hw₁ hw₂ ⟨n,Finset.mem_filter.mpr ⟨Finset.mem_univ _,hne⟩⟩ second
+    hp hcop hw₁ hw₂ (geometryErrorNonzeroBlock reflected s R seed Z Mrow amp ξ reserve b t N hZ bin q p i Bp υ v hw₁ hw₂ n hne) second
     (geometryErrorSelectedAllocation reflected s R seed Z Mrow amp ξ reserve b t N hZ bin q p i Bp υ v hw₁ hw₂ n hne second) ψ hυ hf₁
     (geometryErrorSelectedAllocation_nonzero reflected s R seed Z Mrow amp ξ reserve b t N hZ bin q p i Bp υ v hw₁ hw₂ n hne second)
 

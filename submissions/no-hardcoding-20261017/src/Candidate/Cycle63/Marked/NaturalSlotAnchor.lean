@@ -24,14 +24,14 @@ theorem shifted_anchor_coefficient (η η₀ ν : Character) (u : O)
   rw [G.ideal,excluded_ideal _ _ ν.modulus_ne_bot,F.ideal]
   by_cases hI : I=0
   · subst I
-    simp only [show (⊥ : Ideal O)=0 from rfl,map_zero,zero_mul,ite_self]
+    simp only [map_zero,zero_mul,ite_self]
   by_cases hc : IsCoprime I ν.modulus
-  · rw [if_pos hc]
+  · rw [ite_eq_left hc]
     have hn := HeckeDetectorRelativePrime.idealCoeff_ne_zero_of_coprime ν I hI hc
     simp only [relativeCharacter_ideal,idealCoeff_product,
       HeckeDetectorRelativePrime.idealCoeff_inverse,mul_inv_rev]
     field_simp
-  · rw [if_neg hc,zero_mul]
+  · rw [ite_eq_right hc,zero_mul]
     have hn : idealCoeff ν I=0 := by
       by_contra hn
       exact hc ((idealCoeff_ne_zero_iff ν I).mp hn).2

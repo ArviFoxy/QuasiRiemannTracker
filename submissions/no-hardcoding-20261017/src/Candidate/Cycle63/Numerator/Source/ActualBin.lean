@@ -16,11 +16,11 @@ theorem actual_label_packet_bin_bound {ι : Type} [Fintype ι] [DecidableEq ι]
     (hcp : 0 < cp) (hdp : 0 < dp) (hBp : 0 ≤ Bp) :
     ∃ Cmass : ℝ, 0 < Cmass ∧ ∀
       (S : Finset (Ideal O)) (hS : SourceExclusions S)
-      (firsteps : ℝ) (hfirst : FirstTail firsteps S) (η : Character)
+      (firsteps : ℝ) (_hfirst : FirstTail firsteps S) (η : Character)
       (T : ι→Finset ProbePhysical.PrimeIdeal) (hT : ∀i P,P∈T i→P.val∉S)
-      (hdis : ∀P:∀i,T i,Function.Injective (fun i=>(P i).val))
-      (hη : ∀i P,P∈T i→IsCoprime P.val η.modulus)
-      (Pbase : ∀i,T i) (W : ι→ℝ→ℂ) (Yp : ι→ℝ),
+      (_hdis : ∀P:∀i,T i,Function.Injective (fun i=>(P i).val))
+      (_hη : ∀i P,P∈T i→IsCoprime P.val η.modulus)
+      (_Pbase : ∀i,T i) (W : ι→ℝ→ℂ) (Yp : ι→ℝ),
       (∀i,1≤Yp i) → (∀i,Function.support (W i)⊆Set.Icc cp dp) →
       (∀i y,‖W i y‖≤Bp) → ∀(x z : ℂ) (alpha eps : ℝ),
       51/100≤alpha → alpha≤1 → 0<eps → eps≤1/1000 →
@@ -70,7 +70,7 @@ theorem actual_label_packet_bin_bound {ι : Type} [Fintype ι] [DecidableEq ι]
   have hM : 0<M := mul_pos (mul_pos hCmass (Real.rpow_pos_of_pos hU0 _))
     (Finset.prod_pos (fun i _=>Real.rpow_pos_of_pos (lt_of_lt_of_le zero_lt_one (hYp i)) _))
   have hLM (i : κ) : Lc i ≤ 1 := by
-    letI : Finite (O ⧸ (Ideal.span {(u i).val}:Ideal O)) := Ring.HasFiniteQuotients.finiteQuotient
+    let : Finite (O ⧸ (Ideal.span {(u i).val}:Ideal O)) := Ring.HasFiniteQuotients.finiteQuotient
       (Ideal.span_singleton_eq_bot.not.mpr (u i).property.1)
     have hNupos : (0:ℝ)<(Ideal.span {(u i).val}:Ideal O).absNorm := by
       exact_mod_cast Nat.pos_of_ne_zero (Ideal.absNorm_eq_zero_iff.not.mpr

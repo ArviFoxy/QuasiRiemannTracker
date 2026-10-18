@@ -61,7 +61,7 @@ private lemma phase_deriv (x σ t : ℝ) (hx : 0<x) :
     (Or.inl (Complex.ofReal_ne_zero.mpr hx.ne'))
   have hh := hd.comp_ofReal
   rw [←Complex.ofReal_log hx.le] at hh
-  convert hh using 1 <;> simp only [id_eq] <;> ring
+  convert hh using 1 <;> simp only [id_eq]; ring
 
 theorem annularSum_deriv {Index : Type*} (S : Finset Index) (c : Index→ℂ)
     (ratio : Index→ℝ) (hratio : ∀p∈S,0<ratio p)

@@ -63,7 +63,7 @@ theorem ramified_error_coefficient_mass
   have hx' : (51 / 100 : ℝ) ≤ x.re := by rw [hx]; linarith
   have hz' : (17 / 50 : ℝ) ≤ z.re := hz.ge
   by_cases hj2 : 2 ≤ j
-  · rw [if_pos hj2]
+  · rw [ite_eq_left hj2]
     have hS := ramified_strict_coefficient_mass p hp hg hc eta a phase x z
       (1 / 2 - rho) hQ heta ha hphase hx' hz' j hj
     have he : Q ^ (1 - (1 / 2 - rho)) = Q ^ (1 / 2 : ℝ) * Q ^ rho := by
@@ -76,7 +76,7 @@ theorem ramified_error_coefficient_mass
     change _ ≤ 1161 * Q ^ (1 / 2 : ℝ) * Q ^ rho
     change _ ≤ 1155 * Q ^ (1 / 2 : ℝ) at hR
     nlinarith [Real.rpow_nonneg hQ0.le (1 / 2 : ℝ)]
-  · rw [if_neg hj2,mul_one]
+  · rw [ite_eq_right hj2,mul_one]
     have hS := ramified_boundary_coefficient_mass p hp hg hc eta a phase x z
       (1 / 2 - rho) hQ heta ha hphase hx' hz' j (by omega)
     have hpow : Q ^ (-(1 / 2 - rho)) ≤ Q ^ (1 / 2 : ℝ) :=

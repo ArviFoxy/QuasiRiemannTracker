@@ -308,8 +308,8 @@ theorem actual_detector_affine_input : DetectorAffineInputAt Cycle63.CountAffine
   filter_upwards [hsource η D.t D.t_pos,hscale] with Z hs hscale
   refine ⟨hs.1,?_⟩
   intro rows hrows d hd a tstar T allowance i B hB hdata hprof hwidth hupper hreal
-    bin label left right hne height hheight hexternal
-  intro selected hselected hm1 hm2 hw1 hw2 hcapA j k hjk σ hσ t ht
+    bin label left right hne height hheight hexternal selected hselected hm1 hm2 hw1 hw2 hcapA j k hjk
+    σ hσ t ht
   let F := B.fiber bin label left right hne
   have hdpos : 0<d := by linarith
   have hU : 1<Z^d := Real.one_lt_rpow hs.1 hdpos

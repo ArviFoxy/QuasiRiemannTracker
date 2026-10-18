@@ -105,7 +105,7 @@ theorem affine_actual_retained_fourth {D : Cycle25.Weighted.MomentData}
     simpa only [P,E] using hb
   have hresult := hretained G τ ψ P X (fun _=>U^(xi/4)) 0 (n*Real.log U) B E Rcap
     hX hinterval hgeom hB hE hG hRcap hR hmoment
-  convert hresult using 1 <;> dsimp [E,n] <;> ring
+  convert hresult using 1; dsimp [E,n]; ring
 
 end SevenEighths.Cycle63NumeratorFourth
 end

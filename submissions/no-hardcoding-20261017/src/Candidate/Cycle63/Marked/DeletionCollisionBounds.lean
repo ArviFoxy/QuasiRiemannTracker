@@ -70,7 +70,7 @@ theorem normalizedPrimeCoeff_bound (pool : Finset (Ideal O)) (β : Ideal O→ℂ
 /-- Actual normalized prime coefficients have uniformly bounded square
 mass, without any separation condition between different slots. -/
 theorem normalizedPrimeCoeff_energy (atoms pool : Finset (Ideal O)) (β : Ideal O→ℂ)
-    (P B : ℝ) (hP : 1≤P) (hB : 0≤B) (hβ : ∀I∈pool,‖β I‖≤B)
+    (P B : ℝ) (hP : 1≤P) (_hB : 0≤B) (hβ : ∀I∈pool,‖β I‖≤B)
     (hp : ∀I∈pool,I≠0) (hN : ∀I∈pool,(I.absNorm:ℝ)≤2*P) :
     (∑I∈atoms,‖normalizedPrimeCoeff pool β P I‖^2)≤256*B^2 := by
   have hPp : 0<P := zero_lt_one.trans_le hP
@@ -82,7 +82,7 @@ theorem normalizedPrimeCoeff_energy (atoms pool : Finset (Ideal O)) (β : Ideal 
     nlinarith
   have hterm (I : Ideal O) (hI : I∈pool) :
       ‖normalizedPrimeCoeff pool β P I‖^2≤B^2/P := by
-    rw [normalizedPrimeCoeff,if_pos hI,norm_mul,norm_inv,Complex.norm_real,
+    rw [normalizedPrimeCoeff,ite_eq_left hI,norm_mul,norm_inv,Complex.norm_real,
       Real.norm_eq_abs,abs_of_nonneg hs.le,mul_pow,inv_pow,Real.sq_sqrt hPp.le]
     rw [div_eq_mul_inv,mul_comm (B^2)]
     exact mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (norm_nonneg _) (hβ I hI) 2) (inv_nonneg.mpr hPp.le)

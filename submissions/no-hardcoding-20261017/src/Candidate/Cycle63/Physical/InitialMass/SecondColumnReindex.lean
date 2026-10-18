@@ -63,7 +63,7 @@ theorem actual_second_left_normalized_column_reindex
           ‖normalizedColumn (withHeight (d r.1).input ((d r.1).τ r.2.1)
             ((d r.1).input.t+2*Real.pi*(u-t)))
             (d r.1).C (d r.1).hC (d r.1).R (d r.1).seed D r.2.2.2.val‖^2)=
-      ∑l,∑χ : RayCharacter,∑ψ : RayCharacter,
+      ∑l,∑χ : RayCharacter,∑_ψ : RayCharacter,
         ∑D∈(d l).block.divisors.filter Squarefree,
           ∑z∈secondLiveColumnRows (d l).block,
             (‖w l‖*(d l).block.outside*volume (d l).input.toData)*
@@ -82,7 +82,7 @@ theorem actual_second_right_normalized_column_reindex
           ‖normalizedColumn (withHeight (d r.1).input ((d r.1).τ r.2.2.1⁻¹)
             ((d r.1).input.t+2*Real.pi*(u-(-t))))
             (d r.1).D (d r.1).hD (d r.1).R (d r.1).seed D (-r.2.2.2.val)‖^2)=
-      ∑l,∑χ : RayCharacter,∑ψ : RayCharacter,
+      ∑l,∑_χ : RayCharacter,∑ψ : RayCharacter,
         ∑D∈(d l).block.divisors.filter Squarefree,
           ∑z∈secondLiveColumnRows (d l).block,
             (‖w l‖*(d l).block.outside*volume (d l).input.toData)*

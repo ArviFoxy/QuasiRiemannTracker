@@ -90,15 +90,15 @@ theorem actual_retained_uniform_fourth (epsilon : ℝ) (hepsilon : 0 < epsilon)
     simp only [normalized_zero]
     by_cases hk : keep i (u i)
     · simp only [keep] at hk
-      rw [if_pos hk]
+      rw [ite_eq_left hk]
       dsimp [Y,P',keep,c]
-      rw [if_pos hk,if_pos hk,norm_mul_sqrt_fourth]
+      rw [ite_eq_left hk,ite_eq_left hk,norm_mul_sqrt_fourth]
     · have hk' := hk
       simp only [keep] at hk'
-      rw [if_neg hk']
+      rw [ite_eq_right hk']
       simp only [norm_zero,zero_pow (by omega : 4 ≠ 0)]
       dsimp [P',keep]
-      rw [if_neg hk']
+      rw [ite_eq_right hk']
       simp
   have hh := hw (fun i => sourcePrimes (χ i) (ψ i))
     (fun i Q hQ => redundantSet_prime _ _ Q hQ) ψ (fun i => (ψ i).inverse)

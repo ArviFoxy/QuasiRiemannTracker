@@ -344,7 +344,7 @@ def MainLowQuantitativeBinSpec {α : Type} [Fintype α] [DecidableEq α]
             (⟨firstIndex r.1,r.2⟩ : GeometryMainSecondIndex reflected s R seed₀ Z Mrow amp ξ reserve bs t
               (Fintype.card α) hZ bin)∈geometryMainNonzeroBlocks reflected s R seed₀ Z Mrow amp ξ reserve bs t
                 (Fintype.card α) hZ bin hw₁ hw₂)
-          (hU : ∀r∈rows,r.2.2.1∈inactiveSubsets r.2.1.val.val.1 r.2.1.val.val.2)
+          (hU : ∀r∈rows,ActualSecondBlockIndex.IsInactive r.2)
           (box : Finset (Fin 4→ ℤ))
           (hbox : ∀r∈rows,actualSecondDyad (childSrc r.1) (Rchild r.1) (seed r.1)
             (K r.1) (Tsec r.1) Z ξ r.2∈box),

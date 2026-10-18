@@ -107,7 +107,7 @@ theorem certified_actual_retained_fourth {D : Cycle25.Weighted.MomentData}
         simpa only [P] using hb
       apply hsumBound.trans
       dsimp [E]
-      gcongr <;> first | linarith [norm_nonneg v,norm_nonneg w,abs_nonneg v,abs_nonneg w] | omega
+      gcongr <;> linarith [norm_nonneg v,norm_nonneg w,abs_nonneg v,abs_nonneg w]
     · have hslot (i:rows) : P i = 1 := by subst T; simp [P]
       simp only [hslot,mul_one]
       have hexp : U^n ≤ U^(2:ℝ) := Real.rpow_le_rpow_of_exponent_le hU.le hmmax
@@ -125,10 +125,10 @@ theorem certified_actual_retained_fourth {D : Cycle25.Weighted.MomentData}
         apply (show Cz ≤ Cp+Cz by linarith).trans
         exact le_mul_of_one_le_right (by positivity) (one_le_pow₀ (by linarith))
       dsimp [E]
-      gcongr <;> first | exact hfac | linarith [norm_nonneg v,norm_nonneg w,abs_nonneg v,abs_nonneg w] | omega
+      gcongr <;> first | exact hfac | linarith [norm_nonneg v,norm_nonneg w,abs_nonneg v,abs_nonneg w]
   have hresult := hretained G τ ψ P X (fun _=>U^(xi/4)) 0 (n*Real.log U) B E Rcap
     hX hinterval hgeom hB hE hG hRcap hR hmoment
-  convert hresult using 1 <;> dsimp [E,n] <;> ring
+  convert hresult using 1; dsimp [E,n]; ring
 
 end SevenEighths.Cycle25WeightedNumeratorPhysical
 end

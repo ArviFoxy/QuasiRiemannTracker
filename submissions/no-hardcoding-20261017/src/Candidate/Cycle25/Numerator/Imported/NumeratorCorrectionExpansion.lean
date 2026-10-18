@@ -124,7 +124,7 @@ theorem continuedCorrection_coefficient_expansion (eps : ℝ) (S : Finset (Ideal
 
 theorem continuedCorrection_coefficient_subpower (epsilon : ℝ) (hepsilon : 0 < epsilon) :
     ∃ C : ℝ, 0 < C ∧ ∀ (eps sigma : ℝ) (S : Finset (Ideal O))
-      (hS : SourceExclusions S) (hfirst : FirstTail eps S) (η : Character) (u : FreeRow)
+      (hS : SourceExclusions S) (_hfirst : FirstTail eps S) (η : Character) (u : FreeRow)
       (x z : ℂ), (51 / 100 : ℝ) ≤ x.re → (17 / 50 : ℝ) ≤ z.re →
       -(1 / 100 : ℝ) ≤ sigma → 1 + eps ≤ x.re + sigma →
       (∑' e : CorrectionIndex S u, ‖correctionCoefficient S hS η u x z e‖ *

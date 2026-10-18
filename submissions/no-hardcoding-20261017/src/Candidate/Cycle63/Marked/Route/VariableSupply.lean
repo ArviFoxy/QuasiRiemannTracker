@@ -22,7 +22,7 @@ theorem count_identity {d p s : ℝ} (hd : d ≤ Cycle63.Optimization.markedBinT
   apply mul_left_cancel₀ hn
   unfold count cutoff
   field_simp [hn]
-  <;> ring
+; ring
 
 theorem gain_identity {d p s : ℝ} (hd : d ≤ Cycle63.Optimization.markedBinTop) :
     density d-count d p s = gain d p s := by
@@ -30,7 +30,7 @@ theorem gain_identity {d p s : ℝ} (hd : d ≤ Cycle63.Optimization.markedBinTo
   apply mul_left_cancel₀ hn
   unfold density count cutoff gain
   field_simp [hn]
-  <;> ring
+; ring
 
 theorem inverseWidth_bounds {S : ℝ} (hS : 0 ≤ S) :
     0 ≤ inverseWidth S ∧ inverseWidth S ≤ S ∧ inverseWidth S ≤ Cycle63.Optimization.inverseWidthCap := by

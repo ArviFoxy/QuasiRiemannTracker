@@ -39,7 +39,7 @@ theorem actual_high_source_row
     ∀ (s : NaturalState Z Bmask bΦ), s.width ≤ Mcap →
     ∀ (hQM : s.fixedModulus ≤ M) (hQη : s.fixedModulus ≤ η₀.modulus)
       (a : ℝ) (i : ℕ), 51/100 ≤ a → a ≤ 1 →
-    ∀ z : O, ∀ hz : s.radial.keep z, ∀ F : NaturalRow s.character z,
+    ∀ z : O, ∀ _hz : s.radial.keep z, ∀ F : NaturalRow s.character z,
     ActualLow M H hH s η₀ hQM hQη a e (3*(i+1 : ℕ)*Z^τ) z →
     ∀ {Dict : Type*} [Fintype Dict] (χ : Dict → Character)
       (hχ : ∀ j, (χ j).residue ≠ 1) (j : Dict),

@@ -67,7 +67,7 @@ theorem actual_second_allocation_window_energy {α : Type*} [Fintype α] [Decida
     ∃K : ℝ,0<K ∧ ∀{κ : Type*}(rows : Finset κ)(slots : κ→Finset α)
       (s : (k : κ)→Input (slots k)) (C R seed L : κ→Ideal O)
       (hC : ∀k,Supported (C k)) (η : κ→Character)
-      (t θ X : κ→ℝ) (hX : ∀k,0<X k) (z : κ→O) (scalar : κ→ℂ)
+      (t θ X : κ→ℝ) (_hX : ∀k,0<X k) (z : κ→O) (scalar : κ→ℂ)
       (V : ℝ→ℂ) (hc : HasCompactSupport V) (hs : ContDiff ℝ ∞ V)
       (J : ℕ) (E : ℝ),0≤E →
       (∀k∈rows,seed k∣C k) → (∀k∈rows,Squarefree (L k)) →

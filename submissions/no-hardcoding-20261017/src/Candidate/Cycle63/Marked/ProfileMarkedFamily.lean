@@ -97,7 +97,7 @@ theorem actual_profile_marked_weighted_family {Index : Type} [Fintype Index]
         dsimp [K]
         ring
   have hh:=mul_le_mul_of_nonneg_left hbound (hcoeff l hl)
-  convert hh using 1 <;> ring
+  convert hh using 1; ring
 
 end
 end OAI.SevenEighths.Cycle63Moment

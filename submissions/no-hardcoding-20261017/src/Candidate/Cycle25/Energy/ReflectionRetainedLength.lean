@@ -65,7 +65,7 @@ lemma one_reflection_total_width (M A z b xi reflected : ℝ)
     reflected+b+z≤3*M/2-A+2*z+xi := by linarith
 
 lemma positive_slot_width_drop (M A z xi kappa : ℝ)
-    (hM : 0≤M) (hz : 0≤z) (hk : 7/10≤kappa)
+    (_hM : 0≤M) (hz : 0≤z) (hk : 7/10≤kappa)
     (hA : 5*M/6≤A) (hcap : A+(6*kappa-1)*z≤M) :
     3*M/2-A+2*z+xi≤37*M/48+xi ∧
     3*M/2-A+2*z+xi+(6*kappa-1)*z≤15*M/16+xi := by

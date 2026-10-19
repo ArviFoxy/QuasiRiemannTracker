@@ -137,5 +137,3 @@ theorem affine_marked_count_on_window
 
 end
 end OAI.SevenEighths.MainCount
-#print axioms OAI.SevenEighths.MainCount.affine_marked_count
-#print axioms OAI.SevenEighths.MainCount.affine_marked_count_on_window

@@ -33,38 +33,7 @@ theorem geometry_affine_main_amplifier_bound  (beta : ℝ)
     norm_num [Sil.Uneven.AuxiliarySource.amplifierMinimum] at hlo
     linarith
 
-/-- Fold the fixed amplifier coefficient after the prime average has
-already been paid in both branches. There is no second prime factor. -/
-theorem geometry_amplified_branch_join (main error Kmain Kerror control a : ℝ)
-    (ha : 0≤a) (ha' : a≤2000000) (hKm : 0≤Kmain) (hc : 0≤control)
-    (hm : main≤Kmain*control) (he : error≤Kerror*control) :
-    a*main+error≤(2000000*Kmain+Kerror)*control := by
-  have h₁:=mul_le_mul_of_nonneg_left hm ha
-  have h₂:=mul_le_mul_of_nonneg_right ha' (mul_nonneg hKm hc)
-  nlinarith
 
-/-- Both orientations use the same E and reciprocal physical compensator.
-The asymmetric fixed support constant is absorbed into E. -/
-theorem geometry_physical_side_join (reflected : Bool) (C K control budget : ℝ)
-    (key : ℤ×(Fin 5→ℤ)) (hK : 0≤K) (hc : 0≤control)
-    (hb : budget≤K*geometryHighFactor reflected C key*control) :
-    let E:=K*(1+2*C^2)*control
-    budget ≤ (if reflected then E/geometryDCompensator key
-      else E*geometryDCompensator key) := by
-  intro E
-  have hh:=(geometryDCompensator_pos key).le
-  cases reflected
-  · simp only [geometryHighFactor,Bool.false_eq_true,ite_false] at hb ⊢
-    dsimp only [E]
-    nlinarith [mul_nonneg (mul_nonneg hK hc) hh]
-  · simp only [geometryHighFactor,ite_true] at hb ⊢
-    dsimp only [E]
-    rw [div_eq_mul_inv]
-    have hnonneg : 0≤K*C^2*control*(geometryDCompensator key)⁻¹ := by positivity
-    nlinarith
 
 end
 end OAI.SevenEighths.AuxiliaryHigh
-#print axioms OAI.SevenEighths.AuxiliaryHigh.geometry_affine_main_amplifier_bound
-#print axioms OAI.SevenEighths.AuxiliaryHigh.geometry_amplified_branch_join
-#print axioms OAI.SevenEighths.AuxiliaryHigh.geometry_physical_side_join

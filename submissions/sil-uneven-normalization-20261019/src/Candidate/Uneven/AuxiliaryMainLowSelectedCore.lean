@@ -176,4 +176,3 @@ theorem actual_low_fixed_profile_columns
 
 end
 end OAI.SevenEighths.AuxiliaryPhysical
-#print axioms OAI.SevenEighths.AuxiliaryPhysical.actual_low_fixed_profile_columns

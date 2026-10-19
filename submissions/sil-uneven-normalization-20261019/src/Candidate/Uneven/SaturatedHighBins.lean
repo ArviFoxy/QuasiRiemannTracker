@@ -272,4 +272,3 @@ theorem actual_geometry_saturated_binned_shell {α : Type} [Fintype α] [Decidab
 
 end
 end OAI.SevenEighths.TargetHigh830
-#print axioms OAI.SevenEighths.TargetHigh830.actual_geometry_saturated_binned_shell

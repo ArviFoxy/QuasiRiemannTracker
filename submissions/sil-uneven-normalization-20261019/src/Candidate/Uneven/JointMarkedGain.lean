@@ -160,14 +160,6 @@ theorem root_gain_lower {a b : Fin 4 → ℝ} {S D c z pad : ℝ}
   have hc := mul_nonneg (sub_nonneg.mpr (hbc i)) hz
   nlinarith only [hh,hp,hc]
 
-/-- The exact sixth-root norm is summable after paying the scale slope. -/
-theorem weighted_root_exponent {a b : Fin 4 → ℝ} {S D c z pad rho nu : ℝ}
-    (hb0 : ∀ i, 0 ≤ b i) (hbc : ∀ i, b i ≤ c)
-    (hz : 0 ≤ z) (hpad : 0 ≤ pad) :
-    rho*(D-6*z)+nu*S-fourGain a b S (D-6*z+pad) ≤
-      rho*D+nu*S-fourGain a b S D-6*(rho-c)*z := by
-  have hh := root_gain_lower (a:=a) (S:=S) (D:=D) hb0 hbc hz hpad
-  linarith
 
 theorem one_form_width_transport {a b gamma R L Q S F : ℝ}
     (ha : 0 ≤ a) (hb : 0 ≤ b) (hg : 0 ≤ gamma)
@@ -205,7 +197,3 @@ theorem four_gain_width_transport {a b : Fin 4 → ℝ} {gamma R L Q S F : ℝ}
   linarith
 
 end PR63Adaptation
-#print axioms PR63Adaptation.weighted_short_fiber
-#print axioms PR63Adaptation.weighted_long_fiber
-#print axioms PR63Adaptation.weighted_root_exponent
-#print axioms PR63Adaptation.four_gain_width_transport

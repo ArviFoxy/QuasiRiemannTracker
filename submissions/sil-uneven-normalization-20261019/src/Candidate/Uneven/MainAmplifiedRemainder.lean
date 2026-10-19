@@ -1,14 +1,42 @@
-/- Adapted from PR63 by Sil with OpenAI Codex assistance. Apache-2.0. -/
-import Candidate.Uneven.MainErrorLoss
+import Candidate.Uneven.MainParameters
+import Candidate.Cycle63.Physical.InitialMass.GeometryLossSchedule
 import Candidate.Uneven.MainZeroPayment
 import Candidate.Uneven.MainErrorMain
 import Candidate.Uneven.MainCellGeometry
 import Candidate.Cycle63.Physical.SecondZero.Source
-/- Copyright (c) 2026 Hailey Collet. Released under Apache 2.0. -/
 import Candidate.Cycle63.Physical.InitialMass.GeometryErrorRemainder
 import Candidate.Cycle63.Arithmetic.LocalReserves
 import Candidate.Cycle63.Physical.FinalError.Payment
-import Candidate.Cycle63.Physical.InitialMass.GeometryLossSchedule
+
+/- Original module: Candidate.Uneven.MainErrorLoss. -/
+section
+/- Copyright (c) 2026 Sil. Apache-2.0. Prepared with OpenAI Codex assistance. -/
+
+set_option autoImplicit false
+namespace OAI.SevenEighths.MainReconstruction
+noncomputable section
+open Cycle63InitialMass
+
+/-- The smaller error reserve is paid using the actual capped loss unit. -/
+theorem main_paid_error_loss (Mmin εaffine M reserve loss : ℝ)
+    (hMmin : 0< Mmin) (hM : Mmin≤ M)
+    (hεcap : εaffine≤ Mmin/1000000000)
+    (hr : Sil.Uneven.MainSource.errorReserve≤ reserve)
+    (hloss : loss≤64*geometryLossUnit Mmin εaffine) :
+    -M*reserve+loss≤-M*(1/2000000000) := by
+  have hu : geometryLossUnit Mmin εaffine≤εaffine/128 := min_le_left _ _
+  have hres := mul_le_mul_of_nonneg_left hr (hMmin.trans_le hM).le
+  norm_num [Sil.Uneven.MainSource.errorReserve] at hres
+  linarith only [hu,hres,hεcap,hloss,hM,hMmin]
+
+end
+end OAI.SevenEighths.MainReconstruction
+end
+
+/- Original module: Candidate.Uneven.MainAmplifiedRemainder. -/
+section
+/- Adapted from PR63 by Sil with OpenAI Codex assistance. Apache-2.0. -/
+/- Copyright (c) 2026 Hailey Collet. Released under Apache 2.0. -/
 
 set_option autoImplicit false
 namespace OAI.SevenEighths.MainReconstruction
@@ -28,10 +56,10 @@ variable {plane : Plane}
 /-- The actual prime average costs only the three extracted branches.
 The prime pool is not replaced by a polynomial counting estimate. -/
 theorem actual_error_zero_prime_average (P : Finset (Ideal O)) (Z ε : ℝ)
-    (hne : P.Nonempty) (hZ : 1<Z) (hε : 0 ≤ ε)
+    (hne : P.Nonempty) (hZ : 1< Z) (hε : 0 ≤ ε)
     (hp : ∀Q∈P,Prime Q) (hbad : ∀Q∈P,Q∉fixedBadPrimes) :
     (56/(P.card:ℝ))*errorZeroPrimeWeight Z ε P ≤ 168 := by
-  have hn : (0:ℝ)<P.card := by exact_mod_cast hne.card_pos
+  have hn : (0:ℝ)< P.card := by exact_mod_cast hne.card_pos
   have hpoint (q : elementPool P) (i : Fin 3) :
       Z^(-ε*errorRemoval q.val Z (errorIndex i+1)) ≤ 1 := by
     have hdata := elementPool_data P hp hbad q.val q.property
@@ -45,7 +73,7 @@ theorem actual_error_zero_prime_average (P : Finset (Ideal O)) (Z ε : ℝ)
   have hw : errorZeroPrimeWeight Z ε P ≤ 3*(P.card:ℝ) := by
     calc
       _ ≤ ∑q : elementPool P,∑i : Fin 3,(1:ℝ) :=
-        Finset.sum_le_sum (fun q _=>Finset.sum_le_sum (fun i _=>hpoint q i))
+        Finset.sum_le_sum (fun q _=> Finset.sum_le_sum (fun i _=> hpoint q i))
       _=3*(P.card:ℝ) := by
         simp only [Finset.sum_const,Finset.card_univ,Fintype.card_fin,nsmul_eq_mul,mul_one,
           Fintype.card_coe,elementPool_card P hp hbad]
@@ -71,13 +99,13 @@ theorem geometry_zero_exponent_saving (Z M A a ξ reserve padding ε εmass B co
 full prime average and arithmetic-label sums. The factor 1872 is the exact
 sum of their existing multiplicities, rather than a new label count. -/
 theorem geometry_error_branches_saving (Z Mmin εaffine M loss : ℝ)
-    (hZ : 1 ≤ Z) (hMmin : 0<Mmin) (hM : Mmin ≤ M)
-    (hεcap : εaffine≤Mmin/1000000000)
+    (hZ : 1 ≤ Z) (hMmin : 0< Mmin) (hM : Mmin ≤ M)
+    (hεcap : εaffine≤ Mmin/1000000000)
     (hloss : loss ≤ 64*geometryLossUnit Mmin εaffine) :
     Z^loss*(∑i : Fin 3,16*(errorIndex i+2:ℝ)^2*
       Z^(-M*MainError.branchReserve (errorIndex i+1))) ≤ 
       1872*Z^(-M*(1/2000000000:ℝ)) := by
-  have hz : 0<Z := zero_lt_one.trans_le hZ
+  have hz : 0< Z := zero_lt_one.trans_le hZ
   have hres (k : ℕ) : Sil.Uneven.MainSource.errorReserve ≤ MainError.branchReserve k := by
     norm_num [MainError.branchReserve,errorReserve]
   have hpoint (i : Fin 3) :
@@ -96,21 +124,21 @@ theorem geometry_error_branches_saving (Z Mmin εaffine M loss : ℝ)
     _ = ∑i : Fin 3,Z^loss*(16*(errorIndex i+2:ℝ)^2*
         Z^(-M*MainError.branchReserve (errorIndex i+1))) := Finset.mul_sum ..
     _  ≤  ∑i : Fin 3,(16*(errorIndex i+2:ℝ)^2)*Z^(-M*(1/2000000000:ℝ)) :=
-      Finset.sum_le_sum (fun i _=>hpoint i)
+      Finset.sum_le_sum (fun i _=> hpoint i)
     _ = _ := by rw [←Finset.sum_mul]; norm_num [Fin.sum_univ_succ,errorIndex]
 
 
 /-- Width-one amplification pays the main-source amplifier power exactly.
 The coefficient is uniform across the 600000001 admissible cells. -/
 theorem geometry_main_prime_payment (P : Finset (Ideal O)) (Z β loss Ccap E : ℝ)
-    (hZ : 0<Z) (hb : widthLo ≤ β ∧ β ≤ widthHi)
+    (hZ : 0< Z) (hb : widthLo ≤ β ∧ β ≤ widthHi)
     (hC : 0 ≤ Ccap) (hE : 0 ≤ E)
     (hpool : Z^(Sil.Uneven.MainSource.amp plane β-loss) ≤ (P.card:ℝ)) :
     (56/(P.card:ℝ))*((Ccap+6*Sil.Uneven.MainSource.amp plane β)/(Sil.Uneven.MainSource.amp plane β/2))*
       (E*Z^(Sil.Uneven.MainSource.amp plane β)) ≤ 11200000*(Ccap+1)*E*Z^loss := by
   have ha := Sil.Uneven.MainSource.scheduling_guards plane hb
   have hap := Sil.Uneven.MainSource.amplifier_pos plane hb
-  have hp : (0:ℝ)<P.card := (Real.rpow_pos_of_pos hZ _).trans_le hpool
+  have hp : (0:ℝ)< P.card := (Real.rpow_pos_of_pos hZ _).trans_le hpool
   have hfac : (Ccap+6*Sil.Uneven.MainSource.amp plane β)/(Sil.Uneven.MainSource.amp plane β/2) ≤ 
       200000*(Ccap+1) := by
     apply (div_le_iff₀ (half_pos hap)).mpr
@@ -138,9 +166,4 @@ theorem geometry_main_prime_payment (P : Finset (Ideal O)) (Z β loss Ccap E : �
 
 end
 end OAI.SevenEighths.MainReconstruction
-#print axioms OAI.SevenEighths.MainReconstruction.actual_error_zero_prime_average
-#print axioms OAI.SevenEighths.MainReconstruction.geometry_zero_exponent_saving
-
-#print axioms OAI.SevenEighths.MainReconstruction.geometry_error_branches_saving
-
-#print axioms OAI.SevenEighths.MainReconstruction.geometry_main_prime_payment
+end

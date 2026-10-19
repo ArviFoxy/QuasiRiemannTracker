@@ -39,4 +39,3 @@ theorem retained_high_payment_general {d gamma r1 r2 S F live freq base fee erro
   nlinarith only [hp,hhigh,hr]
 
 end Sil.Uneven.Saturated
-#print axioms Sil.Uneven.Saturated.retained_high_payment_general

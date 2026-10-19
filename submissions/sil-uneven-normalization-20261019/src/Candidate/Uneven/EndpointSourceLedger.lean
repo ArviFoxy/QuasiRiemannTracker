@@ -100,7 +100,3 @@ lemma old_physical_packet_certificate (D : BaselineData) (eps sigma d a q : ℝ)
   linarith
 end OAI.SevenEighths.UnevenEndpoint.Physical.Source
 
-#print axioms OAI.SevenEighths.UnevenEndpoint.Physical.Source.sourceMesh_le
-#print axioms OAI.SevenEighths.UnevenEndpoint.Physical.Source.physical_loss_bound
-#print axioms OAI.SevenEighths.UnevenEndpoint.Physical.Source.physical_packet_certificate
-#print axioms OAI.SevenEighths.UnevenEndpoint.Physical.Source.old_physical_packet_certificate

@@ -315,4 +315,3 @@ theorem actual_geometry_literal_bootstrap_high_shell {α : Type} [Fintype α] [D
 
 end
 end OAI.SevenEighths.MainHigh
-#print axioms OAI.SevenEighths.MainHigh.actual_geometry_literal_bootstrap_high_shell

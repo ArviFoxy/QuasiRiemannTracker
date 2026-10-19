@@ -549,19 +549,8 @@ theorem eventual_actual_error_dependent_full_label_payment (N : ℕ) (lo εv B �
 
 end
 end OAI.SevenEighths.MainErrorReconstruction
-#print axioms OAI.SevenEighths.MainErrorReconstruction.actual_error_source_rows_neg
-#print axioms OAI.SevenEighths.MainErrorReconstruction.actual_error_ordinary_rows_neg
-#print axioms OAI.SevenEighths.MainErrorReconstruction.actual_error_ordinary_normalized_columns
 
-#print axioms OAI.SevenEighths.MainErrorReconstruction.error_normalized_coefficient_nonneg
-#print axioms OAI.SevenEighths.MainErrorReconstruction.actual_error_block_weight_norm
-#print axioms OAI.SevenEighths.MainErrorReconstruction.actual_error_full_normalized_to_columns
 
-#print axioms OAI.SevenEighths.MainErrorReconstruction.actual_geometry_error_live_common_allocation
-#print axioms OAI.SevenEighths.MainErrorReconstruction.actual_geometry_error_full_normalized_to_columns
 
-#print axioms OAI.SevenEighths.MainErrorReconstruction.actual_error_dependent_projector_reciprocal
 
-#print axioms OAI.SevenEighths.MainErrorReconstruction.eventual_actual_error_projector_dependent_payment
 
-#print axioms OAI.SevenEighths.MainErrorReconstruction.eventual_actual_error_dependent_full_label_payment

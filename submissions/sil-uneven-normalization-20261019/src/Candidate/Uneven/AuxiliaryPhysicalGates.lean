@@ -111,4 +111,3 @@ theorem eventual_actual_affine_exceptional_source_gates
 
 end
 end OAI.SevenEighths.AuxiliaryPhysical
-#print axioms OAI.SevenEighths.AuxiliaryPhysical.eventual_actual_affine_exceptional_source_gates

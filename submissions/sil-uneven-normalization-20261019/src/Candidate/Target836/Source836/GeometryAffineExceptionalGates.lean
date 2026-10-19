@@ -1,12 +1,87 @@
 import Candidate.Target836.Source836.GlobalNamed
+import Candidate.Cycle63.Physical.InitialMass.GeometryErrorCoprime
+import Candidate.Cycle63.Arithmetic.LocalReserves
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.PrimeElements
 import Candidate.Cycle63.Physical.InitialMass.GeometryAffineExceptionalGates
-/- Copyright (c) 2026 Hailey Collet. Released under Apache 2.0. -/
 import Candidate.Cycle63.Physical.InitialMass.GeometryExceptionalErrorNormPayment
 import Candidate.Cycle63.Physical.InitialMass.GeometryAffinePoolCaps
-import Candidate.Target836.Source836.GeometryAffinePrimeGates
 import Candidate.Cycle63.Physical.InitialMass.GeometryLossSchedule
 import Candidate.Cycle63.Moment.InitialState
 import Candidate.Cycle63.Moment.CellGeometry
+
+/- Original module: Candidate.Target836.Source836.GeometryAffinePrimeGates. -/
+section
+/- Copyright (c) 2026 Hailey Collet. Released under Apache 2.0. -/
+
+set_option autoImplicit false
+namespace OAI.SevenEighths.Target836SourceAssembly
+noncomputable section
+open OAI.SevenEighths.Cycle63InitialMass OAI.SevenEighths.Cycle63Physical OAI.SevenEighths.Cycle63SecondZero
+open scoped Classical BigOperators
+open Filter HeckeFamily CanonicalQuadraticSieve
+open CenteredMomentCommonRadialData CenteredMomentAllocatedRayDictionary
+open CenteredMomentAmplificationSlotGap CenteredMomentPrimeElements
+open ConcretePrimeRowBridge
+local notation "O" => ActualEisensteinCubic.O
+variable (M : Ideal O) [NeZero M]
+local instance affinePrimeGatesFiniteQuotient : Finite (O⧸M) :=
+  Ring.HasFiniteQuotients.finiteQuotient (NeZero.ne M)
+variable (H : Subgroup (O⧸M)ˣ) (hH : RayOrthogonality.globalUnits M≤ H)
+
+/-- One threshold separates every amplifier cell from all stored slots.
+It does not discard entries whose smooth profile happens to vanish. -/
+theorem eventual_geometry_affine_prime_coprime
+    (S : Finset (Ideal O)) (hS : fixedBadPrimes⊆S) (b mesh : ℝ)
+    (hmesh : mesh<(902420521/120632400000:ℝ)/2) :
+    ∀ᶠZ : ℝ in atTop,1< Z ∧
+      ∀beta : ℝ,3401/100000≤ beta → beta≤1/25 →
+      let P:=CenteredMomentPrimePool.primePool M H S (1/2) 1
+        (Z^(GlobalNamed.amp beta))
+      ∀{α : Type*}[Fintype α][DecidableEq α]
+        (s : Input α)(η₀ : Character)(θ : α→RayQuotient.Characters M H)
+        (w σ v : α→ℝ)(W : ℝ→ℂ),
+        Matches M H hH s η₀ θ w σ v W b Z → (∀i,w i≤ mesh) →
+        ∀q : elementPool P,∀i I,I∈s.slots i→IsCoprime (Ideal.span {q.val}) I := by
+  let ell : ℝ:=(902420521/120632400000)/2
+  have hell : 0< ell := by norm_num [ell]
+  filter_upwards [eventually_scale_gap (max 1 b) mesh ell hmesh,
+    (tendsto_rpow_atTop hell).eventually (eventually_ge_atTop (2:ℝ)),
+    eventually_gt_atTop (1:ℝ)] with Z hgap hlarge hZ
+  refine ⟨hZ,?_⟩
+  intro beta hlo hhi P α _ _ s η₀ θ w σ v W hm hw q i I hI
+  have hz : 0< Z:=zero_lt_one.trans hZ
+  have hp : ∀Q∈P,Prime Q:=fun Q hQ=>(primePool_data M H S hS _ _ _ Q hQ).1
+  have hbad : ∀Q∈P,Q∉fixedBadPrimes:=fun Q hQ=>(primePool_data M H S hS _ _ _ Q hQ).2
+  have hq:=elementPool_data P hp hbad q.val q.property
+  have hn:=PNT.AnnularPrimeMass.norm_bounds_of_mem_annularPrimeIdeals
+    (by norm_num : (0:ℝ)≤1/2) (by norm_num : (1/2:ℝ)≤1)
+    (Real.rpow_pos_of_pos hz _) (Finset.mem_sdiff.mp hq.2.1).1
+  have hlow : Z^ell≤(1/2:ℝ)*Z^(GlobalNamed.amp beta) := by
+    have ha : ell+ell≤ GlobalNamed.amp beta := by
+      have h:=(GlobalNamed.amp_bounds ⟨hlo,hhi⟩).1
+      dsimp only [ell]
+      linarith
+    have hr:=Real.rpow_le_rpow_of_exponent_le hZ.le ha
+    rw [Real.rpow_add hz] at hr
+    have hnonneg:=Real.rpow_nonneg hz.le ell
+    have hx : 2 * Z^ell ≤ Z^(GlobalNamed.amp beta) :=
+      (mul_le_mul_of_nonneg_right hlarge hnonneg).trans hr
+    calc
+      Z^ell = (1/2:ℝ) * (2 * Z^ell) := by ring
+      _ ≤ (1/2:ℝ) * Z^(GlobalNamed.amp beta) :=
+        mul_le_mul_of_nonneg_left hx (by norm_num)
+  exact actual_full_slot_coprime M H hH s η₀ θ w σ v W b Z mesh ell hZ.le hm hw
+    (Ideal.span {q.val}) (hp _ hq.2.1)
+    (hlow.trans (by simpa only [mul_comm] using hn.1.le)) hgap.2 i I hI
+
+end
+end OAI.SevenEighths.Target836SourceAssembly
+#print axioms OAI.SevenEighths.Target836SourceAssembly.eventual_geometry_affine_prime_coprime
+end
+
+/- Original module: Candidate.Target836.Source836.GeometryAffineExceptionalGates. -/
+section
+/- Copyright (c) 2026 Hailey Collet. Released under Apache 2.0. -/
 
 set_option autoImplicit false
 set_option maxHeartbeats 500000
@@ -27,15 +102,15 @@ local notation "O" => HeckeFamily.O
 /-- Actual affine source receipts used by both exceptional payments. The
 plain loss is the exact fixed-parent conductor logarithm divided by four. -/
 private theorem affine_exceptional_quarter (Z X₁ X₂ ell : ℝ)
-    (hZ : 1<Z) (hX₁ : 0<X₁) (_hX₂ : 0<X₂)
-    (hlo₁ : (41/100:ℝ)≤length Z X₁) (hlo₂ : (41/100:ℝ)≤length Z X₂) :
+    (hZ : 1< Z) (hX₁ : 0< X₁) (_hX₂ : 0< X₂)
+    (hlo₁ : (41/100:ℝ)≤ length Z X₁) (hlo₂ : (41/100:ℝ)≤ length Z X₂) :
     let r:=Z^((1+ell)/4-ell/4)
-    r≤X₁ ∧ r≤X₂ ∧ r≤comparisonFirst Z 1 ∧
-      r≤comparisonSecond Z 1 X₁ X₂ := by
+    r≤ X₁ ∧ r≤ X₂ ∧ r≤ comparisonFirst Z 1 ∧
+      r≤ comparisonSecond Z 1 X₁ X₂ := by
   intro r
-  have hr : r=Z^(1/4:ℝ) := congrArg (fun e : ℝ=>Z^e) (by ring)
-  have hq : 0<Z^(1/4:ℝ) := Real.rpow_pos_of_pos (zero_lt_one.trans hZ) _
-  have hx (X : ℝ) (hlo : (41/100:ℝ)≤length Z X) : Z^(1/4:ℝ)≤X := by
+  have hr : r=Z^(1/4:ℝ) := congrArg (fun e : ℝ=> Z^e) (by ring)
+  have hq : 0< Z^(1/4:ℝ) := Real.rpow_pos_of_pos (zero_lt_one.trans hZ) _
+  have hx (X : ℝ) (hlo : (41/100:ℝ)≤ length Z X) : Z^(1/4:ℝ)≤ X := by
     rw [initial_scale_exact Z X 1 hZ (by norm_num) (by simpa only [mul_one] using hlo)]
     exact Real.rpow_le_rpow_of_exponent_le hZ.le (by linarith)
   have hx₁:=hx X₁ hlo₁
@@ -48,18 +123,18 @@ variable {α : Type*} [Fintype α] [DecidableEq α]
 variable (rayM : Ideal O) [NeZero rayM]
 local instance affineExceptionalFiniteQuotient : Finite (O⧸rayM) :=
   Ring.HasFiniteQuotients.finiteQuotient (NeZero.ne rayM)
-variable (H : Subgroup (O⧸rayM)ˣ) (hH : RayOrthogonality.globalUnits rayM≤H)
+variable (H : Subgroup (O⧸rayM)ˣ) (hH : RayOrthogonality.globalUnits rayM≤ H)
 
 /-- The threshold and profile cap precede every slot subset, smooth plain
 profile, fixed-parent radial function, and both heights. No energy is assumed. -/
 theorem eventual_actual_affine_exceptional_source_gates
     (W : ℝ→ℂ) (hW : Continuous W) (hWs : Function.support W⊆Set.Icc (1:ℝ) 2) :
-    ∃Cs : ℝ,1≤Cs ∧ ∀ᶠZ : ℝ in atTop,1<Z ∧
+    ∃Cs : ℝ,1≤ Cs ∧ ∀ᶠZ : ℝ in atTop,1< Z ∧
       ∀(T : Finset α)(η₀ : Character)(θ : T→RayQuotient.Characters rayM H)
         (w σ freq : T→ℝ)(hσ : ∀i,σ i∈Set.Icc (33/50:ℝ) (33/50))
         (bΦ : ℝ)(state : NaturalState Z 0 bΦ)(p : Profiles (1/4) (9/4))
-        (t X₁ X₂ : ℝ)(hX₁ : 0<X₁)(hX₂ : 0<X₂),
-      (∀i,0≤w i) → (41/100:ℝ)≤length Z X₁ → (41/100:ℝ)≤length Z X₂ →
+        (t X₁ X₂ : ℝ)(hX₁ : 0< X₁)(hX₂ : 0< X₂),
+      (∀i,0≤ w i) → (41/100:ℝ)≤ length Z X₁ → (41/100:ℝ)≤ length Z X₂ →
       length Z X₁≤(44/100:ℝ) → length Z X₂≤(44/100:ℝ) → (∑i,w i)≤(1/25:ℝ) →
       let inp:=affineInput rayM H hH η₀ θ W hW 1 2 (33/50) (33/50)
         (by norm_num) hWs w σ freq hσ state p (by norm_num) 1 t X₁ X₂ hX₁ hX₂
@@ -82,7 +157,7 @@ theorem eventual_actual_affine_exceptional_source_gates
   have he:=affine_endpoints rayM H hH η₀ θ W hW 1 2 (33/50) (33/50)
     (by norm_num) hWs w σ freq hσ state p (by norm_num) 1 t X₁ X₂ hX₁ hX₂
     (by norm_num) (by norm_num)
-  have hplain (j : Fin 2)(x : ℝ)(hne : p.profile j x≠0) : (1/4:ℝ)≤x :=
+  have hplain (j : Fin 2)(x : ℝ)(hne : p.profile j x≠0) : (1/4:ℝ)≤ x :=
     (p.support j hne).1
   have hzero (j : Fin 2) : p.profile j 0=0 := by
     by_contra hne
@@ -102,9 +177,9 @@ theorem eventual_actual_affine_exceptional_source_gates
   · simpa only [show (1:ℝ)+1=2 by norm_num] using hcaps.2.2.1
   · exact hcaps.2.1.trans (by norm_num)
   · change 0<(∏i : T,(2:ℝ))*(9/4)*(9/4)*(X₁*X₂)*(∏i : T,Z^(w i))
-    exact mul_pos (mul_pos (mul_pos (mul_pos (Finset.prod_pos (fun _ _=>by norm_num))
+    exact mul_pos (mul_pos (mul_pos (mul_pos (Finset.prod_pos (fun _ _=> by norm_num))
       (by norm_num)) (by norm_num)) (mul_pos hX₁ hX₂))
-      (Finset.prod_pos (fun _ _=>Real.rpow_pos_of_pos (zero_lt_one.trans hc.1) _))
+      (Finset.prod_pos (fun _ _=> Real.rpow_pos_of_pos (zero_lt_one.trans hc.1) _))
   · simpa only [show (1:ℝ)+2=3 by norm_num] using hcaps.2.2.2.1
   · intro i I hI
     exact (hpool i I hI).trans (Real.rpow_le_rpow_of_exponent_le hc.1.le (by norm_num))
@@ -116,13 +191,13 @@ theorem eventual_actual_affine_exceptional_child_coprime
     (Sbad : Finset (Ideal O)) (hbad : fixedBadPrimes⊆Sbad)
     (W : ℝ→ℂ) (hW : Continuous W) (hWs : Function.support W⊆Set.Icc (1:ℝ) 2)
     (mesh : ℝ) (hmesh : mesh<(902420521/120632400000:ℝ)/2) :
-    ∀ᶠZ : ℝ in atTop,1<Z ∧
+    ∀ᶠZ : ℝ in atTop,1< Z ∧
       ∀{ι : Type*}[Fintype ι][DecidableEq ι]
         (η₀ : Character)(θ : ι→RayQuotient.Characters rayM H)
         (w σ freq : ι→ℝ)(hσ : ∀i,σ i∈Set.Icc (33/50:ℝ) (33/50))
         (bΦ : ℝ)(state : NaturalState Z 0 bΦ)(p : Profiles (1/4) (9/4))
-        (t X₁ X₂ : ℝ)(hX₁ : 0<X₁)(hX₂ : 0<X₂),
-      (∀i,w i≤ mesh) → ∀beta : ℝ,3401/100000≤beta → beta≤1/25 →
+        (t X₁ X₂ : ℝ)(hX₁ : 0< X₁)(hX₂ : 0< X₂),
+      (∀i,w i≤ mesh) → ∀beta : ℝ,3401/100000≤ beta → beta≤1/25 →
       let inp:=affineInput rayM H hH η₀ θ W hW 1 2 (33/50) (33/50)
         (by norm_num) hWs w σ freq hσ state p (by norm_num) 1 t X₁ X₂ hX₁ hX₂
       let P:=CenteredMomentPrimePool.primePool rayM H Sbad (1/2) 1 (Z^(GlobalNamed.amp beta))
@@ -141,7 +216,7 @@ theorem eventual_actual_affine_exceptional_child_coprime
 /-- Fixed-parent specialization retains the exact conductor; it does not
 require a threshold uniform over arbitrary moving NaturalState characters. -/
 theorem affine_exceptional_fixed_parent_character (η : Character) (Q : Ideal O)
-    (Φ : 𝓢(ℝ,ℂ)) (bΦ Z : ℝ) (hZ : 1<Z)
+    (Φ : 𝓢(ℝ,ℂ)) (bΦ Z : ℝ) (hZ : 1< Z)
     (hs : Function.support (Φ:ℝ→ℂ)⊆Set.Iic bΦ) (hp : ∀x,0≤(Φ x).re) :
     (fixedParentState η Q Φ bΦ Z 1 hZ (by norm_num) hs hp).character=η ∧
       (fixedParentState η Q Φ bΦ Z 1 hZ (by norm_num) hs hp).characterWidth=
@@ -153,8 +228,8 @@ theorem affine_exceptional_volume_cell {ι : Type*} [Fintype ι] [DecidableEq ι
     (s : Input ι) (Z n₁ n₂ slots : ℝ)
     (hvolume : Real.logb Z (volume s)=n₁+n₂+slots)
     (hslots : (17/500:ℝ)≤ slots ∧ slots≤1/25)
-    (hcone : n₁+n₂+GlobalNamed.lambda*slots≤GlobalNamed.B) :
-    Real.logb Z (volume s)≤GlobalNamed.totalA
+    (hcone : n₁+n₂+GlobalNamed.lambda*slots≤ GlobalNamed.B) :
+    Real.logb Z (volume s)≤ GlobalNamed.totalA
       (GlobalNamed.cellUpper (Cycle63.Moment.originalCell slots)) := by
   have hh:=Target874836.SourceProvider.normalized_cell_bounds (M:=1) (n₁:=n₁) (n₂:=n₂)
     (z:=slots) (by norm_num) (by simpa only [mul_one] using hslots)
@@ -168,13 +243,13 @@ theorem actual_affine_exceptional_volume_cell {ι : Type*} [Fintype ι] [Decidab
     (W : ℝ→ℂ) (hW : Continuous W) (hWs : Function.support W⊆Set.Icc (1:ℝ) 2)
     (w σ freq : ι→ℝ) (hσ : ∀i,σ i∈Set.Icc (33/50:ℝ) (33/50))
     {Z bΦ : ℝ} (state : NaturalState Z 0 bΦ) (p : Profiles (1/4) (9/4))
-    (t X₁ X₂ : ℝ) (hX₁ : 0<X₁) (hX₂ : 0<X₂) (hZ : 1<Z)
-    (hlo₁ : (41/100:ℝ)≤length Z X₁) (hlo₂ : (41/100:ℝ)≤length Z X₂)
+    (t X₁ X₂ : ℝ) (hX₁ : 0< X₁) (hX₂ : 0< X₂) (hZ : 1< Z)
+    (hlo₁ : (41/100:ℝ)≤ length Z X₁) (hlo₂ : (41/100:ℝ)≤ length Z X₂)
     (hslots : (17/500:ℝ)≤∑i,w i ∧ (∑i,w i)≤1/25)
-    (hcone : length Z X₁+length Z X₂+GlobalNamed.lambda*(∑i,w i)≤GlobalNamed.B) :
+    (hcone : length Z X₁+length Z X₂+GlobalNamed.lambda*(∑i,w i)≤ GlobalNamed.B) :
     let inp:=affineInput rayM H hH η₀ θ W hW 1 2 (33/50) (33/50)
       (by norm_num) hWs w σ freq hσ state p (by norm_num) 1 t X₁ X₂ hX₁ hX₂
-    Real.logb Z (volume inp)≤GlobalNamed.totalA
+    Real.logb Z (volume inp)≤ GlobalNamed.totalA
       (GlobalNamed.cellUpper (Cycle63.Moment.originalCell (∑i,w i))) := by
   intro inp
   apply affine_exceptional_volume_cell inp Z (length Z X₁) (length Z X₂) (∑i,w i) _ hslots hcone
@@ -186,8 +261,8 @@ theorem actual_affine_exceptional_volume_cell {ι : Type*} [Fintype ι] [Decidab
 extracted-error exponent after its already included 56/P payment. All
 density, shell, frequency and height fees are charged to loss. -/
 theorem affine_exceptional_exponent_saving (beta logV ell loss : ℝ)
-    (hbeta : 3401/100000≤beta ∧ beta≤1/25)
-    (hV : logV≤GlobalNamed.totalA beta) (hell : 0≤ell) (hloss : loss≤1/100) :
+    (hbeta : 3401/100000≤ beta ∧ beta≤1/25)
+    (hV : logV≤ GlobalNamed.totalA beta) (hell : 0≤ ell) (hloss : loss≤1/100) :
     loss+logV-(1+ell)+4*GlobalNamed.amp beta+2*(ell/4)/3≤-(1/100:ℝ) ∧
       loss+logV-(1+ell)+3*(3*GlobalNamed.amp beta)/2+2*(ell/4)/3≤-(1/100:ℝ) := by
   have hm:=GlobalNamed.main_fixed_reserve hbeta
@@ -200,8 +275,8 @@ original label/projector shell, and both independent height windows. -/
 theorem affine_exceptional_small_loss (εaffine omega heightLoss primeLoss : ℝ)
     (hε : 0<εaffine)
     (hω : omega≤33*geometryLossUnit 1 εaffine/128)
-    (hh : heightLoss≤geometryLossUnit 1 εaffine/8)
-    (hp : primeLoss≤geometryLossUnit 1 εaffine/8) :
+    (hh : heightLoss≤ geometryLossUnit 1 εaffine/8)
+    (hp : primeLoss≤ geometryLossUnit 1 εaffine/8) :
     let μ:=geometryLossUnit 1 εaffine
     0<μ/128 ∧ 0<μ/2048 ∧
       2*(μ/128)+2*(μ/128)+252*(μ/2048)+5*omega/6+
@@ -226,3 +301,4 @@ end OAI.SevenEighths.Target836SourceAssembly
 #print axioms OAI.SevenEighths.Target836SourceAssembly.actual_affine_exceptional_volume_cell
 #print axioms OAI.SevenEighths.Target836SourceAssembly.affine_exceptional_exponent_saving
 #print axioms OAI.SevenEighths.Target836SourceAssembly.affine_exceptional_small_loss
+end

@@ -43,4 +43,3 @@ lemma SourceMomentBound.mono_constant {D : BaselineData} {F : SourceData}
 
 end
 end OAI.SevenEighths.UnevenEndpoint.Physical
-#print axioms OAI.SevenEighths.UnevenEndpoint.Physical.SourceMomentBound.mono_constant

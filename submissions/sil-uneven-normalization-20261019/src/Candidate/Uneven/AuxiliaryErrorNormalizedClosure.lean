@@ -124,18 +124,6 @@ theorem geometryErrorSelectedGeometry_radius :
       frequencyRadius (geometryErrorFourierScale reflected s R seed Z Mrow amp ξ reserve b N hZ bin q p i) Z ξ
   exact actual_geometry_error_radius reflected s R seed Z Mrow amp ξ reserve b t N hZ bin q p i Bp υ v hp hcop _ _ _
 
-/-- The source ledger is independent of the selected common allocation,
-both physical rays and the residual projector. -/
-theorem geometryErrorSelectedGeometry_nominal :
-    let d := geometryErrorSecondDatum reflected s R seed Z Mrow amp ξ reserve b t N hZ bin q p i Bp υ v hw₁ hw₂ n
-    (geometryErrorSelectedGeometry reflected s R seed Z Mrow amp ξ reserve b t N hZ bin q p i Bp υ v hw₁ hw₂ n hne second hp hcop ψ hυ hf₁).nominal=
-      errorNominal Mrow Z amp (frequencyLoss Z 32 ξ+reserve)
-        (errorRemoval p Z (errorIndex i+1)) (errorMoving p Z (errorIndex i+1))
-        (geometryColumnIdeal reflected s R seed (Z^Mrow) Z ξ
-          (Real.rpow_pos_of_pos (zero_lt_one.trans hZ) _) bin q.1.val)
-        (geometryErrorOtherIdeal reflected s R seed (Z^Mrow) Z ξ
-          (Real.rpow_pos_of_pos (zero_lt_one.trans hZ) _) bin q.1.val)
-        d.C d.D d.inactive := rfl
 
 /-- Both full physical zero-mode sums equal the columns of the admitted
 geometry. The right ray stays inverse and its height shift stays negative. -/
@@ -282,11 +270,3 @@ def actual_geometry_error_complete_selected_columns {α : Type u}[Fintype α][De
 
 end
 end OAI.SevenEighths.AuxiliaryErrorReconstruction
-#print axioms OAI.SevenEighths.AuxiliaryErrorReconstruction.geometryErrorSelectedAllocation_nonzero
-#print axioms OAI.SevenEighths.AuxiliaryErrorReconstruction.geometryErrorSelectedGeometry_radius
-#print axioms OAI.SevenEighths.AuxiliaryErrorReconstruction.geometryErrorSelectedGeometry_nominal
-#print axioms OAI.SevenEighths.AuxiliaryErrorReconstruction.geometryErrorSelectedGeometry_complete_columns
-#print axioms OAI.SevenEighths.AuxiliaryErrorReconstruction.actual_geometry_error_column_parameters
-#print axioms OAI.SevenEighths.AuxiliaryErrorReconstruction.actual_geometry_error_complete_selected_columns
-set_option pp.universes true in
-#check @OAI.SevenEighths.AuxiliaryErrorReconstruction.actual_geometry_error_complete_selected_columns

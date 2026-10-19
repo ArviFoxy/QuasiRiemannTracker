@@ -103,12 +103,6 @@ theorem geometry_affine_high_actual_raw_budget_mixed_anchor (μ : ℝ) (N Nbudge
   change μ/16+2*31*geometryFinalPlainRate μ 31+2*31*(Nbudget:ℝ)*δ≤ μ/4 at hraw
   nlinarith only [hslots,hδ,hraw,hμ]
 
-/-- The coordinate ceiling B=130 preserves the literal shared first mass. -/
-theorem geometry_affine_high_mass_rate_mixed_anchor (μ : ℝ) (Nbudget : ℕ) (hμ : 0< μ) :
-    geometryFinalMassRate μ (geometryAffineHighDictionaryRate_mixed_anchor μ Nbudget) 130=
-      geometryAffineHighDictionaryRate_mixed_anchor μ Nbudget :=
-  geometry_affine_final_dictionary_mass_rate_eq μ 130 (3*((Nbudget:ℝ)+2)) Nbudget
-    hμ (by norm_num) (by norm_num)
 
 open Cycle63InitialSource CenteredMomentCommonRawScale QuadraticInitialBound CenteredMomentEnergyBands
 variable {α : Type} [Fintype α] [DecidableEq α]
@@ -449,6 +443,4 @@ def reboundAffineHighState_mixed_anchor {Z Bmask Bmask' bΦ : ℝ} (st : Natural
 end
 end OAI.SevenEighths.AuxiliaryHigh
 
-#print axioms OAI.SevenEighths.AuxiliaryHigh.actual_affine_high_selected_coarse_mixed_anchor
 
-#print axioms OAI.SevenEighths.AuxiliaryHigh.geometry_affine_high_selected_height_splice_mixed_anchor

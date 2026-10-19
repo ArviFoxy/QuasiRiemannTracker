@@ -87,7 +87,5 @@ theorem two_stage_supported_capacity (s : Input ι) (C₁ R₁ : Ideal O)
   norm_num [Sil.Uneven.AuxiliarySource.kappa] at *
   linarith
 
-#print axioms supported_residual_capacity
-#print axioms two_stage_supported_capacity
 end
 end OAI.SevenEighths.AuxiliaryCapacity

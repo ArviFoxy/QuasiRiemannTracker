@@ -44,4 +44,3 @@ theorem eventual_actual_affine_error_prime_width
 
 end
 end OAI.SevenEighths.AuxiliaryErrorReconstruction
-#print axioms OAI.SevenEighths.AuxiliaryErrorReconstruction.eventual_actual_affine_error_prime_width

@@ -10,8 +10,6 @@ open SaturatedPlain
 /-- The marked count fee is paid explicitly before the source is assembled. -/
 def mainHighReserve : ℝ := Sil.Uneven.MainSource.highReserve-fineHighRawFee
 
-theorem main_high_reserve_pos : 0 < mainHighReserve := by
-  norm_num [mainHighReserve,Sil.Uneven.MainSource.highReserve,fineHighRawFee]
 
 theorem main_high_reserve_paid :
     mainHighReserve+fineHighRawFee=Sil.Uneven.MainSource.highReserve := by

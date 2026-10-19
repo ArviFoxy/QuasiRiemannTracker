@@ -25,4 +25,3 @@ def mainLowCompleteSelectedCost (P : Plane) {Label : Type*} [Fintype Label]
 
 end
 end OAI.SevenEighths.MainPhysical
-#print axioms OAI.SevenEighths.MainPhysical.mainLowCompleteSelectedCost

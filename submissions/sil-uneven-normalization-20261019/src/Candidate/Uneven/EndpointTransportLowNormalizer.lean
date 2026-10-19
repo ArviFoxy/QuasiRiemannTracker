@@ -69,4 +69,3 @@ end
 
 end OAI
 
-#print axioms OAI.SevenEighths.UnevenEndpointPhysicalLowNormalizer.actual_ray_normalizer_inverse

@@ -1,6 +1,207 @@
-import Candidate.Target836.SourceProvider.ErrorGeometry
+import Candidate.Target836.SourceProvider.ErrorNamed
+import Candidate.Cycle63.Moment.CellGeometry
+import Candidate.Cycle63.Physical.FinalCapacity.Final
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Energy.InputParentCapacity
+import Candidate.Cycle63.Physical.FinalErrorCapacity.Capacity
+import Candidate.Cycle63.Physical.FinalError.Geometry
+import Candidate.Cycle63.Physical.FinalError.Chain
 import Candidate.Target836.SourceProvider.ErrorPayment
 import Candidate.Cycle63.Physical.FinalError.Payment
+
+/- Original module: Candidate.Target836.SourceProvider.ErrorOriginalCapacity. -/
+section
+
+set_option autoImplicit false
+namespace Target874836.SourceProvider.ErrorCapacity
+noncomputable section
+open OAI OAI.SevenEighths
+open scoped Classical BigOperators
+open CenteredMomentCommonRadialData CenteredMomentAmplificationChildInput
+open CenteredMomentEnergyBands CenteredMomentEnergyInputParentCapacity
+variable {ι : Type*} [Fintype ι]
+
+/-- The original affine cell, rather than an old parent-capacity gate, pays
+the old 9/2 final capacity. Raw logarithms are bounded by clamped lengths. -/
+theorem original_affine_capacity (s : Input ι) (Z M : ℝ) (hZ : 1 < Z) (hM : 0 < M)
+    (hz : (17/500)*M  ≤  ∑ i, Real.logb Z (s.P i) ∧
+      (∑ i, Real.logb Z (s.P i))  ≤  (1/25)*M)
+    (haffine : length Z s.X₁+length Z s.X₂+
+      Named.lam*(∑ i, Real.logb Z (s.P i))  ≤  Named.B*M) :
+    let b := Cycle63.Arithmetic.cellUpper
+      (Cycle63.Moment.originalCell ((∑ i,Real.logb Z (s.P i))/M))
+    Real.logb Z (volume s)+(7/2)*(∑ i,Real.logb Z (s.P i))  ≤  M+M*Named.errorGap b := by
+  dsimp only
+  have ht : 17/500  ≤  (∑i,Real.logb Z (s.P i))/M ∧ (∑i,Real.logb Z (s.P i))/M  ≤  1/25 :=
+    ⟨(le_div_iff₀ hM).mpr hz.1,(div_le_iff₀ hM).mpr hz.2⟩
+  have hu := (Cycle63.Moment.originalCell_mem ht).2.2.2
+  have hzu := (div_le_iff₀ hM).mp hu
+  have hc : 0  ≤  (9/2 : ℝ)-Named.lam := by norm_num [Named.lam]
+  have hh := mul_le_mul_of_nonneg_left hzu hc
+  rw [input_volume_log]
+  unfold Named.errorGap
+  nlinarith [raw_log_le_length Z s.X₁ hZ s.X₁_pos,raw_log_le_length Z s.X₂ hZ s.X₂_pos]
+#print axioms original_affine_capacity
+end
+end Target874836.SourceProvider.ErrorCapacity
+end
+
+/- Original module: Candidate.Target836.SourceProvider.ErrorCapacity. -/
+section
+
+set_option autoImplicit false
+set_option maxHeartbeats 800000
+namespace Target874836.SourceProvider.ErrorCapacity
+noncomputable section
+open OAI OAI.SevenEighths
+open OAI.SevenEighths.Cycle63FinalErrorCapacity
+open scoped Classical BigOperators
+open HeckeFamily CenteredMomentCommonRadialData CenteredMomentCommonAllocationSum
+open CenteredMomentCommonProfile CenteredMomentCommonRawScale
+open CenteredMomentAmplificationChildInput CenteredMomentAmplificationChildSourceCaps
+open CenteredMomentAllocatedChildCapacity CenteredMomentEligibleEnergy
+open CenteredMomentDivisorAllocation CenteredMomentDivisorRectangle
+open CenteredMomentDivisorExtraction CenteredMomentDivisorRaw CenteredMomentDivisorRetained
+open CenteredMomentSourceLiveColumn CenteredMomentAllocatedNaturalSource
+open CenteredMomentSecondCanonical CenteredMomentSectorLocalization
+open CompletedGauss CanonicalQuadraticSieve CenteredMomentEnergyBands
+open CenteredMomentCanonicalFirst Cycle63FinalCapacity
+local notation "O" => HeckeFamily.O
+variable {ι : Type*} [Fintype ι] [DecidableEq ι]
+
+/-- Both actual second-label allocations share the same generator/unit
+ cancellation. Prime extraction pays its exact removed width. -/
+theorem actual_error_source_capacity (N : ℕ) (b : ℝ) (hb : 1  ≤  b)
+    (s : Input ι) (hcard : Fintype.card ι  ≤  N) (hs : s.upper  ≤  b)
+    (C₁ R₁ : Ideal O) (B₁ : actualAllocations s.pools C₁)
+    (hf₁ : frozenCoefficient B₁.val C₁ R₁ s.ν s.W s.P ≠ 0)
+    (χ : Character) (t : ℝ) (Q : Ideal O) (hQ : Q ≠ 0) (k : ℕ)
+    (hslot : ∀i,∀I∈(child s C₁ R₁ B₁ χ t).slots i,IsCoprime Q I)
+    (Bp : actualAllocations (child s C₁ R₁ B₁ χ t).pools (Q^k))
+    (υ : Character) (v : ℝ) (C₂ D₂ H R₂ : Ideal O) (hH : H=C₂ ∨ H=D₂)
+    (B₂ : actualAllocations (twiceChild s C₁ R₁ B₁ χ t Q k Bp υ v).pools H)
+    (hf₂ : let e := twiceChild s C₁ R₁ B₁ χ t Q k Bp υ v
+      frozenCoefficient B₂.val H R₂ e.ν e.W e.P ≠ 0)
+    (D₁ : Ideal O) (hD₁ : D₁ ≠ 0) (hC₂ : Supported C₂) (hD₂ : Supported D₂)
+    (hCD₂ : primeSupport C₂ = primeSupport D₂) (U : Finset (CommonIndex C₂ D₂))
+    (L : Ideal O) (a : Allocation L (Finset.univ : Finset
+      ((CenteredMomentCommonProfile.liveIndices B₂.val) ⊕ Fin 2)))
+    (Z M amp omega wo : ℝ) (hZ : 1 < Z) (hM : 0 < M) (hP : ∀i,1  ≤  s.P i)
+    (hwo : wo  ≤  (k:ℝ)*Real.logb Z (Q.absNorm:ℝ))
+    (hz : (17/500)*M  ≤  ∑i,Real.logb Z (s.P i) ∧
+      (∑i,Real.logb Z (s.P i))  ≤  (1/25)*M)
+    (haffine : length Z s.X₁+length Z s.X₂+
+      Named.lam*(∑i,Real.logb Z (s.P i))  ≤  Named.B*M)
+    (second : Bool) (z : O)
+    (hne : Cycle63.Physical.sourcePositiveRow
+      (commonData (twiceChild s C₁ R₁ B₁ χ t Q k Bp υ v) H R₂ B₂).toSource second L a z ≠ 0) :
+    let e := twiceChild s C₁ R₁ B₁ χ t Q k Bp υ v
+    let f := commonData e H R₂ B₂
+    let w := (k:ℝ)*Real.logb Z (Q.absNorm:ℝ)
+    let cell := Cycle63.Arithmetic.cellUpper
+      (Cycle63.Moment.originalCell ((∑i,Real.logb Z (s.P i))/M))
+    length Z (Cycle63Moment.LowBranch.finalPlain f second L a 0)+
+      length Z (Cycle63Moment.LowBranch.finalPlain f second L a 1)+
+        (9/2)*remainingLogs L a Z f.P-
+      errorNominal M Z amp omega w wo C₁ D₁ C₂ D₂ U  ≤ 
+        M*Named.errorGap cell+3*amp+(w-wo)+omega+supportPadding N b s.b₁ s.b₂ Z := by
+  let first := child s C₁ R₁ B₁ χ t
+  let e := twiceChild s C₁ R₁ B₁ χ t Q k Bp υ v
+  let f := commonData e H R₂ B₂
+  let X := Cycle63.Physical.sourcePlainScales f.toSource second
+  have hx₁ := Cycle63Moment.LowBranch.source_plain_positive f second 0
+  have hx₂ := Cycle63Moment.LowBranch.source_plain_positive f second 1
+  have hprod : X 0*X 1=f.X₁*f.X₂ := by
+    cases second
+    · rfl
+    · exact f.same_product
+  have htotal := extracted_supported_capacity s C₁ R₁ B₁ χ t Q hQ k hslot Bp υ v
+    H R₂ B₂ L a Z hZ hP (X 0) (X 1) hx₁ hx₂ hprod z hne
+  have he : length Z (Cycle63Moment.LowBranch.finalPlain f second L a 0)+
+      length Z (Cycle63Moment.LowBranch.finalPlain f second L a 1) =
+        plainLogs L a Z (X 0) (X 1) := by
+    change Real.logb Z (max 1 (CenteredMomentRetainedProfile.clippedScale (rawScale L a (X 0) 0)))+
+      Real.logb Z (max 1 (CenteredMomentRetainedProfile.clippedScale (rawScale L a (X 1) 1))) = _
+    rw [max_eq_right (CenteredMomentRetainedProfile.clippedScale_ge_one _),
+      max_eq_right (CenteredMomentRetainedProfile.clippedScale_ge_one _)]
+    rfl
+  have hc₁ := Real.logb_nonneg hZ (norm_ge_one C₁ (allocation_ne s C₁ B₁))
+  have hd₁ := Real.logb_nonneg hZ (norm_ge_one D₁ hD₁)
+  have hw : 0  ≤  (k:ℝ)*Real.logb Z (Q.absNorm:ℝ) :=
+    mul_nonneg (Nat.cast_nonneg _) (Real.logb_nonneg hZ (norm_ge_one Q hQ))
+  have hmax := extraction_max_loss _ _ _ wo hc₁ hd₁ hw hwo
+  have hshift : Real.logb Z (normValue (commonFrequencyGenerator C₂ D₂))-
+      Real.logb Z ((∏P∈U,P.val).absNorm:ℝ)  ≤  Real.logb Z (H.absNorm:ℝ) := by
+    rcases hH with hh|hh
+    · rw [hh]
+      exact actual_common_shift_le C₂ D₂ hC₂ hD₂ hCD₂ U Z hZ
+    · rw [hh]
+      exact actual_common_shift_le_right C₂ D₂ hC₂ hD₂ hCD₂ U Z hZ
+  have hr₁ := common_reduction_log_lower N b hb s hcard hs C₁ R₁ B₁ hf₁ Z hZ
+  have hce : Fintype.card (CenteredMomentCommonProfile.liveIndices Bp.val)  ≤  N :=
+    (live_card_le Bp.val).trans ((live_card_le B₁.val).trans hcard)
+  have hr₂ := common_reduction_log_lower N b hb e hce hs H R₂ B₂ hf₂ Z hZ
+  have hcell := original_affine_capacity s Z M hZ hM hz haffine
+  dsimp only at htotal hcell ⊢
+  rw [he]
+  change Real.logb Z (preVolume s.toData)+(7/2)*(∑i,Real.logb Z (s.P i))  ≤  _ at hcell
+  unfold errorNominal supportPadding
+  linarith
+
+#print axioms actual_error_source_capacity
+
+end
+end Target874836.SourceProvider.ErrorCapacity
+end
+
+/- Original module: Candidate.Target836.SourceProvider.ErrorGeometry. -/
+section
+
+set_option autoImplicit false
+set_option maxHeartbeats 1000000
+namespace Target874836.SourceProvider.ErrorPhysical
+noncomputable section
+open OAI OAI.SevenEighths
+open OAI.SevenEighths.Cycle63FinalError
+open scoped Classical BigOperators SchwartzMap
+open HeckeFamily CanonicalQuadraticSieve CompletedGauss ConcretePrimeRowBridge
+open CenteredMomentCompleteCommon CenteredMomentSecondHeightFamily ActualEisensteinCubic
+open CenteredMomentCanonicalFirst CenteredMomentSecondCanonical CenteredMomentSecondExceptionalFamily
+open CenteredMomentSecondPhysicalBlock CenteredMomentSectorLocalization CenteredMomentFirstAmplificationChoice
+open CenteredMomentAmplifiedRetainedRadius CenteredMomentCommonRadialData CenteredMomentCommonRawScale
+open CenteredMomentSourceLiveColumn CenteredMomentAmplificationChildInput CenteredMomentAmplificationChildSourceCaps
+open Cycle63FinalNatural Cycle63FinalCapacity Cycle63FinalErrorCapacity
+local notation "O" => HeckeFamily.O
+variable {α : Type*} [Fintype α] [DecidableEq α]
+
+theorem error_source_capacity {s : Input α} {q : Chain s} {Z Mrow amp omega ξ b J : ℝ}
+    (g : Geometry s q Z Mrow amp omega ξ b J (Fintype.card α)) (hb : 1 ≤ b)
+    (hs : s.upper ≤ b) (hZ : 1 < Z) (hM : 0 < Mrow) (hP : ∀j,1 ≤ s.P j)
+    (hz : (17/500)*Mrow ≤ ∑j,Real.logb Z (s.P j) ∧ (∑j,Real.logb Z (s.P j)) ≤ (1/25)*Mrow)
+    (haff : CenteredMomentEnergyBands.length Z s.X₁+CenteredMomentEnergyBands.length Z s.X₂+
+      Named.lam*(∑j,Real.logb Z (s.P j)) ≤ Named.B*Mrow)
+    (η : Character) (v : ℝ) (second : Bool) (L : Ideal O)
+    (a : CenteredMomentDivisorAllocation.Allocation L (Finset.univ : Finset
+      (CenteredMomentCommonProfile.liveIndices q.B₂.val⊕Fin 2))) (z : O)
+    (hne : Cycle63.Physical.sourcePositiveRow (q.final η v).toSource second L a z≠0) :
+    let cell := Cycle63.Arithmetic.cellUpper (Cycle63.Moment.originalCell ((∑j,Real.logb Z (s.P j))/Mrow))
+    CenteredMomentEnergyBands.length Z (Cycle63Moment.LowBranch.finalPlain (q.final η v) second L a 0)+
+      CenteredMomentEnergyBands.length Z (Cycle63Moment.LowBranch.finalPlain (q.final η v) second L a 1)+
+        (9/2)*CenteredMomentAllocatedChildCapacity.remainingLogs L a Z (q.final η v).P-g.nominal  ≤ 
+      Mrow*Named.errorGap cell+3*amp+(errorRemoval q.p Z q.k-errorMoving q.p Z q.k)+omega+
+        supportPadding (Fintype.card α) b s.b₁ s.b₂ Z := by
+  exact Target874836.SourceProvider.ErrorCapacity.actual_error_source_capacity (Fintype.card α) b hb s le_rfl hs q.C₁ q.R₁ q.B₁
+    g.first_nonzero q.η₁ q.t₁ (Ideal.span {q.p}) (Ideal.span_singleton_eq_bot.not.mpr q.hp)
+    q.k q.coprime q.Bp η v g.C g.D q.E₂ q.R₂ g.label q.B₂ g.second_nonzero
+    g.D₁ g.hD₁.1 g.hC g.hD g.heq g.U L a Z Mrow amp omega (errorMoving q.p Z q.k)
+    hZ hM hP (actual_prime_widths q.p q.hp Z hZ q.k q.hk).2.2 hz haff second z hne
+
+#print axioms error_source_capacity
+end
+end Target874836.SourceProvider.ErrorPhysical
+end
+
+/- Original module: Candidate.Target836.SourceProvider.ErrorMain. -/
+section
 
 set_option autoImplicit false
 set_option maxHeartbeats 1200000
@@ -129,7 +330,7 @@ theorem actual_paid_error_uniform
   by_cases live : ∃z,Cycle63.Physical.sourcePositiveRow src.toSource second L₂ alloc z≠0
   · obtain ⟨z,hzrow⟩ := live
     let X := Cycle63.Physical.sourcePlainScales src.toSource second
-    let U := fun j : Fin 2=>X j/(Ideal.absNorm (selectedPlain L₂ alloc j):ℝ)
+    let U := fun j : Fin 2=> X j/(Ideal.absNorm (selectedPlain L₂ alloc j):ℝ)
     have hU : ∀j,0 < U j := fun j=> div_pos (source_plain_positive src second j)
       (zero_lt_one.trans_le (CenteredMomentAmplificationChildSourceCaps.norm_ge_one _
         (CenteredMomentDivisorExtraction.selectedDivisor_ne_zero L₂ Finset.univ alloc (Sum.inr j))))
@@ -154,7 +355,7 @@ theorem actual_paid_error_uniform
     have hXcap₁ := final_plain_cap s q (g.τ χ) v Z L hZone hL hOrig second L₂ alloc 0
     have hXcap₂ := final_plain_cap s q (g.τ χ) v Z L hZone hL hOrig second L₂ alloc 1
     have htotal := error_source_capacity g hbs hsupper hZone hM
-      (fun j=>by rw [hm.scale j]; exact Real.one_le_rpow hZone.le (hw j)) hz haff (g.τ χ) v second L₂ alloc z hzrow
+      (fun j=> by rw [hm.scale j]; exact Real.one_le_rpow hZone.le (hw j)) hz haff (g.τ χ) v second L₂ alloc z hzrow
     rw [original_slot_sum s q (g.τ χ) v Z hZone w hm.scale L₂ alloc] at htotal
     have hpadd := hpadLoss.2 Mrow hMmin
     rw [hsb₁,hsb₂] at htotal
@@ -164,7 +365,7 @@ theorem actual_paid_error_uniform
       change _ ≤ _ at htotal
       dsimp [padding]; unfold errorRemoval errorMoving at htotal; linarith
     have hpaid := paid_branch_exponent q.k hk hcell hM.le hwidth hδ hprime hpadding hcap
-    have he := hZ.2 (q.indices L₂ alloc) θ w σ freq v height mesh hw hwL hmesh (fun j _=>hwm j)
+    have he := hZ.2 (q.indices L₂ alloc) θ w σ freq v height mesh hw hwL hmesh (fun j _=> hwm j)
       hσlo hσhi hheight hfreq st rfl hs pret _ _
       (zero_lt_one.trans_le (clippedScale_ge_one _)) (zero_lt_one.trans_le (clippedScale_ge_one _)) hXcap₁ hXcap₂
     have hcoef := hcontrol p U hU
@@ -197,3 +398,4 @@ theorem actual_paid_error_uniform
 #print axioms actual_paid_error_uniform
 end
 end Target874836.SourceProvider.ErrorPhysical
+end

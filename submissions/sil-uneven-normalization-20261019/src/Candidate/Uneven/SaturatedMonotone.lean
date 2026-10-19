@@ -59,5 +59,3 @@ theorem zero_width_lower {d : ℝ} (hd : d < 5/6) : rho d ≤ fullCount d 0 := b
   exact (le_max_left _ _).trans (le_max_left _ _)
 
 end Sil.Uneven.Saturated
-#print axioms Sil.Uneven.Saturated.full_exponent_mono
-#print axioms Sil.Uneven.Saturated.zero_width_lower

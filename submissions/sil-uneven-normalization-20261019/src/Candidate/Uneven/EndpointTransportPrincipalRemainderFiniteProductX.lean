@@ -110,9 +110,3 @@ end UnevenEndpointPhysical.Transport.PrincipalFiniteProductX
 end
 
 
-#print axioms UnevenEndpointPhysical.Transport.PrincipalFiniteProductX.marked_differentiableAt_x
-#print axioms UnevenEndpointPhysical.Transport.PrincipalFiniteProductX.local_analytic_x
-#print axioms UnevenEndpointPhysical.Transport.PrincipalFiniteProductX.slot_analytic_x
-#print axioms UnevenEndpointPhysical.Transport.PrincipalFiniteProductX.continued_source_analytic_x
-#print axioms UnevenEndpointPhysical.Transport.PrincipalFiniteProductX.continued_source_eq_raw
-#print axioms UnevenEndpointPhysical.Transport.PrincipalFiniteProductX.continued_source_differentiable_strip

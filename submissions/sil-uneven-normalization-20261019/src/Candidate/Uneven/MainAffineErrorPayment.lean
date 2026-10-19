@@ -235,7 +235,4 @@ theorem actual_affine_error_uniform_component_payment
 
 end
 end OAI.SevenEighths.MainErrorReconstruction
-#print axioms OAI.SevenEighths.MainErrorReconstruction.geometry_affine_error_paid_source_of_receipts
-#print axioms OAI.SevenEighths.MainErrorReconstruction.geometry_affine_error_final_source_exponent
 
-#print axioms OAI.SevenEighths.MainErrorReconstruction.actual_affine_error_uniform_component_payment

@@ -320,48 +320,7 @@ theorem actual_initial_source_reduction_fixed_mesh {α Label : Type*} [Fintype �
       CenteredMomentAmplificationChildInput.volume inp))
   convert hh using 1 <;> ring
 
-theorem actual_initial_source_reduction {α Label : Type*} [Fintype α] [DecidableEq α]
-    [Fintype Label] (anchors : Label→Character)
-    (W : ℝ→ℂ) (aslot bslot lo hi a b bΦ Mmin Mmax ε ξ : ℝ)
-    (haslot : 0<aslot) (hWs : Function.support W⊆Set.Icc aslot bslot)
-    (hW : ContDiff ℝ ∞ W) (hbslot : 0≤bslot) (hlohi : lo≤hi)
-    (ha : 0<a) (hlo : a≤1/4) (hhi : 1≤b) (hbΦ : 0<bΦ)
-    (hMmin : 0<Mmin) (hMmax : Mmin≤Mmax) (hε : 0<ε) (hξ : 0<ξ)
-    (hbeta : (51/100:ℝ)≤HeckeZeroSupremum.beta)
-    (hκbeta : 2*HeckeZeroSupremum.beta-1≤(3/4:ℝ)) :
-    ∃Ψ : 𝓢(ℝ,ℂ), Function.support (Ψ:ℝ→ℂ)⊆Set.Icc (-1) (bΦ+1) ∧
-      (∀x,0≤(Ψ x).re) ∧ ∃mesh : ℝ, 0< mesh ∧ ∃degree : ℕ, ∃S : Finset (ℕ×ℕ),
-    ∀η₀ : Character, ∀Q : Ideal O, Q≤rayM → internalQ Q η₀≠0 →
-      internalQ Q η₀≠⊤ → internalQ Q η₀≤Ideal.span {(72:O)} →
-    ∃C : ℝ, 0<C ∧ ∀ᶠ Z : ℝ in atTop, 1<Z ∧
-    ∀j : Label, ∀T : Finset α, ∀θ : T→RayQuotient.Characters rayM H,
-    ∀w σ freq : T→ℝ, ∀t height : ℝ,
-      (∀i,0≤w i) → (∀i,w i≤ mesh) → ∀hσlo : (∀i,lo≤σ i), ∀hσhi : (∀i,σ i≤hi),
-      0≤height → (∀i,|freq i|≤height) →
-    ∀M : ℝ, Mmin≤M → M≤Mmax →
-    ∀Φ : 𝓢(ℝ,ℂ), ∀hsΦ : Function.support (Φ:ℝ→ℂ)⊆Set.Iic bΦ,
-    ∀hpΦ : ∀x,0≤(Φ x).re, ∀p : Profiles a b, ∀X₁ X₂ : ℝ,
-    ∀hX₁ : 0<X₁, ∀hX₂ : 0<X₂,
-      (81/200)*M≤length Z X₁ → length Z X₁≤(45/100)*M →
-      (81/200)*M≤length Z X₂ → length Z X₂≤(45/100)*M →
-      (∑i,w i)≤M/25 → ∀hZ : 1<Z, ∀hM : 0≤M,
-    let s := fixedParentState (anchors j) (internalQ Q η₀) Φ bΦ Z M hZ hM hsΦ hpΦ;
-    let inp := affineInput rayM H hH η₀ θ W hW.continuous aslot bslot lo hi haslot hWs
-      w σ freq (fun i => ⟨hσlo i,hσhi i⟩) s p ha M t X₁ X₂ hX₁ hX₂;
-    energy (anchors j) (fixedBadMask*idealGenerator 1) 1 t (p.profile 0) (p.profile 1)
-      (fun i => primePool rayM H bslot (Z^(w i)))
-      (fun i I => idealCoeff (relativeCharacter rayM H hH η₀ (θ i)) I *
-        HeckePrimeAnnular.annularWeight W (Z^(w i)) (σ i) (freq i) I)
-      (fun i => Z^(w i)) X₁ X₂ (initialKeep (anchors j) (internalQ Q η₀)) Φ (Z^M) ≤
-      2*diagonalControl Φ*(physicalMass inp 1 1 fixedBadMask 1 Ψ (Z^M) Z ξ/
-        CenteredMomentAmplificationChildInput.volume inp)+
-      C*diagonalControl Φ*(p.control S)^2*(1+|t|+height)^degree*Z^(M+ε) := by
-  obtain ⟨Ψ,hs,hp,hm,J,S,hbound⟩ := actual_initial_source_reduction_fixed_mesh (α:=α)
-    rayM H hH anchors W aslot bslot lo hi a b bΦ Mmin Mmax ε ξ haslot hWs hW hbslot
-    hlohi ha hlo hhi hbΦ hMmin hMmax hε hξ hbeta hκbeta
-  exact ⟨Ψ,hs,hp,comparisonMesh Mmin Mmax ε,hm,J,S,hbound⟩
 
 end
 end OAI.SevenEighths.AuxiliaryAssemblyInitialSource
 
-#print axioms OAI.SevenEighths.AuxiliaryAssemblyInitialSource.actual_initial_source_reduction_fixed_mesh

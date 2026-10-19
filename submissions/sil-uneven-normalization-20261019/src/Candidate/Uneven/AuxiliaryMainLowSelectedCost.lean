@@ -24,4 +24,3 @@ def mainLowCompleteSelectedCost  {Label : Type*} [Fintype Label]
 
 end
 end OAI.SevenEighths.AuxiliaryPhysical
-#print axioms OAI.SevenEighths.AuxiliaryPhysical.mainLowCompleteSelectedCost

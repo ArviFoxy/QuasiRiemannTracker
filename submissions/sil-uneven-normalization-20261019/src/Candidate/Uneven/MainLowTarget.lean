@@ -76,4 +76,3 @@ theorem final_branch_exponents (P : Plane) (g : GeometryAffineLowSchedule)
 
 end
 end OAI.SevenEighths.MainPhysical
-#print axioms OAI.SevenEighths.MainPhysical.final_branch_exponents

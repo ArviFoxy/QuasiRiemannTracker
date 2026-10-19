@@ -205,4 +205,3 @@ theorem actual_detector_affine_input_of_initial (plane : Sil.Uneven.MainSource.P
 
 end
 end OAI.SevenEighths.MainInitialTransport
-#print axioms OAI.SevenEighths.MainInitialTransport.actual_detector_affine_input_of_initial

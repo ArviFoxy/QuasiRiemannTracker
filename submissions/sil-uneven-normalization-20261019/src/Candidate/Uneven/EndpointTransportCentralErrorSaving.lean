@@ -61,6 +61,3 @@ end
 
 end OAI
 
-#print axioms OAI.SevenEighths.UnevenEndpointPhysicalHighRowFamily.central_source_crude_scale
-#print axioms OAI.SevenEighths.UnevenEndpointPhysicalHighRowFamily.central_prime_product_bound
-#print axioms OAI.SevenEighths.UnevenEndpointPhysicalHighRowFamily.central_arithmetic_cost_bound

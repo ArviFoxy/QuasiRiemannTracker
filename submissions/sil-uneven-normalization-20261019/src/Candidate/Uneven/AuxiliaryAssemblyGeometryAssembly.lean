@@ -278,5 +278,3 @@ theorem literal_geometry_initial_affine
 
 end
 end OAI.SevenEighths.AuxiliaryAssembly
-#print axioms OAI.SevenEighths.AuxiliaryAssembly.uniform_geometry_mass
-#print axioms OAI.SevenEighths.AuxiliaryAssembly.literal_geometry_initial_affine

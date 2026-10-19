@@ -1,7 +1,114 @@
+import Candidate.Cycle63.Marked.ProfileMarkedShell
+import Candidate.Cycle63.Marked.LabeledRawMax
+import Candidate.Cycle63.Marked.OriginalSlotPartition
+import Candidate.Cycle63.Marked.SmallSlotDiscard
+import Candidate.Cycle63.Marked.WeightedSlotDiscard
 import Candidate.Cycle63.Marked.TwoCommonMarkedShell
-import Candidate.Cycle63.Marked.RetainedFamilyDiscard
 import Candidate.Cycle63.Marked.RetainedSlotCaps
 import Candidate.Cycle63.Physical.InitialMass.SecondSourceControls
+
+/- Original module: Candidate.Cycle63.Marked.RetainedWeightTransport. -/
+section
+
+set_option autoImplicit false
+namespace OAI.SevenEighths.Cycle63MarkedPlain
+noncomputable section
+open scoped Classical BigOperators
+open HeckeFamily Cycle63Moment CenteredMomentEnergyState CenteredMomentNaturalRowSource
+local notation "O"=>HeckeFamily.O
+variable (M : Ideal O) [NeZero M]
+local instance : Finite (O⧸M):=Ring.HasFiniteQuotients.finiteQuotient (NeZero.ne M)
+variable (H : Subgroup (O⧸M)ˣ)(hH : RayOrthogonality.globalUnits M≤H)
+
+/-- The full retained source factor is precisely the literal raw slot weight
+on the surviving subset of the original coordinates. -/
+theorem retained_weight_original_product {Row Slot J : Type}
+    [Fintype J] [Fintype Slot] [DecidableEq Slot]
+    (P : HighSourceParameters)(hB : P.B₀=2)(η₀ : Character)(Z : ℝ)
+    (st : Row→NaturalState Z P.Bmask P.bΦ)(z : Row→O)(hz : ∀l,(st l).radial.keep (z l))
+    (w σ v : Slot→ℝ)(θ : Slot→RayQuotient.Characters M H)(t : Row→ℝ)
+    (f : J→Slot)(hf : Function.Injective f)(l : Row) :
+    retainedSourceSlotWeight M H hH P η₀ Z (st l) (z l) (hz l)
+      (fun j=>w (f j)) (fun j=>σ (f j)) (fun j=>v (f j)) (fun j=>θ (f j)) (t l)=
+      (∏s∈Cycle63CommonSupply.originalSlots f,max 1 ‖labeledRawSlot M H hH η₀ P.Wslot Z
+        w σ v t θ (fun l=>excluded (naturalRow (st l).character (z l)
+          ((st l).row_ne_zero (z l) (hz l))).character (st l).puncture) l s‖)^2 := by
+  have hh:=Cycle63CommonSupply.prod_originalSlots f hf
+    (fun s=>(max 1 ‖labeledRawSlot M H hH η₀ P.Wslot Z w σ v t θ
+      (fun l=>excluded (naturalRow (st l).character (z l)
+        ((st l).row_ne_zero (z l) (hz l))).character (st l).puncture) l s‖)^2)
+  simpa only [retainedSourceSlotWeight,labeledRawSlot,hB,Finset.prod_pow] using hh
+
+/-- Positive widths in any surviving original subset retain the same total
+upper bound as the original family. -/
+theorem surviving_width_upper {Slot : Type} [Fintype Slot] [DecidableEq Slot]
+    (slots : Finset Slot)(w : Slot→ℝ)(upper : ℝ)
+    (hw : ∀s,0≤w s)(hupper : (∑s,w s)≤upper) :
+    (∑s∈slots,w s)≤upper :=
+  (Finset.sum_le_sum_of_subset_of_nonneg (Finset.subset_univ _) (fun i _ _=>hw i)).trans hupper
+
+end
+end OAI.SevenEighths.Cycle63MarkedPlain
+#print axioms OAI.SevenEighths.Cycle63MarkedPlain.retained_weight_original_product
+end
+
+/- Original module: Candidate.Cycle63.Marked.RetainedFamilyDiscard. -/
+section
+
+set_option autoImplicit false
+set_option maxHeartbeats 1200000
+namespace OAI.SevenEighths.Cycle63MarkedPlain
+noncomputable section
+open scoped Classical BigOperators
+open HeckeFamily Cycle63Moment CenteredMomentEnergyState CenteredMomentNaturalRowSource
+local notation "O"=>HeckeFamily.O
+variable (M : Ideal O) [NeZero M]
+local instance : Finite (O⧸M):=Ring.HasFiniteQuotients.finiteQuotient (NeZero.ne M)
+variable (H : Subgroup (O⧸M)ˣ)(hH : RayOrthogonality.globalUnits M≤H)
+
+/-- The entire moving retained source family is reindexed on the original
+coordinates before tiny slots are paid. No residual allocation appears in
+the surviving max-product. -/
+theorem retained_family_discard {Row Slot : Type} [Fintype Slot] [DecidableEq Slot]
+    (J : Row→Type) [∀l,Fintype (J l)]
+    (f : ∀l,J l→Slot)(hf : ∀l,Function.Injective (f l))
+    (P : HighSourceParameters)(hB : P.B₀=2)(η₀ : Character)(Z : ℝ)
+    (st : Row→NaturalState Z P.Bmask P.bΦ)(z : Row→O)(hz : ∀l,(st l).radial.keep (z l))
+    (w σ v : Slot→ℝ)(θ : Slot→RayQuotient.Characters M H)(t : Row→ℝ)
+    (rows : Finset Row)(base coeff : Row→ℝ)(C δ error extra wmin : ℝ)
+    (hZ : 1<Z)(hC : 1≤C)(herror : 0≤error)(N : ℕ)(hN : Fintype.card Slot≤N)
+    (hcoeff : ∀l∈rows,0≤coeff l)
+    (hcap : ∀l∈rows,∀s,(max 1 ‖labeledRawSlot M H hH η₀ P.Wslot Z w σ v t θ
+      (fun l=>excluded (naturalRow (st l).character (z l)
+        ((st l).row_ne_zero (z l) (hz l))).character (st l).puncture) l s‖)^2≤
+      C*Z^(δ*w s+error)) :
+    let slots:=fun l=>Cycle63CommonSupply.originalSlots (f l)
+    let large:=fun l=>largeSlots (slots l) w wmin
+    let amplitude:=labeledRawSlot M H hH η₀ P.Wslot Z w σ v t θ
+      (fun l=>excluded (naturalRow (st l).character (z l)
+        ((st l).row_ne_zero (z l) (hz l))).character (st l).puncture)
+    (∑l∈rows,coeff l*Z^(δ*(base l-∑j:J l,w (f l j))+extra)*
+      retainedSourceSlotWeight M H hH P η₀ Z (st l) (z l) (hz l)
+        (fun j=>w (f l j)) (fun j=>σ (f l j)) (fun j=>v (f l j)) (fun j=>θ (f l j)) (t l))≤
+    C^N*Z^(extra+error*N)*
+      ∑l∈rows,coeff l*Z^(δ*(base l-∑s∈large l,w s))*(∏s∈large l,max 1 ‖amplitude l s‖)^2 := by
+  intro slots large amplitude
+  have he (l : Row) : (∑j:J l,w (f l j))=∑s∈slots l,w s :=
+    Cycle63CommonSupply.sum_originalSlots (f l) (hf l) w
+  have hw (l : Row) := retained_weight_original_product M H hH P hB η₀ Z st z hz
+    w σ v θ t (f l) (hf l) l
+  simp only [he,hw]
+  exact weighted_normalized_products_discard rows slots large
+    (fun l _=>Finset.filter_subset _ _) w amplitude base coeff Z C δ error extra hZ hC herror
+    N (fun l _=>(Finset.card_le_univ _).trans hN) hcoeff (fun l hl s _=>hcap l hl s)
+
+end
+end OAI.SevenEighths.Cycle63MarkedPlain
+#print axioms OAI.SevenEighths.Cycle63MarkedPlain.retained_family_discard
+end
+
+/- Original module: Candidate.Cycle63.Marked.TwoCommonLargeSlotShell. -/
+section
 
 set_option autoImplicit false
 set_option maxHeartbeats 1400000
@@ -141,3 +248,4 @@ theorem actual_two_common_large_slot_shell {α : Type} [Fintype α] [DecidableEq
 end
 end OAI.SevenEighths.Cycle63InitialMass
 #print axioms OAI.SevenEighths.Cycle63InitialMass.actual_two_common_large_slot_shell
+end

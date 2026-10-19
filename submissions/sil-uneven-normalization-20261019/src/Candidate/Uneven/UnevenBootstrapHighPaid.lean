@@ -258,4 +258,3 @@ theorem actual_geometry_uneven_bootstrap_paid_shell {α : Type} [Fintype α] [De
 
 end
 end OAI.SevenEighths.TargetHigh830
-#print axioms OAI.SevenEighths.TargetHigh830.actual_geometry_uneven_bootstrap_paid_shell

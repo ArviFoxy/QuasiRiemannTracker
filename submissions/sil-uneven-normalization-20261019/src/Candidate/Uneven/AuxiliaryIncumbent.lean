@@ -64,4 +64,3 @@ theorem accepted_incumbent
 end
 end OAI.SevenEighths.AuxiliaryLow
 
-#print axioms OAI.SevenEighths.AuxiliaryLow.accepted_incumbent

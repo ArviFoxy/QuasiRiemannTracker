@@ -415,4 +415,3 @@ theorem actual_selected_low_paid_columns (P : Plane) {α : Type} [Fintype α] [D
 
 end
 end OAI.SevenEighths.MainPhysical
-#print axioms OAI.SevenEighths.MainPhysical.actual_selected_low_paid_columns

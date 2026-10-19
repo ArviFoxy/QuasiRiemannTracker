@@ -83,8 +83,3 @@ end
 
 end OAI
 
-#print axioms OAI.SevenEighths.UnevenEndpointPhysicalProbeLow.lowUnselectedProduct_norm_upper_nominal
-#print axioms OAI.SevenEighths.UnevenEndpointPhysicalProbeLow.eventually_low_selected_caps
-#print axioms OAI.SevenEighths.UnevenEndpointPhysicalProbeLow.lowCentralShift_scale
-#print axioms OAI.SevenEighths.UnevenEndpointPhysicalProbeLow.lowCentralShift_bound
-#print axioms OAI.SevenEighths.UnevenEndpointPhysicalProbeLow.lowCentral_ratio_bounds

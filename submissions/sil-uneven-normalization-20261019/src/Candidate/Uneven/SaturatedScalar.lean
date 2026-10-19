@@ -132,5 +132,3 @@ theorem inverse_width_gates {r S eps : ℝ}
     constructor <;> linarith
 
 end Sil.Uneven.Saturated
-#print axioms Sil.Uneven.Saturated.fiber_exponent
-#print axioms Sil.Uneven.Saturated.inverse_width_gates

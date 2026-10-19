@@ -51,7 +51,3 @@ end
 
 end OAI
 
-#print axioms OAI.SevenEighths.UnevenEndpointPhysicalHighRowFamily.selected_scale_power
-#print axioms OAI.SevenEighths.UnevenEndpointPhysicalHighRowFamily.physical_scale_power
-#print axioms OAI.SevenEighths.UnevenEndpointPhysicalHighRowFamily.small_source_scale
-#print axioms OAI.SevenEighths.UnevenEndpointPhysicalHighRowFamily.large_source_scale

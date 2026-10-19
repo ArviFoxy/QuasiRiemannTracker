@@ -203,4 +203,3 @@ theorem count_from_raw_moments_finite
 
 end
 end OAI.SevenEighths.MainDetectorCount
-#print axioms OAI.SevenEighths.MainDetectorCount.count_from_raw_moments_finite

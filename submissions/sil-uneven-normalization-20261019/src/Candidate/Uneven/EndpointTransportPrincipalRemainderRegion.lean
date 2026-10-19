@@ -149,20 +149,6 @@ theorem remainder_globalClosedCorrection_bound (η : HeckeFamily.Character) (S :
     (fun P=> remainder_idealClosedCorrection_bound η P.val (hS.norm_four P.val P.property) x w z hx hw hz)
     hS.half hS.small
 
-lemma remainder_globalClosedCorrection_multipliable (η : HeckeFamily.Character) (S : Finset Id)
-    (hS : CorrectionTail S) (x w z : ℂ)
-    (hx : theta≤ x.re) (hw : 9/10≤ w.re) (hz : 4/25≤ z.re) :
-    Multipliable (fun P : {P : PrimeIdeal // P.val∉S}=> idealClosedCorrection η P.val x w z) := by
-  let F := fun P : {P : PrimeIdeal // P.val∉S}=> idealClosedCorrection η P.val x w z
-  let B := fun P : {P : PrimeIdeal // P.val∉S}=> globalPrimeDefectBound P.val
-  have hB (P) : ‖F P-1‖≤ B P :=
-    remainder_idealClosedCorrection_bound η P.val (hS.norm_four P.val P.property) x w z hx hw hz
-  refine ⟨Complex.exp (∑' P,Complex.log (F P)),?_⟩
-  apply ((log_summable_of_defect F B hS.summable hB hS.half).of_norm.hasSum.cexp).congr
-  intro T
-  apply Finset.prod_congr rfl
-  intro P hP
-  exact Complex.exp_log (factor_ne_zero_of_defect _ ((hB P).trans (hS.half P)))
 
 theorem remainder_globalClosedCorrection_analytic_x (η : HeckeFamily.Character) (S : Finset Id)
     (hS : CorrectionTail S) (w z : ℂ) (hw : 9/10≤ w.re) (hz : 4/25≤ z.re) :
@@ -214,14 +200,3 @@ theorem remainder_globalClosedCorrection_analytic_z (η : HeckeFamily.Character)
 end UnevenEndpointPhysical.Transport
 end
 
-#print axioms UnevenEndpointPhysical.Transport.remainder_unramified_bound
-#print axioms UnevenEndpointPhysical.Transport.remainder_open_region_denominators
-#print axioms UnevenEndpointPhysical.Transport.remainder_unramifiedClosed_analytic_x
-#print axioms UnevenEndpointPhysical.Transport.remainder_unramifiedClosed_analytic_w
-#print axioms UnevenEndpointPhysical.Transport.remainder_unramifiedClosed_analytic_z
-#print axioms UnevenEndpointPhysical.Transport.remainder_idealClosedCorrection_bound
-#print axioms UnevenEndpointPhysical.Transport.remainder_globalClosedCorrection_bound
-#print axioms UnevenEndpointPhysical.Transport.remainder_globalClosedCorrection_multipliable
-#print axioms UnevenEndpointPhysical.Transport.remainder_globalClosedCorrection_analytic_x
-#print axioms UnevenEndpointPhysical.Transport.remainder_globalClosedCorrection_analytic_w
-#print axioms UnevenEndpointPhysical.Transport.remainder_globalClosedCorrection_analytic_z

@@ -81,30 +81,6 @@ def mainLowCanonicalSelector
     (actual_main_low_source_admission d χ₀ χ ψ Q hQ m hm hml hm2 Z Bmask hZ second hP hPN
       (fun _=>True) z.val z.property).1 e T he hT hβlo hβhi)
 
-/-- The canonical index retains the full buffered zero-bin certificate,
-so high and low consumers share one literal partition. -/
-theorem actual_main_low_canonical_zero_bin 
-    (d : SecondInputDatum α) (χ₀ χ ψ : RayFourExpansion.RayCharacter) (Q : Ideal O)
-    (hQ : Q ≤ Ideal.span {(72:O)}) (m : O) (hm : m≠0)
-    (hml : goodLambda∣m) (hm2 : (2:O)∣m)
-    (Z Bmask : ℝ) (hZ : 1 < Z) (second : Bool)
-    (hP : d.R*(if second then d.D else d.C)≠0)
-    (hPN : ((d.R*(if second then d.D else d.C)).absNorm:ℝ) ≤ Z^Bmask)
-    (η₀ : Character) (hQM : Q ≤ M) (hQη : Q ≤ η₀.modulus)
-    (e T : ℝ) (he : 0 < e) (hT : 2 < T)
-    (hβlo : 51/100 ≤ HeckeZeroSupremum.beta) (hβhi : HeckeZeroSupremum.beta ≤ 7/8) :
-    let st:=retainedState Z Bmask hZ (if second then d.τ ψ⁻¹ else d.τ χ) Q
-      (d.R*(if second then d.D else d.C)) hP hPN d.radius d.C d.D d.inactive
-    ∀z : mainLowSourceRows second (ordinarySecondDatum d χ₀ Q m) (fun _=>True),
-      GeometryZeroBin M H hH st η₀ hQM hQη z.val
-        (actual_main_low_source_admission d χ₀ χ ψ Q hQ m hm hml hm2 Z Bmask hZ second hP hPN
-          (fun _=>True) z.val z.property).1 e T
-        (mainLowCanonicalSelector  M H hH d χ₀ χ ψ Q hQ m hm hml hm2 Z Bmask hZ second
-          hP hPN η₀ hQM hQη e T he hT hβlo hβhi z) := by
-  intro st z
-  exact Classical.choose_spec (actual_geometry_zero_partition M H hH st η₀ hQM hQη z.val
-    (actual_main_low_source_admission d χ₀ χ ψ Q hQ m hm hml hm2 Z Bmask hZ second hP hPN
-      (fun _=>True) z.val z.property).1 e T he hT hβlo hβhi)
 
 /-- The canonical choice gives all low-kernel gates at unit weight. -/
 theorem actual_main_low_canonical_payment_bins 
@@ -163,26 +139,6 @@ def mainLowFamilyCanonicalSelector  {Label : Type*} [Fintype Label]
       refine ⟨r.val.2.2.2,?_,rfl,True.intro⟩
       exact Finset.mem_filter.mpr ⟨Finset.mem_univ _,(Finset.mem_filter.mp r.property).2⟩⟩
 
-/-- The literal first-child height is retained in each actual second datum. -/
-theorem actual_main_low_quantitative_height_identity 
-    (reflected : Bool) (s : Input α) (R seed : Ideal O)
-    (Z Mrow amp ξ reserve b t : ℝ) (N : ℕ) (hZ : 1 < Z)
-    (bin : ℤ×(Fin 5→ℤ))
-    (q : GeometryLowFirstIndex reflected s R seed (Z^Mrow) Z ξ
-      (Real.rpow_pos_of_pos (zero_lt_one.trans hZ) _) bin)
-    (hw₁ : s.W₁ 0=0)(hw₂ : s.W₂ 0=0)
-    (n : GeometryLowSecondIndex reflected s R seed Z Mrow amp ξ reserve b t N hZ bin q)
-    (second : Bool) (t₀ u height τ : ℝ)
-    (hsmall : 2*(1+|t|+height+2*Real.pi*(|t₀|+|u|)) ≤ Z^τ) :
-    let d:=geometryLowSecondDatum reflected s R seed Z Mrow amp ξ reserve b t N hZ bin q hw₁ hw₂ n
-    d.input.t=t ∧
-      |d.input.t+2*Real.pi*(u-(if second then -t₀ else t₀))|+height+Z^τ/2 ≤ 5*Z^τ := by
-  intro d
-  have ht : d.input.t=t := rfl
-  refine ⟨ht,?_⟩
-  rw [ht]
-  exact main_low_payment_shifted_height_envelope  second t height t₀ u (Z^τ)
-    (Real.rpow_nonneg (zero_lt_one.trans hZ).le _) hsmall
 private theorem mainLowQuantitativeFactor_nonneg 
     (Cg b Cs control v height physical Z exponent seedNorm : ℝ)
     (N degree boxCard : ℕ)
@@ -548,10 +504,3 @@ def actual_main_low_quantitative_bins  {α : Type} [Fintype α] [DecidableEq α]
 
 end
 end OAI.SevenEighths.AuxiliaryPhysical
-#print axioms OAI.SevenEighths.AuxiliaryPhysical.mainLowFamilyCanonicalSelector
-#print axioms OAI.SevenEighths.AuxiliaryPhysical.actual_main_low_canonical_zero_bin
-#print axioms OAI.SevenEighths.AuxiliaryPhysical.actual_main_low_quantitative_height_identity
-#print axioms OAI.SevenEighths.AuxiliaryPhysical.actual_main_low_canonical_payment_bins
-#print axioms OAI.SevenEighths.AuxiliaryPhysical.main_low_quantitative_factor_bin_payment
-#print axioms OAI.SevenEighths.AuxiliaryPhysical.main_low_payment_complete_cost_le
-#print axioms OAI.SevenEighths.AuxiliaryPhysical.actual_main_low_quantitative_bins

@@ -267,4 +267,3 @@ theorem actual_geometry_full_high_columns {α : Type} [Fintype α] [DecidableEq 
 
 end
 end OAI.SevenEighths.MainHigh
-#print axioms OAI.SevenEighths.MainHigh.actual_geometry_full_high_columns

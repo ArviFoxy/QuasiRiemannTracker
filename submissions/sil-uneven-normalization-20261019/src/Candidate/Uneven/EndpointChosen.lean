@@ -61,4 +61,3 @@ theorem exists_chosen_data_with_mesh (hβ : theta< HeckeZeroSupremum.beta)
   exact hk1
 end
 end OAI.SevenEighths.UnevenEndpoint.Physical.FinalAssembly
-#print axioms OAI.SevenEighths.UnevenEndpoint.Physical.FinalAssembly.exists_chosen_data_with_mesh

@@ -49,4 +49,3 @@ theorem old_count_affine {κ d p : ℝ} (hk : 7/10 ≤ κ)
 
 end
 end OAI.SevenEighths.MainCount
-#print axioms OAI.SevenEighths.MainCount.old_count_affine

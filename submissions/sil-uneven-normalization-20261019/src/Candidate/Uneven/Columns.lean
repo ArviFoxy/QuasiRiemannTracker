@@ -102,5 +102,3 @@ theorem unevenColumnScalar_norm_sq (reflected : Bool) (s : Input ι) (R seed : I
 end
 end OAI.SevenEighths.Target830.Source.Uneven
 
-#print axioms OAI.SevenEighths.Target830.Source.Uneven.unevenColumnScalar_norm_sq
-#print axioms OAI.SevenEighths.Target830.Source.Uneven.actual_uneven_source_budget

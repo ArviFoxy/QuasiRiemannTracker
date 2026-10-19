@@ -66,19 +66,6 @@ theorem affine_main_low_profile_zero (P : Plane) (p : Profiles (1/4) (9/4)) (j :
   have hh := (p.support j h).1
   norm_num at hh
 
-/-- Only positive fees accompany the single negative low reserve. -/
-theorem affine_main_low_target_lower (P : Plane) (g : GeometryAffineLowSchedule) (N : ℕ)
-    (amp omega mesh : ℝ)(ha : 0≤ amp)(ho : 0≤ omega)(hm : 0≤ mesh) :
-    -1≤ geometryAffineLowTarget g N amp omega mesh := by
-  have hq : 0≤ Cycle63.Arithmetic.q0 := by norm_num [Cycle63.Arithmetic.q0]
-  have hmu:=g.μ_pos.le
-  have hd:=g.δ_pos.le
-  unfold geometryAffineLowTarget
-  have hp : 0≤(2*Cycle63.Arithmetic.q0/9)*(omega+g.μ/8) := by positivity
-  have hpm : 0≤ Cycle63.Arithmetic.q0*mesh := mul_nonneg hq hm
-  have hN : 0≤2*g.δ*31*(N:ℝ) := by positivity
-  have hs : 0≤3*((N:ℝ)+2)*3*g.δ := by positivity
-  linarith
 
 set_option linter.unusedVariables false in
 set_option linter.defProp false in
@@ -236,9 +223,5 @@ def actual_affine_main_low_payment (P : Plane)
 
 end
 end OAI.SevenEighths.MainPhysical
-#print axioms OAI.SevenEighths.MainPhysical.affine_main_low_profile_zero
-#print axioms OAI.SevenEighths.MainPhysical.affine_main_low_target_lower
 
-#print axioms OAI.SevenEighths.MainPhysical.affine_main_low_spec_of_receipts
 
-#print axioms OAI.SevenEighths.MainPhysical.actual_affine_main_low_payment

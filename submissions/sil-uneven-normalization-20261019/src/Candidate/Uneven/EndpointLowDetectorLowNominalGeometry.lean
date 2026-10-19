@@ -1,8 +1,43 @@
+import Candidate.Uneven.EndpointLowGeometry
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Detector.LowSlotScales
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Detector.RayPoolGood
+import Candidate.Uneven.EndpointLowDetectorLowSlotScales
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Detector.LowNominalGeometry
+
+/- Original module: Candidate.Uneven.EndpointLowDetectorLowOriginalPools. -/
+section
 /- Adapted from PR63 by Sil with OpenAI Codex assistance. Apache-2.0. -/
 /- Private .874836 LOW probe, adapted from credited accepted source; Apache-2.0. -/
-import Candidate.Uneven.EndpointLowGeometry
-import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Detector.LowNominalGeometry
-import Candidate.Uneven.EndpointLowDetectorLowOriginalPools
+/-! Adapted from OpenAI/math family003, module Detector.LowOriginalPools at openai/math fd4aeeb2e
+(the pruned source fork c388e88e6 no longer has it, so this file imports that module's own
+imports). Changed physical geometry and explicit compensation bookkeeping.
+Apache-2.0 upstream attribution retained. -/
+
+set_option autoImplicit false
+
+namespace OAI
+
+noncomputable section
+open scoped Classical
+namespace SevenEighths.UnevenEndpointPhysicalProbeLow
+variable [config : _root_.OAI.SevenEighths.UnevenEndpoint.Configuration]
+open ProbePhysical
+open CompletedGauss CanonicalQuadraticSieve ProbeRaySlots
+local notation "O" => ActualEisensteinCubic.O
+local notation "Id" => Ideal O
+
+
+
+end SevenEighths.UnevenEndpointPhysicalProbeLow
+end
+
+end OAI
+end
+
+/- Original module: Candidate.Uneven.EndpointLowDetectorLowNominalGeometry. -/
+section
+/- Adapted from PR63 by Sil with OpenAI Codex assistance. Apache-2.0. -/
+/- Private .874836 LOW probe, adapted from credited accepted source; Apache-2.0. -/
 /-! Adapted from OpenAI/math family003, pinned original module Detector.LowNominalGeometry.
 Changed physical geometry and explicit compensation bookkeeping; upstream is unchanged.
 Apache-2.0 upstream attribution retained. -/
@@ -56,12 +91,6 @@ lemma lowUnselectedProduct_norm_lower {K : ℕ} (ell : Fin K→ℝ)
       rfl
     _≤ _ := Finset.prod_le_prod₀ (fun _ _=> by positivity) (fun i _=> hslots i.val _ (p i).property)
 
-lemma originalPool_element_lower (R : Set Id) (S : Finset Id) (hS : SourceExclusions S)
-    (a b Y : ℝ) (ha : 0≤ a) (hab : a≤ b) (hY : 0< Y) (n : O)
-    (hn : n∈canonicalSlotSupport (pool R S a b Y)) : a*Y≤ elementNorm n := by
-  obtain ⟨P,hP,rfl⟩ := Finset.mem_image.mp hn
-  rw [primaryTuple_norm P (pool_supported R S hS a b Y P hP)]
-  simpa only [mul_comm] using (pool_norm_bounds R S ha hab hY P hP).1.le
 
 lemma lowPhysicalScale_source (C : CalibrationData) (Z L : ℝ) (hZ : 0< Z) :
     lowPhysicalScale C (Z^(UnevenEndpointPhysical.Arithmetic.x:ℝ)/L) (Z^(UnevenEndpointPhysical.Arithmetic.y:ℝ)/L)=
@@ -118,12 +147,4 @@ end SevenEighths.UnevenEndpointPhysicalProbeLow
 end
 
 end OAI
-
-#print axioms OAI.SevenEighths.UnevenEndpointPhysicalProbeLow.lowLength_sum
-#print axioms OAI.SevenEighths.UnevenEndpointPhysicalProbeLow.lowLength_bounds
-#print axioms OAI.SevenEighths.UnevenEndpointPhysicalProbeLow.lowUnselectedProduct_norm_lower
-#print axioms OAI.SevenEighths.UnevenEndpointPhysicalProbeLow.originalPool_element_lower
-#print axioms OAI.SevenEighths.UnevenEndpointPhysicalProbeLow.lowPhysicalScale_source
-#print axioms OAI.SevenEighths.UnevenEndpointPhysicalProbeLow.lowPhysicalScale_nominal_bound
-#print axioms OAI.SevenEighths.UnevenEndpointPhysicalProbeLow.lowSelectedScale_product
-#print axioms OAI.SevenEighths.UnevenEndpointPhysicalProbeLow.lowSelectedCaps_product
+end

@@ -1,8 +1,208 @@
-/- Target830 actual physical specialization, adapted from accepted .874836.
-Predecessor attribution retained. Apache-2.0. -/
-import Candidate.Target830.Physical.Original
+import Candidate.Target830.Physical.Retained
+import Candidate.Cycle25.Energy.Physical.RetainedFixed
+import Candidate.Cycle25.Numerator.Imported.NumeratorReflectionData
+import Candidate.Cycle25.Energy.Physical.Discarded
 import Candidate.Target830.Physical.Geometry
 import Candidate.Cycle25.Assembly.Mesh
+
+/- Original module: Candidate.Target830.Physical.Fixed. -/
+section
+/- Target830 actual physical specialization, adapted from accepted .874836.
+Predecessor attribution retained. Apache-2.0. -/
+
+namespace OAI
+noncomputable section
+set_option autoImplicit false
+open OAI.SevenEighths.CenteredMomentDetectorPlainFiberSource
+open scoped Classical BigOperators SchwartzMap
+open Filter
+namespace SevenEighths.Target830.Physical
+open Cycle25WeightedNumeratorPhysical OAI.SevenEighths.Target830.Physical
+open CenteredMomentDetectorPlainFiberSource CenteredMomentFiniteProfileExceptional QuadraticInitialBound
+open HeckeFamily HeckeDyadic HeckeInverseAmplification ProbeHighRowFamily
+open CenteredMomentRetainedWeightedSource CenteredMomentUniformReflectionApproximation
+local notation "O" => HeckeFamily.O
+set_option maxHeartbeats 800000
+
+/-- Fixed source profile version with all restoration and logarithmic losses
+absorbed into any prescribed positive exponent loss. The constant is independent
+of rowwise coefficient choices and all amplitude/count constants. -/
+theorem affine_retained_fixed_profile (P : SourcePlane) {D : Cycle25.Weighted.MomentData}
+    (F : Cycle25ProbeFinalAssembly.WeightedSourceData D) (κ : ℝ) (hκlo : 7/10 ≤ κ) (hκhi : κ ≤ 3/4)
+    (hbeta : (51/100:ℝ) ≤ HeckeZeroSupremum.beta)
+    (hκbeta : 2*HeckeZeroSupremum.beta-1 ≤ κ)
+    (bΦ mesh affineError : ℝ) (hAffineError : 0< affineError)
+    (hsΦ : Function.support (radialMajorant:ℝ→ℂ)⊆Set.Iic bΦ)
+    (di : ℕ) (control : Finset (ℕ×ℕ)) (Ci : ℝ) (hCi : 0< Ci)
+    (hinput : ∀ᶠU:ℝ in atTop,AffineAt P F bΦ mesh affineError U di control Ci)
+    (G:𝓢(ℝ,ℂ)) (loss Cscale Ccond xi:ℝ)
+    (hloss:0 < loss) (hCscale:0 < Cscale) (hCcond:0 < Ccond) (hxi:0 < xi) :
+    ∃degree:ℕ, ∃C:ℝ, 0 < C ∧ ∀ᶠU:ℝ in atTop,
+      1 < U ∧ ∀rows:Finset FreeRow,
+      (∀u∈rows, U^(1/100:ℝ) ≤ rowNorm u ∧ rowNorm u ≤ U) →
+      ∀(τ ψ:rows→Character) (X:rows→ℝ) (m:ℝ),
+      (∀i, ∀n:O, elementCoeff (rowCharacter F.S F.exclusions.prime i.val) n = elementCoeff (τ i) n) →
+      (∀i, 0 < X i) → 0 ≤ m → m+xi ≤ 2 →
+      (∀i, (Ideal.absNorm (∏P∈sourcePrimes (τ i) (ψ i),P):ℝ) ≤ Ccond*U) →
+      (∀i, ((ψ i).modulus.absNorm:ℝ)*(Ideal.absNorm (∏P∈sourcePrimes (τ i) (ψ i),P):ℝ)
+        ≤ Cscale*U^m*X i) →
+      ∀T:Finset (Fin D.N), ∀width:T→ℝ, ∀z:T→ℂ, ∀height:ℝ,
+      (∀i, 0 ≤ width i) →
+      (∀i,width i≤ mesh) →
+      (∀i, width i ≤ Cycle25.Energy.commonMesh 2 0 1 (D.t/4)) →
+      (∀i, (z i).re = 17/50) → 0 ≤ height → (∀i, |(z i).im| ≤ height) →
+      ((∃d t:ℝ,OAI.SevenEighths.Target830.dMinus≤ d ∧ d≤ OAI.SevenEighths.Target830.dPlus ∧
+        0≤ t ∧ t≤ physicalSwitch ∧ m+xi=plainScale d t ∧
+        (∑i,width i)≤ affineCapacity P d t) ∨
+        (2*(m+xi)+6*κ*(∑i,width i)≤1 ∨ T=∅)) →
+      (∑i:rows, ‖retainedSchwartz (τ i) (ψ i) G (X i) (U^(xi/4))‖^4 *
+        ‖∏s,HeckePrimeRow.canonicalPrimeAmplitude F.modulus ⊤ i.val.val F.W 2
+          (U^(width s)) (z s)‖^2)
+        ≤ C*(1+height)^degree*U^(1+D.t+affineError+loss) := by
+  obtain ⟨degree,H,Cr,hCr,hr⟩ := affine_actual_retained_fourth P F κ hκlo hκhi hbeta hκbeta
+    bΦ mesh affineError hAffineError hsΦ di control Ci hCi hinput (loss/2) Cscale xi
+    (by linarith) hCscale hxi
+  let B := 1+H.sup (schwartzSeminormFamily ℝ ℝ ℂ) G
+  let K := max 1 Ccond
+  have hB : 0 < B := by have := apply_nonneg (H.sup (schwartzSeminormFamily ℝ ℝ ℂ)) G; dsimp [B]; linarith
+  have hK : 1 ≤ K := le_max_left _ _
+  have hKpos : 0 < K := zero_lt_one.trans_le hK
+  refine ⟨degree,25*Cr*K^(loss/2)*B^4,by positivity,?_⟩
+  filter_upwards [hr,eventually_retained_log_cost loss hloss] with U hr hl
+  have hU := hr.1
+  have hUp := zero_lt_one.trans hU
+  refine ⟨hU,?_⟩
+  intro rows hrows τ ψ X m he hX hm hmmax hred hcombined T width z height
+    hw hwmesh hwmax hreal hh him hcapacity
+  have hRcap : 1 ≤ K*U := by nlinarith
+  have hred' (i:rows) : (Ideal.absNorm (∏P∈sourcePrimes (τ i) (ψ i),P):ℝ) ≤ K*U :=
+    (hred i).trans (mul_le_mul_of_nonneg_right (le_max_right _ _) hUp.le)
+  have hGB (i:rows) : H.sup (schwartzSeminormFamily ℝ ℝ ℂ) G ≤ B := by dsimp [B]; linarith
+  have hb := hr.2 rows hrows τ ψ (fun _=> G) X m B (K*U) he hX hm hmmax hB hGB
+    hRcap hred' hcombined T width z height hw hwmesh hwmax hreal hh him hcapacity
+  have hlog := hl.2 (m+xi) (by linarith) hmmax
+  apply hb.trans
+  calc
+    _ ≤ Cr*(K*U)^(loss/2)*B^4*(25*U^(loss/2))*(1+height)^degree*U^(1+D.t+affineError) := by
+      gcongr
+    _ = _ := by
+      rw [Real.mul_rpow hKpos.le hUp.le]
+      calc
+        _ = (25*Cr*K^(loss/2)*B^4)*(1+height)^degree*
+            (U^(loss/2)*U^(loss/2)*U^(1+D.t+affineError)) := by ring
+        _ = _ := by rw [←Real.rpow_add hUp,←Real.rpow_add hUp]; congr 2; ring
+
+end SevenEighths.Target830.Physical
+end
+end OAI
+
+/- Adapted from Cycle25 retained profile restoration, Apache-2.0. -/
+
+#print axioms OAI.SevenEighths.Target830.Physical.affine_retained_fixed_profile
+end
+
+/- Original module: Candidate.Target830.Physical.Original. -/
+section
+/- Target830 actual physical specialization, adapted from accepted .874836.
+Predecessor attribution retained. Apache-2.0. -/
+
+noncomputable section
+set_option autoImplicit false
+set_option maxHeartbeats 1200000
+open scoped Classical BigOperators SchwartzMap
+open Filter
+namespace OAI.SevenEighths.Target830.Physical
+open OAI OAI.SevenEighths HeckeFamily HeckeInverseAmplification ProbeHighRowFamily
+open ProbeRowRadicalConductor CenteredMomentUniformReflectionApproximation
+open OAI.SevenEighths.Target830.Physical CenteredMomentDetectorPlainFiberSource CenteredMomentFiniteProfileExceptional QuadraticInitialBound
+open Cycle25WeightedNumeratorPhysical Cycle25.Weighted.Numerator.PhysicalTail Cycle25.Weighted.Numerator CenteredMomentRetainedWeightedSource
+local notation "O" => HeckeFamily.O
+
+theorem affine_original_numerator_fourth (P : SourcePlane) {D : Cycle25.Weighted.MomentData}
+    (F : Cycle25ProbeFinalAssembly.WeightedSourceData D) (κ : ℝ) (hκlo : 7/10 ≤ κ) (hκhi : κ ≤ 3/4)
+    (hbeta : (51/100:ℝ) ≤ HeckeZeroSupremum.beta)
+    (hκbeta : 2*HeckeZeroSupremum.beta-1 ≤ κ)
+    (bΦ mesh affineError : ℝ) (hAffineError : 0< affineError)
+    (hsΦ : Function.support (radialMajorant:ℝ→ℂ)⊆Set.Iic bΦ)
+    (di : ℕ) (control : Finset (ℕ×ℕ)) (Ci : ℝ) (hCi : 0< Ci)
+    (hinput : ∀ᶠU:ℝ in atTop,AffineAt P F bΦ mesh affineError U di control Ci)
+    (G : 𝓢(ℝ,ℂ)) (loss xi q b Cslot : ℝ)
+    (hloss : 0< loss) (hxi : 0< xi) (hb : 0< b) (hCslot : 0< Cslot) :
+    ∃degree:ℕ,∃C:ℝ,0< C ∧ ∀ᶠU:ℝ in atTop,
+      1< U ∧ ∀rows:Finset FreeRow,
+      (∀u∈rows,U^(1/100:ℝ) ≤ rowNorm u ∧ rowNorm u ≤ U) →
+      ∀(data : ∀i:rows,PhysicalReflectionData F.S F.exclusions.prime i.val)
+        (N : rows→ℝ)(Y m : ℝ),
+      0< Y → (∀i,0< N i ∧ N i ≤ b*Y) → 0 ≤ m → m+xi ≤ 2 →
+      (∀i,(data i).combinedConductor ≤ (fixedConductorConstant F.S:ℝ)*U^m*(Y/N i)) →
+      ∀T:Finset (Fin D.N),∀width:T→ℝ,∀z:T→ℂ,∀height:ℝ,
+      (∀i,0 ≤ width i) →
+      (∀i,width i≤ mesh) →
+      (∀i,width i ≤ Cycle25.Energy.commonMesh 2 0 1 (D.t/4)) →
+      (∀i,(z i).re=17/50) → 0 ≤ height → (∀i,|(z i).im| ≤ height) →
+      ((∃d t:ℝ,dMinus≤ d ∧ d≤ dPlus ∧
+        0≤ t ∧ t≤ physicalSwitch ∧ m+xi=plainScale d t ∧
+        (∑i,width i)≤ affineCapacity P d t) ∨
+        (2*(m+xi)+6*κ*(∑i,width i)≤1 ∨ T=∅)) →
+      (∀i:rows,‖∏s,HeckePrimeRow.canonicalPrimeAmplitude F.modulus ⊤ i.val.val F.W 2
+        (U^(width s)) (z s)‖ ≤ Cslot*U^q) →
+      (∑i:rows,‖HeckeDyadic.polynomial (rowCharacter F.S F.exclusions.prime i.val) false G (Y/N i) 0 0‖^4*
+        ‖∏s,HeckePrimeRow.canonicalPrimeAmplitude F.modulus ⊤ i.val.val F.W 2
+          (U^(width s)) (z s)‖^2) ≤ C*(1+height)^degree*U^(1+D.t+affineError+loss) := by
+  let Ccond : ℝ := fixedConductorConstant F.S
+  have hCcond : 0< Ccond := by dsimp [Ccond];exact_mod_cast fixedConductorConstant_pos F.S F.exclusions.prime
+  obtain ⟨degree,Cr,hCr,hret⟩ := affine_retained_fixed_profile P F κ hκlo hκhi hbeta hκbeta
+    bΦ mesh affineError hAffineError hsΦ di control Ci hCi hinput G loss Ccond Ccond xi
+    hloss hCcond hCcond hxi
+  obtain ⟨Ct,hCt,htail⟩ := subtype_discarded_fourth_negligible (xi/2) 0 q b Ccond Cslot
+    (by positivity) hb hCcond hCslot G
+  refine ⟨degree,8*(Cr+Ct),by positivity,?_⟩
+  filter_upwards [hret] with U hret
+  have hU := hret.1
+  have hUp := zero_lt_one.trans hU
+  refine ⟨hU,?_⟩
+  intro rows hrows data N Y m hY hN hm hmmax hcombined T width z height hw hwmesh hwmax hz hheight hzim hcap hQ
+  let τ (i:rows) := (data i).presentation
+  let ψ (i:rows) := (data i).primitive
+  let R (i:rows) := retainedSchwartz (τ i) (ψ i) G (Y/N i) (U^(xi/4))
+  let tail (i:rows) := discardedSchwartz (τ i) (ψ i) G (Y/N i) (U^(xi/4))
+  let Q (i:rows) := ∏s,HeckePrimeRow.canonicalPrimeAmplitude F.modulus ⊤ i.val.val F.W 2
+    (U^(width s)) (z s)
+  let P (i:rows) := HeckeDyadic.polynomial (rowCharacter F.S F.exclusions.prime i.val) false G (Y/N i) 0 0
+  have hc (i:rows) : (data i).combinedConductor ≤ Ccond*U :=
+    (data i).combined_le_row.trans (mul_le_mul_of_nonneg_left (hrows i.val i.property).2 hCcond.le)
+  have hred (i:rows) : (Ideal.absNorm (∏P∈sourcePrimes (τ i) (ψ i),P):ℝ) ≤ Ccond*U :=
+    (data i).redundant_le_combined.trans (hc i)
+  have hr := hret.2 rows hrows τ ψ (fun i=> Y/N i) m (fun i=>(data i).element_eq)
+    (fun i=> div_pos hY (hN i).1) hm hmmax hred hcombined T width z height
+    hw hwmesh hwmax hz hheight hzim hcap
+  have ht := htail rows τ ψ N Q Y U hY hU.le hN (fun u hu=>(hrows u hu).2) hc hQ
+  simp only [show (xi/2)/2=xi/4 by ring,neg_zero,Real.rpow_zero,mul_one] at ht
+  have hsplit (i:rows) : P i=(data i).phase*(R i+tail i) :=
+    (data i).split G (Y/N i) (U^(xi/4)) (div_pos hY (hN i).1)
+  have hh := original_split_weighted_fourth Finset.univ P R tail (fun i=>(data i).phase) Q
+    (fun _=>1) (Cr*(1+height)^degree*U^(1+D.t+affineError+loss)) Ct
+    (fun _ _=> le_rfl) (fun i _=>(data i).phase_norm) (fun i _=> hsplit i)
+    (by simpa only [Complex.ofReal_one,div_one] using hr) ht
+  simp only [Complex.ofReal_one,div_one] at hh
+  have hH : 1 ≤ (1+height)^degree := one_le_pow₀ (by linarith)
+  have hpow : 1 ≤ U^(1+D.t+affineError+loss) := Real.one_le_rpow hU.le (by linarith [D.t_pos])
+  have hcost : 1 ≤ (1+height)^degree*U^(1+D.t+affineError+loss) := one_le_mul_of_one_le_of_one_le hH hpow
+  have hCt' := mul_le_mul_of_nonneg_left hcost hCt.le
+  exact hh.trans (by nlinarith)
+
+end OAI.SevenEighths.Target830.Physical
+end
+
+/- Adapted from Cycle25 original physical reflection split, Apache-2.0. -/
+
+#print axioms OAI.SevenEighths.Target830.Physical.affine_original_numerator_fourth
+end
+
+/- Original module: Candidate.Target830.Physical.Active. -/
+section
+/- Target830 actual physical specialization, adapted from accepted .874836.
+Predecessor attribution retained. Apache-2.0. -/
 
 /-! Actual rowwise coefficient choices on one finite dilation box. Inactive
 choices are replaced by a positive admissible scale before invoking the moment
@@ -46,7 +246,7 @@ lemma eventually_new_cutoff_le_base (b:ℝ) (hb:0≤ b) :
   have hp:=physical_d_pos hd
   have hy:y/d≤19/20:=by
     apply (div_le_iff₀ hp).mpr
-    have hd':1/2< d:=(show (1/2:ℝ)<dMinus by norm_num [dMinus,h]).trans_le hd
+    have hd':1/2< d:=(show (1/2:ℝ)< dMinus by norm_num [dMinus,h]).trans_le hd
     norm_num [y,h,ell,theta] at *
     linarith
   calc
@@ -182,3 +382,4 @@ The capacity argument keeps the exact factor two from conductor dilation. -/
 #print axioms OAI.SevenEighths.Target830.Physical.fallback_scale_admissible
 #print axioms OAI.SevenEighths.Target830.Physical.eventually_new_cutoff_le_base
 #print axioms OAI.SevenEighths.Target830.Physical.affine_active_box_fourth
+end

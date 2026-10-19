@@ -163,12 +163,6 @@ theorem actual_geometry_error_first_weight_zero
     geometryAllocationWeight reflected s R seed K Z ξ M A hK key weight N b j alloc=0 := by
   simp only [geometryAllocationWeight,hzero,ne_eq,not_true_eq_false,ite_false]
 
-/-- The original zero first weight survives the single prime normalization
-and child-volume division without discarding a label. -/
-theorem actual_geometry_error_normalized_coefficient_zero
-    (P : Finset (Ideal O))(V : ℝ)(prime : O)(i : Fin 3) :
-    errorNormalizedCoefficient P 0 V prime i=0 := by
-  simp only [errorNormalizedCoefficient,mul_zero,zero_mul,zero_div]
 
 
 /-- All raw second labels remain in the normalized sum when their common
@@ -294,54 +288,6 @@ theorem actual_affine_error_cell_gates
 
 attribute [local irreducible] geometryErrorSecondDatum affineInput
 
-/-- The actual finite Fourier family supplies every raw error puncture.
-The common threshold precedes the live subset, parent state, first label,
-amplifier prime and second label; no coefficient support is assumed. -/
-theorem eventual_actual_affine_error_source_and_puncture
-    (Sbad : Finset (Ideal O))(hbad : fixedBadPrimes⊆Sbad)
-    (W : ℝ→ℂ)(hW : Continuous W)(hWs : Function.support W⊆Set.Icc (1:ℝ) 2) :
-    ∃Cs : ℝ,1 ≤ Cs ∧ ∀ᶠZ : ℝ in atTop,1 < Z ∧
-      ∀(T : Finset α)(η₀ : Character)(θ : T→RayQuotient.Characters rayM H)
-        (w σ freq : T→ℝ)(hσ : ∀j,σ j∈Set.Icc (33/50:ℝ) (33/50))
-        (η : Character)(Q : Ideal O)(Φ : 𝓢(ℝ,ℂ))(bΦ : ℝ)
-        (hs : Function.support (Φ:ℝ→ℂ)⊆Set.Iic bΦ)(hp : ∀x,0 ≤ (Φ x).re)
-        (p : Profiles (1/4) (9/4))(t X₁ X₂ : ℝ)(hX₁ : 0 < X₁)(hX₂ : 0 < X₂)(hZ : 1 < Z),
-      (∀j,0 ≤ w j) → (81/200:ℝ) ≤ length Z X₁ → (81/200:ℝ) ≤ length Z X₂ →
-      length Z X₁ ≤ (45/100:ℝ) → length Z X₂ ≤ (45/100:ℝ) → (∑j,w j) ≤ (1/25:ℝ) →
-      let state:=fixedParentState η Q Φ bΦ Z 1 hZ (by norm_num) hs hp
-      let inp:=affineInput rayM H hH η₀ θ W hW 1 2 (33/50) (33/50)
-        (by norm_num) hWs w σ freq hσ state p (by norm_num) 1 t X₁ X₂ hX₁ hX₂
-      ∃caps : GeometryAffineExceptionalSourceGates inp p (Fintype.card α) Cs Z,
-        inp.η=η ∧ ∀(beta : ℝ)(_hbeta : widthLo ≤ beta ∧ beta ≤ 1/25)
-          (reflected : Bool)(ξ reserve : ℝ)(key : ℤ×(Fin 5→ℤ))
-          (first : GeometryLowFirstIndex reflected inp 1 1 (Z^(1:ℝ)) Z ξ
-            (Real.rpow_pos_of_pos (zero_lt_one.trans hZ) _) key),
-        let pool:=CenteredMomentPrimePool.primePool rayM H Sbad (1/2) 1
-          (Z^(Sil.Uneven.MainSource.amp plane beta))
-        ∀(prime : elementPool pool)(i : Fin 3)
-          (Bp : actualAllocations (activeInput (geometryLowFirstChild reflected inp 1 1 (Z^(1:ℝ)) Z ξ
-            (Real.rpow_pos_of_pos (zero_lt_one.trans hZ) _) key t first)).pools
-            ((Ideal.span {prime.val})^(errorIndex i+1))) (υ : Character)(v : ℝ)
-          (n : GeometryErrorSecondIndex reflected inp 1 1 Z 1 (Sil.Uneven.MainSource.amp plane beta) ξ reserve (9/4) t
-            (Fintype.card T) hZ key first prime.val i Bp υ v)(second : Bool),
-        let d:=geometryErrorSecondDatum reflected inp 1 1 Z 1 (Sil.Uneven.MainSource.amp plane beta) ξ reserve (9/4) t
-          (Fintype.card T) hZ key first prime.val i Bp υ v caps.zero₁ caps.zero₂ n
-        let puncture:=d.R*(if second then d.D else d.C)
-        puncture≠0 ∧ (puncture.absNorm:ℝ) ≤ Z^(28:ℝ) := by
-  obtain ⟨Cs,hCs,hcaps⟩:=AuxiliaryPhysical.eventual_actual_affine_exceptional_source_gates (α:=α) rayM H hH W hW hWs
-  refine ⟨Cs,hCs,?_⟩
-  filter_upwards [hcaps,eventual_actual_geometry_affine_error_puncture_of_scales (Fintype.card α)] with Z hc he
-  refine ⟨hc.1,?_⟩
-  intro T η₀ θ w σ freq hσ η Q Φ bΦ hs hp p t X₁ X₂ hX₁ hX₂ hZ hw hlo₁ hlo₂ hhi₁ hhi₂ hsum state inp
-  have caps:=hc.2 T η₀ θ w σ freq hσ bΦ state p t X₁ X₂ hX₁ hX₂ hw hlo₁ hlo₂ hhi₁ hhi₂ hsum
-  have heta : inp.η=η := by
-    unfold inp affineInput
-    rfl
-  refine ⟨caps,heta,?_⟩
-  intro beta hbeta reflected ξ reserve key first pool prime i Bp υ v n second
-  have hprime:=actual_affine_error_prime_norm_cap (plane:=plane) rayM H Sbad hbad Z hZ beta hbeta prime
-  exact he.2 (α:=↥T) reflected inp 1 p Cs (Sil.Uneven.MainSource.amp plane beta) ξ reserve t hZ caps
-    squarefree_one key first prime.val hprime.1 hprime.2 i Bp υ v n second
 
 
 set_option linter.style.haveILetI false in
@@ -699,32 +645,16 @@ end RawAffineMenu
 
 end
 end OAI.SevenEighths.MainErrorReconstruction
-#print axioms OAI.SevenEighths.MainErrorReconstruction.eventual_actual_geometry_error_second_caps_of_scales
-#print axioms OAI.SevenEighths.MainErrorReconstruction.eventual_actual_geometry_affine_error_puncture_of_scales
-#print axioms OAI.SevenEighths.MainErrorReconstruction.actual_affine_error_prime_norm_cap
-
-#print axioms OAI.SevenEighths.MainErrorReconstruction.eventual_actual_affine_error_source_and_puncture
-
-#print axioms OAI.SevenEighths.MainErrorReconstruction.actual_affine_error_auxiliary_gates
-
-#print axioms OAI.SevenEighths.MainErrorReconstruction.actual_geometry_error_block_projector_cap
-
-#print axioms OAI.SevenEighths.MainErrorReconstruction.actual_affine_error_cell_gates
 
 
-#print axioms OAI.SevenEighths.MainErrorReconstruction.actual_geometry_error_first_weight_zero
-#print axioms OAI.SevenEighths.MainErrorReconstruction.actual_geometry_error_normalized_coefficient_zero
 
-#print axioms OAI.SevenEighths.MainErrorReconstruction.actual_geometry_error_zero_normalized_sum
 
-#print axioms OAI.SevenEighths.MainErrorReconstruction.actual_finiteT_affine_error_normalized_menu
 
-#print axioms OAI.SevenEighths.MainErrorReconstruction.eventual_actual_affine_error_normalized_scalar_schedule
 
-#print axioms OAI.SevenEighths.MainErrorReconstruction.actual_affine_error_normalized_menu_source_prefix
 
-#print axioms OAI.SevenEighths.MainErrorReconstruction.actual_geometry_error_normalized_label_gates
 
-#print axioms OAI.SevenEighths.MainErrorReconstruction.actual_affine_error_normalized_menu_source_aligned
 
-#print axioms OAI.SevenEighths.MainErrorReconstruction.actual_geometry_affine_error_raw_normalized_menu
+
+
+
+

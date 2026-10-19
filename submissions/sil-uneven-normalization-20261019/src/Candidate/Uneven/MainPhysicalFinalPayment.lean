@@ -99,12 +99,6 @@ def mainLowShellIndex (P : Plane) (n : ℤ)
     (l : Label)×MainLowFinalSecondIndex (P := P) reflected s R seed Z Mrow amp ξ reserve b t N hZ key firstIndex l := ⟨q.1.val,q.2⟩
 
 omit [DecidableEq α] in
-theorem main_low_shell_index_injective (P : Plane) (n : ℤ) :
-    Function.Injective (mainLowShellIndex (P := P) reflected s R seed Z Mrow amp ξ reserve b t N hZ key
-      firstIndex n) := by
-  intro q r h
-  have hl : q.1=r.1 := Subtype.ext (congrArg Sigma.fst h)
-  exact Sigma.ext hl (Sigma.mk.inj_iff.mp h).2
 
 /-- ORIGINAL full-nonzero membership is tested before ordinary restriction
 and is pulled back exactly, rather than replaced by restricted nonzeroness. -/
@@ -136,35 +130,11 @@ theorem main_low_shell_original_gate (P : Plane)
   intro q hq
   exact hOriginal _ (Finset.mem_filter.mp hq).2
 
-/-- The original selected datum is unchanged under the shell pullback. -/
-theorem main_low_shell_datum (P : Plane)
-    (rows : Finset ((l : Label)×MainLowFinalSecondIndex (P := P) reflected s R seed Z Mrow amp ξ reserve b t N hZ key firstIndex l)) (n : ℤ)
-    (q : mainLowShellRows (P := P) reflected s R seed Z Mrow amp ξ reserve b t N hZ key firstIndex rows n) :
-    geometryLowSecondDatum reflected s R seed Z Mrow amp ξ reserve b t N hZ key
-      (firstIndex q.val.1.val) hz₁ hz₂ q.val.2=
-    geometryLowSecondDatum reflected s R seed Z Mrow amp ξ reserve b t N hZ key
-      (firstIndex (mainLowShellRowOriginal (P := P) reflected s R seed Z Mrow amp ξ reserve b t N hZ key
-        firstIndex rows n q).val.1) hz₁ hz₂
-      (mainLowShellRowOriginal (P := P) reflected s R seed Z Mrow amp ξ reserve b t N hZ key
-        firstIndex rows n q).val.2 := rfl
 
 attribute [local irreducible] MainLowFinalSecondIndex
 
 set_option maxHeartbeats 10000 in
 omit [DecidableEq α] in
-/-- The entire original-nonzero second-block cost is disintegrated by
-one common first-projector shell. No second label, allocation or dyad is
-removed, duplicated or charged by its cardinality. -/
-theorem main_low_shell_complete_sum (P : Plane)
-    (rows : Finset ((l : Label)×MainLowFinalSecondIndex (P := P) reflected s R seed Z Mrow amp ξ reserve b t N hZ key firstIndex l))
-    (hs : ∀l,Squarefree (firstIndex l).1.val.2.1.val)
-    (cost : ((l : Label)×MainLowFinalSecondIndex (P := P) reflected s R seed Z Mrow amp ξ reserve b t N hZ key firstIndex l)→ℝ) :
-    (∑q∈rows,cost q)=∑n∈selectedShells (selectedFirstProjectors (fun l=>(firstIndex l).1.val)),
-      ∑q∈mainLowShellRows (P := P) reflected s R seed Z Mrow amp ξ reserve b t N hZ key firstIndex rows n,
-        cost (mainLowShellIndex (P := P) reflected s R seed Z Mrow amp ξ reserve b t N hZ key
-          firstIndex n q) := by
-  exact filtered_first_shell_sum (P := P) (fun l=>(firstIndex l).1.val) hs
-    (fun l=>MainLowFinalSecondIndex (P := P) reflected s R seed Z Mrow amp ξ reserve b t N hZ key firstIndex l) rows cost
 
 omit [DecidableEq α] in
 /-- The same complete filter identity for the original cost's subtype. -/
@@ -252,28 +222,6 @@ def mainLowShellOriginalBlock (P : Plane)
     hOriginal _ (Finset.mem_filter.mp q.property).2⟩
 
 set_option maxHeartbeats 320000 in
-/-- A single second common allocation and genuine original row witness
-are chosen before the entire signed ordinary source sum on the shell. -/
-theorem actual_main_low_final_shell_choices (P : Plane)
-    (rows : Finset ((l : Label)×MainLowFinalSecondIndex (P := P) reflected s R seed Z Mrow amp ξ reserve b t
-      N hZ key firstIndex l))
-    (hOriginal : ∀q∈rows,
-      (⟨firstIndex q.1,q.2⟩ : GeometryMainSecondIndex reflected s R seed Z Mrow amp ξ reserve b t
-        N hZ key)∈geometryMainNonzeroBlocks reflected s R seed Z Mrow amp ξ reserve b t N hZ key hz₁ hz₂)
-    (n : ℤ)(second : Bool) :
-    let d:=fun q : mainLowShellRows (P := P) reflected s R seed Z Mrow amp ξ reserve b t N hZ key firstIndex rows n=>
-      geometryLowSecondDatum reflected s R seed Z Mrow amp ξ reserve b t N hZ key
-        (firstIndex q.val.1.val) hz₁ hz₂ q.val.2
-    ∃B₂ : (q : mainLowShellRows (P := P) reflected s R seed Z Mrow amp ξ reserve b t N hZ key firstIndex rows n)→
-        actualAllocations (d q).input.pools (if second then (d q).D else (d q).C),
-      ∃_rwitness : (q : mainLowShellRows (P := P) reflected s R seed Z Mrow amp ξ reserve b t N hZ key firstIndex rows n)→
-          secondLiveRows (fun _:Unit=>(d q).block),
-        ∀q,frozenCoefficient (B₂ q).val (if second then (d q).D else (d q).C) (d q).R
-          (d q).input.ν (d q).input.W (d q).input.P≠0 ∧
-          (d q).inactive∈inactiveSubsets (d q).C (d q).D := by
-  exact actual_main_low_family_choices reflected s R seed Z Mrow amp ξ reserve b t N hZ key hz₁ hz₂
-    (mainLowShellOriginalBlock (P := P) reflected s R seed Z Mrow amp ξ reserve b t N hZ key hz₁ hz₂
-      firstIndex rows hOriginal n) second
 
 /-- A pure physical block cost boundary; it keeps the full signed source sum. -/
 def mainLowSingleRayPhysicalCost (P : Plane) (N : ℕ)(lo ap : ℝ)(second : Bool)
@@ -282,18 +230,6 @@ def mainLowSingleRayPhysicalCost (P : Plane) (N : ℕ)(lo ap : ℝ)(second : Boo
   mainLowFixedRayPhysicalCost (P := P) N lo ap second (fun _:Unit=>datum) (fun _=>coefficient) t₀ u χ ψ
     (fun _=>select)
 
-/-- Grouping costs uses entire source columns before any shell or scalar payment. -/
-theorem main_low_single_ray_physical_sum (P : Plane) {J : Type*}[Fintype J]
-    (N : ℕ)(lo ap : ℝ)(second : Bool)(datum : J→SecondInputDatum α)
-    (coefficient : J→ℝ)(t₀ u : ℝ)(χ ψ : RayFourExpansion.RayCharacter){e : ℝ}
-    (select : (r : J)→mainLowSourceRows second (datum r) (fun _=>True)→BufferIndex e) :
-    mainLowFixedRayPhysicalCost (P := P) N lo ap second datum coefficient t₀ u χ ψ select=
-      ∑r,mainLowSingleRayPhysicalCost (P := P) N lo ap second (datum r) (coefficient r) t₀ u χ ψ (select r) := by
-  unfold mainLowFixedRayPhysicalCost mainLowSingleRayPhysicalCost
-  apply Finset.sum_congr rfl
-  intro r _
-  simp only [mainLowFixedRayPhysicalCost,Fintype.sum_unique]
-  rfl
 
 section SavedKernel
 open HeckeFamily CanonicalQuadraticSieve CenteredMomentCommonRadialData
@@ -660,26 +596,14 @@ def actual_main_low_final_physical_bins (P : Plane) {α : Type} [Fintype α] [De
 
 end SavedKernel
 
-#print axioms filtered_first_shell_sum
 
 end
 end OAI.SevenEighths.MainPhysical
-#print axioms OAI.SevenEighths.MainPhysical.main_low_shell_index_injective
-#print axioms OAI.SevenEighths.MainPhysical.main_low_shell_original_gate
-#print axioms OAI.SevenEighths.MainPhysical.main_low_shell_datum
 
 
-#print axioms OAI.SevenEighths.MainPhysical.main_low_shell_complete_sum
 
-#print axioms OAI.SevenEighths.MainPhysical.main_low_shell_complete_subtype_sum
 
-#print axioms OAI.SevenEighths.MainPhysical.main_low_shell_fixed_ray_cost
 
-#print axioms OAI.SevenEighths.MainPhysical.actual_main_low_final_shell_first_gates
-#print axioms OAI.SevenEighths.MainPhysical.actual_main_low_final_shell_choices
 
-#print axioms OAI.SevenEighths.MainPhysical.main_low_final_physical_spec_of_bins
 
-#print axioms OAI.SevenEighths.MainPhysical.main_low_single_ray_physical_sum
 
-#print axioms OAI.SevenEighths.MainPhysical.actual_main_low_final_physical_bins

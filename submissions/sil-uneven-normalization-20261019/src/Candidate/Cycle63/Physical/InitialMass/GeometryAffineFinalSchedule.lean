@@ -1,8 +1,91 @@
-/- Copyright (c) 2026 Hailey Collet. Released under Apache 2.0. -/
+import Candidate.Cycle63.Physical.InitialMass.GeometryFinalParameters
+import Candidate.Cycle63.Moment.HighParameters
 import Candidate.Cycle63.Physical.InitialMass.GeometryAffineScheduleData
 import Candidate.Cycle63.Physical.InitialMass.GeometryFinalLowLoss
 import Candidate.Cycle63.Physical.InitialMass.GeometryFinalLossParameters
-import Candidate.Cycle63.Physical.InitialMass.GeometryUniformHighParameters
+
+/- Original module: Candidate.Cycle63.Physical.InitialMass.GeometryCommonHighParameters. -/
+section
+/- Copyright (c) 2026 Hailey Collet. Released under Apache 2.0. -/
+
+set_option autoImplicit false
+namespace OAI.SevenEighths.Cycle63InitialMass
+noncomputable section
+open Cycle63Moment
+
+/-- Use one common cutoff for both canonical branches after the high density
+degree is known. All other high-source parameters stay unchanged. -/
+def geometryCommonHighParameters (P : HighSourceParameters) (μ : ℝ) (J : ℕ)
+    (hμ : 0<μ) (hs : 0<P.vslot) (hp : 0<P.vplain) : HighSourceParameters :=
+  { P with
+    τ := geometryFinalHeight μ P.d P.vslot P.vplain J
+    hτ := (geometry_final_height_gates μ P.d P.vslot P.vplain J hμ P.hd hs hp).1 }
+
+/-- These are the exact high gates and the strict low gate for the same
+selector threshold. The low dictionary rate is the high slot rate. -/
+theorem geometry_common_high_parameter_gates (P : HighSourceParameters) (μ : ℝ)
+    (J : ℕ) (hμ : 0<μ) (hs : 0<P.vslot) (hp : 0<P.vplain) :
+    let Q := geometryCommonHighParameters P μ J hμ hs hp
+    Q.τ=geometryFinalHeight μ P.d P.vslot P.vplain J ∧
+      Q.e=P.e ∧ Q.κ=P.κ ∧ Q.vslot=P.vslot ∧ Q.vplain=P.vplain ∧ Q.d=P.d ∧
+      0<Q.τ ∧ Q.τ≤μ/16 ∧ 2*Q.τ<Q.d*Q.vslot ∧
+      8*Q.τ≤Q.d*Q.vslot ∧ 16*Q.τ≤Q.d*Q.vplain ∧
+      2*Q.τ*((J:ℝ)+1)≤μ/8 := by
+  intro Q
+  have h := geometry_final_height_gates μ P.d P.vslot P.vplain J hμ P.hd hs hp
+  refine ⟨rfl,rfl,rfl,rfl,rfl,rfl,h.1,h.2.1,?_,h.2.2.1,h.2.2.2.1,h.2.2.2.2⟩
+  change 2*(geometryFinalHeight μ P.d P.vslot P.vplain J)<P.d*P.vslot
+  linarith [h.1,h.2.2.1]
+
+end
+end OAI.SevenEighths.Cycle63InitialMass
+#print axioms OAI.SevenEighths.Cycle63InitialMass.geometry_common_high_parameter_gates
+end
+
+/- Original module: Candidate.Cycle63.Physical.InitialMass.GeometryUniformHighParameters. -/
+section
+/- Copyright (c) 2026 Hailey Collet. Released under Apache 2.0. -/
+
+set_option autoImplicit false
+namespace OAI.SevenEighths.Cycle63InitialMass
+noncomputable section
+open scoped Classical
+open Cycle63Moment
+
+/-- Choose a single height cutoff after all actual-subset density receipts
+are known. Each subset retains its own profile-bound function and source
+parameters; no change of Fourier cardinality is involved. -/
+theorem geometry_uniform_high_height {ι : Type*} [Fintype ι] [Nonempty ι]
+    (P : ι→HighSourceParameters) (J : ι→ℕ) (μ : ℝ)
+    (hμ : 0<μ) (hs : ∀i,0<(P i).vslot) (hp : ∀i,0<(P i).vplain) :
+    ∃τ : ℝ, 0<τ ∧ τ≤μ/16 ∧ ∀i,
+      2*τ<(P i).d*(P i).vslot ∧ 8*τ≤(P i).d*(P i).vslot ∧
+      16*τ≤(P i).d*(P i).vplain ∧ 2*τ*((J i:ℝ)+1)≤μ/8 := by
+  let rate := fun i=>geometryFinalHeight μ (P i).d (P i).vslot (P i).vplain (J i)
+  have gates (i : ι) := geometry_final_height_gates μ (P i).d (P i).vslot
+    (P i).vplain (J i) hμ (P i).hd (hs i) (hp i)
+  let τ := Finset.univ.inf' Finset.univ_nonempty rate
+  have hτ : 0<τ := (Finset.lt_inf'_iff _).mpr (fun i _=>(gates i).1)
+  have hle (i : ι) : τ≤rate i := Finset.inf'_le rate (Finset.mem_univ i)
+  let i₀ : ι := Classical.choice inferInstance
+  refine ⟨τ,hτ,(hle i₀).trans (gates i₀).2.1,?_⟩
+  intro i
+  have hsmall := hle i
+  have hg := gates i
+  change τ≤geometryFinalHeight μ (P i).d (P i).vslot (P i).vplain (J i) at hsmall
+  have hJ : 0≤(J i:ℝ)+1 := by positivity
+  have hmul := mul_le_mul_of_nonneg_right hsmall hJ
+  exact ⟨by linarith [hg.2.2.1],by linarith [hg.2.2.1],
+    by linarith [hg.2.2.2.1],by linarith [hg.2.2.2.2]⟩
+
+end
+end OAI.SevenEighths.Cycle63InitialMass
+#print axioms OAI.SevenEighths.Cycle63InitialMass.geometry_uniform_high_height
+end
+
+/- Original module: Candidate.Cycle63.Physical.InitialMass.GeometryAffineFinalSchedule. -/
+section
+/- Copyright (c) 2026 Hailey Collet. Released under Apache 2.0. -/
 
 set_option autoImplicit false
 set_option maxHeartbeats 60000
@@ -109,3 +192,4 @@ end OAI.SevenEighths.Cycle63InitialMass
 #print axioms OAI.SevenEighths.Cycle63InitialMass.geometry_affine_final_high_schedule_rates
 #print axioms OAI.SevenEighths.Cycle63InitialMass.geometry_affine_final_dictionary_mass_rate_eq
 #print axioms OAI.SevenEighths.Cycle63InitialMass.geometry_affine_final_low_target_ledger
+end

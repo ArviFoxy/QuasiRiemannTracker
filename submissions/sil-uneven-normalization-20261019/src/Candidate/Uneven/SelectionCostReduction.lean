@@ -289,13 +289,4 @@ end Literal
 
 end
 end OAI.SevenEighths.UnevenSelection
-#print axioms OAI.SevenEighths.UnevenSelection.main_normalized_block_cost_nonneg
-#print axioms OAI.SevenEighths.UnevenSelection.actual_main_normalized_block_cost
-#print axioms OAI.SevenEighths.UnevenSelection.actual_main_normalized_coefficient_cost
-#print axioms OAI.SevenEighths.UnevenSelection.geometry_main_first_cost_nonneg
-#print axioms OAI.SevenEighths.UnevenSelection.actual_main_first_cost_disintegration
-#print axioms OAI.SevenEighths.UnevenSelection.actual_geometry_main_first_cost
 
-#print axioms OAI.SevenEighths.UnevenSelection.filtered_sigma_weighted_cost
-#print axioms OAI.SevenEighths.UnevenSelection.geometry_allocation_weight_mono
-#print axioms OAI.SevenEighths.UnevenSelection.actual_geometry_main_first_cost_uniform

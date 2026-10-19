@@ -164,4 +164,3 @@ theorem actual_geometry_label_common_skew
 end
 end OAI.SevenEighths.TargetHigh830
 
-#print axioms OAI.SevenEighths.TargetHigh830.actual_geometry_label_common_skew

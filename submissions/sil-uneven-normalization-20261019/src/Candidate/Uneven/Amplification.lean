@@ -135,6 +135,4 @@ theorem actual_uneven_budget_amplification
 
 end
 end OAI.SevenEighths.Target830.Source.Uneven
-#print axioms OAI.SevenEighths.Target830.Source.Uneven.unevenLiveBudget_eq_allocations
 
-#print axioms OAI.SevenEighths.Target830.Source.Uneven.actual_uneven_budget_amplification

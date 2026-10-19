@@ -183,61 +183,10 @@ theorem actual_paid_error_column_family_after_threshold {α : Type*}[Fintype α]
   ring_nf
 
 
-/-- Literal positive normalized source sum with the exact prime coefficient,
-now expressed in the complete ordinary columns admitted by the paid theorem. -/
-theorem actual_error_full_normalized_to_admitted_columns {α : Type*} [Fintype α] [DecidableEq α]
-    (slots : Finset α) (s : Input slots) (R seed : Ideal O)
-    (hseed : Squarefree seed) (hz₁ : s.W₁ 0=0) (hz₂ : s.W₂ 0=0)
-    (K Tsec Z ξ : ℝ) (hK : 0 < K)
-    (rows : Finset (ActualSecondBlockIndex s R seed K Tsec Z ξ))
-    (P : Finset (Ideal O)) (weight : ℝ) (hw : 0 ≤ weight) (p : O) (i : Fin 3)
-    (N : ℕ) (a ap : ℝ) (ha : 0 < a) (hap : 0 < ap)
-    (hcard : Fintype.card α ≤ N) (hlower : a ≤ s.lower)
-    (hW₁ : ∀x,s.W₁ x≠0→ap ≤ x) (hW₂ : ∀x,s.W₂ x≠0→ap ≤ x)
-    (W : 𝓢(ℝ,ℂ)) (χ₀ : rows→RayCharacter) (Q : Ideal O) (hQ : Q ≤ Ideal.span {(72:O)})
-    (reflected : Bool) (t u : ℝ) :
-    let d := fun n : rows=>actualSecondBlockDatum slots s R seed hseed hz₁ hz₂ K Tsec Z ξ hK n.val
-    let datum := fun n=>ordinarySecondDatum (d n) (χ₀ n) Q fixedBadMask
-    let c := errorNormalizedCoefficient P weight (volume s) p i
-    let w := fun n : rows=>(c:ℂ)*actualSecondBlockWeight s R seed K Tsec Z ξ n.val
-    secondNormalizedSum reflected datum
-      (secondEffectiveWeight (fun n=>(datum n).block) w W) t u ≤ 
-      (c*(K/lowerFactor N a ap))*
-      ∑n : rows,∑χ : RayCharacter,∑ψ : RayCharacter,
-        normalizer (d n).C (d n).D (d n).inactive*
-        ∑D∈(d n).block.divisors.filter Squarefree,
-          (if reflected then
-            ∑z∈partRows false s.η ψ⁻¹ Q fixedBadMask (d n).C (d n).D (d n).inactive (d n).radius,
-              ‖normalizedColumn (withHeight s ((d n).τ ψ⁻¹) (s.t+2*Real.pi*(u-(-t))))
-                (d n).D (d n).hD R seed D z‖^2
-           else
-            ∑z∈partRows false s.η χ Q fixedBadMask (d n).C (d n).D (d n).inactive (d n).radius,
-              ‖normalizedColumn (withHeight s ((d n).τ χ) (s.t+2*Real.pi*(u-t)))
-                (d n).C (d n).hC R seed D z‖^2) := by
-  intro d datum c w
-  apply (actual_error_full_normalized_to_columns slots s R seed hseed hz₁ hz₂ K Tsec Z ξ hK
-    rows P weight hw p i N a ap ha hap hcard hlower hW₁ hW₂ W χ₀ Q reflected t u).trans_eq
-  apply congrArg (fun r : ℝ=>(c*(K/lowerFactor N a ap))*r)
-  apply Finset.sum_congr rfl
-  intro n hn
-  apply Finset.sum_congr rfl
-  intro χ hχ
-  apply Finset.sum_congr rfl
-  intro ψ hψ
-  apply congrArg (fun r : ℝ=>normalizer (d n).C (d n).D (d n).inactive*r)
-  apply Finset.sum_congr rfl
-  intro D hD
-  exact actual_error_complete_column_rows s (d n).τ (d n).C (d n).D (d n).hC (d n).hD
-    (d n).inactive R seed D Q (d n).radius hQ (χ₀ n) χ ψ reflected t u
 
 
 end
 end OAI.SevenEighths.MainErrorReconstruction
-#print axioms OAI.SevenEighths.MainErrorReconstruction.actual_error_ordinary_rows_eq
-#print axioms OAI.SevenEighths.MainErrorReconstruction.actual_error_complete_right_rows
-#print axioms OAI.SevenEighths.MainErrorReconstruction.actual_error_complete_column_rows
 
-#print axioms OAI.SevenEighths.MainErrorReconstruction.actual_paid_error_column_family_after_threshold
 
-#print axioms OAI.SevenEighths.MainErrorReconstruction.actual_error_full_normalized_to_admitted_columns
 

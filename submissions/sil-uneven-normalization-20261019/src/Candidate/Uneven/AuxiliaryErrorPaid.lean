@@ -84,10 +84,5 @@ theorem seventh_paid_error_reserve {b M widthDefect allowance F primeWidth paddi
   have hr := mul_le_mul_of_nonneg_left (Sil.Uneven.AuxiliarySource.error_reserves hb).2.2.le hM
   nlinarith
 
-#print axioms actual_prime_widths
-#print axioms paid_error_excess_bound
-#print axioms first_paid_error_reserve
-#print axioms sixth_paid_error_reserve
-#print axioms seventh_paid_error_reserve
 end
 end OAI.SevenEighths.AuxiliaryError

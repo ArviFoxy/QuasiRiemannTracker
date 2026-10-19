@@ -378,13 +378,6 @@ def eventual_actual_error_physical_shell_payment
 
 end
 end OAI.SevenEighths.MainErrorReconstruction
-#print axioms OAI.SevenEighths.MainErrorReconstruction.extracted_error_label_scalar_nonneg
-#print axioms OAI.SevenEighths.MainErrorReconstruction.error_physical_bin_exponent_payment
-#print axioms OAI.SevenEighths.MainErrorReconstruction.actual_error_first_label_gates
 
-#print axioms OAI.SevenEighths.MainErrorReconstruction.eventual_actual_error_physical_shell_payment
 
-#print axioms OAI.SevenEighths.MainErrorReconstruction.ErrorPhysicalShellBound
 
-#print axioms OAI.SevenEighths.MainErrorReconstruction.geometryErrorPhysicalScalarPacket
-#print axioms OAI.SevenEighths.MainErrorReconstruction.selected_error_physical_scalar_packet_at

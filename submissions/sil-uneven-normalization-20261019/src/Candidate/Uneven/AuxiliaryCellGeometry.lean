@@ -21,8 +21,6 @@ theorem widthCellIndex_mem (s : ℝ) :
     widthCellIndex s ∈ Finset.Icc (0:ℤ) 800000 :=
   Finset.mem_Icc.mpr (widthCellIndex_bounds s)
 
-theorem widthCellUpper_eq (s : ℝ) :
-    widthCellUpper s = widthCellAtIndex (widthCellIndex s) := rfl
 
 theorem amplifier_pos {b : ℝ} (hb : b ∈ Set.Icc widthLo widthHi) : 0 < amp b :=
   lt_of_lt_of_le (scheduling_guards hb).2.1 (scheduling_guards hb).2.2.1
@@ -45,4 +43,3 @@ theorem normalized_cell_volume {n₁ n₂ slots : ℝ}
 
 end
 end Sil.Uneven.AuxiliarySource
-#print axioms Sil.Uneven.AuxiliarySource.normalized_cell_volume

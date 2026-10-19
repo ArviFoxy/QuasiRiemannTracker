@@ -539,15 +539,8 @@ theorem actual_geometry_main_high_canonical_projectors {α : Type} [Fintype α] 
 end
 end OAI.SevenEighths.MainHigh
 
-#print axioms OAI.SevenEighths.MainHigh.eventually_actual_main_high_literal_admission
 
-#print axioms OAI.SevenEighths.MainHigh.actual_geometry_main_high_canonical_projectors
 
-#print axioms OAI.SevenEighths.MainHigh.actual_main_high_original_projector_union
 
-#print axioms OAI.SevenEighths.MainHigh.eventually_actual_main_high_canonical_admission
 
-#print axioms OAI.SevenEighths.MainHigh.main_high_residual_subset_union
-#print axioms OAI.SevenEighths.MainHigh.main_high_residual_sum_le_union
 
-#print axioms OAI.SevenEighths.MainHigh.actual_main_high_seed_gates

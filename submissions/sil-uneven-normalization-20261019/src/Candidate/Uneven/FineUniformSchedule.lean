@@ -129,4 +129,3 @@ theorem geometry_final_marked_schedule
 
 end
 end OAI.SevenEighths.SaturatedPlain
-#print axioms OAI.SevenEighths.SaturatedPlain.geometry_affine_marked_uniform_schedule

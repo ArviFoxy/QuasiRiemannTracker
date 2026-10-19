@@ -306,8 +306,6 @@ def GeometryAffineExceptionalMainSpec
       C*geometryAffineExceptionalShell reflected Z key*(p.control Sp)^2*
         (1+‖firstHeight‖)^degree*Z^(-(1/100:ℝ))
 
-private theorem affine_exceptional_split_power (Z a b : ℝ) (hZ : 0<Z) :
-    Z^a*Z^b=Z^(a+b) := (Real.rpow_add hZ a b).symm
 
 private theorem affine_exceptional_post_coefficient (Z a b ray cap Cd factor : ℝ)
     (hZ : 0<Z) :
@@ -548,26 +546,7 @@ theorem actual_affine_main_exceptional_payment
   convert hpaid.trans (mul_le_mul_of_nonneg_right
     (mul_le_mul_of_nonneg_right hcontrol hshell) (Real.rpow_nonneg (zero_lt_one.trans hZ).le _)) using 1 <;> ring
 
-/-- Either reflection sign preserves independent original and Mellin height
-weights. Its fixed scale factor can be absorbed into the saved constant. -/
-theorem geometry_affine_exceptional_mellin_weight (degree : ℕ)
-    (base height t u : ℝ)(reflected : Bool)(hh : 0≤height) :
-    (1+‖base+2*Real.pi*(u-(if reflected then -t else t))‖)^degree≤
-      (1+|2*Real.pi|)^degree*(1+|base|+height)^degree*
-        (1+‖t‖)^degree*(1+‖u‖)^degree := by
-  have h:=geometry_mellin_height base height (if reflected then -t else t) u (2*Real.pi) hh
-  have hn : ‖(if reflected then -t else t)‖=‖t‖ := by split_ifs <;> simp only [norm_neg]
-  rw [hn] at h
-  have hbase : 1+‖base+2*Real.pi*(u-(if reflected then -t else t))‖≤
-      1+|base+2*Real.pi*(u-(if reflected then -t else t))|+height := by
-    rw [Real.norm_eq_abs];linarith
-  have hp:=pow_le_pow_left₀ (by positivity)
-    (hbase.trans h) degree
-  simpa only [mul_pow,mul_assoc,mul_comm,mul_left_comm] using hp
 
 end
 end OAI.SevenEighths.MainReconstruction
-#print axioms OAI.SevenEighths.MainReconstruction.actual_affine_error_exceptional_payment
-#print axioms OAI.SevenEighths.MainReconstruction.actual_affine_main_exceptional_payment
 
-#print axioms OAI.SevenEighths.MainReconstruction.geometry_affine_exceptional_mellin_weight

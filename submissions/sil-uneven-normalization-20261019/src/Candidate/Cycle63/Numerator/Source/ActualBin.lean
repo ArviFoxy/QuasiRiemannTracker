@@ -1,6 +1,203 @@
-/- Copyright (c) 2026 Hailey Collet. Released under Apache 2.0. -/
+import Candidate.Cycle63.Numerator.Capacity.Schedule
+import Candidate.Cycle25.Numerator.AmplitudeHolder
+import Candidate.Cycle25.Numerator.BoxReconstruction
 import Candidate.Cycle25.Numerator.ActualBin
-import Candidate.Cycle63.Numerator.Source.PacketBound
+
+/- Original module: Candidate.Cycle63.Numerator.Source.BinBound. -/
+section
+/- Copyright (c) 2026 Hailey Collet. Released under Apache 2.0. -/
+
+/- Adapted from Cycle25/Numerator/AmplitudeHolder.lean and its
+akashlevy/QuasiRiemannTracker Apache-2.0 predecessor. The selected capacity
+is the explicit Cycle63 schedule; the fourth moment is an input. -/
+noncomputable section
+open scoped BigOperators
+namespace Cycle63.Numerator.Source
+open Cycle63.Arithmetic Cycle63.Numerator.Capacity
+open Cycle25.Numerator
+
+theorem weighted_dilation_bin {ι : Type*} (s : Finset ι) (S Q P : ι → ℂ)
+    (d U R q L v xi ann delta loss epsilon Ccount Cmoment : ℝ)
+    (hd : dMinus ≤ d ∧ d ≤ dPlus)
+    (hU : 1 ≤ U) (hc : 1 ≤ Ccount) (hm : 1 ≤ Cmoment)
+    (hq : 0 ≤ q) (hqdelta : q ≤ delta / 2) (hv : 0 ≤ v) (hxi : 0 ≤ xi) (hann : 0 ≤ ann)
+    (hcard : (s.card : ℝ) ≤ Ccount * U^R)
+    (hselected : ∀ i ∈ s, U^(q*scheduledCapacity d (2*(v+xi+ann))-loss) ≤ ‖Q i‖)
+    (hfull : ∀ i ∈ s, ‖P i‖ ≤ U^(q*L))
+    (henergy : (∑ i ∈ s, ‖S i‖^4 * ‖Q i‖^2) ≤ Cmoment * U^(1+epsilon)) :
+    U^(-delta*v/2) * (∑ i ∈ s, ‖S i * P i‖) ≤
+      Ccount * Cmoment * U^(q*L-q*zeroCapacity d/2+(3*R+1+epsilon)/4+loss/2+delta*(xi+ann)/2-
+        2*dampingRate*delta*(v+xi+ann)) := by
+  have hU0 : 0 < U := lt_of_lt_of_le zero_lt_one hU
+  have hh := weighted_amplitude_bin s S Q P U R (q*L)
+    (q*scheduledCapacity d (2*(v+xi+ann))-loss) epsilon Ccount Cmoment hU0 hc hm
+    hcard hselected hfull henergy
+  have hdelta : 0 ≤ delta := by linarith
+  have hdamp := scheduled_capacity_damping hd (by positivity : 0 ≤ 2*(v+xi+ann)) hq hqdelta hdelta
+  calc
+    _ ≤ U^(-delta*v/2) *
+        (Ccount*Cmoment*U^(q*L-(q*scheduledCapacity d (2*(v+xi+ann))-loss)/2+(3*R+1+epsilon)/4)) :=
+      mul_le_mul_of_nonneg_left hh (Real.rpow_nonneg hU0.le _)
+    _ = (Ccount*Cmoment) * (U^(-delta*v/2) *
+        U^(q*L-(q*scheduledCapacity d (2*(v+xi+ann))-loss)/2+(3*R+1+epsilon)/4)) := by ring
+    _ = Ccount*Cmoment*U^(-delta*v/2+q*L-
+        (q*scheduledCapacity d (2*(v+xi+ann))-loss)/2+(3*R+1+epsilon)/4) := by
+      rw [←Real.rpow_add hU0]
+      congr 1
+      congr 1
+      ring
+    _ ≤ _ := by
+      apply mul_le_mul_of_nonneg_left _ (by have hc0 := le_trans zero_le_one hc; have hm0 := le_trans zero_le_one hm; positivity)
+      apply Real.rpow_le_rpow_of_exponent_le hU
+      linarith
+
+
+end Cycle63.Numerator.Source
+end
+
+/- Original module: Candidate.Cycle63.Numerator.Source.FiniteBins. -/
+section
+/- Copyright (c) 2026 Hailey Collet. Released under Apache 2.0. -/
+
+/-! Finite dilation boxes summed after the weighted fourth-moment estimate.
+The coefficient mass stays a single linear factor. -/
+noncomputable section
+set_option maxHeartbeats 1200000
+open scoped BigOperators Classical
+namespace Cycle63.Numerator.Source
+open Cycle63.Arithmetic Cycle63.Numerator.Capacity
+open Cycle25.Numerator
+
+theorem finite_weighted_dilation_bins {ι : Type*} (s : Finset ι) (n : ℕ)
+    (S Q : ℕ → ι → ℂ) (P f : ι → ℂ)
+    (d U R q L xi ann delta loss epsilon Ccount Cmoment M : ℝ)
+    (hd : dMinus ≤ d ∧ d ≤ dPlus)
+    (hU : 1 ≤ U) (hc : 1 ≤ Ccount) (hm : 1 ≤ Cmoment) (hM : 0 ≤ M)
+    (hq : 0 ≤ q) (hqdelta : q ≤ delta/2) (hxi : 0 ≤ xi) (hann : 0 ≤ ann)
+    (hcard : (s.card : ℝ) ≤ Ccount*U^R)
+    (hsplit : ∀ i ∈ s, f i = ∑ j ∈ Finset.range (n+1),
+      ((M * U^(-delta*((j : ℝ)*xi)/2) : ℝ) : ℂ) * S j i)
+    (hselected : ∀ j ∈ Finset.range (n+1), ∀ i ∈ s,
+      U^(q*scheduledCapacity d (2*((j : ℝ)*xi+xi+ann))-loss) ≤ ‖Q j i‖)
+    (hfull : ∀ i ∈ s, ‖P i‖ ≤ U^(q*L))
+    (henergy : ∀ j ∈ Finset.range (n+1),
+      (∑ i ∈ s, ‖S j i‖^4 * ‖Q j i‖^2) ≤ Cmoment*U^(1+epsilon)) :
+    (∑ i ∈ s, ‖f i * P i‖) ≤
+      ((n+1 : ℕ) : ℝ)*M*Ccount*Cmoment*
+        U^(q*L-q*zeroCapacity d/2+(3*R+1+epsilon)/4+loss/2+delta*(xi+ann)/2) := by
+  have hU0 : 0 < U := lt_of_lt_of_le zero_lt_one hU
+  have hdelta : 0 ≤ delta := by linarith
+  let E : ℝ := q*L-q*zeroCapacity d/2+(3*R+1+epsilon)/4+loss/2+delta*(xi+ann)/2
+  have hj (j : ℕ) (hj : j ∈ Finset.range (n+1)) :
+      (∑ i ∈ s, ‖(((M * U^(-delta*((j : ℝ)*xi)/2) : ℝ) : ℂ) * S j i) * P i‖) ≤
+      M*Ccount*Cmoment*U^E := by
+    have hb := weighted_dilation_bin s (S j) (Q j) P d U R q L ((j : ℝ)*xi) xi ann delta
+      loss epsilon Ccount Cmoment hd hU hc hm hq hqdelta (mul_nonneg (Nat.cast_nonneg _) hxi)
+      hxi hann hcard (hselected j hj) hfull (henergy j hj)
+    have hpow : U^(E-2*dampingRate*delta*((j : ℝ)*xi+xi+ann)) ≤ U^E :=
+      Real.rpow_le_rpow_of_exponent_le hU (by
+        have hv : 0 ≤ (j : ℝ)*xi+xi+ann := by positivity
+        have := mul_nonneg (mul_nonneg dampingRate_pos.le hdelta) hv
+        dsimp only [E]
+        nlinarith)
+    calc
+      _ = M * (U^(-delta*((j : ℝ)*xi)/2) * (∑ i ∈ s, ‖S j i * P i‖)) := by
+        rw [Finset.mul_sum,Finset.mul_sum]
+        apply Finset.sum_congr rfl
+        intro i hi
+        rw [mul_assoc,norm_mul,Complex.norm_real,
+          Real.norm_of_nonneg (mul_nonneg hM (Real.rpow_nonneg hU0.le _))]
+        ring
+      _ ≤ M * (Ccount*Cmoment*U^(E-2*dampingRate*delta*((j : ℝ)*xi+xi+ann))) :=
+        mul_le_mul_of_nonneg_left hb hM
+      _ ≤ M * (Ccount*Cmoment*U^E) := by
+        exact mul_le_mul_of_nonneg_left
+          (mul_le_mul_of_nonneg_left hpow (by have hc0 := zero_le_one.trans hc; have hm0 := zero_le_one.trans hm; positivity)) hM
+      _ = _ := by ring
+  calc
+    _ ≤ ∑ i ∈ s, ∑ j ∈ Finset.range (n+1),
+        ‖(((M * U^(-delta*((j : ℝ)*xi)/2) : ℝ) : ℂ) * S j i) * P i‖ := by
+      apply Finset.sum_le_sum
+      intro i hi
+      rw [hsplit i hi,Finset.sum_mul]
+      exact norm_sum_le _ _
+    _ = ∑ j ∈ Finset.range (n+1), ∑ i ∈ s,
+        ‖(((M * U^(-delta*((j : ℝ)*xi)/2) : ℝ) : ℂ) * S j i) * P i‖ := Finset.sum_comm
+    _ ≤ ∑ j ∈ Finset.range (n+1), M*Ccount*Cmoment*U^E := Finset.sum_le_sum hj
+    _ = _ := by simp only [Finset.sum_const,Finset.card_range,nsmul_eq_mul]; dsimp only [E]; ring
+
+end Cycle63.Numerator.Source
+
+
+/- Adapted from Cycle25/Numerator/FiniteBins.lean; original predecessor:
+akashlevy/QuasiRiemannTracker 2fd60c0926b66ea18d7436f5ed55250fd006ab5d, Apache-2.0. -/
+end
+
+/- Original module: Candidate.Cycle63.Numerator.Source.PacketBound. -/
+section
+/- Copyright (c) 2026 Hailey Collet. Released under Apache 2.0. -/
+
+/-! Infinite coefficient sums are reconstructed by the existing normalized-box
+lemmas. The rowwise fourth moment remains an explicit integration input. -/
+noncomputable section
+set_option maxHeartbeats 1200000
+open scoped BigOperators Classical
+namespace Cycle63.Numerator.Source
+open Cycle63.Arithmetic Cycle63.Numerator.Capacity
+open Cycle25.Numerator
+
+variable {ι : Type*} [Fintype ι] {α : ι → Type*}
+
+theorem packet_weighted_bins
+    (base : ∀ i, α i) (A S : ∀ i, α i → ℂ) (N : ∀ i, α i → ℝ)
+    (hN : ∀ i e, 0 < N i e) (Lc : ι → ℝ) (d U xi ann : ℝ) (n : ℕ)
+    (valid : ∀ i, α i → Prop) [∀ i e, Decidable (valid i e)]
+    (Q : ℕ → ι → ℂ) (P : ι → ℂ)
+    (R q L delta loss epsilon Ccount Cmoment M : ℝ)
+    (hd : dMinus ≤ d ∧ d ≤ dPlus) (hM : 0 < M) (hU : 1 ≤ U) (hxi : 0 ≤ xi) (hann : 0 ≤ ann)
+    (hc : 1 ≤ Ccount) (hm : 1 ≤ Cmoment) (hq : 0 ≤ q) (hqdelta : q ≤ delta/2)
+    (hcard : (Fintype.card ι : ℝ) ≤ Ccount*U^R)
+    (hzero : ∀ i e, ¬valid i e → S i e = 0)
+    (hupper : ∀ i e, valid i e → max 1 (Lc i * N i e) ≤ U^((n : ℝ)*xi))
+    (hseries : ∀ i, Summable (fun e=>‖A i e*(N i e:ℂ)^(-(1/2:ℂ))*S i e‖))
+    (hs : ∀ i, Summable (fun e => ‖A i e‖ * (N i e)^(-(1 / 2 : ℝ)) *
+      max 1 (Lc i * N i e)^(delta/2)))
+    (hmass : ∀ i, (∑' e, ‖A i e‖ * (N i e)^(-(1 / 2 : ℝ)) *
+      max 1 (Lc i * N i e)^(delta/2)) ≤ M)
+    (hselected : ∀ j ∈ Finset.range (n+1), ∀ i,
+      U^(q*scheduledCapacity d (2*((j : ℝ)*xi+xi+ann))-loss) ≤ ‖Q j i‖)
+    (hfull : ∀ i, ‖P i‖ ≤ U^(q*L))
+    (hselection : ∀ j ∈ Finset.range (n+1), ∀ e : ∀ i, α i,
+      (∑ i, ‖if valid i (e i) ∧ dilationBox U xi n (max 1 (Lc i*N i (e i))) = j
+        then S i (e i) else 0‖^4 * ‖Q j i‖^2) ≤ Cmoment*U^(1+epsilon)) :
+    (∑ i, ‖(∑' e,A i e*(N i e:ℂ)^(-(1/2:ℂ))*S i e)*P i‖) ≤
+      ((n+1 : ℕ) : ℝ)*M*Ccount*Cmoment*
+        U^(q*L-q*zeroCapacity d/2+(3*R+1+epsilon)/4+loss/2+delta*(xi+ann)/2) := by
+  have hU0 : 0 < U := lt_of_lt_of_le zero_lt_one hU
+  have hrho : 0 ≤ delta/2 := by linarith
+  let B (j : ℕ) (i : ι) := normalizedBox U xi n j (delta/2) M
+    (fun e=>max 1 (Lc i*N i e)) (fun e=>A i e*(N i e:ℂ)^(-(1/2:ℂ))*S i e)
+  have hsplit (i : ι) : (∑' e,A i e*(N i e:ℂ)^(-(1/2:ℂ))*S i e) =
+      ∑ j ∈ Finset.range (n+1), ((M*U^(-delta*((j : ℝ)*xi)/2) : ℝ):ℂ)*B j i := by
+    have hh := normalized_box_reconstruction U xi n (delta/2) M hU0 hM.ne'
+      (fun e=>max 1 (Lc i*N i e)) (fun e=>A i e*(N i e:ℂ)^(-(1/2:ℂ))*S i e) (hseries i)
+    have hexp (j : ℕ) : -(delta/2)*((j : ℝ)*xi) = -delta*((j : ℝ)*xi)/2 := by ring
+    simpa only [hexp, B] using hh
+  have henergy (j : ℕ) (hj : j ∈ Finset.range (n+1)) :
+      (∑ i, ‖B j i‖^4 * ‖Q j i‖^2) ≤ Cmoment*U^(1+epsilon) :=
+    normalized_dilation_box_fourth base A S N hN Lc (delta/2) U xi n j valid (Q j) M
+      (Cmoment*U^(1+epsilon)) hM hU hxi hrho hzero hupper hs hmass (hselection j hj)
+  exact finite_weighted_dilation_bins Finset.univ n B Q P _ d U R q L xi ann delta loss epsilon
+    Ccount Cmoment M hd hU hc hm hM.le hq hqdelta hxi hann (by simpa using hcard)
+    (fun i hi=>hsplit i) (fun j hj i hi=>hselected j hj i) (fun i hi=>hfull i) henergy
+
+
+end Cycle63.Numerator.Source
+end
+
+/- Original module: Candidate.Cycle63.Numerator.Source.ActualBin. -/
+section
+/- Copyright (c) 2026 Hailey Collet. Released under Apache 2.0. -/
 
 noncomputable section
 set_option maxHeartbeats 1800000
@@ -111,3 +308,4 @@ theorem actual_label_packet_bin_bound {ι : Type} [Fintype ι] [DecidableEq ι]
 
 
 end Cycle63.Numerator.Source
+end

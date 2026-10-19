@@ -49,19 +49,6 @@ open CenteredMomentFirstAnnularInput CenteredMomentSecondRadicalBudget CenteredM
 local notation "O" => HeckeFamily.O
 local instance errorFullNormalizedPaymentSumDecidableEq {ι : Type*} : DecidableEq (ι⊕Fin 2) := errorNormalizedFullFamilySumDecidableEq
 
-/-- The positive normalized sum splits over the actual source menu without
-introducing its cardinality; effective weights are local to each block. -/
-theorem second_normalized_effective_sigma {α S : Type*}
-    [Fintype α] [DecidableEq α] [Fintype S]
-    {B : S→Type*} [∀s,Fintype (B s)]
-    (d : (s : S)→B s→SecondInputDatum α) (w : (s : S)→B s→ℂ)
-    (W : 𝓢(ℝ,ℂ)) (side : Bool) (t u : ℝ) :
-    secondNormalizedSum side (fun j : Sigma B=>d j.1 j.2)
-      (secondEffectiveWeight (fun j : Sigma B=>(d j.1 j.2).block)
-        (fun j=>w j.1 j.2) W) t u=
-    ∑s,secondNormalizedSum side (d s)
-      (secondEffectiveWeight (fun b=>(d s b).block) (w s) W) t u := by
-  simp only [second_normalized_sum_labels,Fintype.sum_sigma,secondEffectiveWeight]
 
 /-- The bound uses the original physical nonzero filter, before applying
 ordinary-row restrictions or shifting either Mellin height. -/
@@ -136,21 +123,6 @@ private theorem error_scalar_reassoc
   rw [he]
   ring
 
-theorem actual_second_scalar_label_cost_nonneg {ι : Type*}[Fintype ι]
-    (s : Input ι)(R seed : Ideal O)(hseed : Squarefree seed)
-    (hw₁ : s.W₁ 0=0)(hw₂ : s.W₂ 0=0)(reflected second : Bool)(first : FirstSourceLabel)
-    (Z M amp δ reserve error εshell V : ℝ)(prime : O)(k : ℕ)(hZ : 0 ≤ Z) :
-    ∀l∈actualSecondLabels s R seed,0 ≤ extractedErrorLabelScalar reflected second first l
-      Z M amp δ reserve error εshell V (volume s) prime k := by
-  intro l hl
-  have hv := (actual_second_labels_gates s R seed hseed hw₁ hw₂ l hl).1
-  unfold extractedErrorLabelScalar
-  apply mul_nonneg
-  · apply mul_nonneg
-    · unfold firstErrorTailRadius errorCommonRadius
-      exact div_nonneg (Real.rpow_nonneg hZ _) (volume_pos s).le
-    · exact mul_nonneg (normalizer_pos _ _ hv _).le (Real.rpow_nonneg (Nat.cast_nonneg _) _)
-  · exact Real.rpow_nonneg hZ _
 
 private theorem error_scaled_label_payment {A : Type*}[Fintype A]
     {x r f budget : ℝ}{raw : A→ℝ}(hraw : x ≤ r*(f*∑a,raw a))
@@ -162,39 +134,6 @@ private theorem error_scaled_label_payment {A : Type*}[Fintype A]
     exact mul_le_mul_of_nonneg_left hpaid hfactor)
 
 set_option maxHeartbeats 100000 in
-/-- Finite indexed disintegration retains the original label and all four
-scale coordinates without constructing an image of dependent block indices. -/
-theorem actual_second_indexed_positive_disintegration {ι Label : Type*}
-    [Fintype ι][Fintype Label](s : Input ι)(R seed : Ideal O)(K Tsec Z ξ : ℝ)
-    (index : Label→ActualSecondBlockIndex s R seed K Tsec Z ξ)
-    (hinj : Function.Injective index)
-    (hU : ∀n,(index n).2.1∈inactiveSubsets (index n).1.val.val.1 (index n).1.val.val.2)
-    (box : Finset (Fin 4→ℤ))(hbox : ∀n,actualSecondDyad s R seed K Tsec Z ξ (index n)∈box)
-    (cost : FirstSourceLabel→ℝ)(hcost : ∀l∈actualSecondLabels s R seed,0 ≤ cost l) :
-    (∑n,cost (actualSecondSupportedLabel s R seed K Tsec Z ξ (index n) (hU n))) ≤ 
-      (box.card:ℝ)*(∑l∈actualSecondLabels s R seed,cost l) := by
-  classical
-  let code := fun n=>(actualSecondSupportedLabel s R seed K Tsec Z ξ (index n) (hU n),
-    actualSecondDyad s R seed K Tsec Z ξ (index n))
-  have hcode : Function.Injective code := by
-    intro n m h
-    apply hinj
-    apply actual_second_label_dyad_injective s R seed K Tsec Z ξ
-    exact congrArg (fun x : FirstSourceLabel×(Fin 4→ℤ)=>
-      ((⟨x.1.1,x.1.2.val⟩ : SecondArithmeticLabel),x.2)) h
-  have hsub : Finset.univ.image code⊆actualSecondLabels s R seed×ˢbox := by
-    intro x hx
-    obtain ⟨n,_,rfl⟩:=Finset.mem_image.mp hx
-    exact Finset.mem_product.mpr ⟨actual_second_supported_label_mem s R seed K Tsec Z ξ
-      (index n) (hU n),hbox n⟩
-  calc
-    _=∑x∈Finset.univ.image code,cost x.1 := by
-      rw [Finset.sum_image (fun _ _ _ _ h=>hcode h)]
-    _ ≤ ∑x∈actualSecondLabels s R seed×ˢbox,cost x.1 := by
-      apply Finset.sum_le_sum_of_subset_of_nonneg hsub
-      intro x hx _
-      exact hcost x.1 (Finset.mem_product.mp hx).1
-    _=_ := by rw [Finset.sum_product,Finset.sum_comm]; simp
 
 private theorem error_indexed_image_payment {A J : Type*}[DecidableEq A][Fintype J]
     (index : J→A)(hinj : Function.Injective index)(P Q : A→Prop)
@@ -535,8 +474,6 @@ private theorem error_height_volume_sum_transport {Label : Type*}[Fintype Label]
       F*(∑j,c j/CenteredMomentAmplificationChildInput.volume (s j)*r₁ j*r₂ j*r₃ j) := by
   simpa only [error_volume_withHeight] using h
 
-private theorem error_label_coefficient_nonneg (P : Finset (Ideal O)) (w lf : ℝ) (k : ℕ)
-    (hw : 0 ≤ w)(hlf : 0 < lf) : 0 ≤ (56/(P.card:ℝ))*w*16*(k:ℝ)/lf := by positivity
 
 
 set_option linter.defProp false in
@@ -1083,16 +1020,3 @@ end OAI.SevenEighths.AuxiliaryErrorReconstruction
 
 
 
-#print axioms OAI.SevenEighths.AuxiliaryErrorReconstruction.second_normalized_effective_sigma
-#print axioms OAI.SevenEighths.AuxiliaryErrorReconstruction.actual_second_scalar_label_cost_nonneg
-#print axioms OAI.SevenEighths.AuxiliaryErrorReconstruction.actual_second_indexed_positive_disintegration
-#print axioms OAI.SevenEighths.AuxiliaryErrorReconstruction.actual_geometry_error_indexed_scalar_payment
-#print axioms OAI.SevenEighths.AuxiliaryErrorReconstruction.actual_error_indexed_normalized_to_datum_columns
-#print axioms OAI.SevenEighths.AuxiliaryErrorReconstruction.actual_error_indexed_given_datum_normalized_to_columns
-#print axioms OAI.SevenEighths.AuxiliaryErrorReconstruction.actual_geometry_error_normalized_to_datum_columns
-#print axioms OAI.SevenEighths.AuxiliaryErrorReconstruction.actual_geometry_error_admitted_columns_eq
-#print axioms OAI.SevenEighths.AuxiliaryErrorReconstruction.actual_geometry_error_projector_to_concrete_paid_columns
-#print axioms OAI.SevenEighths.AuxiliaryErrorReconstruction.actual_geometry_error_normalized_from_concrete_paid_columns
-#print axioms OAI.SevenEighths.AuxiliaryErrorReconstruction.actual_geometry_error_normalized_pointwise
-#print axioms OAI.SevenEighths.AuxiliaryErrorReconstruction.actual_geometry_error_projector_spec_family
-#print axioms OAI.SevenEighths.AuxiliaryErrorReconstruction.actual_geometry_error_paid_normalized_labels

@@ -579,5 +579,3 @@ theorem C_saturated_hi_4 {d : ℝ}
   linarith only [hh]
 
 end Sil.Uneven.MainSource
-#print axioms Sil.Uneven.MainSource.C_bootstrap_lo_1
-#print axioms Sil.Uneven.MainSource.C_saturated_hi_4

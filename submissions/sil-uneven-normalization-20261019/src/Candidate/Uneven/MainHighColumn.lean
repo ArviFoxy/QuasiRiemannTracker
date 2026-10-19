@@ -350,70 +350,9 @@ theorem actual_geometry_selected_high_columns {α : Type} [Fintype α] [Decidabl
       mul_le_mul_of_nonneg_left hcommonBound (by positivity)
     _=_:=by dsimp only [rhs];ring
 
-/-- The actual Mellin window splits at a literal height cutoff. Both
-integrals are retained, including the unrestricted complementary tail. -/
-theorem actual_high_column_mellin_split {ι : Type*} [Fintype ι] [DecidableEq ι]
-    (s : Input ι)(E R seed L : Ideal O)(hE : Supported E)(η : Character)
-    (t θ X Z τ : ℝ)(hX : 0<X)(V : ℝ→ℂ)
-    (hc : HasCompactSupport V)(hs : ContDiff ℝ ∞ V)(z : O) :
-    let f:=fun u : ℝ=>columnDensity V hc hs u*logPhase (θ-u) (Real.log X)*
-      normalizedColumn (withHeight s η (t+2*Real.pi*(u-θ))) E hE R seed L z
-    let small:= {u : ℝ | 1+‖u‖ ≤ Z^τ}
-    windowColumn s E hE R seed L η t θ X V z=
-      (∫u in small,f u)+(∫u in smallᶜ,f u) := by
-  intro f small
-  have hsmall : MeasurableSet small:=
-    (isClosed_le (continuous_const.add continuous_norm) continuous_const).measurableSet
-  have hi : Integrable f:=actual_window_column_integrable s E hE R seed L η t θ X hX V hc hs z
-  rw [actual_window_column_integral s E hE R seed L η t θ X hX V hc hs z]
-  exact (integral_add_compl hsmall hi).symm
 
-/-- Finite physical weights remain inside both genuine Mellin pieces.
-This truncation inequality introduces no selected energy premise. -/
-theorem actual_high_weighted_mellin_split {α κ : Type*} [Fintype α] [DecidableEq α]
-    (rows : Finset κ)(slots : κ→Finset α)(s : (k : κ)→Input (slots k))
-    (E R seed : κ→Ideal O)(hE : ∀k,Supported (E k))(Ds : κ→Finset (Ideal O))
-    (η : κ→Character)(t θ X : κ→ℝ)(hX : ∀k,0<X k)(z : κ→O)
-    (weight : κ→ℝ)(hw : ∀k,0 ≤ weight k)(Z τ : ℝ)
-    (V : ℝ→ℂ)(hc : HasCompactSupport V)(hs : ContDiff ℝ ∞ V) :
-    let f:=fun k L u=>columnDensity V hc hs u*logPhase (θ k-u) (Real.log (X k))*
-      normalizedColumn (withHeight (s k) (η k) (t k+2*Real.pi*(u-θ k)))
-        (E k) (hE k) (R k) (seed k) L (z k)
-    let small:= {u : ℝ | 1+‖u‖ ≤ Z^τ}
-    (∑k∈rows,weight k*∑L∈Ds k,‖windowColumn (s k) (E k) (hE k) (R k) (seed k) L
-      (η k) (t k) (θ k) (X k) V (z k)‖^2) ≤ 
-    2*(∑k∈rows,weight k*∑L∈Ds k,‖∫u in small,f k L u‖^2)+
-      2*(∑k∈rows,weight k*∑L∈Ds k,‖∫u in smallᶜ,f k L u‖^2) := by
-  intro f small
-  have hsplit (k : κ)(L : Ideal O) :
-      windowColumn (s k) (E k) (hE k) (R k) (seed k) L (η k) (t k) (θ k) (X k) V (z k)=
-      (∫u in small,f k L u)+(∫u in smallᶜ,f k L u):=
-    actual_high_column_mellin_split (s k) (E k) (R k) (seed k) L (hE k) (η k)
-      (t k) (θ k) (X k) Z τ (hX k) V hc hs (z k)
-  calc
-    _ ≤ ∑k∈rows,weight k*∑L∈Ds k,
-      (2*‖∫u in small,f k L u‖^2+2*‖∫u in smallᶜ,f k L u‖^2) := by
-      apply Finset.sum_le_sum
-      intro k _
-      apply mul_le_mul_of_nonneg_left _ (hw k)
-      apply Finset.sum_le_sum
-      intro L _
-      rw [hsplit]
-      have hadd:=norm_add_le (∫u in small,f k L u) (∫u in smallᶜ,f k L u)
-      nlinarith [norm_nonneg ((∫u in small,f k L u)+(∫u in smallᶜ,f k L u)),
-        norm_nonneg (∫u in small,f k L u),norm_nonneg (∫u in smallᶜ,f k L u),
-        sq_nonneg (‖∫u in small,f k L u‖-‖∫u in smallᶜ,f k L u‖)]
-    _=2*(∑k∈rows,weight k*∑L∈Ds k,‖∫u in small,f k L u‖^2)+
-        2*(∑k∈rows,weight k*∑L∈Ds k,‖∫u in smallᶜ,f k L u‖^2) := by
-      simp only [Finset.sum_add_distrib,Finset.mul_sum,mul_add]
-      congr 1 <;> apply Finset.sum_congr rfl <;> intro k _ <;>
-        apply Finset.sum_congr rfl <;> intro L _ <;> ring
 
 
 end
 end OAI.SevenEighths.MainHigh
-#print axioms OAI.SevenEighths.MainHigh.high_real_common_selection
-#print axioms OAI.SevenEighths.MainHigh.actual_geometry_selected_high_columns
 
-#print axioms OAI.SevenEighths.MainHigh.actual_high_column_mellin_split
-#print axioms OAI.SevenEighths.MainHigh.actual_high_weighted_mellin_split

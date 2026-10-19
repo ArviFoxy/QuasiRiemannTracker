@@ -144,4 +144,3 @@ theorem actual_affine_geometry_amplification
 
 end
 end OAI.SevenEighths.AuxiliaryReconstruction
-#print axioms OAI.SevenEighths.AuxiliaryReconstruction.actual_affine_geometry_amplification

@@ -1,6 +1,117 @@
-/- Copyright (c) 2026 Hailey Collet. Released under Apache 2.0. -/
-import Candidate.Cycle63.Physical.InitialMass.GeometryCommonLossChoice
+import Candidate.Cycle63.Physical.InitialMass.GeometryLossSchedule
+import Candidate.Cycle63.Physical.InitialMass.GeometryHighLossChoice
 import Candidate.Cycle63.Physical.InitialMass.GeometryFinalParameters
+
+/- Original module: Candidate.Cycle63.Physical.InitialMass.GeometryLowLossChoice. -/
+section
+/- Copyright (c) 2026 Hailey Collet. Released under Apache 2.0. -/
+
+set_option autoImplicit false
+namespace OAI.SevenEighths.Cycle63InitialMass
+noncomputable section
+
+/-- This rate is chosen after the fixed dictionary and source caps. The
+mesh, width padding and old-moment loss can still be fixed before them. -/
+def geometryLowDictionaryRate (μ d Bmass Bnorm U : ℝ) (N : ℕ) : ℝ :=
+  μ/(2*d*N+Bmass+Bnorm+3*((N:ℝ)+2)*U+16)
+
+theorem geometry_low_dictionary_rate_budget
+    (μ d Bmass Bnorm U : ℝ) (N : ℕ)
+    (hμ : 0<μ) (hd : 0≤d) (hm : 0≤Bmass) (hn : 0≤Bnorm) (hU : 0≤U) :
+    let δ:=geometryLowDictionaryRate μ d Bmass Bnorm U N
+    0<δ ∧ δ≤μ/16 ∧
+      2*δ*d*N+Bmass*δ+Bnorm*δ+3*((N:ℝ)+2)*U*δ+8*δ≤μ := by
+  intro δ
+  have hp : 0<δ := by dsimp [δ,geometryLowDictionaryRate];positivity
+  have he : δ*(2*d*N+Bmass+Bnorm+3*((N:ℝ)+2)*U+16)=μ :=
+    div_mul_cancel₀ _ (by positivity)
+  have hc : 0≤2*d*N+Bmass+Bnorm+3*((N:ℝ)+2)*U := by positivity
+  have hprod:=mul_nonneg hp.le hc
+  refine ⟨hp,?_,?_⟩ <;> nlinarith
+
+/-- The literal width-one low exponent, including both projector-shell
+losses and eight additional unit-rate payments, fits inside two loss units.
+These eight fees leave room for the box count, first selection, supported
+label payment, both shell counts and subsequent fixed finite partitions.
+Each consumer must still show that its own fees fit this displayed ledger. -/
+theorem geometry_low_width_one_loss_budget
+    (μ d Bmass Bnorm U omega mesh : ℝ) (N : ℕ)
+    (hμ : 0<μ) (hd : 0≤d) (hm : 0≤Bmass) (hn : 0≤Bnorm) (hU : 0≤U)
+    (hω : omega≤33*μ/128) (hmesh : mesh≤μ/8) :
+    let δ:=geometryLowDictionaryRate μ d Bmass Bnorm U N
+    μ/8+μ/128+μ/8+2*δ*d*N+
+      (2*Cycle63.Arithmetic.q0/9)*(omega+μ/8)+Cycle63.Arithmetic.q0*mesh+
+      μ/8+Bmass*δ+Bnorm*δ+3*((N:ℝ)+2)*U*δ+8*δ≤2*μ := by
+  intro δ
+  have hb:=(geometry_low_dictionary_rate_budget μ d Bmass Bnorm U N hμ hd hm hn hU).2.2
+  change 2*δ*d*N+Bmass*δ+Bnorm*δ+3*((N:ℝ)+2)*U*δ+8*δ≤μ at hb
+  norm_num only [Cycle63.Arithmetic.q0]
+  linarith
+
+/-- Any bound supplied by this ledger retains the strict low-branch
+saving. This is scalar payment only, not a column-energy hypothesis. -/
+theorem geometry_low_width_one_exponent_saving (εaffine loss : ℝ)
+    (hε : 0<εaffine) (hloss : loss≤2*geometryLossUnit 1 εaffine) :
+    -(7/30000000:ℝ)+loss≤-(7/60000000:ℝ) := by
+  have hμ:=geometry_loss_unit_pos 1 εaffine (by norm_num) hε
+  have hh:=geometry_paid_loss 1 εaffine 1 (7/30000000) loss
+    (by norm_num) le_rfl le_rfl (by linarith)
+  linarith
+
+end
+end OAI.SevenEighths.Cycle63InitialMass
+#print axioms OAI.SevenEighths.Cycle63InitialMass.geometry_low_dictionary_rate_budget
+#print axioms OAI.SevenEighths.Cycle63InitialMass.geometry_low_width_one_loss_budget
+#print axioms OAI.SevenEighths.Cycle63InitialMass.geometry_low_width_one_exponent_saving
+end
+
+/- Original module: Candidate.Cycle63.Physical.InitialMass.GeometryCommonLossChoice. -/
+section
+/- Copyright (c) 2026 Hailey Collet. Released under Apache 2.0. -/
+
+set_option autoImplicit false
+namespace OAI.SevenEighths.Cycle63InitialMass
+noncomputable section
+
+/-- One post-dictionary rate can pay both projector ledgers. The original
+mesh and loss unit have already been chosen before the dictionary. -/
+def geometryCommonDictionaryRate (μ d Bmass Bnorm U B L : ℝ) (N : ℕ) : ℝ :=
+  min (geometryLowDictionaryRate μ d Bmass Bnorm U N)
+    (min (geometryHighShellRate μ B L) (μ/128))
+
+theorem geometry_common_dictionary_rate_budget
+    (μ d Bmass Bnorm U B L : ℝ) (N : ℕ)
+    (hμ : 0<μ) (hd : 0≤d) (hm : 0≤Bmass) (hn : 0≤Bnorm)
+    (hU : 0≤U) (hB : 0≤B) (hL : 0≤L) :
+    let δ:=geometryCommonDictionaryRate μ d Bmass Bnorm U B L N
+    0<δ ∧ δ≤μ/128 ∧
+      2*δ*d*N+Bmass*δ+Bnorm*δ+3*((N:ℝ)+2)*U*δ+8*δ≤μ ∧
+      B*δ+3*L*δ+δ+8*δ≤μ := by
+  intro δ
+  have hlo:=geometry_low_dictionary_rate_budget μ d Bmass Bnorm U N hμ hd hm hn hU
+  have hhi:=geometry_high_shell_rate_budget μ B L hμ hB hL
+  have hδ : 0<δ := by
+    exact lt_min hlo.1 (lt_min hhi.1 (by positivity))
+  have hδlo : δ≤geometryLowDictionaryRate μ d Bmass Bnorm U N := min_le_left _ _
+  have hδhi : δ≤geometryHighShellRate μ B L :=
+    (min_le_right _ _).trans (min_le_left _ _)
+  have hδcap : δ≤μ/128 := (min_le_right _ _).trans (min_le_right _ _)
+  refine ⟨hδ,hδcap,?_,?_⟩
+  · have hcoef : 0≤2*d*N+Bmass+Bnorm+3*((N:ℝ)+2)*U+8 := by positivity
+    have hh:=mul_le_mul_of_nonneg_left hδlo hcoef
+    nlinarith [hlo.2.2]
+  · have hcoef : 0≤B+3*L+9 := by positivity
+    have hh:=mul_le_mul_of_nonneg_left hδhi hcoef
+    nlinarith [hhi.2.2]
+
+end
+end OAI.SevenEighths.Cycle63InitialMass
+#print axioms OAI.SevenEighths.Cycle63InitialMass.geometry_common_dictionary_rate_budget
+end
+
+/- Original module: Candidate.Cycle63.Physical.InitialMass.GeometryFinalLossParameters. -/
+section
+/- Copyright (c) 2026 Hailey Collet. Released under Apache 2.0. -/
 
 set_option autoImplicit false
 namespace OAI.SevenEighths.Cycle63InitialMass
@@ -116,3 +227,4 @@ end OAI.SevenEighths.Cycle63InitialMass
 #print axioms OAI.SevenEighths.Cycle63InitialMass.geometry_final_mass_dictionary_budget
 #print axioms OAI.SevenEighths.Cycle63InitialMass.geometry_final_source_expansion_loss
 #print axioms OAI.SevenEighths.Cycle63InitialMass.geometry_final_error_rate_below_frequency
+end

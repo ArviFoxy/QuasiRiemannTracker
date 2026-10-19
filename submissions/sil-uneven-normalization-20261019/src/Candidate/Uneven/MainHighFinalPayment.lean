@@ -269,4 +269,3 @@ theorem actual_main_high_final_small_height  {α : Type} [Fintype α] [Decidable
 end
 end OAI.SevenEighths.MainHigh
 
-#print axioms OAI.SevenEighths.MainHigh.actual_main_high_final_small_height

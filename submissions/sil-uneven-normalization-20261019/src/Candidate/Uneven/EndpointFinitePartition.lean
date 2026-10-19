@@ -87,6 +87,3 @@ theorem fullW_cells_norm_bound {K : ℕ}
 end
 end OAI.SevenEighths.UnevenEndpoint.Physical.FiniteNumerator
 
-#print axioms OAI.SevenEighths.UnevenEndpoint.Physical.FiniteNumerator.fullW_bin_partition
-#print axioms OAI.SevenEighths.UnevenEndpoint.Physical.FiniteNumerator.fullW_dyadic_partition
-#print axioms OAI.SevenEighths.UnevenEndpoint.Physical.FiniteNumerator.fullW_cells_norm_bound

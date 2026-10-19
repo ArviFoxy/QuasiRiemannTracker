@@ -235,4 +235,3 @@ theorem actual_geometry_uneven_paid_binned_high_shell {α : Type} [Fintype α] [
 
 end
 end OAI.SevenEighths.TargetHigh830
-#print axioms OAI.SevenEighths.TargetHigh830.actual_geometry_uneven_paid_binned_high_shell

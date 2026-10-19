@@ -229,83 +229,6 @@ theorem coefficient_nonneg {d : ℝ} (hd0 : 31/50 ≤ d) (hd1 : d ≤ 33/50) :
     · exact offset_5_nonneg hd0 hd1
     · exact offset_6_nonneg hd0 hd1
 
-theorem width_upper {d : ℝ} (hd0 : 31/50 ≤ d) (hd1 : d ≤ 33/50) :
-    ∀i,slope d i ≤ d := by
-  have hlo : 0 ≤ d-31/50 := by linarith
-  have hhi : 0 ≤ 33/50-d := by linarith
-  intro i
-  fin_cases i
-  · change ((-6*(d^2))+(5*d))/(5+(-2*d)) ≤ d
-    have hn : (0:ℝ) ≤ (4*(d^2)) := by
-      have he : (4*(d^2))=961*(d-31/50)^0*(33/50-d)^2+2046*(d-31/50)^1*(33/50-d)^1+1089*(d-31/50)^2*(33/50-d)^0 := by ring
-      rw [he]
-      positivity
-    have hden : (0:ℝ) < (5+(-2*d)) := by
-      have he : (5+(-2*d))=(92/25:ℝ)+2*(d-31/50)^0*(33/50-d)^1 := by ring
-      rw [he]
-      positivity
-    apply (div_le_iff₀ hden).mpr
-    nlinarith only [hn]
-  · change ((-38293836*(d^2))+(31911530*d))/(52867295+(-25146918*d)) ≤ d
-    have hn : (0:ℝ) ≤ ((13146918*(d^2))+(20955765*d)) := by
-      have he : ((13146918*(d^2))+(20955765*d))=11278905987*(d-31/50)^0*(33/50-d)^2+23489260557*(d-31/50)^1*(33/50-d)^1+12223501488*(d-31/50)^2*(33/50-d)^0 := by ring
-      rw [he]
-      positivity
-    have hden : (0:ℝ) < (52867295+(-25146918*d)) := by
-      have he : (52867295+(-25146918*d))=(906758228/25:ℝ)+25146918*(d-31/50)^0*(33/50-d)^1 := by ring
-      rw [he]
-      positivity
-    apply (div_le_iff₀ hden).mpr
-    nlinarith only [hn]
-  · change ((-12*(d^2))+(10*d))/(15+(-6*d)) ≤ d
-    have hn : (0:ℝ) ≤ ((5*d)+(6*(d^2))) := by
-      have he : ((5*d)+(6*(d^2)))=3379*(d-31/50)^0*(33/50-d)^2+7069*(d-31/50)^1*(33/50-d)^1+3696*(d-31/50)^2*(33/50-d)^0 := by ring
-      rw [he]
-      positivity
-    have hden : (0:ℝ) < (15+(-6*d)) := by
-      have he : (15+(-6*d))=(276/25:ℝ)+6*(d-31/50)^0*(33/50-d)^1 := by ring
-      rw [he]
-      positivity
-    apply (div_le_iff₀ hden).mpr
-    nlinarith only [hn]
-  · change ((-6*(d^2))+(5*d))/(25+(-18*d)) ≤ d
-    have hn : (0:ℝ) ≤ ((-12*(d^2))+(20*d)) := by
-      have he : ((-12*(d^2))+(20*d))=4867*(d-31/50)^0*(33/50-d)^2+9862*(d-31/50)^1*(33/50-d)^1+4983*(d-31/50)^2*(33/50-d)^0 := by ring
-      rw [he]
-      positivity
-    have hden : (0:ℝ) < (25+(-18*d)) := by
-      have he : (25+(-18*d))=(328/25:ℝ)+18*(d-31/50)^0*(33/50-d)^1 := by ring
-      rw [he]
-      positivity
-    apply (div_le_iff₀ hden).mpr
-    nlinarith only [hn]
-  · change 0/1 ≤ d
-    have hn : (0:ℝ) ≤ d := by
-      have he : d=(31/2:ℝ)*(d-31/50)^0*(33/50-d)^1+(33/2:ℝ)*(d-31/50)^1*(33/50-d)^0 := by ring
-      rw [he]
-      positivity
-    have hden : (0:ℝ) < 1 := by
-      norm_num
-    apply (div_le_iff₀ hden).mpr
-    nlinarith only [hn]
-  · change 0/1 ≤ d
-    have hn : (0:ℝ) ≤ d := by
-      have he : d=(31/2:ℝ)*(d-31/50)^0*(33/50-d)^1+(33/2:ℝ)*(d-31/50)^1*(33/50-d)^0 := by ring
-      rw [he]
-      positivity
-    have hden : (0:ℝ) < 1 := by
-      norm_num
-    apply (div_le_iff₀ hden).mpr
-    nlinarith only [hn]
-  · change 0/1 ≤ d
-    have hn : (0:ℝ) ≤ d := by
-      have he : d=(31/2:ℝ)*(d-31/50)^0*(33/50-d)^1+(33/2:ℝ)*(d-31/50)^1*(33/50-d)^0 := by ring
-      rw [he]
-      positivity
-    have hden : (0:ℝ) < 1 := by
-      norm_num
-    apply (div_le_iff₀ hden).mpr
-    nlinarith only [hn]
 
 theorem saturated_cap {d : ℝ} (hd0 : 31/50 ≤ d) (hd1 : d ≤ 33/50) :
     offset d 4 ≤ 3/200 := by
@@ -340,6 +263,3 @@ theorem physicalGain_root {d S D q pad : ℝ} (hd0 : 31/50 ≤ d) (hd1 : d ≤ 3
     hS hq0 hq1 hpad (physicalGain_cap hd0 hd1 hD)
 
 end Sil.Uneven.Bootstrap
-#print axioms Sil.Uneven.Bootstrap.coefficient_nonneg
-#print axioms Sil.Uneven.Bootstrap.width_upper
-#print axioms Sil.Uneven.Bootstrap.physicalGain_root

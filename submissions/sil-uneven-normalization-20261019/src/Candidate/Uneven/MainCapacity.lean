@@ -87,7 +87,5 @@ theorem two_stage_supported_capacity (s : Input ι) (C₁ R₁ : Ideal O)
       Real.logb Z (max 1 s.b₁*max 1 s.b₂) at hb
   cases P <;> norm_num [Plane.incumbent] at * <;> linarith
 
-#print axioms supported_residual_capacity
-#print axioms two_stage_supported_capacity
 end
 end OAI.SevenEighths.MainCapacity

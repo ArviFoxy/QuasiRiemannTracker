@@ -44,5 +44,3 @@ theorem zero_width_count {d : ℝ} (hd0 : 31/50 ≤ d) (hd1 : d ≤ 33/50) :
   linarith
 
 end Sil.Uneven.Bootstrap
-#print axioms Sil.Uneven.Bootstrap.full_exponent_mono
-#print axioms Sil.Uneven.Bootstrap.zero_width_count

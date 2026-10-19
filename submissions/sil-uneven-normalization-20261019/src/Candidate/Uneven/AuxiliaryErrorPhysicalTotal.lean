@@ -364,7 +364,3 @@ theorem eventual_actual_error_physical_allocation_payment {ι : Type}[Fintype ι
 
 end
 end OAI.SevenEighths.AuxiliaryErrorReconstruction
-#print axioms OAI.SevenEighths.AuxiliaryErrorReconstruction.actual_error_physical_complete_shell
-#print axioms OAI.SevenEighths.AuxiliaryErrorReconstruction.geometry_error_physical_complete_cost_nonneg
-#print axioms OAI.SevenEighths.AuxiliaryErrorReconstruction.eventual_actual_error_physical_selected_payment
-#print axioms OAI.SevenEighths.AuxiliaryErrorReconstruction.eventual_actual_error_physical_allocation_payment

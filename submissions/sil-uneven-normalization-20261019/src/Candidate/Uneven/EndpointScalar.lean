@@ -10,14 +10,6 @@ set_option autoImplicit false
 open OAI.SevenEighths.UnevenEndpoint
 def signalShift : ℝ := -(5/6-x/3-ell/6)
 def signal (s : ℝ) : ℝ := s+signalShift
-theorem signalShift_eq : signalShift=-(4+(y-x))/6 := by
-  unfold signalShift
-  unfold x y
-  ring
-theorem signal_at_boundary : signal theta=x/2+(y-x)/12 := by
-  unfold signal signalShift
-  unfold x y ell
-  ring
 end
 end OAI.SevenEighths.UnevenEndpoint.Physical.Assembly
 
@@ -214,21 +206,8 @@ theorem source_packet_multiplicative_identity {K : ℕ} (J : Finset (Fin K))
       field_simp
       ring
 
-theorem source_kernel_multiplicative_identity (Z kap d C delta p e A : ℝ)
-    (L : LossData) (hZ : 0 < Z) :
-    A*Z^(numeratorExponent kap d C delta p+weightedSourceLoss d delta L)*
-      (Z^x)^(1/2-17/50:ℝ)*Z^((1+delta)/2+16*e+17/50-1) =
-    A*Z^(rowAt kap d C delta p+Assembly.signalShift+16*e+weightedSourceLoss d delta L) := by
-  rw [←Real.rpow_mul hZ.le,mul_assoc,←Real.rpow_add hZ,mul_assoc,←Real.rpow_add hZ]
-  congr 2
-  have hi := numerator_kernel_exponent kap d C delta p e
-  unfold kernelExponent at hi
-  linarith only [hi]
 
 
 end
 end OAI.SevenEighths.UnevenEndpoint.Physical.Scalar
 
-#print axioms OAI.SevenEighths.UnevenEndpoint.Physical.Scalar.new_packet_certificate
-#print axioms OAI.SevenEighths.UnevenEndpoint.Physical.Scalar.old_packet_certificate
-#print axioms OAI.SevenEighths.UnevenEndpoint.Physical.Scalar.source_packet_multiplicative_identity

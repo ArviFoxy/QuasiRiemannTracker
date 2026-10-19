@@ -53,13 +53,6 @@ theorem unevenLowFirstWeight_eq (reflected : Bool) (s : Input α) (R seed : Idea
     (Fintype.card α) b q.1.val q.2]
   ring
 
-theorem unevenLowFirstWeight_nonneg (reflected : Bool) (s : Input α) (R seed : Ideal O)
-    (K Z ξ M A : ℝ) (hK : 0<K) (bin : ℤ×(Fin 5→ℤ))
-    (weight : Cycle63JointSource.SourceCoordinate s R seed K Z ξ→ℂ) (b t : ℝ)
-    (q : GeometryLowFirstIndex reflected s R seed K Z ξ hK bin) :
-    0≤ unevenLowFirstWeight reflected s R seed K Z ξ M A hK bin weight b t q :=
-  div_nonneg (unevenAllocationWeight_nonneg reflected s R seed K Z ξ M A hK bin weight
-    (Fintype.card α) b q.1.val q.2) (volume_pos _).le
 
 section Second
 variable (reflected : Bool) (s : Input α) (R seed : Ideal O)
@@ -97,7 +90,3 @@ theorem unevenMainSecondWeight_eq (Mprice Aprice : ℝ)
 end Second
 end
 end OAI.SevenEighths.Target830.Source.Uneven
-#print axioms OAI.SevenEighths.Target830.Source.Uneven.unevenAllocationWeight_eq
-#print axioms OAI.SevenEighths.Target830.Source.Uneven.unevenLowFirstWeight_eq
-#print axioms OAI.SevenEighths.Target830.Source.Uneven.unevenLowFirstWeight_nonneg
-#print axioms OAI.SevenEighths.Target830.Source.Uneven.unevenMainSecondWeight_eq

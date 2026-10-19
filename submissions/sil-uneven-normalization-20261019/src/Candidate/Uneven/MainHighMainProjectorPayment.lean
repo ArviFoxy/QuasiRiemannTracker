@@ -302,4 +302,3 @@ theorem actual_geometry_main_high_buffered_projectors {α : Type} [Fintype α] [
 
 end
 end OAI.SevenEighths.MainHigh
-#print axioms OAI.SevenEighths.MainHigh.actual_geometry_main_high_buffered_projectors

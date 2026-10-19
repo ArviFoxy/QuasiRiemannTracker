@@ -245,9 +245,3 @@ def eventual_actual_selected_error_saved_payment (N : ℕ)(lo εv B ε : ℝ)
 
 end
 end OAI.SevenEighths.MainErrorReconstruction
-#print axioms OAI.SevenEighths.MainErrorReconstruction.selectedErrorAllocation
-#print axioms OAI.SevenEighths.MainErrorReconstruction.selected_error_allocation_val
-#print axioms OAI.SevenEighths.MainErrorReconstruction.selected_error_allocation_nonzero
-#print axioms OAI.SevenEighths.MainErrorReconstruction.selected_error_allocation_at
-#print axioms OAI.SevenEighths.MainErrorReconstruction.selected_error_prime_ray_cost_reindex
-#print axioms OAI.SevenEighths.MainErrorReconstruction.eventual_actual_selected_error_saved_payment

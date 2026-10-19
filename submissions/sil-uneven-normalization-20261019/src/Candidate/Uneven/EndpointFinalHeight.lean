@@ -80,6 +80,3 @@ end
 end OAI.SevenEighths.UnevenEndpoint.Physical.FinalAssembly
 
 
-#print axioms OAI.SevenEighths.UnevenEndpoint.Physical.FinalAssembly.choose_height
-#print axioms OAI.SevenEighths.UnevenEndpoint.Physical.FinalAssembly.height_admissible_mono
-#print axioms OAI.SevenEighths.UnevenEndpoint.Physical.FinalAssembly.actual_joint_height

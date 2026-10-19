@@ -73,5 +73,3 @@ theorem selected_width_gate {m w : ℝ}
     linarith
 
 end Sil.Uneven.AuxiliarySource
-#print axioms Sil.Uneven.AuxiliarySource.source_guards
-#print axioms Sil.Uneven.AuxiliarySource.selected_width_gate

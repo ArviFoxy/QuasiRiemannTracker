@@ -377,9 +377,4 @@ def eventual_actual_geometry_error_scalar_subpower
 
 end
 end OAI.SevenEighths.AuxiliaryErrorReconstruction
-#print axioms OAI.SevenEighths.AuxiliaryErrorReconstruction.actual_geometry_error_column_scalar_identity
-#print axioms OAI.SevenEighths.AuxiliaryErrorReconstruction.actual_geometry_error_column_scalar_sum
-#print axioms OAI.SevenEighths.AuxiliaryErrorReconstruction.actual_geometry_error_scalar_disintegration
-#print axioms OAI.SevenEighths.AuxiliaryErrorReconstruction.eventual_actual_geometry_error_scalar_subpower
 
-#print axioms OAI.SevenEighths.AuxiliaryErrorReconstruction.geometryErrorScalarSubpowerConstant

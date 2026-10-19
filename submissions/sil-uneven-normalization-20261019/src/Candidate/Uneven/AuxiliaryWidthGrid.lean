@@ -55,4 +55,3 @@ theorem widthCellUpper_bounds {s : ℝ} (hs : s ∈ Set.Icc widthLo widthHi) :
 
 end
 end Sil.Uneven.AuxiliarySource
-#print axioms Sil.Uneven.AuxiliarySource.widthCellUpper_bounds

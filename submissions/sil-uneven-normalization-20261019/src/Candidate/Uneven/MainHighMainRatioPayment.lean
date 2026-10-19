@@ -123,4 +123,3 @@ theorem uniform_actual_affine_main_ratio_payment
 end
 end OAI.SevenEighths.MainHigh
 
-#print axioms OAI.SevenEighths.MainHigh.uniform_actual_affine_main_ratio_payment

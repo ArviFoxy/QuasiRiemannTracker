@@ -223,14 +223,8 @@ def actual_geometry_selected_low_paid_columns (P : Plane) {Î± : Type} [Fintype Î
 
 end
 end OAI.SevenEighths.MainPhysical
-#print axioms OAI.SevenEighths.MainPhysical.actual_child_low_profile_factor
 
-#print axioms OAI.SevenEighths.MainPhysical.actual_low_fixed_profile_columns
 
-#print axioms OAI.SevenEighths.MainPhysical.actual_selected_low_paid_columns
 
-#print axioms OAI.SevenEighths.MainPhysical.actual_geometry_low_paid_fields
 
-#print axioms OAI.SevenEighths.MainPhysical.actual_geometry_selected_low_paid_columns
 
-#print axioms OAI.SevenEighths.MainPhysical.actual_geometry_low_uniform_mass

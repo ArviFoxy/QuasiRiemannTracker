@@ -289,44 +289,6 @@ theorem actual_paid_error_complete_projector_family {α : Type*}[Fintype α][Dec
       mul_le_mul_of_nonneg_right (hzs.2 Ds hcap) (by positivity)
     _=_ := by dsimp only [H]; rw [Real.rpow_add hzpos]; ring
 
-/-- The post-column scalar has no common-allocation dependence. Original
-nonzero blocks reindex to the full supported arithmetic labels, paying
-only the shared four-coordinate dyadic envelope. -/
-theorem actual_error_original_block_scalar_subpower {α : Type*}[Fintype α][DecidableEq α]
-    (A D₀ B L Cr ε : ℝ)(hA : 0 ≤ A)(hD₀ : 0 ≤ D₀)(hB : 0 ≤ B)(hL : 0 ≤ L)
-    (hCr : 0 < Cr)(hε : 0 < ε) :
-    ∃C₀ : ℝ,0 < C₀ ∧ ∀ᶠZ : ℝ in atTop,1 ≤ Z ∧
-    ∀(slots : Finset α)(s : Input slots)(R seed : Ideal O)(hseed : Squarefree seed)
-      (hz₁ : s.W₁ 0=0)(hz₂ : s.W₂ 0=0)(K Tsec ξ : ℝ)(hK : 0 < K),
-      Z^(-D₀) ≤ K → K ≤ Z^A → frequencyRadius Tsec Z ξ ≤ Cr*Z^L → sourceRadius s ≤ Z^B →
-    ∀(rows : Finset (ActualSecondBlockIndex s R seed K Tsec Z ξ))(W : 𝓢(ℝ,ℂ)),
-      ∀hne : ∀n∈rows,(actualSecondBlockDatum slots s R seed hseed hz₁ hz₂ K Tsec Z ξ hK n).block.value W≠0,
-    ∀(reflected second : Bool)(first : FirstSourceLabel)(M a δ reserve error εcommon V : ℝ)(p : O)(k : ℕ),
-    let hU := actual_second_original_nonzero_supported slots s R seed hseed hz₁ hz₂ K Tsec Z ξ hK W rows hne
-    (∑n : rows,extractedErrorLabelScalar reflected second first
-      (actualSecondSupportedLabel s R seed K Tsec Z ξ n.val (hU n.val n.property))
-      Z M a δ reserve error εcommon V (volume s) p k) ≤ 
-      C₀*Z^ε*∑v∈actualSecondLabels s R seed,
-        extractedErrorLabelScalar reflected second first v Z M a δ reserve error εcommon V (volume s) p k := by
-  obtain ⟨C₀,hC₀,hcount⟩ := actual_second_positive_subpower (α:=α) A D₀ B L Cr ε
-    hA hD₀ hB hL hCr hε
-  refine ⟨C₀,hC₀,?_⟩
-  filter_upwards [hcount] with Z hz
-  refine ⟨hz.1,?_⟩
-  intro slots s R seed hseed hz₁ hz₂ K Tsec ξ hK hKlo hKhi hr hs rows W hne
-    reflected second first M a δ reserve error εcommon V p k hU
-  apply hz.2 slots s R seed hseed hz₁ hz₂ K Tsec ξ hK hKlo hKhi hr hs rows hU
-    (fun v=>extractedErrorLabelScalar reflected second first v Z M a δ reserve error εcommon V (volume s) p k)
-  intro v hv
-  have hg := actual_second_labels_gates s R seed hseed hz₁ hz₂ v hv
-  have hn := (normalizer_pos v.1.1 v.1.2 hg.1 v.2.val).le
-  have hvol := (volume_pos s).le
-  have hrad : 0 ≤ firstErrorTailRadius reflected first Z M V a δ reserve p k := by
-    unfold firstErrorTailRadius errorCommonRadius
-    exact Real.rpow_nonneg (zero_le_one.trans hz.1) _
-  have hznonneg : 0 ≤ Z := zero_le_one.trans hz.1
-  unfold extractedErrorLabelScalar
-  positivity
 
 /-- Genuine dependent full-label payment absorbs its explicit finite
 loss into the strict reserve of every extracted-prime branch. -/
@@ -403,13 +365,5 @@ theorem eventual_actual_error_dependent_saved_payment (N : ℕ) (lo εv B ε : �
 
 end
 end OAI.SevenEighths.MainErrorReconstruction
-#print axioms OAI.SevenEighths.MainErrorReconstruction.actual_error_extracted_pool_cap
-#print axioms OAI.SevenEighths.MainErrorReconstruction.actual_error_extracted_finite_pool_cap
-#print axioms OAI.SevenEighths.MainErrorReconstruction.actual_error_extracted_projector_cap
-#print axioms OAI.SevenEighths.MainErrorReconstruction.actual_error_normalized_scalar_identity
-#print axioms OAI.SevenEighths.MainErrorReconstruction.actual_error_fixed_shell_factor
-#print axioms OAI.SevenEighths.MainErrorReconstruction.actual_paid_error_complete_projector_family
 
-#print axioms OAI.SevenEighths.MainErrorReconstruction.eventual_actual_error_dependent_saved_payment
 
-#print axioms OAI.SevenEighths.MainErrorReconstruction.actual_error_original_block_scalar_subpower

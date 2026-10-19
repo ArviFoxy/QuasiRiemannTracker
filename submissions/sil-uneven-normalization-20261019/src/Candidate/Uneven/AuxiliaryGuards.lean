@@ -21,4 +21,3 @@ theorem scheduling_guards {b : ℝ} (hb : b ∈ Set.Icc widthLo widthHi) :
 theorem q_range : 31/50 ≤ q ∧ q ≤ 3/4 := by norm_num [q]
 
 end Sil.Uneven.AuxiliarySource
-#print axioms Sil.Uneven.AuxiliarySource.scheduling_guards

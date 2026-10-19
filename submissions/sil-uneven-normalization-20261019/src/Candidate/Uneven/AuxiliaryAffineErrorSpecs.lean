@@ -119,5 +119,3 @@ def GeometryAffineErrorPaidSpec
 
 end
 end OAI.SevenEighths.AuxiliaryErrorReconstruction
-#print axioms OAI.SevenEighths.AuxiliaryErrorReconstruction.GeometryAffineErrorNormalizedSpec
-#print axioms OAI.SevenEighths.AuxiliaryErrorReconstruction.GeometryAffineErrorPaidSpec

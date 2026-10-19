@@ -25,16 +25,9 @@ def numT (δ p : ℝ) : ℝ := (5/6-δ)*DN P p+δ*(1-p)*(aN P p+cN P p)
 def tN (δ p : ℝ) : ℝ := numT P δ p/JN P δ p
 def RNew (δ p : ℝ) : ℝ := 1-δ+(5/6-δ)*δ*(1-p)*cN P p/JN P δ p
 theorem plane_lambda_pos : 0 < P.lambda := MainCount.plane_lambda_pos P
-theorem plane_lower_gt : 41/100 < MainCount.lowerPlain P := (MainCount.plane_plain_window P).1
-theorem plane_lower_le_upper : MainCount.lowerPlain P ≤ MainCount.mHi := by
-  cases P <;> norm_num [MainCount.lowerPlain,MainCount.mHi,Target830.Count.mHi,kappa0,widthLower,widthUpper,MainCount.Plane.B,MainCount.Plane.lambda]
 
 theorem DN_pos {p : ℝ} (hp : 0 ≤ p) (hp1 : p ≤ 1/2) : 0 < DN P p := by
   cases P <;> norm_num [DN,MainCount.Plane.lambda] <;> nlinarith
-theorem aN_pos {p : ℝ} (hp : 0 ≤ p) (hp1 : p ≤ 1/2) : 0 < aN P p := by
-  cases P <;> norm_num [aN,MainCount.Plane.lambda] <;> nlinarith
-theorem cN_pos {p : ℝ} (hp : 0 ≤ p) (hp1 : p ≤ 1/2) : 0 < cN P p := by
-  cases P <;> norm_num [cN,MainCount.Plane.B,MainCount.Plane.lambda] <;> nlinarith
 
 theorem affine_at_crossing (δ p t : ℝ) (hd : DN P p ≠ 0) :
     affineExp P δ p (t-rN P p t) = shortNew P δ p t := by
@@ -208,5 +201,3 @@ theorem max_at_tN {δ p : ℝ} (hJ : JN P δ p ≠ 0) (hD : DN P p ≠ 0) :
 
 end OAI.SevenEighths.MainCountArithmetic
 end
-#print axioms OAI.SevenEighths.MainCountArithmetic.affine_count_bound
-#print axioms OAI.SevenEighths.MainCountArithmetic.max_at_tN

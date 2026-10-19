@@ -227,6 +227,3 @@ theorem actual_geometry_error_paid_normalized_menu {α : Type u}[Fintype α][Dec
 
 end
 end OAI.SevenEighths.AuxiliaryErrorReconstruction
-#print axioms OAI.SevenEighths.AuxiliaryErrorReconstruction.geometryErrorRawNormalizedSum_sigma
-#print axioms OAI.SevenEighths.AuxiliaryErrorReconstruction.actual_geometry_error_normalized_menu_pointwise
-#print axioms OAI.SevenEighths.AuxiliaryErrorReconstruction.actual_geometry_error_paid_normalized_menu

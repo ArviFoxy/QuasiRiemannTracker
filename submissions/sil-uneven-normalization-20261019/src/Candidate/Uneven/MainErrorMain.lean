@@ -1,8 +1,252 @@
-/- Adapted from PR63 by Sil with OpenAI Codex assistance. Apache-2.0. -/
-import Candidate.Uneven.MainErrorGeometry
+import Candidate.Cycle63.Physical.FinalErrorCapacity.Capacity
+import Candidate.Uneven.MainCapacity
+import Candidate.Cycle63.Physical.FinalCapacity.Physical
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.FirstAmplificationChoice
+import Candidate.Uneven.MainCellCapacity
+import Candidate.Cycle63.Physical.FinalError.Geometry
+import Candidate.Cycle63.Physical.FinalError.Chain
 import Candidate.Uneven.MainGlobalEnvelope
 import Candidate.Uneven.MainErrorPayment
 import Candidate.Cycle63.Physical.FinalError.Payment
+
+/- Original module: Candidate.Uneven.MainExtractedCapacity. -/
+section
+/- Adapted from PR63 by Sil with OpenAI Codex assistance. Apache-2.0. -/
+
+set_option autoImplicit false
+set_option maxHeartbeats 800000
+namespace OAI.SevenEighths.MainCapacity
+noncomputable section
+open Sil.Uneven.MainSource
+variable (P : Plane)
+open scoped Classical BigOperators
+open HeckeFamily CenteredMomentCommonRadialData CenteredMomentCommonAllocationSum
+open CenteredMomentCommonProfile CenteredMomentCommonRawScale
+open CenteredMomentAmplificationChildInput CenteredMomentAmplificationChildSourceCaps
+open CenteredMomentAllocatedChildCapacity CenteredMomentEligibleEnergy
+open CenteredMomentDivisorAllocation CenteredMomentDivisorRectangle
+open CenteredMomentDivisorExtraction CenteredMomentDivisorRaw CenteredMomentDivisorRetained
+open CenteredMomentSourceLiveColumn CenteredMomentAllocatedNaturalSource
+open CenteredMomentSecondCanonical CenteredMomentSectorLocalization
+open CompletedGauss CanonicalQuadraticSieve CenteredMomentEnergyBands
+open CenteredMomentCanonicalFirst Cycle63FinalCapacity
+open Cycle63FinalErrorCapacity
+local notation "O" => HeckeFamily.O
+variable {ι : Type*} [Fintype ι] [DecidableEq ι]
+
+/-- Extraction contributes its exact prime power, rather than a third
+ common-allocation support loss. -/
+theorem extracted_supported_capacity (s : Input ι) (C₁ R₁ : Ideal O)
+    (B₁ : actualAllocations s.pools C₁) (χ : Character) (t : ℝ)
+    (Q : Ideal O) (hQ : Q ≠ 0) (k : ℕ)
+    (hslot : ∀i,∀I∈(child s C₁ R₁ B₁ χ t).slots i,IsCoprime Q I)
+    (Bp : actualAllocations (child s C₁ R₁ B₁ χ t).pools (Q^k))
+    (υ : Character) (v : ℝ) (C₂ R₂ : Ideal O)
+    (B₂ : actualAllocations (twiceChild s C₁ R₁ B₁ χ t Q k Bp υ v).pools C₂)
+    (L : Ideal O) (a : Allocation L (Finset.univ : Finset
+      ((CenteredMomentCommonProfile.liveIndices B₂.val) ⊕ Fin 2)))
+    (Z : ℝ) (hZ : 1 < Z) (hP : ∀i,1 ≤ s.P i)
+    (X₁ X₂ : ℝ) (hX₁ : 0 < X₁) (hX₂ : 0 < X₂)
+    (hprod : X₁*X₂=(commonData (twiceChild s C₁ R₁ B₁ χ t Q k Bp υ v)
+      C₂ R₂ B₂).X₁*(commonData (twiceChild s C₁ R₁ B₁ χ t Q k Bp υ v) C₂ R₂ B₂).X₂)
+    (z : O) (hne : let f := commonData (twiceChild s C₁ R₁ B₁ χ t Q k Bp υ v) C₂ R₂ B₂
+      allocatedPositiveRow f.η f.m f.A z f.t f.slots f.coefficient f.P L a
+        f.W₁ f.W₂ X₁ X₂ ≠ 0) :
+    let e := twiceChild s C₁ R₁ B₁ χ t Q k Bp υ v
+    let f := commonData e C₂ R₂ B₂
+    plainLogs L a Z X₁ X₂+(6*P.incumbent)*remainingLogs L a Z f.P ≤
+      Real.logb Z (preVolume s.toData)-Real.logb Z (rawReduction B₁.val s.P)-
+        (k:ℝ)*Real.logb Z (Q.absNorm:ℝ)-Real.logb Z (rawReduction B₂.val e.P)+
+        (6*P.incumbent-1)*(∑i,Real.logb Z (s.P i))+Real.logb Z (max 1 s.b₁*max 1 s.b₂) := by
+  let first := child s C₁ R₁ B₁ χ t
+  let e := twiceChild s C₁ R₁ B₁ χ t Q k Bp υ v
+  let f := commonData e C₂ R₂ B₂
+  have hp₁ : ∀i,1 ≤ first.P i := fun i => hP i.val
+  have hpe : ∀i,1 ≤ e.P i := fun i => hp₁ i.val
+  have hpf : ∀i,1 ≤ f.P i := fun i => hpe i.val
+  have hb := supported_residual_capacity P f L a Z hZ hpf X₁ X₂ hX₁ hX₂ hprod z hne
+  have hv : Real.logb Z (preVolume f) = Real.logb Z (preVolume s.toData)-
+      Real.logb Z (rawReduction B₁.val s.P)-(k:ℝ)*Real.logb Z (Q.absNorm:ℝ)-
+      Real.logb Z (rawReduction B₂.val e.P) :=
+    extracted_final_volume_log s C₁ R₁ B₁ χ t Q hQ k hslot Bp υ v C₂ R₂ B₂ Z
+  have hl₁ := common_slot_logs_le s C₁ B₁ Z hZ hP
+  have hlp := common_slot_logs_le first (Q^k) Bp Z hZ hp₁
+  have hl₂ := common_slot_logs_le e C₂ B₂ Z hZ hpe
+  change (∑i,Real.logb Z (first.P i)) ≤ ∑i,Real.logb Z (s.P i) at hl₁
+  change (∑i,Real.logb Z (e.P i)) ≤ ∑i,Real.logb Z (first.P i) at hlp
+  change (∑i,Real.logb Z (f.P i)) ≤ ∑i,Real.logb Z (e.P i) at hl₂
+  rw [hv] at hb
+  change _ ≤ _ at hb ⊢
+  change _ ≤ Real.logb Z (preVolume s.toData)-Real.logb Z (rawReduction B₁.val s.P)-
+    (k:ℝ)*Real.logb Z (Q.absNorm:ℝ)-Real.logb Z (rawReduction B₂.val e.P)+
+    (6*P.incumbent-1)*(∑i,Real.logb Z (f.P i))+Real.logb Z (max 1 s.b₁*max 1 s.b₂) at hb
+  cases P <;> norm_num [Plane.incumbent] at * <;> linarith
+
+end
+end OAI.SevenEighths.MainCapacity
+end
+
+/- Original module: Candidate.Uneven.MainErrorCapacity. -/
+section
+/- Adapted from PR63 by Sil with OpenAI Codex assistance. Apache-2.0. -/
+
+set_option autoImplicit false
+set_option maxHeartbeats 800000
+namespace OAI.SevenEighths.MainCapacity
+noncomputable section
+open Sil.Uneven.MainSource
+open OAI OAI.SevenEighths
+open OAI.SevenEighths.Cycle63FinalErrorCapacity
+open scoped Classical BigOperators
+open HeckeFamily CenteredMomentCommonRadialData CenteredMomentCommonAllocationSum
+open CenteredMomentCommonProfile CenteredMomentCommonRawScale
+open CenteredMomentAmplificationChildInput CenteredMomentAmplificationChildSourceCaps
+open CenteredMomentAllocatedChildCapacity CenteredMomentEligibleEnergy
+open CenteredMomentDivisorAllocation CenteredMomentDivisorRectangle
+open CenteredMomentDivisorExtraction CenteredMomentDivisorRaw CenteredMomentDivisorRetained
+open CenteredMomentSourceLiveColumn CenteredMomentAllocatedNaturalSource
+open CenteredMomentSecondCanonical CenteredMomentSectorLocalization
+open CompletedGauss CanonicalQuadraticSieve CenteredMomentEnergyBands
+open CenteredMomentCanonicalFirst Cycle63FinalCapacity
+local notation "O" => HeckeFamily.O
+variable (P : Plane)
+variable {ι : Type*} [Fintype ι] [DecidableEq ι]
+
+/-- Both actual second-label allocations share the same generator/unit
+ cancellation. Prime extraction pays its exact removed width. -/
+theorem actual_error_source_capacity (N : ℕ) (b : ℝ) (hb : 1  ≤  b)
+    (s : Input ι) (hcard : Fintype.card ι  ≤  N) (hs : s.upper  ≤  b)
+    (C₁ R₁ : Ideal O) (B₁ : actualAllocations s.pools C₁)
+    (hf₁ : frozenCoefficient B₁.val C₁ R₁ s.ν s.W s.P ≠ 0)
+    (χ : Character) (t : ℝ) (Q : Ideal O) (hQ : Q ≠ 0) (k : ℕ)
+    (hslot : ∀i,∀I∈(child s C₁ R₁ B₁ χ t).slots i,IsCoprime Q I)
+    (Bp : actualAllocations (child s C₁ R₁ B₁ χ t).pools (Q^k))
+    (υ : Character) (v : ℝ) (C₂ D₂ H R₂ : Ideal O) (hH : H=C₂ ∨ H=D₂)
+    (B₂ : actualAllocations (twiceChild s C₁ R₁ B₁ χ t Q k Bp υ v).pools H)
+    (hf₂ : let e := twiceChild s C₁ R₁ B₁ χ t Q k Bp υ v
+      frozenCoefficient B₂.val H R₂ e.ν e.W e.P ≠ 0)
+    (D₁ : Ideal O) (hD₁ : D₁ ≠ 0) (hC₂ : Supported C₂) (hD₂ : Supported D₂)
+    (hCD₂ : primeSupport C₂ = primeSupport D₂) (U : Finset (CommonIndex C₂ D₂))
+    (L : Ideal O) (a : Allocation L (Finset.univ : Finset
+      ((CenteredMomentCommonProfile.liveIndices B₂.val) ⊕ Fin 2)))
+    (Z M amp omega wo : ℝ) (hZ : 1 < Z) (hM : 0 < M) (hP : ∀i,1  ≤  s.P i)
+    (hwo : wo  ≤  (k:ℝ)*Real.logb Z (Q.absNorm:ℝ))
+    (hz : (17/500)*M  ≤  ∑i,Real.logb Z (s.P i) ∧
+      (∑i,Real.logb Z (s.P i))  ≤  (1/25)*M)
+    (haffine : length Z s.X₁+length Z s.X₂+
+      P.lambda*(∑i,Real.logb Z (s.P i))  ≤  P.B*M)
+    (second : Bool) (z : O)
+    (hne : Cycle63.Physical.sourcePositiveRow
+      (commonData (twiceChild s C₁ R₁ B₁ χ t Q k Bp υ v) H R₂ B₂).toSource second L a z ≠ 0) :
+    let e := twiceChild s C₁ R₁ B₁ χ t Q k Bp υ v
+    let f := commonData e H R₂ B₂
+    let w := (k:ℝ)*Real.logb Z (Q.absNorm:ℝ)
+    let cell := widthCellUpper ((∑i,Real.logb Z (s.P i))/M)
+    length Z (Cycle63Moment.LowBranch.finalPlain f second L a 0)+
+      length Z (Cycle63Moment.LowBranch.finalPlain f second L a 1)+
+        (6*P.incumbent)*remainingLogs L a Z f.P-
+      errorNominal M Z amp omega w wo C₁ D₁ C₂ D₂ U  ≤ 
+        M*gap P cell+3*amp+(w-wo)+omega+supportPadding N b s.b₁ s.b₂ Z := by
+  let first := child s C₁ R₁ B₁ χ t
+  let e := twiceChild s C₁ R₁ B₁ χ t Q k Bp υ v
+  let f := commonData e H R₂ B₂
+  let X := Cycle63.Physical.sourcePlainScales f.toSource second
+  have hx₁ := Cycle63Moment.LowBranch.source_plain_positive f second 0
+  have hx₂ := Cycle63Moment.LowBranch.source_plain_positive f second 1
+  have hprod : X 0*X 1=f.X₁*f.X₂ := by
+    cases second
+    · rfl
+    · exact f.same_product
+  have htotal := extracted_supported_capacity P s C₁ R₁ B₁ χ t Q hQ k hslot Bp υ v
+    H R₂ B₂ L a Z hZ hP (X 0) (X 1) hx₁ hx₂ hprod z hne
+  have he : length Z (Cycle63Moment.LowBranch.finalPlain f second L a 0)+
+      length Z (Cycle63Moment.LowBranch.finalPlain f second L a 1) =
+        plainLogs L a Z (X 0) (X 1) := by
+    change Real.logb Z (max 1 (CenteredMomentRetainedProfile.clippedScale (rawScale L a (X 0) 0)))+
+      Real.logb Z (max 1 (CenteredMomentRetainedProfile.clippedScale (rawScale L a (X 1) 1))) = _
+    rw [max_eq_right (CenteredMomentRetainedProfile.clippedScale_ge_one _),
+      max_eq_right (CenteredMomentRetainedProfile.clippedScale_ge_one _)]
+    rfl
+  have hc₁ := Real.logb_nonneg hZ (norm_ge_one C₁ (allocation_ne s C₁ B₁))
+  have hd₁ := Real.logb_nonneg hZ (norm_ge_one D₁ hD₁)
+  have hw : 0  ≤  (k:ℝ)*Real.logb Z (Q.absNorm:ℝ) :=
+    mul_nonneg (Nat.cast_nonneg _) (Real.logb_nonneg hZ (norm_ge_one Q hQ))
+  have hmax := extraction_max_loss _ _ _ wo hc₁ hd₁ hw hwo
+  have hshift : Real.logb Z (normValue (commonFrequencyGenerator C₂ D₂))-
+      Real.logb Z ((∏P∈U,P.val).absNorm:ℝ)  ≤  Real.logb Z (H.absNorm:ℝ) := by
+    rcases hH with hh|hh
+    · rw [hh]
+      exact actual_common_shift_le C₂ D₂ hC₂ hD₂ hCD₂ U Z hZ
+    · rw [hh]
+      exact actual_common_shift_le_right C₂ D₂ hC₂ hD₂ hCD₂ U Z hZ
+  have hr₁ := common_reduction_log_lower N b hb s hcard hs C₁ R₁ B₁ hf₁ Z hZ
+  have hce : Fintype.card (CenteredMomentCommonProfile.liveIndices Bp.val)  ≤  N :=
+    (live_card_le Bp.val).trans ((live_card_le B₁.val).trans hcard)
+  have hr₂ := common_reduction_log_lower N b hb e hce hs H R₂ B₂ hf₂ Z hZ
+  have hcell := original_affine_capacity P s Z M hZ hM hz haffine
+  dsimp only at htotal hcell ⊢
+  rw [he]
+  change Real.logb Z (preVolume s.toData)+(6*P.incumbent-1)*(∑i,Real.logb Z (s.P i))  ≤  _ at hcell
+  unfold errorNominal supportPadding
+  linarith
+
+
+end
+end OAI.SevenEighths.MainCapacity
+end
+
+/- Original module: Candidate.Uneven.MainErrorGeometry. -/
+section
+/- Adapted from PR63 by Sil with OpenAI Codex assistance. Apache-2.0. -/
+
+set_option autoImplicit false
+set_option maxHeartbeats 1000000
+namespace OAI.SevenEighths.MainError
+noncomputable section
+open Sil.Uneven.MainSource
+open OAI OAI.SevenEighths
+open OAI.SevenEighths.Cycle63FinalError
+open scoped Classical BigOperators SchwartzMap
+open HeckeFamily CanonicalQuadraticSieve CompletedGauss ConcretePrimeRowBridge
+open CenteredMomentCompleteCommon CenteredMomentSecondHeightFamily ActualEisensteinCubic
+open CenteredMomentCanonicalFirst CenteredMomentSecondCanonical CenteredMomentSecondExceptionalFamily
+open CenteredMomentSecondPhysicalBlock CenteredMomentSectorLocalization CenteredMomentFirstAmplificationChoice
+open CenteredMomentAmplifiedRetainedRadius CenteredMomentCommonRadialData CenteredMomentCommonRawScale
+open CenteredMomentSourceLiveColumn CenteredMomentAmplificationChildInput CenteredMomentAmplificationChildSourceCaps
+open Cycle63FinalNatural Cycle63FinalCapacity Cycle63FinalErrorCapacity
+local notation "O" => HeckeFamily.O
+variable (P : Plane)
+variable {α : Type*} [Fintype α] [DecidableEq α]
+
+theorem error_source_capacity {s : Input α} {q : Chain s} {Z Mrow amp omega ξ b J : ℝ}
+    (g : Geometry s q Z Mrow amp omega ξ b J (Fintype.card α)) (hb : 1 ≤ b)
+    (hs : s.upper ≤ b) (hZ : 1 < Z) (hM : 0 < Mrow) (hP : ∀j,1 ≤ s.P j)
+    (hz : (17/500)*Mrow ≤ ∑j,Real.logb Z (s.P j) ∧ (∑j,Real.logb Z (s.P j)) ≤ (1/25)*Mrow)
+    (haff : CenteredMomentEnergyBands.length Z s.X₁+CenteredMomentEnergyBands.length Z s.X₂+
+      P.lambda*(∑j,Real.logb Z (s.P j)) ≤ P.B*Mrow)
+    (η : Character) (v : ℝ) (second : Bool) (L : Ideal O)
+    (a : CenteredMomentDivisorAllocation.Allocation L (Finset.univ : Finset
+      (CenteredMomentCommonProfile.liveIndices q.B₂.val⊕Fin 2))) (z : O)
+    (hne : Cycle63.Physical.sourcePositiveRow (q.final η v).toSource second L a z≠0) :
+    let cell := widthCellUpper ((∑j,Real.logb Z (s.P j))/Mrow)
+    CenteredMomentEnergyBands.length Z (Cycle63Moment.LowBranch.finalPlain (q.final η v) second L a 0)+
+      CenteredMomentEnergyBands.length Z (Cycle63Moment.LowBranch.finalPlain (q.final η v) second L a 1)+
+        (6*P.incumbent)*CenteredMomentAllocatedChildCapacity.remainingLogs L a Z (q.final η v).P-g.nominal  ≤ 
+      Mrow*Sil.Uneven.MainSource.gap P cell+3*amp+(errorRemoval q.p Z q.k-errorMoving q.p Z q.k)+omega+
+        supportPadding (Fintype.card α) b s.b₁ s.b₂ Z := by
+  exact MainCapacity.actual_error_source_capacity P (Fintype.card α) b hb s le_rfl hs q.C₁ q.R₁ q.B₁
+    g.first_nonzero q.η₁ q.t₁ (Ideal.span {q.p}) (Ideal.span_singleton_eq_bot.not.mpr q.hp)
+    q.k q.coprime q.Bp η v g.C g.D q.E₂ q.R₂ g.label q.B₂ g.second_nonzero
+    g.D₁ g.hD₁.1 g.hC g.hD g.heq g.U L a Z Mrow amp omega (errorMoving q.p Z q.k)
+    hZ hM hP (actual_prime_widths q.p q.hp Z hZ q.k q.hk).2.2 hz haff second z hne
+
+end
+end OAI.SevenEighths.MainError
+end
+
+/- Original module: Candidate.Uneven.MainErrorMain. -/
+section
+/- Adapted from PR63 by Sil with OpenAI Codex assistance. Apache-2.0. -/
 
 set_option autoImplicit false
 set_option maxHeartbeats 1200000
@@ -115,8 +359,8 @@ theorem actual_paid_error_uniform
   have hcell := (widthCellUpper_bounds
     (show (∑j,Real.logb Z (s.P j))/Mrow ∈ Set.Icc widthLo widthHi from
       ⟨(le_div_iff₀ hM).mpr hz.1,(div_le_iff₀ hM).mpr hz.2⟩)).1
-  have hamp : 0≤amp := by
-    have ha : 0<Sil.Uneven.MainSource.amp P cell :=
+  have hamp : 0≤ amp := by
+    have ha : 0< Sil.Uneven.MainSource.amp P cell :=
       lt_of_lt_of_le (scheduling_guards P hcell).2.1 (scheduling_guards P hcell).2.2.1
     exact (mul_pos hM ha).le
   have hshift := CenteredMomentSecondActualWidth.actual_common_log_ge_unit g.C g.D g.hC g.U Z hZone
@@ -136,7 +380,7 @@ theorem actual_paid_error_uniform
   by_cases live : ∃z,Cycle63.Physical.sourcePositiveRow src.toSource second L₂ alloc z≠0
   · obtain ⟨z,hzrow⟩ := live
     let X := Cycle63.Physical.sourcePlainScales src.toSource second
-    let U := fun j : Fin 2=>X j/(Ideal.absNorm (selectedPlain L₂ alloc j):ℝ)
+    let U := fun j : Fin 2=> X j/(Ideal.absNorm (selectedPlain L₂ alloc j):ℝ)
     have hU : ∀j,0 < U j := fun j=> div_pos (source_plain_positive src second j)
       (zero_lt_one.trans_le (CenteredMomentAmplificationChildSourceCaps.norm_ge_one _
         (CenteredMomentDivisorExtraction.selectedDivisor_ne_zero L₂ Finset.univ alloc (Sum.inr j))))
@@ -161,7 +405,7 @@ theorem actual_paid_error_uniform
     have hXcap₁ := final_plain_cap s q (g.τ χ) v Z L hZone hL hOrig second L₂ alloc 0
     have hXcap₂ := final_plain_cap s q (g.τ χ) v Z L hZone hL hOrig second L₂ alloc 1
     have htotal := error_source_capacity P g hbs hsupper hZone hM
-      (fun j=>by rw [hm.scale j]; exact Real.one_le_rpow hZone.le (hw j)) hz haff (g.τ χ) v second L₂ alloc z hzrow
+      (fun j=> by rw [hm.scale j]; exact Real.one_le_rpow hZone.le (hw j)) hz haff (g.τ χ) v second L₂ alloc z hzrow
     rw [original_slot_sum s q (g.τ χ) v Z hZone w hm.scale L₂ alloc] at htotal
     have hpadd := hpadLoss.2 Mrow hMmin
     rw [hsb₁,hsb₂] at htotal
@@ -171,7 +415,7 @@ theorem actual_paid_error_uniform
       change _ ≤ _ at htotal
       dsimp [padding]; unfold errorRemoval errorMoving at htotal; linarith
     have hpaid := paid_branch_exponent P q.k hk hcell hM.le hwidth hδ hprime hpadding hcap
-    have he := hZ.2 (q.indices L₂ alloc) θ w σ freq v height mesh hw hwL hmesh (fun j _=>hwm j)
+    have he := hZ.2 (q.indices L₂ alloc) θ w σ freq v height mesh hw hwL hmesh (fun j _=> hwm j)
       hσlo hσhi hheight hfreq st rfl hs pret _ _
       (zero_lt_one.trans_le (clippedScale_ge_one _)) (zero_lt_one.trans_le (clippedScale_ge_one _)) hXcap₁ hXcap₂
     have hcoef := hcontrol p U hU
@@ -201,6 +445,6 @@ theorem actual_paid_error_uniform
     have hdiag := QuadraticInitialBound.diagonalControl_nonneg st.radial.profile
     positivity
 
-#print axioms actual_paid_error_uniform
 end
 end OAI.SevenEighths.MainError
+end

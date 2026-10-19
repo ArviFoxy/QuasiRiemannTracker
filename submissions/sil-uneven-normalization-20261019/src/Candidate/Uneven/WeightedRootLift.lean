@@ -84,4 +84,3 @@ theorem actual_raw_from_weighted_small_roots {Label : Type*} [Fintype Label]
 
 end
 end OAI.SevenEighths.Marked830Raw.Uneven
-#print axioms OAI.SevenEighths.Marked830Raw.Uneven.actual_raw_from_weighted_small_roots

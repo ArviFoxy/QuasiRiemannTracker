@@ -42,7 +42,6 @@ theorem paid_branch_exponent {b M width nominal allowance total padding primeWid
     norm_num [branchReserve]
     linarith
 
-#print axioms paid_branch_exponent
 
 theorem normalize_error_energy (p : O) (hp : p≠0) (Z : ℝ) (hZ : 1 < Z)
     (k : ℕ) (hk : k=1 ∨ k=6 ∨ k=7) (E D exponent : ℝ) (hD : 0 ≤ D)
@@ -66,6 +65,5 @@ theorem normalize_error_energy (p : O) (hp : p≠0) (Z : ℝ) (hZ : 1 < Z)
     _  ≤  D*Z^exponent := by nlinarith [mul_le_mul_of_nonneg_left hs hD,
       mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hs hD) (Real.rpow_nonneg hz.le exponent)]
 
-#print axioms normalize_error_energy
 end
 end OAI.SevenEighths.AuxiliaryError

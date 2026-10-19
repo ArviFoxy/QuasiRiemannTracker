@@ -222,14 +222,8 @@ def actual_geometry_selected_low_paid_columns  {α : Type} [Fintype α] [Decidab
 
 end
 end OAI.SevenEighths.AuxiliaryPhysical
-#print axioms OAI.SevenEighths.AuxiliaryPhysical.actual_child_low_profile_factor
 
-#print axioms OAI.SevenEighths.AuxiliaryPhysical.actual_low_fixed_profile_columns
 
-#print axioms OAI.SevenEighths.AuxiliaryPhysical.actual_selected_low_paid_columns
 
-#print axioms OAI.SevenEighths.AuxiliaryPhysical.actual_geometry_low_paid_fields
 
-#print axioms OAI.SevenEighths.AuxiliaryPhysical.actual_geometry_selected_low_paid_columns
 
-#print axioms OAI.SevenEighths.AuxiliaryPhysical.actual_geometry_low_uniform_mass

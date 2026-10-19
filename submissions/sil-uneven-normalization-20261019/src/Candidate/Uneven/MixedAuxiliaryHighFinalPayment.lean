@@ -269,4 +269,3 @@ theorem actual_main_high_final_small_height_mixed_anchor  {Î± : Type} [Fintype Î
 end
 end OAI.SevenEighths.AuxiliaryHigh
 
-#print axioms OAI.SevenEighths.AuxiliaryHigh.actual_main_high_final_small_height_mixed_anchor

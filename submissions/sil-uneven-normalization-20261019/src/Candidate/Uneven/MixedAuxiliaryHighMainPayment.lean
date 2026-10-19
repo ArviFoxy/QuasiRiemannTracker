@@ -539,15 +539,8 @@ theorem actual_geometry_main_high_canonical_projectors_mixed_anchor {α : Type} 
 end
 end OAI.SevenEighths.AuxiliaryHigh
 
-#print axioms OAI.SevenEighths.AuxiliaryHigh.eventually_actual_main_high_literal_admission_mixed_anchor
 
-#print axioms OAI.SevenEighths.AuxiliaryHigh.actual_geometry_main_high_canonical_projectors_mixed_anchor
 
-#print axioms OAI.SevenEighths.AuxiliaryHigh.actual_main_high_original_projector_union_mixed_anchor
 
-#print axioms OAI.SevenEighths.AuxiliaryHigh.eventually_actual_main_high_canonical_admission_mixed_anchor
 
-#print axioms OAI.SevenEighths.AuxiliaryHigh.main_high_residual_subset_union_mixed_anchor
-#print axioms OAI.SevenEighths.AuxiliaryHigh.main_high_residual_sum_le_union_mixed_anchor
 
-#print axioms OAI.SevenEighths.AuxiliaryHigh.actual_main_high_seed_gates_mixed_anchor

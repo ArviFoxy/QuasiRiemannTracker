@@ -294,5 +294,3 @@ end SevenEighths.UnevenEndpointPhysicalLowReflection
 end
 end OAI
 
-#print axioms OAI.SevenEighths.UnevenEndpointPhysicalLowReflection.low_original_choice_energy
-#print axioms OAI.SevenEighths.UnevenEndpointPhysicalLowReflection.low_original_inactive_energy

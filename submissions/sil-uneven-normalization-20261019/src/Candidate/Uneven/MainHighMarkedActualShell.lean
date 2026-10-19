@@ -282,4 +282,3 @@ theorem actual_geometry_literal_marked_high_shell {α : Type} [Fintype α] [Deci
 
 end
 end OAI.SevenEighths.MainHigh
-#print axioms OAI.SevenEighths.MainHigh.actual_geometry_literal_marked_high_shell

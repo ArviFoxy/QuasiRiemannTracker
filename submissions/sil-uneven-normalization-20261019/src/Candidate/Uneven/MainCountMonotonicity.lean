@@ -46,4 +46,3 @@ theorem count_mono (stage : Stage) {a κ d p : ℝ} (ha : 7/10 ≤ a) (hak : a �
 
 end
 end OAI.SevenEighths.MainCount
-#print axioms OAI.SevenEighths.MainCount.count_mono

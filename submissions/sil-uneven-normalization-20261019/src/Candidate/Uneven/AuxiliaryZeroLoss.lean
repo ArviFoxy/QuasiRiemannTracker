@@ -22,4 +22,3 @@ theorem auxiliary_geometry_zero_exponent_saving
 
 end
 end OAI.SevenEighths.AuxiliaryReconstruction
-#print axioms OAI.SevenEighths.AuxiliaryReconstruction.auxiliary_geometry_zero_exponent_saving

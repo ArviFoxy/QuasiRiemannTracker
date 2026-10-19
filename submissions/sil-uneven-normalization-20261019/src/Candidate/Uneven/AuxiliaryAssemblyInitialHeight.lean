@@ -119,47 +119,6 @@ theorem initial_height_extend  (W : ℝ → ℂ) (bslot a b bΦ mesh lo hi Mmin 
     (p.profile 0) (p.profile 1) Φ ≤ _
   exact hh.trans_eq (by dsimp only [control]; ring)
 
-/-- A bounded-height affine theorem is the sole new analytic input. The
-all-height coarse side is obtained from the original incumbent, with a common
-final degree before the fixed bases and the live initial configurations. -/
-theorem original_initial_height  (W : ℝ → ℂ) (aslot bslot a b bΦ mesh lo hi Mmin Mmax coarseError ε τ : ℝ)
-    (haslot : 0 < aslot) (hWs : Function.support W ⊆ Set.Icc aslot bslot)
-    (hW : ContDiff ℝ ∞ W) (hbslot : 0 ≤ bslot)
-    (ha : 0 < a) (haUpper : a ≤ 1/4) (hb : 1 ≤ b) (hbΦ : 0 < bΦ)
-    (hmesh : 0 ≤ mesh) (hMmin : 0 < Mmin) (hMM : Mmin ≤ Mmax)
-    (hcError : 0 < coarseError) (hcOne : coarseError ≤ 1)
-    (hbeta : 51/100 ≤ HeckeZeroSupremum.beta) (hτ : 0 < τ)
-    (η : Label → Character) (jSmall : ℕ) (Ssmall : Finset (ℕ × ℕ))
-    (hsmall : ∀ η₀ : Character, ∀ Q : Ideal O,
-      Q ≤ R → internalQ Q η₀ ≠ 0 → internalQ Q η₀ ≠ ⊤ →
-      internalQ Q η₀ ≤ Ideal.span {(72 : O)} →
-      ∃ Csmall : ℝ, 0 < Csmall ∧ ∀ᶠ Z : ℝ in atTop, ∀ label : Label,
-        BoundedInitialAffineAt  (α := α) R H hH W bslot a b bΦ mesh lo hi Mmin Mmax
-          ε τ Z (η label) η₀ Q jSmall Ssmall Csmall) :
-    ∃ degree : ℕ, ∃ S : Finset (ℕ × ℕ), ∀ η₀ : Character, ∀ Q : Ideal O,
-      Q ≤ R → internalQ Q η₀ ≠ 0 → internalQ Q η₀ ≠ ⊤ →
-      internalQ Q η₀ ≤ Ideal.span {(72 : O)} →
-    ∃ C : ℝ, 0 < C ∧ ∀ᶠ Z : ℝ in atTop, ∀ label : Label,
-      OAI.SevenEighths.AuxiliaryInitial.InitialAffineAt  (α := α) R H hH W bslot a b bΦ mesh lo hi Mmin Mmax
-        ε Z (η label) η₀ Q degree S C := by
-  obtain ⟨jCoarse,Scoarse,hcoarse⟩ := original_initial_coarse (α := α) R H hH W
-    aslot bslot a b bΦ mesh lo hi Mmin Mmax coarseError haslot hWs hW hbslot
-    ha haUpper hb hbΦ hmesh hMmin hMM hcError hcOne hbeta η
-  obtain ⟨degree,hextend⟩ := initial_height_extend  (α := α) (Label := Label) R H hH W
-    bslot a b bΦ mesh lo hi Mmin Mmax
-    (coarseError+2*(Fintype.card α : ℝ)*mesh) ε τ hτ hMmin hMM
-    jSmall jCoarse Ssmall Scoarse
-  refine ⟨degree,Ssmall ∪ Scoarse,?_⟩
-  intro η₀ Q hQR hQ0 hQt hQ72
-  obtain ⟨Csmall,hCs,hsmall⟩ := hsmall η₀ Q hQR hQ0 hQt hQ72
-  obtain ⟨Ccoarse,hCc,hcoarse⟩ := hcoarse η₀ Q hQR hQ0 hQt hQ72
-  refine ⟨Csmall+Ccoarse,add_pos hCs hCc,?_⟩
-  exact hextend η η₀ Q Csmall Ccoarse hCs.le hCc.le hsmall
-    (hcoarse.mono (fun _ h => h.2))
 
-#print axioms profile_control_mono
-#print axioms initial_plain_length_cap
-#print axioms initial_height_extend
-#print axioms original_initial_height
 end
 end OAI.SevenEighths.AuxiliaryAssembly

@@ -1081,16 +1081,9 @@ def actual_geometry_main_exceptional_norm_payment
 end
 end OAI.SevenEighths.MainReconstruction
 
-#print axioms OAI.SevenEighths.MainReconstruction.actual_geometry_main_exceptional_norm_paid
 
-#print axioms OAI.SevenEighths.MainReconstruction.actual_geometry_error_exceptional_norm_paid
 
-#print axioms OAI.SevenEighths.MainReconstruction.actual_geometry_main_exceptional_norm_closed
 
-#print axioms OAI.SevenEighths.MainReconstruction.actual_geometry_error_exceptional_norm_closed
 
-#print axioms OAI.SevenEighths.MainReconstruction.actual_geometry_main_exceptional_norm_full
 
-#print axioms OAI.SevenEighths.MainReconstruction.actual_geometry_main_exceptional_norm_remainder_le
 
-#print axioms OAI.SevenEighths.MainReconstruction.actual_geometry_main_exceptional_norm_payment

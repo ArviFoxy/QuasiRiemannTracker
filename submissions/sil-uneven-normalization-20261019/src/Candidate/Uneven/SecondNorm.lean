@@ -34,4 +34,3 @@ theorem uneven_main_block_weight_norm
 
 end
 end OAI.SevenEighths.Target830.Source.Uneven
-#print axioms OAI.SevenEighths.Target830.Source.Uneven.uneven_main_block_weight_norm

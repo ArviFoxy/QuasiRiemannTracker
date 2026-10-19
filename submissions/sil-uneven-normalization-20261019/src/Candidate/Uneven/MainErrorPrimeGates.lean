@@ -73,4 +73,3 @@ theorem eventual_geometry_affine_prime_coprime
 
 end
 end OAI.SevenEighths.MainErrorReconstruction
-#print axioms OAI.SevenEighths.MainErrorReconstruction.eventual_geometry_affine_prime_coprime

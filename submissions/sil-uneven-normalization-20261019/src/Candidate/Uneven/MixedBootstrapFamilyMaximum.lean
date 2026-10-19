@@ -36,4 +36,3 @@ theorem whole_family_maximum (ηcoarse η₀ : Character) (u₀ : O) (F₀ : Nat
 
 end
 end OAI.SevenEighths.MixedBootstrapNaturalBases
-#print axioms OAI.SevenEighths.MixedBootstrapNaturalBases.whole_family_maximum

@@ -858,16 +858,9 @@ def actual_main_low_complete_all_height_payment  {α : Type} [Fintype α] [Decid
 
 end
 end OAI.SevenEighths.AuxiliaryPhysical
-#print axioms OAI.SevenEighths.AuxiliaryPhysical.main_low_complete_physical_spec_of_final
 
-#print axioms OAI.SevenEighths.AuxiliaryPhysical.actual_main_low_complete_physical_bins
 
-#print axioms OAI.SevenEighths.AuxiliaryPhysical.main_low_complete_coarse_spec_of_original
 
-#print axioms OAI.SevenEighths.AuxiliaryPhysical.main_low_complete_image_cost
 
-#print axioms OAI.SevenEighths.AuxiliaryPhysical.main_low_complete_all_height_spec_of_receipts
 
-#print axioms OAI.SevenEighths.AuxiliaryPhysical.actual_main_low_complete_coarse_payment
 
-#print axioms OAI.SevenEighths.AuxiliaryPhysical.actual_main_low_complete_all_height_payment

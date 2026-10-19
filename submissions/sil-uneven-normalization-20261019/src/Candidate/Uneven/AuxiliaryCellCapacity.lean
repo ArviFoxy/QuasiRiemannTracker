@@ -33,4 +33,3 @@ theorem original_affine_capacity (s : Input ι) (Z M : ℝ)
 
 end
 end OAI.SevenEighths.AuxiliaryCapacity
-#print axioms OAI.SevenEighths.AuxiliaryCapacity.original_affine_capacity

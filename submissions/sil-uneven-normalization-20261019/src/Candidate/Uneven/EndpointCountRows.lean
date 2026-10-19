@@ -1,7 +1,239 @@
-/- Adapted from PR63 by Sil with OpenAI Codex assistance. Apache-2.0. -/
+import Candidate.Uneven.MainCountConcrete
+import Candidate.Uneven.MainCountIdentity
+import Candidate.Uneven.RoundedRowIntervals
+import Candidate.Uneven.MainCountMonotonicity
 import Candidate.Uneven.EndpointStageParameters
 import Candidate.Uneven.WarmupCountIncumbent
-import Candidate.Uneven.RoundedCountIncumbent
+
+/- Original module: Candidate.Uneven.RoundedActualCountBounds. -/
+section
+/- Adapted from PR63 by Sil with OpenAI Codex assistance. Apache-2.0. -/
+
+set_option autoImplicit false
+set_option maxHeartbeats 1200000
+namespace Sil.Uneven.RoundedRows
+noncomputable section
+open OAI.SevenEighths
+
+theorem affine_numeric_identity {i : ℕ} (hi : i ≤ 7) {d p : ℝ}
+    (hd : 0 ≤ d ∧ d ≤ 3/4) (hp : 0 ≤ p ∧ p ≤ 1/2) :
+    Target830.Count.affineR (planeLambda i) (planeB i) d p =
+      numerator i d p/denominator i d p := by
+  have hJ := (denominator_pos hi hd hp).ne'
+  apply (eq_div_iff hJ).mpr
+  have hJ' : Target830.Count.affineJ (planeLambda i) d p ≠ 0 := hJ
+  convert Target830.Count.affine_count_mul (B:=planeB i) hJ' using 1 <;>
+    dsimp [numerator,denominator,Target830.Count.affineN,Target830.Count.affineJ,
+      Target830.Count.affineD,Target830.Count.affineA,Target830.Count.affineU,
+      Target830.Count.affineC] <;> ring
+
+/-- The actual finite count selector satisfies every bound used by the numerical
+row certificates. No analytic source estimate is assumed in this algebraic bridge. -/
+theorem actual_count_bounds {d p : ℝ}
+    (hd : 0 ≤ d ∧ d ≤ 3/4) (hp : 0 ≤ p ∧ p ≤ 1/2) :
+    CountBounds (MainCount.count .final frozen_kappa d p) d p := by
+  intro i hi ha
+  rw [←affine_numeric_identity hi hd hp]
+  rcases ha with hz | h0 | h1 | h2 | h3 | h4 | h5 | h6 | h7 | h8 | h9 | h10 | h11 | h12 | h13 | h14
+  · subst i
+    have hc := MainCount.count_le_old .final frozen_kappa d p
+    rw [MainCount.old_count_affine (by norm_num [frozen_kappa]) hd hp] at hc
+    convert hc using 1 <;> norm_num [planeLambda,planeB,frozen_kappa]
+  · rcases h0 with ⟨rfl,hd0,hd1,hp0,hp1⟩
+    have hw : Target830.Count.window0.Available d p := ⟨⟨hd0,hd1⟩,hp0,hp1⟩
+    have hc := (MainCount.count_le_previous .final frozen_kappa d p).trans
+      (Target830.Count.count_le_window0 hw)
+    convert hc using 1 <;> norm_num [planeLambda,planeB,Target830.Count.window0,
+      Target830.Count.Plane.lambda,Target830.Count.Plane.B,
+      Target830.SourcePlane.lambda,Target830.SourcePlane.B]
+  · rcases h1 with ⟨rfl,hd0,hd1,hp0,hp1⟩
+    have hw : Target830.Count.window1.Available d p := ⟨⟨hd0,hd1⟩,hp0,hp1⟩
+    have hc := (MainCount.count_le_previous .final frozen_kappa d p).trans
+      (Target830.Count.count_le_window1 hw)
+    convert hc using 1 <;> norm_num [planeLambda,planeB,Target830.Count.window1,
+      Target830.Count.Plane.lambda,Target830.Count.Plane.B,
+      Target830.SourcePlane.lambda,Target830.SourcePlane.B]
+  · rcases h2 with ⟨rfl,hd0,hd1,hp0,hp1⟩
+    have hw : Target830.Count.window2.Available d p := ⟨⟨hd0,hd1⟩,hp0,hp1⟩
+    have hc := (MainCount.count_le_previous .final frozen_kappa d p).trans
+      (Target830.Count.count_le_window2 hw)
+    convert hc using 1 <;> norm_num [planeLambda,planeB,Target830.Count.window2,
+      Target830.Count.Plane.lambda,Target830.Count.Plane.B,
+      Target830.SourcePlane.lambda,Target830.SourcePlane.B]
+  · rcases h3 with ⟨rfl,hd0,hd1,hp0,hp1⟩
+    have hw : Target830.Count.window3.Available d p := ⟨⟨hd0,hd1⟩,hp0,hp1⟩
+    have hc := (MainCount.count_le_previous .final frozen_kappa d p).trans
+      (Target830.Count.count_le_window3 hw)
+    convert hc using 1 <;> norm_num [planeLambda,planeB,Target830.Count.window3,
+      Target830.Count.Plane.lambda,Target830.Count.Plane.B,
+      Target830.SourcePlane.lambda,Target830.SourcePlane.B]
+  · rcases h4 with ⟨rfl,hd0,hd1,hp0,hp1⟩
+    have hw : Target830.Count.window4.Available d p := ⟨⟨hd0,hd1⟩,hp0,hp1⟩
+    have hc := (MainCount.count_le_previous .final frozen_kappa d p).trans
+      (Target830.Count.count_le_window4 hw)
+    convert hc using 1 <;> norm_num [planeLambda,planeB,Target830.Count.window4,
+      Target830.Count.Plane.lambda,Target830.Count.Plane.B,
+      Target830.SourcePlane.lambda,Target830.SourcePlane.B]
+  · rcases h5 with ⟨rfl,hd0,hd1,hp0,hp1⟩
+    have hw : Target830.Count.window5.Available d p := ⟨⟨hd0,hd1⟩,hp0,hp1⟩
+    have hc := (MainCount.count_le_previous .final frozen_kappa d p).trans
+      (Target830.Count.count_le_window5 hw)
+    convert hc using 1 <;> norm_num [planeLambda,planeB,Target830.Count.window5,
+      Target830.Count.Plane.lambda,Target830.Count.Plane.B,
+      Target830.SourcePlane.lambda,Target830.SourcePlane.B]
+  · rcases h6 with ⟨rfl,hd0,hd1,hp0,hp1⟩
+    have hw : Target830.Count.window6.Available d p := ⟨⟨hd0,hd1⟩,hp0,hp1⟩
+    have hc := (MainCount.count_le_previous .final frozen_kappa d p).trans
+      (Target830.Count.count_le_window6 hw)
+    convert hc using 1 <;> norm_num [planeLambda,planeB,Target830.Count.window6,
+      Target830.Count.Plane.lambda,Target830.Count.Plane.B,
+      Target830.SourcePlane.lambda,Target830.SourcePlane.B]
+  · rcases h7 with ⟨rfl,hd0,hd1,hp0,hp1⟩
+    have hw : Target830.Count.window7.Available d p := ⟨⟨hd0,hd1⟩,hp0,hp1⟩
+    have hc := (MainCount.count_le_previous .final frozen_kappa d p).trans
+      (Target830.Count.count_le_window7 hw)
+    convert hc using 1 <;> norm_num [planeLambda,planeB,Target830.Count.window7,
+      Target830.Count.Plane.lambda,Target830.Count.Plane.B,
+      Target830.SourcePlane.lambda,Target830.SourcePlane.B]
+  · rcases h8 with ⟨rfl,hd0,hd1,hp0,hp1⟩
+    have hw : Target830.Count.window8.Available d p := ⟨⟨hd0,hd1⟩,hp0,hp1⟩
+    have hc := (MainCount.count_le_previous .final frozen_kappa d p).trans
+      (Target830.Count.count_le_window8 hw)
+    convert hc using 1 <;> norm_num [planeLambda,planeB,Target830.Count.window8,
+      Target830.Count.Plane.lambda,Target830.Count.Plane.B,
+      Target830.SourcePlane.lambda,Target830.SourcePlane.B]
+  · rcases h9 with ⟨rfl,hd0,hd1,hp0,hp1⟩
+    have hw : Target830.Count.window9.Available d p := ⟨⟨hd0,hd1⟩,hp0,hp1⟩
+    have hc := (MainCount.count_le_previous .final frozen_kappa d p).trans
+      (Target830.Count.count_le_window9 hw)
+    convert hc using 1 <;> norm_num [planeLambda,planeB,Target830.Count.window9,
+      Target830.Count.Plane.lambda,Target830.Count.Plane.B,
+      Target830.SourcePlane.lambda,Target830.SourcePlane.B]
+  · rcases h10 with ⟨rfl,hd0,hd1,hp0,hp1⟩
+    have hw : (MainCount.window10 .final).Available d p := ⟨⟨hd0,hd1⟩,hp0,hp1⟩
+    have hc := MainCount.count_le_window10 .final (κ:=frozen_kappa) hw
+    convert hc using 1 <;> norm_num [planeLambda,planeB,MainCount.window10,
+      MainCount.Stage.aPlane,MainCount.Stage.cPlane,
+      MainCount.Plane.lambda,MainCount.Plane.B]
+  · rcases h11 with ⟨rfl,hd0,hd1,hp0,hp1⟩
+    have hw : (MainCount.window11 .final).Available d p := ⟨⟨hd0,hd1⟩,hp0,hp1⟩
+    have hc := MainCount.count_le_window11 .final (κ:=frozen_kappa) hw
+    convert hc using 1 <;> norm_num [planeLambda,planeB,MainCount.window11,
+      MainCount.Stage.aPlane,MainCount.Stage.cPlane,
+      MainCount.Plane.lambda,MainCount.Plane.B]
+  · rcases h12 with ⟨rfl,hd0,hd1,hp0,hp1⟩
+    have hw : (MainCount.window12 .final).Available d p := ⟨⟨hd0,hd1⟩,hp0,hp1⟩
+    have hc := MainCount.count_le_window12 .final (κ:=frozen_kappa) hw
+    convert hc using 1 <;> norm_num [planeLambda,planeB,MainCount.window12,
+      MainCount.Stage.aPlane,MainCount.Stage.cPlane,
+      MainCount.Plane.lambda,MainCount.Plane.B]
+  · rcases h13 with ⟨rfl,hd0,hd1,hp0,hp1⟩
+    have hw : (MainCount.window13 .final).Available d p := ⟨⟨hd0,hd1⟩,hp0,hp1⟩
+    have hc := MainCount.count_le_window13 .final (κ:=frozen_kappa) hw
+    convert hc using 1 <;> norm_num [planeLambda,planeB,MainCount.window13,
+      MainCount.Stage.aPlane,MainCount.Stage.cPlane,
+      MainCount.Plane.lambda,MainCount.Plane.B]
+  · rcases h14 with ⟨rfl,hd0,hd1,hp0,hp1⟩
+    have hw : (MainCount.window14 .final).Available d p := ⟨⟨hd0,hd1⟩,hp0,hp1⟩
+    have hc := MainCount.count_le_window14 .final (κ:=frozen_kappa) hw
+    convert hc using 1 <;> norm_num [planeLambda,planeB,MainCount.window14,
+      MainCount.Stage.aPlane,MainCount.Stage.cPlane,
+      MainCount.Plane.lambda,MainCount.Plane.B]
+
+theorem actual_old_row_interval {z d p : ℝ}
+    (hd : 0 ≤ d ∧ d ≤ 3/4) (hp : 0 ≤ p ∧ p ≤ 1/2)
+    (hz : rowHeight 0 ≤ z ∧ z ≤ rowHeight 1) :
+    scalarRow z (oldCapacity z) (MainCount.count .final frozen_kappa d p) d p ≤
+      theta-1/20000000000000 :=
+  old_row_interval hd hp hz (actual_count_bounds hd hp)
+
+theorem actual_new_row_interval {z d p : ℝ}
+    (hd : 0 ≤ d ∧ d ≤ 3/4) (hp : 0 ≤ p ∧ p ≤ 1/2)
+    (hz : rowHeight 2 ≤ z ∧ z ≤ rowHeight 3) :
+    scalarRow z (newCapacity z) (MainCount.count .final frozen_kappa d p) d p ≤
+      theta-1/20000000000000 :=
+  new_row_interval hd hp hz (actual_count_bounds hd hp)
+
+end
+end Sil.Uneven.RoundedRows
+end
+
+/- Original module: Candidate.Uneven.RoundedCountIncumbent. -/
+section
+/- Adapted from PR63 by Sil with OpenAI Codex assistance. Apache-2.0. -/
+
+set_option autoImplicit false
+set_option maxHeartbeats 600000
+namespace Sil.Uneven.RoundedRows
+noncomputable section
+open OAI.SevenEighths
+
+def oldCapacityAt (κ z : ℝ) : ℝ := min z (2*y-z)/(6*κ)
+
+theorem scalar_capacity_antitone {z cap cap' count d p : ℝ}
+    (hd : 0 ≤ d) (hp : 0 ≤ p) (hc : cap ≤ cap') :
+    scalarRow z cap' count d p ≤ scalarRow z cap count d p := by
+  have hh := mul_le_mul_of_nonneg_left hc (mul_nonneg hd hp)
+  unfold scalarRow
+  linarith only [hh]
+
+theorem old_row_at_incumbent {κ z d p : ℝ} (hk : 7/10 ≤ κ) (hkhi : κ ≤ frozen_kappa)
+    (hd : 0 ≤ d ∧ d ≤ 3/4) (hp : 0 ≤ p ∧ p ≤ 1/2)
+    (hz : rowHeight 0 ≤ z ∧ z ≤ rowHeight 1) :
+    scalarRow z (oldCapacityAt κ z) (MainCount.count .final κ d p) d p ≤ theta-1/20000000000000 := by
+  have hz0 : 0 ≤ z := (show (0:ℝ) ≤ rowHeight 0 by norm_num [rowHeight]).trans hz.1
+  have htop : rowHeight 1 ≤ 2*y := by norm_num [rowHeight,y]
+  have hm : 0 ≤ min z (2*y-z) := le_min hz0 (by linarith only [hz.2,htop])
+  have hcap : oldCapacity z ≤ oldCapacityAt κ z := by
+    exact div_le_div_of_nonneg_left hm (by linarith : 0 < 6*κ)
+      (by linarith : 6*κ ≤ 6*frozen_kappa)
+  have hc := MainCount.count_mono .final hk hkhi
+    (show 0 ≤ d ∧ d ≤ 5/6 from ⟨hd.1,by linarith [hd.2]⟩) hp
+  calc
+    _ ≤ scalarRow z (oldCapacity z) (MainCount.count .final κ d p) d p :=
+      scalar_capacity_antitone hd.1 hp.1 hcap
+    _ ≤ scalarRow z (oldCapacity z) (MainCount.count .final frozen_kappa d p) d p :=
+      scalar_row_mono hz0 hc
+    _ ≤ _ := actual_old_row_interval hd hp hz
+
+theorem new_row_at_incumbent {κ z d p : ℝ} (hk : 7/10 ≤ κ) (hkhi : κ ≤ frozen_kappa)
+    (hd : 0 ≤ d ∧ d ≤ 3/4) (hp : 0 ≤ p ∧ p ≤ 1/2)
+    (hz : rowHeight 2 ≤ z ∧ z ≤ rowHeight 3) :
+    scalarRow z (newCapacity z) (MainCount.count .final κ d p) d p ≤ theta-1/20000000000000 := by
+  have hz0 : 0 ≤ z := (show (0:ℝ) ≤ rowHeight 2 by norm_num [rowHeight]).trans hz.1
+  have hc := MainCount.count_mono .final hk hkhi
+    (show 0 ≤ d ∧ d ≤ 5/6 from ⟨hd.1,by linarith [hd.2]⟩) hp
+  exact (scalar_row_mono hz0 hc).trans (actual_new_row_interval hd hp hz)
+
+theorem old_supremum_deficit {beta z d p : ℝ} (hb : theta < beta)
+    (hbhi : beta ≤ (frozen_kappa+1)/2)
+    (hd : 0 ≤ d ∧ d ≤ 3/4) (hp : 0 ≤ p ∧ p ≤ 1/2)
+    (hz : rowHeight 0 ≤ z ∧ z ≤ rowHeight 1) :
+    scalarRow z (oldCapacityAt (2*beta-1) z) (MainCount.count .final (2*beta-1) d p) d p-beta ≤
+      -(1/20000000000000)-(beta-theta) := by
+  have hk : 7/10 ≤ 2*beta-1 := by norm_num [theta] at hb; linarith only [hb]
+  have hkhi : 2*beta-1 ≤ frozen_kappa := by linarith only [hbhi]
+  have hh := old_row_at_incumbent hk hkhi hd hp hz
+  linarith only [hh]
+
+theorem new_supremum_deficit {beta z d p : ℝ} (hb : theta < beta)
+    (hbhi : beta ≤ (frozen_kappa+1)/2)
+    (hd : 0 ≤ d ∧ d ≤ 3/4) (hp : 0 ≤ p ∧ p ≤ 1/2)
+    (hz : rowHeight 2 ≤ z ∧ z ≤ rowHeight 3) :
+    scalarRow z (newCapacity z) (MainCount.count .final (2*beta-1) d p) d p-beta ≤
+      -(1/20000000000000)-(beta-theta) := by
+  have hk : 7/10 ≤ 2*beta-1 := by norm_num [theta] at hb; linarith only [hb]
+  have hkhi : 2*beta-1 ≤ frozen_kappa := by linarith only [hbhi]
+  have hh := new_row_at_incumbent hk hkhi hd hp hz
+  linarith only [hh]
+
+end
+end Sil.Uneven.RoundedRows
+end
+
+/- Original module: Candidate.Uneven.EndpointCountRows. -/
+section
+/- Adapted from PR63 by Sil with OpenAI Codex assistance. Apache-2.0. -/
 
 set_option autoImplicit false
 set_option maxHeartbeats 1000000
@@ -76,5 +308,4 @@ theorem new_supremum_deficit {β d δ p : ℝ} (hb : theta < β)
 
 end
 end OAI.SevenEighths.UnevenEndpoint.Count
-#print axioms OAI.SevenEighths.UnevenEndpoint.Count.old_supremum_deficit
-#print axioms OAI.SevenEighths.UnevenEndpoint.Count.new_supremum_deficit
+end

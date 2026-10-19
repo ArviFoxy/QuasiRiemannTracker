@@ -120,4 +120,3 @@ theorem actual_geometry_compensated_high_gates
     nlinarith only [hh,hAA,haa,hgg]
 
 end OAI.SevenEighths.MainHigh
-#print axioms OAI.SevenEighths.MainHigh.actual_geometry_compensated_high_gates

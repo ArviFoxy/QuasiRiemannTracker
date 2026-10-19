@@ -43,4 +43,3 @@ theorem low_target_le_accepted (g : GeometryAffineLowSchedule) (N : ℕ)
 
 end
 end OAI.SevenEighths.AuxiliaryPhysical
-#print axioms OAI.SevenEighths.AuxiliaryPhysical.low_target_le_accepted

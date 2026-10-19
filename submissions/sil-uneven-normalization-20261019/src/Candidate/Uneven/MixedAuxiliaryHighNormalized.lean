@@ -267,4 +267,3 @@ theorem actual_geometry_full_high_columns_mixed_anchor {α : Type} [Fintype α] 
 
 end
 end OAI.SevenEighths.AuxiliaryHigh
-#print axioms OAI.SevenEighths.AuxiliaryHigh.actual_geometry_full_high_columns_mixed_anchor

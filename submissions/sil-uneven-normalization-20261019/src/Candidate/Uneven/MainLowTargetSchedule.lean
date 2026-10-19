@@ -34,4 +34,3 @@ theorem final_branch_exponents_of_schedule (P : Plane) (g : GeometryAffineLowSch
 
 end
 end OAI.SevenEighths.MainPhysical
-#print axioms OAI.SevenEighths.MainPhysical.final_branch_exponents_of_schedule

@@ -111,13 +111,6 @@ theorem exists_baseline_data_common_mesh {κ σ : ℝ} (hk : 7/10≤κ) (hk1 : �
   · constructor
     · intro j;exact (hbound j).2.trans ((min_le_right _ _).trans (min_le_left _ _))
     · intro j;exact (hbound j).2.trans ((min_le_right _ _).trans (min_le_right _ _))
-/-- Baseline-only specialization of the common-mesh constructor. -/
-theorem exists_baseline_data_fine {κ σ : ℝ} (hk : 7/10≤κ) (hk1 : κ≤3/4)
-    (hσ : 0<σ) : ∃D:BaselineData,D.momentKappa=κ ∧
-      159*D.ε+609*D.t≤σ ∧ ∀j,D.length j≤ Cycle25.sourceMesh D.t/200 := by
-  obtain ⟨D,hκ,he,hfine,_⟩:=exists_baseline_data_common_mesh hk hk1 hσ
-    Cycle25.sourceMesh (fun _ ht=> Cycle25.sourceMesh_pos ht)
-  exact ⟨D,hκ,he,hfine⟩
 
 
 abbrev BaselineSourceData (D : BaselineData) :=
@@ -141,5 +134,3 @@ theorem exists_baseline_source (D : BaselineData) : Nonempty (BaselineSourceData
 end
 end OAI.SevenEighths.UnevenEndpoint.Physical
 
-#print axioms OAI.SevenEighths.UnevenEndpoint.Physical.exists_baseline_data_common_mesh
-#print axioms OAI.SevenEighths.UnevenEndpoint.Physical.exists_baseline_source

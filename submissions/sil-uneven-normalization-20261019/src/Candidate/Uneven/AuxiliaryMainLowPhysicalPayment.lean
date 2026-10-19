@@ -338,27 +338,10 @@ theorem main_low_physical_small_fee_bound
 
 end
 end OAI.SevenEighths.AuxiliaryPhysical
-#print axioms OAI.SevenEighths.AuxiliaryPhysical.main_low_physical_source_sum
-#print axioms OAI.SevenEighths.AuxiliaryPhysical.actual_main_low_complete_physical_reindex
 
-#print axioms OAI.SevenEighths.AuxiliaryPhysical.actual_main_low_fixed_ray_physical_reindex
-#print axioms OAI.SevenEighths.AuxiliaryPhysical.main_low_physical_fixed_ray_sum_le
 
-#print axioms OAI.SevenEighths.AuxiliaryPhysical.actual_main_low_physical_bins
 
-#print axioms OAI.SevenEighths.AuxiliaryPhysical.main_low_fixed_ray_sigma
-#print axioms OAI.SevenEighths.AuxiliaryPhysical.main_low_physical_first_shell_reindex
-#print axioms OAI.SevenEighths.AuxiliaryPhysical.main_low_physical_complete_ray_sum
-#print axioms OAI.SevenEighths.AuxiliaryPhysical.main_low_physical_first_shell_payment
 
-#print axioms OAI.SevenEighths.AuxiliaryPhysical.actual_main_low_physical_ordinary_row_cost
-#print axioms OAI.SevenEighths.AuxiliaryPhysical.actual_main_low_physical_original_row_cost
 
-#print axioms OAI.SevenEighths.AuxiliaryPhysical.main_low_original_label_row_injective
-#print axioms OAI.SevenEighths.AuxiliaryPhysical.main_low_original_label_row_cost
-#print axioms OAI.SevenEighths.AuxiliaryPhysical.actual_main_low_physical_full_original_row_cost
 
-#print axioms OAI.SevenEighths.AuxiliaryPhysical.eventual_actual_main_low_physical_first_shell_contraction
 
-#print axioms OAI.SevenEighths.AuxiliaryPhysical.main_low_physical_signed_height
-#print axioms OAI.SevenEighths.AuxiliaryPhysical.main_low_physical_small_fee_bound

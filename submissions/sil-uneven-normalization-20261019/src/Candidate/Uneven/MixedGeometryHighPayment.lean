@@ -234,4 +234,3 @@ theorem actual_geometry_paid_binned_high_shell_mixed_anchor {α : Type} [Fintype
 
 end
 end OAI.SevenEighths.TargetHigh830
-#print axioms OAI.SevenEighths.TargetHigh830.actual_geometry_paid_binned_high_shell_mixed_anchor

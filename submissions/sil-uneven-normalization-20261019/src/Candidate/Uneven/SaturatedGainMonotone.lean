@@ -15,4 +15,3 @@ theorem physicalGain_monotone {d : ℝ} (hd0 : 31/50 ≤ d) (hd : d ≤ 3/4) (S 
     (add_le_add le_rfl (mul_le_mul_of_nonneg_left hD ((coefficient_bounds hd0 hd).2.1 i)))
 
 end Sil.Uneven.Saturated
-#print axioms Sil.Uneven.Saturated.physicalGain_monotone

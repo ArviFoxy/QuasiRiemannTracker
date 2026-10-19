@@ -297,5 +297,3 @@ end SevenEighths.UnevenEndpointPhysicalLowReflection
 end
 end OAI
 
-#print axioms OAI.SevenEighths.UnevenEndpointPhysicalLowReflection.low_fixed_member_geometry_uniform
-#print axioms OAI.SevenEighths.UnevenEndpointPhysicalLowReflection.low_dyadic_geometry_uniform

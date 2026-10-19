@@ -114,4 +114,3 @@ theorem physicalGain_root {d S D q pad : ℝ}
   convert hh using 1 <;> unfold physicalGain <;> congr 1 <;> ring
 
 end Sil.Uneven.Saturated
-#print axioms Sil.Uneven.Saturated.physicalGain_root

@@ -104,12 +104,6 @@ theorem geometry_affine_high_actual_raw_budget (μ : ℝ) (N Nbudget : ℕ)
   change μ/16+2*31*geometryFinalPlainRate μ 31+2*31*(Nbudget:ℝ)*δ≤ μ/4 at hraw
   nlinarith only [hslots,hδ,hraw,hμ]
 
-/-- The coordinate ceiling B=130 preserves the literal shared first mass. -/
-theorem geometry_affine_high_mass_rate (μ : ℝ) (Nbudget : ℕ) (hμ : 0< μ) :
-    geometryFinalMassRate μ (geometryAffineHighDictionaryRate μ Nbudget) 130=
-      geometryAffineHighDictionaryRate μ Nbudget :=
-  geometry_affine_final_dictionary_mass_rate_eq μ 130 (3*((Nbudget:ℝ)+2)) Nbudget
-    hμ (by norm_num) (by norm_num)
 
 open Cycle63InitialSource CenteredMomentCommonRawScale QuadraticInitialBound CenteredMomentEnergyBands
 variable {α : Type} [Fintype α] [DecidableEq α]
@@ -444,6 +438,4 @@ def reboundAffineHighState {Z Bmask Bmask' bΦ : ℝ} (st : NaturalState Z Bmask
 end
 end OAI.SevenEighths.MainHigh
 
-#print axioms OAI.SevenEighths.MainHigh.actual_affine_high_selected_coarse
 
-#print axioms OAI.SevenEighths.MainHigh.geometry_affine_high_selected_height_splice

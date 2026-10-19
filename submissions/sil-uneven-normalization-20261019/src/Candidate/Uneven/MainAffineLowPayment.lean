@@ -511,10 +511,4 @@ def actual_affine_low_selected_payment (P : Plane)
 
 end
 end OAI.SevenEighths.MainPhysical
-#print axioms OAI.SevenEighths.MainPhysical.actual_affine_low_complete_data
-#print axioms OAI.SevenEighths.MainPhysical.actual_affine_low_selected_payment
 
-#print axioms OAI.SevenEighths.MainPhysical.affine_low_complete_physical_spec_mono
-#print axioms OAI.SevenEighths.MainPhysical.actual_affine_low_complete_enlarged
-#print axioms OAI.SevenEighths.MainPhysical.affine_low_profile_norm_receipt
-#print axioms OAI.SevenEighths.MainPhysical.affine_low_selected_original_mem

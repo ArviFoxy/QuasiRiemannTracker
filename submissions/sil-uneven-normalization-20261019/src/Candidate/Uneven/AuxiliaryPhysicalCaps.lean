@@ -345,10 +345,3 @@ theorem eventual_affine_polynomial_caps {α : Type*} [Fintype α] [DecidableEq �
 
 end
 end OAI.SevenEighths.AuxiliaryPhysical
-#print axioms OAI.SevenEighths.AuxiliaryPhysical.weighted_padded_columns_norm
-#print axioms OAI.SevenEighths.AuxiliaryPhysical.affine_volume_log_exact
-#print axioms OAI.SevenEighths.AuxiliaryPhysical.affine_original_volume_caps
-#print axioms OAI.SevenEighths.AuxiliaryPhysical.affine_padded_columns_norm
-#print axioms OAI.SevenEighths.AuxiliaryPhysical.affine_polynomial_source_caps
-#print axioms OAI.SevenEighths.AuxiliaryPhysical.eventual_affine_endpoint_factor
-#print axioms OAI.SevenEighths.AuxiliaryPhysical.eventual_affine_polynomial_caps

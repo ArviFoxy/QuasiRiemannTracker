@@ -358,6 +358,3 @@ end SevenEighths.UnevenEndpointPhysicalLowReflection
 end
 end OAI
 
-#print axioms OAI.SevenEighths.UnevenEndpointPhysicalLowReflection.original_low_sector_full_energy
-#print axioms OAI.SevenEighths.UnevenEndpointPhysicalLowReflection.original_low_sector_full_budget
-#print axioms OAI.SevenEighths.UnevenEndpointPhysicalLowReflection.original_low_global_full_budget

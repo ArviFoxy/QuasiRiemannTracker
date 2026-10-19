@@ -649,21 +649,10 @@ theorem actual_affine_error_retained_contraction
 
 end
 end OAI.SevenEighths.MainReconstruction
-#print axioms OAI.SevenEighths.MainReconstruction.affine_error_source_selected_payment
-#print axioms OAI.SevenEighths.MainReconstruction.affine_error_source_raw_payment
-#print axioms OAI.SevenEighths.MainReconstruction.affine_error_joint_raw_payment
 
-#print axioms OAI.SevenEighths.MainReconstruction.affine_error_joint_selected_payment
 
-#print axioms OAI.SevenEighths.MainReconstruction.actual_geometry_error_exceptional_sum_payment
 
-#print axioms OAI.SevenEighths.MainReconstruction.uniform_actual_geometry_error_ordinary_contraction
 
-#print axioms OAI.SevenEighths.MainReconstruction.actual_affine_error_retained_contraction
 
-#print axioms OAI.SevenEighths.MainReconstruction.affine_error_paid_source_bridge
 
-#print axioms OAI.SevenEighths.MainReconstruction.geometry_affine_error_retained_contract_sum_eq_original
 
-#print axioms OAI.SevenEighths.MainReconstruction.affine_error_frozen_to_paid
-#print axioms OAI.SevenEighths.MainReconstruction.uniform_actual_geometry_error_paid_contraction

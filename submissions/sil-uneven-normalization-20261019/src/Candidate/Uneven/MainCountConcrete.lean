@@ -29,11 +29,6 @@ theorem count_le_old (S : Stage) (κ d p : ℝ) :
     count S κ d p ≤ oldCount κ d p :=
   (count_le_previous S κ d p).trans (Target830.Count.count_le_old κ d p)
 
-theorem count_gap (S : Stage) {a κ d p : ℝ} (ha : 7/10 ≤ a) (hak : a ≤ κ)
-    (hd : 0 ≤ d ∧ d ≤ 5/6) (hp : 0 ≤ p ∧ p ≤ 1/2) :
-    count S κ d p-count S a d p ≤ 5*(κ-a)/216 := by
-  exact finiteEnvelope_gap Target830.Count.count (branches S) (by linarith)
-    (Target830.Count.count_gap ha hak hd hp)
 
 theorem count_antitone (S : Stage) {κ d p q : ℝ}
     (hk : 7/10 ≤ κ) (hkhi : κ ≤ 3/4) (hd : 0 ≤ d) (hdhi : d ≤ 3/4)
@@ -41,11 +36,6 @@ theorem count_antitone (S : Stage) {κ d p q : ℝ}
   finiteEnvelope_antitone Target830.Count.count (branches S) hpq hq
     (Target830.Count.count_antitone hk hkhi hd hdhi hp hpq hq)
 
-theorem count_bound (S : Stage) {κ d p : ℝ} {P : ℝ → Prop}
-    (hold : P (Target830.Count.count κ d p))
-    (hfixed : ∀ b ∈ branches S, b.available d p → P (b.value d p)) :
-    P (count S κ d p) :=
-  finiteEnvelope_bound Target830.Count.count (branches S) hold hfixed
 
 theorem count_attained (S : Stage) (κ d p : ℝ) :
     count S κ d p=Target830.Count.count κ d p ∨
@@ -84,6 +74,3 @@ theorem count_le_window14 (S : Stage) {κ d p : ℝ}
 
 end
 end OAI.SevenEighths.MainCount
-#print axioms OAI.SevenEighths.MainCount.count_gap
-#print axioms OAI.SevenEighths.MainCount.count_antitone
-#print axioms OAI.SevenEighths.MainCount.count_bound

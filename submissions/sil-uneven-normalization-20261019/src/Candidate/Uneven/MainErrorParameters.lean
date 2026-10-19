@@ -14,4 +14,3 @@ theorem amplifier_bounds (P : Plane) {b : ℝ}
 
 end
 end OAI.SevenEighths.MainErrorReconstruction
-#print axioms OAI.SevenEighths.MainErrorReconstruction.amplifier_bounds

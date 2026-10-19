@@ -528,76 +528,15 @@ theorem geometry_affine_high_selected_fiber_receipt
     (9/4) (9/4) (μ/8) 3 1 (μ/64) (by norm_num) (by norm_num)
     (by positivity) (by norm_num) (by norm_num) (by positivity) (by linarith only [hμ])
 
-/-- Actual high payment with its supported selected fibers proved internally. -/
-theorem actual_affine_high_selected_small_height 
-    (η₀ : Character)(u₀ : O)(F₀ : NaturalRow η₀ u₀)(R₀ : Ideal O)(hu₀ : u₀≠0)
-    (W : ℝ→ℂ)(hWs : Function.support W⊆Set.Icc (1:ℝ) 2)(hW : ContDiff ℝ ∞ W)
-    (hbeta : 51/100≤ HeckeZeroSupremum.beta)
-    (hMarkedUpper : HeckeZeroSupremum.beta≤7/8)
-    (μ Cs : ℝ)(Nbudget : ℕ)(hμ : 0< μ)(hμcap : μ≤17/5000000000000)(hCs : 1≤ Cs)
-    (hN : Fintype.card α≤ Nbudget) :
-    let δ:=geometryAffineHighDictionaryRate μ Nbudget
-    ∃bound : ℕ→ℝ,(∀k,0< bound k) ∧ ∃J : ℕ,
-      ∀P : HighSourceParameters,P.profileBound=bound →
-      GeometryAffineHighScheduleGates W μ δ P →
-      FineMarkedSchedule P (Fintype.card α) W (33/50) (33/50) →
-      8*P.τ≤ P.d*P.vslot → 16*P.τ≤ P.d*P.vplain → 2*P.τ*(J+1)≤ μ/8 →
-      ∃Sp : Finset (ℕ×ℕ),(0,0)∈Sp ∧ ∃K : ℝ,0< K ∧
-      ∀(Q : Ideal O)(hQM : Q≤ M)(hQ72 : internalQ Q η₀≤ Ideal.span {(72:O)}),
-      ∀ᶠZ : ℝ in atTop,2≤ Z ∧
-        GeometryAffineHighSelectedCostSpec (α:=α) M H hH plane W hbeta P μ δ
-          (geometryAffineHighTarget μ δ)
-          (fun Z t height t₀ u=>|t|+height+2*Real.pi*(|u|+|t₀|)≤ Z^P.τ)
-          (excluded F₀.character R₀) Cs Sp 0 K η₀ Q hQM hQ72 Z := by
-  exact actual_affine_high_selected_small_height_of_fibers (α:=α) M H hH plane η₀ u₀ F₀ R₀ hu₀
-    W hWs hW hbeta hMarkedUpper μ Cs Nbudget hμ hμcap hCs hN
-    (geometry_affine_high_selected_fiber_receipt (α:=α) η₀ u₀ F₀ R₀ hu₀ μ hμ)
 
-/-- Actual high payment with its supported selected fibers proved internally. -/
-theorem actual_affine_high_selected_all_height 
-    (η₀ : Character)(u₀ : O)(F₀ : NaturalRow η₀ u₀)(R₀ : Ideal O)(hu₀ : u₀≠0)
-    (W : ℝ→ℂ)(hWs : Function.support W⊆Set.Icc (1:ℝ) 2)(hW : ContDiff ℝ ∞ W)
-    (hbeta : 51/100≤ HeckeZeroSupremum.beta)
-    (hMarkedUpper : HeckeZeroSupremum.beta≤7/8)
-    (μ Cs : ℝ)(Nbudget : ℕ)(hμ : 0< μ)(hμcap : μ≤17/5000000000000)(hCs : 1≤ Cs)
-    (hN : Fintype.card α≤ Nbudget) :
-    let δ:=geometryAffineHighDictionaryRate μ Nbudget
-    ∃bound : ℕ→ℝ,(∀k,0< bound k) ∧ ∃J : ℕ,
-      ∀P : HighSourceParameters,P.profileBound=bound →
-      GeometryAffineHighScheduleGates W μ δ P →
-      FineMarkedSchedule P (Fintype.card α) W (33/50) (33/50) →
-      8*P.τ≤ P.d*P.vslot → 16*P.τ≤ P.d*P.vplain → 2*P.τ*(J+1)≤ μ/8 →
-      ∃Sp : Finset (ℕ×ℕ),(0,0)∈Sp ∧ ∃degree : ℕ,∃K : ℝ,0< K ∧
-      ∀(Q : Ideal O)(hQM : Q≤ M)(hQ72 : internalQ Q η₀≤ Ideal.span {(72:O)}),
-      ∀ᶠZ : ℝ in atTop,2≤ Z ∧
-        GeometryAffineHighSelectedCostSpec (α:=α) M H hH plane W hbeta P μ δ
-          (geometryAffineHighTarget μ δ) (fun _ _ _ _ _=>True)
-          (excluded F₀.character R₀) Cs Sp degree K η₀ Q hQM hQ72 Z := by
-  exact actual_affine_high_selected_all_height_of_fibers (α:=α) M H hH plane η₀ u₀ F₀ R₀ hu₀
-    W hWs hW hbeta hMarkedUpper μ Cs Nbudget hμ hμcap hCs hN
-    (geometry_affine_high_selected_fiber_receipt (α:=α) η₀ u₀ F₀ R₀ hu₀ μ hμ)
 
 end
 end OAI.SevenEighths.MainHigh
-#print axioms OAI.SevenEighths.MainHigh.geometry_affine_high_actual_raw_budget
-#print axioms OAI.SevenEighths.MainHigh.geometry_affine_high_mass_rate
 
-#print axioms OAI.SevenEighths.MainHigh.actual_affine_high_selected_coarse
 
-#print axioms OAI.SevenEighths.MainHigh.geometry_affine_high_schedule_gates
 
-#print axioms OAI.SevenEighths.MainHigh.actual_affine_high_selected_small_height_of_fibers
-#print axioms OAI.SevenEighths.MainHigh.actual_affine_high_selected_all_height_of_fibers
 
-#print axioms OAI.SevenEighths.MainHigh.geometry_affine_high_unamplify
-#print axioms OAI.SevenEighths.MainHigh.geometry_affine_high_amplify
-#print axioms OAI.SevenEighths.MainHigh.geometry_affine_high_selected_cost_mono
-#print axioms OAI.SevenEighths.MainHigh.geometry_affine_high_selected_height_splice
 
-#print axioms OAI.SevenEighths.MainHigh.affine_main_high_spec_of_receipts
 
-#print axioms OAI.SevenEighths.MainHigh.geometry_affine_high_selected_fiber_receipt
 
-#print axioms OAI.SevenEighths.MainHigh.actual_affine_high_selected_small_height
 
-#print axioms OAI.SevenEighths.MainHigh.actual_affine_high_selected_all_height

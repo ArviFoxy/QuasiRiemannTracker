@@ -308,4 +308,3 @@ theorem actual_geometry_literal_high_shell_mixed_anchor {α : Type} [Fintype α]
 
 end
 end OAI.SevenEighths.AuxiliaryHigh
-#print axioms OAI.SevenEighths.AuxiliaryHigh.actual_geometry_literal_high_shell_mixed_anchor

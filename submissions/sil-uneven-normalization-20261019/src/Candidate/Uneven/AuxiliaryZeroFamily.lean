@@ -161,6 +161,3 @@ theorem actual_geometry_zero_family (N : ℕ) (Cs bs lo hi ε εmass : ℝ)
 
 end
 end OAI.SevenEighths.AuxiliaryReconstruction
-#print axioms OAI.SevenEighths.AuxiliaryReconstruction.actual_first_divisor_ne_zero
-#print axioms OAI.SevenEighths.AuxiliaryReconstruction.actual_geometry_column_main_zero
-#print axioms OAI.SevenEighths.AuxiliaryReconstruction.actual_geometry_zero_family

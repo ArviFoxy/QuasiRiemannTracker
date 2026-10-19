@@ -138,4 +138,3 @@ theorem source_integrated_amplitude_classes (D : BaselineData)
 
 end OAI.SevenEighths.UnevenEndpoint.Physical.Source
 
-#print axioms OAI.SevenEighths.UnevenEndpoint.Physical.Source.source_integrated_amplitude_classes

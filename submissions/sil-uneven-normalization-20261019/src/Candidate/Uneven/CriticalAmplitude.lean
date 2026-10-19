@@ -1,5 +1,277 @@
+import Mathlib
+
+/- Original module: Candidate.Uneven.Endpoint. -/
+section
+
+/- Copyright (c) 2026 Sil. Apache-2.0.
+   Prepared with OpenAI Codex assistance.
+   This file proves the algebraic endpoint and rounding, not L-function nonvanishing.
+-/
+
+set_option autoImplicit false
+set_option maxHeartbeats 800000
+
+namespace Sil.Uneven
+noncomputable section
+
+def quadA : ℝ := 6093050555534740855143533085201471
+def quadB : ℝ := 11216192073911255069710427525384691
+def quadC : ℝ := 5149081167263611203406370372027234
+def discriminant : ℝ := quadB ^ 2 - 4 * quadA * quadC
+def endpoint : ℝ := (quadB - Real.sqrt discriminant) / (2 * quadA)
+def submittedBound : ℝ := 874828524351 / 1000000000000
+def lower : ℝ := 8748285243509452822184826547948 / 10000000000000000000000000000000
+def upper : ℝ := 8748285243509452822184826547950 / 10000000000000000000000000000000
+
+theorem quadA_pos : 0 < quadA := by norm_num [quadA]
+theorem discriminant_pos : 0 < discriminant := by
+  norm_num [discriminant, quadA, quadB, quadC]
+
+theorem endpoint_polynomial :
+    quadA * endpoint ^ 2 - quadB * endpoint + quadC = 0 := by
+  have hs := Real.sq_sqrt (le_of_lt discriminant_pos)
+  have ha : quadA ≠ 0 := ne_of_gt quadA_pos
+  dsimp only [endpoint]
+  field_simp
+  change Real.sqrt discriminant ^ 2 = quadB ^ 2 - 4 * quadA * quadC at hs
+  nlinarith only [hs]
+
+theorem endpoint_isolation : lower < endpoint ∧ endpoint < upper := by
+  have hs := Real.sq_sqrt (le_of_lt discriminant_pos)
+  have hn := Real.sqrt_nonneg discriminant
+  have hlowpos : 0 < quadB - 2 * quadA * lower := by
+    norm_num [quadB, quadA, lower]
+  have huppos : 0 < quadB - 2 * quadA * upper := by
+    norm_num [quadB, quadA, upper]
+  have hlow : discriminant < (quadB - 2 * quadA * lower)^2 := by
+    norm_num [discriminant, quadA, quadB, quadC, lower]
+  have hupp : (quadB - 2 * quadA * upper)^2 < discriminant := by
+    norm_num [discriminant, quadA, quadB, quadC, upper]
+  have hslo : Real.sqrt discriminant < quadB - 2 * quadA * lower := by
+    nlinarith only [hs, hn, hlowpos, hlow]
+  have hshi : quadB - 2 * quadA * upper < Real.sqrt discriminant := by
+    nlinarith only [hs, hn, huppos, hupp]
+  constructor
+  · unfold endpoint
+    rw [lt_div_iff₀ (by exact mul_pos (by norm_num) quadA_pos : 0 < 2 * quadA)]
+    linarith only [hslo]
+  · unfold endpoint
+    rw [div_lt_iff₀ (by exact mul_pos (by norm_num) quadA_pos : 0 < 2 * quadA)]
+    linarith only [hshi]
+
+theorem endpoint_lt_submitted : endpoint < submittedBound := by
+  have h := endpoint_isolation.2
+  have hu : upper < submittedBound := by norm_num [upper, submittedBound]
+  exact h.trans hu
+
+
+
+
+end
+end Sil.Uneven
+end
+
+/- Original module: Candidate.Uneven.CriticalHalf. -/
+section
+/- Copyright (c) 2026 Sil. Apache-2.0. Prepared with OpenAI Codex assistance.
+   This file is only the critical-row algebra; it is not an analytic source proof. -/
+
+set_option autoImplicit false
+set_option maxHeartbeats 1600000
+namespace Sil.Uneven.Critical
+noncomputable section
+
+def parameterPolynomial (v : ℝ) : ℝ := (68829760479687653132500 + (-191011230531473313491625 * v) + (91804891419376373332989 * (v ^ 2)))
+
+def criticalTheta (v : ℝ) : ℝ := ((1/677005617281637872793725898355719:ℝ) * (567450664717496215205934736498337 + (53513930593943064798030058210029 * v)))
+
+def criticalHeight (v : ℝ) : ℝ := ((6994912332/49968722309439657004318790966985043884232644046099976816135970525060125549:ℝ) * (7557749495571114292507544377461412922157493616026381864542400775 + (-4019635498657897742511108248017721263274119229323182364458666606 * v)))
+
+def halfDenominator (d : ℝ) : ℝ := ((1/222692807916:ℝ) * (363943349825 + (-274039211874 * d)))
+
+def halfNumerator (d : ℝ) : ℝ := ((1/4453856158320:ℝ) * (7278866996500 + (-11393134690085 * d) + (3840964384806 * (d ^ 2))))
+
+def squareCoefficient (v : ℝ) : ℝ := ((582909361/30910208552955526252376912497889322987100696504485953294577280370765145008984169571900:ℝ) * (7523203541522138545083732423005053576604149679946576882719597385241377646775 + (5909712235488191390397393563708703934495592639548882228890480482347153986306 * v)))
+
+def physicalB : ℝ := 49061544613/50000000000
+def physicalLambda : ℝ := 1891221821/500000000
+def countB : ℝ := 97851371081/100000000000
+def countLambda : ℝ := 18557733993/5000000000
+
+def countDenominator (d p : ℝ) : ℝ :=
+  (5/6-d)*(3-p-4*p/countLambda)+d*(1-p)*(2-4*p/countLambda)
+def countNumerator (d p : ℝ) : ℝ :=
+  (1-d)*countDenominator d p+(5/6-d)*d*(1-p)*(1-2*p*countB/countLambda)
+def criticalRow (theta height d p : ℝ) : ℝ :=
+  (1+d)/2+(11/3-4*theta)*(1/2+d*p)-5/12*height-
+    d*p*((physicalB*height-4*(11/3-4*theta))/physicalLambda)/2+
+    3/4*height*(countNumerator d p/countDenominator d p)
+def halfRowNumerator (v d : ℝ) : ℝ :=
+  ((1+d)/2+(11/3-4*criticalTheta v)*(1/2+d/2)-5/12*criticalHeight v-
+    d*((physicalB*criticalHeight v-4*(11/3-4*criticalTheta v))/physicalLambda)/4)*
+      halfDenominator d+3/4*criticalHeight v*halfNumerator d
+
+theorem half_denominator_eq (d : ℝ) :
+    countDenominator d (1/2) = halfDenominator d := by
+  unfold countDenominator countLambda halfDenominator
+  ring
+
+theorem half_numerator_eq (d : ℝ) :
+    countNumerator d (1/2) = halfNumerator d := by
+  unfold countNumerator countDenominator countLambda countB halfNumerator
+  ring
+
+theorem half_row_eq (v d : ℝ) (hd : halfDenominator d ≠ 0) :
+    criticalRow (criticalTheta v) (criticalHeight v) d (1/2) =
+      halfRowNumerator v d/halfDenominator d := by
+  unfold criticalRow halfRowNumerator
+  rw [half_denominator_eq, half_numerator_eq]
+  field_simp
+  <;> ring
+
+theorem critical_half_factorization (v d : ℝ)
+    (hroot : parameterPolynomial v = 0) :
+    criticalTheta v*halfDenominator d-halfRowNumerator v d =
+      squareCoefficient v*(d-v)^2 := by
+  dsimp only [criticalTheta, halfDenominator, halfRowNumerator, criticalHeight,
+    squareCoefficient, physicalB, physicalLambda, halfNumerator]
+  unfold parameterPolynomial at hroot
+  linear_combination (((582909361/92730625658866578757130737493667968961302089513457859883731841112295435026952508715700:ℝ) * (-647647773920692213208414358559023658975235954831132175 + (-193117560865854433271506040398124131023525521751262462 * v) + (386235121731708866543012080796248262047051043502524924 * d)))) * hroot
+
+theorem critical_parameter_guards {v : ℝ}
+    (hv : (4636766567303565669606137753427/10000000000000000000000000000000:ℝ) ≤ v ∧
+      v ≤ 4636766567303565669606137753428/10000000000000000000000000000000) :
+    87482852/100000000 < criticalTheta v ∧ criticalTheta v < 87482853/100000000 ∧
+    7970705/10000000 < criticalHeight v ∧ criticalHeight v < 7970707/10000000 ∧
+    0 < squareCoefficient v := by
+  rcases hv with ⟨hlo,hhi⟩
+  norm_num [criticalTheta,criticalHeight,squareCoefficient]
+  constructor
+  · linarith only [hlo,hhi]
+  constructor
+  · linarith only [hlo,hhi]
+  constructor
+  · linarith only [hlo,hhi]
+  constructor <;> linarith only [hlo,hhi]
+
+theorem half_denominator_pos {d : ℝ} (hd : d ≤ 1/2) :
+    0 < halfDenominator d := by
+  norm_num [halfDenominator]
+  linarith only [hd]
+
+/-- The touching critical row has a positive quadratic-square deficit.
+    Every denominator and parameter sign used here is explicit. -/
+theorem critical_half_bound {v d : ℝ}
+    (hv : (4636766567303565669606137753427/10000000000000000000000000000000:ℝ) ≤ v ∧
+      v ≤ 4636766567303565669606137753428/10000000000000000000000000000000)
+    (hroot : parameterPolynomial v = 0) (hd : d ≤ 1/2) :
+    criticalRow (criticalTheta v) (criticalHeight v) d (1/2) ≤ criticalTheta v := by
+  have hj := half_denominator_pos hd
+  rw [half_row_eq v d hj.ne']
+  apply (div_le_iff₀ hj).mpr
+  have hfactor := critical_half_factorization v d hroot
+  have hpos := mul_nonneg (critical_parameter_guards hv).2.2.2.2.le (sq_nonneg (d-v))
+  linarith only [hfactor,hpos]
+
+end
+end Sil.Uneven.Critical
+end
+
+/- Original module: Candidate.Uneven.CriticalParameter. -/
+section
 /- Copyright (c) 2026 Sil. Apache-2.0. Prepared with OpenAI Codex assistance. -/
-import Candidate.Uneven.CriticalParameter
+
+set_option autoImplicit false
+set_option maxHeartbeats 1600000
+namespace Sil.Uneven.Critical
+noncomputable section
+
+def parameterA : ℝ := 91804891419376373332989
+def parameterB : ℝ := 191011230531473313491625
+def parameterC : ℝ := 68829760479687653132500
+def parameterDiscriminant : ℝ := parameterB^2-4*parameterA*parameterC
+def criticalParameter : ℝ := (parameterB-Real.sqrt parameterDiscriminant)/(2*parameterA)
+def parameterLower : ℝ := 4636766567303565669606137753427/10000000000000000000000000000000
+def parameterUpper : ℝ := 4636766567303565669606137753428/10000000000000000000000000000000
+
+theorem parameter_a_pos : 0 < parameterA := by norm_num [parameterA]
+theorem parameter_discriminant_pos : 0 < parameterDiscriminant := by
+  norm_num [parameterDiscriminant,parameterA,parameterB,parameterC]
+
+theorem critical_parameter_polynomial : parameterPolynomial criticalParameter = 0 := by
+  have hs := Real.sq_sqrt parameter_discriminant_pos.le
+  have ha : parameterA ≠ 0 := parameter_a_pos.ne'
+  have hmain : parameterA*criticalParameter^2-parameterB*criticalParameter+parameterC=0 := by
+    dsimp only [criticalParameter]
+    field_simp
+    change Real.sqrt parameterDiscriminant^2=parameterB^2-4*parameterA*parameterC at hs
+    nlinarith only [hs]
+  simpa only [parameterPolynomial,parameterA,parameterB,parameterC,sub_eq_add_neg,
+    neg_mul,add_assoc,add_comm,add_left_comm] using hmain
+
+theorem critical_parameter_isolation : parameterLower < criticalParameter ∧
+    criticalParameter < parameterUpper := by
+  have hs := Real.sq_sqrt parameter_discriminant_pos.le
+  have hn := Real.sqrt_nonneg parameterDiscriminant
+  have hlo0 : 0 < parameterB-2*parameterA*parameterLower := by
+    norm_num [parameterA,parameterB,parameterLower]
+  have hhi0 : 0 < parameterB-2*parameterA*parameterUpper := by
+    norm_num [parameterA,parameterB,parameterUpper]
+  have hlo : parameterDiscriminant < (parameterB-2*parameterA*parameterLower)^2 := by
+    norm_num [parameterDiscriminant,parameterA,parameterB,parameterC,parameterLower]
+  have hhi : (parameterB-2*parameterA*parameterUpper)^2 < parameterDiscriminant := by
+    norm_num [parameterDiscriminant,parameterA,parameterB,parameterC,parameterUpper]
+  have hslo : Real.sqrt parameterDiscriminant < parameterB-2*parameterA*parameterLower := by
+    nlinarith only [hs,hn,hlo0,hlo]
+  have hshi : parameterB-2*parameterA*parameterUpper < Real.sqrt parameterDiscriminant := by
+    nlinarith only [hs,hn,hhi0,hhi]
+  constructor
+  · unfold criticalParameter
+    rw [lt_div_iff₀ (mul_pos (by norm_num : (0:ℝ)<2) parameter_a_pos)]
+    linarith only [hslo]
+  · unfold criticalParameter
+    rw [div_lt_iff₀ (mul_pos (by norm_num : (0:ℝ)<2) parameter_a_pos)]
+    linarith only [hshi]
+
+theorem theta_endpoint_polynomial {v : ℝ} (hroot : parameterPolynomial v = 0) :
+    quadA*(criticalTheta v)^2-quadB*criticalTheta v+quadC=0 := by
+  unfold quadA quadB quadC criticalTheta
+  unfold parameterPolynomial at hroot
+  linear_combination (31193771087113702371801295290000808181469/75222846364626430310413988706191:ℝ)*hroot
+
+theorem critical_theta_eq_endpoint : criticalTheta criticalParameter = endpoint := by
+  have hguard := critical_parameter_guards
+    ⟨critical_parameter_isolation.1.le,critical_parameter_isolation.2.le⟩
+  have ht : criticalTheta criticalParameter < (9/10:ℝ) :=
+    hguard.2.1.trans (by norm_num)
+  have he : endpoint < (9/10:ℝ) := endpoint_isolation.2.trans (by norm_num [upper])
+  have hp := theta_endpoint_polynomial critical_parameter_polynomial
+  have hfactor : (criticalTheta criticalParameter-endpoint)*
+      (quadA*(criticalTheta criticalParameter+endpoint)-quadB)=0 := by
+    nlinarith only [hp,endpoint_polynomial]
+  rcases mul_eq_zero.mp hfactor with h | h
+  · exact sub_eq_zero.mp h
+  · have hsum : criticalTheta criticalParameter+endpoint < (9/5:ℝ) := by linarith
+    have hlt := mul_lt_mul_of_pos_left hsum quadA_pos
+    have hconst : quadA*(9/5:ℝ) < quadB := by norm_num [quadA,quadB]
+    linarith only [hlt,hconst,h]
+
+/-- An unconditional algebraic inequality for the critical half-amplitude row.
+    The analytic source hypotheses and complementary parameter cover are separate. -/
+theorem endpoint_critical_half_bound {d : ℝ} (hd : d ≤ 1/2) :
+    criticalRow endpoint (criticalHeight criticalParameter) d (1/2) ≤ endpoint := by
+  have h := critical_half_bound
+    ⟨critical_parameter_isolation.1.le,critical_parameter_isolation.2.le⟩
+    critical_parameter_polynomial hd
+  simpa only [critical_theta_eq_endpoint] using h
+
+end
+end Sil.Uneven.Critical
+end
+
+/- Original module: Candidate.Uneven.CriticalAmplitude. -/
+section
+/- Copyright (c) 2026 Sil. Apache-2.0. Prepared with OpenAI Codex assistance. -/
 
 set_option autoImplicit false
 set_option maxHeartbeats 2400000
@@ -228,4 +500,4 @@ theorem endpoint_critical_rectangle {d p : ℝ}
 
 end
 end Sil.Uneven.Critical
-#print axioms Sil.Uneven.Critical.endpoint_critical_rectangle
+end

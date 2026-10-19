@@ -1,12 +1,292 @@
-/- Adapted from PR63 by Sil with OpenAI Codex assistance. Apache-2.0. -/
 import Candidate.Uneven.MainAmplifiedRemainder
 import Candidate.Uneven.MainErrorMain
 import Candidate.Uneven.MainErrorParameters
-/- Copyright (c) 2026 Hailey Collet. Released under Apache 2.0 license. -/
-import Candidate.Uneven.MainErrorColumn
+import Candidate.Cycle63.Physical.FinalError.Main
+import Candidate.Cycle63.Physical.InitialMass.SecondExtraction
+import Candidate.Cycle63.Physical.FinalProfiles
+import Candidate.Cycle63.Physical.InitialMass.SecondLowCommon
+import Candidate.Cycle63.Physical.InitialMass.SecondSourceControls
 import Candidate.Cycle63.Physical.InitialMass.GeometryErrorActiveInput
 import Candidate.Cycle63.Physical.InitialMass.GeometryErrorAdmission
 import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Moments.PrimeElements
+
+/- Original module: Candidate.Uneven.MainErrorColumn. -/
+section
+/- Adapted from PR63 by Sil with OpenAI Codex assistance. Apache-2.0. -/
+/- Copyright (c) 2026 Hailey Collet. Released under Apache 2.0 license. -/
+
+set_option autoImplicit false
+set_option maxHeartbeats 1000000
+namespace OAI.SevenEighths.MainErrorReconstruction
+open OAI.SevenEighths.Cycle63InitialMass
+noncomputable section
+open Sil.Uneven.MainSource
+variable {plane : Plane}
+open OAI.SevenEighths.MainReconstruction
+open scoped Classical BigOperators SchwartzMap ContDiff
+open Filter Set HeckeFamily CanonicalQuadraticSieve ConcretePrimeRowBridge CompletedGauss
+open ActualEisensteinCubic ConcreteTraceCRT
+open CenteredMomentEnergyState CenteredMomentEnergyBands CenteredMomentCanonicalFirst
+open CenteredMomentSecondExceptionalFamily CenteredMomentSecondPhysicalBlock CenteredMomentSecondCanonical
+open CenteredMomentSectorLocalization CenteredMomentFirstAmplificationChoice CenteredMomentAmplifiedRetainedRadius
+open CenteredMomentSecondHeightFamily CenteredMomentSecondRadicalBudget
+open CenteredMomentCommonRadialData CenteredMomentCommonAllocationSum CenteredMomentCommonProfile
+open CenteredMomentCommonHeightEnvelope CenteredMomentDivisorAllocation CenteredMomentDivisorRaw
+open CenteredMomentDivisorRectangle CenteredMomentRetainedProfile CenteredMomentAllocatedRayDictionary
+open CenteredMomentNaturalFixedRaySource CenteredMomentPrimeSlot HeckePrimeAnnular
+open CenteredMomentInductionEnergy CenteredMomentEligibleEnergy CenteredMomentFiniteProfileExceptional
+open CenteredMomentAmplificationChildInput CenteredMomentCommonRawScale
+open CenteredMomentAmplificationChildSourceCaps
+open CenteredMomentCommonLinearNormalization CenteredMomentSourceLiveColumn
+open Cycle63Moment Cycle63FinalError
+open CenteredMomentAmplificationErrorEnergy CenteredMomentSlotRatios
+open Cycle63Moment.LowBranch Cycle63FinalNatural Cycle63FinalCapacity
+open CenteredMomentDivisorExtraction
+open CenteredMomentEnergyAllocatedProfiles CenteredMomentAllocatedChildCapacity Cycle63FinalProfiles
+local notation "O" => HeckeFamily.O
+variable {α : Type*} [Fintype α] [DecidableEq α]
+
+
+open CenteredMomentCommonPairedSource
+/-- The complete row sum precedes both supported allocation payments. -/
+theorem error_common_column_energy {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (b ε : ℝ) (hε : 0 < ε) :
+    ∃K : ℝ,0 < K ∧ ∀(s : Input ι),s.upper ≤ b → ∀C R seed : Ideal O,
+      ∀hC : Supported C,seed∣C →
+      ∀(Ds : Finset (Ideal O))(zs : Finset O)(weight : O→ℝ)(T Z pad E : ℝ),
+      1 ≤ T → 1 < Z → 0 ≤ E →
+      (∀D∈Ds,Squarefree D ∧ T ≤ (D.absNorm:ℝ) ∧ (D.absNorm:ℝ) < 2*T) →
+      ∀(keep : O→Prop)(Φ : 𝓢(ℝ,ℂ))(rad : ℝ),0 < rad →
+      (∀z : O,keep z → 0 ≤ (Φ (‖eisEmbedding z‖^2/rad)).re) →
+      (∀z∈zs,0 ≤ weight z) → (∀z∈zs,keep z) →
+      (∀z∈zs,weight z ≤ (Φ (‖eisEmbedding z‖^2/rad)).re) →
+      (∀B : actualAllocations s.pools C,commonScalar s C R B≠0 →
+        (commonData s C R B).toSource.allowance Z ≤ pad) →
+      (∀B : actualAllocations s.pools C,commonScalar s C R B≠0 →
+        ∀D∈Ds,∀a∈(commonData s C R B).toSource.active D,∀second : Bool,
+          finalPositiveEnergy (commonData s C R B) second D a keep Φ rad ≤ E) →
+      (∑D∈Ds,∑z∈zs,weight z*‖normalizedColumn s C hC R seed D z‖^2) ≤ 
+        K*s.toData.profileFactor*(∏i,s.M i)^2*E*(C.absNorm:ℝ)^(ε-1)*
+          (2*T)^(3*ε)*Z^pad := by
+  obtain ⟨Kc,hKc,hcommon⟩ := actual_common_low_energy (ι:=ι) b ε hε
+  obtain ⟨Ke,hKe,hpoint⟩ := actual_common_column_extraction (ι:=ι) ε hε
+  refine ⟨Ke*Kc,by positivity,?_⟩
+  intro s hb C R seed hC hseed Ds zs weight T Z pad E hT hZ hE hDs keep Φ rad hrad hΦ
+    hn hk hw hallow henergy
+  have hh := hcommon s hb C R hC.1 Ds zs weight T Z pad E hT hZ hE hDs
+    keep Φ rad hrad hΦ hk hw hallow henergy
+  have hT0 : 0 < 2*T := by linarith
+  have hmajor : (∑D∈Ds,∑z∈zs,weight z*‖normalizedColumn s C hC R seed D z‖^2) ≤ 
+      Ke*(2*T)^ε*(∑D∈Ds,∑z∈zs,weight z*commonRetainedCost s C R D z) := by
+    simp only [Finset.mul_sum]
+    apply Finset.sum_le_sum
+    intro D hD
+    apply Finset.sum_le_sum
+    intro z hz
+    have hp := mul_le_mul_of_nonneg_left (hpoint s C hC R seed D hseed (hDs D hD).1 z) (hn z hz)
+    apply hp.trans
+    have hd := Real.rpow_le_rpow (Nat.cast_nonneg D.absNorm) (hDs D hD).2.2.le hε.le
+    have hc := common_retained_cost_nonneg s C R D z
+    convert mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hd hKe.le)
+      (mul_nonneg (hn z hz) hc) using 1; ring_nf
+  apply hmajor.trans
+  apply (mul_le_mul_of_nonneg_left hh (by positivity : 0 ≤ Ke*(2*T)^ε)).trans_eq
+  rw [show 3*ε=ε+2*ε by ring_nf,Real.rpow_add hT0 ε (2*ε)]
+  ring_nf
+
+theorem uniform_error_common_column_energy {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (b ε : ℝ) (hε : 0 < ε) :
+    ∃K : ℝ,0 < K ∧ ∀S : Finset ι,∀(s : Input S),s.upper ≤ b → ∀C R seed : Ideal O,
+      ∀hC : Supported C,seed∣C →
+      ∀(Ds : Finset (Ideal O))(zs : Finset O)(weight : O→ℝ)(T Z pad E : ℝ),
+      1 ≤ T → 1 < Z → 0 ≤ E →
+      (∀D∈Ds,Squarefree D ∧ T ≤ (D.absNorm:ℝ) ∧ (D.absNorm:ℝ) < 2*T) →
+      ∀(keep : O→Prop)(Φ : 𝓢(ℝ,ℂ))(rad : ℝ),0 < rad →
+      (∀z : O,keep z → 0 ≤ (Φ (‖eisEmbedding z‖^2/rad)).re) →
+      (∀z∈zs,0 ≤ weight z) → (∀z∈zs,keep z) →
+      (∀z∈zs,weight z ≤ (Φ (‖eisEmbedding z‖^2/rad)).re) →
+      (∀B : actualAllocations s.pools C,commonScalar s C R B≠0 →
+        (commonData s C R B).toSource.allowance Z ≤ pad) →
+      (∀B : actualAllocations s.pools C,commonScalar s C R B≠0 →
+        ∀D∈Ds,∀a∈(commonData s C R B).toSource.active D,∀second : Bool,
+          finalPositiveEnergy (commonData s C R B) second D a keep Φ rad ≤ E) →
+      (∑D∈Ds,∑z∈zs,weight z*‖normalizedColumn s C hC R seed D z‖^2) ≤ 
+        K*s.toData.profileFactor*(∏i,s.M i)^2*E*(C.absNorm:ℝ)^(ε-1)*
+          (2*T)^(3*ε)*Z^pad := by
+  choose K hK hc using fun S : Finset ι=> error_common_column_energy (ι:=S) b ε hε
+  let Kall := 1+∑S : Finset ι,K S
+  have hpos : 0 < Kall := by
+    have hn : 0 ≤ ∑S : Finset ι,K S := Finset.sum_nonneg (fun S _=>(hK S).le)
+    dsimp [Kall]; linarith
+  refine ⟨Kall,hpos,?_⟩
+  intro S s hb C R seed hC hseed Ds zs weight T Z pad E hT hZ hE hDs keep Φ rad hrad hΦ
+    hn hk hw hallow henergy
+  have hle : K S ≤ Kall := by
+    have hh := Finset.single_le_sum (fun S (_ : S∈Finset.univ)=>(hK S).le) (Finset.mem_univ S)
+    dsimp [Kall]; linarith
+  apply (hc S s hb C R seed hC hseed Ds zs weight T Z pad E hT hZ hE hDs
+    keep Φ rad hrad hΦ hn hk hw hallow henergy).trans
+  have hp := s.toData.profile_nonneg
+  gcongr
+
+variable (M : Ideal O) [NeZero M]
+variable (H : Subgroup (O⧸M)ˣ) (hH : RayOrthogonality.globalUnits M ≤ H)
+
+/-- Actual extracted normalized columns with prime payment retained outside the complete frequency sum. -/
+theorem actual_paid_error_column_uniform
+    (W : ℝ→ℂ) (A B ap bp Bmask L lo hi Mcap εold loss margin : ℝ)
+    (hA : 0 < A) (hWs : Function.support W⊆Icc A B) (hW : ContDiff ℝ ∞ W)
+    (hB : 0 ≤ B) (hap : 0 < ap) (hap' : ap ≤ 1/4) (hbp : 1 ≤ bp)
+    (hBmask : 0 ≤ Bmask) (hL : 0 ≤ L) (hMcap : 0 < Mcap) (hεold : 0 < εold)
+    (hloss : 0 < loss) (hmargin : 0 < margin) (hbeta : 51/100 ≤ HeckeZeroSupremum.beta)
+    (hκbeta : 2*HeckeZeroSupremum.beta-1 ≤ plane.incumbent)
+    (ηseed : Character) (bs J εwidth εpad Mmin : ℝ)
+    (window pad εshell : ℝ) (hwindow : 0 ≤ window) (hpad : 0 < pad) (heshell : 0 < εshell)
+    (hbs : 1 ≤ bs) (hJ : 0 < J) (hew : 0 < εwidth) (hep : 0 < εpad) (hmin : 0 < Mmin) :
+    ∃degree : ℕ, ∃Sp : Finset (ℕ×ℕ), ∀η₀ : Character, ∀Q : Ideal O,
+    ∀_hQM : Q ≤ M, internalQ Q η₀≠0 → internalQ Q η₀≠⊤ → internalQ Q η₀ ≤ Ideal.span {(72:O)} →
+    ∃Cg : ℝ, 0 < Cg ∧ ∀ᶠZ : ℝ in atTop,1 < Z ∧
+    ∀(hZ : 1 < Z)(s : Input α)(θ : α→RayQuotient.Characters M H)(w σ freq : α→ℝ)
+      (v height mesh : ℝ),
+      Matches M H hH s η₀ θ w σ freq W B Z → s.η=ηseed → s.upper ≤ bs → s.b₁=bp → s.b₂=bp →
+      (∀j,0 ≤ w j) → (∀j,w j ≤ Cycle25.Energy.commonMesh Mcap Bmask L εold) →
+      0 ≤ mesh → (∀j,w j ≤ mesh) → (∀j,lo ≤ σ j) → (∀j,σ j ≤ hi) →
+      0 ≤ height → (∀j,|freq j| ≤ height) →
+      (∀second j,Cycle63.Physical.sourcePlainScales s.toData.toSource second j ≤ Z^L) →
+      (∀j,logWindow (s.lo j) (s.hi j) ≤ window) →
+    ∀(Mrow omega ξ : ℝ),Mmin ≤ Mrow → 0 ≤ omega → 0 ≤ ξ → Mrow+εwidth*Mrow+ξ/2 ≤ Mcap →
+      ((17/500)*Mrow ≤ ∑j,Real.logb Z (s.P j) ∧ (∑j,Real.logb Z (s.P j)) ≤ (1/25)*Mrow) →
+      length Z s.X₁+length Z s.X₂+plane.lambda*(∑j,Real.logb Z (s.P j)) ≤ plane.B*Mrow →
+    ∀q : Chain s,
+    let cell := Sil.Uneven.MainSource.widthCellUpper ((∑j,Real.logb Z (s.P j))/Mrow)
+    let amp := Mrow*Sil.Uneven.MainSource.amp plane cell
+    q.k=1 ∨ q.k=6 ∨ q.k=7 → 3*amp/4 ≤ Real.logb Z (normValue q.p) →
+    ∀g : Geometry s q Z Mrow amp omega ξ bs J (Fintype.card α),
+    ∀(χ : RayFourExpansion.RayCharacter)(hP : q.R₂*q.E₂≠0)(hPN : ((q.R₂*q.E₂).absNorm:ℝ) ≤ Z^Bmask)
+,
+    let st := retainedState Z Bmask hZ (g.τ χ) (internalQ Q η₀) (q.R₂*q.E₂) hP hPN g.radius g.C g.D g.U
+    let src := withHeight q.extracted (g.τ χ) v
+    let δwidth := εwidth*Mrow+ξ/2
+    let padding := omega+εpad*Mrow
+    ∀p : Profiles ap bp,s.W₁=p.profile 0 → s.W₂=p.profile 1 →
+    ∀(seed : Ideal O)(hE₂ : Supported q.E₂),seed∣q.E₂ →
+    ∀(Ds : Finset (Ideal O))(T : ℝ),1 ≤ T →
+      (∀D∈Ds,Squarefree D ∧ T ≤ (D.absNorm:ℝ) ∧ (D.absNorm:ℝ) < 2*T) →
+    ∀(zs : Finset O)(weight : O→ℝ),(∀z∈zs,0 ≤ weight z) →
+      (∀z∈zs,st.radial.keep z) →
+      (∀z∈zs,weight z ≤ (st.radial.profile (‖eisEmbedding z‖^2/st.radial.scale)).re) →
+    localErrorCost q.p (q.k-1)*Z^(-errorRemoval q.p Z q.k+errorMoving q.p Z q.k)*
+      (∑D∈Ds,∑z∈zs,weight z*‖normalizedColumn src q.E₂ hE₂ q.R₂ seed D z‖^2) ≤ 
+      Cg*src.toData.profileFactor*(∏j,src.M j)^2*
+        QuadraticInitialBound.diagonalControl st.radial.profile*(p.control Sp)^2*
+        (1+|v|+height)^degree*(q.E₂.absNorm:ℝ)^(εshell-1)*(2*T)^(3*εshell)*
+        Z^(g.nominal+δwidth-Mrow*MainError.branchReserve q.k+εold+loss*(Fintype.card α:ℝ)+
+          padding/6+plane.incumbent*mesh+pad) := by
+  obtain ⟨degree,Sp,hprofiles⟩ := MainError.actual_paid_error_uniform (α:=α) plane M H hH W A B ap bp Bmask L lo hi
+    Mcap εold loss margin hA hWs hW hB hap hap' hbp hBmask hL hMcap hεold hloss hmargin hbeta hκbeta
+    ηseed bs J εwidth εpad Mmin hbs hJ hew hep hmin
+  choose Kss hKss hcolumns using fun S : Finset α=>
+    uniform_error_common_column_energy (ι:=S) bs εshell heshell
+  let Kall := 1+∑S : Finset α,Kss S
+  have hKall : 0 < Kall := by
+    have hn : 0 ≤ ∑S : Finset α,Kss S := Finset.sum_nonneg (fun S _=>(hKss S).le)
+    dsimp [Kall]; linarith
+  have hKle (S : Finset α) : Kss S ≤ Kall := by
+    have hh := Finset.single_le_sum (fun S (_ : S∈Finset.univ)=>(hKss S).le) (Finset.mem_univ S)
+    dsimp [Kall]; linarith
+  refine ⟨degree,Sp,?_⟩
+  intro η₀ Q hQM hQ0 hQt hQ72
+  obtain ⟨C,hC,hbound⟩ := hprofiles η₀ Q hQM hQ0 hQt hQ72
+  refine ⟨Kall*C,by positivity,?_⟩
+  filter_upwards [hbound,Real.tendsto_log_atTop.eventually
+    (eventually_ge_atTop (((Fintype.card α:ℝ)*window+2*Real.log bp)/pad))] with Z hZ hallow
+  refine ⟨hZ.1,?_⟩
+  intro hZone s θ w σ freq v height mesh hm hsη hsupper hsb₁ hsb₂ hw hwL hmesh hwm
+    hσlo hσhi hheight hfreq hOrig hwin Mrow omega ξ hMmin hω hξ hMcap' hz haff q
+    cell amp hk hprime g χ hP hPN st src δwidth padding p hp₁ hp₂ seed hE₂ hseed
+    Ds T hT hDs zs weight hnonneg hkeep hweight
+  let exponent := g.nominal+δwidth-Mrow*MainError.branchReserve q.k+εold+loss*(Fintype.card α:ℝ)+
+    padding/6+plane.incumbent*mesh
+  let E := C*QuadraticInitialBound.diagonalControl st.radial.profile*(p.control Sp)^2*
+    (1+|v|+height)^degree*Z^(exponent+errorRemoval q.p Z q.k)
+  have hdiag := QuadraticInitialBound.diagonalControl_nonneg st.radial.profile
+  have hE : 0 ≤ E := by dsimp [E]; positivity
+  have henergy (B₂ : actualAllocations src.pools q.E₂)(hn : commonScalar src q.E₂ q.R₂ B₂≠0)
+      (D : Ideal O)(hD : D∈Ds)
+      (alloc : Allocation D (Finset.univ : Finset (liveIndices B₂.val⊕Fin 2)))
+      (_halloc : alloc∈(commonData src q.E₂ q.R₂ B₂).toSource.active D)(second : Bool) :
+      finalPositiveEnergy (commonData src q.E₂ q.R₂ B₂) second D alloc
+        st.radial.keep st.radial.profile st.radial.scale ≤ E := by
+    let q' : Chain s := { q with B₂:=B₂ }
+    have hB₂ : frozenCoefficient B₂.val q.E₂ q.R₂ q.extracted.ν q.extracted.W q.extracted.P≠0 :=
+      right_ne_zero_of_mul hn
+    let g' : Geometry s q' Z Mrow amp omega ξ bs J (Fintype.card α) :=
+      { g with second_nonzero:=hB₂ }
+    have he := (hZ.2 hZone s θ w σ freq v height mesh hm hsη hsupper hsb₁ hsb₂
+      hw hwL hmesh hwm hσlo hσhi hheight hfreq hOrig Mrow omega ξ hMmin hω hξ hMcap'
+      hz haff q' hk hprime g' χ hP hPN second D alloc p hp₁ hp₂).1
+    change finalPositiveEnergy (commonData src q.E₂ q.R₂ B₂) second D alloc
+      st.radial.keep st.radial.profile st.radial.scale ≤ 
+      C*QuadraticInitialBound.diagonalControl st.radial.profile*(p.control Sp)^2*
+        (1+|v|+height)^degree*Z^(g.nominal+δwidth+errorRemoval q.p Z q.k-
+          Mrow*MainError.branchReserve q.k+εold+loss*(Fintype.card α:ℝ)+padding/6+plane.incumbent*mesh) at he
+    apply he.trans_eq
+    dsimp only [E,exponent]
+    congr 1
+    ring_nf
+  have hallowance (B₂ : actualAllocations src.pools q.E₂)
+      (_hn : commonScalar src q.E₂ q.R₂ B₂≠0) :
+      (commonData src q.E₂ q.R₂ B₂).toSource.allowance Z ≤ pad := by
+    have hh := fixed_source_allowance (Fintype.card α) window bp hwindow hbp
+      (commonData src q.E₂ q.R₂ B₂)
+      ((live_card_le B₂.val).trans ((live_card_le q.Bp.val).trans (live_card_le q.B₁.val)))
+      (fun j=> hwin j.val.val.val) hsb₁.le hsb₂.le Z hZone
+    have hfixed : ((Fintype.card α:ℝ)*window+2*Real.log bp)/Real.log Z ≤ pad :=
+      (div_le_iff₀ (Real.log_pos hZone)).mpr
+        (by nlinarith [(div_le_iff₀ hpad).mp hallow])
+    have hpaid := hh.trans hfixed
+    have hp : 0 ≤ Cycle63.Physical.plainClipAllowance Z
+        ![(commonData src q.E₂ q.R₂ B₂).b₁,(commonData src q.E₂ q.R₂ B₂).b₂] := by
+      unfold Cycle63.Physical.plainClipAllowance
+      exact Finset.sum_nonneg (fun j _=> Real.logb_nonneg hZone (le_max_left _ _))
+    linarith
+  have hcolumn := hcolumns (liveIndices q.B₁.val) (liveIndices q.Bp.val) src hsupper
+    q.E₂ q.R₂ seed hE₂ hseed Ds zs weight T Z pad E hT hZone hE hDs
+    st.radial.keep st.radial.profile st.radial.scale st.radial.scale_pos
+    (fun z _=> st.radial.nonneg z) hnonneg hkeep hweight hallowance henergy
+  have hlarge : (∑D∈Ds,∑z∈zs,weight z*‖normalizedColumn src q.E₂ hE₂ q.R₂ seed D z‖^2) ≤ 
+      (Kall*C*src.toData.profileFactor*(∏j,src.M j)^2*
+        QuadraticInitialBound.diagonalControl st.radial.profile*(p.control Sp)^2*
+        (1+|v|+height)^degree*(q.E₂.absNorm:ℝ)^(εshell-1)*(2*T)^(3*εshell))*
+          Z^((exponent+pad)+errorRemoval q.p Z q.k) := by
+    apply hcolumn.trans
+    calc
+      _  ≤  Kall*src.toData.profileFactor*(∏j,src.M j)^2*E*
+          (q.E₂.absNorm:ℝ)^(εshell-1)*(2*T)^(3*εshell)*Z^pad := by
+        have hp := src.toData.profile_nonneg
+        gcongr
+        exact hKle _
+      _ = _ := by
+        have hpow : Z^(exponent+errorRemoval q.p Z q.k)*Z^pad=
+            Z^((exponent+pad)+errorRemoval q.p Z q.k) := by
+          rw [←Real.rpow_add (zero_lt_one.trans hZone)]
+          congr 1
+          ring_nf
+        dsimp only [E]
+        linear_combination Kall*src.toData.profileFactor*(∏j,src.M j)^2*C*
+          QuadraticInitialBound.diagonalControl st.radial.profile*(p.control Sp)^2*
+          (1+|v|+height)^degree*(q.E₂.absNorm:ℝ)^(εshell-1)*(2*T)^(3*εshell)*hpow
+  exact normalize_error_energy q.p q.hp Z hZone q.k hk _ _ _
+    (by have hp:=src.toData.profile_nonneg; positivity) hlarge
+
+end
+end OAI.SevenEighths.MainErrorReconstruction
+end
+
+/- Original module: Candidate.Uneven.MainErrorColumnFamily. -/
+section
+/- Adapted from PR63 by Sil with OpenAI Codex assistance. Apache-2.0. -/
+/- Copyright (c) 2026 Hailey Collet. Released under Apache 2.0 license. -/
 
 set_option autoImplicit false
 set_option maxHeartbeats 1600000
@@ -76,32 +356,7 @@ theorem actual_error_complete_row_admission (s : Input α) (q : Chain s)
     exact actual_partRows_majorized Z Bmask hZ (g.τ χ) Q (q.R₂*q.E₂) hP hPN
       q.υ χ fixedBadMask g.radius g.C g.D g.U z hz
 
-/-- Removing the paid-row normalization keeps its exact compensating
-prime power inside the source-normalized family. -/
-theorem error_column_paid_weight_cancel (p : O) (k : ℕ) (Z V c energy : ℝ)
-    (hZ : 0 < Z) :
-    (c*localErrorCost p (k-1)/V)*energy=
-      (c/V*Z^(errorRemoval p Z k-errorMoving p Z k))*
-        (localErrorCost p (k-1)*Z^(-errorRemoval p Z k+errorMoving p Z k)*energy) := by
-  have hp : Z^(errorRemoval p Z k-errorMoving p Z k)*
-      Z^(-errorRemoval p Z k+errorMoving p Z k)=1 := by
-    rw [←Real.rpow_add hZ]
-    simp only [show errorRemoval p Z k-errorMoving p Z k+
-      (-errorRemoval p Z k+errorMoving p Z k)=0 by ring,Real.rpow_zero]
-  linear_combination -(c/V*localErrorCost p (k-1)*energy)*hp
 
-/-- Exact prime averaging retains the three separate reserves. Its
-cardinality cancels against the original amplifier denominator. -/
-theorem actual_error_reserve_average (P : Finset (Ideal O)) (hne : P.Nonempty)
-    (hp : ∀Q∈P,Prime Q) (hbad : ∀Q∈P,Q∉fixedBadPrimes) (Z M : ℝ) :
-    (56/(P.card:ℝ))*(∑_p : elementPool P,∑i : Fin 3,
-      16*(errorIndex i+2:ℝ)*Z^(-M*MainError.branchReserve (errorIndex i+1)))=
-      56*∑i : Fin 3,16*(errorIndex i+2:ℝ)*Z^(-M*MainError.branchReserve (errorIndex i+1)) := by
-  have hn : (0:ℝ) < P.card := by exact_mod_cast hne.card_pos
-  have hc : Fintype.card (elementPool P)=P.card := by
-    rw [Fintype.card_coe,elementPool_card P hp hbad]
-  simp only [Finset.sum_const,Finset.card_univ,nsmul_eq_mul,hc]
-  field_simp
 
 /-- Exact restoration of the original extracted weight. -/
 theorem error_column_paid_restore (p : O) (k : ℕ) (Z coefficient energy C envelope : ℝ)
@@ -122,140 +377,7 @@ theorem error_column_paid_restore (p : O) (k : ℕ) (Z coefficient energy C enve
       mul_le_mul_of_nonneg_left hpaid (mul_nonneg hc (Real.rpow_nonneg hZ.le _))
     _ = _ := by ring
 
-/-- A complete finite column family, with its literal source volume and
-amplifier denominator still present. The energies come from the genuine
-paid error theorem rather than an additional family estimate. -/
-theorem actual_paid_error_column_family_uniform {Label : Type*} [Fintype Label]
-    (M : Ideal O) [NeZero M] (H : Subgroup (O⧸M)ˣ) (hH : RayOrthogonality.globalUnits M ≤ H)
-    (W : ℝ→ℂ) (A B ap bp Bmask L lo hi Mcap εold loss margin : ℝ)
-    (hA : 0 < A) (hWs : Function.support W⊆Icc A B) (hW : ContDiff ℝ ∞ W)
-    (hB : 0 ≤ B) (hap : 0 < ap) (hap' : ap ≤ 1/4) (hbp : 1 ≤ bp)
-    (hBmask : 0 ≤ Bmask) (hL : 0 ≤ L) (hMcap : 0 < Mcap) (hεold : 0 < εold)
-    (hloss : 0 < loss) (hmargin : 0 < margin) (hbeta : 51/100 ≤ HeckeZeroSupremum.beta)
-    (hκbeta : 2*HeckeZeroSupremum.beta-1 ≤ plane.incumbent)
-    (ηseed : Character) (bs J εwidth εpad Mmin : ℝ)
-    (window pad εshell : ℝ) (hwindow : 0 ≤ window) (hpad : 0 < pad) (heshell : 0 < εshell)
-    (hbs : 1 ≤ bs) (hJ : 0 < J) (hew : 0 < εwidth) (hep : 0 < εpad) (hmin : 0 < Mmin) :
-    ∃degree : ℕ, ∃Sp : Finset (ℕ×ℕ), ∀η₀ : Character, ∀Q : Ideal O,
-    ∀_hQM : Q ≤ M, internalQ Q η₀≠0 → internalQ Q η₀≠⊤ → internalQ Q η₀ ≤ Ideal.span {(72:O)} →
-    ∃Cg : ℝ, 0 < Cg ∧ ∀ᶠZ : ℝ in atTop,1 < Z ∧
-    ∀(hZ : 1 < Z)(s : Input α)(θ : α→RayQuotient.Characters M H)(w σ freq : α→ℝ)
-      (v height mesh : ℝ),
-      Matches M H hH s η₀ θ w σ freq W B Z → s.η=ηseed → s.upper ≤ bs → s.b₁=bp → s.b₂=bp →
-      (∀j,0 ≤ w j) → (∀j,w j ≤ Cycle25.Energy.commonMesh Mcap Bmask L εold) →
-      0 ≤ mesh → (∀j,w j ≤ mesh) → (∀j,lo ≤ σ j) → (∀j,σ j ≤ hi) →
-      0 ≤ height → (∀j,|freq j| ≤ height) →
-      (∀second j,Cycle63.Physical.sourcePlainScales s.toData.toSource second j ≤ Z^L) →
-      (∀j,logWindow (s.lo j) (s.hi j) ≤ window) →
-    ∀(Mrow omega ξ : ℝ),Mmin ≤ Mrow → 0 ≤ omega → 0 ≤ ξ → Mrow+εwidth*Mrow+ξ/2 ≤ Mcap →
-      ((17/500)*Mrow ≤ ∑j,Real.logb Z (s.P j) ∧ (∑j,Real.logb Z (s.P j)) ≤ (1/25)*Mrow) →
-      length Z s.X₁+length Z s.X₂+plane.lambda*(∑j,Real.logb Z (s.P j)) ≤ plane.B*Mrow →
-    let cell := Sil.Uneven.MainSource.widthCellUpper ((∑j,Real.logb Z (s.P j))/Mrow)
-    let amp := Mrow*Sil.Uneven.MainSource.amp plane cell
-    ∀q : Label→Chain s,
-    (∀j,(q j).k=1 ∨ (q j).k=6 ∨ (q j).k=7) →
-    (∀j,3*amp/4 ≤ Real.logb Z (normValue (q j).p)) →
-    ∀g : (j : Label)→Geometry s (q j) Z Mrow amp omega ξ bs J (Fintype.card α),
-    ∀(χ : Label→RayFourExpansion.RayCharacter)(hP : ∀j,(q j).R₂*(q j).E₂≠0)
-      (hPN : ∀j,(((q j).R₂*(q j).E₂).absNorm:ℝ) ≤ Z^Bmask),
-    let st := fun j=>retainedState Z Bmask hZ ((g j).τ (χ j)) (internalQ Q η₀)
-      ((q j).R₂*(q j).E₂) (hP j) (hPN j) (g j).radius (g j).C (g j).D (g j).U
-    let src := fun j=>withHeight (q j).extracted ((g j).τ (χ j)) v
-    ∀p : Profiles ap bp,s.W₁=p.profile 0 → s.W₂=p.profile 1 →
-    ∀(seed : Label→Ideal O)(hE₂ : ∀j,Supported (q j).E₂),(∀j,seed j∣(q j).E₂) →
-    ∀(Ds : Label→Finset (Ideal O))(T : Label→ℝ),(∀j,1 ≤ T j) →
-      (∀j,∀D∈Ds j,Squarefree D ∧ T j ≤ (D.absNorm:ℝ) ∧ (D.absNorm:ℝ) < 2*T j) →
-    ∀(P : Finset (Ideal O))(weight : Label→ℝ),(∀j,0 ≤ weight j) →
-    let coefficient := fun j=>(56/(P.card:ℝ))*weight j*16*((q j).k+1:ℝ)/volume (src j)
-    let rows := fun j=>partRows false (q j).υ (χ j) (internalQ Q η₀)
-      fixedBadMask (g j).C (g j).D (g j).U (g j).radius
-    (∑j,coefficient j*localErrorCost (q j).p ((q j).k-1)*
-      (∑D∈Ds j,∑z∈rows j,‖normalizedColumn (src j) (q j).E₂ (hE₂ j) (q j).R₂ (seed j) D z‖^2)) ≤ 
-      Cg*∑j,coefficient j*Z^(errorRemoval (q j).p Z (q j).k-errorMoving (q j).p Z (q j).k)*
-        ((src j).toData.profileFactor*(∏a,(src j).M a)^2*
-          QuadraticInitialBound.diagonalControl (st j).radial.profile*(p.control Sp)^2*
-          (1+|v|+height)^degree*((q j).E₂.absNorm:ℝ)^(εshell-1)*(2*T j)^(3*εshell)*
-          Z^((g j).nominal+εwidth*Mrow+ξ/2-Mrow*MainError.branchReserve (q j).k+
-            εold+loss*(Fintype.card α:ℝ)+(omega+εpad*Mrow)/6+plane.incumbent*mesh+pad)) := by
-  obtain ⟨degree,Sp,hbound⟩ := actual_paid_error_column_uniform (plane:=plane) (α:=α) M H hH W A B ap bp
-    Bmask L lo hi Mcap εold loss margin hA hWs hW hB hap hap' hbp hBmask hL hMcap
-    hεold hloss hmargin hbeta hκbeta ηseed bs J εwidth εpad Mmin window pad εshell
-    hwindow hpad heshell hbs hJ hew hep hmin
-  refine ⟨degree,Sp,?_⟩
-  intro η₀ Q hQM hQ0 hQt hQ72
-  obtain ⟨Cg,hCg,hZs⟩ := hbound η₀ Q hQM hQ0 hQt hQ72
-  refine ⟨Cg,hCg,?_⟩
-  filter_upwards [hZs] with Z hz
-  refine ⟨hz.1,?_⟩
-  intro hZ s θ w σ freq v height mesh hm hsη hsupper hsb₁ hsb₂ hw hwL hmesh hwm
-    hσlo hσhi hheight hfreq hOrig hwin Mrow omega ξ hMmin hω hξ hMcap' hslot haff
-    cell amp q hk hprime g χ hP hPN st src p hp₁ hp₂ seed hE₂ hseed Ds T hT hDs P weight
-    hwgt coefficient rows
-  rw [Finset.mul_sum]
-  apply Finset.sum_le_sum
-  intro j hj
-  have hrow (z : O) (hz : z∈rows j) := actual_error_complete_row_admission s (q j)
-    Z Mrow amp omega ξ bs J (g j) Bmask hZ (χ j) (internalQ Q η₀) (hP j) (hPN j) z hz
-  have hcol := hz.2 hZ s θ w σ freq v height mesh hm hsη hsupper hsb₁ hsb₂ hw hwL
-    hmesh hwm hσlo hσhi hheight hfreq hOrig hwin Mrow omega ξ hMmin hω hξ hMcap'
-    hslot haff (q j) (hk j) (hprime j) (g j) (χ j) (hP j) (hPN j) p hp₁ hp₂
-    (seed j) (hE₂ j) (hseed j) (Ds j) (T j) (hT j) (hDs j) (rows j) (fun _=>1)
-    (fun _ _=>zero_le_one) (fun z hz=>(hrow z hz).1) (fun z hz=>(hrow z hz).2)
-  simp only [one_mul] at hcol
-  have hc : 0 ≤ coefficient j := by
-    dsimp only [coefficient]
-    have hv := volume_pos (src j)
-    have hn : 0 ≤ (P.card:ℝ) := Nat.cast_nonneg _
-    have hwj := hwgt j
-    positivity
-  apply error_column_paid_restore (q j).p (q j).k Z (coefficient j) _ Cg _
-    (zero_lt_one.trans hZ) hc
-  convert hcol using 1
-  dsimp only [src,st]
-  ring_nf
 
-/-- Every actual nonzero extracted block supplies the supported label and
-complete-row gates for the family theorem, in either first orientation. -/
-theorem actual_geometry_error_column_gates (reflected : Bool) (s : Input α) (R seed : Ideal O)
-    (Z Mrow amp ξ reserve b t : ℝ) (hZ : 1 < Z) (bin : ℤ×(Fin 5→ℤ))
-    (q : GeometryLowFirstIndex reflected s R seed (Z^Mrow) Z ξ
-      (Real.rpow_pos_of_pos (zero_lt_one.trans hZ) _) bin)
-    (p : O) (i : Fin 3)
-    (Bp : actualAllocations (activeInput
-      (geometryLowFirstChild reflected s R seed (Z^Mrow) Z ξ
-        (Real.rpow_pos_of_pos (zero_lt_one.trans hZ) _) bin t q)).pools
-          ((Ideal.span {p})^(errorIndex i+1))) (υ : Character) (v : ℝ)
-    (hp : p≠0) (hcop : ∀j I,I∈
-      (geometryLowFirstChild reflected s R seed (Z^Mrow) Z ξ
-        (Real.rpow_pos_of_pos (zero_lt_one.trans hZ) _) bin t q).slots j→IsCoprime (Ideal.span {p}) I)
-    (hw₁ : s.W₁ 0=0) (hw₂ : s.W₂ 0=0)
-    (n : geometryErrorNonzeroBlocks reflected s R seed Z Mrow amp ξ reserve b t (Fintype.card α) hZ bin q p i Bp υ v hw₁ hw₂) (second : Bool)
-    (B₂ : actualAllocations ((geometryErrorChild reflected s R seed Z Mrow ξ t hZ bin q p i Bp υ v)).pools (if second then ((geometryErrorSecondDatum reflected s R seed Z Mrow amp ξ reserve b t (Fintype.card α) hZ bin q p i Bp υ v hw₁ hw₂ n.val)).D else ((geometryErrorSecondDatum reflected s R seed Z Mrow amp ξ reserve b t (Fintype.card α) hZ bin q p i Bp υ v hw₁ hw₂ n.val)).C))
-    (ψ : RayCharacter)
-    (hυ : υ.modulus.absNorm ≤ radicalBound (childCharacter (geometryColumnCharacter reflected s R seed (Z^Mrow) Z ξ (Real.rpow_pos_of_pos (zero_lt_one.trans hZ) _) bin q.1.val) ψ) fixedBadMask p
-      (errorMovingExponent (errorIndex i)))
-    (hf₁ : frozenCoefficient q.2.val (geometryColumnIdeal reflected s R seed (Z^Mrow) Z ξ (Real.rpow_pos_of_pos (zero_lt_one.trans hZ) _) bin q.1.val) R s.ν s.W s.P≠0)
-    (hf₂ : frozenCoefficient B₂.val (if second then ((geometryErrorSecondDatum reflected s R seed Z Mrow amp ξ reserve b t (Fintype.card α) hZ bin q p i Bp υ v hw₁ hw₂ n.val)).D else ((geometryErrorSecondDatum reflected s R seed Z Mrow amp ξ reserve b t (Fintype.card α) hZ bin q p i Bp υ v hw₁ hw₂ n.val)).C) ((geometryErrorSecondDatum reflected s R seed Z Mrow amp ξ reserve b t (Fintype.card α) hZ bin q p i Bp υ v hw₁ hw₂ n.val)).R ((geometryErrorChild reflected s R seed Z Mrow ξ t hZ bin q p i Bp υ v)).ν ((geometryErrorChild reflected s R seed Z Mrow ξ t hZ bin q p i Bp υ v)).W ((geometryErrorChild reflected s R seed Z Mrow ξ t hZ bin q p i Bp υ v)).P≠0) :
-    let chain := geometryErrorActualChain reflected s R seed Z Mrow amp ξ reserve b t (Fintype.card α) hZ bin q p i Bp υ v hp hcop hw₁ hw₂ n second B₂
-    let g := geometryErrorActualGeometry reflected s R seed Z Mrow amp ξ reserve b t (Fintype.card α) hZ bin q p i Bp υ v hp hcop hw₁ hw₂ n second B₂ ψ hυ hf₁ hf₂
-    Supported chain.E₂ ∧ (chain.k=1 ∨ chain.k=6 ∨ chain.k=7) ∧
-    ∀(Bmask : ℝ)(χ : RayFourExpansion.RayCharacter)(Q : Ideal O)
-      (hP : chain.R₂*chain.E₂≠0)(hPN : ((chain.R₂*chain.E₂).absNorm:ℝ) ≤ Z^Bmask)
-      (z : O), z∈partRows false chain.υ χ Q fixedBadMask g.C g.D g.U g.radius →
-    let st := retainedState Z Bmask hZ (g.τ χ) Q (chain.R₂*chain.E₂) hP hPN g.radius g.C g.D g.U
-    st.radial.keep z ∧ 1 ≤ (st.radial.profile (‖eisEmbedding z‖^2/st.radial.scale)).re := by
-  dsimp only
-  let chain := geometryErrorActualChain reflected s R seed Z Mrow amp ξ reserve b t (Fintype.card α) hZ bin q p i Bp υ v hp hcop hw₁ hw₂ n second B₂
-  let g := geometryErrorActualGeometry reflected s R seed Z Mrow amp ξ reserve b t (Fintype.card α) hZ bin q p i Bp υ v hp hcop hw₁ hw₂ n second B₂ ψ hυ hf₁ hf₂
-  refine ⟨?_,?_,?_⟩
-  · rcases g.label with hl|hr
-    · exact hl.symm ▸ g.hC
-    · exact hr.symm ▸ g.hD
-  · change errorIndex i+1=1 ∨ errorIndex i+1=6 ∨ errorIndex i+1=7
-    rcases errorIndex_cases i with hi|hi|hi <;> simp [hi]
-  · intro Bmask χ Q hP hPN z hz
-    exact actual_error_complete_row_admission s chain Z Mrow amp (frequencyLoss Z 32 ξ+reserve)
-      ξ b (fixedFactor:ℝ) g Bmask hZ χ Q hP hPN z hz
 
 /-- The literal extracted retained datum supplies both projector divisibilities. -/
 theorem actual_geometry_error_seed_gates (reflected : Bool) (s : Input α) (R seed : Ideal O)
@@ -274,20 +396,10 @@ theorem actual_geometry_error_seed_gates (reflected : Bool) (s : Input α) (R se
   have hg := actual_retained_block_gates (liveIndices (errorActiveAllocation (geometryLowFirstChild reflected s R seed (Z^Mrow) Z ξ (Real.rpow_pos_of_pos (zero_lt_one.trans hZ) _) bin t q) _ Bp).val)
     (geometryErrorChild reflected s R seed Z Mrow ξ t hZ bin q p i Bp υ v) ((R*(geometryColumnIdeal reflected s R seed (Z^Mrow) Z ξ (Real.rpow_pos_of_pos (zero_lt_one.trans hZ) _) bin q.1.val))*(Ideal.span {p})^(errorIndex i+1)) q.1.val.2.1.val
     (actual_first_live_squarefree (geometryFirstSource s R seed (Z^Mrow) Z ξ (Real.rpow_pos_of_pos (zero_lt_one.trans hZ) Mrow) bin)
-      (fun _=>logAnnulus) q.1.val q.1.property) hw₁ hw₂ (geometryErrorSourceRadius reflected s R seed Z Mrow amp ξ reserve hZ bin q p i) (geometryErrorFourierScale reflected s R seed Z Mrow amp ξ reserve b N hZ bin q p i) Z ξ
+      (fun _=> logAnnulus) q.1.val q.1.property) hw₁ hw₂ (geometryErrorSourceRadius reflected s R seed Z Mrow amp ξ reserve hZ bin q p i) (geometryErrorFourierScale reflected s R seed Z Mrow amp ξ reserve b N hZ bin q p i) Z ξ
     (actual_geometry_error_source_radius_pos reflected s R seed Z Mrow amp ξ reserve hZ bin q p i) n
   exact ⟨hg.1,hg.2.1⟩
 
 end
 end OAI.SevenEighths.MainErrorReconstruction
-#print axioms OAI.SevenEighths.MainErrorReconstruction.actual_error_complete_row_admission
-#print axioms OAI.SevenEighths.MainErrorReconstruction.error_column_paid_weight_cancel
-#print axioms OAI.SevenEighths.MainErrorReconstruction.actual_error_reserve_average
-
-#print axioms OAI.SevenEighths.MainErrorReconstruction.actual_paid_error_column_family_uniform
-
-#print axioms OAI.SevenEighths.MainErrorReconstruction.actual_geometry_error_column_gates
-
-#print axioms OAI.SevenEighths.MainErrorReconstruction.error_column_paid_restore
-
-#print axioms OAI.SevenEighths.MainErrorReconstruction.actual_geometry_error_seed_gates
+end

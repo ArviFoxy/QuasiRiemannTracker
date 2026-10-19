@@ -165,6 +165,3 @@ theorem source_selected_product_crude (D : BaselineData)
 
 end OAI.SevenEighths.UnevenEndpoint.Physical.Source
 
-#print axioms OAI.SevenEighths.UnevenEndpoint.Physical.Source.baseline_scheduled_whole_slots
-#print axioms OAI.SevenEighths.UnevenEndpoint.Physical.Source.source_class_main_selection
-#print axioms OAI.SevenEighths.UnevenEndpoint.Physical.Source.source_selected_product_crude

@@ -35,4 +35,3 @@ theorem original_affine_capacity (P : Plane) (s : Input ι) (Z M : ℝ)
 
 end
 end OAI.SevenEighths.MainCapacity
-#print axioms OAI.SevenEighths.MainCapacity.original_affine_capacity

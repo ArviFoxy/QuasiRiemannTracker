@@ -302,4 +302,3 @@ theorem actual_geometry_main_high_buffered_projectors_mixed_anchor {α : Type} [
 
 end
 end OAI.SevenEighths.AuxiliaryHigh
-#print axioms OAI.SevenEighths.AuxiliaryHigh.actual_geometry_main_high_buffered_projectors_mixed_anchor

@@ -127,6 +127,3 @@ theorem weighted_source_height_le (τ : ℝ) (n : ℕ) (hτ : 0 < τ) :
 
 end OAI.SevenEighths.UnevenEndpoint.Physical.Source
 
-#print axioms OAI.SevenEighths.UnevenEndpoint.Physical.Source.source_prime_bins
-#print axioms OAI.SevenEighths.UnevenEndpoint.Physical.Source.source_scalar_on_rows
-#print axioms OAI.SevenEighths.UnevenEndpoint.Physical.Source.weighted_source_height_le

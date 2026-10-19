@@ -426,15 +426,7 @@ theorem actual_geometry_projector_cap {ι : Type*}[Fintype ι][DecidableEq ι]
 end
 end OAI.SevenEighths.AuxiliaryReconstruction
 
-#print axioms OAI.SevenEighths.AuxiliaryReconstruction.projector_shell_reciprocal
-#print axioms OAI.SevenEighths.AuxiliaryReconstruction.eventual_projector_reciprocal
-#print axioms OAI.SevenEighths.AuxiliaryReconstruction.eventual_first_zero_label_projector_payment
 
-#print axioms OAI.SevenEighths.AuxiliaryReconstruction.actual_zero_exponent_payment
-#print axioms OAI.SevenEighths.AuxiliaryReconstruction.actual_geometry_zero_cost_payment
 
-#print axioms OAI.SevenEighths.AuxiliaryReconstruction.eventual_actual_zero_column_payment
 
-#print axioms OAI.SevenEighths.AuxiliaryReconstruction.eventual_actual_geometry_zero_mass_payment
 
-#print axioms OAI.SevenEighths.AuxiliaryReconstruction.actual_geometry_projector_cap

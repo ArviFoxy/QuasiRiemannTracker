@@ -16,4 +16,3 @@ theorem incumbent_kappa_bound :
   linarith
 
 end OAI.SevenEighths.AuxiliaryLow
-#print axioms OAI.SevenEighths.AuxiliaryLow.incumbent_kappa_bound

@@ -112,177 +112,9 @@ theorem actual_main_high_widened_selector
       e T (select r) (hs r).2.1⟩
 
 omit [NeZero M] in
-/-- Ordinary row membership supplies the actual keep and unit profile.
-Only the scalar logarithmic width ceiling remains for the coarse gate
-adapter; the dictionary and puncture are literal physical quantities. -/
-theorem actual_main_high_ordinary_state
-    {ι α Label : Type*} [Fintype ι] [Fintype α] [DecidableEq α] [Fintype Label]
-    (reflected second : Bool)(η₀ : Character)(u₀ : O)(F₀ : NaturalRow η₀ u₀)(R₀ : Ideal O)
-    (hu₀ : u₀≠0)(s : Input ι)(hη : s.η=excluded F₀.character R₀)
-    (R seed : Ideal O)(K Z ξ amp reserve b Mcap Bmask bΦ : ℝ)(N : ℕ)
-    (hK : 0<K)(hZ : 1<Z)(hb : 0<b)(hbΦ : 2 ≤ bΦ)(bin : ℤ×(Fin 5→ℤ))
-    (j : FirstColumnIndex (geometryFirstSource s R seed K Z ξ hK bin))
-    (d : Label→SecondInputDatum α)(first : Label→FirstSourceLabel)
-    (χ₀ : Label→RayCharacter)(Q : Ideal O)(hQ : Q ≤ Ideal.span {(72:O)})
-    (m : O)(hm : m≠0)(hml : ConcretePrimeRowBridge.goodLambda∣m)(hm2 : (2:O)∣m)
-    (r : secondLiveRows (fun l=>(ordinarySecondDatum (d l) (χ₀ l) Q m).block))
-    (hparent : (d r.val.1).input.η=geometryColumnCharacter reflected s R seed K Z ξ hK bin j)
-    (hradius : (d r.val.1).radius=frequencyRadius
-      (firstMainFourierScale reflected K (volume s) Z ξ (3*amp) reserve b N
-        (geometryFirstLabel s R seed K Z ξ hK bin j)) Z ξ)
-    (hfirst : first r.val.1=geometryFirstLabel s R seed K Z ξ hK bin j)
-    (hR : (d r.val.1).R≠0)(hQM : Q ≤ M)(hQη : Q ≤ η₀.modulus)
-    (hPN : (((d r.val.1).R*(if second then (d r.val.1).D else (d r.val.1).C)).absNorm:ℝ) ≤ Z^Bmask)
-    (hwidth :
-      let src:=geometryFirstSource s R seed K Z ξ hK bin j.1
-      let c:=Real.logb Z ((if reflected then src.D else src.C).absNorm:ℝ)
-      let e:=Real.logb Z ((if reflected then src.C else src.D).absNorm:ℝ)
-      (Real.logb Z K+Real.logb Z (s.η.modulus.absNorm:ℝ)-max (c-e) 0-6*amp-
-        frequencyLoss Z 32 ξ-reserve-
-        Real.logb Z (normValue (commonFrequencyGenerator (d r.val.1).C (d r.val.1).D))+
-        Real.logb Z ((∏p∈(d r.val.1).inactive,p.val).absNorm:ℝ))+
-      (Real.logb Z CenteredMomentFirstPhysicalSource.fixedPresentationCost+2*(N:ℝ)*Real.logb Z b+ξ/2+
-        Real.logb Z (4*(CenteredMomentSecondRadicalBudget.fixedFactor:ℝ))) ≤ Mcap) :
-    let ordinary:=fun l=>ordinarySecondDatum (d l) (χ₀ l) Q m
-    let ψ:=if second then r.val.2.2.1⁻¹ else r.val.2.1
-    let unit:=fun l=>(firstDictionaryUnit (!reflected) η₀ u₀ F₀ R₀ l:O)
-    let hf:=geometry_first_frequency_ne_zero reflected η₀ u₀ F₀ R₀ hu₀ s R seed K Z ξ hK bin
-      j ordinary first r hfirst
-    let rawKey:=secondEncodedNonzeroRow (fun l=>(ordinary l).block) first r (!reflected) u₀ unit hf
-    let key:=if second then reflectedNonzeroJointLabel rawKey else rawKey
-    let z:=mainLowSignedRow second r.val.2.2.2.val
-    let puncture:=(d r.val.1).R*(if second then (d r.val.1).D else (d r.val.1).C)
-    let hP:puncture≠0:=mul_ne_zero hR (by
-      split <;> first | exact (d r.val.1).hD.1 | exact (d r.val.1).hC.1)
-    let base:=retainedState Z Bmask hZ ((d r.val.1).τ ψ) Q puncture hP hPN
-      (d r.val.1).radius (d r.val.1).C (d r.val.1).D (d r.val.1).inactive
-    let st:=widenHighState base bΦ hbΦ
-    let holes:=(d r.val.1).input.η.modulus*puncture
-    st.fixedModulus ≤ M ∧ st.fixedModulus ≤ η₀.modulus ∧
-      st.character=(ordinary r.val.1).τ ψ ∧ st.puncture=puncture ∧
-      st.width ≤ Mcap ∧ holes≠0 ∧ ∃keep:st.radial.keep z,
-        1 ≤ (st.radial.profile (‖eisEmbedding z‖^2/st.radial.scale)).re ∧
-        st.radial.profile (‖eisEmbedding z‖^2/st.radial.scale)≠0 ∧ ∀I : Ideal O,
-        idealCoeff (excluded (naturalRow st.character z (st.row_ne_zero z keep)).character st.puncture) I=
-        idealCoeff (excluded (naturalRow (secondFixedDictionary η₀
-          (geometryDictionaryRay reflected s R seed K Z ξ hK bin j,ψ))
-          (nonzeroJointSourceRow key).val (nonzeroJointSourceRow key).property).character holes) I := by
-  intro ordinary ψ unit hf rawKey key z puncture hP base st holes
-  have ha:=actual_main_ordinary_row_admission (d r.val.1) (χ₀ r.val.1) r.val.2.1 r.val.2.2.1
-    Q hQ m hm hml hm2 Z Bmask hZ second hP hPN r.val.2.2.2.val r.val.2.2.2.property
-  have hkeep:st.radial.keep z := by
-    cases second <;> exact ha.1
-  have hweightN:1 ≤ (st.radial.profile (normValue z/st.radial.scale)).re := by
-    cases second <;> exact ha.2
-  have hweight:1 ≤ (st.radial.profile (‖eisEmbedding z‖^2/st.radial.scale)).re := by
-    simpa only [normValue_eq_embedding] using hweightN
-  have hn:st.radial.profile (‖eisEmbedding z‖^2/st.radial.scale)≠0:=by
-    intro hz
-    rw [hz] at hweight
-    norm_num at hweight
-  have hd:=actual_geometry_natural_dictionary reflected second η₀ u₀ F₀ R₀ hu₀ s hη
-    R seed K Z ξ hK bin j ordinary first r hparent hfirst hR ψ
-  have hw:=actual_geometry_second_width reflected s R seed K Z ξ amp reserve b N
-    hK hZ hb bin j ordinary r hparent hradius Bmask ψ Q puncture hP hPN
-  refine ⟨hQM,hQη,rfl,rfl,hw.trans hwidth,hd.1,hkeep,hweight,hn,?_⟩
-  exact hd.2
 
-/-- The fixed original dictionary absorbs the actual retained-width logs
-before moving source data. Ordinary restriction changes only the row set. -/
-theorem eventually_actual_main_high_ordinary_width (η : Character)(N : ℕ)(b : ℝ)(hb : 0<b) :
-    ∀ᶠZ : ℝ in atTop,∀hZ : 1<Z,
-      ∀{ι α Label : Type*}[Fintype ι][Fintype α][DecidableEq α][Fintype Label]
-      (reflected second : Bool)(s : Input ι)(_hη : s.η=η)(R seed : Ideal O)
-      (ξ amp reserve Bmask bΦ : ℝ)(hbΦ : 2 ≤ bΦ)(hK : 0<Z),
-      0 ≤ amp → 0 ≤ reserve → 0 ≤ ξ → ξ ≤ 1 →
-      ∀(bin : ℤ×(Fin 5→ℤ))
-        (j : FirstColumnIndex (geometryFirstSource s R seed Z Z ξ hK bin))
-        (d : Label→SecondInputDatum α)(χ₀ : Label→RayCharacter)(Q : Ideal O)(m : O)
-        (r : secondLiveRows (fun l=>(ordinarySecondDatum (d l) (χ₀ l) Q m).block)),
-      (d r.val.1).input.η=geometryColumnCharacter reflected s R seed Z Z ξ hK bin j →
-      (d r.val.1).radius=frequencyRadius
-        (firstMainFourierScale reflected Z (volume s) Z ξ (3*amp) reserve b N
-          (geometryFirstLabel s R seed Z Z ξ hK bin j)) Z ξ →
-      ∀(hP : (d r.val.1).R*(if second then (d r.val.1).D else (d r.val.1).C)≠0)
-        (hPN : (((d r.val.1).R*(if second then (d r.val.1).D else (d r.val.1).C)).absNorm:ℝ) ≤ Z^Bmask),
-      let ψ:=if second then r.val.2.2.1⁻¹ else r.val.2.1
-      let base:=retainedState Z Bmask hZ ((d r.val.1).τ ψ) Q
-        ((d r.val.1).R*(if second then (d r.val.1).D else (d r.val.1).C)) hP hPN
-        (d r.val.1).radius (d r.val.1).C (d r.val.1).D (d r.val.1).inactive
-      (widenHighState base bΦ hbΦ).width ≤ 2 := by
-  filter_upwards [eventual_high_width_one_gate η N b] with Z hw
-  intro hZ ι α Label _ _ _ _ reflected second s hη R seed ξ amp reserve Bmask bΦ hbΦ hK
-    hamp hreserve hξ hξ1 bin j d χ₀ Q m r hparent hradius hP hPN ψ base
-  let ordinary:=fun l=>ordinarySecondDatum (d l) (χ₀ l) Q m
-  have hwidth:=actual_geometry_second_width reflected s R seed Z Z ξ amp reserve b N
-    hK hZ hb bin j ordinary r hparent hradius Bmask ψ Q
-    ((d r.val.1).R*(if second then (d r.val.1).D else (d r.val.1).C)) hP hPN
-  apply hwidth.trans
-  dsimp only
-  rw [hη]
-  exact hw.2 (d r.val.1).C (d r.val.1).D (d r.val.1).hC (d r.val.1).inactive
-    _ _ amp reserve ξ hamp hreserve hξ hξ1
 
-/-- A single original projector union remains outside the buffered bin.
-Dropping membership costs only nonnegative literal physical terms. -/
-theorem actual_main_high_global_shell_bin_le
-    {α Label : Type*}[Fintype α][DecidableEq α][Fintype Label]
-    (N : ℕ)(lo ap Z amp : ℝ)(hlo : 0<lo)(hap : 0<ap)(hZ : 0 ≤ Z)
-    (second : Bool)(d : Label→SecondInputDatum α)(coefficient : Label→ℝ)
-    (hcoefficient : ∀l,0 ≤ coefficient l)(t u e : ℝ)
-    (select : (secondLiveRows (fun l=>(d l).block))→BufferIndex e)
-    (Ds : (secondLiveRows (fun l=>(d l).block))→Finset (Ideal O))(n : ℤ)(p : BufferIndex e) :
-    let rows:=secondLiveRows (fun l=>(d l).block)
-    let cost:=fun (r : rows) L=>mainNormalizedPhysicalCost N lo ap second d coefficient t u r.val L
-    Z^(-amp)*mainBufferedShellBin rows e select Ds cost n p ≤ 
-      Z^(-amp)*(∑r∈rows.attach.filter (fun r=>select r=p),
-        ∑L∈shell (sharedProjectors Ds) n,cost r L) := by
-  intro rows cost
-  apply mul_le_mul_of_nonneg_left _ (Real.rpow_nonneg hZ _)
-  dsimp only [mainBufferedShellBin]
-  rw [Finset.sum_filter]
-  simp only [Finset.attach_eq_univ]
-  apply Finset.sum_le_sum
-  intro r _
-  by_cases hr : select r=p
-  · simp only [hr,ite_true]
-    apply Finset.sum_le_sum
-    intro L _
-    by_cases hL : L∈Ds r
-    · simp only [hL,ite_true,le_refl]
-    · simp only [hL,ite_false]
-      dsimp only [cost,mainNormalizedPhysicalCost]
-      apply mul_nonneg
-      · exact mul_nonneg (mul_nonneg (hcoefficient _)
-          (div_nonneg (d r.val.1).K_pos.le (lowerFactor_pos N lo ap hlo hap).le))
-          (normalizer_pos _ _ (d r.val.1).hC _).le
-      · split <;> exact sq_nonneg _
-  · simp only [hr,ite_false,le_refl]
 
-/-- One original outer-height condition controls every literal signed
-Mellin shift. The threshold precedes all source labels, bin indices and
-moving profile frequencies. -/
-theorem eventually_actual_main_high_shifted_family (outer inner : ℝ)(hgap : inner<outer) :
-    ∀ᶠZ : ℝ in atTop,1 ≤ Z ∧
-      ∀{α Label : Type*}[Fintype α][DecidableEq α][Fintype Label]
-      (d : Label→SecondInputDatum α)(second : Bool)(t height t₀ u : ℝ)(v : α→ℝ)(i : ℕ),
-      (∀l,(d l).input.t=t) → 0 ≤ height →
-      |t|+height+2*Real.pi*|t₀| ≤ Z^outer/2 →
-      1+‖u‖ ≤ Z^inner → (∀j,|v j| ≤ height) →
-      ∀l,(∀j,|(d l).input.t+2*Real.pi*(u-(if second then -t₀ else t₀))+v j|+
-        Z^outer/2 ≤ (3*i+2:ℕ)*Z^outer) ∧
-        |(d l).input.t+2*Real.pi*(u-(if second then -t₀ else t₀))|+
-          Z^outer/2 ≤ (3*i+2:ℕ)*Z^outer := by
-  filter_upwards [eventually_geometry_inner_shift_admission outer inner hgap] with Z hz
-  refine ⟨hz.1,?_⟩
-  intro α Label _ _ _ d second t height t₀ u v i ht hh hbase hu hv l
-  have hbase' : |t|+height+2*Real.pi*|if second then -t₀ else t₀| ≤ Z^outer/2 := by
-    cases second <;> simpa only [Bool.false_eq_true,ite_false,ite_true,abs_neg] using hbase
-  have ha (j : α):=hz.2 t height (if second then -t₀ else t₀) u i (v j) hh hbase' hu (hv j)
-  have hp:=hz.2 t height (if second then -t₀ else t₀) u i 0 hh hbase' hu
-    (by simpa only [abs_zero] using hh)
-  rw [ht l]
-  exact ⟨fun j=>(ha j).1,hp.2⟩
 
 theorem main_high_common_target (plane : Sil.Uneven.MainSource.Plane) (β omega εfreq εvolume : ℝ)
     (hβ : (1+plane.q)/2 ≤ β)(hβ' : β ≤ 7/8)(hω : 0 ≤ omega)(hε : 0 ≤ εfreq) :
@@ -724,18 +556,9 @@ theorem actual_geometry_main_high_buffered_shell {α : Type} [Fintype α] [Decid
 
 end
 end OAI.SevenEighths.MainHigh
-#print axioms OAI.SevenEighths.MainHigh.main_high_widen_zero_bin
-#print axioms OAI.SevenEighths.MainHigh.actual_main_high_widened_selector
 
-#print axioms OAI.SevenEighths.MainHigh.actual_main_high_ordinary_state
 
-#print axioms OAI.SevenEighths.MainHigh.eventually_actual_main_high_ordinary_width
-#print axioms OAI.SevenEighths.MainHigh.actual_main_high_global_shell_bin_le
 
-#print axioms OAI.SevenEighths.MainHigh.eventually_actual_main_high_shifted_family
 
-#print axioms OAI.SevenEighths.MainHigh.main_high_common_target
 
-#print axioms OAI.SevenEighths.MainHigh.actual_geometry_main_high_uniform_shell
 
-#print axioms OAI.SevenEighths.MainHigh.actual_geometry_main_high_buffered_shell

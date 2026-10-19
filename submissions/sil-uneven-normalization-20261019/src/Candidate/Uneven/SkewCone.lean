@@ -24,10 +24,6 @@ theorem clip_odd {s r : ℝ} (hs : 0 ≤ s) :
   simp only [max_def, min_def]
   split_ifs <;> linarith
 
-theorem budget (m outside left right s r : ℝ)
-    (h : outside+(left+right)/2=m-s) :
-    outside+((left+s+clip s r)+(right+s-clip s r))/2=m := by
-  linarith
 
 theorem clip_lipschitz {s s' r r' u v : ℝ}
     (hs : |s'-s| ≤ u) (hr : |r'-r| ≤ v) :
@@ -99,10 +95,6 @@ theorem skew_lipschitz {c d r p c' d' r' p' w : ℝ}
   linarith
 
 end SkewNormalization
-#print axioms SkewNormalization.allocations_nonnegative
-#print axioms SkewNormalization.budget
-#print axioms SkewNormalization.skew_reflect
-#print axioms SkewNormalization.skew_lipschitz
 
 namespace SkewCone
 open SkewNormalization
@@ -1211,5 +1203,3 @@ theorem weighted_full_range {ι : Type*} (s : Finset ι) (i j : ι → ℕ)
   have hh := weighted_cone s i j w hw hi hj
   exact full_range _ rho hh.1 hh.2 hs hr0 hr1
 end SkewCone
-#print axioms SkewCone.full_range
-#print axioms SkewCone.weighted_full_range

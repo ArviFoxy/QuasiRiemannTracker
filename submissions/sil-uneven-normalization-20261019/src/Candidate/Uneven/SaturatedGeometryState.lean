@@ -134,4 +134,3 @@ theorem actual_geometry_state_raw_max_fixedmesh {Slot : Type} [Fintype Slot] [De
 
 end
 end OAI.SevenEighths.SaturatedPlain
-#print axioms OAI.SevenEighths.SaturatedPlain.actual_geometry_state_raw_max_fixedmesh

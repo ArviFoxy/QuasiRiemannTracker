@@ -414,4 +414,3 @@ theorem actual_selected_low_paid_columns  {α : Type} [Fintype α] [DecidableEq 
 
 end
 end OAI.SevenEighths.AuxiliaryPhysical
-#print axioms OAI.SevenEighths.AuxiliaryPhysical.actual_selected_low_paid_columns

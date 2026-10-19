@@ -51,16 +51,6 @@ theorem actual_error_zero_prime_average (P : Finset (Ideal O)) (Z ε : ℝ)
       mul_le_mul_of_nonneg_left hw (by positivity)
     _=168 := by field_simp; norm_num
 
-/-- A strict zero-frequency saving remains even after cancelling the
-entire error prime pool. The small analytic losses are explicit. -/
-theorem geometry_zero_exponent_saving (Z M A a ξ reserve padding ε εmass B count β : ℝ)
-    (hM : 0 ≤ M) (hb : Sil.Uneven.AuxiliarySource.widthLo ≤ β ∧ β ≤ Sil.Uneven.AuxiliarySource.widthHi)
-    (ha : a ≤ M*Sil.Uneven.AuxiliarySource.amp β)
-    (hloss : frequencyLoss Z 32 ξ+reserve+ε*(A+padding)+B*εmass+3*count ≤ M/380) :
-    zeroPaymentExponent Z M A a ξ reserve padding ε εmass B+3*count ≤ -M/20 := by
-  have hamp := mul_le_mul_of_nonneg_left (Sil.Uneven.AuxiliarySource.scheduling_guards  hb).2.2.2.1 hM
-  unfold zeroPaymentExponent
-  linarith
 
 
 /-- The three extracted branches retain a uniform strict saving after the
@@ -133,9 +123,5 @@ theorem geometry_main_prime_payment (P : Finset (Ideal O)) (Z β loss Ccap E : �
 
 end
 end OAI.SevenEighths.AuxiliaryReconstruction
-#print axioms OAI.SevenEighths.AuxiliaryReconstruction.actual_error_zero_prime_average
-#print axioms OAI.SevenEighths.AuxiliaryReconstruction.geometry_zero_exponent_saving
 
-#print axioms OAI.SevenEighths.AuxiliaryReconstruction.geometry_error_branches_saving
 
-#print axioms OAI.SevenEighths.AuxiliaryReconstruction.geometry_main_prime_payment

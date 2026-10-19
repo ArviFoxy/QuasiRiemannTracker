@@ -28,6 +28,3 @@ lemma floor_loss_bound (N : ℕ) {v e eps loss mesh : ℝ} (hv : v≤1) (he : 0�
   nlinarith [UnevenEndpointPhysical.Transport.ly_coarse, mul_nonneg he (by linarith [UnevenEndpointPhysical.Transport.ly_coarse] : 0≤ ly-1/3)]
 end UnevenEndpointPhysical.Transport
 
-#print axioms UnevenEndpointPhysical.Transport.physical_scale_identity
-#print axioms UnevenEndpointPhysical.Transport.floor_source_margin
-#print axioms UnevenEndpointPhysical.Transport.floor_loss_bound

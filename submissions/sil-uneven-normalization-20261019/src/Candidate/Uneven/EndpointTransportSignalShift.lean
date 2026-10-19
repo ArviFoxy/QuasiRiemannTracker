@@ -88,6 +88,3 @@ theorem contour_shift_left (χ : Character) (H : ℂ → ℂ)
 end UnevenEndpointPhysical.Transport.SignalShift
 end
 
-#print axioms UnevenEndpointPhysical.Transport.SignalShift.quotient_holomorphic
-#print axioms UnevenEndpointPhysical.Transport.SignalShift.quotient_polynomial_bound
-#print axioms UnevenEndpointPhysical.Transport.SignalShift.contour_shift_left

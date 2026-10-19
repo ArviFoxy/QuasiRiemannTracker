@@ -104,4 +104,3 @@ end
 
 end OAI
 
-#print axioms OAI.SevenEighths.UnevenEndpoint.Physical.SourceCount.balanced_source_count_affine

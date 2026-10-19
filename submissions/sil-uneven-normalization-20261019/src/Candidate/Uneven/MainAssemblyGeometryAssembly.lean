@@ -277,5 +277,3 @@ theorem literal_geometry_initial_affine (plane : Sil.Uneven.MainSource.Plane)
 
 end
 end OAI.SevenEighths.MainAssembly
-#print axioms OAI.SevenEighths.MainAssembly.uniform_geometry_mass
-#print axioms OAI.SevenEighths.MainAssembly.literal_geometry_initial_affine

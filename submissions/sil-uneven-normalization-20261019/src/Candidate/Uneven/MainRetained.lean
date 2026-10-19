@@ -126,4 +126,3 @@ theorem actual_main_retained_nonzero_sum (Mprice Aprice : ℝ)
 end Actual
 end
 end OAI.SevenEighths.MainAssembly
-#print axioms OAI.SevenEighths.MainAssembly.actual_main_retained_nonzero_sum

@@ -1,7 +1,31 @@
-import Candidate.Cycle63.Physical.FinalCapacity.Public
+import Candidate.Cycle63.Physical.FinalCapacity.Physical
+import Candidate.Cycle63.Physical.FinalCapacity.UniformPadding
 import Candidate.Cycle63.Physical.ChildMatches
 import Candidate.Cycle63.Physical.FinalNatural.Error
 import Candidate.Cycle63.Physical.WidthLoss
+
+/- Original module: Candidate.Cycle63.Physical.FinalCapacity.Public. -/
+section
+
+/- Public audit: exact affine-cell to final selected-capacity bridge.
+   The literal physical row must survive; zero rows need no capacity gate. -/
+#print axioms OAI.SevenEighths.Cycle63FinalCapacity.common_reduction_log_lower
+#print axioms OAI.SevenEighths.Cycle63FinalCapacity.two_stage_raw_volume
+#print axioms OAI.SevenEighths.Cycle63FinalCapacity.original_affine_capacity
+#print axioms OAI.SevenEighths.Cycle63FinalCapacity.actual_common_shift_le
+#print axioms OAI.SevenEighths.Cycle63FinalCapacity.actual_common_shift_le_right
+#print axioms OAI.SevenEighths.Cycle63FinalCapacity.two_stage_supported_capacity
+#print axioms OAI.SevenEighths.Cycle63FinalCapacity.actual_final_capacity
+#print axioms OAI.SevenEighths.Cycle63FinalCapacity.actual_final_capacity_right
+#print axioms OAI.SevenEighths.Cycle63FinalCapacity.child_with_height
+#print axioms OAI.SevenEighths.Cycle63FinalCapacity.actual_final_source_capacity
+#print axioms OAI.SevenEighths.Cycle63FinalCapacity.actual_final_source_capacity_right
+#print axioms OAI.SevenEighths.Cycle63FinalCapacity.support_padding_eventually
+#print axioms OAI.SevenEighths.Cycle63FinalCapacity.support_padding_eventually_mass
+end
+
+/- Original module: Candidate.Cycle63.Physical.FinalLow.Chain. -/
+section
 
 set_option autoImplicit false
 set_option maxHeartbeats 1000000
@@ -114,3 +138,4 @@ theorem zero_low_energy {ι : Type*} [Fintype ι] [DecidableEq ι] (src : Data �
 #print axioms zero_low_energy
 end
 end OAI.SevenEighths.Cycle63FinalLow
+end

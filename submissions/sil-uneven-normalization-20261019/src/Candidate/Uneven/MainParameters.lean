@@ -105,5 +105,3 @@ theorem error_reserves (P : Plane) {b : ℝ} (hb : b∈Set.Icc widthLo widthHi) 
   all_goals linarith
 
 end Sil.Uneven.MainSource
-#print axioms Sil.Uneven.MainSource.scheduling_guards
-#print axioms Sil.Uneven.MainSource.error_reserves

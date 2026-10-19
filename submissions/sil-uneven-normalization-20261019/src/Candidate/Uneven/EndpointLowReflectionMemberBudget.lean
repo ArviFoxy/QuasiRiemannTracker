@@ -227,5 +227,3 @@ end SevenEighths.UnevenEndpointPhysicalLowReflection
 end
 end OAI
 
-#print axioms OAI.SevenEighths.UnevenEndpointPhysicalLowReflection.original_low_member_tuple_full_budget
-#print axioms OAI.SevenEighths.UnevenEndpointPhysicalLowReflection.original_low_member_geometry_uniform

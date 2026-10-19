@@ -257,4 +257,3 @@ theorem actual_geometry_balanced_saturated_paid_shell_mixed_anchor {α : Type} [
 
 end
 end OAI.SevenEighths.TargetHigh830
-#print axioms OAI.SevenEighths.TargetHigh830.actual_geometry_balanced_saturated_paid_shell_mixed_anchor

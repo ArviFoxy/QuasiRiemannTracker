@@ -266,7 +266,3 @@ theorem old_source_packet_amplitude_class (D:BaselineData)
 
 end OAI.SevenEighths.UnevenEndpoint.Physical.Source
 
-#print axioms OAI.SevenEighths.UnevenEndpoint.Physical.Source.old_whole_slots
-#print axioms OAI.SevenEighths.UnevenEndpoint.Physical.Source.old_source_class_main_selection
-#print axioms OAI.SevenEighths.UnevenEndpoint.Physical.Source.old_source_selected_product_crude
-#print axioms OAI.SevenEighths.UnevenEndpoint.Physical.Source.old_source_packet_amplitude_class

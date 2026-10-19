@@ -22,8 +22,6 @@ def withSmallerE (D : BaselineData) (e : ℝ) (he : 0< e) (hle : e≤ D.e) : Bas
       have hd:=D.detector_budget
       nlinarith }
 
-theorem withSmallerE_length (D : BaselineData) (e : ℝ) (he : 0< e) (hle : e≤ D.e) :
-    (withSmallerE D e he hle).length=D.length := rfl
 
 def commonMesh (t : ℝ) : ℝ := min (min (Cycle25.sourceMesh t) t) (DetectorAffine.detectorMesh t)
 lemma commonMesh_pos {t : ℝ} (ht : 0< t) : 0< commonMesh t :=
@@ -66,97 +64,6 @@ structure TransportParameters (D : BaselineData) where
   window_budget : sigma+D.e≤ OAI.SevenEighths.UnevenEndpoint.theta*ellMin
   floor_budget : 26*D.e+(D.N+8)*eps+D.t+mesh*OAI.SevenEighths.UnevenEndpoint.ell+nu+sigma≤1/100
 
-/-- All genuine baseline data and phase parameters are fixed before source or height. -/
-theorem exists_compatible_data {κ budget : ℝ} (hk : 7/10≤κ) (hk1 : κ≤3/4)
-    (hb : 0< budget) :
-    ∃D : BaselineData,D.momentKappa=κ ∧ 159*D.ε+609*D.t≤ budget ∧
-      (∀j,D.length j≤ Cycle25.sourceMesh D.t/200) ∧
-      (∀j,D.length j≤ commonMesh D.t/200) ∧ Nonempty (TransportParameters D) := by
-  have hpad : 0 < upperPadding := by
-    cases config with
-    | mk stage => cases stage <;> norm_num [upperPadding]
-  let small : ℝ := min budget (min (1/100000000) (100*upperPadding))
-  have hsmall : 0< small := lt_min hb (lt_min (by norm_num) (by positivity))
-  obtain ⟨D,hκ,hbudget,hfine,hcommon⟩ := exists_baseline_data_common_mesh hk hk1 hsmall
-    commonMesh (fun _ ht=> commonMesh_pos ht)
-  have hbound : 159*D.ε+609*D.t≤ budget := hbudget.trans (min_le_left _ _)
-  have hsum : 0<∑j,D.length j := by rw [D.slots_sum];exact (by have hh := parameter_gates.2.2.2.1; linarith only [hh])
-  obtain ⟨j,_,_⟩ := (Finset.sum_pos_iff_of_nonneg (fun j _=>(D.slots_pos j).le)).mp hsum
-  let : Nonempty (Fin D.N) := ⟨j⟩
-  obtain ⟨m,hm,hmle⟩ : ∃m : ℝ,0< m ∧ ∀j,m≤ D.length j := by
-    obtain ⟨i,hmle⟩ := Finite.exists_min D.length
-    exact ⟨D.length i,D.slots_pos i,hmle⟩
-  let mesh := commonMesh D.t
-  have hmesh : 0< mesh := commonMesh_pos D.t_pos
-  let phase := m*mesh/2
-  have hphase : 0< phase := by positivity
-  let e := min D.e (min (phase/(32*D.t)) (min (OAI.SevenEighths.UnevenEndpoint.theta*m/4) (D.t/10000)))
-  have htheta : 0< theta := by have hh := parameter_gates.1; linarith only [hh]
-  have ht:=D.t_pos
-  have hep : 0< e := lt_min D.e_pos (lt_min (by positivity) (lt_min (by positivity) (by positivity)))
-  have heD : e≤ D.e := min_le_left _ _
-  have hephase : e≤ phase/(32*D.t) := (min_le_right _ _).trans (min_le_left _ _)
-  have hetheta : e≤ OAI.SevenEighths.UnevenEndpoint.theta*m/4 :=
-    (min_le_right _ _).trans ((min_le_right _ _).trans (min_le_left _ _))
-  have hesmall : e≤ D.t/10000 :=
-    (min_le_right _ _).trans ((min_le_right _ _).trans (min_le_right _ _))
-  let D' := withSmallerE D e hep heD
-  let sigma := min (OAI.SevenEighths.UnevenEndpoint.theta*m/4) (D.t/8)
-  have hsigma : 0< sigma := lt_min (by positivity) (by positivity)
-  have hsigma1 : sigma≤ D.t/8 := min_le_right _ _
-  have hsigmaw : sigma≤ OAI.SevenEighths.UnevenEndpoint.theta*m/4 := min_le_left _ _
-  let eps : ℝ := D.t/(100*(D.N+8))
-  have heps : 0< eps := by positivity
-  refine ⟨D',hκ,hbound,hfine,hcommon,⟨{
-    t_padding:=by
-      have hbsmall : 159*D.ε+609*D.t ≤ 100*upperPadding := hbudget.trans ((min_le_right _ _).trans (min_le_right _ _))
-      have hep0:=D.epsilon_pos
-      change D.t≤ upperPadding/4
-      linarith
-    mesh:=mesh
-    mesh_pos:=hmesh
-    mesh_small:=commonMesh_le
-    slots_mesh:=hcommon
-    e_tsmall:=hesmall
-    rmin:=m
-    rmin_pos:=hm
-    slots_lower:=fun j=> by dsimp [D',withSmallerE];nlinarith [hmle j]
-    ellMin:=m
-    ellMin_pos:=hm
-    slots_min:=hmle
-    phaseEpsilon:=phase
-    phaseEpsilon_pos:=hphase
-    phaseKappa:=phase/4
-    phaseKappa_pos:=by positivity
-    phase_budget:=by
-      have ht:=D.t_pos
-      have hmul: e*(32*D.t)≤ phase := (le_div_iff₀ (by positivity)).mp hephase
-      change 8*e*D.t+phase/4≤ phase
-      nlinarith
-    phase_gap:=by dsimp [phase];nlinarith [mul_pos hm hmesh]
-    eps:=eps
-    eps_pos:=heps
-    eps_budget:=by change (D.N+8:ℝ)*eps≤ D.t/100;dsimp [eps];field_simp; norm_num
-    sigma:=sigma
-    sigma_pos:=hsigma
-    sigma_small:=hsigma1
-    nu:=D.t/8
-    nu_pos:=by positivity
-    nu_eq:=rfl
-    geometric_budget:=by change sigma+8*e+D.t/8≤1/20;linarith [D.t_small]
-    principal_budget:=by linarith [D.t_small]
-    window_budget:=by change sigma+e≤ OAI.SevenEighths.UnevenEndpoint.theta*m;linarith [mul_pos htheta hm]
-    floor_budget:=by
-      have ht:=D.t_small
-      have hme:mesh≤ D.t:=commonMesh_le
-      have hmes:mesh*OAI.SevenEighths.UnevenEndpoint.ell≤ D.t := by
-        have hel : OAI.SevenEighths.UnevenEndpoint.ell≤1 := by have hh := parameter_gates.2.2.2.2.1; linarith only [hh]
-        exact (mul_le_mul_of_nonneg_left hel hmesh.le).trans (by simpa using hme)
-      have hepsmul : (D.N+8:ℝ)*eps=D.t/100 := by
-        dsimp [eps];field_simp
-      change 26*e+(D.N+8)*eps+D.t+mesh*OAI.SevenEighths.UnevenEndpoint.ell+D.t/8+sigma≤1/100
-      rw [hepsmul]
-      linarith }⟩⟩
 
 theorem exists_compatible_data_with_mesh {κ budget : ℝ} (hk : 7/10≤κ) (hk1 : κ≤3/4)
     (hb : 0< budget) (extraMesh : ℝ → ℝ)
@@ -273,5 +180,3 @@ end
 end OAI.SevenEighths.UnevenEndpoint.Physical.Assembly
 
 
-#print axioms OAI.SevenEighths.UnevenEndpoint.Physical.Assembly.exists_compatible_data
-#print axioms OAI.SevenEighths.UnevenEndpoint.Physical.Assembly.exists_compatible_data_with_mesh

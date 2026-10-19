@@ -257,4 +257,3 @@ theorem actual_geometry_saturated_paid_shell {α : Type} [Fintype α] [Decidable
 
 end
 end OAI.SevenEighths.TargetHigh830
-#print axioms OAI.SevenEighths.TargetHigh830.actual_geometry_saturated_paid_shell

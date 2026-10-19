@@ -25,5 +25,3 @@ theorem second_zero_excess_bound {b M A a c d Bc : ℝ}
   nlinarith
 end
 end OAI.SevenEighths.MainReconstruction
-#print axioms OAI.SevenEighths.MainReconstruction.second_zero_reserve
-#print axioms OAI.SevenEighths.MainReconstruction.second_zero_excess_bound

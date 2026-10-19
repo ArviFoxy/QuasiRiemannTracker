@@ -243,32 +243,6 @@ theorem actual_main_low_fixed_ray_physical_reindex  {Label : Type*} [Fintype Lab
     main_low_physical_source_sum ]
   ring
 
-/-- Fixed ray cardinalities are paid once after complete source columns.
-The supplied source estimate is the quantitative receipt's literal last
-inequality, not a norm estimate for an arithmetic label. -/
-theorem main_low_physical_fixed_ray_sum_le  {Label : Type*} [Fintype Label]
-    (N : ℕ) (a ap : ℝ) (second : Bool) (d : Label→SecondInputDatum α)
-    (coefficient : Label→ℝ) (t u : ℝ) {e : ℝ}
-    (select : (l : Label)→(χ ψ : RayFourExpansion.RayCharacter)→
-      mainLowSourceRows second (d l) (fun _=>True)→BufferIndex e)
-    (bound : ℝ) (hlower : 0 < lowerFactor N a ap)
-    (hsource : ∀χ ψ,mainLowCompleteSelectedCost 
-      (fun l=>mainLowSourceRows second (d l) (fun _=>True)) (fun l=>select l χ ψ)
-      (fun l=>(d l).block.divisors.filter Squarefree)
-      (fun l _=>coefficient l*(d l).K*normalizer (d l).C (d l).D (d l).inactive)
-      (fun l D z=>‖normalizedColumn
-        (withHeight (d l).input (if second then (d l).τ ψ⁻¹ else (d l).τ χ)
-          ((d l).input.t+2*Real.pi*(u-(if second then -t else t))))
-        (if second then (d l).D else (d l).C)
-        (mainLowPhysicalSupported  second (d l))
-        (d l).R (d l).seed D z‖^2) ≤ bound) :
-    mainLowPhysicalCompleteCost  N a ap second d coefficient t u select ≤ 
-      (1/lowerFactor N a ap)*(Fintype.card RayFourExpansion.RayCharacter:ℝ)^2*bound := by
-  rw [actual_main_low_complete_physical_reindex ]
-  have h := Finset.sum_le_sum (s:=Finset.univ) (fun χ _=>
-    Finset.sum_le_sum (s:=Finset.univ) (fun ψ _=>hsource χ ψ))
-  have h' := mul_le_mul_of_nonneg_left h (by positivity : 0 ≤ 1/lowerFactor N a ap)
-  simpa only [Finset.sum_const,Finset.card_univ,nsmul_eq_mul,pow_two,mul_assoc] using h'
 
 theorem fixed_ray_source_transport  {Label : Type*} [Fintype Label]
     (N : ℕ) (a ap : ℝ) (second : Bool) (d : Label→SecondInputDatum α)
@@ -318,49 +292,8 @@ theorem fixed_ray_source_transport  {Label : Type*} [Fintype Label]
 attribute [local irreducible] mainLowFixedRayPhysicalCost mainLowCompleteSelectedCost
   selectedFirstProjectors
 
-/-- A complete original-nonzero second family may be stored separately
-under each chosen first column. This exact sigma identity preserves that
-subtype, its common allocation and its literal signed frequency set. -/
-theorem main_low_fixed_ray_sigma  {Label : Type*} [Fintype Label]
-    (Block : Label→Type*) [∀l,Fintype (Block l)]
-    (N : ℕ) (a ap : ℝ) (second : Bool)
-    (d : ((l : Label)×Block l)→SecondInputDatum α)
-    (coefficient : ((l : Label)×Block l)→ℝ) (t u : ℝ)
-    (χ ψ : RayFourExpansion.RayCharacter) {e : ℝ}
-    (select : (r : (l : Label)×Block l)→mainLowSourceRows second (d r) (fun _=>True)→BufferIndex e) :
-    mainLowFixedRayPhysicalCost  N a ap second d coefficient t u χ ψ select=
-      ∑l,mainLowFixedRayPhysicalCost  N a ap second
-        (fun r : Block l=>d ⟨l,r⟩) (fun r=>coefficient ⟨l,r⟩) t u χ ψ
-        (fun r=>select ⟨l,r⟩) := by
-  unfold mainLowFixedRayPhysicalCost
-  exact Fintype.sum_sigma _
 
 set_option maxHeartbeats 320000 in
-/-- The first projector union is taken on the selected original columns
-before the complete second family, fixed rays or buffered bins are split.
-No block or arithmetic-label cardinality appears. -/
-theorem main_low_physical_first_shell_reindex  {ι Label : Type*} [Fintype Label]
-    {src : ι→FirstBlockSource}
-    (column : Label→FirstColumnIndex src)
-    (hs : ∀l,Squarefree (column l).2.1.val)
-    (Block : Label→Type*) [∀l,Fintype (Block l)]
-    (N : ℕ) (a ap : ℝ) (second : Bool)
-    (d : ((l : Label)×Block l)→SecondInputDatum α)
-    (coefficient : ((l : Label)×Block l)→ℝ) (t u : ℝ)
-    (χ ψ : RayFourExpansion.RayCharacter) {e : ℝ}
-    (select : (r : (l : Label)×Block l)→mainLowSourceRows second (d r) (fun _=>True)→BufferIndex e) :
-    mainLowFixedRayPhysicalCost  N a ap second d coefficient t u χ ψ select=
-      ∑n∈CenteredMomentWholeDivisorShell.selectedShells (selectedFirstProjectors column),
-        mainLowFixedRayPhysicalCost  N a ap second
-          (fun r : (l : SelectedFirstShell column n)×Block l.val=>d ⟨r.1.val,r.2⟩)
-          (fun r=>coefficient ⟨r.1.val,r.2⟩) t u χ ψ
-          (fun r=>select ⟨r.1.val,r.2⟩) := by
-  rw [main_low_fixed_ray_sigma ,selected_first_shell_sum column hs]
-  apply Finset.sum_congr rfl
-  intro n _
-  exact (main_low_fixed_ray_sigma  (fun l : SelectedFirstShell column n=>Block l.val)
-    N a ap second (fun r=>d ⟨r.1.val,r.2⟩) (fun r=>coefficient ⟨r.1.val,r.2⟩)
-    t u χ ψ (fun r=>select ⟨r.1.val,r.2⟩)).symm
 
 /-- All fixed rays share the same first projector union. A shell payment
 therefore incurs its norm-dyad count once, after both ray sums. -/
@@ -381,80 +314,7 @@ theorem main_low_physical_complete_ray_sum  {Label : Type*} [Fintype Label]
   intro ψ _
   exact (actual_main_low_fixed_ray_physical_reindex  N a ap second d coefficient t u χ ψ _).symm
 
-/-- Pure payment contraction on the actual nested physical family. The
-per-shell source estimate is supplied by `actual_main_low_physical_bins `;
-this step charges only the common first-projector shells and fixed rays. -/
-theorem main_low_physical_first_shell_payment  {ι Label : Type*} [Fintype Label]
-    {src : ι→FirstBlockSource}
-    (column : Label→FirstColumnIndex src)
-    (hs : ∀l,Squarefree (column l).2.1.val)
-    (Block : Label→Type*) [∀l,Fintype (Block l)]
-    (N : ℕ) (a ap : ℝ) (second : Bool)
-    (d : ((l : Label)×Block l)→SecondInputDatum α)
-    (coefficient : ((l : Label)×Block l)→ℝ) (t u : ℝ) {e : ℝ}
-    (select : (r : (l : Label)×Block l)→(χ ψ : RayFourExpansion.RayCharacter)→
-      mainLowSourceRows second (d r) (fun _=>True)→BufferIndex e)
-    (bound C Z ε : ℝ) (hbound : 0 ≤ bound)
-    (hcard : ((CenteredMomentWholeDivisorShell.selectedShells
-      (selectedFirstProjectors column)).card:ℝ) ≤ C*Z^ε)
-    (hpay : ∀n∈CenteredMomentWholeDivisorShell.selectedShells (selectedFirstProjectors column),
-      ∀χ ψ,mainLowFixedRayPhysicalCost  N a ap second
-        (fun r : (l : SelectedFirstShell column n)×Block l.val=>d ⟨r.1.val,r.2⟩)
-        (fun r=>coefficient ⟨r.1.val,r.2⟩) t u χ ψ
-        (fun r=>select ⟨r.1.val,r.2⟩ χ ψ) ≤ bound) :
-    mainLowPhysicalCompleteCost  N a ap second d coefficient t u select ≤ 
-      (Fintype.card RayFourExpansion.RayCharacter:ℝ)^2*(C*Z^ε*bound) := by
-  rw [main_low_physical_complete_ray_sum ]
-  have hray (χ ψ : RayFourExpansion.RayCharacter) :
-      mainLowFixedRayPhysicalCost  N a ap second d coefficient t u χ ψ
-        (fun l=>select l χ ψ) ≤ C*Z^ε*bound := by
-    rw [main_low_physical_first_shell_reindex  column hs Block]
-    calc
-      _ ≤ ∑_n∈CenteredMomentWholeDivisorShell.selectedShells (selectedFirstProjectors column),bound :=
-        Finset.sum_le_sum (fun n hn=>hpay n hn χ ψ)
-      _ ≤ C*Z^ε*bound := by
-        simpa only [Finset.sum_const,Finset.card_univ,nsmul_eq_mul] using
-          mul_le_mul_of_nonneg_right hcard hbound
-  calc
-    _ ≤ ∑_χ : RayFourExpansion.RayCharacter,∑_ψ : RayFourExpansion.RayCharacter,C*Z^ε*bound :=
-      Finset.sum_le_sum (fun χ _=>Finset.sum_le_sum (fun ψ _=>hray χ ψ))
-    _=_ := by simp only [Finset.sum_const,Finset.card_univ,nsmul_eq_mul,pow_two,mul_assoc]
 
-/-- Original stored-pool caps pay the common FIRST projector shells
-uniformly before all selected labels, original-nonzero second blocks and
-Mellin shifts. The supplied shell receipt is the literal physical-bin
-continuation, not a cardinality bound on arithmetic labels. -/
-theorem eventual_actual_main_low_physical_first_shell_contraction 
-    (N : ℕ) (U εshell : ℝ) (hU : 0 ≤ U) (hεshell : 0 < εshell) :
-    ∃C : ℝ,0 < C ∧ ∀ᶠZ : ℝ in atTop,1 < Z ∧
-      ∀{ι Label : Type*}[Fintype ι][DecidableEq ι][Fintype Label]
-        (s : Input ι),Fintype.card ι ≤ N →
-      (∀i I,I∈s.pools i→(I.absNorm:ℝ) ≤ Z^U) →
-      ∀(R seed : Ideal O)(K ξ : ℝ)(hK : 0 < K)(bin : ℤ×(Fin 5→ℤ))
-        (column : Label→FirstColumnIndex (geometryFirstSource s R seed K Z ξ hK bin))
-        (_hs : ∀l,Squarefree (column l).2.1.val)
-        (Block : Label→Type*)[∀l,Fintype (Block l)]
-        (a ap : ℝ)(second : Bool)
-        (d : ((l : Label)×Block l)→SecondInputDatum ι)
-        (coefficient : ((l : Label)×Block l)→ℝ)(t u e bound : ℝ)
-        (select : (r : (l : Label)×Block l)→(χ ψ : RayFourExpansion.RayCharacter)→
-          mainLowSourceRows second (d r) (fun _=>True)→BufferIndex e),
-      0 ≤ bound →
-      (∀n∈selectedShells (selectedFirstProjectors column),∀χ ψ,
-        mainLowFixedRayPhysicalCost  N a ap second
-          (fun r : (l : SelectedFirstShell column n)×Block l.val=>d ⟨r.1.val,r.2⟩)
-          (fun r=>coefficient ⟨r.1.val,r.2⟩) t u χ ψ
-          (fun r=>select ⟨r.1.val,r.2⟩ χ ψ) ≤ bound) →
-      mainLowPhysicalCompleteCost  N a ap second d coefficient t u select ≤ 
-        (Fintype.card RayFourExpansion.RayCharacter:ℝ)^2*(C*Z^εshell*bound) := by
-  obtain ⟨C,hC,hcount⟩:=eventual_actual_geometry_selected_first_shell_subpower N U εshell hU hεshell
-  refine ⟨C,hC,?_⟩
-  filter_upwards [hcount] with Z hz
-  refine ⟨hz.1,?_⟩
-  intro ι Label _ _ _ s hN hpool R seed K ξ hK bin column hs Block _ a ap second
-    d coefficient t u e bound select hbound hpay
-  exact main_low_physical_first_shell_payment  column hs Block N a ap second d coefficient t u
-    select bound C Z εshell hbound (hz.2 s hN hpool R seed K ξ hK bin column) hpay
 
 /-- The complete ordinary low subset, before any projector grouping.
 The row's block label is unchanged, including its original-nonzero subtype. -/
@@ -606,5 +466,3 @@ set_option linter.defProp false in
 
 end
 end OAI.SevenEighths.AuxiliaryPhysical
-#print axioms OAI.SevenEighths.AuxiliaryPhysical.mainLowPhysicalCompleteCost
-#print axioms OAI.SevenEighths.AuxiliaryPhysical.actual_main_low_complete_physical_reindex

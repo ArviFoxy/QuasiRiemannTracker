@@ -1,10 +1,161 @@
-/- Independent coarse source and relative anchor. -/
-/- Adapted from PR63 by Sil with OpenAI Codex assistance. Apache-2.0. -/
+import Candidate.Uneven.MixedBootstrapNaturalBatch
+import Candidate.Cycle63.Marked.DeletionFiniteExceptions
+import Candidate.Cycle63.Marked.NaturalSlotPhase
+import Candidate.Uneven.BootstrapCore
 import Candidate.Cycle63.Marked.WholeCoreGates
 import Candidate.Uneven.MixedBootstrapWholeBuffered
-import Candidate.Uneven.MixedBootstrapNaturalCoreGates
 import Candidate.Cycle63.Marked.DeletionRawPadded
-import Candidate.Uneven.BootstrapRescale
+
+/- Original module: Candidate.Uneven.MixedBootstrapNaturalCoreGates. -/
+section
+/- Independent coarse source and relative anchor. -/
+/- Adapted from PR63 by Sil with OpenAI Codex assistance. Apache-2.0. -/
+
+set_option autoImplicit false
+set_option maxHeartbeats 1600000
+namespace OAI.SevenEighths.MixedBootstrapNaturalBases
+noncomputable section
+open scoped Classical BigOperators
+open Set Filter HeckeFamily HeckeInverseAmplification ProbeHighRowFamily LocalMoment
+open Cycle63Moment Cycle63MarkedPlain CenteredMomentNaturalRowSource CenteredMomentNaturalFixedRaySource
+open CenteredMomentDetectorEnergyInitialState CenteredMomentCommonMaskExpansion
+open CenteredMomentCommonMaskEnergy CenteredMomentPrimeSlot
+local notation "O" => HeckeFamily.O
+variable (M : Ideal O) [NeZero M]
+local instance : Finite (O⧸M) := Ring.HasFiniteQuotients.finiteQuotient (NeZero.ne M)
+variable (H : Subgroup (O⧸M)ˣ) (hH : RayOrthogonality.globalUnits M≤ H)
+
+/-- The exceptional free cores are one fixed finite set, chosen before
+the scale, every root ideal, and every moving amplitude or zero label. -/
+theorem whole_core_exception_set (ηcoarse η₀ : Character) (u₀ : O) (hu₀ : u₀≠0) (R₀ : Ideal O) (bad : WholeSourceIndex M H→Ideal O)
+    (hbad0 : ∀j,internalQ (bad j) (wholeSourceAnchor M H hH η₀ j)≠0)
+    (hbadTop : ∀j,internalQ (bad j) (wholeSourceAnchor M H hH η₀ j)≠⊤)
+    (hbad72 : ∀j,internalQ (bad j) (wholeSourceAnchor M H hH η₀ j)≤ Ideal.span {(72:O)}) :
+    ∃E : Finset FreeRow,∀u : FreeRow,u∉E ↔ ∀j,initialKeep (base M H hH ηcoarse η₀ u₀ hu₀ R₀ j)
+      (internalQ (bad j) (wholeSourceAnchor M H hH η₀ j)) u.val :=
+  Deletion26.fixed_initial_exception_union (base M H hH ηcoarse η₀ u₀ hu₀ R₀)
+    (fun j=> internalQ (bad j) (wholeSourceAnchor M H hH η₀ j)) hbad0 hbadTop hbad72
+
+/-- A fixed positive padding absorbs all natural conductor constants.
+The original row norm alone supplies the embedding and clean modulus caps. -/
+theorem eventually_whole_core_norm_caps (ηcoarse η₀ : Character) (u₀ : O) (hu₀ : u₀≠0) (R₀ : Ideal O) (pad : ℝ) (hpad : 0< pad) :
+    ∀ᶠ U : ℝ in atTop,1< U ∧ ∀(Y : ℝ)(u : FreeRow),rowNorm u≤ Y →
+      ((Ideal.span {u.val}).absNorm:ℝ)≤ Y*U^pad ∧
+      ‖ConcreteTraceCRT.eisEmbedding u.val‖^2≤ Y*U^pad ∧
+      ∀j,(naturalRow (base M H hH ηcoarse η₀ u₀ hu₀ R₀ j) u.val u.property.1).character.modulus.absNorm≤ Y*U^pad := by
+  let D := FixedUnmarkedDictionary.ofBases (base M H hH ηcoarse η₀ u₀ hu₀ R₀)
+  obtain ⟨K,hK,hmod⟩ := D.natural_conductor_bound
+  have hlarge : ∀ᶠU : ℝ in atTop,K≤ U^pad :=
+    (tendsto_rpow_atTop hpad).eventually (eventually_ge_atTop K)
+  filter_upwards [hlarge,eventually_gt_atTop (1:ℝ)] with U hKU hU
+  refine ⟨hU,?_⟩
+  intro Y u hu
+  have hY : 0≤ Y := (zero_le_one.trans (rowNorm_ge_one u)).trans hu
+  have hnorm : rowNorm u≤ Y*U^pad :=
+    hu.trans (le_mul_of_one_le_right hY (hK.trans hKU))
+  refine ⟨hnorm,?_,?_⟩
+  · simpa only [ActualEisensteinCubic.eisEmbedding_norm_sq_eq_absNorm_span,rowNorm] using hnorm
+  · intro j
+    apply (hmod u j).trans
+    calc
+      K*rowNorm u ≤ K*Y := mul_le_mul_of_nonneg_left hu (zero_le_one.trans hK)
+      _ ≤ _ := by nlinarith
+
+/-- A positive lower physical width eventually puts every slot beyond
+all fixed deleted detector conductors, uniformly over the whole dictionary. -/
+theorem eventually_whole_core_inverse_large (ηcoarse η₀ : Character) (u₀ : O) (hu₀ : u₀≠0) (R₀ : Ideal O) (wmin : ℝ) (hwmin : 0< wmin) :
+    ∀ᶠU : ℝ in atTop,1< U ∧ ∀w : ℝ,wmin≤ w → ∀j : WholeSourceIndex M H,
+      ((DetectorDictionaryInverseRawInitialGates.deletedBase
+        (momentData (base M H hH ηcoarse η₀ u₀ hu₀ R₀ j))).modulus.absNorm:ℝ)< U^w := by
+  let K : ℝ := ∑j : WholeSourceIndex M H,
+    ((DetectorDictionaryInverseRawInitialGates.deletedBase
+      (momentData (base M H hH ηcoarse η₀ u₀ hu₀ R₀ j))).modulus.absNorm:ℝ)
+  have hlarge : ∀ᶠU : ℝ in atTop,K< U^wmin :=
+    (tendsto_rpow_atTop hwmin).eventually (eventually_gt_atTop K)
+  filter_upwards [hlarge,eventually_gt_atTop (1:ℝ)] with U hlarge hU
+  refine ⟨hU,?_⟩
+  intro w hw j
+  have hj : ((DetectorDictionaryInverseRawInitialGates.deletedBase
+      (momentData (base M H hH ηcoarse η₀ u₀ hu₀ R₀ j))).modulus.absNorm:ℝ)≤ K :=
+    by
+      dsimp only [K]
+      exact Finset.single_le_sum (f := fun j : WholeSourceIndex M H=>
+        ((DetectorDictionaryInverseRawInitialGates.deletedBase
+          (momentData (base M H hH ηcoarse η₀ u₀ hu₀ R₀ j))).modulus.absNorm:ℝ))
+        (fun _ _=> by positivity) (Finset.mem_univ j)
+  exact (hj.trans_lt hlarge).trans_le (Real.rpow_le_rpow_of_exponent_le hU.le hw)
+
+
+end
+end OAI.SevenEighths.MixedBootstrapNaturalBases
+end
+
+/- Original module: Candidate.Uneven.BootstrapRescale. -/
+section
+/- Copyright (c) 2026 Sil. Apache-2.0. Adapted from PR63 with OpenAI Codex assistance. -/
+
+set_option autoImplicit false
+noncomputable section
+namespace Sil.Uneven.Bootstrap
+
+theorem rescaled_power_padded
+    (U Y D Dmax pad d q S loss : ℝ)
+    (hU : 1 ≤ U) (hY : 0< Y) (hD : 0< D) (hDmax : D ≤ Dmax)
+    (hbase : U^D=Y*U^pad) (hloss : 0 ≤ loss) :
+    (U^D)^(count d (S/D)+q*(S/D)+loss) ≤
+      U^(q*S-physicalGain d S D+Dmax*loss+pad*Saturated.rho d)*Y^(Saturated.rho d) := by
+  have hUp : 0< U := zero_lt_one.trans_le hU
+  have hYeq : Y=U^(D-pad) := by
+    rw [Real.rpow_sub hUp]
+    apply (eq_div_iff (Real.rpow_pos_of_pos hUp pad).ne').mpr
+    exact hbase.symm
+  have hgain : D*physicalGain d (S/D) 1=physicalGain d S D := FiniteGain.gain_rescale hD
+  have hexp : D*(count d (S/D)+q*(S/D)+loss)=
+      q*S-physicalGain d S D+D*loss+D*Saturated.rho d := by
+    have hcancel : D*(S/D)=S := mul_div_cancel₀ _ hD.ne'
+    unfold count
+    linear_combination q*hcancel-hgain
+  rw [←Real.rpow_mul hUp.le,hexp,hYeq,←Real.rpow_mul hUp.le,←Real.rpow_add hUp]
+  apply Real.rpow_le_rpow_of_exponent_le hU
+  have hh := mul_le_mul_of_nonneg_right hDmax hloss
+  linarith
+
+theorem root_power_transport {d U Y D q pad S A r loss : ℝ}
+    (hd0 : 31/50 ≤ d) (hd : d ≤ 33/50) (hU : 1 ≤ U) (hY : 1 ≤ Y)
+    (hS : 0 ≤ S) (hD : 0 ≤ D) (hq0 : 0 ≤ q) (hq : q ≤ 1) (hpad : 0 ≤ pad) (hloss : 0 ≤ loss)
+    (hbase : Y=U^(D*q)) :
+    U^(A-physicalGain d S (D*q+pad))*Y^r ≤
+      U^(A+(3/200)*D-physicalGain d S D)*Y^(r+loss-3/200) := by
+  have hUp : 0< U := zero_lt_one.trans_le hU
+  have hg := physicalGain_root hd0 hd hS hD hq0 hq hpad
+  calc
+    _ ≤ U^(A-physicalGain d S (D*q+pad))*Y^(r+loss) :=
+      mul_le_mul_of_nonneg_left
+        (Real.rpow_le_rpow_of_exponent_le hY (by linarith)) (by positivity)
+    _ ≤ _ := by
+      rw [hbase,←Real.rpow_mul hUp.le,←Real.rpow_mul hUp.le,
+        ←Real.rpow_add hUp,←Real.rpow_add hUp]
+      apply Real.rpow_le_rpow_of_exponent_le hU
+      nlinarith only [hg]
+
+theorem exception_envelope {d U Y D S A r : ℝ}
+    (hd0 : 31/50 ≤ d) (hd : d ≤ 33/50) (hU : 1 ≤ U) (hY : 1 ≤ Y)
+    (hD : 0 ≤ D) (hr : 3/200 ≤ r) :
+    U^A ≤ U^(A+(3/200)*D-physicalGain d S D)*Y^(r-3/200) := by
+  have hg := physicalGain_cap (S:=S) hd0 hd hD
+  calc
+    _ ≤ U^(A+(3/200)*D-physicalGain d S D) :=
+      Real.rpow_le_rpow_of_exponent_le hU (by linarith)
+    _ ≤ _ := le_mul_of_one_le_right (by positivity)
+      (Real.one_le_rpow hY (by linarith))
+
+end Sil.Uneven.Bootstrap
+end
+
+/- Original module: Candidate.Uneven.MixedBootstrapWholePadded. -/
+section
+/- Independent coarse source and relative anchor. -/
+/- Adapted from PR63 by Sil with OpenAI Codex assistance. Apache-2.0. -/
 
 set_option autoImplicit false
 set_option maxHeartbeats 2200000
@@ -96,18 +247,18 @@ theorem actual_whole_padded_core_weighted_fixedmesh {Slot : Type} [Fintype Slot]
   have hscale (s : Slot) : (U^d)^(w s/d)=U^(w s) := by
     rw [←Real.rpow_mul hUp.le,mul_div_cancel₀ _ hdp.ne']
   have hYs : 0< Y*U^pad := hbase ▸ Real.rpow_pos_of_pos hUp d
-  have hY : 0< Y := (mul_pos_iff.mp hYs).elim (fun h=>h.1)
-    (fun h=>False.elim ((not_lt_of_ge (Real.rpow_nonneg hUp.le _)) h.2))
-  have he := hcount.2 d hd hd' rows slots (fun s=>w s/d) σ v t θ
-    (fun s hs=>div_pos (hwmin.trans_le (hw s hs)) hdp) hlo hhi
-    (fun u hu=>by rw [hbase];exact (hnorms.2 Y u (hrow u hu)).1)
-    (fun u hu=>by rw [hbase];exact (hnorms.2 Y u (hrow u hu)).2.1)
+  have hY : 0< Y := (mul_pos_iff.mp hYs).elim (fun h=> h.1)
+    (fun h=> False.elim ((not_lt_of_ge (Real.rpow_nonneg hUp.le _)) h.2))
+  have he := hcount.2 d hd hd' rows slots (fun s=> w s/d) σ v t θ
+    (fun s hs=> div_pos (hwmin.trans_le (hw s hs)) hdp) hlo hhi
+    (fun u hu=> by rw [hbase];exact (hnorms.2 Y u (hrow u hu)).1)
+    (fun u hu=> by rw [hbase];exact (hnorms.2 Y u (hrow u hu)).2.1)
     (fun u hu=>(hE u).mp (hrows u hu))
-    (fun s hs j=>by rw [hscale];exact hlarge.2 (w s) (hw s hs) j)
+    (fun s hs j=> by rw [hscale];exact hlarge.2 (w s) (hw s hs) j)
     χ holes hholes hcoeff a mesh height i hiI ha0 ha hmesh hmeshmax hmeshaux hbin'
     (fun s hs=>(div_le_iff₀ hdp).mpr (hwm s hs)) hh hf hv ht hχ hnext hcurrent
-    (fun u hu j=>by rw [hbase];exact (hnorms.2 Y u (hrow u hu)).2.2 j)
-    (fun u hu s hs=>by rw [wholeCleanSlot_rescale M H hH (excluded F₀.character R₀) η₀ W U d hUp hdp.ne',hscale];exact hQ u hu s hs)
+    (fun u hu j=> by rw [hbase];exact (hnorms.2 Y u (hrow u hu)).2.2 j)
+    (fun u hu s hs=> by rw [wholeCleanSlot_rescale M H hH (excluded F₀.character R₀) η₀ W U d hUp hdp.ne',hscale];exact hQ u hu s hs)
   simp only [wholeCleanSlot_rescale M H hH (excluded F₀.character R₀) η₀ W U d hUp hdp.ne',←Finset.sum_div] at he
   have heq : Sil.Uneven.Bootstrap.count (2*a-1) ((∑s∈slots,w s)/d)+(2*a-1)*((∑s∈slots,w s)/d)+
       402*ε+mesh+εm+2*binWidth*((∑s∈slots,w s)/d)+ηloss =
@@ -122,4 +273,4 @@ theorem actual_whole_padded_core_weighted_fixedmesh {Slot : Type} [Fintype Slot]
 
 end
 end OAI.SevenEighths.MixedBootstrapPlain
-#print axioms OAI.SevenEighths.MixedBootstrapPlain.actual_whole_padded_core_weighted_fixedmesh
+end

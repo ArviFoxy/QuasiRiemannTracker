@@ -248,16 +248,6 @@ private theorem geometry_error_source_physical_cost_nonneg
     (actual_first_live_squarefree (geometryFirstSource s R seed (Z^M) Z ξ hK key)
       (fun _=>CenteredMomentLogDyadic.logAnnulus) q.1.val q.1.property) hz₁ hz₂
 
-/-- The positivity comes from the genuine physical supported-label cost. -/
-theorem geometry_joint_error_raw_scalar_cost_nonneg (n : ℕ)
-    (hz₁ : s.W₁ 0=0)(hz₂ : s.W₂ 0=0) :
-    0 ≤ geometryJointErrorRawScalarCost reflected second s R seed Z M amp ξ reserve b t v error εcommon
-      Mprice Aprice hZ key P phase υ n := by
-  rw [geometry_joint_error_raw_scalar_cost_eq_physical]
-  unfold geometryJointErrorPhysicalScalarCost
-  exact Finset.sum_nonneg (fun q _=>mul_nonneg
-    (geometryAllocationWeight_nonneg reflected s R seed (Z^M) Z ξ Mprice Aprice hK key phase n b q.1.val q.2)
-    (geometry_error_source_physical_cost_nonneg reflected second s R seed Z M amp ξ reserve t v error εcommon hZ key P υ hz₁ hz₂ q))
 
 /-- Only the outer allocation payment is enlarged. The raw source and its
 actual-cardinality Fourier data remain fixed. -/
@@ -456,20 +446,9 @@ theorem affine_error_frequency_loss_raw_scalar_bound
 
 end
 end OAI.SevenEighths.MainErrorReconstruction
-#print axioms OAI.SevenEighths.MainErrorReconstruction.geometry_error_analytic_height_factor
-#print axioms OAI.SevenEighths.MainErrorReconstruction.geometry_error_active_scalar_packet_eq_physical
-#print axioms OAI.SevenEighths.MainErrorReconstruction.geometry_joint_error_raw_scalar_cost_eq_physical
 
-#print axioms OAI.SevenEighths.MainErrorReconstruction.geometry_joint_error_raw_scalar_cost_nonneg
-#print axioms OAI.SevenEighths.MainErrorReconstruction.geometry_joint_error_raw_scalar_cost_card_mono
 
-#print axioms OAI.SevenEighths.MainErrorReconstruction.geometry_joint_error_scalar_menu_collect
-#print axioms OAI.SevenEighths.MainErrorReconstruction.geometry_joint_error_scalar_menu_physical_payment
 
-#print axioms OAI.SevenEighths.MainErrorReconstruction.affine_error_frequency_loss_raw_scalar_bound
 
-#print axioms OAI.SevenEighths.MainErrorReconstruction.geometry_error_scalar_height_box_payment
 
-#print axioms OAI.SevenEighths.MainErrorReconstruction.geometry_joint_error_physical_scalar_cost_one_payment
 
-#print axioms OAI.SevenEighths.MainErrorReconstruction.geometry_joint_error_scalar_menu_height_box_payment

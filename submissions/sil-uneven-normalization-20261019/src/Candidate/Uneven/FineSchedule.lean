@@ -70,23 +70,7 @@ theorem FineMarkedSchedule.of_card_le {P : HighSourceParameters} {N Nbudget : �
 
 def fineGeometryMesh (oldMesh : ℝ) : ℝ := min oldMesh (fineRawMesh*fineRawCore/64)
 
-theorem fine_geometry_mesh_gates (oldMesh : ℝ) (hold : 0<oldMesh) :
-    0<fineGeometryMesh oldMesh ∧ fineGeometryMesh oldMesh ≤ oldMesh ∧
-      31*fineGeometryMesh oldMesh ≤ fineRawMesh*fineRawCore := by
-  have hm:=fine_raw_mesh_gates.1
-  have hc : 0<fineRawCore := by norm_num [fineRawCore]
-  have hcap : fineGeometryMesh oldMesh ≤ fineRawMesh*fineRawCore/64 := min_le_right _ _
-  exact ⟨lt_min hold (by positivity),min_le_left _ _,by nlinarith⟩
 
-theorem FineMarkedSchedule.width_cap {P : HighSourceParameters} {N : ℕ}
-    {W : ℝ→ℂ} {lo hi mesh oldMesh w : ℝ}
-    (h : FineMarkedSchedule P N W lo hi) (hm : mesh ≤ fineGeometryMesh oldMesh)
-    (hw : w ≤ P.d*mesh) : w ≤ fineRawMesh*fineRawCore := by
-  rw [h.degree] at hw
-  have hc : fineGeometryMesh oldMesh ≤ fineRawMesh*fineRawCore/64 := min_le_right _ _
-  have hp : 0 ≤ fineRawMesh*fineRawCore := mul_nonneg fine_raw_mesh_gates.1.le (by norm_num [fineRawCore])
-  nlinarith
 
 end
 end OAI.SevenEighths.SaturatedPlain
-#print axioms OAI.SevenEighths.SaturatedPlain.fine_raw_mesh_gates

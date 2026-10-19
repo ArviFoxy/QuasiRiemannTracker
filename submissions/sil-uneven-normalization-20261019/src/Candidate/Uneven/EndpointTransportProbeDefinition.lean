@@ -35,5 +35,3 @@ lemma isBigO_rpow_of_eventual_norm_bound (f : ℝ→ℂ) (r : ℝ)
 end SevenEighths.UnevenEndpointPhysicalLow
 end
 end OAI
-#print axioms OAI.SevenEighths.UnevenEndpointPhysicalLow.normalizedProbe
-#print axioms OAI.SevenEighths.UnevenEndpointPhysicalLow.isBigO_rpow_of_eventual_norm_bound

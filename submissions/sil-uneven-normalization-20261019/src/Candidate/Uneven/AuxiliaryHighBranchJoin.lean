@@ -39,4 +39,3 @@ theorem high_branch_sum_join {ι : Type*} (s : Finset ι)
 
 end
 end OAI.SevenEighths.AuxiliaryHigh
-#print axioms OAI.SevenEighths.AuxiliaryHigh.high_branch_sum_join

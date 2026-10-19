@@ -352,6 +352,3 @@ def actual_geometry_error_paid_normalized_family {α : Type u}[Fintype α][Decid
 
 end
 end OAI.SevenEighths.MainErrorReconstruction
-#print axioms OAI.SevenEighths.MainErrorReconstruction.actual_error_indexed_normalized_to_admitted_columns
-#print axioms OAI.SevenEighths.MainErrorReconstruction.actual_geometry_error_indexed_admitted_columns
-#print axioms OAI.SevenEighths.MainErrorReconstruction.actual_geometry_error_paid_normalized_family

@@ -34,4 +34,3 @@ theorem actual_uneven_allocation_weight_le (reflected : Bool) (s : Input ι)
 
 end
 end OAI.SevenEighths.MainAssembly
-#print axioms OAI.SevenEighths.MainAssembly.actual_uneven_allocation_weight_le

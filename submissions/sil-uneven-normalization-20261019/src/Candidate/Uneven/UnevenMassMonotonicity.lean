@@ -25,4 +25,3 @@ theorem uneven_first_high_mass_le (reflected : Bool) (s : Input α) (R seed : Id
     (geometry_first_high_mass_nonneg reflected s R seed W D Z ξ ε hK key j)).trans_eq (mul_one _)
 
 end OAI.SevenEighths.TargetHigh830
-#print axioms OAI.SevenEighths.TargetHigh830.uneven_first_high_mass_le

@@ -177,4 +177,3 @@ theorem actual_low_fixed_profile_columns (P : Plane)
 
 end
 end OAI.SevenEighths.MainPhysical
-#print axioms OAI.SevenEighths.MainPhysical.actual_low_fixed_profile_columns

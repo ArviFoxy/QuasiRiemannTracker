@@ -1,12 +1,33 @@
-/- Seven-face physical shell; all source and mesh assumptions retained. -/
-/- Adapted from PR63 by Sil with OpenAI Codex assistance. Apache-2.0. -/
+import Candidate.Uneven.BootstrapMonotone
 import Candidate.Cycle63.Marked.ShellFactor
 import Candidate.Cycle63.Marked.TwoCommonLargeSlotShell
 import Candidate.Target830.High.VariableJointMarkedBins
 import Candidate.Target830.Source.Valuation
 import Candidate.Uneven.BootstrapGeometryUniform
-import Candidate.Uneven.BootstrapGainMonotone
 import Candidate.Cycle63.Density.CountingSetup
+
+/- Original module: Candidate.Uneven.BootstrapGainMonotone. -/
+section
+/- Copyright (c) 2026 Sil. Apache-2.0. -/
+
+set_option autoImplicit false
+noncomputable section
+namespace Sil.Uneven.Bootstrap
+
+theorem physicalGain_monotone {d : ℝ} (hd0 : 31/50 ≤ d) (hd1 : d ≤ 33/50) (S : ℝ) :
+    Monotone (physicalGain d S) := by
+  intro D D' hD
+  exact FiniteGain.gain_mono (coefficient_nonneg hd0 hd1).1
+    (coefficient_nonneg hd0 hd1).2 le_rfl hD
+
+
+end Sil.Uneven.Bootstrap
+end
+
+/- Original module: Candidate.Uneven.BootstrapHighBins. -/
+section
+/- Seven-face physical shell; all source and mesh assumptions retained. -/
+/- Adapted from PR63 by Sil with OpenAI Codex assistance. Apache-2.0. -/
 
 set_option autoImplicit false
 set_option maxHeartbeats 6000000
@@ -43,18 +64,18 @@ theorem actual_geometry_bootstrap_binned_shell {α : Type} [Fintype α] [Decidab
     (hMarkedBeta : (51/100:ℝ) ≤ HeckeZeroSupremum.beta)
     (hMarkedUpper : HeckeZeroSupremum.beta ≤ 7/8)
     (B Q loss ε : ℝ) (hB : 0 ≤ B) (hQ : 0 ≤ Q) (hQB : Q ≤ B)(hQmax : Q ≤ 130)
-    (hloss : 0<loss) (hε : 0<ε) {ap bp : ℝ} (hap : 0<ap)
+    (hloss : 0< loss) (hε : 0<ε) {ap bp : ℝ} (hap : 0< ap)
     (N : ℕ)(Cs bs b window pad : ℝ)
-    (hCs : 1 ≤ Cs)(hbs : 1 ≤ bs)(hb : 1 ≤ b)(hwindow : 0 ≤ window)(hpad : 0<pad) :
-    ∃bound : ℕ→ℝ,(∀k,0<bound k) ∧ ∃J : ℕ,
+    (hCs : 1 ≤ Cs)(hbs : 1 ≤ bs)(hb : 1 ≤ b)(hwindow : 0 ≤ window)(hpad : 0< pad) :
+    ∃bound : ℕ→ℝ,(∀k,0< bound k) ∧ ∃J : ℕ,
       ∀P : HighSourceParameters,P.profileBound=bound → FineMarkedSchedule P N Wslot (33/50) (33/50) →
       8*P.τ ≤ P.d*P.vslot → 16*P.τ ≤ P.d*P.vplain →
       2*P.τ*((J:ℝ)+1) ≤ 1/1000000000000 →
-      ∃F G : Finset (ℕ×ℕ),∃Cprofile C : ℝ,(0,0)∈F ∧ 0<Cprofile ∧ 0<C ∧
+      ∃F G : Finset (ℕ×ℕ),∃Cprofile C : ℝ,(0,0)∈F ∧ 0< Cprofile ∧ 0< C ∧
       ∀ᶠZ : ℝ in atTop,2 ≤ Z ∧
       ∀{κ DataLabel : Type}[Nonempty κ][Fintype DataLabel],
       ∀(reflected second : Bool)(s : Input α)(_hη : s.η=excluded F₀.character R₀)
-        (R seed : Ideal O)(K ξ : ℝ)(hK : 0<K)(bin : ℤ×(Fin 5→ℤ))
+        (R seed : Ideal O)(K ξ : ℝ)(hK : 0< K)(bin : ℤ×(Fin 5→ℤ))
         (column : κ→FirstColumnIndex (geometryFirstSource s R seed K Z ξ hK bin))
         (datum : DataLabel→SecondInputDatum α)(first : DataLabel→FirstSourceLabel)
         (row : κ→secondLiveRows (fun l=>(datum l).block))
@@ -63,12 +84,12 @@ theorem actual_geometry_bootstrap_binned_shell {α : Type} [Fintype α] [Decidab
         (_hR : ∀l,(datum (row l).val.1).R≠0)(ψ : κ→RayCharacter),
       let left := !reflected
       let unit := fun l=>(firstDictionaryUnit left η₀ u₀ F₀ R₀ l:O)
-      let hf := fun l=>geometry_first_frequency_ne_zero reflected η₀ u₀ F₀ R₀ hu₀ s R seed K Z ξ hK bin (column l) datum first (row l) (hfirst l)
-      let rawKey := fun l=>secondEncodedNonzeroRow (fun k=>(datum k).block) first (row l) left u₀ unit (hf l)
-      let key := fun l=>if second then reflectedNonzeroJointLabel (rawKey l) else rawKey l
+      let hf := fun l=> geometry_first_frequency_ne_zero reflected η₀ u₀ F₀ R₀ hu₀ s R seed K Z ξ hK bin (column l) datum first (row l) (hfirst l)
+      let rawKey := fun l=> secondEncodedNonzeroRow (fun k=>(datum k).block) first (row l) left u₀ unit (hf l)
+      let key := fun l=> if second then reflectedNonzeroJointLabel (rawKey l) else rawKey l
       ∀
         (a rawError allowance Kcontrol T width Bbox target reserve : ℝ) (i : ℕ),
-      81/100  ≤  a → a ≤ 83/100 → 0  ≤  Kcontrol → 1  ≤  T → 0<width →
+      81/100  ≤  a → a ≤ 83/100 → 0  ≤  Kcontrol → 1  ≤  T → 0< width →
       Function.Injective key →
       ∀(labels : Finset κ)(x : κ→Fin 4→ℝ)(coeff : κ→ℝ),
       (∀l∈labels,∀j,-Bbox ≤ x l j ∧ x l j ≤ Bbox) →
@@ -102,7 +123,7 @@ theorem actual_geometry_bootstrap_binned_shell {α : Type} [Fintype α] [Decidab
       ∀(C₁ R₁ : κ→Ideal O)(B₁ : ∀l,actualAllocations s.pools (C₁ l))
         (χ₁ : κ→Character)(t₁ : κ→ℝ),
       (∀l∈labels,frozenCoefficient (B₁ l).val (C₁ l) (R₁ l) s.ν s.W s.P≠0) →
-      let first := fun l=>child s (C₁ l) (R₁ l) (B₁ l) (χ₁ l) (t₁ l)
+      let first := fun l=> child s (C₁ l) (R₁ l) (B₁ l) (χ₁ l) (t₁ l)
       ∀(E R : κ→Ideal O)(pick : ∀l,actualAllocations (first l).pools (E l))
         (t : κ→ℝ)(w σ v : α→ℝ)(θ : α→RayQuotient.Characters M H)
         (p : κ→Profiles ap bp)(Ds : κ→Finset (Ideal O))(cap Araw : ℝ),
@@ -121,7 +142,7 @@ theorem actual_geometry_bootstrap_binned_shell {α : Type} [Fintype α] [Decidab
           (excluded (naturalRow (st l).character (z l) ((st l).row_ne_zero (z l) (hz l))).character
             (st l).puncture))
         (whole_source_family_nonprincipal M H hH (st l) η₀ (hQM l) (hQη l) (z l) (hz l) _)
-          (3*(i+1:ℕ)*Z^P.τ)<a+2*P.e) →
+          (3*(i+1:ℕ)*Z^P.τ)< a+2*P.e) →
       (∀j,0 ≤ w j) → (∀j,w j ≤  bootstrapRawMesh*fineRawCore) →
       (∑j,w j) ≤ 1/25 → (∀j,w j/P.d ≤ P.Rwidth) →
       (∀j,P.σmin ≤ σ j) → (∀j,σ j ≤ P.σmax) →
@@ -131,14 +152,14 @@ theorem actual_geometry_bootstrap_binned_shell {α : Type} [Fintype α] [Decidab
         s.W₂=((p l).profile 1:ℝ→ℂ) ∧ s.b₁=bp ∧ s.b₂=bp) →
       (∀l∈labels,∀L∈Ds l,Squarefree L) →
       (∀l∈labels,∀L∈Ds l,T ≤ (L.absNorm:ℝ) ∧ (L.absNorm:ℝ)<2*T) →
-      let src := fun l=>commonData (withHeight (first l) (st l).character (t l)) (E l) (R l) (pick l)
+      let src := fun l=> commonData (withHeight (first l) (st l).character (t l)) (E l) (R l) (pick l)
       (∀l∈labels,((p l).control G)^2*(2*bs*Cs^N)^2 ≤ Kcontrol) →
       (∀l∈labels,x l 3=Araw-Real.logb Z ((C₁ l).absNorm:ℝ)-Real.logb Z ((E l).absNorm:ℝ)) →
       pad+2*P.εplain*P.d+2*P.εslot*P.d*(N:ℝ) ≤ rawError →
       (∀l∈labels,retainedHighExponent (2*a-1)
-        (fun q=>Sil.Uneven.Bootstrap.physicalGain (2*a-1)
+        (fun q=> Sil.Uneven.Bootstrap.physicalGain (2*a-1)
           (∑j∈largeSlots (Cycle63CommonSupply.originalSlots
-            (fun k : CenteredMomentCommonProfile.liveIndices (pick l).val=>k.val.val))
+            (fun k : CenteredMomentCommonProfile.liveIndices (pick l).val=> k.val.val))
             w (fineRawTiny N),w j) q) (x l) ≤ target-reserve) →
       (∑l∈labels,coeff l*(∑L∈Ds l,∑alloc∈(src l).toSource.active L,
         retainedAllocationCost (src l) L alloc (z l))) ≤ 
@@ -165,7 +186,7 @@ theorem actual_geometry_bootstrap_binned_shell {α : Type} [Fintype α] [Decidab
     hsource P hboundeq hP.slotCap hslot hplain
   obtain ⟨Craw,hCraw,hcount⟩ := hcount P hP hslot hplain (by convert hheight using 1 <;> norm_num)
   let Cpart : ℝ := (Fintype.card (RayCharacter×RayCharacter):ℝ)*(2:ℝ)^(Fintype.card α)
-  have hCpart : 0<Cpart := by dsimp only [Cpart]; positivity
+  have hCpart : 0< Cpart := by dsimp only [Cpart]; positivity
   refine ⟨F,G,Cprofile,Csrc*Cpart*Cmult*Craw,hF,hCprofile,by positivity,?_⟩
   filter_upwards [hsource,hcount,eventually_geometry_marked_packet η₀ u₀ F₀ R₀ hu₀ B P.Bmask P.bΦ]
     with Z hs hc hp
@@ -177,18 +198,18 @@ theorem actual_geometry_bootstrap_binned_shell {α : Type} [Fintype α] [Decidab
     E R₂ pick t w σ v θ p Ds cap Araw hcap hmatches hscales hAraw hpadallow hf₂
     hstateMask hwidth hradial hupper hw hmesh hsupply hwr hσlo hσhi hfreq hplainfreq hW hDs hdyad src hcontrol
     hx3 hrawError hpoint
-  have hZ : 1<Z := by linarith [hs.1]
-  have hzpos : 0<Z := zero_lt_one.trans hZ
+  have hZ : 1< Z := by linarith [hs.1]
+  have hzpos : 0< Z := zero_lt_one.trans hZ
   have hδ : (31/50:ℝ) ≤ 2*a-1 ∧ 2*a-1 ≤ 33/50 := by
     constructor <;> linarith
-  let slots := fun l=>largeSlots (Cycle63CommonSupply.originalSlots
-    (fun k : CenteredMomentCommonProfile.liveIndices (pick l).val=>k.val.val)) w (fineRawTiny N)
+  let slots := fun l=> largeSlots (Cycle63CommonSupply.originalSlots
+    (fun k : CenteredMomentCommonProfile.liveIndices (pick l).val=> k.val.val)) w (fineRawTiny N)
   let amplitude := labeledRawSlot M H hH η₀ P.Wslot Z w σ v t θ
-    (fun l=>excluded (naturalRow (st l).character (z l) ((st l).row_ne_zero (z l) (hz l))).character (st l).puncture)
+    (fun l=> excluded (naturalRow (st l).character (z l) ((st l).row_ne_zero (z l) (hz l))).character (st l).puncture)
   let index := fun l=>(geometryDictionaryRay reflected s R seed K Z ξ hK bin (column l),ψ l)
   let gain := fun (s : Finset α) (q : ℝ)=>
     Sil.Uneven.Bootstrap.physicalGain (2*a-1) (∑j∈s,w j) q
-  let energy := fun l=>coeff l*Z^((2*a-1)*(x l 3-∑j∈slots l,w j))*(∏j∈slots l,max 1 ‖amplitude l j‖)^2
+  let energy := fun l=> coeff l*Z^((2*a-1)*(x l 3-∑j∈slots l,w j))*(∏j∈slots l,max 1 ‖amplitude l j‖)^2
   have hfirstcap (l : κ)(hl : l∈labels) :
       ((geometryFirstSource s R seed K Z ξ hK bin (column l).1).C.absNorm:ℝ) ≤ Z^B := by
     have hh := (hnorm l hl).1
@@ -200,8 +221,8 @@ theorem actual_geometry_bootstrap_binned_shell {α : Type} [Fintype α] [Decidab
     datum first (row l) (hparent l) (hfirst l) (hR l) (ψ l) (hfirstcap l hl)
     (st l) (z l) (hz l) (hchar l) (hpuncture l) (hrow l)
   have hcount' (j : RayCharacter×RayCharacter)(ss : Finset α)(rows : Finset κ)
-      (hrows : rows⊆labels.filter (fun l=>index l=j ∧ slots l=ss))
-      (hinjrow : Set.InjOn (fun l=>nonzeroJointSourceRow (key l)) (↑rows:Set κ))
+      (hrows : rows⊆labels.filter (fun l=> index l=j ∧ slots l=ss))
+      (hinjrow : Set.InjOn (fun l=> nonzeroJointSourceRow (key l)) (↑rows:Set κ))
       (q : ℝ)(hq0 : (4/5:ℝ) ≤ q)(hq1 : q ≤ Q)
       (hrowq : ∀l∈rows,rawFrequencyNorm (nonzeroJointSourceRow (key l)) ≤ Z^q) :
       (∑l∈rows,(∏k∈ss,max 1 ‖amplitude l k‖)^2) ≤ 
@@ -217,18 +238,18 @@ theorem actual_geometry_bootstrap_binned_shell {α : Type} [Fintype α] [Decidab
     have hh := hc.2 q hq0 (hq1.trans hQmax) j reflected second s hη R seed K ξ hK bin
       column datum first row hparent hfirst hR ψ rows hinjrow
       (fun l hl=>(Finset.mem_filter.mp (hrows hl)).2.1)
-      (fun l hl=>hfirstcap l (hmem l hl)) st hQM hQη z hz hchar hpuncture hrow hrowq
+      (fun l hl=> hfirstcap l (hmem l hl)) st hQM hQη z hz hchar hpuncture hrow hrowq
       ss w σ v t θ a i hiI (by linarith) (by linarith) hsmall
-      (fun k _=>hmesh k) (fun k _=>hwr k) (fun k _=>hσlo k) (fun k _=>hσhi k)
-      (fun l hl=>hwidth l (hmem l hl)) (fun l hl=>hradial l (hmem l hl))
-      (fun l hl=>hupper l (hmem l hl)) (fun l hl=>(hzero l (hmem l hl)).2)
-      (fun l hl k _=>hfreq l (hmem l hl) k) (fun l hl=>hplainfreq l (hmem l hl))
+      (fun k _=> hmesh k) (fun k _=> hwr k) (fun k _=> hσlo k) (fun k _=> hσhi k)
+      (fun l hl=> hwidth l (hmem l hl)) (fun l hl=> hradial l (hmem l hl))
+      (fun l hl=> hupper l (hmem l hl)) (fun l hl=>(hzero l (hmem l hl)).2)
+      (fun l hl k _=> hfreq l (hmem l hl) k) (fun l hl=> hplainfreq l (hmem l hl))
       (surviving_width_upper ss w (1/25) hw hsupply) 0 (by norm_num)
     simpa only [Real.rpow_zero,one_mul,amplitude,hP.slot,gain,mul_comm,mul_left_comm,mul_assoc,←Target830.Source.Valuation.rho_eq_local] using hh
   have hb := hbins left u₀ unit Z hs.1 key hinj labels x energy slots index amplitude w
     (2*a-1) (4/5) Q width Bbox Craw (fineHighRawFee) target reserve gain hδ.1 (by linarith only [hδ.2]) hCraw.le hwidthbin
-    (fun ss=>Sil.Uneven.Bootstrap.physicalGain_monotone hδ.1 hδ.2 (∑j∈ss,w j))
-    hx hq hpoint (fun l hl=>by
+    (fun ss=> Sil.Uneven.Bootstrap.physicalGain_monotone hδ.1 hδ.2 (∑j∈ss,w j))
+    hx hq hpoint (fun l hl=> by
       dsimp only [energy]
       rw [Real.rpow_add hzpos]
       exact mul_le_mul_of_nonneg_right
@@ -280,4 +301,4 @@ theorem actual_geometry_bootstrap_binned_shell {α : Type} [Fintype α] [Decidab
 
 end
 end OAI.SevenEighths.TargetHigh830
-#print axioms OAI.SevenEighths.TargetHigh830.actual_geometry_bootstrap_binned_shell
+end

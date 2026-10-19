@@ -686,5 +686,3 @@ by
 
 end
 end OAI.SevenEighths.MainPhysical
-#print axioms OAI.SevenEighths.MainPhysical.actual_geometry_selected_low_full_columns
-#print axioms OAI.SevenEighths.MainPhysical.actual_geometry_low_second_source_caps

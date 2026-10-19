@@ -249,6 +249,4 @@ theorem actual_affine_error_normalized_family
   ring
 end
 end OAI.SevenEighths.MainErrorReconstruction
-#print axioms OAI.SevenEighths.MainErrorReconstruction.affine_error_family_raw_source_zero
 
-#print axioms OAI.SevenEighths.MainErrorReconstruction.actual_affine_error_normalized_family

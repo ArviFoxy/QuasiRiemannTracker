@@ -97,4 +97,3 @@ def GeometryAffineSourceCapsSpec
 
 end
 end OAI.SevenEighths.MainPhysical
-#print axioms OAI.SevenEighths.MainPhysical.actual_affine_low_source_gates

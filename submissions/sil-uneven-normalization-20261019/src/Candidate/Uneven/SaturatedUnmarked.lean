@@ -76,4 +76,3 @@ theorem actual_unmarked_from_buffered_maxima_uniform
 
 
 end OAI.SevenEighths.SaturatedActualWeighted
-#print axioms OAI.SevenEighths.SaturatedActualWeighted.actual_unmarked_from_buffered_maxima_uniform

@@ -427,24 +427,3 @@ theorem weighted_region_slot_norm {ι : Type*} (S : Finset ι) (b Q : ι → ℝ
 end UnevenEndpointPhysical.Transport.PrincipalSlots
 end
 
-#print axioms UnevenEndpointPhysical.Transport.PrincipalSlots.principal_correction_defect
-#print axioms UnevenEndpointPhysical.Transport.PrincipalSlots.principal_correction_lower_bound
-#print axioms UnevenEndpointPhysical.Transport.PrincipalSlots.principal_correction_ne_zero
-#print axioms UnevenEndpointPhysical.Transport.PrincipalSlots.principal_correction_inverse_bound
-#print axioms UnevenEndpointPhysical.Transport.PrincipalSlots.principal_marked_error_bounds
-#print axioms UnevenEndpointPhysical.Transport.PrincipalSlots.principal_replacement_error
-#print axioms UnevenEndpointPhysical.Transport.PrincipalSlots.principal_slot_error
-#print axioms UnevenEndpointPhysical.Transport.PrincipalSlots.weighted_principal_slot_error
-#print axioms UnevenEndpointPhysical.Transport.PrincipalSlots.weighted_principal_product_error
-#print axioms UnevenEndpointPhysical.Transport.PrincipalSlots.principal_geometric_bounds
-#print axioms UnevenEndpointPhysical.Transport.PrincipalSlots.weighted_principal_product_error_linear
-#print axioms UnevenEndpointPhysical.Transport.PrincipalSlots.region_correction_defect
-#print axioms UnevenEndpointPhysical.Transport.PrincipalSlots.region_correction_lower_bound
-#print axioms UnevenEndpointPhysical.Transport.PrincipalSlots.region_correction_ne_zero
-#print axioms UnevenEndpointPhysical.Transport.PrincipalSlots.region_correction_inverse_bound
-#print axioms UnevenEndpointPhysical.Transport.PrincipalSlots.region_geometric_bounds
-#print axioms UnevenEndpointPhysical.Transport.PrincipalSlots.region_marked_error_bounds
-#print axioms UnevenEndpointPhysical.Transport.PrincipalSlots.region_replacement_error
-#print axioms UnevenEndpointPhysical.Transport.PrincipalSlots.region_slot_error
-#print axioms UnevenEndpointPhysical.Transport.PrincipalSlots.region_slot_norm_le
-#print axioms UnevenEndpointPhysical.Transport.PrincipalSlots.weighted_region_slot_norm

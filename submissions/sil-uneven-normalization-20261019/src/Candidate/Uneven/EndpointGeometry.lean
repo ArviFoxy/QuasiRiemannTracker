@@ -67,10 +67,6 @@ theorem affineCapacity_budget (P : SourcePlane) (d t : ℝ) :
   field_simp
   ring
 
-theorem affineCapacity_shift (P : SourcePlane) (d t : ℝ) :
-    affineCapacity P d 0 - affineCapacity P d t = 2 * t / P.lambda := by
-  unfold affineCapacity plainScale
-  ring
 
 theorem affine_shortening (P : SourcePlane) {d t n1 n2 z : ℝ}
     (h1 : n1 ≤ plainScale d t) (h2 : n2 ≤ plainScale d t)
@@ -262,6 +258,3 @@ theorem scheduled_capacity_or_empty (P : SourcePlane) {α : Type*}
 
 end OAI.SevenEighths.UnevenEndpoint.Physical
 
-#print axioms OAI.SevenEighths.UnevenEndpoint.Physical.scheduled_capacity_damping
-#print axioms OAI.SevenEighths.UnevenEndpoint.Physical.scaled_zeroCapacity
-#print axioms OAI.SevenEighths.UnevenEndpoint.Physical.scheduled_capacity_or_empty

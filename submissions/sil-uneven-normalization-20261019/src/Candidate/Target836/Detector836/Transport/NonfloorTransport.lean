@@ -1,8 +1,324 @@
-/- Ported from Cycle25 transport, weighted upstream PR6 and OpenAI/math; Apache-2.0 attribution retained. -/
 import Candidate.Target836.Detector836.Transport.GeometryFacts
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.PrimeRows.CubeFloorNormalized
+import Candidate.Target836.Detector836.Transport.FloorExponent
+import Candidate.Target836.Detector836.Transport.LowNormalizer
+import Candidate.Target836.Detector836.Transport.CubeFloorGlobalIntegral
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.PrimeRows.CubeNormalizer
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.PrimeRows.CubeFloorSaving
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.PrimeRows.CubeFloorCollected
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.PrimeRows.CubeBinPartition
 import Candidate.Target836.Detector836.Transport.NormalizedTransportSaving
 import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.PrimeRows.CentralSupportedSplit
-import Candidate.Target836.Detector836.Transport.CubeFloorCollected
+
+/- Original module: Candidate.Target836.Detector836.Transport.CubeFloorNormalized. -/
+section
+/- Ported from Cycle25 transport, weighted upstream PR6 and OpenAI/math; Apache-2.0 attribution retained. -/
+namespace OAI
+
+noncomputable section
+open scoped Classical BigOperators Topology ContDiff
+open Filter Set
+namespace SevenEighths.Target836HighRowFamily
+open ProbeHighRowFamily
+open HeckeFamily HeckeInverseAmplification ProbePhysical ProbeMellinBoundary
+open ProbeRaySlots HeckeDetectorPhysicalSelection
+local notation "O" => HeckeFamily.O
+variable (M : Ideal O) [NeZero M]
+local instance : Finite (O ⧸ M) := Ring.HasFiniteQuotients.finiteQuotient (NeZero.ne M)
+variable (H : Subgroup (O ⧸ M)ˣ) (hH : RayOrthogonality.globalUnits M≤ H)
+
+omit [NeZero M] in
+private theorem normalizedFloorPoolOutside (S : Finset (Ideal O)) (N : ℕ) (c b : ℝ) (Y : Fin N→ℝ) :
+    ∀j P,P∈pool (RayQuotient.identityClass M H) S c b (Y j) → P.val∉S :=
+  fun j P hP=>(mem_pool _ S c b (Y j) P).mp hP |>.2.2.2
+
+theorem actual_normalized_floor_cube (N n : ℕ) (e eps c b A R dmin dmax rmin τ ε κ cost mesh δ margin loss : ℝ)
+    (he : 0 < e) (he1 : e<1/1000) (heps : 0 < eps) (hc : 0 < c) (hcb : c≤ b) (hA : 0≤ A)
+    (hR : 0≤ R) (hdmin : 0 < dmin) (hdmax : 0≤ dmax) (hdRange : dmin≤ dmax) (hrmin : 0 < rmin)
+    (hτ : 0<τ) (hε : 0<ε) (hκ : 0<κ) (hcost : 0≤ cost) (hmesh : 0 < mesh) (hδ : 0<δ)
+    (hbudget : 8*e*R+κ≤ε) (hgap : ε < rmin*mesh) (hmargin : 0 < margin)
+    (hheight : 2*τ < dmin*cost) (hloss : τ*(2+4*eps) < loss)
+    (S : Finset (Ideal O)) (hS : SourceExclusions S) (hfirst : FirstTail (4*e) S)
+    (hmax : ∀P∈S,P.IsMaximal)
+    (ell : Fin N→ℝ) (hell : Function.Injective ell)
+    (hello : ∀j,dmax*rmin≤ ell j) (hellhi : ∀j,ell j≤ dmin*R)
+    (W : Fin N→ℝ→ℝ)
+    (hWs : ∀j,Function.support (W j)⊆Ioo c b) (hW : ∀j,ContDiff ℝ ∞ (W j)) (hWB : ∀j t,0≤ W j t ∧ W j t≤ A)
+    (hcompact : ∀j,HasCompactSupport (W j)) (hne : ∀j,W j≠0)
+    (hellsum : ∑j,ell j=Target836.Arithmetic.ell)
+    (W0 W1 : SchwartzMap ℝ ℂ) (a0 b0 a1 b1 : ℝ) (ha0 : 0 < a0) (ha1 : 0 < a1)
+    (hW0 : Function.support W0⊆Icc a0 b0) (hW1 : Function.support W1⊆Icc a1 b1)
+    (hr0 : ∀y,(W0 y).im=0) (hr1 : ∀y,(W1 y).im=0)
+    (hp0 : ∀y,0≤(W0 y).re) (hp1 : ∀y,0≤(W1 y).re) (hn0 : W0≠0) (hn1 : W1≠0)
+    (nu : ℝ) (hnu : 0 < nu) :
+    letI : NeZero (∏P∈S,P) := ⟨fixedPrimeProduct_ne_zero S hS.prime⟩
+    ∃C : ℝ,0 < C ∧ ∀η : Character,∀ᶠ Z : ℝ in atTop,
+      ∀d : ℝ,dmin≤ d → d≤ dmax → ∀(v : ℝ),0≤ v → ∀rows : Finset FreeRow,
+      (∀u∈rows,u.val≠1 ∧ Z^δ≤ rowNorm u ∧
+        (calibrationForSet S hmax).residueMonoid u.val≠0 ∧ rowNorm u≤ Z^(d-margin)) →
+      (∀u∈rows,rowNorm u≤ Z^v) →
+      ∀i : ℕ,i≤ n →
+      (∀u∈rows,detectorMaximum (sourceDetectorFamily S hS.prime η u (rayCubeFamily M H hH u))
+        (3*(i+1:ℕ)*Z^τ)<51/100+2*e) →
+      let Yp : Fin N→ℝ := fun j=> Z^(ell j)
+      let T : Fin N→Finset ProbePhysical.PrimeIdeal := fun j=> pool (RayQuotient.identityClass M H) S c b (Yp j)
+      let normer := PrincipalMellinResidues.sourceResidueConstant W0 W1 (∏P∈S,P)*
+        (Probe.principalScalar Finset.univ Z (Target836.Arithmetic.ell)
+          (PrincipalSignalComparison.slotMass T (ProbePrincipalResidueActual.residueWeights W Yp)) : ℂ)
+      normer≠0 ∧ ‖finiteCentralCubeRows S hS hmax η rows T (normalizedFloorPoolOutside M H S N c b Yp) (fun j y=>(W j y:ℂ)) Yp
+        W0 W1 (Z^(Target836.Arithmetic.x:ℝ)) (Z^(Target836.Arithmetic.y:ℝ)) Z e (fun _=>51/100) (fun _=>(3*i+1:ℕ)*Z^τ)/normer‖≤
+        C*(η.modulus.absNorm:ℝ)^(2*eps)*
+          Z^(Target836.Transport.floorSourceExponent v+
+            Target836.Transport.floorRealLoss N v e eps loss mesh+nu) := by
+  let : NeZero (∏P∈S,P) := ⟨fixedPrimeProduct_ne_zero S hS.prime⟩
+  let WC : Fin N→ℝ→ℂ := fun j y=>(W j y:ℂ)
+  have hWC (j : Fin N) : ContDiff ℝ ∞ (WC j) := Complex.ofRealCLM.contDiff.comp (hW j)
+  have hWCs (j : Fin N) : Function.support (WC j)⊆Ioo c b := by
+    intro y hy
+    apply hWs j
+    intro hh
+    exact hy (by dsimp [WC];rw [hh];simp)
+  have hWCB (j : Fin N) (y : ℝ) : ‖WC j y‖≤ A := by
+    simpa only [WC,Complex.norm_real,Real.norm_eq_abs,abs_of_nonneg (hWB j y).1] using (hWB j y).2
+  obtain ⟨Cg,hCg,hbound⟩ := actual_global_floor_cube_norm M H hH N n e eps c b A R dmin dmax rmin τ ε κ cost mesh δ margin loss
+    he he1 heps hc hcb hA hR hdmin hdmax hdRange hrmin hτ hε hκ hcost hmesh hδ hbudget hgap hmargin hheight hloss
+    S hS hfirst hmax ell hell hello hellhi WC hWCs hWC hWCB hellsum
+    W0 W1 a0 b0 a1 b1 ha0 ha1 hW0 hW1
+  have hellpos (j : Fin N) : 0 < ell j :=
+    (mul_pos (hdmin.trans_le hdRange) hrmin).trans_le (hello j)
+  obtain ⟨Cn,hCn,hnormer⟩ := Target836LowNormalizer.actual_ray_normalizer_inverse M H hH S hS c b hc hcb ell hellpos hellsum
+    W hW hcompact hWs (fun j y=>(hWB j y).1) hne W0 W1 a0 b0 a1 b1 ha0 ha1 hW0 hW1
+    hr0 hr1 hp0 hp1 hn0 hn1 nu hnu
+  refine ⟨Cg*Cn,mul_pos hCg hCn,?_⟩
+  intro η
+  filter_upwards [hbound η,hnormer,eventually_gt_atTop (0:ℝ)] with Z hb hn hZ
+  intro d hd hd' v hv rows hrows hnorm i hi hbin
+  dsimp only at hn ⊢
+  refine ⟨hn.1,?_⟩
+  have hh := hb d hd hd' v hv rows hrows hnorm i hi hbin
+  rw [div_eq_mul_inv,norm_mul]
+  have hm := mul_le_mul hh hn.2 (norm_nonneg _) (by positivity)
+  apply hm.trans_eq
+  rw [Real.rpow_add hZ (Target836.Transport.floorSourceExponent v+
+    Target836.Transport.floorRealLoss N v e eps loss mesh) nu]
+  ring
+
+end SevenEighths.Target836HighRowFamily
+
+end
+
+end OAI
+
+#print axioms OAI.SevenEighths.Target836HighRowFamily.actual_normalized_floor_cube
+end
+
+/- Original module: Candidate.Target836.Detector836.Transport.CubeFloorSaving. -/
+section
+/- Ported from Cycle25 transport, weighted upstream PR6 and OpenAI/math; Apache-2.0 attribution retained. -/
+namespace OAI
+
+noncomputable section
+open scoped Classical BigOperators Topology ContDiff
+open Filter Set
+namespace SevenEighths.Target836HighRowFamily
+open ProbeHighRowFamily
+open HeckeFamily HeckeInverseAmplification ProbePhysical ProbeMellinBoundary
+open ProbeRaySlots HeckeDetectorPhysicalSelection
+local notation "O" => HeckeFamily.O
+variable (M : Ideal O) [NeZero M]
+local instance : Finite (O ⧸ M) := Ring.HasFiniteQuotients.finiteQuotient (NeZero.ne M)
+variable (H : Subgroup (O ⧸ M)ˣ) (hH : RayOrthogonality.globalUnits M≤ H)
+
+omit [NeZero M] in
+private theorem savingFloorPoolOutside (S : Finset (Ideal O)) (N : ℕ) (c b : ℝ) (Y : Fin N→ℝ) :
+    ∀j P,P∈pool (RayQuotient.identityClass M H) S c b (Y j) → P.val∉S :=
+  fun j P hP=>(mem_pool _ S c b (Y j) P).mp hP |>.2.2.2
+
+theorem actual_floor_cube_saving (N n : ℕ) (e eps c b A R dmin dmax rmin τ ε κ cost mesh δ margin loss : ℝ)
+    (he : 0 < e) (he1 : e<1/1000) (heps : 0 < eps) (hc : 0 < c) (hcb : c≤ b) (hA : 0≤ A)
+    (hR : 0≤ R) (hdmin : 0 < dmin) (hdmax : 0≤ dmax) (hdRange : dmin≤ dmax) (hrmin : 0 < rmin)
+    (hτ : 0<τ) (hε : 0<ε) (hκ : 0<κ) (hcost : 0≤ cost) (hmesh : 0 < mesh) (hδ : 0<δ)
+    (hbudget : 8*e*R+κ≤ε) (hgap : ε < rmin*mesh) (hmargin : 0 < margin)
+    (hheight : 2*τ < dmin*cost) (hloss : τ*(2+4*eps) < loss)
+    (S : Finset (Ideal O)) (hS : SourceExclusions S) (hfirst : FirstTail (4*e) S)
+    (hmax : ∀P∈S,P.IsMaximal)
+    (ell : Fin N→ℝ) (hell : Function.Injective ell)
+    (hello : ∀j,dmax*rmin≤ ell j) (hellhi : ∀j,ell j≤ dmin*R)
+    (W : Fin N→ℝ→ℝ)
+    (hWs : ∀j,Function.support (W j)⊆Ioo c b) (hW : ∀j,ContDiff ℝ ∞ (W j)) (hWB : ∀j t,0≤ W j t ∧ W j t≤ A)
+    (hcompact : ∀j,HasCompactSupport (W j)) (hne : ∀j,W j≠0)
+    (hellsum : ∑j,ell j=Target836.Arithmetic.ell)
+    (W0 W1 : SchwartzMap ℝ ℂ) (a0 b0 a1 b1 : ℝ) (ha0 : 0 < a0) (ha1 : 0 < a1)
+    (hW0 : Function.support W0⊆Icc a0 b0) (hW1 : Function.support W1⊆Icc a1 b1)
+    (hr0 : ∀y,(W0 y).im=0) (hr1 : ∀y,(W1 y).im=0)
+    (hp0 : ∀y,0≤(W0 y).re) (hp1 : ∀y,0≤(W1 y).re) (hn0 : W0≠0) (hn1 : W1≠0)
+    (nu : ℝ) (hnu : 0 < nu)
+    (saving : ℝ) (_hsaving : 0 < saving)
+    (htotal : 26*e+(N+8)*eps+loss+mesh*Target836.Arithmetic.ell+nu+saving≤1/100) :
+    letI : NeZero (∏P∈S,P) := ⟨fixedPrimeProduct_ne_zero S hS.prime⟩
+    ∃C : ℝ,0 < C ∧ ∀η : Character,∀ᶠ Z : ℝ in atTop,
+      ∀d : ℝ,dmin≤ d → d≤ dmax → ∀(v : ℝ),0≤ v → v≤ Target836.Arithmetic.h+Target836.Transport.rowExtension → ∀rows : Finset FreeRow,
+      (∀u∈rows,u.val≠1 ∧ Z^δ≤ rowNorm u ∧
+        (calibrationForSet S hmax).residueMonoid u.val≠0 ∧ rowNorm u≤ Z^(d-margin)) →
+      (∀u∈rows,rowNorm u≤ Z^v) →
+      ∀i : ℕ,i≤ n →
+      (∀u∈rows,detectorMaximum (sourceDetectorFamily S hS.prime η u (rayCubeFamily M H hH u))
+        (3*(i+1:ℕ)*Z^τ)<51/100+2*e) →
+      let Yp : Fin N→ℝ := fun j=> Z^(ell j)
+      let T : Fin N→Finset ProbePhysical.PrimeIdeal := fun j=> pool (RayQuotient.identityClass M H) S c b (Yp j)
+      let normer := PrincipalMellinResidues.sourceResidueConstant W0 W1 (∏P∈S,P)*
+        (Probe.principalScalar Finset.univ Z (Target836.Arithmetic.ell)
+          (PrincipalSignalComparison.slotMass T (ProbePrincipalResidueActual.residueWeights W Yp)) : ℂ)
+      normer≠0 ∧ ‖finiteCentralCubeRows S hS hmax η rows T (savingFloorPoolOutside M H S N c b Yp) (fun j y=>(W j y:ℂ)) Yp
+        W0 W1 (Z^(Target836.Arithmetic.x:ℝ)) (Z^(Target836.Arithmetic.y:ℝ)) Z e (fun _=>51/100) (fun _=>(3*i+1:ℕ)*Z^τ)/normer‖≤
+        C*(η.modulus.absNorm:ℝ)^(2*eps)*
+          Z^(Target836.Assembly.signal Target836.Arithmetic.theta-saving) := by
+  let : NeZero (∏P∈S,P) := ⟨fixedPrimeProduct_ne_zero S hS.prime⟩
+  obtain ⟨C,hC,hbound⟩ := actual_normalized_floor_cube M H hH N n e eps c b A R dmin dmax rmin τ ε κ cost mesh δ margin loss
+    he he1 heps hc hcb hA hR hdmin hdmax hdRange hrmin hτ hε hκ hcost hmesh hδ hbudget hgap hmargin hheight hloss
+    S hS hfirst hmax ell hell hello hellhi W hWs hW hWB hcompact hne hellsum
+    W0 W1 a0 b0 a1 b1 ha0 ha1 hW0 hW1 hr0 hr1 hp0 hp1 hn0 hn1 nu hnu
+  refine ⟨C,hC,?_⟩
+  intro η
+  filter_upwards [hbound η,eventually_ge_atTop (1:ℝ)] with Z hb hZ
+  intro d hd hd' v hv hvhi rows hrows hnorm i hi hbin
+  dsimp only
+  have hh := hb d hd hd' v hv rows hrows hnorm i hi hbin
+  refine ⟨hh.1,hh.2.trans ?_⟩
+  have hm := Target836.Transport.floor_source_margin hvhi
+  have hl := Target836.Transport.floor_loss_bound N (loss:=loss) (mesh:=mesh) (hvhi.trans Target836.Transport.extended_h_lt_one.le) he.le heps.le
+  apply mul_le_mul_of_nonneg_left (Real.rpow_le_rpow_of_exponent_le hZ _) (by positivity)
+  linarith
+
+end SevenEighths.Target836HighRowFamily
+
+end
+
+end OAI
+
+#print axioms OAI.SevenEighths.Target836HighRowFamily.actual_floor_cube_saving
+end
+
+/- Original module: Candidate.Target836.Detector836.Transport.CubeFloorCollected. -/
+section
+/- Ported from Cycle25 transport, weighted upstream PR6 and OpenAI/math; Apache-2.0 attribution retained. -/
+namespace OAI
+
+noncomputable section
+open scoped Classical BigOperators Topology ContDiff
+open Filter Set
+namespace SevenEighths.Target836HighRowFamily
+open ProbeHighRowFamily
+open HeckeFamily HeckeInverseAmplification ProbePhysical ProbeMellinBoundary
+open ProbeRaySlots HeckeDetectorPhysicalSelection
+local notation "O" => HeckeFamily.O
+variable (M : Ideal O) [NeZero M]
+local instance : Finite (O ⧸ M) := Ring.HasFiniteQuotients.finiteQuotient (NeZero.ne M)
+variable (H : Subgroup (O ⧸ M)ˣ) (hH : RayOrthogonality.globalUnits M ≤ H)
+
+omit [NeZero M] in
+private theorem collectedFloorPoolOutside (S : Finset (Ideal O)) (N : ℕ) (c b : ℝ) (Y : Fin N→ℝ) :
+    ∀j P,P∈pool (RayQuotient.identityClass M H) S c b (Y j) → P.val∉S :=
+  fun j P hP=>(mem_pool _ S c b (Y j) P).mp hP |>.2.2.2
+
+theorem actual_floor_rows_saving (N n : ℕ) (e eps c b A R dmin dmax rmin τ ε κ cost mesh δ margin loss : ℝ)
+    (he : 0 < e) (he1 : e<1/1000) (heps : 0 < eps) (hc : 0 < c) (hcb : c ≤ b) (hA : 0 ≤ A)
+    (hR : 0 ≤ R) (hdmin : 0 < dmin) (hdmax : 0 ≤ dmax) (hdRange : dmin ≤ dmax) (hrmin : 0 < rmin)
+    (hτ : 0<τ) (hε : 0<ε) (hκ : 0<κ) (hcost : 0 ≤ cost) (hmesh : 0 < mesh) (hδ : 0<δ)
+    (hbudget : 8*e*R+κ≤ε) (hgap : ε < rmin*mesh) (hmargin : 0 < margin)
+    (hheight : 2*τ < dmin*cost) (hloss : τ*(2+4*eps) < loss)
+    (S : Finset (Ideal O)) (hS : SourceExclusions S) (hfirst : FirstTail (4*e) S)
+    (hmax : ∀P∈S,P.IsMaximal)
+    (ell : Fin N→ℝ) (hell : Function.Injective ell)
+    (hello : ∀j,dmax*rmin ≤ ell j) (hellhi : ∀j,ell j ≤ dmin*R)
+    (W : Fin N→ℝ→ℝ)
+    (hWs : ∀j,Function.support (W j)⊆Ioo c b) (hW : ∀j,ContDiff ℝ ∞ (W j)) (hWB : ∀j t,0 ≤ W j t ∧ W j t ≤ A)
+    (hcompact : ∀j,HasCompactSupport (W j)) (hne : ∀j,W j≠0)
+    (hellsum : ∑j,ell j=Target836.Arithmetic.ell)
+    (W0 W1 : SchwartzMap ℝ ℂ) (a0 b0 a1 b1 : ℝ) (ha0 : 0 < a0) (ha1 : 0 < a1)
+    (hW0 : Function.support W0⊆Icc a0 b0) (hW1 : Function.support W1⊆Icc a1 b1)
+    (hr0 : ∀y,(W0 y).im=0) (hr1 : ∀y,(W1 y).im=0)
+    (hp0 : ∀y,0≤(W0 y).re) (hp1 : ∀y,0≤(W1 y).re) (hn0 : W0≠0) (hn1 : W1≠0)
+    (nu : ℝ) (hnu : 0 < nu)
+    (saving : ℝ) (hsaving : 0 < saving)
+    (htotal : 26*e+(N+8)*eps+loss+mesh*Target836.Arithmetic.ell+nu+saving≤1/100) :
+    letI : NeZero (∏P∈S,P) := ⟨fixedPrimeProduct_ne_zero S hS.prime⟩
+    ∃C : ℝ,0 < C ∧ ∀η : Character,∀ᶠ Z : ℝ in atTop,
+      ∀d : ℝ,dmin ≤ d → d ≤ dmax → ∀(v : ℝ),0 ≤ v → v ≤ Target836.Arithmetic.h+Target836.Transport.rowExtension → ∀rows : Finset FreeRow,
+      (∀u∈rows,u.val≠1 ∧ Z^δ ≤ rowNorm u ∧
+        (calibrationForSet S hmax).residueMonoid u.val≠0 ∧ rowNorm u ≤ Z^(d-margin)) →
+      (∀u∈rows,rowNorm u ≤ Z^v) →
+      ∀idx : FreeRow→ℕ,(∀u∈rows,idx u ≤ n) →
+      (∀u∈rows,detectorMaximum (sourceDetectorFamily S hS.prime η u (rayCubeFamily M H hH u))
+        (3*(idx u+1:ℕ)*Z^τ)<51/100+2*e) →
+      let Yp : Fin N→ℝ := fun j=> Z^(ell j)
+      let T : Fin N→Finset ProbePhysical.PrimeIdeal := fun j=> pool (RayQuotient.identityClass M H) S c b (Yp j)
+      let normer := PrincipalMellinResidues.sourceResidueConstant W0 W1 (∏P∈S,P)*
+        (Probe.principalScalar Finset.univ Z (Target836.Arithmetic.ell)
+          (PrincipalSignalComparison.slotMass T (ProbePrincipalResidueActual.residueWeights W Yp)) : ℂ)
+      normer≠0 ∧ ‖finiteCentralCubeRows S hS hmax η rows T (collectedFloorPoolOutside M H S N c b Yp) (fun j y=>(W j y:ℂ)) Yp
+        W0 W1 (Z^(Target836.Arithmetic.x:ℝ)) (Z^(Target836.Arithmetic.y:ℝ)) Z e (fun _=>51/100) (fun u=>(3*idx u+1:ℕ)*Z^τ)/normer‖≤
+        C*(η.modulus.absNorm:ℝ)^(2*eps)*
+          Z^(Target836.Assembly.signal Target836.Arithmetic.theta-saving) := by
+  let : NeZero (∏P∈S,P) := ⟨fixedPrimeProduct_ne_zero S hS.prime⟩
+  obtain ⟨C,hC,hbound⟩ := actual_floor_cube_saving M H hH N n e eps c b A R dmin dmax rmin τ ε κ cost mesh δ margin loss
+    he he1 heps hc hcb hA hR hdmin hdmax hdRange hrmin hτ hε hκ hcost hmesh hδ hbudget hgap hmargin hheight hloss
+    S hS hfirst hmax ell hell hello hellhi W hWs hW hWB hcompact hne hellsum
+    W0 W1 a0 b0 a1 b1 ha0 ha1 hW0 hW1 hr0 hr1 hp0 hp1 hn0 hn1 nu hnu saving hsaving htotal
+  refine ⟨(n+1:ℕ)*C,by positivity,?_⟩
+  intro η
+  filter_upwards [hbound η] with Z hb
+  intro d hd hd' v hv hvhi rows hrows hnorm idx hidx hbin
+  dsimp only
+  let Yp : Fin N→ℝ := fun j=> Z^(ell j)
+  let T : Fin N→Finset ProbePhysical.PrimeIdeal := fun j=> pool (RayQuotient.identityClass M H) S c b (Yp j)
+  let hT := collectedFloorPoolOutside M H S N c b Yp
+  let WC : Fin N→ℝ→ℂ := fun j y=>(W j y:ℂ)
+  let normer := PrincipalMellinResidues.sourceResidueConstant W0 W1 (∏P∈S,P)*
+    (Probe.principalScalar Finset.univ Z (Target836.Arithmetic.ell)
+      (PrincipalSignalComparison.slotMass T (ProbePrincipalResidueActual.residueWeights W Yp)) : ℂ)
+  let Ri : ℕ→Finset FreeRow := fun i=> rows.filter (fun u=> idx u=i)
+  have hnormer := (hb d hd hd' v hv hvhi ∅ (by simp) (by simp) 0 (Nat.zero_le n) (by simp)).1
+  refine ⟨hnormer,?_⟩
+  have hpart := finiteCentralCubeRows_bin_partition S hS hmax η rows T hT WC Yp W0 W1
+    (Z^(Target836.Arithmetic.x:ℝ)) (Z^(Target836.Arithmetic.y:ℝ)) Z e (Z^τ) idx (fun _=>0) n 0 (fun u hu=>⟨hidx u hu,le_rfl⟩)
+  have heq : finiteCentralCubeRows S hS hmax η rows T hT WC Yp W0 W1
+      (Z^(Target836.Arithmetic.x:ℝ)) (Z^(Target836.Arithmetic.y:ℝ)) Z e (fun _=>51/100) (fun u=>(3*idx u+1:ℕ)*Z^τ)=
+      ∑i∈Finset.range (n+1),finiteCentralCubeRows S hS hmax η (Ri i) T hT WC Yp W0 W1
+        (Z^(Target836.Arithmetic.x:ℝ)) (Z^(Target836.Arithmetic.y:ℝ)) Z e (fun _=>51/100) (fun _=>(3*i+1:ℕ)*Z^τ) := by
+    simpa [cubeBinRows,Ri] using hpart
+  change ‖finiteCentralCubeRows S hS hmax η rows T hT WC Yp W0 W1
+    (Z^(Target836.Arithmetic.x:ℝ)) (Z^(Target836.Arithmetic.y:ℝ)) Z e (fun _=>51/100) (fun u=>(3*idx u+1:ℕ)*Z^τ)/normer‖≤ _
+  rw [heq,Finset.sum_div]
+  apply (norm_sum_le _ _).trans
+  have hboundi (i : ℕ) (hi : i∈Finset.range (n+1)) :
+      ‖finiteCentralCubeRows S hS hmax η (Ri i) T hT WC Yp W0 W1
+        (Z^(Target836.Arithmetic.x:ℝ)) (Z^(Target836.Arithmetic.y:ℝ)) Z e (fun _=>51/100) (fun _=>(3*i+1:ℕ)*Z^τ)/normer‖≤
+      C*(η.modulus.absNorm:ℝ)^(2*eps)*Z^(Target836.Assembly.signal Target836.Arithmetic.theta-saving) := by
+    have hsub : Ri i⊆rows := Finset.filter_subset _ _
+    have hbi : ∀u∈Ri i,detectorMaximum (sourceDetectorFamily S hS.prime η u (rayCubeFamily M H hH u))
+        (3*(i+1:ℕ)*Z^τ)<51/100+2*e := by
+      intro u hu
+      have hh := hbin u (hsub hu)
+      rwa [(Finset.mem_filter.mp hu).2] at hh
+    exact (hb d hd hd' v hv hvhi (Ri i) (fun u hu=> hrows u (hsub hu))
+      (fun u hu=> hnorm u (hsub hu)) i (Nat.le_of_lt_succ (Finset.mem_range.mp hi)) hbi).2
+  calc
+    _ ≤ ∑i∈Finset.range (n+1),C*(η.modulus.absNorm:ℝ)^(2*eps)*Z^(Target836.Assembly.signal Target836.Arithmetic.theta-saving) := Finset.sum_le_sum hboundi
+    _ = _ := by simp only [Finset.sum_const,Finset.card_range,nsmul_eq_mul];ring
+
+end SevenEighths.Target836HighRowFamily
+
+end
+
+end OAI
+
+#print axioms OAI.SevenEighths.Target836HighRowFamily.actual_floor_rows_saving
+end
+
+/- Original module: Candidate.Target836.Detector836.Transport.NonfloorTransport. -/
+section
+/- Ported from Cycle25 transport, weighted upstream PR6 and OpenAI/math; Apache-2.0 attribution retained. -/
 namespace OAI
 
 noncomputable section
@@ -50,8 +366,8 @@ theorem actual_nonfloor_probe_transport (K : ℕ) (e δ a b B ζ saving τ ellMi
     (hfloorbudget : 26*e+(K+8)*eps+loss+mesh*Target836.Arithmetic.ell+nu+sigma≤1/100) :
     let : NeZero (∏P∈S,P) := ⟨fixedPrimeProduct_ne_zero S hS.prime⟩
     ∃n : ℕ,0 < n ∧ ∀η : Character,∃C : ℝ,0 < C ∧ ∀ᶠ Z : ℝ in atTop,
-      let Yp := fun j=>Z^(ell j)
-      let T := fun j=>pool (RayQuotient.identityClass M H) S a b (Yp j)
+      let Yp := fun j=> Z^(ell j)
+      let T := fun j=> pool (RayQuotient.identityClass M H) S a b (Yp j)
       let hT := nonfloorTransportPoolOutside M H S K a b Yp
       let WC : Fin K→ℝ→ℂ := fun j y=>(W j y:ℂ)
       let normer := sourceResidueConstant W0 W1 (∏P∈S,P)*
@@ -78,7 +394,7 @@ theorem actual_nonfloor_probe_transport (K : ℕ) (e δ a b B ζ saving τ ellMi
       let alpha : FreeRow→ℝ := fun u=>51/100+e*grid u
       let height : FreeRow→ℝ := fun u=>(3*idx u+1:ℕ)*Z^τ
       ‖compensatedPhysicalProbe η (calibrationForSet S hmax) W0 W1
-          (fun j=>canonicalSlotSupport (T j)) WC Yp (Z^(Target836.Arithmetic.x:ℝ)) (Z^(Target836.Arithmetic.y:ℝ)) Z/normer-
+          (fun j=> canonicalSlotSupport (T j)) WC Yp (Z^(Target836.Arithmetic.x:ℝ)) (Z^(Target836.Arithmetic.y:ℝ)) Z/normer-
         HeckeSignal.signal (η.excludePrimes S hS.prime) (sourceCorrection η S) (-(4+Target836.Transport.b)/6) Z-
         finiteCentralCubeRows S hS hmax η
           (supportedNonfloorRows S hmax (rowBand (Z^(1/100:ℝ)) (Z^((Target836.Arithmetic.h:ℝ)+ζ))) grid) T hT WC Yp
@@ -104,8 +420,8 @@ theorem actual_nonfloor_probe_transport (K : ℕ) (e δ a b B ζ saving τ ellMi
   dsimp only at ht ⊢
   obtain ⟨hnorm,idx,grid,hlabels,hbins,hray,herror⟩ := ht
   refine ⟨hnorm,idx,grid,hlabels,hbins,hray,?_⟩
-  let Yp : Fin K→ℝ := fun j=>Z^(ell j)
-  let T : Fin K→Finset ProbePhysical.PrimeIdeal := fun j=>pool (RayQuotient.identityClass M H) S a b (Yp j)
+  let Yp : Fin K→ℝ := fun j=> Z^(ell j)
+  let T : Fin K→Finset ProbePhysical.PrimeIdeal := fun j=> pool (RayQuotient.identityClass M H) S a b (Yp j)
   let hT := nonfloorTransportPoolOutside M H S K a b Yp
   let WC : Fin K→ℝ→ℂ := fun j y=>(W j y:ℂ)
   let rows := rowBand (Z^(1/100:ℝ)) (Z^((Target836.Arithmetic.h:ℝ)+ζ))
@@ -148,3 +464,4 @@ end
 end OAI
 
 #print axioms OAI.SevenEighths.Target836HighRowFamily.actual_nonfloor_probe_transport
+end

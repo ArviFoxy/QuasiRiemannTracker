@@ -69,14 +69,6 @@ theorem root_gain_lower {a b : ι → ℝ} {S D q pad cap : ℝ}
   have hc := mul_le_mul_of_nonneg_right hcap (sub_nonneg.mpr hq1)
   nlinarith only [hscaled,hc]
 
-theorem weighted_root_exponent {a b : ι → ℝ} {S D q pad cap rho nu : ℝ}
-    (ha : ∀i,0 ≤ a i) (hb : ∀i,0 ≤ b i)
-    (hS : 0 ≤ S) (hq0 : 0 ≤ q) (hq1 : q ≤ 1) (hpad : 0 ≤ pad)
-    (hcap : gain a b S D ≤ cap*D) :
-    rho*(D*q)+nu*S-gain a b S (D*q+pad) ≤
-      rho*D+nu*S-gain a b S D-(rho-cap)*D*(1-q) := by
-  have h := root_gain_lower ha hb hS hq0 hq1 hpad hcap
-  nlinarith only [h]
 
 theorem width_transport {a b : ι → ℝ} {gamma R L Q S F : ℝ}
     (ha : ∀i,0 ≤ a i) (hb : ∀i,0 ≤ b i) (hg : 0 ≤ gamma)
@@ -105,6 +97,3 @@ theorem channel_payment {a b : ι → ℝ} {gamma R L Q S F base fee : ℝ}
   linarith only [hl,hh]
 
 end Sil.Uneven.FiniteGain
-#print axioms Sil.Uneven.FiniteGain.root_gain_lower
-#print axioms Sil.Uneven.FiniteGain.width_transport
-#print axioms Sil.Uneven.FiniteGain.channel_payment

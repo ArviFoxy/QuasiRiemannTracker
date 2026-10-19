@@ -1,0 +1,45 @@
+/- Adapted from PR63 by Sil with OpenAI Codex assistance. Apache-2.0. -/
+/- Adapted from PR63 by Sil with OpenAI Codex assistance. Apache-2.0. -/
+import Candidate.Uneven.BootstrapSchedule
+import Candidate.Uneven.MainCellGeometry
+import Candidate.Cycle63.Physical.InitialMass.GeometryMeshChoice
+
+set_option autoImplicit false
+noncomputable section
+namespace OAI.SevenEighths.MainAssembly
+open Cycle63InitialMass SaturatedPlain BootstrapPlain
+
+def chosenMesh (ε : ℝ) : ℝ :=
+  min (min (geometryAnalyticMesh 1 1 (ε/4) 2 28 1)
+    (Cycle63FirstActual.comparisonMesh 1 1 (ε/2)))
+    (min (Sil.Uneven.MainSource.amplifierMinimum/4) (bootstrapRawMesh*fineRawCore/31))
+
+theorem chosen_mesh_admission (ε : ℝ) (hε : 0<ε) :
+    let μ:=geometryLossUnit 1 (ε/4)
+    0<chosenMesh ε ∧
+    chosenMesh ε≤Cycle63FirstActual.comparisonMesh 1 1 (ε/2) ∧
+    chosenMesh ε≤Cycle25.Energy.commonMesh 2 28 1 (μ/8) ∧
+    chosenMesh ε≤μ/8 ∧ chosenMesh ε<Sil.Uneven.MainSource.amplifierMinimum/2 ∧
+    chosenMesh ε≤bootstrapRawMesh*fineRawCore := by
+  intro μ
+  have ha:=geometry_analytic_mesh_admission 1 1 (ε/4) 2 28 1
+    (by norm_num) (by norm_num) (by positivity) (by norm_num) (by norm_num)
+  have hc:=Cycle63FirstActual.comparisonMesh_pos 1 1 (ε/2)
+    (by norm_num) (by norm_num) (by positivity)
+  have hf : 0<Sil.Uneven.MainSource.amplifierMinimum := by norm_num [Sil.Uneven.MainSource.amplifierMinimum]
+  have hfm : 0 < bootstrapRawMesh := bootstrap_raw_mesh_gates.1
+  have hfc : 0 < fineRawCore := by norm_num [fineRawCore]
+  have hm : 0 < bootstrapRawMesh*fineRawCore/31 := by positivity
+  have hleft : chosenMesh ε ≤ min (geometryAnalyticMesh 1 1 (ε/4) 2 28 1)
+      (Cycle63FirstActual.comparisonMesh 1 1 (ε/2)) := min_le_left _ _
+  have hright : chosenMesh ε ≤ min (Sil.Uneven.MainSource.amplifierMinimum/4)
+      (bootstrapRawMesh*fineRawCore/31) := min_le_right _ _
+  have han:=hleft.trans (min_le_left _ _)
+  have hamp:=hright.trans (min_le_left _ _)
+  have hmark:=hright.trans (min_le_right _ _)
+  have hpos : 0<chosenMesh ε := lt_min (lt_min ha.1 hc) (lt_min (by positivity) hm)
+  refine ⟨hpos,hleft.trans (min_le_right _ _),han.trans ha.2.2.1,
+    han.trans ha.2.2.2.1,by linarith only [hamp,hf],?_⟩
+  exact hmark.trans (by nlinarith [mul_pos hfm hfc])
+
+end OAI.SevenEighths.MainAssembly

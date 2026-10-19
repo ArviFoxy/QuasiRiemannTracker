@@ -106,5 +106,23 @@
     "repository": "GTimG/QuasiRiemannTracker",
     "number": 64,
     "head_sha": "edbb22b1a080c961b19e438e9e8ce6d6b3842739"
+  },
+  {
+    "schema_version": 1,
+    "result_id": "sil-uneven-normalization-20261019",
+    "theta_exact": "874828524351/1000000000000",
+    "verified_at": "2026-10-19T18:54:39.570286+00:00",
+    "source_repository": "GTimG/QuasiRiemannTracker",
+    "source_commit": "c68a3b2ba5b28b9c9b4bf26966ed6ee04ffa29b9",
+    "kernels": [
+      "Lean default",
+      "nanoda",
+      "con-ron"
+    ],
+    "report_url": "https://github.com/GTimG/QuasiRiemannTracker/blob/302e388161cb7724d0fcc4bcc588adbdb34684e5/verifier/standard/receipts/pr66-c68a3b2b-20261019/result.json",
+    "report_sha256": "b30fc3ffe7065070dd66eaea8239f07464de852afc1a3274cd7e708e7dc0e8a3",
+    "repository": "GTimG/QuasiRiemannTracker",
+    "number": 66,
+    "head_sha": "c68a3b2ba5b28b9c9b4bf26966ed6ee04ffa29b9"
   }
 ]

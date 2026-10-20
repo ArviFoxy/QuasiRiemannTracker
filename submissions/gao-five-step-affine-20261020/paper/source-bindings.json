@@ -1,0 +1,128 @@
+{
+  "scope": "Companion to the four-page manuscript. The actual finite-source root moment and unconditional endpoint have passed local Lean kernel checking with three standard axioms; official submission admission remains pending.",
+  "equations": {
+    "M": {
+      "modules": [
+        "Candidate.Research.RecursiveAffine.ActualRootMoment",
+        "Candidate.Research.RecursiveAffine.Endpoint.RootMomentFactory"
+      ],
+      "declarations": [
+        "OAI.SevenEighths.Cycle153RootInitialAssembly.actual_weighted_root_initial",
+        "Cycle153Endpoint.actualRootMomentFactory"
+      ],
+      "status": "proved from genuine finite native sources; no moment, RAW, count or induction hypothesis remains",
+      "source_sha256": "71f0df63cf94f80ac00965eac74bb99f3373b34f220712ee1cd93462a7ed7f8d"
+    },
+    "2": {
+      "module": "Candidate.Research.RecursiveAffine.PhysicalRetainedCaps",
+      "declaration": "two_stage_low_source_caps"
+    },
+    "4": {
+      "modules": [
+        "Candidate.Research.RecursiveAffine.RawPrefixPayment",
+        "Candidate.Research.RecursiveAffine.NativeInnerPerBinAllHeight",
+        "Candidate.Research.RecursiveAffine.NativePaidPathNode",
+        "Candidate.Research.RecursiveAffine.NativeSourceSide"
+      ],
+      "declarations": [
+        "raw_physical_prefix_attachment",
+        "actualInnerPerBinAllHeight",
+        "NativePaidPathNode.shiftedOutside",
+        "actual_first_bin_side_cancellation",
+        "actual_shifted_raw_row_payment"
+      ]
+    },
+    "6-9": {
+      "modules": [
+        "Candidate.Research.RecursiveAffine.FixedStages",
+        "Candidate.Research.RecursiveAffine.Geometry.Coordinates",
+        "Candidate.Research.RecursiveAffine.CorrectedJointBudget",
+        "Candidate.Research.RecursiveAffine.CorrectedPhysicalCoordinates"
+      ]
+    },
+    "10": {
+      "modules": [
+        "Candidate.Research.RecursiveAffine.FiniteHistoryReturnedSum",
+        "Candidate.Research.RecursiveAffine.NativeRootReturnAbsorption"
+      ],
+      "declarations": [
+        "finite_history_returned_sum",
+        "actual_root_forest_scaled_threshold_absorption_all_budgets"
+      ]
+    },
+    "11-12": {
+      "modules": [
+        "Candidate.Research.RecursiveAffine.ConsumerParameters",
+        "Candidate.Research.RecursiveAffine.Endpoint.Cycle63.Arithmetic.Bernstein.Feedback",
+        "Candidate.Research.RecursiveAffine.Endpoint.FinalFromRootFactory",
+        "Candidate.Main"
+      ],
+      "declaration": "Candidate.bound",
+      "status": "unconditional exact all-moduli nonvanishing theorem; concrete actualRootMomentFactory constructed inside proof",
+      "source_sha256": "3f479c8ee87924878de5584d91e82f63b1e589b1680805a0101d0c1ceb6f13e4"
+    },
+    "finite-inner-closure": {
+      "module": "Candidate.Research.RecursiveAffine.ActualInnerBackward",
+      "status": "genuine finite backward induction from terminal source; no RAW, energy or IH input remains in first-inner theorem",
+      "declarations": [
+        "eventual_actual_first_inner_node_outputs"
+      ]
+    },
+    "compensated-volume-lift": {
+      "module": "Candidate.Research.RecursiveAffine.NativeLengthLift",
+      "declarations": [
+        "NativePaidPathNode.lengthLift",
+        "NativePaidPathNode.lengthLift_shiftedOutside",
+        "NativePaidPathNode.lengthLift_raw_edge"
+      ],
+      "identity": "A local length lift Delta increases native X0 and X3 by unit*Delta and decreases signed massLoss by Delta, preserving shiftedOutside and the full raw weight."
+    },
+    "finite-root-closure": {
+      "modules": [
+        "Candidate.Research.RecursiveAffine.RootLowCanonicalMetadata",
+        "Candidate.Research.RecursiveAffine.RootLowQuantitativeMetadata",
+        "Candidate.Research.RecursiveAffine.NativeRecursiveRootLow"
+      ],
+      "declarations": [
+        "actual_root_canonical_metadata",
+        "actual_root_low_quantitative_metadata",
+        "eventual_actual_recursive_root_low"
+      ],
+      "status": "genuine root LOW source invokes actual inner induction, canonical/coarse/OLD/physical producers and exact per-subset count thresholds before moving base"
+    }
+  },
+  "attribution": [
+    "OpenAI",
+    "Hailey Collet",
+    "Akash Levy",
+    "timbalud",
+    "DaysSky",
+    "ArviFoxy",
+    "Zhongpai Gao (with AI assistance)"
+  ],
+  "license": "Apache-2.0 subject to all inherited source/dependency notices",
+  "notes": [
+    "Native raw intermediate scale is retained.",
+    "Common reduction uses corrected native h(q) credit; uncorrected model J is not a physical source estimate.",
+    "Root radius Z, seed one, and row scale one come from actual initial source reduction.",
+    "Eq4 retains first-mass dyad loss explicitly and cancels it only with the SAME first-bin label side.",
+    "Eq7 uses compensated volume coordinates; the root cell majorant is justified by an explicit lengthLift.",
+    "The varying-height envelope is a whole licensed arithmetic receipt majorant, not necessarily an attained analytic source run.",
+    "Empty terminal forest means empty LOW-continuation forest, leaving local own-HIGH separate.",
+    "The literal root moment is proved for actual weighted-source data, with inherited fixed Q and characters unchanged by excluding the unit ideal.",
+    "Both actual detector and conjugated numerator prove the excluded-unit character identity before invoking the same constructed moment.",
+    "Official project admission and publication status are separate from the local kernel result."
+  ],
+  "formal_status": {
+    "inner_finite_backward_induction": "checked genuine terminal-to-first-inner induction",
+    "literal_root_moment": "ActualRootMoment PASS 12.643 seconds; no factory/moment premise; source 71f0df63cf94f80ac00965eac74bb99f3373b34f220712ee1cd93462a7ed7f8d",
+    "unconditional_endpoint": "ActualDirichletEndpoint PASS 12.585 seconds; Candidate.bound has exact boundary 8748087/10000000 and no factory premise",
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "official_admission": "pending",
+    "manuscript_status": "unconditional theorem; unpublished submission manuscript"
+  }
+}

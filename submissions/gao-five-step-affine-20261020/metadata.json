@@ -26,6 +26,10 @@
   "license": "Apache-2.0; inherited source notices and dependency licenses retained.",
   "references": [
     {
+      "label": "Four-page paper: finite-depth affine source returns",
+      "url": "https://github.com/Gaozhongpai/QuasiRiemannTracker/blob/5085baa8fd0814c60f3ae523c6d1ce697bf12752/submissions/gao-five-step-affine-20261020/paper/paper.pdf"
+    },
+    {
       "label": "Two-level affine returned-source count (ArviFoxy, PR 67)",
       "url": "https://github.com/GTimG/QuasiRiemannTracker/pull/67"
     },

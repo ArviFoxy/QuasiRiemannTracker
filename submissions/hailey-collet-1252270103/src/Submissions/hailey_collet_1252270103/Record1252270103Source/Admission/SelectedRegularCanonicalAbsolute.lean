@@ -17,7 +17,7 @@ open Cycle61Moment Cycle61InitialMass Record1252270103Second
 open OAI.SevenEighths.Record1252270103Source QRH.Record1252270103Low
 open High.GlobalPhysical SecondSectorDatum SelectedRegularSourceData SelectedRegularLowPoint
 local notation "O"=>HeckeFamily.O
-local instance canonicalAbsoluteDecEq {ι:Type*}:DecidableEq ι:=SelectedRegularAbsolute.instDecidableEq_record1252270103Source
+local instance canonicalAbsoluteDecEq {ι:Type*}:DecidableEq ι:=Classical.decEq _
 local instance canonicalAbsoluteFinite (M:Ideal O)[NeZero M]:Finite (O⧸M):=Ring.HasFiniteQuotients.finiteQuotient (NeZero.ne M)
 
 theorem eventually_canonical_absolute (N:ℕ)(B lam cap ξ amp reserve:ℝ)

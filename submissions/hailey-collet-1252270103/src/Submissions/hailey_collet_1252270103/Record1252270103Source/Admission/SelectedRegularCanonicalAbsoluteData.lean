@@ -20,7 +20,7 @@ open OAI.SevenEighths.Record1252270103Source QRH.Record1252270103Low
 open CenteredMomentFiniteProfileExceptional CenteredMomentOriginalCommonHarmonic
 open High.GlobalPhysical SecondSectorDatum SelectedRegularSourceData SelectedRegularLowPoint
 local notation "O"=>HeckeFamily.O
-local instance canonicalAbsoluteDataDecEq {ι:Type*}:DecidableEq ι:=SelectedRegularAbsolute.instDecidableEq_record1252270103Source
+local instance canonicalAbsoluteDataDecEq {ι:Type*}:DecidableEq ι:=Classical.decEq _
 
 theorem budget_true {α Label:Type}[Fintype α][Fintype Label]
     (d:Label→SecondInputDatum α)(m:∀l,Tuple (d l).slots→ℂ)(w:Label→ℂ):

@@ -142,5 +142,23 @@
     "repository": "GTimG/QuasiRiemannTracker",
     "number": 68,
     "head_sha": "f07bb2418990a9976c0da5f65bb6a7a77da94c9a"
+  },
+  {
+    "schema_version": 1,
+    "result_id": "hailey-collet-1252270103",
+    "theta_exact": "8747729897/10000000000",
+    "verified_at": "2026-10-22T22:13:39.013693+00:00",
+    "source_repository": "GTimG/QuasiRiemannTracker",
+    "source_commit": "ac76d5ef6008d976a7b8f3c1d921af2317e79ce9",
+    "kernels": [
+      "Lean default",
+      "nanoda",
+      "con-ron"
+    ],
+    "report_url": "https://github.com/GTimG/QuasiRiemannTracker/blob/2e5f260096b478003550046cab52e612c2c1dd03/verifier/standard/receipts/pr69-ac76d5ef-20261023/result.json",
+    "report_sha256": "b9976aad6617832a1140abcfa903bb2fa06c736e5578940ae5a814ef2a3fc877",
+    "repository": "GTimG/QuasiRiemannTracker",
+    "number": 69,
+    "head_sha": "ac76d5ef6008d976a7b8f3c1d921af2317e79ce9"
   }
 ]

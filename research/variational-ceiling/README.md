@@ -109,10 +109,15 @@ The same recost applies to our graph (`hyb_fees.py`, `continuum.py … 1e-17,1e-
 | **continuum, fine fees: the ceiling** | **0.8747241** | **−4.8e-6** |
 
 - **The face map is exhausted.** The ceiling with the current gates is θ* = 0.8747241. The next
-  milestone (1e-5 below the Lean branch) is 0.8747189, still 5.2e-6 beyond the ceiling. No choice of
-  pivot spacing, caps, parents or fees reaches it. The continuum solution bounds every admissible
-  envelope (`../lean-lab/MaximalEnvelope.lean`), so this statement covers every graph built from
-  these gates, not only the chains tried.
+  milestone (1e-5 below the Lean branch) is 0.8747189, still 5.2e-6 beyond the ceiling.
+  - What is proved: `../lean-lab/MaximalEnvelope.lean` bounds every envelope that satisfies the
+    pointwise slope condition `E' ≤ −Λ_min(s, E)`.
+  - A discrete node whose LOW parent is older can be locally flatter than `Λ_min` at its pivot
+    (the lag effect of §3), so discrete graphs are not covered by that theorem.
+  - For them the ceiling is empirical. Uniform spacings 0.002, 0.001, 0.0005 and the consolidated
+    0.0005/0.00025 chain approach the continuum from below, linearly in the spacing. Two-class and
+    multi-ancestor LOW parents were priced negative (`../chain-ode/README.md`, `../LOG.md`).
+  - No choice of pivot spacing, caps, parents or fees that was tried reaches the milestone.
 - **What sets the ceiling.** It is fixed by `Λ_min(s, E)`, the flattest slope the HIGH gate admits at
   the pivot with the node as its own parent. Its ingredients are the unmarked count `ρ(ν)`, the
   gain's inverse cap (slot cost 2) and the exchange rate 6 (`../barriers/README.md`, atoms 1–3).

@@ -119,8 +119,9 @@ The exact pipeline with every known refinement (Lemma F, fine pivots, density fl
 
 - **The source graph is at its ceiling** (`../variational-ceiling/`). The continuum limit of the
   face map, with PR #71's fine fees, gives θ* = 0.8747241. The comparison principle
-  (`../lean-lab/MaximalEnvelope.lean`) makes this a bound for every graph built from the current
-  gates. That is 4.8e-6 below the Lean branch and 5.2e-6 short of the milestone 0.8747189. The
+  (`../lean-lab/MaximalEnvelope.lean`) proves this bound for envelopes satisfying the pointwise
+  slope condition. Discrete graphs can be locally flatter at a pivot (the lag effect), and for them
+  the ceiling is the measured limit: chains converge from below, linearly in the spacing. That is 4.8e-6 below the Lean branch and 5.2e-6 short of the milestone 0.8747189. The
   Lemma F chain under the Lean branch's own guards gives 0.8747263. Every sub-bar item found so far
   (fees, density floor, `Λ_P > 3`, pivots, caps, Lemma F) lies inside this ceiling.
 - **The probe's bookkeeping has no slack** (`../return-slack/README.md`, `../lean-lab/BalanceAlgebra.lean`).

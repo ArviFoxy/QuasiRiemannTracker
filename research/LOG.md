@@ -928,6 +928,30 @@ A catalogue cross-check (21.9k records) found nothing that moves them. → `cap-
     is Collet's "individual plain edge 2/5" (Ch24.5, via Gao's Target830). Saturated marked
     capacities and sixth-root weights are superseded by Collet's faces.
 
+- *Atom 4 (`c_g = 1/12`) restated as an explicit correlation; the target is tiny* (7/8 §6.1, §15).
+  - The probe's low separation (6.2) is `I_η = Q^{−1/2}∫Ŵ₀ Σ_σ Σ_m Ω ξ(m)(q_m/Q)^{−iv} A_m B_m dv`.
+    - `A_m = Y^{−1}Σ_{s~Y} c(s)(q_s/Y)^{−1/2+iv} q_s^{−1/2} g_{χ_s}(s, −m)` is a sextic Gauss-sum
+      polynomial. For `(m, s) = 1` it equals `Σ_s c′(s) g̃₆(s) χ̄_s(m)`.
+    - `B_m = Σ_θ a_θ ∫ Z^t Φ(t) T(t + 1/2, ν_σθχ•(m)) dt` is the completed cubic-theta row
+      `T = L₀·D` (§5.1), twisted by the row's sextic character.
+  - Cauchy–Schwarz (§15.3) pairs `‖A‖² ≪ (Q/Y′)P_a^{1/6}` (Prop. 15.2) with `‖B‖² ≪ Z^{M′}`
+    (Lemma 15.1).
+  - In `‖A‖²` the exceptional frequencies `k = a⁶e₀` dominate the diagonal `Q/Y′`. They are
+    genuine positive main terms, bounded in the paper by trivial counting.
+  - So the whole bias is `|⟨A^exc, B⟩| ≤ ‖A^exc‖‖B‖`. `B` is not adversarial: it is an explicit
+    arithmetic vector, the same for every row, independent of zeros.
+  - **Target.** −1e-5 needs the Gram term `P_a^{1/6 − 2.5e-4}`, i.e. a saving `P_a^{1.25e-4}`
+    in the correlation. With `P_a = Z^{y−x} ≈ Z^{0.096}` that is only `Z^{−1.2e-5}`. Under GRH the
+    probe is about `Z^{−3/16}`, so the true slack is enormous.
+  - **Obstacle.** `A^exc` comes from the theta residue of the sextic Gauss-sum series twisted by
+    the row (6-fold-cover theta coefficients, which are not explicit for `n = 6`). The correlation
+    is then a theta-weighted first moment of twisted cubic-theta rows, a residue of a double
+    Dirichlet series `Σ_{m,A} ρ₆(m)θ₃(A)(A/m)₆ m^{−w}A^{−s}`. Its natural home is the Fourier
+    coefficients of metaplectic Eisenstein series on the 6-fold cover of GL(3) (A₂ Weyl-group
+    multiple Dirichlet series, finite type). Whether it has a full-size main term (C–S tight) or a
+    power saving is open. The round-3 "closed" verdict assumed `B` was unknown along the signal
+    direction. It is known, but unanalyzed.
+
 ## Open directions (ranked, revised 2026-10-24, third pass; see `barriers/README.md`)
 
 Exact state: committed Lean branch 0.8747289; best exact value with known lemmas 0.8747257

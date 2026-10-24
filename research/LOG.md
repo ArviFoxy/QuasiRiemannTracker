@@ -908,6 +908,26 @@ A catalogue cross-check (21.9k records) found nothing that moves them. → `cap-
   - **Kept.** The self-saturation reading. A new quantitative target: a three-plain diagonal at
     `c_S ≤ 1.85` is worth ≥ 1e-5, and `c_S = 1` about 9e-5.
 
+- *Unabsorbed upstream ideas* (task: mine records outside Collet's `builds_on`). **No
+  transplant.**
+  - **Gao's five-step (PR #68, 0.8748087).** HIGH records from inner stages are returned and
+    counted once over complete histories (Gao's four-page paper, eq. 8):
+    `J = (1−ρ)W − qL + a − P + …` with `W = 1 − V − 6a`.
+    - In one step this is exactly Collet's per-node gate `H = 1 − ρ − νT − a(5 − 6ρ)`, since
+      `−6a(1−ρ) + a = −a(5 − 6ρ)`.
+    - Over a history, the amplifiers and deletions of the whole path accumulate against a single
+      saving `(1 − ρ)`.
+    - Collet's chain (paper69 `sources.tex` §28.7) instead proves each face as a black box, with
+      its own marked HIGH count (G16)–(G17), and its LOW children deleted into the earlier face.
+  - **The returned-history line saturates near 0.87481.** The community hill-climb
+    (`rohanarun/quasi-rh-hillclimb`, `depth3/`) extends it to 6–8 stages: 0.874809989 (six
+    levels) and 0.874806549 (eight stages, `K ≤ 12`). Collet's per-node chain reaches 0.8747730.
+    Its junctions stay at `q ≥ 0.638`, where Collet's chain reaches the density floor
+    `q → 1/2` (and below 1/2 it is worth only 5e-7).
+  - **Sil's record (0.874828524).** Its "clipped uneven normalization with common-factor cost 2/5"
+    is Collet's "individual plain edge 2/5" (Ch24.5, via Gao's Target830). Saturated marked
+    capacities and sixth-root weights are superseded by Collet's faces.
+
 ## Open directions (ranked, revised 2026-10-24, third pass; see `barriers/README.md`)
 
 Exact state: committed Lean branch 0.8747289; best exact value with known lemmas 0.8747257

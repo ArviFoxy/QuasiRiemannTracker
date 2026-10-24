@@ -11,6 +11,13 @@ Numbers come from `../atom-targets/` (float LP model) unless marked exact.
 - Origin: a divisibility mark `p | A` on the cubic-theta index puts `p` into the cusp denominator
   `c`. The reflection at `a/c` rescales by `c²`, and the hybrid norm already saves the whole slot
   length in the column branch.
+- Cleanest form (2026-10-24). In the hybrid norm (MF2.29) the column branch's dual sum carries
+  the twist `χ_k(n)³χ_P(n)^{-2}`, the row's quadratic character times the slot tuple's cubic
+  character. Its critical length is therefore `Z^{H+z}` with `H = 2(r+z) − m`. The maximal dual
+  length is `T_d = 3r + 5z − 2m`, and `T_d ≤ H + z ⟺ r + 2z ≤ m`. So the budget says exactly that
+  the dual sums stay within the joint critical length. Inside it, the quadratic sieve's `N` term
+  costs the excess. Beyond it, re-reflection with the optimal sextic sieve (de Faveri) costs the
+  `A^{7/6}`-type term, which is worse near the boundary.
 - It binds in three places:
   - the physical probe's marked energy `x + y + ℓ ≤ 1` (`dθ/dε = −0.0628`; for −1e-5 the cost must
     fall `2 → 1.99905`);

@@ -755,6 +755,20 @@ A catalogue cross-check (21.9k records) found nothing that moves them. → `cap-
     plain descent), is forced by the one case with explicit theta coefficients. A smaller exchange
     rate would need a different automorphic input, not a different character order.
 
+- *The crispest form of atom 2: the inverse moment slightly past its diagonal.* Suppose the
+  unmarked inverse moment `Σ_{q_v≤H}|M_v(D)|² ≪ H^{1+o(1)}` held for `D ≤ H^{1+ε}` and not only for
+  `D ≤ H^{1−c}`.
+  - Amplification could then use the ball `H = D^{1−ε}`. The long-line exponent
+    `(1 + 5t)/6` drops by `5tε/6`, so the λ-test target 2.6e-4 at `t = 1.155` needs only
+    `ε ≈ 2.7·10⁻⁴`.
+  - At `D = H^{1+ε}` the restored dual diagonal has dual rows `H' = D²/H > D` and size `D`, so the
+    excess is `H^ε`.
+  - Individual character-sum bounds for the dual `k`-sums do not help. The modulus is `nn' ≈ D²`
+    and the length `H' ≈ D^{1−ε}`, roughly the square root of the modulus. Pólya–Vinogradov and
+    Burgess (`D^{7/8}` per pair) leave the `n ≠ n'` sum uncancelled and lose a power.
+  - So the target is a bilinear (signed) bound at the exact square-root balance, which is the same
+    open problem as P1.
+
 ## Open directions (ranked, revised 2026-10-24, third pass; see `barriers/README.md`)
 
 Exact state: committed Lean branch 0.8747289; best exact value with known lemmas 0.8747257

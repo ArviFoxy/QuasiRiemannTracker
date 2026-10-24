@@ -1,6 +1,6 @@
-/- Repeated marks: fork of Collet's generic physical return module PhysicalDirect.SourceLedger (Record1252270103Return,
-Apache-2.0; inherited notices retained), re-elaborated in QRH.RepeatedMarks.Return so that the
-physical schedule applies the physical face globally (Lemma D). -/
+/- Repeated marks: fork of Collet's generic return module PhysicalDirect.SourceLedger (Record1252270103Return,
+Apache-2.0; inherited notices retained), re-elaborated in QRH.RepeatedMarks.Return against the
+relaxed parameter bounds `Geometry.BoundsR`, with the physical face applied globally (Lemma D). -/
 /- Literal physical source loss ledger at the new GenericCount.envelope. Apache-2.0.
 Adapted from Gao Target830 with the checked new conductor/feedback certificates. -/
 import Submissions.repeated_marks_20261024.ReturnD.Schedule
@@ -13,7 +13,7 @@ set_option maxHeartbeats 200000
 set_option autoImplicit false
 namespace QRH.RepeatedMarks.Return.GenericPhysical.PhysicalDirect.Source
 open QRH.Record1252270103Return QRH.Record1252270103Return.GenericPhysical
-variable [Geometry.Parameters] [Geometry.Bounds] [scheme : CountScheme] [GenericArithmetic.PhysicalSchedule]
+variable [Geometry.Parameters] [Geometry.BoundsR] [scheme : CountScheme] [GenericArithmetic.PhysicalSchedule]
 open QRH.RepeatedMarks.Return.GenericArithmetic QRH.Record12518109Count QRH.RepeatedMarks.Return.GenericPhysical.Scalar
 open QRH.Record12518109Count
 open QRH.RepeatedMarks.Return.GenericPhysical.PhysicalDirect QRH.Record1252270103Return.GenericPhysical
@@ -75,7 +75,7 @@ lemma physical_packet_certificate (D : BaselineData) (eps sigma affineError d a 
   have hdel : 0 ≤ 2*a-1 ∧ 2*a-1 ≤ 3/4 := by constructor <;> linarith
   have hp : q/(2*a-1) ∈ Set.Icc 0 (1/2) :=
     ⟨div_nonneg hq.1 hdelta.le,(div_le_iff₀ hdelta).mpr (by linarith [hq.2])⟩
-  have hd1 : d ≤ 1 := hd.2.trans (by change Geometry.h+1/10000000000 ≤ _; linarith [Geometry.Bounds.h_interval.2])
+  have hd1 : d ≤ 1 := hd.2.trans (by change Geometry.h+1/10000000000 ≤ _; linarith [Geometry.BoundsR.h_interval.2])
   have hl := physical_loss_bound D eps sigma affineError d (2*a-1) heps hsigma haff hd1 hdel
   have hh := new_packet_certificate GenericCount.admittedBranches (physicalLoss D eps sigma affineError) hgap hbeta hd hdel hp (PhysicalSchedule.new_rows hd hdel hp)
     (by linarith : 16*D.e+weightedSourceLoss d (2*a-1) (physicalLoss D eps sigma affineError)+D.t ≤
@@ -99,7 +99,7 @@ lemma old_physical_packet_certificate (D : BaselineData) (eps sigma d a q : ℝ)
   have hdel : 0 ≤ 2*a-1 ∧ 2*a-1 ≤ 3/4 := by constructor <;> linarith
   have hp : q/(2*a-1) ∈ Set.Icc 0 (1/2) :=
     ⟨div_nonneg hq.1 hdelta.le,(div_le_iff₀ hdelta).mpr (by linarith [hq.2])⟩
-  have hd1 : d ≤ 1 := hd.2.trans (PhysicalSchedule.dMinus_before_top.trans Record1252270103Return.Transport.Arithmetic.dPlus_lt_one.le)
+  have hd1 : d ≤ 1 := hd.2.trans (PhysicalSchedule.dMinus_before_top.trans RepeatedMarksReturn.Transport.Arithmetic.dPlus_lt_one.le)
   have hl := physical_loss_bound D eps sigma 0 d (2*a-1) heps hsigma (by norm_num) hd1 hdel
   have hh := old_packet_certificate GenericCount.admittedBranches (physicalLoss D eps sigma 0) hgap hbeta hd hdel hp (PhysicalSchedule.old_rows hd hdel hp)
     (by linarith : 16*D.e+weightedSourceLoss d (2*a-1) (physicalLoss D eps sigma 0)+D.t ≤

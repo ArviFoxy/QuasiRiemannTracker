@@ -1,9 +1,9 @@
-/- Repeated marks: fork of Collet's generic physical return module PhysicalDirect.Helpers (Record1252270103Return,
-Apache-2.0; inherited notices retained), re-elaborated in QRH.RepeatedMarks.Return so that the
-physical schedule applies the physical face globally (Lemma D). -/
+/- Repeated marks: fork of Collet's generic return module PhysicalDirect.Helpers (Record1252270103Return,
+Apache-2.0; inherited notices retained), re-elaborated in QRH.RepeatedMarks.Return against the
+relaxed parameter bounds `Geometry.BoundsR`, with the physical face applied globally (Lemma D). -/
 /- Actual physical numerator source/normalizer closure, adapted Gao/Hailey Collet/OpenAI; Apache-2.0. -/
 import Submissions.repeated_marks_20261024.ReturnD.Schedule
-import Submissions.hailey_collet_1252270103.Record1252270103Return.Transport.TransportParameters
+import Submissions.repeated_marks_20261024.ReturnD.Transport.TransportParameters
 import Submissions.repeated_marks_20261024.ReturnD.PhysicalDirect.Collect
 import Submissions.hailey_collet_1252270103.Cycle25.Numerator.SourceScalar
 import Submissions.hailey_collet_1252270103.Cycle25.Numerator.PhysicalFront
@@ -15,7 +15,7 @@ open scoped Classical BigOperators Topology ContDiff
 open Filter Set
 namespace QRH.RepeatedMarks.Return.GenericPhysical.PhysicalDirect.Source
 open QRH.Record1252270103Return QRH.Record1252270103Return.GenericPhysical
-variable [Geometry.Parameters] [Geometry.Bounds] [scheme : CountScheme] [GenericArithmetic.PhysicalSchedule]
+variable [Geometry.Parameters] [Geometry.BoundsR] [scheme : CountScheme] [GenericArithmetic.PhysicalSchedule]
 open QRH.RepeatedMarks.Return.GenericArithmetic QRH.Record12518109Count QRH.RepeatedMarks.Return.GenericPhysical.Scalar
 open Cycle25.Weighted.Numerator Cycle25.Numerator
 open OAI OAI.SevenEighths Cycle25ProbeFinalAssembly ProbeHighRowFamily ProbePhysical HeckeFamily HeckeInverseAmplification
@@ -25,7 +25,7 @@ open HeckePrimeAmplitudeBins ProbeMellinBoundary
 instance source_fixed_product_neZero (D : BaselineData) (F : BaselineSourceData D) : NeZero (∏P∈F.S,P) :=
   ⟨fixedPrimeProduct_ne_zero F.S F.exclusions.prime⟩
 
- theorem source_prime_bins (D : BaselineData) (F : BaselineSourceData D) (P : QRH.Record1252270103Return.GenericPhysical.Assembly.TransportParameters D)
+ theorem source_prime_bins (D : BaselineData) (F : BaselineSourceData D) (P : QRH.RepeatedMarks.Return.GenericPhysical.Assembly.TransportParameters D)
     (τ : ℝ) (n : ℕ) (hτ : 0 < τ) (hheight : 4*τ < (1/200:ℝ)*D.cost) :
     ∀ᶠZ : ℝ in atTop,∀d : ℝ,(1/200:ℝ) ≤ d → d ≤ 7/8 →
       ∀(η : Character) (u : FreeRow),Z^(1/100:ℝ) ≤ rowNorm u →

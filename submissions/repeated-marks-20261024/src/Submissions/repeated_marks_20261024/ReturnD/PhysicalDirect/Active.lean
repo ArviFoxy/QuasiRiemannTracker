@@ -1,6 +1,6 @@
-/- Repeated marks: fork of Collet's generic physical return module PhysicalDirect.Active (Record1252270103Return,
-Apache-2.0; inherited notices retained), re-elaborated in QRH.RepeatedMarks.Return so that the
-physical schedule applies the physical face globally (Lemma D). -/
+/- Repeated marks: fork of Collet's generic return module PhysicalDirect.Active (Record1252270103Return,
+Apache-2.0; inherited notices retained), re-elaborated in QRH.RepeatedMarks.Return against the
+relaxed parameter bounds `Geometry.BoundsR`, with the physical face applied globally (Lemma D). -/
 /- Adapted from Zhongpai Gao Target830 physical closure, inherited OpenAI/Hailey Collet; Apache-2.0. -/
 import Submissions.repeated_marks_20261024.ReturnD.Schedule
 import Submissions.repeated_marks_20261024.ReturnD.PhysicalDirect.Original
@@ -15,7 +15,7 @@ open QRH.Record1252270103Return
 
 namespace QRH.RepeatedMarks.Return.GenericPhysical.PhysicalDirect
 open QRH.Record1252270103Return QRH.Record1252270103Return.GenericPhysical
-variable [Geometry.Parameters] [Geometry.Bounds] [scheme : CountScheme] [GenericArithmetic.PhysicalSchedule]
+variable [Geometry.Parameters] [Geometry.BoundsR] [scheme : CountScheme] [GenericArithmetic.PhysicalSchedule]
 open QRH.RepeatedMarks.Return.GenericArithmetic
 open Cycle25.Weighted.Numerator Cycle25.Numerator
 open OAI.SevenEighths.CenteredMomentDetectorPlainFiberSource
@@ -51,7 +51,7 @@ lemma eventually_new_cutoff_le_base (b:ℝ) (hb:0≤ b) :
   have hy:y/d≤19/20:=by
     apply (div_le_iff₀ hp).mpr
     have hd':1/2< d:=(show (1/2:ℝ)<dm by linarith [PhysicalSchedule.dMinus_lower]).trans_le hd
-    linarith [Geometry.Bounds.ly_coarse.2]
+    linarith [Geometry.BoundsR.ly_coarse.2]
   calc
     _ ≤ U^(1/20:ℝ)*U^(19/20:ℝ):=mul_le_mul he
       (Real.rpow_le_rpow_of_exponent_le hU.le hy)

@@ -1,6 +1,6 @@
-/- Repeated marks: fork of Collet's generic physical return module PhysicalDirect.Input (Record1252270103Return,
-Apache-2.0; inherited notices retained), re-elaborated in QRH.RepeatedMarks.Return so that the
-physical schedule applies the physical face globally (Lemma D). -/
+/- Repeated marks: fork of Collet's generic return module PhysicalDirect.Input (Record1252270103Return,
+Apache-2.0; inherited notices retained), re-elaborated in QRH.RepeatedMarks.Return against the
+relaxed parameter bounds `Geometry.BoundsR`, with the physical face applied globally (Lemma D). -/
 /- Copyright (c) 2026 Hailey Collet. Apache-2.0.
 Adapted from Zhongpai Gao Target830 Physical.Input, with inherited
 OpenAI/Hailey Collet physical energy and reflection-mask identities. -/
@@ -16,7 +16,7 @@ open QRH.Record1252270103Return
 
 namespace QRH.RepeatedMarks.Return.GenericPhysical.PhysicalDirect
 open QRH.Record1252270103Return QRH.Record1252270103Return.GenericPhysical
-variable [Geometry.Parameters] [Geometry.Bounds] [scheme : CountScheme] [GenericArithmetic.PhysicalSchedule]
+variable [Geometry.Parameters] [Geometry.BoundsR] [scheme : CountScheme] [GenericArithmetic.PhysicalSchedule]
 open OAI OAI.SevenEighths HeckeFamily HeckeDyadic HeckeInverseAmplification ProbeHighRowFamily
 open CenteredMomentDetectorDictionary CenteredMomentNaturalFixedRaySource
 open CenteredMomentDetectorEnergyInitialState CenteredMomentEnergyState

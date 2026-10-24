@@ -1,6 +1,6 @@
-/- Repeated marks: fork of Collet's generic physical return module PhysicalDirect.Finite.SourceCells (Record1252270103Return,
-Apache-2.0; inherited notices retained), re-elaborated in QRH.RepeatedMarks.Return so that the
-physical schedule applies the physical face globally (Lemma D). -/
+/- Repeated marks: fork of Collet's generic return module PhysicalDirect.Finite.SourceCells (Record1252270103Return,
+Apache-2.0; inherited notices retained), re-elaborated in QRH.RepeatedMarks.Return against the
+relaxed parameter bounds `Geometry.BoundsR`, with the physical face applied globally (Lemma D). -/
 /- Private .874836 actual numerator specialization; predecessor attribution retained. Apache-2.0. -/
 import Submissions.repeated_marks_20261024.ReturnD.PhysicalDirect.Finite.Summation
 import Submissions.repeated_marks_20261024.ReturnD.PhysicalDirect.SourceFullW
@@ -12,14 +12,14 @@ namespace QRH.RepeatedMarks.Return.GenericPhysical.PhysicalDirect.FiniteNumerato
 open QRH.Record1252270103Return QRH.Record1252270103Return.GenericPhysical
 noncomputable section
 set_option maxHeartbeats 200000
-variable [QRH.Record1252270103Return.Geometry.Parameters] [QRH.Record1252270103Return.Geometry.Bounds]
+variable [QRH.Record1252270103Return.Geometry.Parameters] [QRH.Record1252270103Return.Geometry.BoundsR]
 variable [scheme : QRH.Record1252270103Return.CountScheme] [QRH.RepeatedMarks.Return.GenericArithmetic.PhysicalSchedule]
 open QRH.RepeatedMarks.Return.GenericArithmetic QRH.Record1252270103Return.GenericPhysical OAI OAI.SevenEighths
 open scoped Classical BigOperators
 open QRH.Record1252270103Return.GenericPhysical (baselineSource)
 open Filter OAI.SevenEighths ProbeHighRowFamily HeckeFamily HeckeInverseAmplification ProbePhysical
-open QRH.RepeatedMarks.Return.GenericPhysical.PhysicalDirect QRH.Record1252270103Return.GenericPhysical.FinalAssembly Record1252270103Return.TransportHighTransport
-open QRH.Record1252270103Return.GenericPhysical.Assembly Cycle25.Numerator
+open QRH.RepeatedMarks.Return.GenericPhysical.PhysicalDirect QRH.RepeatedMarks.Return.GenericPhysical.FinalAssembly OAI.SevenEighths.RepeatedMarksReturn.TransportHighTransport
+open QRH.RepeatedMarks.Return.GenericPhysical.Assembly Cycle25.Numerator
 
 /-- Source's genuine cell theorem is specialized to the actual buffered partition. -/
 theorem actual_cells_of_affine (hgap : QRH.RepeatedMarks.Return.GenericArithmetic.theta< HeckeZeroSupremum.beta)

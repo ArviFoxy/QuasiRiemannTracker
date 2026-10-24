@@ -1,6 +1,6 @@
-/- Repeated marks: fork of Collet's generic physical return module PhysicalDirect.SourceParameters (Record1252270103Return,
-Apache-2.0; inherited notices retained), re-elaborated in QRH.RepeatedMarks.Return so that the
-physical schedule applies the physical face globally (Lemma D). -/
+/- Repeated marks: fork of Collet's generic return module PhysicalDirect.SourceParameters (Record1252270103Return,
+Apache-2.0; inherited notices retained), re-elaborated in QRH.RepeatedMarks.Return against the
+relaxed parameter bounds `Geometry.BoundsR`, with the physical face applied globally (Lemma D). -/
 /- Adapted from Gao Target830 physical closure, inherited OpenAI/Hailey Collet/Akash Levy; Apache-2.0. -/
 import Submissions.repeated_marks_20261024.ReturnD.Schedule
 import Submissions.repeated_marks_20261024.ReturnD.PhysicalDirect.Public
@@ -13,7 +13,7 @@ open scoped Classical BigOperators
 open Filter
 namespace QRH.RepeatedMarks.Return.GenericPhysical.PhysicalDirect.Source
 open QRH.Record1252270103Return QRH.Record1252270103Return.GenericPhysical
-variable [Geometry.Parameters] [Geometry.Bounds] [scheme : CountScheme] [GenericArithmetic.PhysicalSchedule]
+variable [Geometry.Parameters] [Geometry.BoundsR] [scheme : CountScheme] [GenericArithmetic.PhysicalSchedule]
 open QRH.RepeatedMarks.Return.GenericArithmetic
 open QRH.RepeatedMarks.Return.GenericArithmetic
 open OAI OAI.SevenEighths QRH.RepeatedMarks.Return.GenericPhysical.PhysicalDirect HeckeFamily
@@ -45,7 +45,7 @@ lemma source_cutoff_le_base (b : ℝ) (hb : 0≤ b) :
   have hdp : 0< d:=by linarith
   have hy : y/d≤19/20 := by
     apply (div_le_iff₀ hdp).mpr
-    have hy : y≤19/40:=by linarith [Geometry.Bounds.ly_coarse.1,Geometry.Bounds.ly_coarse.2]
+    have hy : y≤19/40:=by linarith [Geometry.BoundsR.ly_coarse.1,Geometry.BoundsR.ly_coarse.2]
     linarith
   calc
     _ ≤ U^(1/20:ℝ)*U^(19/20:ℝ) := mul_le_mul he

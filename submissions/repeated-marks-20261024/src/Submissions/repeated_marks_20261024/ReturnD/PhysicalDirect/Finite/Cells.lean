@@ -1,10 +1,10 @@
-/- Repeated marks: fork of Collet's generic physical return module PhysicalDirect.Finite.Cells (Record1252270103Return,
-Apache-2.0; inherited notices retained), re-elaborated in QRH.RepeatedMarks.Return so that the
-physical schedule applies the physical face globally (Lemma D). -/
+/- Repeated marks: fork of Collet's generic return module PhysicalDirect.Finite.Cells (Record1252270103Return,
+Apache-2.0; inherited notices retained), re-elaborated in QRH.RepeatedMarks.Return against the
+relaxed parameter bounds `Geometry.BoundsR`, with the physical face applied globally (Lemma D). -/
 /- Private .874836 actual numerator specialization; predecessor attribution retained. Apache-2.0. -/
 import Submissions.repeated_marks_20261024.ReturnD.PhysicalDirect.Finite.Partition
 import Submissions.repeated_marks_20261024.ReturnD.PhysicalDirect.Chosen
-import Submissions.hailey_collet_1252270103.Record1252270103Return.Transport.FinalFixedHigh
+import Submissions.repeated_marks_20261024.ReturnD.Transport.FinalFixedHigh
 import Submissions.repeated_marks_20261024.ReturnD.Schedule
 import Submissions.repeated_marks_20261024.ReturnD.GenericScalar
 
@@ -13,14 +13,14 @@ namespace QRH.RepeatedMarks.Return.GenericPhysical.PhysicalDirect.FiniteNumerato
 open QRH.Record1252270103Return QRH.Record1252270103Return.GenericPhysical
 noncomputable section
 set_option maxHeartbeats 200000
-variable [QRH.Record1252270103Return.Geometry.Parameters] [QRH.Record1252270103Return.Geometry.Bounds]
+variable [QRH.Record1252270103Return.Geometry.Parameters] [QRH.Record1252270103Return.Geometry.BoundsR]
 variable [scheme : QRH.Record1252270103Return.CountScheme] [QRH.RepeatedMarks.Return.GenericArithmetic.PhysicalSchedule]
 open QRH.RepeatedMarks.Return.GenericArithmetic QRH.Record1252270103Return.GenericPhysical OAI OAI.SevenEighths
 open scoped Classical BigOperators
 open QRH.Record1252270103Return.GenericPhysical (baselineSource)
 open Filter OAI.SevenEighths ProbeHighRowFamily HeckeFamily HeckeInverseAmplification ProbePhysical
-open QRH.RepeatedMarks.Return.GenericPhysical.PhysicalDirect QRH.Record1252270103Return.GenericPhysical.FinalAssembly Record1252270103Return.TransportHighTransport
-open QRH.Record1252270103Return.GenericPhysical.Assembly
+open QRH.RepeatedMarks.Return.GenericPhysical.PhysicalDirect QRH.RepeatedMarks.Return.GenericPhysical.FinalAssembly OAI.SevenEighths.RepeatedMarksReturn.TransportHighTransport
+open QRH.RepeatedMarks.Return.GenericPhysical.Assembly
 open ProbeRaySlots PrincipalMellinResidues PrincipalSignalComparison ProbePrincipalResidueActual
 local notation "O" => HeckeFamily.O
 
@@ -51,7 +51,7 @@ def cellRows (D : BaselineData) (F : BaselineSourceData D) (Z : ℝ)
   cubeBinRows (selectedRows D F Z grid∩dyadicRows 1 k) idx grid i j
 
 def cellTarget : ℝ :=
-  HeckeZeroSupremum.beta+QRH.Record1252270103Return.GenericPhysical.Assembly.signalShift-QRH.RepeatedMarks.Return.GenericPhysical.Scalar.sourceReserve-
+  HeckeZeroSupremum.beta+QRH.RepeatedMarks.Return.GenericPhysical.Assembly.signalShift-QRH.RepeatedMarks.Return.GenericPhysical.Scalar.sourceReserve-
     (HeckeZeroSupremum.beta-QRH.RepeatedMarks.Return.GenericArithmetic.theta)/2
 
 structure CellFacts (D : BaselineData) (F : BaselineSourceData D) (η : Character)

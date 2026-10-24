@@ -1,6 +1,6 @@
-/- Repeated marks: fork of Collet's generic physical return module PhysicalDirect.Finite.Geometry (Record1252270103Return,
-Apache-2.0; inherited notices retained), re-elaborated in QRH.RepeatedMarks.Return so that the
-physical schedule applies the physical face globally (Lemma D). -/
+/- Repeated marks: fork of Collet's generic return module PhysicalDirect.Finite.Geometry (Record1252270103Return,
+Apache-2.0; inherited notices retained), re-elaborated in QRH.RepeatedMarks.Return against the
+relaxed parameter bounds `Geometry.BoundsR`, with the physical face applied globally (Lemma D). -/
 /- Private .874836 actual numerator specialization; predecessor attribution retained. Apache-2.0. -/
 import Submissions.repeated_marks_20261024.ReturnD.PhysicalDirect.Finite.Cells
 import Submissions.repeated_marks_20261024.ReturnD.Schedule
@@ -11,14 +11,14 @@ namespace QRH.RepeatedMarks.Return.GenericPhysical.PhysicalDirect.FiniteNumerato
 open QRH.Record1252270103Return QRH.Record1252270103Return.GenericPhysical
 noncomputable section
 set_option maxHeartbeats 200000
-variable [QRH.Record1252270103Return.Geometry.Parameters] [QRH.Record1252270103Return.Geometry.Bounds]
+variable [QRH.Record1252270103Return.Geometry.Parameters] [QRH.Record1252270103Return.Geometry.BoundsR]
 variable [scheme : QRH.Record1252270103Return.CountScheme] [QRH.RepeatedMarks.Return.GenericArithmetic.PhysicalSchedule]
 open QRH.RepeatedMarks.Return.GenericArithmetic QRH.Record1252270103Return.GenericPhysical OAI OAI.SevenEighths
 open scoped Classical BigOperators
 open QRH.Record1252270103Return.GenericPhysical (baselineSource)
 open Filter OAI.SevenEighths ProbeHighRowFamily HeckeFamily HeckeInverseAmplification ProbePhysical
-open QRH.RepeatedMarks.Return.GenericPhysical.PhysicalDirect QRH.Record1252270103Return.GenericPhysical.FinalAssembly Record1252270103Return.TransportHighTransport
-open QRH.Record1252270103Return.GenericPhysical.Assembly
+open QRH.RepeatedMarks.Return.GenericPhysical.PhysicalDirect QRH.RepeatedMarks.Return.GenericPhysical.FinalAssembly OAI.SevenEighths.RepeatedMarksReturn.TransportHighTransport
+open QRH.RepeatedMarks.Return.GenericPhysical.Assembly
 
 /-- All cell geometry is uniform before the live row labels. -/
 theorem actual_cell_geometry (A : ChosenData) (η : Character) (τ : ℝ) (n : ℕ) :
@@ -57,7 +57,7 @@ theorem actual_cell_geometry (A : ChosenData) (η : Character) (τ : ℝ) (n : �
       have hd:=hg.2.2.2.1
       have hcap : QRH.RepeatedMarks.Return.GenericArithmetic.dp≤1 := by
         change QRH.Record1252270103Return.Geometry.h+1/10000000000≤1
-        linarith [QRH.Record1252270103Return.Geometry.Bounds.h_interval.2]
+        linarith [QRH.Record1252270103Return.Geometry.BoundsR.h_interval.2]
       nlinarith
     · exact (hg.2.2.2.2.2 u (hsubk hu)).trans
         (Real.rpow_le_rpow_of_exponent_le hZ.le (by linarith [A.D.t_pos]))

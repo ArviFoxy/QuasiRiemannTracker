@@ -1,17 +1,17 @@
-/- Repeated marks: fork of Collet's generic physical return module PhysicalDirect.Chosen (Record1252270103Return,
-Apache-2.0; inherited notices retained), re-elaborated in QRH.RepeatedMarks.Return so that the
-physical schedule applies the physical face globally (Lemma D). -/
+/- Repeated marks: fork of Collet's generic return module PhysicalDirect.Chosen (Record1252270103Return,
+Apache-2.0; inherited notices retained), re-elaborated in QRH.RepeatedMarks.Return against the
+relaxed parameter bounds `Geometry.BoundsR`, with the physical face applied globally (Lemma D). -/
 /- Chosen physical/count data at the new geometry. Apache-2.0.
 The established incumbent beta cap remains an explicit input until Bootstrap integration. -/
 import Submissions.repeated_marks_20261024.ReturnD.Schedule
 import Submissions.repeated_marks_20261024.ReturnD.PhysicalDirect.MomentGates
-import Submissions.hailey_collet_1252270103.Record1252270103Return.Transport.FinalHeight
+import Submissions.repeated_marks_20261024.ReturnD.Transport.FinalHeight
 set_option autoImplicit false
 open QRH.Record1252270103Return
 
 namespace QRH.RepeatedMarks.Return.GenericPhysical.PhysicalDirect
 open QRH.Record1252270103Return QRH.Record1252270103Return.GenericPhysical
-variable [Geometry.Parameters] [Geometry.Bounds] [scheme : CountScheme] [GenericArithmetic.PhysicalSchedule]
+variable [Geometry.Parameters] [Geometry.BoundsR] [scheme : CountScheme] [GenericArithmetic.PhysicalSchedule]
 noncomputable section
 set_option maxHeartbeats 200000
 open scoped Classical BigOperators ContDiff
@@ -19,7 +19,7 @@ open QRH.RepeatedMarks.Return.GenericArithmetic OAI OAI.SevenEighths HeckeFamily
 open QRH.Record12518109Count
 open QRH.Record1252270103Return.GenericCount
 open QRH.Record1252270103Return.GenericPhysical (baselineSource)
-open QRH.Record1252270103Return.GenericPhysical.Assembly
+open QRH.RepeatedMarks.Return.GenericPhysical.Assembly
 
 structure ChosenData where
   D : BaselineData
@@ -46,7 +46,7 @@ theorem exists_chosen_data_with_mesh (hgap : theta<HeckeZeroSupremum.beta)
     (mesh : ℝ→ℝ) (hmesh : ∀t : ℝ,0<t→0<mesh t) :
     ∃A : ChosenData,A.sourceMesh=mesh A.D.t := by
   have hk : (7/10:ℝ)≤2*HeckeZeroSupremum.beta-1 := by
-    have ht : (85/100:ℝ)<theta := by linarith [Geometry.Bounds.theta_bounds.1]
+    have ht : (85/100:ℝ)<theta := by linarith [Geometry.BoundsR.theta_bounds.1]
     linarith
   have hkhi : 2*HeckeZeroSupremum.beta-1≤3/4 :=
     hκbeta.trans scheme.natural_hi

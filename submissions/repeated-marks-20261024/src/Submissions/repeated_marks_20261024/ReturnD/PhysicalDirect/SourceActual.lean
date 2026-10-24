@@ -1,6 +1,6 @@
-/- Repeated marks: fork of Collet's generic physical return module PhysicalDirect.SourceActual (Record1252270103Return,
-Apache-2.0; inherited notices retained), re-elaborated in QRH.RepeatedMarks.Return so that the
-physical schedule applies the physical face globally (Lemma D). -/
+/- Repeated marks: fork of Collet's generic return module PhysicalDirect.SourceActual (Record1252270103Return,
+Apache-2.0; inherited notices retained), re-elaborated in QRH.RepeatedMarks.Return against the
+relaxed parameter bounds `Geometry.BoundsR`, with the physical face applied globally (Lemma D). -/
 /- Actual physical numerator source/normalizer closure, adapted Gao/Hailey Collet/OpenAI; Apache-2.0. -/
 import Submissions.repeated_marks_20261024.ReturnD.Schedule
 import Submissions.repeated_marks_20261024.ReturnD.PhysicalDirect.Combined
@@ -16,13 +16,13 @@ open Filter
 open QRH.Record1252270103Return.GenericPhysical (baselineSource)
 namespace QRH.RepeatedMarks.Return.GenericPhysical.PhysicalDirect.Source
 open QRH.Record1252270103Return QRH.Record1252270103Return.GenericPhysical
-variable [Geometry.Parameters] [Geometry.Bounds] [scheme : CountScheme] [GenericArithmetic.PhysicalSchedule]
+variable [Geometry.Parameters] [Geometry.BoundsR] [scheme : CountScheme] [GenericArithmetic.PhysicalSchedule]
 open QRH.RepeatedMarks.Return.GenericArithmetic QRH.Record12518109Count QRH.RepeatedMarks.Return.GenericPhysical.Scalar QRH.RepeatedMarks.Return.GenericPhysical.PhysicalDirect
 open Cycle25.Weighted.Numerator Cycle25.Numerator
 open OAI OAI.SevenEighths Cycle25ProbeFinalAssembly ProbeHighRowFamily ProbePhysical HeckeFamily HeckeInverseAmplification
 open QRH.Record12518109Count
 open QRH.RepeatedMarks.Return.GenericPhysical.PhysicalDirect Cycle25DetectorRowCount HeckeDetectorPhysicalSelection HeckeDetectorAmplitudeFirst HeckeDetectorFiberPartition
-open QRH.Record1252270103Return.GenericPhysical.FinalAssembly
+open QRH.RepeatedMarks.Return.GenericPhysical.FinalAssembly
 
 /-- The genuine initial physical affine moment, at an error fixed before height. -/
 def ActualAffineInput (A : ChosenData) : Prop :=
@@ -31,7 +31,7 @@ def ActualAffineInput (A : ChosenData) : Prop :=
   ∃di : ℕ,∃control : Finset (ℕ×ℕ),∃Ci : ℝ,0< Ci ∧
     ∀ᶠU:ℝ in atTop,AffineAt A.F bPhi A.sourceMesh affineError U di control Ci
 
-def sourceTarget : ℝ := QRH.Record1252270103Return.GenericPhysical.Assembly.signal HeckeZeroSupremum.beta-sourceReserve-
+def sourceTarget : ℝ := QRH.RepeatedMarks.Return.GenericPhysical.Assembly.signal HeckeZeroSupremum.beta-sourceReserve-
   (HeckeZeroSupremum.beta-theta)/2
 
 def RawSourceDyadBound (A : ChosenData) (η : Character) (Z τ : ℝ) (n : ℕ)
@@ -77,7 +77,7 @@ theorem actual_raw_source (hgap : theta< HeckeZeroSupremum.beta) (A : ChosenData
     RawSourceDyadBound A η Z τ n J C C0 := by
   obtain ⟨bPhi,affineError,haff,haffsmall,hsPhi,di,control,Ci,hCi,hinput⟩ := hAffine
   have hb : (51/100:ℝ)≤ HeckeZeroSupremum.beta := by
-    have ht : (51/100:ℝ)< theta := by linarith [Geometry.Bounds.theta_bounds.1]
+    have ht : (51/100:ℝ)< theta := by linarith [Geometry.BoundsR.theta_bounds.1]
     linarith
   have hbetatop : HeckeZeroSupremum.beta≤7/8 := by
     have hh := A.D.momentKappa_hi
@@ -105,7 +105,7 @@ theorem actual_raw_source (hgap : theta< HeckeZeroSupremum.beta) (A : ChosenData
   unfold RawSourceDyadBound
   intro rows d a i hd hdmax ha hatop hi hsource hrows hrow hfreq hnext hcurrent q hq
   have hZ0 : 0< Z := zero_lt_one.trans hZ
-  have hd' : d≤7/8 := hdmax.trans (by change Geometry.h+1/10000000000 ≤ _; linarith [Geometry.Bounds.h_interval.2])
+  have hd' : d≤7/8 := hdmax.trans (by change Geometry.h+1/10000000000 ≤ _; linarith [Geometry.BoundsR.h_interval.2])
   have hz : ((17/50:ℂ)+q.2*Complex.I).re=17/50 := by norm_num
   have hx : ((((a+16*A.D.e):ℝ):ℂ)+q.1*Complex.I).re=a+16*A.D.e := by simp
   have him : |((17/50:ℂ)+q.2*Complex.I).im|≤((3*i+1:ℕ):ℝ)*Z^τ := by simpa using hq.2

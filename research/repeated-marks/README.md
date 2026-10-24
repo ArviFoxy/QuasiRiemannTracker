@@ -21,25 +21,23 @@ $0.8747514$ (`../doubled-marks`).
 - The return certifier reproduces PR #69's own final certificate exactly
   (`test_return69.py`).
 - **Lean.** The submission `submissions/repeated-marks-20261024` proves
-  $\theta=8747417/10^7=0.8747417$ in Lean 4. That is $3.12\cdot10^{-5}$
-  below the record $0.874772906$. It uses:
+  $\theta=8747289/10^7=0.8747289$ in Lean 4. That is $4.40\cdot10^{-5}$
+  below the record $0.874772906$, and it is the full value of this note.
+  It uses:
   - the repeated-mark source step and the 59-face graph;
   - the final return with Lemma D: the physical face (node 52) is applied
     through its global source theorem at every shift, with numerator cap
     $s_P=9/200$;
-  - count windows at cap $s_+=13/250$, with count face node 58.
+  - count windows at cap $s_+=13/250$, with count face node 58;
+  - Collet's generic return re-elaborated against relaxed coarse parameter
+    bounds (§10).
 
   `Candidate.bound` depends only on `propext`, `Classical.choice` and
-  `Quot.sound` (§10).
-- **Earlier Lean stages.** Two earlier versions with Collet's windowed physical
-  return were certified and committed:
-  - $0.8747565$, with count cap $11/250$;
-  - $0.8747490$, with count cap $13/250$.
-- **Still open: the full stage-B value $\theta=0.8747289$.** Collet's
-  transport layer fixes coarse bounds on the parameters through
-  `Geometry.Bounds`: $\ell<0.1677$, $y<0.466$, $h<0.802$. These force
-  $\theta>0.87474167$. Reaching $0.8747289$ means relaxing those bounds in the
-  57 transport modules that use them.
+  `Quot.sound`.
+- **Earlier Lean stages.** These were certified and committed on the way:
+  - $0.8747565$ (Collet's windowed return, count cap $11/250$);
+  - $0.8747490$ (count cap $13/250$);
+  - $0.8747417$ (Lemma D, within Collet's coarse bounds).
 
 This note supersedes `../doubled-marks/README.md`, which used each marked slot
 at most twice. Three things change, and everything else in PR #69 is reused
@@ -335,7 +333,7 @@ pipeline:
 | this note, stage A (certified, Lean) | $\mathcal G'_K$, $K=8$ | PR #69 guards, $h=799/1000$ | 0.8747565 |
 | this note, stage A with $s_+=13/250$ (certified, Lean) | $\mathcal G'_K$, $K=8$ | PR #69 guards, $h=799/1000$ | 0.8747490 |
 | this note, Lemma D within Collet's coarse bounds (certified, Lean) | $\mathcal G'_K$, $K=8$ | Lemma D, $s_+=13/250$, $s_P=9/200$, $h=801/1000$ | 0.8747417 |
-| this note (certified) | $\mathcal G'_K$, $K=8$ | Lemma D, $s_+=13/250$, $s_P=9/200$, $h=401/500$ | **0.8747289** |
+| this note, Lemma D with relaxed coarse bounds (certified, Lean) | $\mathcal G'_K$, $K=8$ | Lemma D, $s_+=13/250$, $s_P=9/200$, $h=401/500$ | **0.8747289** |
 
 The new faces are flatter (Λ_C ≈ 2.897, Λ_P ≈ 3.038). With PR #69's guards
 unchanged they gain almost nothing: FR21 needs $t_f\ge0.0029$, and the Lean plain
@@ -469,9 +467,9 @@ The remaining differences are hand-written:
 ```
 python3 fork_source.py fork/fork_closure.tsv fork/fork_tainted_all.txt <package dir> <package dir>/Source/NFStep2.lean
 python3 gen_graph_lean.py 59 58 52 <package dir>
-python3 gen_return_lean.py cchain_k8b.json 8747417/10000000 801/1000 58 52 <out dir> 13/250 9/200 global
-python3 fork_return.py <out dir> <package dir> 549989/10000000 549989/10000000 13/250 9/200
-python3 fork_physical.py <package dir> 9/200
+python3 gen_return_lean.py cchain_k8b.json 8747289/10000000 401/500 58 52 <out dir> 13/250 9/200 global
+python3 fork_return.py <out dir> <package dir> 549989/10000000 549989/10000000 13/250 9/200 transport
+python3 fork_transport.py <package dir> 9/200
 ```
 
 **Lemma D** (`ReturnD/`, 64 modules). `fork_physical.py` copies Collet's generic
@@ -490,10 +488,33 @@ physical return into `QRH.RepeatedMarks.Return` and changes three things:
   lengths by the natural moment.
 
 The final stage (`fork_return.py` with the `SP` argument) instantiates the new
-schedule and restricts the global physical source to the new face. The return
-certificate is `gen_return_lean.py ... 13/250 9/200 global`: 24 row rectangles
-and 4 admission windows at $\theta=8747417/10^7$, $h=801/1000$, faces 58 (count)
-and 52 (physical).
+schedule and restricts the global physical source to the new face.
+
+**Relaxed coarse bounds** (`fork_transport.py`, 119 modules in `ReturnD/`).
+Collet's transport layer fixes coarse bounds on the return parameters in the
+class `Geometry.Bounds`: $\ell<0.1677$, $y<0.466$, $h<0.802$. These force
+$\theta>0.87474167$. `fork_transport.py` re-elaborates every return module that
+depends on that class, which is the whole transport layer together with the
+generic physical return above. It uses a class `Geometry.BoundsR` with
+$\ell<0.1678$, $y<0.467$, $h<0.803$. Only two proofs restate the bounds as
+literals, and both hold with the relaxed values. The final stage is
+`fork_return.py ... 13/250 9/200 transport`. The return certificate is
+`gen_return_lean.py ... 13/250 9/200 global` at $\theta=8747289/10^7$,
+$h=401/500$, with faces 58 (count) and 52 (physical): 36 row rectangles and
+13 admission windows.
+
+**Binding constraints at the final value.** These were examined with the
+certifiers:
+- **The return.** It binds on the top conductor edge $N_+$ at $\delta\approx0.453$,
+  $p=1/2$, through the count branch of face C. The capped count branch has a
+  large return margin there, but it fails the plain-cone guard
+  $2M+\Lambda_Cz\le B_C$. Smaller caps restore the cone but lose the margin, so
+  extra capped branches do not help.
+- **The source graph.** Every node is limited by the HIGH gate at width $b$ =
+  cap, at the lowest density $\nu=q$. There the class gain binds at
+  $p\approx0.45$ through the inverse row budget $(Q-r)/2$ and the parent face
+  $(BQ-y)/\Lambda$. More copies ($K>8$), other HIGH parents, other count faces and
+  smaller node caps each move $\theta$ by at most $10^{-7}$.
 
 ## Reproducing
 

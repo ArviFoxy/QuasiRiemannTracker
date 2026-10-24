@@ -14,7 +14,7 @@ open QRH.Record12518109Source QRH.Record12518109Existence
 open OAI.SevenEighths OAI.SevenEighths.HeckeFamily
 namespace Final
 local instance : Geometry.Parameters := Geometry.finalParameters
-local instance : Geometry.Bounds := Geometry.finalBounds
+local instance : Geometry.BoundsR := Geometry.finalBounds
 local instance : CountScheme := finalCountScheme
 local instance : GenericArithmetic.PhysicalSchedule := finalPhysicalSchedule
 

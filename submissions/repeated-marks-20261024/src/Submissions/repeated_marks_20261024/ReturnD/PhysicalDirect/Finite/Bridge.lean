@@ -1,6 +1,6 @@
-/- Repeated marks: fork of Collet's generic physical return module PhysicalDirect.Finite.Bridge (Record1252270103Return,
-Apache-2.0; inherited notices retained), re-elaborated in QRH.RepeatedMarks.Return so that the
-physical schedule applies the physical face globally (Lemma D). -/
+/- Repeated marks: fork of Collet's generic return module PhysicalDirect.Finite.Bridge (Record1252270103Return,
+Apache-2.0; inherited notices retained), re-elaborated in QRH.RepeatedMarks.Return against the
+relaxed parameter bounds `Geometry.BoundsR`, with the physical face applied globally (Lemma D). -/
 /- Private .874836 actual numerator specialization; predecessor attribution retained. Apache-2.0. -/
 /- Source integration: PR50 8cb265dc base; PR56 67edfb7a detector affine interfaces.
    Original Hailey Collet, OpenAI and predecessor notices are retained.
@@ -18,22 +18,22 @@ namespace QRH.RepeatedMarks.Return.GenericPhysical.PhysicalDirect.FiniteNumerato
 open QRH.Record1252270103Return QRH.Record1252270103Return.GenericPhysical
 noncomputable section
 set_option maxHeartbeats 200000
-variable [QRH.Record1252270103Return.Geometry.Parameters] [QRH.Record1252270103Return.Geometry.Bounds]
+variable [QRH.Record1252270103Return.Geometry.Parameters] [QRH.Record1252270103Return.Geometry.BoundsR]
 variable [scheme : QRH.Record1252270103Return.CountScheme] [QRH.RepeatedMarks.Return.GenericArithmetic.PhysicalSchedule]
 open QRH.RepeatedMarks.Return.GenericArithmetic QRH.Record1252270103Return.GenericPhysical OAI OAI.SevenEighths
 open scoped Classical BigOperators
 open QRH.Record1252270103Return.GenericPhysical (baselineSource)
 open Filter OAI.SevenEighths ProbeHighRowFamily HeckeFamily HeckeInverseAmplification ProbePhysical
-open QRH.RepeatedMarks.Return.GenericPhysical.PhysicalDirect QRH.Record1252270103Return.GenericPhysical.FinalAssembly Record1252270103Return.TransportHighTransport
-open QRH.Record1252270103Return.GenericPhysical.Assembly
+open QRH.RepeatedMarks.Return.GenericPhysical.PhysicalDirect QRH.RepeatedMarks.Return.GenericPhysical.FinalAssembly OAI.SevenEighths.RepeatedMarksReturn.TransportHighTransport
+open QRH.RepeatedMarks.Return.GenericPhysical.Assembly
 
 theorem target_positive (A : ChosenData) (hgap : QRH.RepeatedMarks.Return.GenericArithmetic.theta< HeckeZeroSupremum.beta) :
-    0< HeckeZeroSupremum.beta+QRH.Record1252270103Return.GenericPhysical.Assembly.signalShift-A.P.sigma := by
+    0< HeckeZeroSupremum.beta+QRH.RepeatedMarks.Return.GenericPhysical.Assembly.signalShift-A.P.sigma := by
   have ht:=A.P.t_padding
   have hs:=A.P.sigma_small
-  have ha : (1/10:ℝ)< QRH.RepeatedMarks.Return.GenericArithmetic.theta+QRH.Record1252270103Return.GenericPhysical.Assembly.signalShift := by
+  have ha : (1/10:ℝ)< QRH.RepeatedMarks.Return.GenericArithmetic.theta+QRH.RepeatedMarks.Return.GenericPhysical.Assembly.signalShift := by
     change (1/10:ℝ)<QRH.Record1252270103Return.Geometry.theta-(5/6-QRH.Record1252270103Return.Geometry.x/3-QRH.Record1252270103Return.Geometry.ell/6)
-    linarith [QRH.Record1252270103Return.Geometry.Bounds.theta_bounds.1,QRH.Record1252270103Return.Geometry.Bounds.ell_interval.1,QRH.Record1252270103Return.Geometry.ell_lt_x]
+    linarith [QRH.Record1252270103Return.Geometry.BoundsR.theta_bounds.1,QRH.Record1252270103Return.Geometry.BoundsR.ell_interval.1,QRH.Record1252270103Return.Geometry.ell_lt_x]
   linarith
 
 /-- Actual cell bounds and actual count moments imply the literal finite cube bound. -/
@@ -58,7 +58,7 @@ theorem fixed_numerator_of_cells (hgap : QRH.RepeatedMarks.Return.GenericArithme
       η rowPadding A.D.e τ n Z idx grid →
     ‖finiteNonfloorNumerator A.F.modulus ⊤ A.F.S A.F.exclusions A.F.maximal A.D.length
       1 2 rowPadding A.D.e τ (fun _=>A.F.w) A.F.W A.F.W η Z idx grid‖ ≤
-      Ctot*‖normalizer A.D A.F Z‖*Z^(HeckeZeroSupremum.beta+QRH.Record1252270103Return.GenericPhysical.Assembly.signalShift-A.P.sigma)
+      Ctot*‖normalizer A.D A.F Z‖*Z^(HeckeZeroSupremum.beta+QRH.RepeatedMarks.Return.GenericPhysical.Assembly.signalShift-A.P.sigma)
   refine ⟨Csum+1,by positivity,?_⟩
   filter_upwards [hcount,hcell,hsum,herror,eventually_ge_atTop ((Ce+1)*(η.modulus.absNorm:ℝ)^2),
     eventually_ge_atTop (1:ℝ)] with Z hc hcells hs he hlarge hZ
@@ -72,14 +72,14 @@ theorem fixed_numerator_of_cells (hgap : QRH.RepeatedMarks.Return.GenericArithme
       _ ≤ Z*Z^(-(1:ℝ)) := mul_le_mul_of_nonneg_right
         (by nlinarith only [hlarge,sq_nonneg (η.modulus.absNorm:ℝ)]) (by positivity)
       _ = 1 := by rw [Real.rpow_neg_one];exact mul_inv_cancel₀ hZp.ne'
-  have hone : (1:ℝ)≤ Z^(HeckeZeroSupremum.beta+QRH.Record1252270103Return.GenericPhysical.Assembly.signalShift-A.P.sigma) :=
+  have hone : (1:ℝ)≤ Z^(HeckeZeroSupremum.beta+QRH.RepeatedMarks.Return.GenericPhysical.Assembly.signalShift-A.P.sigma) :=
     Real.one_le_rpow hZ (target_positive A hgap).le
   let V := finiteNonfloorNumerator A.F.modulus ⊤ A.F.S A.F.exclusions A.F.maximal A.D.length
     1 2 rowPadding A.D.e τ (fun _=>A.F.w) A.F.W A.F.W η Z idx grid
   let W := fullW A.D A.F η Z (selectedRows A.D A.F Z grid)
     (fun u=>51/100+A.D.e*grid u) (fun u=>(3*idx u+1:ℕ)*Z^τ)
   let N := normalizer A.D A.F Z
-  let E := Z^(HeckeZeroSupremum.beta+QRH.Record1252270103Return.GenericPhysical.Assembly.signalShift-A.P.sigma)
+  let E := Z^(HeckeZeroSupremum.beta+QRH.RepeatedMarks.Return.GenericPhysical.Assembly.signalShift-A.P.sigma)
   have hnormalized : ‖V/N‖≤(Csum+1)*E := by
     calc
       _ = ‖(V/N-W/N)+W/N‖ := by rw [sub_add_cancel]

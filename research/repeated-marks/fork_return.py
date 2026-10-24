@@ -100,10 +100,14 @@ def strip_block(text, name):
     return re.sub(r'^#print axioms \S*\.' + name + r'\.\S*\n', '', text, flags=re.M)
 
 
-def lemma_d(m, text, phys, sP, capP):
-    """Point the final stage at the forked generic physical return (Lemma D)."""
+def lemma_d(m, text, phys, sP, capP, ft=None):
+    """Point the final stage at the forked generic physical return (Lemma D); with `ft`, at the
+    generic return forked below the relaxed parameter bounds (fork_transport.py)."""
     for mod in sorted(phys, key=len, reverse=True):
         text = text.replace(f'import {CPKG}.Record1252270103Return.{mod}\n', f'import {PKG}.ReturnD.{mod}\n')
+    if ft is not None:
+        import fork_transport as FT
+        text = FT.rename_bounds(ft['requalify'](text))
     for ns in ('GenericArithmetic.', 'GenericPhysical.PhysicalDirect.', 'GenericPhysical.Scalar.'):
         text = text.replace(f'{NS_OLD}.{ns}', f'{NS_NEW}.{ns}')
     def sub1(old, new):
@@ -139,8 +143,13 @@ def main():
     gen, out, capC, capP = sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4]
     sC = sys.argv[5] if len(sys.argv) > 5 else '11/250'
     sP = sys.argv[6] if len(sys.argv) > 6 else None
-    phys = set()
-    if sP is not None:
+    transport = len(sys.argv) > 7 and sys.argv[7] == 'transport'
+    phys, ft = set(), None
+    if sP is not None and transport:
+        import fork_transport as FT
+        ft = FT.build_context()
+        phys = {m[len('Record1252270103Return.'):] for m in ft['fork']}
+    elif sP is not None:
         import fork_physical as FPH
         phys = {m[len('Record1252270103Return.'):] for m in FPH.forked_modules(FPH.all_modules())}
     fr = os.path.join(out, 'FinalReturn')
@@ -217,7 +226,7 @@ def main():
                                 f'import @@CPKG@@.Record1252270103Return.EndpointFromSources')
         new = rewrite(body, fork_names, fin).replace('@@CPKG@@', CPKG)
         if sP is not None:
-            new = lemma_d(m, new, phys, sP, capP)
+            new = lemma_d(m, new, phys, sP, capP, ft)
 
         write_if_changed(os.path.join(fr, f'{m}.lean'), HDR.format(m=m) + new)
     print('forked', len(FORKED), 'modules;', len(fork_names), 'qualified names re-pointed')

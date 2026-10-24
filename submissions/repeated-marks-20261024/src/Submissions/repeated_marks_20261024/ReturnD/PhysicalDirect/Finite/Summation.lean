@@ -1,6 +1,6 @@
-/- Repeated marks: fork of Collet's generic physical return module PhysicalDirect.Finite.Summation (Record1252270103Return,
-Apache-2.0; inherited notices retained), re-elaborated in QRH.RepeatedMarks.Return so that the
-physical schedule applies the physical face globally (Lemma D). -/
+/- Repeated marks: fork of Collet's generic return module PhysicalDirect.Finite.Summation (Record1252270103Return,
+Apache-2.0; inherited notices retained), re-elaborated in QRH.RepeatedMarks.Return against the
+relaxed parameter bounds `Geometry.BoundsR`, with the physical face applied globally (Lemma D). -/
 /- Private .874836 actual numerator specialization; predecessor attribution retained. Apache-2.0. -/
 import Submissions.repeated_marks_20261024.ReturnD.PhysicalDirect.Finite.Geometry
 import Submissions.repeated_marks_20261024.ReturnD.Schedule
@@ -11,14 +11,14 @@ namespace QRH.RepeatedMarks.Return.GenericPhysical.PhysicalDirect.FiniteNumerato
 open QRH.Record1252270103Return QRH.Record1252270103Return.GenericPhysical
 noncomputable section
 set_option maxHeartbeats 200000
-variable [QRH.Record1252270103Return.Geometry.Parameters] [QRH.Record1252270103Return.Geometry.Bounds]
+variable [QRH.Record1252270103Return.Geometry.Parameters] [QRH.Record1252270103Return.Geometry.BoundsR]
 variable [scheme : QRH.Record1252270103Return.CountScheme] [QRH.RepeatedMarks.Return.GenericArithmetic.PhysicalSchedule]
 open QRH.RepeatedMarks.Return.GenericArithmetic QRH.Record1252270103Return.GenericPhysical OAI OAI.SevenEighths
 open scoped Classical BigOperators
 open QRH.Record1252270103Return.GenericPhysical (baselineSource)
 open Filter OAI.SevenEighths ProbeHighRowFamily HeckeFamily HeckeInverseAmplification ProbePhysical
-open QRH.RepeatedMarks.Return.GenericPhysical.PhysicalDirect QRH.Record1252270103Return.GenericPhysical.FinalAssembly Record1252270103Return.TransportHighTransport
-open QRH.Record1252270103Return.GenericPhysical.Assembly
+open QRH.RepeatedMarks.Return.GenericPhysical.PhysicalDirect QRH.RepeatedMarks.Return.GenericPhysical.FinalAssembly OAI.SevenEighths.RepeatedMarksReturn.TransportHighTransport
+open QRH.RepeatedMarks.Return.GenericPhysical.Assembly
 
 def FullWCellsAt (A : ChosenData) (τ : ℝ) (n : ℕ) (η : Character) (C Z : ℝ) : Prop :=
   ∀idx grid : FreeRow→ℕ,
@@ -40,7 +40,7 @@ def ActualFullWCellInput (A : ChosenData) (J : ℝ) : Prop :=
       FullWCellsAt A τ n η (C*C0*(η.modulus.absNorm:ℝ)^(2*A.P.eps)) Z
 
 theorem cell_exponent_le (A : ChosenData) :
-    cellTarget+A.D.t/4≤ HeckeZeroSupremum.beta+QRH.Record1252270103Return.GenericPhysical.Assembly.signalShift-A.P.sigma := by
+    cellTarget+A.D.t/4≤ HeckeZeroSupremum.beta+QRH.RepeatedMarks.Return.GenericPhysical.Assembly.signalShift-A.P.sigma := by
   have ht:=A.P.t_padding
   have hs:=A.P.sigma_small
   have hc:=A.count_budget
@@ -58,7 +58,7 @@ theorem fullW_sum_bound (A : ChosenData) (τ : ℝ) (n : ℕ) (η : Character)
         η rowPadding A.D.e τ n Z idx grid →
       ‖fullW A.D A.F η Z (selectedRows A.D A.F Z grid)
         (fun u=>51/100+A.D.e*grid u) (fun u=>(3*idx u+1:ℕ)*Z^τ)/normalizer A.D A.F Z‖ ≤
-        Csum*Z^(HeckeZeroSupremum.beta+QRH.Record1252270103Return.GenericPhysical.Assembly.signalShift-A.P.sigma) := by
+        Csum*Z^(HeckeZeroSupremum.beta+QRH.RepeatedMarks.Return.GenericPhysical.Assembly.signalShift-A.P.sigma) := by
   have ht:=A.D.t_pos
   obtain ⟨Cd,hCd,hdyad⟩:=canonical_dyad_cost (A.D.t/8) (by positivity)
   let m : ℕ:=⌊(49/100:ℝ)/A.D.e⌋₊
@@ -76,7 +76,7 @@ theorem fullW_sum_bound (A : ChosenData) (τ : ℝ) (n : ℕ) (η : Character)
     (fun u _=>⟨(hsel.1 u).2.1,(hsel.1 u).2.2.1⟩) (hcell idx grid hsel)
   have htop : QRH.RepeatedMarks.Return.GenericArithmetic.h+rowPadding≤1 := by
     change QRH.Record1252270103Return.Geometry.h+1/20000000000≤1
-    linarith [QRH.Record1252270103Return.Geometry.Bounds.h_interval.2]
+    linarith [QRH.Record1252270103Return.Geometry.BoundsR.h_interval.2]
   have hd:=hdyad Z (QRH.RepeatedMarks.Return.GenericArithmetic.h+rowPadding) hZ htop
   have hexp:=Real.rpow_le_rpow_of_exponent_le hZ (cell_exponent_le A)
   calc

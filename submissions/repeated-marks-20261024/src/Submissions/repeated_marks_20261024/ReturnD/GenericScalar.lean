@@ -1,6 +1,6 @@
-/- Repeated marks: fork of Collet's generic physical return module GenericScalar (Record1252270103Return,
-Apache-2.0; inherited notices retained), re-elaborated in QRH.RepeatedMarks.Return so that the
-physical schedule applies the physical face globally (Lemma D). -/
+/- Repeated marks: fork of Collet's generic return module GenericScalar (Record1252270103Return,
+Apache-2.0; inherited notices retained), re-elaborated in QRH.RepeatedMarks.Return against the
+relaxed parameter bounds `Geometry.BoundsR`, with the physical face applied globally (Lemma D). -/
 /- Literal Target830 physical exponents and complete source-loss ledger.
 Adapted from accepted Hailey Collet/OpenAI/Cycle25 sources. Apache-2.0. -/
 import Submissions.repeated_marks_20261024.ReturnD.GenericFeedback
@@ -12,7 +12,7 @@ open scoped BigOperators
 namespace QRH.RepeatedMarks.Return.GenericPhysical.Scalar
 open QRH.Record1252270103Return QRH.Record1252270103Return.GenericPhysical
 open QRH.Record1252270103Return QRH.RepeatedMarks.Return.GenericArithmetic
-variable [Geometry.Parameters] [Geometry.Bounds] [CountScheme] [PhysicalSchedule]
+variable [Geometry.Parameters] [Geometry.BoundsR] [CountScheme] [PhysicalSchedule]
 
 /-- C is total selected capacity in Z units, not capacity relative to U=Z^d. -/
 def numeratorExponent (bs : List Branch) (kap d C delta p : ℝ) : ℝ :=
@@ -28,7 +28,7 @@ theorem numerator_kernel_exponent (bs : List Branch) (kap d C delta p e : ℝ) :
     numeratorExponent bs kap d C delta p+kernelExponent ((1+delta)/2) e =
       rowAt bs kap d C delta p+Assembly.signalShift+16*e := by
   unfold numeratorExponent kernelExponent rowAt Ebase Assembly.signalShift
-  dsimp [Assembly.signalShift, Record1252270103Return.Transport.Assembly.signalShift, h, Geometry.h]
+  dsimp [Assembly.signalShift, RepeatedMarksReturn.Transport.Assembly.signalShift, h, Geometry.h]
   ring
 
 theorem numerator_packet_exponent (bs : List Branch) (kap d C delta q scalar mass count moment selection mesh slack : ℝ)
@@ -53,7 +53,7 @@ namespace QRH.RepeatedMarks.Return.GenericPhysical.Scalar
 open QRH.Record1252270103Return QRH.Record1252270103Return.GenericPhysical
 noncomputable section
 open QRH.Record1252270103Return QRH.RepeatedMarks.Return.GenericArithmetic
-variable [Geometry.Parameters] [Geometry.Bounds] [CountScheme] [PhysicalSchedule]
+variable [Geometry.Parameters] [Geometry.BoundsR] [CountScheme] [PhysicalSchedule]
 def sourceReserve : ℝ := rowFee/2
 
 /-- Fixed scalar costs from the literal physical reconstruction. All entries

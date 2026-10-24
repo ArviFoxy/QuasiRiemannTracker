@@ -1,9 +1,9 @@
-/- Repeated marks: fork of Collet's generic physical return module PhysicalDirect.FiniteError.CubeTransfer (Record1252270103Return,
-Apache-2.0; inherited notices retained), re-elaborated in QRH.RepeatedMarks.Return so that the
-physical schedule applies the physical face globally (Lemma D). -/
+/- Repeated marks: fork of Collet's generic return module PhysicalDirect.FiniteError.CubeTransfer (Record1252270103Return,
+Apache-2.0; inherited notices retained), re-elaborated in QRH.RepeatedMarks.Return against the
+relaxed parameter bounds `Geometry.BoundsR`, with the physical face applied globally (Lemma D). -/
 /- Private .874836 actual numerator specialization; predecessor attribution retained. Apache-2.0. -/
 /- Adapted from weighted upstream PR6; original proof structure retained. -/
-import Submissions.hailey_collet_1252270103.Record1252270103Return.Transport.Transport.CubeFiniteError
+import Submissions.repeated_marks_20261024.ReturnD.Transport.Transport.CubeFiniteError
 import Submissions.repeated_marks_20261024.ReturnD.PhysicalDirect.FiniteError.FullW
 import Submissions.repeated_marks_20261024.ReturnD.Schedule
 import Submissions.repeated_marks_20261024.ReturnD.GenericScalar
@@ -11,12 +11,13 @@ namespace QRH.RepeatedMarks.Return.GenericPhysical.PhysicalDirect
 open QRH.Record1252270103Return QRH.Record1252270103Return.GenericPhysical
 noncomputable section
 set_option maxHeartbeats 200000
-variable [QRH.Record1252270103Return.Geometry.Parameters] [QRH.Record1252270103Return.Geometry.Bounds]
+variable [QRH.Record1252270103Return.Geometry.Parameters] [QRH.Record1252270103Return.Geometry.BoundsR]
 variable [scheme : QRH.Record1252270103Return.CountScheme] [QRH.RepeatedMarks.Return.GenericArithmetic.PhysicalSchedule]
 open QRH.RepeatedMarks.Return.GenericArithmetic QRH.Record1252270103Return.GenericPhysical OAI OAI.SevenEighths
 open scoped Classical BigOperators
 open MeasureTheory Set Complex
 namespace PhysicalHighRowFamily
+open QRH.Record1252270103Return QRH.Record1252270103Return.GenericPhysical
 open ProbeHighRowFamily
 open HeckeFamily HeckeInverseAmplification ProbePhysical ProbeMellinBoundary
 local notation "O" => HeckeFamily.O
@@ -50,7 +51,7 @@ theorem finite_cube_fullW_arbitrary_saving (K : ℕ) (τ saving b ζ A : ℝ)
           (Z^(QRH.RepeatedMarks.Return.GenericArithmetic.x:ℝ)) (Z^(QRH.RepeatedMarks.Return.GenericArithmetic.y:ℝ)) Z e a H-
         Cycle25.Weighted.FullWContour.finiteCentralFullWRows S hS hmax η R T hT W (fun j=>Z^(length j)) W0 W1
           (Z^(QRH.RepeatedMarks.Return.GenericArithmetic.x:ℝ)) (Z^(QRH.RepeatedMarks.Return.GenericArithmetic.y:ℝ)) Z e a H‖≤ C*(η.modulus.absNorm:ℝ)^2*Z^(-saving) := by
-  obtain ⟨Cc,hCc,hcube⟩ := Record1252270103Return.TransportHighRowFamily.finite_cube_arbitrary_saving (ι:=ι) K τ saving b ζ A hτ hb hζ hA
+  obtain ⟨Cc,hCc,hcube⟩ := RepeatedMarksReturn.TransportHighRowFamily.finite_cube_arbitrary_saving (ι:=ι) K τ saving b ζ A hτ hb hζ hA
     e he he' S hS hmax hfirst W0 W1 a0 b0 a1 b1 ha0 ha1 hW0 hW1
   obtain ⟨Cw,hCw,hfull⟩ := QRH.RepeatedMarks.Return.GenericPhysical.PhysicalDirect.FullWError.finite_fullW_arbitrary_saving (ι:=ι)
     K τ saving b ζ A hτ hb hζ hA e he he' S hS hmax hfirst W0 W1 a0 b0 a1 b1 ha0 ha1 hW0 hW1

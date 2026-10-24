@@ -1,9 +1,9 @@
-/- Repeated marks: fork of Collet's generic physical return module PhysicalDirect.FiniteError.FullW (Record1252270103Return,
-Apache-2.0; inherited notices retained), re-elaborated in QRH.RepeatedMarks.Return so that the
-physical schedule applies the physical face globally (Lemma D). -/
+/- Repeated marks: fork of Collet's generic return module PhysicalDirect.FiniteError.FullW (Record1252270103Return,
+Apache-2.0; inherited notices retained), re-elaborated in QRH.RepeatedMarks.Return against the
+relaxed parameter bounds `Geometry.BoundsR`, with the physical face applied globally (Lemma D). -/
 /- Private .874836 actual numerator specialization; predecessor attribution retained. Apache-2.0. -/
 /- Adapted from weighted upstream PR6; original notices and transparent FullWContour definitions retained. -/
-import Submissions.hailey_collet_1252270103.Record1252270103Return.TransportGeometry
+import Submissions.repeated_marks_20261024.ReturnD.TransportGeometry
 import Submissions.hailey_collet_1252270103.Cycle25.Numerator.Imported.FullWFiniteError
 import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.PrimeRows.CubeFiniteError
 import Submissions.repeated_marks_20261024.ReturnD.Schedule
@@ -13,7 +13,7 @@ import Submissions.repeated_marks_20261024.ReturnD.GenericScalar
 lengths, with arbitrary power savings chosen after the height exponent. -/
 noncomputable section
 set_option maxHeartbeats 200000
-variable [QRH.Record1252270103Return.Geometry.Parameters] [QRH.Record1252270103Return.Geometry.Bounds]
+variable [QRH.Record1252270103Return.Geometry.Parameters] [QRH.Record1252270103Return.Geometry.BoundsR]
 variable [scheme : QRH.Record1252270103Return.CountScheme] [QRH.RepeatedMarks.Return.GenericArithmetic.PhysicalSchedule]
 open QRH.RepeatedMarks.Return.GenericArithmetic QRH.Record1252270103Return.GenericPhysical OAI OAI.SevenEighths
 open scoped Classical BigOperators
@@ -32,7 +32,7 @@ lemma fullW_source_crude_scale {Z a e : ℝ} (hZ : 1≤ Z) (ha : 0≤ a) (he : 0
   have hZ0 : 0< Z := lt_of_lt_of_le zero_lt_one hZ
   simp_rw [←Real.rpow_mul hZ0.le]
   rw [←Real.rpow_add hZ0,←Real.rpow_add hZ0]
-  exact Real.rpow_le_rpow_of_exponent_le hZ (by nlinarith [Record1252270103Return.Transport.Transport.length_sum,Record1252270103Return.Transport.Transport.ly_coarse,Record1252270103Return.Transport.Transport.ell_interval])
+  exact Real.rpow_le_rpow_of_exponent_le hZ (by nlinarith [RepeatedMarksReturn.Transport.Transport.length_sum,RepeatedMarksReturn.Transport.Transport.ly_coarse,RepeatedMarksReturn.Transport.Transport.ell_interval])
 
 lemma fullW_prime_product_bound {K : ℕ} (P : Fin K→HeckeInverseAmplification.PrimeIdeal)
     (Z b : ℝ) (hZ : 0< Z) (_hb : 0≤ b) (length : Fin K→ℝ)
@@ -50,7 +50,7 @@ lemma fullW_arithmetic_cost_bound {K : ℕ} (η : Character) (u : FreeRow) (P : 
     contourArithmeticCost η u P≤(η.modulus.absNorm:ℝ)^2*(b^K)^3*Z^(6+3*QRH.RepeatedMarks.Return.GenericArithmetic.ell) := by
   have hZ0 : 0< Z := lt_of_lt_of_le zero_lt_one hZ
   have hu' : ((Ideal.span {u.val}:Ideal O).absNorm:ℝ)≤ Z :=
-    hu.trans (by simpa using Real.rpow_le_rpow_of_exponent_le hZ (show QRH.RepeatedMarks.Return.GenericArithmetic.h+ζ≤1 by linarith [Record1252270103Return.Transport.Transport.h_interval]))
+    hu.trans (by simpa using Real.rpow_le_rpow_of_exponent_le hZ (show QRH.RepeatedMarks.Return.GenericArithmetic.h+ζ≤1 by linarith [RepeatedMarksReturn.Transport.Transport.h_interval]))
   have hp := fullW_prime_product_bound P Z b hZ0 hb length hlength hP
   have hp0 : 0≤∏j,((P j).val.absNorm:ℝ) := Finset.prod_nonneg (fun j _=>Nat.cast_nonneg _)
   unfold contourArithmeticCost
@@ -163,13 +163,13 @@ theorem finite_fullW_arbitrary_saving (K : ℕ) (τ saving b ζ A : ℝ)
   intro η Z hZ R hR T hT hdis length hl hp W hW a B H idx ψ hbin
   have hZ0 : 0< Z := lt_of_lt_of_le zero_lt_one hZ
   have hrange : Z^(QRH.RepeatedMarks.Return.GenericArithmetic.h+ζ)≤ Z := by
-    simpa using Real.rpow_le_rpow_of_exponent_le hZ (show QRH.RepeatedMarks.Return.GenericArithmetic.h+ζ≤1 by linarith [Record1252270103Return.Transport.Transport.h_interval])
+    simpa using Real.rpow_le_rpow_of_exponent_le hZ (show QRH.RepeatedMarks.Return.GenericArithmetic.h+ζ≤1 by linarith [RepeatedMarksReturn.Transport.Transport.h_interval])
   have hcR : (R.card:ℝ)≤128*Z := freeRow_count R Z hZ (by
     intro u hu
     exact (hR u hu).2.trans hrange)
   have hcT : (Fintype.card (∀j,T j):ℝ)≤(128*b)^K*Z :=
     (fullW_prime_tuple_count T Z b hZ0 hb.le length hl hp).trans
-      (mul_le_mul_of_nonneg_left (by simpa using Real.rpow_le_rpow_of_exponent_le hZ (show QRH.RepeatedMarks.Return.GenericArithmetic.ell≤1 by linarith [Record1252270103Return.Transport.Transport.ell_interval])) (by positivity))
+      (mul_le_mul_of_nonneg_left (by simpa using Real.rpow_le_rpow_of_exponent_le hZ (show QRH.RepeatedMarks.Return.GenericArithmetic.ell≤1 by linarith [RepeatedMarksReturn.Transport.Transport.ell_interval])) (by positivity))
   let E := C*(η.modulus.absNorm:ℝ)^2*Z^(-(saving+2))
   have hE : 0≤ E := by dsimp [E];positivity
   have herr (u : FreeRow) (hu : u∈R) (P : ∀j,T j) :

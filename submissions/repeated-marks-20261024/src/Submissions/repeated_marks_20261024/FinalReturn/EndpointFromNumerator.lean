@@ -1,6 +1,6 @@
 /- Repeated marks: fork of Collet's final-stage module EndpointFromNumerator (Record1252270103Return, Apache-2.0),
 re-instantiated with the final constants of the repeated-mark graph. -/
-import Submissions.hailey_collet_1252270103.Record1252270103Return.Transport.FinalCommonProbe
+import Submissions.repeated_marks_20261024.ReturnD.Transport.FinalCommonProbe
 import Submissions.repeated_marks_20261024.FinalReturn.TransportInstances
 set_option autoImplicit false
 set_option maxHeartbeats 200000
@@ -10,7 +10,7 @@ noncomputable section
 open OAI.SevenEighths OAI.SevenEighths.HeckeFamily
 namespace Final
 local instance : Geometry.Parameters := Geometry.finalParameters
-local instance : Geometry.Bounds := Geometry.finalBounds
+local instance : Geometry.BoundsR := Geometry.finalBounds
 abbrev LiteralNumeratorInput : Prop := GenericPhysical.FinalAssembly.ChosenFiniteNumeratorInput
 
 theorem beta_of_literal_numerator (h : LiteralNumeratorInput) :

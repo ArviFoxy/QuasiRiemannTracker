@@ -1,6 +1,6 @@
-/- Repeated marks: fork of Collet's generic physical return module PhysicalDirect.JointHeight (Record1252270103Return,
-Apache-2.0; inherited notices retained), re-elaborated in QRH.RepeatedMarks.Return so that the
-physical schedule applies the physical face globally (Lemma D). -/
+/- Repeated marks: fork of Collet's generic return module PhysicalDirect.JointHeight (Record1252270103Return,
+Apache-2.0; inherited notices retained), re-elaborated in QRH.RepeatedMarks.Return against the
+relaxed parameter bounds `Geometry.BoundsR`, with the physical face applied globally (Lemma D). -/
 /- A single height is chosen after the physical and count polynomial degrees.
 Adapted Gao/Hailey Collet/OpenAI; Apache-2.0. -/
 import Submissions.repeated_marks_20261024.ReturnD.Schedule
@@ -12,13 +12,13 @@ open QRH.Record1252270103Return
 
 namespace QRH.RepeatedMarks.Return.GenericPhysical.PhysicalDirect
 open QRH.Record1252270103Return QRH.Record1252270103Return.GenericPhysical
-variable [Geometry.Parameters] [Geometry.Bounds] [scheme : CountScheme] [GenericArithmetic.PhysicalSchedule]
+variable [Geometry.Parameters] [Geometry.BoundsR] [scheme : CountScheme] [GenericArithmetic.PhysicalSchedule]
 noncomputable section
 set_option maxHeartbeats 200000
 open scoped Classical
 open Filter OAI OAI.SevenEighths HeckeFamily QRH.RepeatedMarks.Return.GenericArithmetic
 open QRH.Record1252270103Return.GenericPhysical (baselineSource)
-open QRH.Record1252270103Return.GenericPhysical.FinalAssembly
+open QRH.RepeatedMarks.Return.GenericPhysical.FinalAssembly
 open QRH.Record12518109Count
 open QRH.Record1252270103Return.GenericCount
 
@@ -31,7 +31,7 @@ theorem actual_joint_height (A : ChosenData) (hgap : theta<HeckeZeroSupremum.bet
           (C*Z^A.D.t) (Z^(2*τ)) := by
   intro η
   have hb : (51/100:ℝ)≤HeckeZeroSupremum.beta := by
-    have ht : (51/100:ℝ)<theta := by linarith [Geometry.Bounds.theta_bounds.1]
+    have ht : (51/100:ℝ)<theta := by linarith [Geometry.BoundsR.theta_bounds.1]
     linarith
   have hk : 2*HeckeZeroSupremum.beta-1≤scheme.naturalκ := by
     rw [←A.kappa_exact];exact A.kappa_incumbent

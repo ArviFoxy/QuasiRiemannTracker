@@ -10,7 +10,7 @@ namespace QRH.RepeatedMarks.Return
 open QRH.Record1252270103Return
 noncomputable section
 local instance : QRH.Record1252270103Return.Geometry.Parameters := QRH.RepeatedMarks.Return.Geometry.finalParameters
-local instance : QRH.Record1252270103Return.Geometry.Bounds := QRH.RepeatedMarks.Return.Geometry.finalBounds
+local instance : QRH.Record1252270103Return.Geometry.BoundsR := QRH.RepeatedMarks.Return.Geometry.finalBounds
 local instance : QRH.Record1252270103Return.CountScheme := QRH.RepeatedMarks.Return.finalCountScheme
 noncomputable abbrev finalPhysicalSchedule : @QRH.RepeatedMarks.Return.GenericArithmetic.PhysicalSchedule QRH.RepeatedMarks.Return.Geometry.finalParameters QRH.RepeatedMarks.Return.finalCountScheme where
  dMinus := QRH.RepeatedMarks.Return.ds

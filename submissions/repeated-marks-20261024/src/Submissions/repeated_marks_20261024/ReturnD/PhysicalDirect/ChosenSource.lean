@@ -1,6 +1,6 @@
-/- Repeated marks: fork of Collet's generic physical return module PhysicalDirect.ChosenSource (Record1252270103Return,
-Apache-2.0; inherited notices retained), re-elaborated in QRH.RepeatedMarks.Return so that the
-physical schedule applies the physical face globally (Lemma D). -/
+/- Repeated marks: fork of Collet's generic return module PhysicalDirect.ChosenSource (Record1252270103Return,
+Apache-2.0; inherited notices retained), re-elaborated in QRH.RepeatedMarks.Return against the
+relaxed parameter bounds `Geometry.BoundsR`, with the physical face applied globally (Lemma D). -/
 /- Copyright (c) 2026 Hailey Collet. Apache-2.0.
 Literal initial-energy suppliers on one source, mesh and chosen geometry. -/
 import Submissions.hailey_collet_1252270103.Record1252270103Return.CountSource
@@ -12,7 +12,7 @@ open QRH.Record1252270103Return
 namespace QRH.RepeatedMarks.Return.GenericPhysical.PhysicalDirect
 open QRH.Record1252270103Return QRH.Record1252270103Return.GenericPhysical
 noncomputable section
-variable [Geometry.Parameters] [Geometry.Bounds] [scheme:CountScheme] [GenericArithmetic.PhysicalSchedule]
+variable [Geometry.Parameters] [Geometry.BoundsR] [scheme:CountScheme] [GenericArithmetic.PhysicalSchedule]
 open scoped Classical BigOperators SchwartzMap ContDiff ComplexConjugate
 open OAI OAI.SevenEighths QRH.Record12518109Source QRH.Record12518109Existence
 open QRH.RepeatedMarks.Return.GenericArithmetic

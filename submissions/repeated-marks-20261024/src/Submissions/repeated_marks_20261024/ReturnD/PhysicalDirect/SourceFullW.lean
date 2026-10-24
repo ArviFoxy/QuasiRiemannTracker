@@ -1,6 +1,6 @@
-/- Repeated marks: fork of Collet's generic physical return module PhysicalDirect.SourceFullW (Record1252270103Return,
-Apache-2.0; inherited notices retained), re-elaborated in QRH.RepeatedMarks.Return so that the
-physical schedule applies the physical face globally (Lemma D). -/
+/- Repeated marks: fork of Collet's generic return module PhysicalDirect.SourceFullW (Record1252270103Return,
+Apache-2.0; inherited notices retained), re-elaborated in QRH.RepeatedMarks.Return against the
+relaxed parameter bounds `Geometry.BoundsR`, with the physical face applied globally (Lemma D). -/
 /- Actual physical numerator source/normalizer closure, adapted Gao/Hailey Collet/OpenAI; Apache-2.0. -/
 import Submissions.repeated_marks_20261024.ReturnD.Schedule
 import Submissions.repeated_marks_20261024.ReturnD.PhysicalDirect.SourceActual
@@ -14,12 +14,12 @@ open Filter
 open QRH.Record1252270103Return.GenericPhysical (baselineSource)
 namespace QRH.RepeatedMarks.Return.GenericPhysical.PhysicalDirect.Source
 open QRH.Record1252270103Return QRH.Record1252270103Return.GenericPhysical
-variable [Geometry.Parameters] [Geometry.Bounds] [scheme : CountScheme] [GenericArithmetic.PhysicalSchedule]
+variable [Geometry.Parameters] [Geometry.BoundsR] [scheme : CountScheme] [GenericArithmetic.PhysicalSchedule]
 open QRH.RepeatedMarks.Return.GenericArithmetic QRH.Record12518109Count QRH.RepeatedMarks.Return.GenericPhysical.Scalar
 open Cycle25.Weighted.Numerator Cycle25.Numerator
 open OAI OAI.SevenEighths Cycle25ProbeFinalAssembly ProbeHighRowFamily ProbePhysical HeckeFamily HeckeInverseAmplification
 open QRH.Record12518109Count
-open QRH.RepeatedMarks.Return.GenericPhysical.PhysicalDirect QRH.Record1252270103Return.GenericPhysical.FinalAssembly
+open QRH.RepeatedMarks.Return.GenericPhysical.PhysicalDirect QRH.RepeatedMarks.Return.GenericPhysical.FinalAssembly
 theorem source_height_absorption (J t τ : ℝ) (n : ℕ)
     (hJ : 0 ≤ J) (_ht : 0 < t) (hτ : 0 < τ) (hbudget : 2*τ*(1+J) ≤ t) :
     ∀ᶠZ : ℝ in atTop,∀i : ℕ,i ≤ n →
@@ -69,7 +69,7 @@ def FullWCellBound (A : ChosenData) (η : Character) (Z τ : ℝ) (n : ℕ)
     (sourcePrimePool A.F Z) (fun j=>source_prime_pool_outside A.F Z j)
     (fun _ y=>(A.F.w y:ℂ)) (fun j=>Z^(A.D.length j)) A.F.W A.F.W (Z^x) (Z^y) Z A.D.e
     (fun _=>a) (fun _=>(3*i+1:ℕ)*Z^τ)/
-      Record1252270103Return.TransportHighTransport.actualNormalizer A.F.modulus ⊤ A.F.S A.D.length 1 2 (fun _=>A.F.w) A.F.W A.F.W Z‖≤
+      RepeatedMarksReturn.TransportHighTransport.actualNormalizer A.F.modulus ⊤ A.F.S A.D.length 1 2 (fun _=>A.F.w) A.F.W A.F.W Z‖≤
     C*C0*(η.modulus.absNorm:ℝ)^(2*A.P.eps)*Z^(sourceTarget+A.D.t/8)
 
 /-- The two remaining Mellin integrals and literal source normalization cost

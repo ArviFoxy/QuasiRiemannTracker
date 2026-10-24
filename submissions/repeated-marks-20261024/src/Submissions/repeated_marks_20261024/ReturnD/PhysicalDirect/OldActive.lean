@@ -1,6 +1,6 @@
-/- Repeated marks: fork of Collet's generic physical return module PhysicalDirect.OldActive (Record1252270103Return,
-Apache-2.0; inherited notices retained), re-elaborated in QRH.RepeatedMarks.Return so that the
-physical schedule applies the physical face globally (Lemma D). -/
+/- Repeated marks: fork of Collet's generic return module PhysicalDirect.OldActive (Record1252270103Return,
+Apache-2.0; inherited notices retained), re-elaborated in QRH.RepeatedMarks.Return against the
+relaxed parameter bounds `Geometry.BoundsR`, with the physical face applied globally (Lemma D). -/
 /- Actual old-band physical reconstruction on new geometry, adapted Gao/Hailey Collet/OpenAI; Apache-2.0. -/
 import Submissions.repeated_marks_20261024.ReturnD.Schedule
 import Submissions.hailey_collet_1252270103.Cycle25.Energy.Physical.OriginalFourth
@@ -14,7 +14,7 @@ open scoped Classical BigOperators SchwartzMap
 open Filter
 namespace QRH.RepeatedMarks.Return.GenericPhysical.PhysicalDirect.OldFourth
 open QRH.Record1252270103Return QRH.Record1252270103Return.GenericPhysical
-variable [Geometry.Parameters] [Geometry.Bounds] [scheme : CountScheme] [GenericArithmetic.PhysicalSchedule]
+variable [Geometry.Parameters] [Geometry.BoundsR] [scheme : CountScheme] [GenericArithmetic.PhysicalSchedule]
 open QRH.RepeatedMarks.Return.GenericArithmetic OAI OAI.SevenEighths
 open QRH.RepeatedMarks.Return.GenericArithmetic
 open Cycle25.Weighted.Numerator Cycle25.Numerator
@@ -39,7 +39,7 @@ lemma eventually_old_cutoff (b:ℝ) (hb:0≤ b) :
   have hy:y/d≤99:=by
     apply (div_le_iff₀ hp).mpr
     have hdmin : (1/200:ℝ)≤d := hd
-    linarith [Geometry.Bounds.ly_coarse.2]
+    linarith [Geometry.BoundsR.ly_coarse.2]
   calc
     _ ≤ U^(1:ℝ)*U^(99:ℝ):=mul_le_mul he
       (Real.rpow_le_rpow_of_exponent_le hU.le hy)
@@ -154,7 +154,7 @@ theorem old_active_box_fourth {D:Cycle25.Weighted.MomentData}
     exact hh
   have hys:0< y/d:=by
     have hp:=(show (0:ℝ)<d0 by norm_num [d0]).trans_le hd
-    have hy:0< y:=by linarith [Geometry.Bounds.ly_coarse.1,Geometry.Bounds.ly_coarse.2]
+    have hy:0< y:=by linarith [Geometry.BoundsR.ly_coarse.1,Geometry.BoundsR.ly_coarse.2]
     exact div_pos hy hp
   have hmax:max 1 (Lc i*N i)≤ U^(y/d+boxWidth):=by
     apply max_le

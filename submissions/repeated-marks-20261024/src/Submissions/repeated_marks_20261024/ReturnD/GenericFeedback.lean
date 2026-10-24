@@ -1,6 +1,6 @@
-/- Repeated marks: fork of Collet's generic physical return module GenericFeedback (Record1252270103Return,
-Apache-2.0; inherited notices retained), re-elaborated in QRH.RepeatedMarks.Return so that the
-physical schedule applies the physical face globally (Lemma D). -/
+/- Repeated marks: fork of Collet's generic return module GenericFeedback (Record1252270103Return,
+Apache-2.0; inherited notices retained), re-elaborated in QRH.RepeatedMarks.Return against the
+relaxed parameter bounds `Geometry.BoundsR`, with the physical face applied globally (Lemma D). -/
 /- Feedback algebra adapted from accepted PR63, Apache-2.0. -/
 import Submissions.repeated_marks_20261024.ReturnD.Schedule
 set_option autoImplicit false
@@ -9,7 +9,7 @@ namespace QRH.RepeatedMarks.Return.GenericArithmetic
 open QRH.Record1252270103Return
 noncomputable section
 open QRH.Record1252270103Return
-variable [Geometry.Parameters] [Geometry.Bounds] [CountScheme] [PhysicalSchedule]
+variable [Geometry.Parameters] [Geometry.BoundsR] [CountScheme] [PhysicalSchedule]
 open QRH.Record12518109Return (envelope_gap)
 theorem new_feedback (bs : List Branch) {κ d δ p : ℝ} (hk : kappa ≤ κ)
     (hd : d ∈ Set.Icc 0 dp) (hδ : δ ∈ Set.Icc 0 (3/4))
@@ -17,10 +17,10 @@ theorem new_feedback (bs : List Branch) {κ d δ p : ℝ} (hk : kappa ≤ κ)
     newExponentAt bs κ d δ p-newExponent bs d δ p ≤ (κ-kappa)/50 := by
   have hg : 0 ≤ κ-kappa := sub_nonneg.mpr hk
   have hc := envelope_gap bs
-    (show (7/10:ℝ) ≤ kappa by dsimp [kappa]; linarith [Geometry.Bounds.theta_bounds.1]) hk
+    (show (7/10:ℝ) ≤ kappa by dsimp [kappa]; linarith [Geometry.BoundsR.theta_bounds.1]) hk
     (show 0 ≤ δ ∧ δ ≤ 5/6 by constructor <;> linarith [hδ.1,hδ.2]) hp
   have hm := mul_le_mul_of_nonneg_left hc (show 0 ≤ 3*d/4 by linarith [hd.1])
-  have hcoef : 5*dp/288 ≤ (1:ℝ)/50 := by change 5*(Geometry.h+1/10000000000)/288 ≤ (1:ℝ)/50; linarith [Geometry.Bounds.h_interval.2]
+  have hcoef : 5*dp/288 ≤ (1:ℝ)/50 := by change 5*(Geometry.h+1/10000000000)/288 ≤ (1:ℝ)/50; linarith [Geometry.BoundsR.h_interval.2]
   have hp1 := mul_le_mul_of_nonneg_right hd.2 hg
   have hp2 := mul_le_mul_of_nonneg_right hcoef hg
   unfold newExponentAt newExponent rowAt
@@ -38,7 +38,7 @@ theorem old_feedback (bs : List Branch) {κ d δ p : ℝ} (hk : kappa ≤ κ)
     (hd : d ∈ Set.Icc 0 dm) (hδ : δ ∈ Set.Icc 0 (3/4))
     (hp : p ∈ Set.Icc 0 (1/2)) :
     oldExponentAt bs κ d δ p-oldExponent bs d δ p ≤ (κ-kappa)/8 := by
-  have ha : (7/10:ℝ) ≤ kappa := by dsimp [kappa]; linarith [Geometry.Bounds.theta_bounds.1]
+  have ha : (7/10:ℝ) ≤ kappa := by dsimp [kappa]; linarith [Geometry.BoundsR.theta_bounds.1]
   have hk7 := ha.trans hk
   have ha0 : 0 < kappa := by linarith
   have hk0 : 0 < κ := by linarith
@@ -46,7 +46,7 @@ theorem old_feedback (bs : List Branch) {κ d δ p : ℝ} (hk : kappa ≤ κ)
   have hc := envelope_gap bs ha hk
     (show 0 ≤ δ ∧ δ ≤ 5/6 by constructor <;> linarith [hδ.1,hδ.2]) hp
   have hm := mul_le_mul_of_nonneg_left hc (show 0 ≤ 3*d/4 by linarith [hd.1])
-  have hd1 : d ≤ 1 := by exact hd.2.trans (PhysicalSchedule.dMinus_before_top.trans (Record1252270103Return.Transport.Arithmetic.dPlus_lt_one.le))
+  have hd1 : d ≤ 1 := by exact hd.2.trans (PhysicalSchedule.dMinus_before_top.trans (RepeatedMarksReturn.Transport.Arithmetic.dPlus_lt_one.le))
   have hdp := mul_le_mul_of_nonneg_right hd1 hg
   have hprod : (7/10:ℝ)^2 ≤ κ*kappa := by
     rw [pow_two]

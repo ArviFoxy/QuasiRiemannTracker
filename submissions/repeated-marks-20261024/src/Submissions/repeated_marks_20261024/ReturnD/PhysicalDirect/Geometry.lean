@@ -20,7 +20,7 @@ open QRH.Record1252270103Return
 
 namespace QRH.RepeatedMarks.Return.GenericPhysical.PhysicalDirect
 open QRH.Record1252270103Return
-variable [Geometry.Parameters] [Geometry.Bounds] [scheme : CountScheme] [GenericArithmetic.PhysicalSchedule]
+variable [Geometry.Parameters] [Geometry.BoundsR] [scheme : CountScheme] [GenericArithmetic.PhysicalSchedule]
 open QRH.RepeatedMarks.Return.GenericArithmetic
 open QRH.RepeatedMarks.Return.GenericPhysical.PhysicalDirect
 
@@ -81,7 +81,7 @@ theorem shiftBase_nonneg {d : ℝ} (hd : dm ≤ d ∧ d ≤ dp) : 0 ≤ shiftBas
  have hp := physical_d_pos hd.1
  have hdp : dp < 2*y := by
   change Geometry.h+1/10000000000 < 2*Geometry.y
-  linarith [Geometry.Bounds.h_interval.2,Geometry.Bounds.ly_coarse.1]
+  linarith [Geometry.BoundsR.h_interval.2,Geometry.BoundsR.ly_coarse.1]
  have hr : (1:ℝ) ≤ 2*y/d := by
   apply (le_div_iff₀ hp).mpr
   linarith [hd.2]

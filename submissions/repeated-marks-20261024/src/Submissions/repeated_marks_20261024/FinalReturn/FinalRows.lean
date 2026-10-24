@@ -10,7 +10,7 @@ namespace QRH.RepeatedMarks.Return
 open QRH.Record1252270103Return
 noncomputable section
 local instance : Geometry.Parameters := Geometry.finalParameters
-local instance : Geometry.Bounds := Geometry.finalBounds
+local instance : Geometry.BoundsR := Geometry.finalBounds
 local instance : CountScheme := finalCountScheme
 namespace FinalRows
 

@@ -1,10 +1,10 @@
-/- Repeated marks: fork of Collet's generic physical return module Schedule (Record1252270103Return,
-Apache-2.0; inherited notices retained), re-elaborated in QRH.RepeatedMarks.Return so that the
-physical schedule applies the physical face globally (Lemma D). -/
+/- Repeated marks: fork of Collet's generic return module Schedule (Record1252270103Return,
+Apache-2.0; inherited notices retained), re-elaborated in QRH.RepeatedMarks.Return against the
+relaxed parameter bounds `Geometry.BoundsR`, with the physical face applied globally (Lemma D). -/
 /- Copyright (c) 2026 Hailey Collet. Apache-2.0.
 Geometry and finite scalar certificates for the reusable physical return. -/
 import Submissions.hailey_collet_1252270103.Record1252270103Return.CountScheme
-import Submissions.hailey_collet_1252270103.Record1252270103Return.TransportGeometry
+import Submissions.repeated_marks_20261024.ReturnD.TransportGeometry
 set_option autoImplicit false
 set_option maxHeartbeats 200000
 namespace QRH.RepeatedMarks.Return.GenericArithmetic

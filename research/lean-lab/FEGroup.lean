@@ -67,4 +67,42 @@ theorem ell_A : Matrix.vecMul ell A = ell := by decide
 theorem ell_B₁ : Matrix.vecMul ell B₁ = ell := by decide
 theorem ell_B₂ : Matrix.vecMul ell B₂ = ell := by decide
 
+
+/-
+The plain fourth moment `Σ_u |S₁S₂|²` has four column variables, each reflected by the natural
+functional equation of `L(s, χ_u)` (conductor `N(row)`, so `y ↦ y + x_i`), and the same row Poisson
+step. Its generators `P` (row Poisson) and `C₁,…,C₄` are involutions with `(P Cᵢ)³ = 1` and
+`(Cᵢ Cⱼ)² = 1`: the star diagram with four edges of label 3, i.e. the affine group D̃₄ (the group of
+the fourth moment of quadratic L-functions). The invariant form is `(s₁+s₂+s₃+s₄)/2 + w`.
+-/
+namespace Plain
+
+/-- Row Poisson with four natural columns: `x_i ↦ x_i + y`, `y ↦ −y`. -/
+def P : Matrix (Fin 5) (Fin 5) ℤ :=
+  !![1, 0, 0, 0, 1; 0, 1, 0, 0, 1; 0, 0, 1, 0, 1; 0, 0, 0, 1, 1; 0, 0, 0, 0, -1]
+/-- Natural reflection in column `i`: `x_i ↦ −x_i`, `y ↦ y + x_i`. -/
+def C (i : Fin 4) : Matrix (Fin 5) (Fin 5) ℤ :=
+  fun a b => if a = b then (if a = i.castSucc then -1 else 1)
+    else if a = 4 ∧ b = i.castSucc then 1 else 0
+
+theorem P_sq : P * P = 1 := by decide
+theorem C_sq : ∀ i, C i * C i = 1 := by decide
+theorem PC_order3 : ∀ i, (P * C i) ^ 3 = 1 := by decide
+theorem PC_ne_one : ∀ i, P * C i ≠ 1 := by decide
+theorem CC_order2 : ∀ i j, i ≠ j → (C i * C j) ^ 2 = 1 := by decide
+
+/-- The invariant form `x₁ + x₂ + x₃ + x₄ + 2y`, i.e. twice `(s₁+s₂+s₃+s₄)/2 + w` up to a constant. -/
+def ell : Fin 5 → ℤ := ![1, 1, 1, 1, 2]
+
+theorem ell_P : Matrix.vecMul ell P = ell := by decide
+theorem ell_C : ∀ i, Matrix.vecMul ell (C i) = ell := by decide
+
+/-- The Coxeter element has a nontrivial unipotent power, so the group is infinite (affine). -/
+def T : Matrix (Fin 5) (Fin 5) ℤ := (P * C 0 * C 1 * C 2 * C 3) ^ 2
+
+theorem T_ne_one : T ≠ 1 := by decide
+theorem T_unipotent : (T - 1) * (T - 1) = 0 := by decide
+
+end Plain
+
 end FEGroup

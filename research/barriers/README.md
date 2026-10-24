@@ -146,3 +146,10 @@ The exact pipeline with every known refinement (Lemma F, fine pivots, density fl
   - (B) the sextic Möbius mean value past the diagonal has `λ ≥ 0.16834`.
 
   Inexplicit savings (Dunn–Radziwiłł type) cannot enter the rational certificates.
+- **Both mean values behind the count are affine-type multiple Dirichlet series**
+  (`../lean-lab/FEGroup.lean`): the inverse second moment has group C̃₂ and the plain fourth
+  moment D̃₄. Their functional equations preserve a linear form (`s₁+s₂+w`, resp. `(Σsᵢ)/2+w`), and
+  only the Hecke moves at cubes and sixth powers change it. Affine type is the boundary where the
+  classical analogues (fourth moment of quadratic L-functions, second moment of quadratic twists
+  of GL(2)) have only log savings unconditionally (X. Li, Invent. Math. 2024).
+

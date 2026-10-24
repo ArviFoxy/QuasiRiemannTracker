@@ -843,6 +843,31 @@ A catalogue cross-check (21.9k records) found nothing that moves them. → `cap-
     - Kuznetsov on the cubic cover exists (Livné–Patterson, Louvel, Proskurin) but handles only
       `S(m, n; c)`.
 
+- *All three count lines rest on affine-type mean values* (`lean-lab/FEGroup.lean`, proved;
+  classification script `barriers/fe_types.py`). Treat each mean value as a
+  row/column multiple Dirichlet series: row Poisson for the sextic family, theta reflection for
+  Möbius columns (conductor `N(row)²`), natural reflection for plain columns (conductor `N(row)`).
+
+  | mean value | columns | functional-equation group |
+  |---|---|---|
+  | inverse second moment `Σ|M|²` (I and L lines) | 2 theta | affine C̃₂, invariant `s₁+s₂+w` |
+  | plain fourth moment `Σ|S₁S₂|²` (P line) | 4 natural | affine D̃₄, invariant `(Σsᵢ)/2 + w` |
+  | plain second moment `Σ|S|²` | 2 natural | finite (A₃) |
+  | mixed cross moment `Σ M·S̄` | 1 theta + 1 natural | finite (B₃) |
+  | mixed second moment `Σ|MS|²`, or `|M|²·S` | 2 theta + 2 (or 1) natural | hyperbolic |
+
+  - Both mean values that the count actually uses are exactly affine. Affine is the boundary type:
+    D̃₄ is the group of the fourth moment of quadratic L-functions, and the second moment of
+    quadratic twists of a GL(2) form is also affine. In the classical analogues of affine type,
+    power-saving asymptotics are known only in function fields or under GRH; unconditionally there
+    are log savings (Li 2024).
+  - Each line's diagonal limit (`r ≤ 1`; the plain faces) is where the finite part of the analysis
+    ends. Extending a line is the affine-type power-saving problem.
+  - Mixed moments, which a product detector would need, are hyperbolic: worse, not better.
+  - This is a heuristic map, not a theorem about provability. The paper proves the diagonal ranges
+    by inductions, not by multiple Dirichlet series. But it locates every remaining atom at the same
+    well-known frontier.
+
 ## Open directions (ranked, revised 2026-10-24, third pass; see `barriers/README.md`)
 
 Exact state: committed Lean branch 0.8747289; best exact value with known lemmas 0.8747257

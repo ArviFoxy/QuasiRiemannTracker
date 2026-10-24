@@ -30,7 +30,7 @@ theorem countJ_pos (b : CountBranch) {δ p : ℝ}
  | weakC7 => exact add_pos_of_pos_of_nonneg (mul_pos hv (had .weakC7)) (mul_nonneg hdp (haa .weakC7))
 
 theorem edgeD_nonneg (e : Edge) : 0≤edgeD e := by
- cases e <;> norm_num [edgeD,ds,dk,dp,d0,y,h,ell,c,kappa,physicalB,physicalLambda]
+ cases e <;> norm_num [edgeD,ds,dk,dp,d0,y,h,ell,c,kappa,physicalB,physicalLambda,numeratorCap]
 
 /-- Requires the actual admitted count at the same witness. -/
 theorem exponent_lt_of_margin {e : Edge} {b : CountBranch} {δ p R : ℝ}

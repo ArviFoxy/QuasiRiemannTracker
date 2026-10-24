@@ -2,7 +2,7 @@
 re-instantiated with the final constants of the repeated-mark graph. -/
 import Submissions.repeated_marks_20261024.FinalReturn.FinalSchedule
 import Submissions.hailey_collet_1252270103.Record1252270103Return.IntermediateCount.Schedule
-import Submissions.hailey_collet_1252270103.Record1252270103Return.PhysicalDirect.ChosenSource
+import Submissions.repeated_marks_20261024.ReturnD.PhysicalDirect.ChosenSource
 import Submissions.repeated_marks_20261024.FinalReturn.EndpointFromNumerator
 import Submissions.hailey_collet_1252270103.Record1252270103Return.EndpointFromSources
 set_option autoImplicit false
@@ -26,14 +26,15 @@ theorem literal_numerator_of_global_sources
   intro ε hε
   obtain ⟨mesh,hm,_,hw⟩ := final_windows_common_mesh hC hP hε
   exact ⟨mesh,hm,hw⟩
- have hr : physicalWindow.Restricts GenericPhysical.PhysicalDirect.physicalFace := by
-  change physicalWindow.Restricts
-   ⟨QRH.RepeatedMarks.Return.physicalB,QRH.RepeatedMarks.Return.physicalLambda,2/5,11/25,17/500,1/25⟩
-  constructor <;> norm_num [physicalWindow]
+ have hr : physicalGlobal.Restricts GenericPhysical.PhysicalDirect.physicalFace := by
+  change physicalGlobal.Restricts
+   ⟨QRH.RepeatedMarks.Return.physicalB,QRH.RepeatedMarks.Return.physicalLambda,0,1/2,0,9/200⟩
+  constructor <;> norm_num [physicalGlobal,QRH.Record1252270103Return.globalFace,
+   QRH.RepeatedMarks.Return.physicalB]
  have hp : UniformUnitFaceSource GenericPhysical.PhysicalDirect.physicalFace := by
   intro ε hε
   obtain ⟨mesh,hm,hs⟩ := hP ε hε
-  exact ⟨mesh,hm,unit_source_restrict hr (unit_source_restrict physical_restricts hs)⟩
+  exact ⟨mesh,hm,unit_source_restrict hr hs⟩
  exact GenericPhysical.PhysicalDirect.chosen_finite_numerator_of_initial_source
   (GenericPhysical.PhysicalDirect.chosen_initial_source_of_uniform_faces hcap hc hp)
 

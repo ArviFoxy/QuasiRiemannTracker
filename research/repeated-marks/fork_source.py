@@ -33,6 +33,13 @@ TOP = re.compile(r'^(?:@\[|/--|/-|theorem|lemma|def|abbrev|structure|inductive|i
 IDENT = re.compile(r"(?<![A-Za-z_0-9'.])((?:[A-Za-z_][A-Za-z_0-9'!?]*\.)*[A-Za-z_][A-Za-z_0-9'!?]*)")
 
 
+def write_if_changed(path, text):
+    """Write only when the content changes, so that unchanged modules keep their build."""
+    if os.path.exists(path) and open(path).read() == text:
+        return
+    open(path, 'w').write(text)
+
+
 def module_path(m):
     return os.path.join(CROOT, m.replace('.', '/') + '.lean')
 
@@ -324,7 +331,7 @@ def main():
             if text.count(old) != 1:
                 raise SystemExit(f'patch for {rel} applies {text.count(old)} times:\n{old}')
             text = text.replace(old, new)
-        open(path, 'w').write(text)
+        write_if_changed(path, text)
         stats.append((rel, len(fork[mod]), kept))
     for rel, n, k in stats:
         flag = '' if n == k else f'   (of {n})'

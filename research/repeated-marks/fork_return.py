@@ -4,7 +4,10 @@ Generic modules (Geometry classes, CountScheme, PhysicalDirect, Transport, the i
 are imported unchanged; the modules below hard-code the final constants and are re-instantiated
 with ours.  Usage: python3 fork_return.py GENDIR OUTDIR CAPC CAPP
 (GENDIR = output of gen_return_lean.py, i.e. containing FinalReturn/{windows,edges}.lean.part).
-An optional fifth argument SC is the constant-width cap of the count windows (default 11/250)."""
+An optional fifth argument SC is the constant-width cap of the count windows (default 11/250).
+An optional sixth argument SP selects Lemma D: the final stage then uses the generic physical
+return forked by fork_physical.py (numerator cap SP, the physical face applied at every shift)
+instead of Collet's windowed physical schedule."""
 import os, re, sys
 
 SRC = '/home/user/QuasiRiemannTracker/submissions/hailey-collet-1252270103/src/Submissions/hailey_collet_1252270103'
@@ -20,6 +23,13 @@ DECL = re.compile(r"^(?:@\[[^\]]*\]\s*)?(?:private\s+|protected\s+)?(?:noncomput
                   r"instance|structure|inductive|class)\s+([A-Za-z_][A-Za-z_0-9.']*)", re.M)
 HDR = ('/- Repeated marks: fork of Collet\'s final-stage module {m} (Record1252270103Return, Apache-2.0),\n'
        're-instantiated with the final constants of the repeated-mark graph. -/\n')
+
+
+def write_if_changed(path, text):
+    """Write only when the content changes, so that unchanged modules keep their build."""
+    if os.path.exists(path) and open(path).read() == text:
+        return
+    open(path, 'w').write(text)
 
 
 def declared(text):
@@ -90,9 +100,49 @@ def strip_block(text, name):
     return re.sub(r'^#print axioms \S*\.' + name + r'\.\S*\n', '', text, flags=re.M)
 
 
+def lemma_d(m, text, phys, sP, capP):
+    """Point the final stage at the forked generic physical return (Lemma D)."""
+    for mod in sorted(phys, key=len, reverse=True):
+        text = text.replace(f'import {CPKG}.Record1252270103Return.{mod}\n', f'import {PKG}.ReturnD.{mod}\n')
+    for ns in ('GenericArithmetic.', 'GenericPhysical.PhysicalDirect.', 'GenericPhysical.Scalar.'):
+        text = text.replace(f'{NS_OLD}.{ns}', f'{NS_NEW}.{ns}')
+    def sub1(old, new):
+        nonlocal text
+        if text.count(old) != 1:
+            raise SystemExit(f'lemma D patch for {m} applies {text.count(old)} times:\n{old}')
+        text = text.replace(old, new)
+    if m == 'Conductor':
+        sub1('noncomputable abbrev cap : ℝ := 1/25', 'noncomputable abbrev cap : ℝ := numeratorCap')
+        text = text.replace('(d/25)', '(numeratorCap*d)')
+    if m == 'FinalSchedule':
+        for field in ('physical_plain_lower', 'physical_plain_upper', 'physical_width_lower', 'shift_bound',
+                      'large_shift_reserve'):
+            text = re.sub(r'^ ' + field + r' := by\n(?:  [^\n]*\n)+', '', text, count=1, flags=re.M)
+        sub1(' small_plain_shortening := by', ' small_plain_global := by')
+        text = text.replace('dsimp +instances only [', 'dsimp +instances only [QRH.RepeatedMarks.Return.numeratorCap,')
+    if m == 'EndpointFromSources':
+        sub1(""" have hr : physicalWindow.Restricts GenericPhysical.PhysicalDirect.physicalFace := by
+  change physicalWindow.Restricts
+   ⟨QRH.RepeatedMarks.Return.physicalB,QRH.RepeatedMarks.Return.physicalLambda,2/5,11/25,17/500,1/25⟩
+  constructor <;> norm_num [physicalWindow]""",
+             f""" have hr : physicalGlobal.Restricts GenericPhysical.PhysicalDirect.physicalFace := by
+  change physicalGlobal.Restricts
+   ⟨QRH.RepeatedMarks.Return.physicalB,QRH.RepeatedMarks.Return.physicalLambda,0,1/2,0,{sP}⟩
+  constructor <;> norm_num [physicalGlobal,QRH.Record1252270103Return.globalFace,
+   QRH.RepeatedMarks.Return.physicalB]""")
+        sub1('exact ⟨mesh,hm,unit_source_restrict hr (unit_source_restrict physical_restricts hs)⟩',
+             'exact ⟨mesh,hm,unit_source_restrict hr hs⟩')
+    return text
+
+
 def main():
     gen, out, capC, capP = sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4]
     sC = sys.argv[5] if len(sys.argv) > 5 else '11/250'
+    sP = sys.argv[6] if len(sys.argv) > 6 else None
+    phys = set()
+    if sP is not None:
+        import fork_physical as FPH
+        phys = {m[len('Record1252270103Return.'):] for m in FPH.forked_modules(FPH.all_modules())}
     fr = os.path.join(out, 'FinalReturn')
     os.makedirs(fr, exist_ok=True)
     texts = {m: open(f'{SRC}/Record1252270103Return/{m}.lean').read() for m in FORKED}
@@ -166,8 +216,10 @@ def main():
                                 f'import {CPKG}.Record1252270103Return.EndpointFromNumerator\n'
                                 f'import @@CPKG@@.Record1252270103Return.EndpointFromSources')
         new = rewrite(body, fork_names, fin).replace('@@CPKG@@', CPKG)
+        if sP is not None:
+            new = lemma_d(m, new, phys, sP, capP)
 
-        open(os.path.join(fr, f'{m}.lean'), 'w').write(HDR.format(m=m) + new)
+        write_if_changed(os.path.join(fr, f'{m}.lean'), HDR.format(m=m) + new)
     print('forked', len(FORKED), 'modules;', len(fork_names), 'qualified names re-pointed')
 
 

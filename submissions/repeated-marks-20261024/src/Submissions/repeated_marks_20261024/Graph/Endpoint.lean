@@ -19,9 +19,9 @@ lemma final_C_face :
     QRH.RepeatedMarks.Return.countCL]
 
 lemma final_P_face :
-    Record1252270103Source.globalFace (node31.B:ℝ) (node31.L:ℝ) (node31.cap:ℝ)=
+    Record1252270103Source.globalFace (node52.B:ℝ) (node52.L:ℝ) (node52.cap:ℝ)=
       QRH.RepeatedMarks.Return.physicalGlobal := by
-  norm_num [Record1252270103Source.globalFace,node31,QRH.RepeatedMarks.Return.physicalGlobal,
+  norm_num [Record1252270103Source.globalFace,node52,QRH.RepeatedMarks.Return.physicalGlobal,
     QRH.Record1252270103Return.globalFace,QRH.RepeatedMarks.Return.physicalB,
     QRH.RepeatedMarks.Return.physicalLambda]
 

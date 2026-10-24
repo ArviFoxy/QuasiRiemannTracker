@@ -17,7 +17,7 @@ local instance (rayM : Ideal O) [NeZero rayM] : Finite (O⧸rayM) :=
   Ring.HasFiniteQuotients.finiteQuotient (NeZero.ne rayM)
 
 def countGlobal : SourceFace := globalFace countCB countCL (549989/10000000)
-def physicalGlobal : SourceFace := globalFace physicalB physicalLambda (9/200)
+def physicalGlobal : SourceFace := globalFace physicalB physicalLambda (549989/10000000)
 def countWindow (j : ℕ) : SourceFace :=
   ⟨countCB-j/4000,countCL,2/5,11/25,17/500,13/250⟩
 def physicalWindow : SourceFace :=

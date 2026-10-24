@@ -10,7 +10,7 @@ noncomputable section
 
 open QRH.Record12518109Return (envelope_gap)
 noncomputable abbrev dm : ℝ := ds
-noncomputable abbrev cap : ℝ := 1/25
+noncomputable abbrev cap : ℝ := numeratorCap
 def rowAt (bs : List Branch) (κ d C δ p : ℝ) : ℝ :=
   Ebase d C δ p+3*d*envelope bs κ δ p/4
 def oldCapacityAt (κ d : ℝ) : ℝ := min d (2*y-d)/(6*κ)
@@ -40,7 +40,7 @@ theorem rowAt_capacity_antitone (bs : List Branch) {κ d C₁ C₂ δ p : ℝ}
   unfold rowAt Ebase
   nlinarith
 
-def newClipLine (bs : List Branch) (d δ p : ℝ) : ℝ := rowAt bs kappa d (d/25) δ p
+def newClipLine (bs : List Branch) (d δ p : ℝ) : ℝ := rowAt bs kappa d (numeratorCap*d) δ p
 def newAffineLine (bs : List Branch) (d δ p : ℝ) : ℝ :=
   rowAt bs kappa d ((2*y-(2-physicalB)*d)/physicalLambda) δ p
 
@@ -58,7 +58,7 @@ theorem newAffineLine_affine (bs : List Branch) (d δ p : ℝ) :
 theorem newClipLine_le (bs : List Branch) {d δ p : ℝ} (hδ : 0 ≤ δ) (hp : 0 ≤ p) :
     newClipLine bs d δ p ≤ newExponent bs d δ p := by
   apply rowAt_capacity_antitone bs hδ hp
-  exact min_le_left (d/25) ((2*y-(2-physicalB)*d)/physicalLambda)
+  exact min_le_left (numeratorCap*d) ((2*y-(2-physicalB)*d)/physicalLambda)
 
 theorem newAffineLine_le (bs : List Branch) {d δ p : ℝ} (hδ : 0 ≤ δ) (hp : 0 ≤ p) :
     newAffineLine bs d δ p ≤ newExponent bs d δ p := by
@@ -79,7 +79,7 @@ theorem new_interval_bound (bs : List Branch) {d δ p : ℝ}
     apply affine_interval_le (fun z => newAffineLine_affine bs z δ p) hd
     · exact (newAffineLine_le bs hδ.1 hp.1).trans hlo
     · exact (newAffineLine_le bs hδ.1 hp.1).trans hhi
-  rcases le_total (d/25)
+  rcases le_total (numeratorCap*d)
     ((2*y-(2-physicalB)*d)/physicalLambda) with hm | hm
   · simpa only [newExponent,newCapacity,min_eq_left hm,newClipLine] using hc
   · simpa only [newExponent,newCapacity,min_eq_right hm,newAffineLine] using ha

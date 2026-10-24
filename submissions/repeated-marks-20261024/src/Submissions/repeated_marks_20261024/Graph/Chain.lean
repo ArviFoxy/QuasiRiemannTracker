@@ -78,7 +78,7 @@ lemma parent_good_of_valid2 {n low : Source} {h : Option Source}
  ⟨hv.1.1,hv.1.2.1,hv.1.2.2.1,hv.1.2.2.2.1,hv.1.2.2.2.2.1⟩
 
 theorem chain_sources (step : NFStep2) (hβ : (51/100:ℝ)≤HeckeZeroSupremum.beta)
- (hk : 6*(2*HeckeZeroSupremum.beta-1)≤finalK) : P node58 ∧ P node31 := by
+ (hk : 6*(2*HeckeZeroSupremum.beta-1)≤finalK) : P node58 ∧ P node52 := by
  have p_natural : P natural := by
   simpa [P,natural,finalK] using natural_global_source finalK
    (by norm_num [finalK]) (by norm_num [finalK]) hβ hk
@@ -260,6 +260,6 @@ theorem chain_sources (step : NFStep2) (hβ : (51/100:ℝ)≤HeckeZeroSupremum.b
  have p_node58 : P node58 := step node58 node57 node57 hβ hk node58_valid g_node57
   (Or.inl (by norm_num [node58])) p_node57 p_node57
  have g_node58 : ParentGood node58 := parent_good_of_valid2 node58_valid
- exact ⟨p_node58,p_node31⟩
+ exact ⟨p_node58,p_node52⟩
 end
 end QRH.RepeatedMarks.Graph

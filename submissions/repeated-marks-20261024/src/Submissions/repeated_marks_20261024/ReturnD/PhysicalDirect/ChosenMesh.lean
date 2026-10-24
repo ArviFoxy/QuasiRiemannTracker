@@ -1,0 +1,24 @@
+/- Repeated marks: fork of Collet's generic physical return module PhysicalDirect.ChosenMesh (Record1252270103Return,
+Apache-2.0; inherited notices retained), re-elaborated in QRH.RepeatedMarks.Return so that the
+physical schedule applies the physical face globally (Lemma D). -/
+/- Arbitrarily fine simultaneous source/count/probe data. Apache-2.0. -/
+import Submissions.repeated_marks_20261024.ReturnD.Schedule
+import Submissions.repeated_marks_20261024.ReturnD.PhysicalDirect.Chosen
+set_option autoImplicit false
+open QRH.Record1252270103Return
+
+namespace QRH.RepeatedMarks.Return.GenericPhysical.PhysicalDirect
+open QRH.Record1252270103Return QRH.Record1252270103Return.GenericPhysical
+variable [Geometry.Parameters] [Geometry.Bounds] [scheme : CountScheme] [GenericArithmetic.PhysicalSchedule]
+noncomputable section
+set_option maxHeartbeats 200000
+open OAI.SevenEighths QRH.RepeatedMarks.Return.GenericArithmetic QRH.Record12518109Count
+
+theorem exists_chosen_data_small_mesh (hgap : theta<HeckeZeroSupremum.beta)
+    (hκbeta : 2*HeckeZeroSupremum.beta-1≤scheme.naturalκ)
+    (extraMesh : ℝ) (hmesh : 0<extraMesh) :
+    ∃A : ChosenData,A.sourceMesh≤extraMesh := by
+  obtain ⟨A,hA⟩ := exists_chosen_data_with_mesh hgap hκbeta (fun _=>extraMesh) (fun _ _=>hmesh)
+  exact ⟨A,hA.le⟩
+end
+end QRH.RepeatedMarks.Return.GenericPhysical.PhysicalDirect

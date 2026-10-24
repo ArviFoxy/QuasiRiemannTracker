@@ -20,15 +20,26 @@ $0.8747514$ (`../doubled-marks`).
   `certify_all_k.py`.
 - The return certifier reproduces PR #69's own final certificate exactly
   (`test_return69.py`).
-- **Lean, stage A.** The submission `submissions/repeated-marks-20261024` proves
-  $\theta_A=8747490/10^7=0.8747490$ in Lean 4. That is $2.39\cdot10^{-5}$
-  below the record $0.874772906$. It uses the repeated-mark source step and the
-  59-face graph. Collet's final return is re-certified at the new count face
-  (node 58) and physical face (node 31), with count cap $s_+=13/250$ in place
-  of $11/250$. Lemma D (the global physical face) is not used.
+- **Lean.** The submission `submissions/repeated-marks-20261024` proves
+  $\theta=8747417/10^7=0.8747417$ in Lean 4. That is $3.12\cdot10^{-5}$
+  below the record $0.874772906$. It uses:
+  - the repeated-mark source step and the 59-face graph;
+  - the final return with Lemma D: the physical face (node 52) is applied
+    through its global source theorem at every shift, with numerator cap
+    $s_P=9/200$;
+  - count windows at cap $s_+=13/250$, with count face node 58.
+
   `Candidate.bound` depends only on `propext`, `Classical.choice` and
   `Quot.sound` (§10).
-- **Lean, stage B** ($\theta=0.8747289$, with Lemma D) is not yet formalized.
+- **Earlier Lean stages.** Two earlier versions with Collet's windowed physical
+  return were certified and committed:
+  - $0.8747565$, with count cap $11/250$;
+  - $0.8747490$, with count cap $13/250$.
+- **Still open: the full stage-B value $\theta=0.8747289$.** Collet's
+  transport layer fixes coarse bounds on the parameters through
+  `Geometry.Bounds`: $\ell<0.1677$, $y<0.466$, $h<0.802$. These force
+  $\theta>0.87474167$. Reaching $0.8747289$ means relaxing those bounds in the
+  57 transport modules that use them.
 
 This note supersedes `../doubled-marks/README.md`, which used each marked slot
 at most twice. Three things change, and everything else in PR #69 is reused
@@ -323,6 +334,7 @@ pipeline:
 | `../doubled-marks` (certified) | $K=2$, slack 1/12 | PR #69, $t_f=1/360$ | 0.8747514 |
 | this note, stage A (certified, Lean) | $\mathcal G'_K$, $K=8$ | PR #69 guards, $h=799/1000$ | 0.8747565 |
 | this note, stage A with $s_+=13/250$ (certified, Lean) | $\mathcal G'_K$, $K=8$ | PR #69 guards, $h=799/1000$ | 0.8747490 |
+| this note, Lemma D within Collet's coarse bounds (certified, Lean) | $\mathcal G'_K$, $K=8$ | Lemma D, $s_+=13/250$, $s_P=9/200$, $h=801/1000$ | 0.8747417 |
 | this note (certified) | $\mathcal G'_K$, $K=8$ | Lemma D, $s_+=13/250$, $s_P=9/200$, $h=401/500$ | **0.8747289** |
 
 The new faces are flatter (Λ_C ≈ 2.897, Λ_P ≈ 3.038). With PR #69's guards
@@ -456,16 +468,32 @@ The remaining differences are hand-written:
 
 ```
 python3 fork_source.py fork/fork_closure.tsv fork/fork_tainted_all.txt <package dir> <package dir>/Source/NFStep2.lean
-python3 gen_graph_lean.py 59 58 31 <package dir>
-python3 gen_return_lean.py cchain_k8b.json 8747490/10000000 799/1000 58 31 <out dir> 13/250
-python3 fork_return.py <out dir> <package dir> 549989/10000000 9/200 13/250
+python3 gen_graph_lean.py 59 58 52 <package dir>
+python3 gen_return_lean.py cchain_k8b.json 8747417/10000000 801/1000 58 52 <out dir> 13/250 9/200 global
+python3 fork_return.py <out dir> <package dir> 549989/10000000 549989/10000000 13/250 9/200
+python3 fork_physical.py <package dir> 9/200
 ```
 
-**Stage B** still needs Lemma D in `Record1252270103Return/PhysicalDirect`.
-That change removes `small_plain_shortening`, `shift_bound`,
-`large_shift_reserve`, the plain/width window fields and `freeShift` from
-`PhysicalSchedule`, and sets `cap` $=9/200$ and the C count cap to $13/250$.
-The 36 rectangles then need re-certifying at $\theta=0.8747289$.
+**Lemma D** (`ReturnD/`, 64 modules). `fork_physical.py` copies Collet's generic
+physical return into `QRH.RepeatedMarks.Return` and changes three things:
+- **The schedule.** `PhysicalSchedule` drops the window fields
+  (`physical_plain_lower`/`upper`, `physical_width_lower`, `shift_bound`,
+  `large_shift_reserve`) and `small_plain_shortening` at plain length $2/5$.
+  It gains `small_plain_global` at plain length $0$, and the numerator cap is
+  $s_P$.
+- **The geometry.** `lemmaD/Geometry.lean` admits the shifted configuration at
+  every shift below the clipped affine capacity of the global face.
+  `scheduled_capacity_damping` follows from `small_shift_reserve` for every
+  shift.
+- **The face.** `physicalFace` is the global face restricted to plain lengths in
+  $[0,1/2]$ and widths in $[0,s_P]$. `hybrid_fourier` covers nonpositive plain
+  lengths by the natural moment.
+
+The final stage (`fork_return.py` with the `SP` argument) instantiates the new
+schedule and restricts the global physical source to the new face. The return
+certificate is `gen_return_lean.py ... 13/250 9/200 global`: 24 row rectangles
+and 4 admission windows at $\theta=8747417/10^7$, $h=801/1000$, faces 58 (count)
+and 52 (physical).
 
 ## Reproducing
 

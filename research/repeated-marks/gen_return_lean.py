@@ -5,9 +5,11 @@ ReturnNNN, AdmissionNN; Record1252270103Return/CountWindows, FinalEdgeCertificat
 constants of our final source faces.  All arithmetic is exact (Fractions); every Bernstein
 certificate is `m + sum g_ij bterm_ij` with `m = min beta > 0`, `g_ij >= 0`.
 
-usage: python3 gen_return_lean.py CHAIN THETA H iC iP OUTDIR [SC]
+usage: python3 gen_return_lean.py CHAIN THETA H iC iP OUTDIR [SC [SP [global]]]
 SC is the constant-width cap of the count face C (default 11/250, Collet's value); the face is
-proved up to its own cap, so any SC below it is admissible.
+proved up to its own cap, so any SC below it is admissible. SP is the numerator cap of the
+physical face (default 1/25, Collet's value). With `global`, the physical face is applied through
+its global source theorem (Lemma D) and the window receipts of Collet's schedule are not checked.
 """
 import sys, json, os
 from fractions import Fraction as Fr
@@ -139,7 +141,7 @@ def guards(br, meta):
 
 
 # ---------------------------------------------------------------- Lean emitters
-CONST_SIMP = 'c,h,theta,ell,x,y,kappa,ds,dk,dp,d0,physicalB,physicalLambda,countCB,countCL,naturalK,rowFee'
+CONST_SIMP = 'c,h,theta,ell,x,y,kappa,ds,dk,dp,d0,physicalB,physicalLambda,countCB,countCL,naturalK,rowFee,numeratorCap'
 ROW_SIMP = ('rowMargin,Ebase,countN,countJ,countT,RN,MN,DJ,V,D,A,C0,Z,U,oldD,oldC,branchB,branchL,branchCap,'
             'branchZ,isCap,' + CONST_SIMP)
 GUARD_SIMP = 'admissionGuard,lowerM,upperM,naturalM,derivativeD,derivativeA,derivativeC,derivativeU,derivativeJ,' + ROW_SIMP
@@ -147,33 +149,35 @@ GUARD_SIMP = 'admissionGuard,lowerM,upperM,naturalM,derivativeD,derivativeA,deri
 
 def emit_constants(P):
     th, h, BP, LP, BC, LC = P['theta'], P['h'], P['BP'], P['LP'], P['BC'], P['LC']
+    sP = P['sP']
     K = Fr(11243277, 2500000)
     c = 1 - th
     ell = 4 * c - Fr(1, 3)
     x = 1 + ell - h
     y = h - 2 * ell
     kap = 1 - 2 * c
-    ds = 2 * y / (1 + 6 * kap / 25)
-    dk = 2 * y / (2 - BP + LP / 25)
+    ds = 2 * y / (1 + 6 * kap * sP)
+    dk = 2 * y / (2 - BP + LP * sP)
     dp = h + Fr(1, 10 ** 10)
     d0 = Fr(1, 200)
     oldCap = lambda d: min(d, 2 * y - d) / (6 * kap)
-    newCap = lambda d: min(d / 25, (2 * y - (2 - BP) * d) / LP)
+    newCap = lambda d: min(sP * d, (2 * y - (2 - BP) * d) / LP)
     assert ds < dk < dp, 'edge order'
     V = dict(c=c, theta=th, h=h, ell=ell, x=x, y=y, kappa=kap, ds=ds, dk=dk, dp=dp, d0=d0)
     edges = [('oldSmall', d0, oldCap(d0)), ('oldPeak', y, oldCap(y)), ('oldSwitch', ds, oldCap(ds)),
              ('newSwitch', ds, newCap(ds)), ('newTop', dp, newCap(dp)), ('newKink', dk, newCap(dk))]
-    assert oldCap(ds) == newCap(ds) == ds / 25
+    assert oldCap(ds) == newCap(ds) == sP * ds
     L = [HDR, 'import Submissions.hailey_collet_1252270103.Record12518109.Bernstein',
          'set_option autoImplicit false', f'namespace {NS}', 'noncomputable section']
     L += [f'def c : ℝ := {q(c)}', f'def h : ℝ := {q(h)}', f'def physicalB : ℝ := {q(BP)}',
           f'def physicalLambda : ℝ := {q(LP)}', f'def countCB : ℝ := {q(BC)}', f'def countCL : ℝ := {q(LC)}',
           f'def naturalK : ℝ := {q(K)}',
           'def theta : ℝ := 1-c', 'def ell : ℝ := 4*c-1/3', 'def x : ℝ := 1+ell-h', 'def y : ℝ := h-2*ell',
-          'def kappa : ℝ := 1-2*c', 'def ds : ℝ := 2*y/(1+6*kappa/25)',
-          'def dk : ℝ := 2*y/(2-physicalB+physicalLambda/25)', 'def dp : ℝ := h+1/10000000000',
+          'def kappa : ℝ := 1-2*c', f'def numeratorCap : ℝ := {q(sP)}',
+          'def ds : ℝ := 2*y/(1+6*kappa*numeratorCap)',
+          'def dk : ℝ := 2*y/(2-physicalB+physicalLambda*numeratorCap)', 'def dp : ℝ := h+1/10000000000',
           'def d0 : ℝ := 1/200', 'def oldCapacity (d : ℝ) : ℝ := min d (2*y-d)/(6*kappa)',
-          'def newCapacity (d : ℝ) : ℝ := min (d/25) ((2*y-(2-physicalB)*d)/physicalLambda)',
+          'def newCapacity (d : ℝ) : ℝ := min (numeratorCap*d) ((2*y-(2-physicalB)*d)/physicalLambda)',
           'def rowFee : ℝ := 1/1000000000',
           'inductive Edge | oldSmall | oldPeak | oldSwitch | newSwitch | newTop | newKink',
           ' deriving DecidableEq',
@@ -188,8 +192,8 @@ def emit_constants(P):
         L.append(f'theorem edgeD_{nm} : edgeD .{nm} = {q(d)} := by norm_num [edgeD,{CONST_SIMP}]')
         L.append(f'theorem edgeC_{nm} : edgeC .{nm} = {q(C)} := by norm_num '
                  f'[edgeC,edgeD,oldCapacity,newCapacity,{CONST_SIMP}]')
-    L.append('theorem capacity_join : oldCapacity ds = newCapacity ds ∧ newCapacity ds = ds/25 := by')
-    L.append(' norm_num [oldCapacity,newCapacity,ds,y,ell,c,kappa,physicalB,physicalLambda,h]')
+    L.append('theorem capacity_join : oldCapacity ds = newCapacity ds ∧ newCapacity ds = numeratorCap*ds := by')
+    L.append(' norm_num [oldCapacity,newCapacity,ds,y,ell,c,kappa,physicalB,physicalLambda,h,numeratorCap]')
     L.append('theorem geometry_mellin : theta-(4+y-x)/6 = x/2+(y-x)/12 := by')
     L.append(' norm_num [theta,x,y,ell,h,c]')
     L += ['end', f'end {NS}', '']
@@ -300,7 +304,7 @@ theorem countJ_pos (b : CountBranch) {δ p : ℝ}
  | weakC7 => exact add_pos_of_pos_of_nonneg (mul_pos hv (had .weakC7)) (mul_nonneg hdp (haa .weakC7))
 
 theorem edgeD_nonneg (e : Edge) : 0≤edgeD e := by
- cases e <;> norm_num [edgeD,ds,dk,dp,d0,y,h,ell,c,kappa,physicalB,physicalLambda]
+ cases e <;> norm_num [edgeD,ds,dk,dp,d0,y,h,ell,c,kappa,physicalB,physicalLambda,numeratorCap]
 
 /-- Requires the actual admitted count at the same witness. -/
 theorem exponent_lt_of_margin {e : Edge} {b : CountBranch} {δ p R : ℝ}
@@ -373,11 +377,15 @@ def main():
     nC, nP = chain[int(sys.argv[4])], chain[int(sys.argv[5])]
     out = sys.argv[6]
     sC = Fr(sys.argv[7]) if len(sys.argv) > 7 else Fr(11, 250)
+    sP = Fr(sys.argv[8]) if len(sys.argv) > 8 else Fr(1, 25)
+    mode = sys.argv[9] if len(sys.argv) > 9 else 'pr69'
     BC, LC, capC = Fr(nC['B']), Fr(nC['L']), Fr(nC['cap'])
     BP, LP, capP = Fr(nP['B']), Fr(nP['L']), Fr(nP['cap'])
-    P = dict(theta=th, h=h, BP=BP, LP=LP, BC=BC, LC=LC)
-    G = CR.geometry(th, h, BP, LP)
+    P = dict(theta=th, h=h, BP=BP, LP=LP, BC=BC, LC=LC, sP=sP)
+    G = CR.geometry(th, h, BP, LP, sP)
     rec = CR.receipt(G, BP, LP, capC, capP, sC, Fr(43, 1000), Fr(8747759, 10 ** 7))
+    if mode == 'global':
+        rec = {k: v for k, v in rec.items() if k not in CR.GLOBAL_DROP}
     bad = {k: v for k, v in rec.items() if v <= 0}
     assert not bad, bad
     faces = {'C': (BC, LC, sC), 'P': (BP, LP, Fr(43, 1000))}

@@ -568,6 +568,11 @@ A catalogue cross-check (21.9k records) found nothing that moves them. → `cap-
     `N^{2/3} < j₀ < N²K^{−1−2δ'}` is column-type again**, so the route is circular as it stands. It
     restates atom 1 sharply as a target and does not prove it.
 
+- *Round-3 inverse-moment agent: no report* (it stopped on an output-size error before reporting).
+  Not relaunched. Its question, a power saving in the MI column branch, is the same estimate as P1
+  above, and the probe uses that estimate about ten times more cheaply (`δ' ≈ 1.3e-4` against
+  `≈ 1.5e-3`).
+
 ## Open directions (ranked, revised 2026-10-24, third pass; see `barriers/README.md`)
 
 Exact state: committed Lean branch 0.8747289; best exact value with known lemmas 0.8747257

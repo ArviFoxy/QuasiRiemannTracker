@@ -710,6 +710,26 @@ A catalogue cross-check (21.9k records) found nothing that moves them. → `cap-
     - Any lower bound for the complement therefore reproduces the original problem.
     - Positivity (dropping the complement) is exactly what amplification uses.
 
+- *Three more closures (2026-10-24, late).*
+  - **Lemma C's cap `G ≤ νS` is necessary and not binding.** (P1) with `L = 0`, `δ = S`, `Q = F`
+    forces `G(S, F) ≤ G(0, F) + νS = νS`, so the cap cannot be dropped. Along the chain the
+    uncapped `G_K` is itself only 43–98% of `νS` (`chain-ode/`), so relaxing the cap would buy
+    nothing. The early shortfall is the inverse cap `r + 2z ≤ F`, i.e. atom 1.
+  - **The slot cost is intrinsic to active marks.**
+    - The twist `χ_P(n)^{−2} = (P/n)_3^{−1}` can be moved into the Gauss sum: `g(1,n)(P/n)_3^{−1} =
+      g(P,n)`, i.e. theta coefficients along `m = Pn`.
+    - That turns the multiplicative twist mod `P` into a congruence `m ≡ 0 (mod P)`, which costs the
+      same conductor `P`.
+    - Only cube factors are free: the cube completion `c_θ(nb³) ∝ |b|`.
+    - Cube marks carry the quadratic factor `χ_p(u)³` and give no count gain.
+  - **A narrow-cap chain without Lemma F is not a cheaper formalization.**
+    - With old parents, the far end of a cell of width `δ'` has LOW excess
+      `(Λ₀ − Λ)(cap − b_×)/Λ₀ ≈ 18δδ'`.
+    - Its amplifier costs about `26δ` in relative slope at the optimal denominator, roughly ten
+      times the Euler loss.
+    - Lemma F self cells remain the efficient tool for the cap side, so the formalization estimate
+      in `cap-induction/README.md` §5 stands.
+
 ## Open directions (ranked, revised 2026-10-24, third pass; see `barriers/README.md`)
 
 Exact state: committed Lean branch 0.8747289; best exact value with known lemmas 0.8747257

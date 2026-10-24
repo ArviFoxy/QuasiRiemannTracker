@@ -641,11 +641,40 @@ A catalogue cross-check (21.9k records) found nothing that moves them. → `cap-
     2.8e-3 per unit δ), consolidated 0.0005/0.00025 → 0.8747257. Richardson: δ → 0 gives about
     0.8747245 with Collet's fees.
   - **Fees.** The self-cell amplifier `(qe + r)/den` costs about `8.85√r` of log-slope at the
-    optimal `den ≈ √(14.8r)`. PR #71's fine tuple `(10⁻¹⁷, 10⁻¹², 10⁻¹⁰)` cuts this a hundredfold (runs
-    pending).
-  - **Consequence.** Nothing in the face map (spacing, caps, parents, fees) can supply the 6.8e-6
-    still missing for the milestone. The envelope is fixed by the HIGH gate's ingredients: the
-    unmarked count `ρ(ν)`, the gain's inverse cap (atom 1) and the exchange rate 6.
+    optimal `den ≈ √(14.8r)`. PR #71's fine tuple `(10⁻¹⁷, 10⁻¹², 10⁻¹⁰)` cuts this a hundredfold:
+    consolidated chain 0.8747254, continuum 0.8747241.
+  - **Ceiling and formalizable package (final).**
+    - The ceiling (continuum, fine fees) is θ* = 0.8747241, which is 4.8e-6 below the Lean branch
+      and 5.2e-6 above the milestone 0.8747189.
+    - The Lemma F chain under the Lean branch's own guards (floor 1/2, HIGH parents `B ≥ 22/23`,
+      `Λ_P > 3`) with fine fees gives 0.8747263 (−2.6e-6). It is formalizable with existing
+      predicates plus Lemma F cells and `NFAccounting`'s `Or.inr` fees.
+    - Details: `variational-ceiling/README.md` §5.
+  - **Consequence.** Nothing in the face map (spacing, caps, parents, fees) can supply the
+    milestone. The envelope is fixed by the HIGH gate's ingredients: the unmarked count `ρ(ν)`, the
+    gain's inverse cap (atom 1) and the exchange rate 6.
+
+- *Joint numerator bound: Levy's Hölder step is already optimal against the plain witness* (exact
+  identity, 2026-10-24). In the return the class sum of numerators is bounded by Levy's Hölder step,
+  `Σ_class|N_u| ≤ #class^{3/4}(Σ_all|N_u|⁴|Q_u|²·U^{−2qz_A})^{1/4}`, with the fourth moment over
+  all rows (foundations (223), `z_A = (B_P − 2n₀)/Λ_P`, numerator length `n₀ = 2ℓ/h ≈ 0.419` at
+  `d = h`). The rows of a class also carry the detector's plain witness `|S_m|² ≥ U^{δm}`, in the
+  same row character up to conjugation and a fixed twist. So a second option is Hölder at order 2
+  with `S_m` inside the moment: `Σ_class|N| ≤ #class^{1/2}(U^{−δm−2qz_J}Σ_u|N_uS_mQ_u|²)^{1/2}`,
+  where `N·S_m` is a two-plain product (lengths `n₀, m`), so a source face applies with
+  `z_J = (B − n₀ − m)/Λ`.
+  - **Identity.** With one affine face for both, `Levy − Joint = (R − P_face(m))/4` in the `U`-exponent,
+    where `P_face(m) = 1 − 2δm − 2δp(B − 2m)/Λ` is the plain witness line. The count of a split is
+    `min(I, P, L) ≤ P(m)`, so the joint bound never beats Levy's. They tie exactly at the crossing
+    `R = P(m*)`. Numerically at the binding point (`R = 0.6041`, `m* = 0.413`, face P):
+    `Levy = 0.69846`, `Joint = 0.69845`. With the true envelope, convexity of `E⁻¹` only worsens the
+    joint bound.
+  - Other joint variants are unavailable or worse:
+    - an inverse witness inside (`n₀ + r ≈ 1.16 > 1`, and there is no mixed plain×inverse moment);
+    - order 4 with `S_m` (three plains);
+    - a sixth plain moment (it is never diagonal at `m* > 1/3`).
+  - So the physical numerator's Hölder weight `3/4` is tied to the count's plain line and is not an
+    independent lever.
 
 ## Open directions (ranked, revised 2026-10-24, third pass; see `barriers/README.md`)
 

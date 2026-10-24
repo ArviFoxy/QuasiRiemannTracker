@@ -1,0 +1,2 @@
+../variational-ceiling/chain_lean_fine.json (relax22=False, relaxLP=False, 76 nodes kept, last pivot 0.04225): C pivot 0.04225 (B=0.956486, h@.045=0.825973), P pivot 0.04 (L=3.0103, z_phys=0.041313)
+  h = 0.802 theta* = 8747263

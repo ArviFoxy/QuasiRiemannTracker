@@ -77,8 +77,9 @@ Measured (density floor 0.45, Lemma F, same gates and fees as the consolidated c
 | 0.0005 to `s = 0.0335`, then 0.00025 (consolidated) | 0.8369975 | 0.8261064 | 0.8747257 |
 | 0 (continuum, `continuum.py` / `continuum2.py`, RK2 with `ds = 2·10⁻⁴`) | 0.8370759 | 0.8261783 | **0.8747249** |
 
-Height gap continuum − consolidated chain: +3.0e-5 at `s = 0.0135`, then +3.4e-5, +3.8e-5, +4.2e-5,
-+4.7e-5, +5.1e-5, +5.5e-5 at `s = 0.0155, …, 0.0205` (still growing).
+The height gap (continuum minus consolidated chain) grows from +3.0e-5 at `s = 0.0135` to +7.8e-5 at
+`s = 0.0412` and +7.2e-5 at `s = 0.045`. In θ* that is 8e-7, matching the Richardson extrapolation of
+the three uniform spacings (`0.8747245`) to within 4e-7.
 
 ## 4. Fees
 
@@ -94,8 +95,32 @@ The same recost applies to our graph (`hyb_fees.py`, `continuum.py … 1e-17,1e-
 |---|---|---|---|
 | consolidated chain, fees `(10⁻¹², 10⁻⁸, 10⁻⁷)` | 0.8369975 | 0.8261064 | 0.8747257 |
 | same pivots, fees `(10⁻¹⁷, 10⁻¹², 10⁻¹⁰)` | 0.8370274 | 0.8261371 | 0.8747254 |
-| continuum, fine fees | (running) | | |
+| continuum, fine fees | 0.8371458 | 0.8262527 | **0.8747241** |
 
 ## 5. Conclusion
 
-(pending the runs)
+| configuration | θ* | vs Lean branch |
+|---|---|---|
+| Lean branch (59 nodes, Collet fees, `submissions/repeated-marks-20261024`) | 0.8747289 | 0 |
+| Lemma F chain under the Lean branch's guards (floor `q ≥ 1/2`, HIGH parents `B ≥ 22/23`, `Λ_P > 3`), fine fees, consolidated pivots (`chain_lean_fine.json`, `../cap-induction/evalchain.py`) | 0.8747263 | −2.6e-6 |
+| same chain, guards relaxed (`relax22 relaxLP`) | 0.8747257 | −3.2e-6 |
+| consolidated chain (floor 0.45), fine fees | 0.8747254 | −3.5e-6 |
+| continuum, Collet fees | 0.8747249 | −4.0e-6 |
+| **continuum, fine fees: the ceiling** | **0.8747241** | **−4.8e-6** |
+
+- **The face map is exhausted.** The ceiling with the current gates is θ* = 0.8747241. The next
+  milestone (1e-5 below the Lean branch) is 0.8747189, still 5.2e-6 beyond the ceiling. No choice of
+  pivot spacing, caps, parents or fees reaches it. The continuum solution bounds every admissible
+  envelope (`../lean-lab/MaximalEnvelope.lean`), so this statement covers every graph built from
+  these gates, not only the chains tried.
+- **What sets the ceiling.** It is fixed by `Λ_min(s, E)`, the flattest slope the HIGH gate admits at
+  the pivot with the node as its own parent. Its ingredients are the unmarked count `ρ(ν)`, the
+  gain's inverse cap (slot cost 2) and the exchange rate 6 (`../barriers/README.md`, atoms 1–3).
+  Moving the ceiling by 1e-5 needs about `ε_H ≈ 0.0025` in the HIGH count at `ν ≈ 0.5–0.75`
+  (`../atom-targets/README.md`), i.e. new analytic input.
+- **What is formalizable now.** The first row below the Lean branch (0.8747263, −2.6e-6) uses only
+  objects the Lean branch already has: Lemma F self cells (`../lean-lab/RotatedSelfParent.lean`),
+  the fine fee tuple through `NFAccounting`'s `Or.inr` branch, and more nodes. The continuum rows
+  would need a parametric certificate (a new predicate for a one-parameter family of faces).
+  Neither passes the 1e-5 bar on its own. Task: `../LOG.md`, open directions.
+

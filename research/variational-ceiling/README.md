@@ -93,7 +93,7 @@ The same recost applies to our graph (`hyb_fees.py`, `continuum.py … 1e-17,1e-
 | run | `E(0.0412)` | `E(0.045)` | θ* |
 |---|---|---|---|
 | consolidated chain, fees `(10⁻¹², 10⁻⁸, 10⁻⁷)` | 0.8369975 | 0.8261064 | 0.8747257 |
-| same pivots, fees `(10⁻¹⁷, 10⁻¹², 10⁻¹⁰)` | (running) | | |
+| same pivots, fees `(10⁻¹⁷, 10⁻¹², 10⁻¹⁰)` | 0.8370274 | 0.8261371 | 0.8747254 |
 | continuum, fine fees | (running) | | |
 
 ## 5. Conclusion

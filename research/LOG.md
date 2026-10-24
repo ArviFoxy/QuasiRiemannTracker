@@ -769,6 +769,15 @@ A catalogue cross-check (21.9k records) found nothing that moves them. → `cap-
   - So the target is a bilinear (signed) bound at the exact square-root balance, which is the same
     open problem as P1.
 
+- *PR #71's recost applied to our 59-node graph: no measurable gain.* Same pivots, cap rule and
+  K = 8 (`variational-ceiling/k8_finefees.py`, `result_k8_finefees.json`), with the fine tuple
+  `(10⁻¹⁷, 10⁻¹², 10⁻¹⁰)`.
+  - Slopes drop by up to 8e-5 and face heights at `s = 0.045` rise by about 1.9e-6.
+  - The exact return (`cap-induction/evalchain.py`, Lean guards, `h = 0.802`) gives
+    θ* = 0.8747287 for both graphs on the same 1e-7 grid. Our old-parent cells are dominated by the
+    parent's deviation (about 7e-5 per step), not by the fees, so the recost is worth about 1e-8.
+  - The fees matter only inside Lemma F self cells (consolidated chain −3e-7, continuum −8e-7).
+
 ## Open directions (ranked, revised 2026-10-24, third pass; see `barriers/README.md`)
 
 Exact state: committed Lean branch 0.8747289; best exact value with known lemmas 0.8747257

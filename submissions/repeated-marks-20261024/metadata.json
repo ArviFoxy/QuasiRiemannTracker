@@ -1,0 +1,26 @@
+{
+  "title": "Repeated marked slots in the source HIGH count",
+  "authors": [
+    {
+      "name": "ArviFoxy",
+      "url": "https://github.com/ArviFoxy"
+    }
+  ],
+  "description": "Proves the all-moduli Dirichlet boundary 8747565/10000000, with the principal pole excluded. The proof is Hailey Collet's record proof (hailey-collet-1252270103) with three changes. (1) In the source step, the inverse witness of the HIGH same-zero count may use each marked slot up to eight times: the overlap adapter of the marked inverse moment (foundations Lemma 8.1) already admits repeated prime lists, so Collet's inverse fiber count applies verbatim to the replicated slot set. (2) The detector cutoff is chosen per amplitude class of the fiber, and the HIGH gain becomes the infimum over classes of the class gains, a minimum of linear forms capped by the available-slot facet. Its common-width payment (Lemma C) replaces the slope check of the original gain. (3) A new 59-face source graph, certified by exact bicubic Bernstein trees for the new HIGH gate, and the final return re-certified with the new count and physical faces (36 row rectangles, 8 admission windows). The seed step, the intermediate return, the natural premise and all analytic estimates are Collet's, imported unchanged. The research, drafting and Lean development were AI-assisted.",
+  "license": "Apache-2.0; inherited notices and dependency licenses retained.",
+  "builds_on": [
+    "hailey-collet-1252270103",
+    "two-level-affine-20261019",
+    "openai-baseline"
+  ],
+  "dependencies": [
+    "hailey-collet-1252270103",
+    "openai-baseline"
+  ],
+  "references": [
+    {
+      "label": "Research notes and exact certificates",
+      "url": "https://github.com/ArviFoxy/QuasiRiemannTracker/tree/ccr-48c53b87-r20g37/research/repeated-marks"
+    }
+  ]
+}

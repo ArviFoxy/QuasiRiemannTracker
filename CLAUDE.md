@@ -43,6 +43,19 @@
 - The exchange rate 6 is forced by the architecture: order 6 is the only character order whose
   Möbius-twisted Gauss sums collapse to explicitly known (cubic) theta coefficients.
 - Inexplicit savings (Dunn–Radziwiłł type) cannot enter the rational certificates.
+- **Atom 4 (c_g = 1/12) is the signal channel, not a Cauchy–Schwarz loss.** In the low
+  separation, Poisson in the row pairs the Gauss-sum polynomial with the completed row. At the
+  sixth-power frequencies, (4.7) turns the row's dual coefficient into the target's own
+  `1/L(1+t, η·ξ₀)`. Bounded with the zero-free hypothesis it equals the C–S bound times
+  `Z^{β*−θ_low}`, exactly (`research/lean-lab/SignalChannel.lean`). Only the energies (atom 1) can
+  move it.
+- **Mixed prime/plain slots** (round-4 agent) are closed. A squarefree-plain slot is a third plain
+  factor; Lemma 18.1 reflects only two plains, so it costs `6κ → Λ` like a prime slot
+  (`research/lean-lab/DeletionRate.lean`). The design would need a plain mark cost `≤ 1.85`
+  (`research/mixed-slots/`).
+- **Unabsorbed upstream ideas** (Gao's joint HIGH histories, Sil's uneven normalization) give no
+  transplant. The returned-history line saturates near 0.87481, and Sil's 2/5 is already in
+  Collet's geometry.
 - Why the atoms are hard (proved structure, `research/lean-lab/FEGroup.lean`). Counting zeros needs
   positivity, which forces second moments. The two second moments behind the count have affine
   functional-equation groups: C̃₂ (inverse second moment, invariant `s₁+s₂+w`) and D̃₄ (plain fourth

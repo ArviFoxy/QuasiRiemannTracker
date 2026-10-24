@@ -594,8 +594,16 @@ P 0.19, with `dθ/dR = 0.133`. So 6.8e-6 needs one of:
    `d(μ₁μ₂) = d(μ₁)d(μ₂)(μ₁/μ₂)₃^{±}`, which turns the dual sum into a bilinear form with a cubic-symbol
    kernel (Heath-Brown's cubic large sieve), combined with the large sieve over `R`. Bounding each
    `R` separately loses (`Q·N^{2/3} ≫ N`), so both averages are needed at once.
-3. **Physical side.** `c_g = 1/12 − 9e-5` (the sixth-power Gram bias), or the marked energy
-   relaxed to `x + y + ℓ ≤ 1 + 1.1e-4`.
+3. **Physical side: only the marked energy.** `c_g = 1/12` is closed: it is the exact
+   Cauchy–Schwarz bound `|⟨ρ₆Φ, B⟩| ≤ ‖ρ₆Φ‖‖B‖` along the signal direction (round-3 agent). The
+   marked energy `x + y + ℓ ≤ 1` is the same column branch as item 2, in the regime
+   `N ∈ [K, K^{1+δ'}]`. It needs only `δ' ≈ 1.3e-4` for 6.8e-6, about ten times less than item 2
+   (`δ' ≈ 1.5e-3`), so **the probe is the cheapest use of any column-branch saving**. A toy over
+   `Z[ω]` puts the true size at the diagonal (`atom1/toy/colbranch_exp.py`). The target is a
+   quadratic large sieve that stays diagonal slightly past `N = K` for reflected cubic Gauss-sum
+   coefficients with slot twists. Known tools (Heath-Brown; Li's ε-free sieve; Dunn–Radziwiłł's
+   Voronoi with the bias subtracted) cover the ends of the dual range but not the middle
+   `N^{2/3} < j₀ ≲ K`.
 4. **Source chain.** It is an ODE fixed by `ρ(ν)`, the exchange rate 6 and slot cost 2
    (`chain-ode/`). It needs `ε_H ≈ 0.0017` (a HIGH count better by 0.0017 at `ν ≈ 0.5–0.75`), or
    the exchange rate `6 → 5.92`. Discretization holds less than 1.3e-6.

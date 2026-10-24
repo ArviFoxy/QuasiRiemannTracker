@@ -114,3 +114,34 @@ The exact pipeline with every known refinement (Lemma F, fine pivots, density fl
   requires a direct bound `Σ_{q_u≍U}|M_u(D)|² ≪ U + D(U/D)^{λ}` with `λ ≥ 0.16834`. Atom 1's
   sharpest form is P1 in `../LOG.md` (the column-branch quadratic sieve slightly past `N = K`).
 
+
+## Third pass (2026-10-24, late): ceilings and the common root
+
+- **The source graph is at its ceiling** (`../variational-ceiling/`). The continuum limit of the
+  face map, with PR #71's fine fees, gives θ* = 0.8747241. The comparison principle
+  (`../lean-lab/MaximalEnvelope.lean`) makes this a bound for every graph built from the current
+  gates. That is 4.8e-6 below the Lean branch and 5.2e-6 short of the milestone 0.8747189. The
+  Lemma F chain under the Lean branch's own guards gives 0.8747263. Every sub-bar item found so far
+  (fees, density floor, `Λ_P > 3`, pivots, caps, Lemma F) lies inside this ceiling.
+- **The probe's bookkeeping has no slack** (`../return-slack/README.md`, `../lean-lab/BalanceAlgebra.lean`).
+  Every term of the binding balance is an atom or a fixed normalization. The weighted numerator's
+  Hölder weight is tied to the count's plain line by an exact identity
+  (`../lean-lab/JointNumerator.lean`). The count face C is the envelope's best face at the binding
+  crossing.
+- **Atoms 1 and 2 have one root.** The inverse moment's initialization writes the nonprincipal
+  Poisson expression as a ray-class combination of positive canonical squares, restoring the
+  principal pairs with total weight `G(1) = 1`.
+  - Past the diagonal, that restored dual diagonal is the long line's `+D` (atom 2).
+  - In the mark-twisted form it is the column branch's `N` term (atom 1).
+  - In the cleanest form (alternate 11/12 proof, eqs. 2.13–2.15) the obstruction is the quadratic
+    large sieve over `O` for cusp coefficients of the cubic theta function, slightly past the
+    diagonal.
+  - The exchange rate 6 underlies the whole architecture: 11/12 = 1 − 1/(2·6) is the single-target
+    amplification by sixth powers. The compensated probe is an amplifier for the principal row
+    whose per-unit gain 1/6 is the cubic theta residue exponent.
+- **What would move θ by 1e-5**: an explicit bound (A) or (B):
+  - (A) the quadratic large sieve for (slot-twisted) cubic theta coefficients stays diagonal up to
+    column length `K^{1+δ'}`, `δ' ≥ 1.3·10⁻⁴`;
+  - (B) the sextic Möbius mean value past the diagonal has `λ ≥ 0.16834`.
+
+  Inexplicit savings (Dunn–Radziwiłł type) cannot enter the rational certificates.

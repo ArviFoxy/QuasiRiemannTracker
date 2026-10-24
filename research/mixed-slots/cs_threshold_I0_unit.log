@@ -1,0 +1,15 @@
+IPLAIN=False UNIT=True baseline theta=0.8747271
+f=0.90 cS=2.77 dtheta=-1.52e-04
+f=0.90 cS=2.60 dtheta=-1.57e-04
+f=0.90 cS=2.40 dtheta=-1.89e-04
+f=0.90 cS=2.20 dtheta=-1.93e-04
+f=0.90 cS=2.00 dtheta=-1.93e-04
+f=0.90 cS=1.50 dtheta=-1.93e-04
+f=0.90 cS=1.00 dtheta=-1.93e-04
+f=0.80 cS=2.77 dtheta=-5.32e-05
+f=0.80 cS=2.60 dtheta=-6.03e-05
+f=0.80 cS=2.40 dtheta=-9.38e-05
+f=0.80 cS=2.20 dtheta=-1.16e-04
+f=0.80 cS=2.00 dtheta=-1.49e-04
+f=0.80 cS=1.50 dtheta=-2.63e-04
+f=0.80 cS=1.00 dtheta=-3.78e-04

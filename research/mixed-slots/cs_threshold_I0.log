@@ -10,3 +10,6 @@ f=0.80 cS=2.77 dtheta=+1.94e-04
 f=0.80 cS=2.60 dtheta=+1.51e-04
 f=0.80 cS=2.40 dtheta=+1.16e-04
 f=0.80 cS=2.20 dtheta=+7.93e-05
+f=0.80 cS=2.00 dtheta=+2.64e-05
+f=0.80 cS=1.50 dtheta=-6.03e-05
+f=0.80 cS=1.00 dtheta=-1.66e-04

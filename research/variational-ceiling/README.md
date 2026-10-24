@@ -75,7 +75,7 @@ Measured (density floor 0.45, Lemma F, same gates and fees as the consolidated c
 | 0.001 | 0.8368603 | 0.8259606 | 0.8747273 |
 | 0.0005 | 0.8369814 | 0.8260836 | 0.8747259 |
 | 0.0005 to `s = 0.0335`, then 0.00025 (consolidated) | 0.8369975 | 0.8261064 | 0.8747257 |
-| 0 (continuum) | (running) | | |
+| 0 (continuum, `continuum.py` / `continuum2.py`, RK2 with `ds = 2·10⁻⁴`) | 0.8370759 | 0.8261783 | **0.8747249** |
 
 Height gap continuum − consolidated chain: +3.0e-5 at `s = 0.0135`, then +3.4e-5, +3.8e-5, +4.2e-5,
 +4.7e-5, +5.1e-5, +5.5e-5 at `s = 0.0155, …, 0.0205` (still growing).

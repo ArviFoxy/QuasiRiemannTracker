@@ -108,3 +108,9 @@ The exact pipeline with every known refinement (Lemma F, fine pivots, density fl
 - **Bin-restricted faces do not exist in this framework.** The source step selects zeros on the
   transformed joint row `w` of foundations (168), not on the original rows. A zero-free bin on the
   original rows therefore does not make the HIGH class empty.
+- **Screening test for atom 2 (the λ test, round 3).** A mean-value estimate of the shape
+  `H + D(H/D)^λ` on a ball of rows of size `H` improves the long line only if `λ > 1/6`. For
+  `λ ≤ 1/6`, sixth-power amplification still wins. At the binding `t = 1.155`, the needed 2.6e-4
+  requires a direct bound `Σ_{q_u≍U}|M_u(D)|² ≪ U + D(U/D)^{λ}` with `λ ≥ 0.16834`. Atom 1's
+  sharpest form is P1 in `../LOG.md` (the column-branch quadratic sieve slightly past `N = K`).
+

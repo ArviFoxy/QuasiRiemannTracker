@@ -573,6 +573,36 @@ A catalogue cross-check (21.9k records) found nothing that moves them. → `cap-
   above, and the probe uses that estimate about ten times more cheaply (`δ' ≈ 1.3e-4` against
   `≈ 1.5e-3`).
 
+- *Round-3 long-moment agent: atom 2 is a fixed point of the current tools, and a screening test.*
+  - **Leverage** (closed-form crossing on a C face, `δ = 0.4546`, `p = 1/2`,
+    `atom-targets/line_leverage.py`): lowering a line by `ε` lowers `R*` by `0.509ε` (I), `0.305ε` (L),
+    `0.186ε` (P). So the long-line target `−2.6e-4` equals I `−1.56e-4` or P `−4.26e-4`.
+  - **`L(t) = 1/6 + (5/6 − δ)t` is a fixed point** of amplification into any ball bounded by `H + D`,
+    of lifting to `H = U^{1+6α}` with the marked short inverse (minimum at `α = (t−1)/6`, equal to
+    `L(t)`), of Vaughan/Heath-Brown identities on the long witness (Type I sums vanish, and Type II
+    reproduces the detector at a shorter cutoff), and of `μ log = −Λ*μ`.
+  - **The λ test (new screening criterion).** A ball estimate `H + D(H/D)^λ` helps only if `λ > 1/6`.
+    For `λ ≤ 1/6` amplification still wins. For `λ > 1/6` the best choice is the original ball,
+    exponent `(1−λ)t + λ`. At `t = 1.155`, a gain of 2.6e-4 needs `λ ≥ 0.16834`, against
+    amplification's exact `1/6`. Any idea for the long line should be screened against this number
+    first.
+  - **Where the `+D` lives:** only in the near-coprime dyads `q_b ≤ D/U` of (64), whose dual has more
+    rows than length. The `n₁ = n₂` main term there cancels exactly (local factor
+    `1/q_p − 1 + (1 − 1/q_p) = 0`), but what remains after Poisson in `k` is the original
+    off-diagonal (Poisson twice is the identity). Positivity then restores a genuine dual diagonal.
+  - **Count framing.** Every count-only route needs local control of `1/L` just left of the zero
+    (density-hypothesis strength: it would give `I(1) = 1 − δ`). The missing input can be stated as a
+    **pair-zero lemma**: rows in the bin with a second zero, or `|L| ≤ U^{−κ}`, in a box of width
+    `η` left of the zero number at most `U^{R* − 8e-5}`. No proof strategy is known. A two-point
+    detector would need mixed `μ*1` moments that are not available.
+  - Outside angles checked and closed: Guth–Maynard/Halász (off-diagonal about `U`, far above
+    `D^δ`), BDH/BV dispersion (the family is a `1/U`-thin slice), cubic/sextic sieves (de Faveri's
+    off-diagonal terms exceed `D`), bilinear Gauss-sum bounds (wrong row/length regime), Patterson
+    bias (only the circular double dual), denser multipliers (only units and conjugation act
+    exactly).
+  - **Round 3 summary.** Atom 1 is the column-branch target P1 (cheapest via the probe,
+    `δ' ≈ 1.3e-4`). Atom 2 is the λ test or the pair-zero lemma. Atom 4 (`c_g`) is closed.
+
 ## Open directions (ranked, revised 2026-10-24, third pass; see `barriers/README.md`)
 
 Exact state: committed Lean branch 0.8747289; best exact value with known lemmas 0.8747257

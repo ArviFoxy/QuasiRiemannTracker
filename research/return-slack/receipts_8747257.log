@@ -1,0 +1,38 @@
+theta 0.8747257 C [0.9512819796905526, 2.7816799406250228, 0.0549989] P [0.9584989662323006, 2.9490791715820506, 0.0549989]
+geometry: {'theta': 0.8747257, 'h': 0.802, 'ell': 0.16776386666666668, 'x': 0.36576386666666666, 'y': 0.4664722666666667, 'kap': 0.7494514, 'sP': 0.045, 'd0': 0.005, 'dplus': 0.8020000001, 'ds': 0.7759330279295603, 'dk': 0.7945298148839982}
+  principal_z                               8.666667e-05
+  incumbent                                 1.004000e-04
+  source_C_cap                              2.998900e-03
+  floor                                     3.477517e-03
+  conductor_kink_before_top                 7.470185e-03
+  prime_supply                              9.181879e-03
+  numerator_cap_sP_le_capP                  9.998900e-03
+  source_P_cap                              1.199890e-02
+  conductor_switch_before_kink              1.859679e-02
+  principal_w                               2.127161e-02
+  holomorphic_box                           2.472570e-02
+  dMinus_lower_3_4                          2.593303e-02
+  Gram_ell_below_one_fifth                  3.223613e-02
+  capacity_positive_at_top                  3.311566e-02
+  feedback_y                                3.352773e-02
+  small_row                                 3.792280e-02
+  source_intercept                          4.150103e-02
+  feedback_kappa                            4.945140e-02
+  capacity_domain                           6.547227e-02
+  kappa_sub_5_288_25_784                    7.575113e-02
+  Gram_2x_above_y_plus_ell                  9.729160e-02
+  Gram_y_above_x                            1.007084e-01
+  conductor_top_before_twoy                 1.309445e-01
+  feedback_d                                1.980000e-01
+  Gram_x_above_ell                          1.980000e-01
+  conductor_peak_before_switch              3.094608e-01
+  large_shift_clipped                       3.284556e-01
+  small_shift_cost                          3.284556e-01
+  conductor_small_before_peak               4.614723e-01
+  source_lambda_high                        1.550921e+00
+edge old_small  d=0.00500 C=0.001112: 1 rects, min coeff 8.640e-02, branches ['old']
+edge old_peak   d=0.46647 C=0.103736: 1 rects, min coeff 5.856e-02, branches ['old']
+edge old_switch d=0.77593 C=0.034917: 2 rects, min coeff 2.153e-03, branches ['old']
+edge new_switch d=0.77593 C=0.034917: 2 rects, min coeff 2.153e-03, branches ['old']
+edge new_kink   d=0.79453 C=0.035754: 4 rects, min coeff 1.221e-03, branches ['old']
+edge new_top    d=0.80200 C=0.033116: 24 rects, min coeff 1.728e-07, branches ['C', 'old']

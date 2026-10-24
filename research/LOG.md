@@ -229,6 +229,23 @@ A catalogue cross-check (21.9k records) found nothing that moves them. → `cap-
     the Gauss moduli fails because `H(h) = Σ_u B(u)G(u,h)` has no short period. Reflecting long
     child plains is already used for `A > 5M/6`.
 
+- *Why the inverse moment is cheaper than the plain moment (structural, from paper Prop. 5.1 and
+  (4.7)).*
+  - The completed reflection is the functional equation of
+    `T(s,Ψ) = L₀(s,Ψ)·D(s,Ψ)`, `D = Σ_{n sf} γ₂(n)ᾱ(n)Ψ(n)q_n^{-s}`. This is the Mellin transform
+    of the (twisted) cubic theta function, which is entire.
+  - Its squarefree coefficients are `θ(n) := γ₂(n)ᾱ(n) = μ(n)λ̄(n)γ₂(n)`. Here
+    `α(p) = −γ₂(p)³ = −π'_p/|π'_p|`, so `α = μλ` with `λ` an angular Hecke character.
+  - After the first Poisson step in the rows, an inverse polynomial's column coefficient is
+    `μ(z)γ₋₁(z)`. By `γ₁γ₂ = μαG` this is exactly a theta coefficient (`= ᾱγ₂χ(−1)G`). The
+    Möbius sign pairs with the Gauss sum, and the theta reflection applies, at cost `c²`.
+  - A plain polynomial gives `γ₋₁(z)` alone, i.e. `μ(z)·conj(θ(z))·G(z)`: a Möbius-twisted theta
+    coefficient. It has no functional equation, so plains cannot use the reflection recursion.
+    They need the twice-Poisson amplified descent, with its ratio-6 bookkeeping.
+  - Consequence: lowering the plain slot cost through reflection would need a reflection-type
+    identity for Möbius-twisted cubic theta series, i.e. an "inverse theta" recursion. That is
+    open direction 2, stated precisely.
+
 ## Open directions (ranked, revised 2026-10-24 after the second pass; see `barriers/README.md`)
 
 1. **Reflected-energy column branch slightly past the diagonal.** One input would move the probe

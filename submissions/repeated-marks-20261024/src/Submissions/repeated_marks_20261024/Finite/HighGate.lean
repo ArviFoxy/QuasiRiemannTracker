@@ -258,7 +258,11 @@ theorem high_uniform_reserve (n low h : Source) (copies : ℚ) (hcopies : 0 ≤ 
   have hLpos : 0 < (h.L:ℝ) := by linarith
   refine ⟨δ/(180*(h.L:ℝ)), by positivity, ?_⟩
   intro b hb ν hν hS hF
-  have hν0 : 1/2 ≤ ν := le_trans (by exact_mod_cast hq0) hν.1
+  have hq0' : (1/2:ℝ) ≤ (n.q:ℝ) := by
+    have hh := (Rat.cast_le (K:=ℝ)).mpr hq0
+    norm_num at hh
+    exact hh
+  have hν0 : 1/2 ≤ ν := le_trans hq0' hν.1
   have hPP : ParentParams ν copies h.B h.L h.cap :=
     ⟨by linarith, hν.2, by exact_mod_cast hcopies, hB0, hB1, hL, hh0, hh1⟩
   -- every class and branch clears the reserve
@@ -293,8 +297,13 @@ theorem high_uniform_reserve (n low h : Source) (copies : ℚ) (hcopies : 0 ≤ 
   have hgain : δ/(180*(h.L:ℝ)) - (1 - QRH.Record1252270103Source.PhysicalScalar.sourceBase n low b ν -
       (n.highFee:ℝ)) ≤ gainK ν copies h.B h.L h.cap (b - 2*(n.allowance:ℝ))
         (sourceFReal n low b - (n.allowance:ℝ)) := by
-    apply le_csInf ⟨_, ⟨0, ⟨le_rfl, by norm_num⟩, rfl⟩⟩
+    have hne : ((fun p => gainP ν p (copies:ℝ) (h.B:ℝ) (h.L:ℝ) (h.cap:ℝ) (b - 2*(n.allowance:ℝ))
+        (sourceFReal n low b - (n.allowance:ℝ))) '' classes).Nonempty :=
+      ⟨_, ⟨0, ⟨le_rfl, by norm_num⟩, rfl⟩⟩
+    show _ ≤ sInf _
+    apply le_csInf hne
     rintro _ ⟨p, hp, rfl⟩
+    dsimp only
     rw [gainP_eq_inf _ _ _ _ _ _ _ _ (by linarith)]
     apply Finset.le_inf'
     intro k _

@@ -127,15 +127,19 @@ theorem cell_ratio_full (n low : Source) (hc : CellRatio n low) {b : ℝ}
     2*(b - 2*(n.allowance:ℝ)) ≤ sourceFReal n low b - (n.allowance:ℝ) := by
   have hl := hc (crossing n low) (by simp)
   have hr := hc n.cap (by simp)
-  have haff : WidthAffine (fun b => sourceFReal n low b - (n.allowance:ℝ) - 2*(b - 2*(n.allowance:ℝ))) := by
+  have haff : WidthAffine (fun b : ℝ => sourceFReal n low b - (n.allowance:ℝ) - 2*(b - 2*(n.allowance:ℝ))) := by
     intro x y t
     have := sourceFReal_affine n low x y t
     simp only at this ⊢
     rw [this]; ring
-  have := width_affine_nonnegative haff hb
-    (by simp only; rw [sourceFReal_rat]; push_cast; exact_mod_cast (by linarith : (0:ℚ) ≤ _))
-    (by simp only; rw [sourceFReal_rat]; push_cast; exact_mod_cast (by linarith : (0:ℚ) ≤ _))
-  simp only at this
+  have hf (c : ℚ) (hc' : 2*(c - 2*n.allowance) ≤ sourceF n low c - n.allowance) :
+      0 ≤ sourceFReal n low (c:ℝ) - (n.allowance:ℝ) - 2*((c:ℝ) - 2*(n.allowance:ℝ)) := by
+    rw [sourceFReal_rat]
+    have hh : ((2*(c - 2*n.allowance) : ℚ) : ℝ) ≤ ((sourceF n low c - n.allowance : ℚ) : ℝ) := by
+      exact_mod_cast hc'
+    push_cast at hh
+    linarith
+  have := width_affine_nonnegative haff hb (hf _ hl) (hf _ hr)
   linarith
 
 end QRH.RepeatedMarks.Finite

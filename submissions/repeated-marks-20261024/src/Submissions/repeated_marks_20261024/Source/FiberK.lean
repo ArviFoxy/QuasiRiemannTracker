@@ -207,14 +207,19 @@ theorem feedback_fiber_count_K (rows : Finset Row) (hne : rows.Nonempty)
     have hxB : x≤B := by
       simpa only [mul_one] using QRH.RepeatedMarks.xiP_le_BQ (K:=copies) (h:=h) (S:=S) (Q:=1) hP'
         hB0 hB1 (by norm_num)
+    have hclamp : clampClass (weightedMean slots widths g/δ) = p := clampClass_eq hp0 hp
+    have ht : t = QRH.RepeatedMarks.cutoffP δ p copies B lam h S 1 := by
+      show QRH.RepeatedMarks.cutoffP δ (clampClass (weightedMean slots widths g/δ)) copies B lam h
+        (∑ s∈slots, widths s) 1 = _
+      rw [hclamp]
     have hbal : 6*δ*x+(5-6*δ)*t=5 := by
       have hb := QRH.RepeatedMarks.cutoffP_balance (K:=copies) (B:=B) (h:=h) (S:=S) (Q:=1) hP'
       simp only [QRH.RepeatedMarks.w, mul_one] at hb
-      simp only [t, classCutoff, clampClass_eq hp0 hp]
+      rw [ht]
       exact hb
     have hcut : t = QRH.RepeatedMarks.invThr p copies x S 1 +
         QRH.RepeatedMarks.plainThr p B lam h x S 1/2 := by
-      simp only [t, classCutoff, clampClass_eq hp0 hp]
+      rw [ht]
       rfl
     have hh := QRH.RepeatedMarks.fiber_exponent_class (ν:=δ) (B:=B) (lam:=lam) (h:=h) (x:=x)
       (t:=t) (p:=p) (K:=copies) (S:=S) (r:=r) (m:=m) (E:=Real.logb U ((rows.card : ℝ)/A))
@@ -227,7 +232,8 @@ theorem feedback_fiber_count_K (rows : Finset Row) (hne : rows.Nonempty)
     have hle := QRH.RepeatedMarks.gainK_le_gainP hPP hL (by norm_num : (0:ℝ) ≤ 1)
       (show p ∈ QRH.RepeatedMarks.classes from ⟨hp0, hp⟩)
     have hrho : rho δ = 1 - δ*QRH.RepeatedMarks.baseXi δ := by
-      simp only [rho, baseXi, densityDenom, QRH.RepeatedMarks.baseXi, QRH.RepeatedMarks.densityDenom]
+      simp only [rho, QRH.Record1252270103Source.High.baseXi, QRH.Record1252270103Source.High.densityDenom,
+        QRH.RepeatedMarks.baseXi, QRH.RepeatedMarks.densityDenom]
     have hexp : Real.logb U ((rows.card : ℝ)/A) ≤ rho δ+δ*S-gainRep copies δ B lam h S 1-
         2*weightedMean slots widths g*S+155*ε+mesh+εm+δ*ζ := by
       simp only [gainRep]

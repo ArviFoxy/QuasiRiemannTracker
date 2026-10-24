@@ -435,6 +435,18 @@ A catalogue cross-check (21.9k records) found nothing that moves them. → `cap-
     `p = 1/2`. Amplifying the original rows (`u ↦ ua⁶`) costs 5 per unit of `α` and buys only
     `6qB₀/Λ₀ ≈ 0.9` of threshold.
 
+- *Residue transfer for the long detection (variant of the explicit-formula entry).*
+  - At the binding pure-Möbius detection `r = t* = 1.155`, `M(D) = D^{δ/2}ŵ(σ)/L'(ρ) + Σ_{ρ'}
+    D^{σ'−1/2}ŵ/L'(ρ') + ∫`.
+  - If the row's own residue saturates `M(U^{1.155})`, it saturates every `D`, including
+    `D = U`, where the inverse witness gives the density-hypothesis count `1 − δ = 0.545`.
+  - Otherwise a left zero needs `|1/L'(ρ')| ≈ U^{1.155(σ−σ')}`. Its term at `D = U` then exceeds the
+    proven bound `U^{δ/2}` by `U^{0.155(σ−σ')}`, so at least two such zeros must cancel at `D = U`
+    and not at `D = U^{1.155}`.
+  - With `σ − σ' ≈ 0.1` this needs only `|L'(ρ')| ≈ U^{−0.02}` at two left zeros, i.e. mild
+    clustering. Pair counts `Σ_u N_u(σ')² ≤ (log U)·U^{R(σ')}` give no power saving, since
+    `R(σ' ≈ 0.6) ≈ 0.85 > 0.604`. Blocked, like the inverse-witness version.
+
 ## Open directions (ranked, revised 2026-10-24, third pass; see `barriers/README.md`)
 
 Exact state: committed Lean branch 0.8747289; best exact value with known lemmas 0.8747257

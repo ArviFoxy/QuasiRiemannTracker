@@ -229,11 +229,22 @@ A catalogue cross-check (21.9k records) found nothing that moves them. → `cap-
     the Gauss moduli fails because `H(h) = Σ_u B(u)G(u,h)` has no short period. Reflecting long
     child plains is already used for `A > 5M/6`.
 
-## Open directions (ranked)
+## Open directions (ranked, revised 2026-10-24 after the second pass; see `barriers/README.md`)
 
-1. **Column branch of MI / long Möbius moment beyond amplification.** Both need cancellation in sums
-   of cubic Gauss sums twisted by quadratic characters (Type II bilinear structure as in
-   Dunn–Radziwiłł's proof of Patterson's conjecture). A power saving of 2.5e-4 at r = 1.155 in the
-   long Möbius moment would already give 1e-5.
-2. **Joint same-zero witness moments** (catalogue G137, OPEN).
-3. **Sparse-image large sieve for the long branch.**
+1. **Reflected-energy column branch slightly past the diagonal.** One input would move the probe
+   geometry (`dθ/dε = −0.0628`, so `ε = 1.6e-4` gives 1e-5), the count's MI and the HIGH gain at
+   once. It needs an almost diagonal quadratic large sieve at dual length `K^{1+η}` for the
+   reflected cubic-theta coefficients, which is Lindelöf-type input for cubic Gauss sums twisted
+   by quadratic characters.
+2. **Plain fourth moment by a reflection recursion instead of the amplified descent.**
+   - The plain canonical coefficient after Poisson is `γ₁ = γ₂²G = λGγ̄₂`: a twisted conjugate
+     cubic-theta coefficient with no Möbius factor. The inverse moment's is `ᾱγ₂ = μλ̄γ₂`.
+   - It would need the Patterson main term subtracted inside the canonical recursion.
+   - Payoff: slot cost 2 instead of `Λ ≈ 3` gives `R ≈ 0.5996`, about 7e-4 in θ, and the source
+     chain would become unnecessary.
+3. **Long Möbius moment beyond sixth-power amplification.** This needs zero-density-strength
+   input. Bootstrapping with the count is circular at `δ ≈ 0.45–0.5`, and the hybrid `t`-aspect is
+   worse than sixth powers.
+4. Closed this session: joint witnesses (they reproduce Cauchy–Schwarz), the sparse-image large
+   sieve (equivalent to the original problem), large-values methods (no loss to recover), the Gram
+   bias (genuine), probe redesigns (forced active marks), and detector variants.

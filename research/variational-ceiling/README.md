@@ -39,4 +39,32 @@ Collet's `r = 10⁻⁸` the solver settles at `den ≈ 3.7·10⁻⁴`, about 0.1
 
 ## 3. The continuum limit is not the ceiling: the lag effect
 
-(results below)
+At the consolidated chain's own points, the continuum needs a steeper slope than the discrete
+chain achieved:
+
+| `s` | chain slope | continuum minimal slope at the chain's `(s, E)` |
+|---|---|---|
+| 0.02 | 4.0831 | 4.0918 |
+| 0.03 | 3.5280 | 3.5376 |
+| 0.04 | 3.0106 | 3.0166 |
+
+A finite step has a first-order advantage. A hybrid node at pivot `s` with LOW parent at `s − δ` uses
+the parent's ratio `R(s − δ) ≈ R(s) + |R'|δ` on its old-parent cells `[b_×, b₁]` around the pivot
+(`R = Λ/6B`, `R' ≈ −7.7`). Its self cells start at `b₁ > s`, where the node's line lies below the
+envelope (node 0: `q₁ = 0.7434` against `q₂ = 0.7372`, `b₁ = 0.01391 > 0.0135`). To first order:
+- the old-parent side gains about `0.17|R'|δ ≈ 1.3δ` in the HIGH gate (0.17 per unit `q`) and pays
+  `[q(Λ − 1) + ∂G/∂S]δ/2 ≈ 1.0δ` for sitting at `b_× ≈ s − δ/2`;
+- the self side gains about `2Δb` at `b₁ = s + Δb`;
+- the price is the old-parent excess `(Λ₀ − Λ)(b − b_×)/Λ₀`, amplified by `1/den₁`, which grows like
+  `δ(δ/2 + Δb)/den₁` and limits both.
+
+So the ceiling is a discrete optimum with a finite step. Measured on uniform-step hybrid chains
+(density floor 0.45, Lemma F, same gates and fees as the consolidated chain):
+
+| pivot spacing | `E(0.0412)` | `E(0.045)` | θ* |
+|---|---|---|---|
+| 0.002 | 0.8366036 | 0.8256990 | 0.8747301 |
+| 0.001 | (running) | | |
+| 0.0005 | (running) | | |
+| 0.0005 to `s = 0.0335`, then 0.00025 (consolidated) | 0.8369975 | 0.8261064 | 0.8747257 |
+| 0 (continuum) | (running) | | |

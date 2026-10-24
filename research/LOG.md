@@ -603,6 +603,18 @@ A catalogue cross-check (21.9k records) found nothing that moves them. → `cap-
   - **Round 3 summary.** Atom 1 is the column-branch target P1 (cheapest via the probe,
     `δ' ≈ 1.3e-4`). Atom 2 is the λ test or the pair-zero lemma. Atom 4 (`c_g`) is closed.
 
+- *Status correction and branches (2026-10-24, late).* An earlier status line said our branch was
+  "trailing" PR #71. That was wrong: our submission proves `8747289/10⁷ = 0.8747289`, PR #71
+  (slayer's recost of Collet's graph) proves `0.87477290596`, and smaller is stronger. So our
+  branch leads every upstream entry by 4.4e-5 and clears the 1e-5 bar.
+  - `submission-repeated-marks-20261024` is upstream main (`0ce80fdd`) plus only
+    `submissions/repeated-marks-20261024`. Its imports are itself, `hailey_collet_1252270103` and
+    `openai_baseline`, and both trees are byte-identical upstream. The verifier pins and lake
+    manifest are identical too. The PR is ready to open from it; it has not been opened.
+  - `claude-memory` is the fork's main plus `CLAUDE.md` (goal, bar, conventions, pointers).
+  - PR #71's idea (recosting under the fine fee tuple `(10⁻¹⁷, 10⁻¹², 10⁻¹⁰)` that the accepted
+    source theorem permits) is being applied to our graph (`variational-ceiling/hyb_fees.py`).
+
 ## Open directions (ranked, revised 2026-10-24, third pass; see `barriers/README.md`)
 
 Exact state: committed Lean branch 0.8747289; best exact value with known lemmas 0.8747257

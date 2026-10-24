@@ -737,6 +737,24 @@ A catalogue cross-check (21.9k records) found nothing that moves them. → `cap-
   But the count is the crossing `max_m min(I(t−m), P(m))`, and that value depends on `P` only at
   `m*`. So adding all chain faces as count candidates leaves `R` unchanged.
 
+- *Why order 6 (structural remark, heuristic beyond the cases checked).* The architecture needs
+  Poisson in the rows to turn the Möbius-twisted Gauss sums of the row characters into the
+  coefficients of an automorphic object with an explicit reflection. For characters of order `2k`,
+  Hasse–Davenport for `ψ = χ̄` against the quadratic subcharacter `χ^k` gives
+  `g(χ̄) ∝ g(χ^{−2})·g(χ^k)/g(χ^{k−1})`.
+  - The two non-quadratic Gauss sums `χ^{k−1}` and `χ^{−2}` are conjugate iff `k − 1 ≡ 2 (mod 2k)`,
+    i.e. `k = 3`. Then the ratio collapses, through the cube relation of the cubic Gauss sum, to one
+    cubic Gauss sum times the angular factor `α`. With the prime sign this is the paper's
+    `μ(n)γ₋₁(n) = χ_n(−1)G(n)^{−1}α(n)γ₂(n)`: the Möbius sign is absorbed into a coefficient of
+    Kubota's cubic theta function, which Patterson computed explicitly.
+  - For `k = 2` (quartic over `Z[i]`) one gets `γ₋₁ ∝ conj(γ₁)`, and the Möbius sign survives as
+    `(−1)^{ω(n)}conj(γ₁(n))`. The quartic theta's squarefree coefficients are not known in that form
+    (Suzuki), so there is no explicit reflection.
+  - For `k = 5` the ratio of two distinct quintic Gauss sums remains.
+  - So the sextic family, and with it the exchange rate 6 (11/12 = 1 − 1/(2·6), the long line, the
+    plain descent), is forced by the one case with explicit theta coefficients. A smaller exchange
+    rate would need a different automorphic input, not a different character order.
+
 ## Open directions (ranked, revised 2026-10-24, third pass; see `barriers/README.md`)
 
 Exact state: committed Lean branch 0.8747289; best exact value with known lemmas 0.8747257

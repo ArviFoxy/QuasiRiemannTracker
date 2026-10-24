@@ -162,3 +162,19 @@ uniform bound and would need an edit to the imported HIGH-count code.
   rotated self cells: about 400 Lean nodes for the consolidated chain, roughly an hour of build at
   9–10 s per node file.
 
+## 5.2 Cell count with fine fees (measured 2026-10-24)
+
+`../variational-ceiling/build_exact_hybrid.py` was run on the Lean-guard chain (`chain_lean_fine`:
+fees `(10⁻¹⁷, 10⁻¹², 10⁻¹⁰)`, floor 1/2).
+- The first two float nodes become 22 Lean nodes each: one old-parent node on `[s, b₁]`, then 21
+  self cells.
+- The first self cell is only `3·10⁻⁷` wide (reserve `7·10⁻⁸`): at the join the old-parent node has
+  essentially no reserve. Widths then double, roughly every other step, as the gate reserve grows,
+  up to `10⁻²` near the cap.
+
+So fine fees do not shorten the cell ladder. It is set by the reserve profile at the join, not by
+the fees. About 80 float nodes × 22 ≈ 1,700 Lean nodes is too heavy for a −2.6e-6 gain. The right
+tool would be a parametric certificate: one 2-D Bernstein check over `(ν, b)` on `[b₁, cap]` per
+float node, with an induction over the geometric cell family. A cheaper ladder would also follow
+from giving the old-parent node some reserve at `b₁` (a slightly steeper slope there).
+

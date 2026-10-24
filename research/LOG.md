@@ -127,6 +127,51 @@ A catalogue cross-check (21.9k records) found nothing that moves them. → `cap-
     moment beyond the diagonal.
 - *Conductor top h.* The exact certificate's h = 401/500 is optimal (h = 0.801, 0.803: θ* = 0.8747268).
 
+- *Structured slot coefficients in the MI column branch.* The physical slots carry fixed finite-order
+  characters (Θ), not arbitrary weights, so their prime sums obey the zero-free bootstrap
+  `|Σ_p χ(p)W(p/P)| ≪ P^{β*}` (the input that gives the plain moment its slot cost 6κ).
+  - In the reflected energy (paper Lemma 14.3) the column branch is the large sieve's dual diagonal:
+    the dual length is `v = T_d = 2H + 2z_a − N_*`, because the slot primes sit in the reflection
+    modulus `c` and the cubic-theta reflection has conductor `q_c²`.
+  - In that branch the hybrid norm (Lemma 14.2) already saves the full slot length (`u = z_a`), while
+    the zero-free pointwise bound saves only `z_a(1 − κ)`.
+  - Result: no gain. Slot cost 2 is the square of the reflection modulus, not a weakness of the slot
+    sum.
+- *Zero-detector variants (paper Prop. 8.3).* A zero gives an inverse block `M_r` and a plain block
+  `S_m` with `r ≤ t`, `r + m ≥ t`, `m ≤ 1/2`. The long line comes from the edge block (`r ≈ t`,
+  `m ≈ 0`), where the detector polynomial on `(D*, 2D*]` is exactly `−μ(n)`.
+  - Smoother mollifier cutoffs (Selberg-type weights `P(log(D*/l)/log D*)`) change only log factors.
+  - Second-order detector `C = 2M − M²L` (tail `(1 − ML)²`, supported beyond `D*²`): it gives two
+    independent witness pairs with `r_i + m_i ≥ τ`. The adversary puts both at the same point, and the
+    plain product `S_{m1}S_{m2}` is weaker than `|S_m|⁴`. Worse than first order.
+  - Several cutoffs `t` at once (covering formulation): a row escapes every detector iff the
+    `t`-range is covered by intervals `[r, r+m]` of saturated bad blocks. Below the single-detector
+    optimum, short crossing blocks cover up to `r_X + m_X` and pure long blocks cover beyond `ℓ_X`,
+    and these overlap. No gain.
+  - Truncating the plain factor instead of the inverse puts `1/L` in the contour integral, with a
+    pole at the zero. Impossible.
+
+- *Repeated slots in the HIGH count's plain branch.* Collet's plain source moments allow overlapping
+  marked pools, so the plain witness could also take K copies (cap `KS` instead of `S`). But along
+  the whole consolidated chain the binding facet of the HIGH gain is (inverse cap, parent affine cap),
+  never "available slots" on the plain side (checked at nodes 20, 40, 55, 58, `ν ∈ [q, 0.6]`). No gain.
+- *Plain × slots through the generic sextic large sieve.* `Σ_u|S_m Q_z|² ≪ U` holds for
+  `m + z ≤ 1/2` with no special structure (the `U^{5/6}D^{1/3}` term is harmless there), but the
+  resulting count `1 − δ/2` is far worse than the fourth-moment line. A fourth moment with MI-type
+  slot cost 2 instead of `Λ ≈ 3` would give `P(m*) ≈ 0.585` (vs 0.604). It is blocked by the
+  Patterson bias of plain duals, which is exactly why the source theorem needs the amplified descent.
+
+- *Physical Gram exceptional frequencies, re-derived with the exact correlation (paper Lemma 13.3,
+  Prop. 15.2).* The Gram sum `Σ_m|A_m|²` has probe coefficients `c(s) = 1_σ(s)χ_s(b*)ξ̄(s)/τ`.
+  After Poisson the residual columns carry `c(dm₁)χ_{m₁}(k)` and `c̄(dm₂)χ̄_{m₂}(−k)`.
+  - At a prime `p ∈ S`, `p ∤ 6`, with `ξ_p = (·/π_p)^j`, the two column exponents are `1 − j + v`
+    and `−1 + j − v` (`v = v_p(k)`). They vanish together exactly when `v ≡ j − 1 (mod 6)`.
+  - So for `k = a⁶e₀`, with `e₀` the S-supported element fixed by `ξ`, both complete means survive
+    and there are `≍ K_R^{1/6}` genuine main terms.
+  - A mixture of several `ξ_i` gives only diagonal (`i = k`) main terms with weights `|λ_i|²`, so
+    they cannot cancel.
+  - Result: `c_g = 1/12` (the `P_a^{1/6}` term) is genuine, as found earlier.
+
 ## Open directions (ranked)
 
 1. **Column branch of MI / long Möbius moment beyond amplification.** Both need cancellation in sums

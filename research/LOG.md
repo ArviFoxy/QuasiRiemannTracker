@@ -861,8 +861,13 @@ A catalogue cross-check (21.9k records) found nothing that moves them. → `cap-
     quadratic twists of a GL(2) form is also affine. In the classical analogues of affine type,
     power-saving asymptotics are known only in function fields or under GRH; unconditionally there
     are log savings (Li 2024).
-  - Each line's diagonal limit (`r ≤ 1`; the plain faces) is where the finite part of the analysis
-    ends. Extending a line is the affine-type power-saving problem.
+  - What this says about the lines differs between them.
+    - For the I and L lines the limit is the inverse moment's diagonal (`r ≤ 1`, plus marks up to
+      the joint `(k, P)` diagonal). Going past it is the affine-type C̃₂ problem.
+    - For the P line, the slotless plain fourth moment is already diagonal up to total length 1. That
+      is the analogue of Heath-Brown's fourth-moment upper bound; only its exact asymptotic is
+      affine-hard. The P line is limited instead by the slot cost `Λ ≈ 3` of the faces, from the
+      ratio-6 descent (atom 2's exchange rate).
   - Mixed moments, which a product detector would need, are hyperbolic: worse, not better.
   - **Why the finite-type cross moment cannot be used.** The mollified first moment
     `Σ_u w_u L(s₀,ψ_u)C_u(s₀)` (natural × theta, type B₃) could plausibly have a power-saving

@@ -29,7 +29,11 @@ As the pivot spacing `δ → 0`, a node's LOW and HIGH parents tend to the node 
 
 where `Λ_min(s, e)` is the flattest slope for which some threshold `q` passes every gate at the pivot
 `b = s` and at the cap, for the face `(e + Λs, Λ, cap)` as its own parent (`continuum.py`).
-A higher envelope makes the HIGH gate harder, so `Λ_min` is nondecreasing in `e`.
+A higher envelope makes the HIGH gate harder, so `Λ_min` is nondecreasing in `e`. Measured:
+`Λ_min(0.025, E ± 0.002) = 3.7683 / 3.8128 / 3.8580` and `Λ_min(0.04, E ± 0.002) = 2.9720 /
+3.0166 / 3.0620` around the chain's heights, i.e. `∂Λ_min/∂E ≈ 22.5`. So a height perturbation
+decays like `e^{−22.5Δs}`. The envelope at the evaluation widths is set by the gates over the last
+few hundredths of width, and the seed is forgotten.
 `../lean-lab/MaximalEnvelope.lean` proves the resulting comparison principle: any envelope with
 `E' ≤ −Λ_min(s, E)` stays below this solution. Within the continuum class it is the ceiling.
 

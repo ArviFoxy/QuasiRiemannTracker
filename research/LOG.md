@@ -375,6 +375,26 @@ A catalogue cross-check (21.9k records) found nothing that moves them. → `cap-
     plain cap line and the K-copy line are slack. So the chain feels slot cost 2 directly, but only
     through `ε_H`, at `dθ/dε_H ≈ −4.4e-3`.
 
+- *Is the column-branch excess a real size? (heuristic computation, correcting the barrier list).*
+  - The column branch bounds a mean square of the form `Σ_{h~Q} |D_h(N)|²`, with
+    `D_h(N) = N^{-1/2} Σ_{m~N} g̃(m)(m/h)₂ W(m/N)` (theta coefficients with a quadratic twist), at dual
+    length `N = Q^{1+η}` beyond the critical length `Q`. The barrier list said that Lindelöf-quality
+    bounds for these twisted theta sums would remove the excess `N`.
+  - Summing over `h` first gives the exact decomposition
+    `Σ_h |D_h|² = Q·(diagonal) + (Q/N²) Σ_{|j| ≤ N²/Q} |Σ_m g̃(m)ε(m)(j/m)₂ W'(m/N)|²`
+    (Poisson in `h` modulo `m₁m₂`; quadratic Gauss sums `(j/m₁m₂)√(m₁m₂)`). The second term is a sum
+    of squares. If the dual sums have square-root size on average (no conspiracy between cubic Gauss
+    sums and quadratic characters), it equals `(Q/N²)·(N²/Q)·N = N`. So the excess is the dual
+    diagonal, the natural size, not a weakness of the large sieve.
+  - The reflection picture agrees once the alternation is taken into account. Past the critical
+    length, `D_h(N)` reflects to a sextic-twisted theta sum of length `Q²/N`. A mean square of
+    `Q^η` per row needs these sums to be biased at size `Q^{η/2}`, which the sextic sieve's
+    `(QL')^{2/3}`-type terms allow.
+  - Consequence: no bound on the twisted theta sums themselves can remove slot cost 2 inside the
+    column branch. Atom 1 can move only by restructuring the inverse moment before the positive
+    canonical square, keeping signed off-diagonal terms (the same conclusion as "Why the MI stops at
+    `D = U`"). This is a heuristic (it assumes square-root dual sums on average), not a proof.
+
 ## Open directions (ranked, revised 2026-10-24 after the second pass; see `barriers/README.md`)
 
 1. **Reflected-energy column branch slightly past the diagonal.** One input would move the probe

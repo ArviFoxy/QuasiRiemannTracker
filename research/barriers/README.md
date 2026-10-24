@@ -62,7 +62,7 @@ The exact pipeline with every known refinement (Lemma F, fine pivots, density fl
 
 | new input | effect |
 |---|---|
-| Lindelöf-quality mean values for cubic Gauss sums twisted by quadratic characters (column branch beyond the diagonal) | atom 1, all three places |
+| a restructured inverse moment that keeps signed off-diagonal terms instead of passing through the positive canonical square (Lindelöf-quality bounds for the twisted theta sums alone do not suffice: the column excess is their dual diagonal, see `../LOG.md`, "Is the column-branch excess a real size?") | atom 1, all three places |
 | a Möbius Type II estimate beyond the diagonal for sextic families, or any zero-density input stronger than the count itself | atom 2, long branch |
 | a plain fourth moment with slots that subtracts the Patterson bias instead of amplifying | atoms 2 and 3 on the plain side; slot cost 2 there would lower the count `R` from 0.6047 to about 0.5996, worth about `7·10⁻⁴` in θ |
 

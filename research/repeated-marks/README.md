@@ -202,6 +202,15 @@ The lemma is formalized in Lean 4 with Mathlib (`lean/LemmaC.lean`:
 - Lemma C for $\mathcal G_K$ (`gainK_payment`), width monotonicity
   (`gainK_width_mono`) and homogeneity (`gainP_smul`).
 
+`lean/Bernstein2.lean` (Mathlib only) gives the finite-check infrastructure
+for the 2-D HIGH gate:
+- bicubic Bernstein positivity on a box (`bicubic_pos`), through a fixed
+  polynomial identity;
+- a computable rational checker `checkBox` over bisection trees, with
+  soundness `checkBox_sound`. Certificates run under `decide +kernel`.
+
+The gate numerators have bidegree at most $(3,3)$ in $(\nu,p)$.
+
 For comparison, PR #69's HF12 bounds the loss by Lipschitz constants. It needs
 every facet to satisfy $A_j+2B_j\le\nu$; for PR #69's gain this is
 $\varphi_\nu+2C_{\max}\le\nu$, where $C_{\max}=\varphi_\nu/3$ exactly. It also

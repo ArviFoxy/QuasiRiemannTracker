@@ -88,6 +88,6 @@ marks `z = (1 − r)/2 = 0.129`, so `K = Z^{0.742}`, `L = Z^{0.129}` and `N = KL
 
 Slot cost 2 is a worst-case artifact (operator norm over arbitrary slot coefficients) for a column
 branch whose true size, for the coefficients actually used, is plausibly the diagonal. A saving of
-`Z^{0.0008}` out of a plausible `Z^{0.129}` would be enough. But every available large sieve is
+`Z^{0.0011}` out of a plausible `Z^{0.129}` would be enough. But every available large sieve is
 optimal for some coefficient vector, so a proof must use the arithmetic of cubic Gauss sums against
 quadratic characters. That is the open Type II problem above.

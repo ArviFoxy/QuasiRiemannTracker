@@ -481,7 +481,7 @@ A catalogue cross-check (21.9k records) found nothing that moves them. → `cap-
     `A^{7/6}` (`A ≈ B`) and is worse than paying the excess. Slot cost 2 is this joint conductor.
   - **What remains.** The column branch is the quadratic sieve's `N` term for the coefficients
     `β(n)A(n)` with `A(n) = Σ_P a(P)q_P^{-1/2}χ_P(n)^{-2}`, at `K < N ≤ K·L`. For generic
-    coefficients the true size would be `K·N`, i.e. exponent `H`. A saving of `Z^{-0.0008}` would
+    coefficients the true size would be `K·N`, i.e. exponent `H`. A saving of `Z^{-0.0011}` would
     therefore need a quadratic large sieve beyond the family size for products of cubic-theta
     coefficients and cubic slot polynomials. No such estimate is known. Treating `(k, P)` as one
     sextic family with Cauchy over `P` loses more (`A^{7/6}` at `A ≈ N`).
@@ -496,7 +496,7 @@ A catalogue cross-check (21.9k records) found nothing that moves them. → `cap-
     quantity is the operator norm `‖S‖²_op`.
   - For a random-like matrix `‖S‖²_op ≈ N(√K + √L)² ≈ K²L`, smaller by `L = Z^{0.129}`. So
     slot cost 2 is the gap between the Frobenius norm and the operator norm of the row ×
-    slot-tuple central-value matrix, and the lever needs `‖S‖²_op ≤ ‖S‖²_F·Z^{-0.0008}`.
+    slot-tuple central-value matrix, and the lever needs `‖S‖²_op ≤ ‖S‖²_F·Z^{-0.0011}`.
   - Via `‖S‖_op⁴ ≤ Σ_{P,P'}|Σ_k S(k,P)S̄(k,P')|²` the diagonal (`n₁ = n₂`) part of each correlation
     is a nontrivial cubic character sum `Σ_n χ_P^{-2}χ_{P'}^{2}(n)` for `P ≠ P'`, since `|g̃(n)| = 1`
     on squarefree `n`. That part is small. The off-diagonal from Poisson in `k` brings back the same
@@ -513,7 +513,7 @@ A catalogue cross-check (21.9k records) found nothing that moves them. → `cap-
     `Σ_n β(n)A(n)(j/n)` for `j ≤ N²/K`, together with their signed sum over `j`. That is a
     Type II estimate for cubic Gauss sums twisted by quadratic characters. The nearest known result,
     Dunn–Radziwiłł Prop. 10.1, saves only an inexplicit `X^{ρ/2}` (`ρ < 1e-4`), for untwisted
-    `g̃(ab)`, partly under GRH-type inputs. We need `Z^{0.0008}`, which is in the same tiny-saving
+    `g̃(ab)`, partly under GRH-type inputs. We need `Z^{0.0011}`, which is in the same tiny-saving
     regime, but for the twisted problem. Open.
 
 - *Re-reflection with the sextic sieve for the long Möbius moment (atom 2, checked).*
@@ -548,7 +548,7 @@ P 0.19, with `dθ/dR = 0.133`. So 6.8e-6 needs one of:
    are reflected cubic-theta (cubic Gauss sum) coefficients and `χ_R` the quadratic twist. That is a
    saving of `Z^{-0.0011}` over the generic sieve's `N` term. For coefficients not aligned with
    quadratic characters the true size is plausibly `Z^{0.742}‖d‖²`, a saving of `Z^{0.129}`, so only
-   0.6% of the plausible saving is needed. A possible handle is the twisted multiplicativity
+   0.9% of the plausible saving is needed. A possible handle is the twisted multiplicativity
    `d(μ₁μ₂) = d(μ₁)d(μ₂)(μ₁/μ₂)₃^{±}`, which turns the dual sum into a bilinear form with a cubic-symbol
    kernel (Heath-Brown's cubic large sieve), combined with the large sieve over `R`. Bounding each
    `R` separately loses (`Q·N^{2/3} ≫ N`), so both averages are needed at once.

@@ -455,6 +455,16 @@ A catalogue cross-check (21.9k records) found nothing that moves them. → `cap-
   (`δ' ≈ 0.6–0.65`), not only from circularity at the binding `δ`. Restricting to the bin does not
   help either: the bin's images in the amplified family have `H^{R(δ)}D^{δ} = U^{1.223}`.
 
+- *Why the Gram coefficient is worth so little (physical side).* With `k = 5/6 − x/3 − ℓ/6`,
+  `θ_phys = k + x/2 + c_g(y − x)` on `x + y = 1 − ℓ` is
+  `5/6 − ℓ/6 + c_g(1 − ℓ) + x(1/6 − 2c_g)`. At `c_g = 1/12` the `x`-coefficient vanishes, which
+  is why `θ = 11/12 − ℓ/4` does not depend on the split of `x + y`, and `h` is set by `E` alone.
+  A bias saving `c_g = 1/12 − ε_g` lowers `θ_phys` only by `ε_g(1 − ℓ − 2x) ≈ 0.10ε_g` at the
+  binding geometry (`x ≈ 0.366`). That explains the large `ε_g ≈ 1.27e-4` needed for 1e-5. Lemma
+  14.1 bounds the exceptional frequencies `k = er⁶` by their absolute column volume. Their complete
+  means have a common phase (positive local factors), so the root sum has no cancellation to
+  recover.
+
 ## Open directions (ranked, revised 2026-10-24, third pass; see `barriers/README.md`)
 
 Exact state: committed Lean branch 0.8747289; best exact value with known lemmas 0.8747257

@@ -58,7 +58,9 @@ explicit Euler step with the node's slope. Two first-order effects compete:
 - **The slope is frozen over the step while the true slope falls** at `|Λ'| ≈ 55`. Over
   `[0.0195, 0.02]` the continuum averages 4.1068 against the chain's 4.1110.
 
-The second effect wins, about `(|Λ'|/2 − 19.4)δ ≈ 8.3δ` of slope per unit width. With the
+The second effect wins, about `(|Λ'|/2 − 19.4)δ ≈ 8.3δ` of slope per unit width. The cap side never
+binds in the continuum. Moving the cap to the pivot leaves `Λ_min` unchanged to 8 decimals at
+`s = 0.016, 0.024, 0.032`, so the cap rule and the parent's cap in the gain do not affect the ceiling. With the
 contraction `∂Λ_min/∂E ≈ 22.5`, the height gap relaxes toward about `8.3δ/22.5`. So **finer is
 better, and the continuum limit is the ceiling**, consistent with the comparison principle. The
 gate is hardest at the smallest width of a node's cell, so a node's slope is always pinned at the
@@ -71,7 +73,7 @@ Measured (density floor 0.45, Lemma F, same gates and fees as the consolidated c
 |---|---|---|---|
 | 0.002 | 0.8366036 | 0.8256990 | 0.8747301 |
 | 0.001 | 0.8368603 | 0.8259606 | 0.8747273 |
-| 0.0005 | (running) | | |
+| 0.0005 | 0.8369814 | 0.8260836 | 0.8747259 |
 | 0.0005 to `s = 0.0335`, then 0.00025 (consolidated) | 0.8369975 | 0.8261064 | 0.8747257 |
 | 0 (continuum) | (running) | | |
 

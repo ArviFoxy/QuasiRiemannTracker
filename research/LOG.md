@@ -172,6 +172,21 @@ A catalogue cross-check (21.9k records) found nothing that moves them. → `cap-
     they cannot cancel.
   - Result: `c_g = 1/12` (the `P_a^{1/6}` term) is genuine, as found earlier.
 
+- *Amplifying the rows of the MI column branch (near miss).* In the reflected energy (paper
+  Lemma 14.3, 14.16) the row character is `χ_k(nb)³`, which is quadratic. So its exact invariance
+  group is the squares (`k ↦ ka²`), with exchange rate 2 instead of 6.
+  - Naively, amplifying the residual rows lets the column branch pay `H + (L−H)/2` instead of the
+    dual length `L = v + ℓ_b`. That would turn `r + 2z ≤ m` into roughly `r + (21/11)z ≤ m`, far
+    more than the 1.995 needed.
+  - It fails. Amplification needs a large sieve over the full redundant family `{k' ≤ KP²}`, and
+    for generic dual coefficients that family's constant contains a redundancy term `≥ N·P`. The
+    single-character test vector `c_n = χ_{k₀}(n)³` attains it, in exactly the regime `L > K` where
+    the column branch lives.
+  - The MI's own sixth-power amplification (Lemma 17.6) escapes this only because it applies the
+    Möbius moment in its diagonal regime (`D < H`). There the redundancy is harmless.
+  - Any gain would need a structured (non-generic) bound for the dual coefficients `β(n,b)`, and
+    that alone would already remove the dual-diagonal term.
+
 ## Open directions (ranked)
 
 1. **Column branch of MI / long Möbius moment beyond amplification.** Both need cancellation in sums

@@ -29,3 +29,37 @@ Reading guide:
   sixth-power-invariant directions.
 
 Run: `python3 targets.py` (about 20 minutes).
+
+## The probe geometry carries the same slot cost (added 2026-10-24)
+
+The physical probe's only binding geometry constraint is the marked energy (Collet foundations (198),
+Theorem 7.1):
+
+$$M+2z\le N_*\quad\text{with}\quad M=x+y,\ z=\ell,\ N_*=1+\ell,\qquad\text{i.e.}\quad x+y+\ell\le1.$$
+
+The `2z` is the same active-slot term `T_d = 2H + 2z_a − N_*` of the reflected energy (paper
+Lemma 14.3) that gives the inverse moment its slot cost 2.
+
+With the true signal shift `k = 5/6 − x/3 − ℓ/6`, `θ_phys = 5/6 − ℓ/6 + (x+y)/12`. Allowing
+`x + y + ℓ ≤ 1 + ε` (so `y → y + ε` at fixed `x, ℓ, h`) and re-solving the return in the float model
+(`me.py` variant of `targets.py`):
+
+$$\frac{d\theta^*}{d\varepsilon}=-0.0628 .$$
+
+This is linear for `ε ≤ 1e-3`. So:
+
+| atom | change needed for −1e-5 |
+|---|---|
+| marked-energy relaxation `ε` | `1.6e-4` |
+| marked-energy slot cost `c` in `M + cz ≤ N_*` (`ε = (2−c)ℓ`, `ℓ ≈ 0.1676`) | `2 → 1.99905` |
+| same slot cost in the count's inverse moment (table above) | `2 → 1.995` |
+
+The probe geometry is therefore about five times more sensitive to the reflected-energy slot cost
+than the count is.
+
+A soft version does not help. Past the constraint, the column branch (dual length `v ≤ H + η`)
+costs the full excess, `Σ|T|² ≪ Z^{M+η}`, which is `η/2` in the low bound. Re-solving gives
+`Δθ ≈ (−0.0627 + 0.389(1−ω))η` if the column branch kept only a fraction `1−ω` of the excess. A gain
+needs `ω > 0.84`: an almost diagonal quadratic large sieve at dual length `K^{1+η}` for the reflected
+Gauss-sum coefficients. That is the same metaplectic Lindelöf-type input as before (see
+`../LOG.md`, "Amplifying the rows of the MI column branch").

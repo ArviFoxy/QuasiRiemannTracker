@@ -626,6 +626,27 @@ A catalogue cross-check (21.9k records) found nothing that moves them. → `cap-
   `≈ 1.3e-4` for the probe alone. This assumes one column-branch estimate covers all four
   configurations.
 
+- *The face map's continuum limit and the ceiling of the source graph* (`variational-ceiling/`, user's
+  chosen first direction). **The source graph is within about 1e-6 of its ceiling.**
+  - **Continuum limit.** As the pivot spacing `δ → 0`, each face is its own LOW and HIGH parent, and
+    the envelope obeys `E' = −Λ_min(s, E)`. Only the HIGH gate at the pivot binds: moving the cap to
+    the pivot leaves `Λ_min` unchanged, and every gate is affine or concave in the width, so
+    endpoint checks are exact. `Λ_min` is increasing in `E` (`∂Λ/∂E ≈ 22.5`).
+    `lean-lab/MaximalEnvelope.lean` proves the comparison principle, so the continuum solution
+    bounds every admissible envelope of its class.
+  - **The chain is an Euler scheme.** hybchain2 sets `E_{k+1} = E_k − Λ_kδ`. At its pivot a node is
+    flatter than the continuum (the predecessor's ratio helps), but its slope is frozen over the
+    step while the true slope falls at `|Λ'| ≈ 55`. Net loss: about `8.3δ` of slope per unit width.
+    Measured θ*: spacing 0.002 → 0.8747301, 0.001 → 0.8747273, 0.0005 → 0.8747259 (exactly linear,
+    2.8e-3 per unit δ), consolidated 0.0005/0.00025 → 0.8747257. Richardson: δ → 0 gives about
+    0.8747245 with Collet's fees.
+  - **Fees.** The self-cell amplifier `(qe + r)/den` costs about `8.85√r` of log-slope at the
+    optimal `den ≈ √(14.8r)`. PR #71's fine tuple `(10⁻¹⁷, 10⁻¹², 10⁻¹⁰)` cuts this a hundredfold (runs
+    pending).
+  - **Consequence.** Nothing in the face map (spacing, caps, parents, fees) can supply the 6.8e-6
+    still missing for the milestone. The envelope is fixed by the HIGH gate's ingredients: the
+    unmarked count `ρ(ν)`, the gain's inverse cap (atom 1) and the exchange rate 6.
+
 ## Open directions (ranked, revised 2026-10-24, third pass; see `barriers/README.md`)
 
 Exact state: committed Lean branch 0.8747289; best exact value with known lemmas 0.8747257

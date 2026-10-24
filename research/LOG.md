@@ -928,29 +928,42 @@ A catalogue cross-check (21.9k records) found nothing that moves them. → `cap-
     is Collet's "individual plain edge 2/5" (Ch24.5, via Gao's Target830). Saturated marked
     capacities and sixth-root weights are superseded by Collet's faces.
 
-- *Atom 4 (`c_g = 1/12`) restated as an explicit correlation; the target is tiny* (7/8 §6.1, §15).
-  - The probe's low separation (6.2) is `I_η = Q^{−1/2}∫Ŵ₀ Σ_σ Σ_m Ω ξ(m)(q_m/Q)^{−iv} A_m B_m dv`.
-    - `A_m = Y^{−1}Σ_{s~Y} c(s)(q_s/Y)^{−1/2+iv} q_s^{−1/2} g_{χ_s}(s, −m)` is a sextic Gauss-sum
-      polynomial. For `(m, s) = 1` it equals `Σ_s c′(s) g̃₆(s) χ̄_s(m)`.
-    - `B_m = Σ_θ a_θ ∫ Z^t Φ(t) T(t + 1/2, ν_σθχ•(m)) dt` is the completed cubic-theta row
-      `T = L₀·D` (§5.1), twisted by the row's sextic character.
-  - Cauchy–Schwarz (§15.3) pairs `‖A‖² ≪ (Q/Y′)P_a^{1/6}` (Prop. 15.2) with `‖B‖² ≪ Z^{M′}`
-    (Lemma 15.1).
-  - In `‖A‖²` the exceptional frequencies `k = a⁶e₀` dominate the diagonal `Q/Y′`. They are
-    genuine positive main terms, bounded in the paper by trivial counting.
-  - So the whole bias is `|⟨A^exc, B⟩| ≤ ‖A^exc‖‖B‖`. `B` is not adversarial: it is an explicit
-    arithmetic vector, the same for every row, independent of zeros.
-  - **Target.** −1e-5 needs the Gram term `P_a^{1/6 − 2.5e-4}`, i.e. a saving `P_a^{1.25e-4}`
-    in the correlation. With `P_a = Z^{y−x} ≈ Z^{0.096}` that is only `Z^{−1.2e-5}`. Under GRH the
-    probe is about `Z^{−3/16}`, so the true slack is enormous.
-  - **Obstacle.** `A^exc` comes from the theta residue of the sextic Gauss-sum series twisted by
-    the row (6-fold-cover theta coefficients, which are not explicit for `n = 6`). The correlation
-    is then a theta-weighted first moment of twisted cubic-theta rows, a residue of a double
-    Dirichlet series `Σ_{m,A} ρ₆(m)θ₃(A)(A/m)₆ m^{−w}A^{−s}`. Its natural home is the Fourier
-    coefficients of metaplectic Eisenstein series on the 6-fold cover of GL(3) (A₂ Weyl-group
-    multiple Dirichlet series, finite type). Whether it has a full-size main term (C–S tight) or a
-    power saving is open. The round-3 "closed" verdict assumed `B` was unknown along the signal
-    direction. It is known, but unanalyzed.
+- *Atom 4 (`c_g = 1/12`) is the signal channel itself: closed, with a mechanism* (7/8 §4.2, §5.1,
+  §6.1, §15).
+  - **Setup.** The low separation (6.2) is `I_η ∝ Q^{−1/2}Σ_m A_m B_m`, and the bias is
+    `|⟨A^exc, B⟩| ≤ ‖A^exc‖‖B‖`.
+    - `A_m = Σ_s a(s)Σ_x χ_s(x)e(−mx/s)` is the sextic Gauss-sum polynomial, `s ~ Y′`.
+    - `B_m = Σ_A β(A)χ_A(m)` is the completed cubic-theta row, `A = cn³ ~ Z^{N*}` with
+      `N* = 1 + ℓ`.
+    - `A^exc` is the part of `A` behind the Gram's sixth-power frequencies.
+  - **Poisson in the row `m`** (modulus `sA`, CRT) gives `Σ_m W A_m B_m ≈ Q Σ_k â(k) b̂(k)`.
+    - The definitions are `â(k) = Σ_s a(s)χ_s(k)` and `b̂(k) = Σ_A β(A)τ(χ_A)χ̄_A(k)/N(A)`, over
+      `N(k) ≲ N(s)N(A)/Q =: K_×`.
+    - The same `b̂` gives `‖B‖² ≈ QΣ_k|b̂(k)|²`.
+    - At `k = a⁶e₀`, `â ≈ M_A`, with `K_×^{1/6}` such `k`, and `b̂(a⁶e₀) ≈ b̂(e₀)`.
+  - **The dual coefficient is a Möbius sum of a finite-order character.**
+    - On squarefree `A` (with `ᾱ` as in (5.1) and the phase `G` of (6.1)), (4.7) gives
+      `γ₁ = γ₂²G` and `γ₂³ = μα`.
+    - Hence `γ₁γ₂ᾱG = μ|α|²G² = μG²`.
+    - So `b̂(k) ≈ ∫ Z^tΦ(t)E(t)/L(1+t, λ_k) dt` with `λ_k = G²ν χ̄_•(k)` and
+      `ν = ηΞ^{−1}R(·, s_σ)`. Here `E(t)` is the cube part, analytic for `Re t > −1/6`.
+    - At `e₀`, `λ_{e₀}` is the target `η` up to fixed finite characters, so its inverse L-function
+      carries the target's zeros.
+  - **Exact identity.** Shifting to `Re t = β* − 1 + ε`, with the zero-free hypothesis for
+    finite-order Hecke L-functions, gives
+    `|⟨A^exc, B⟩| ≪ (C–S bound) · Z^{(N* + ly − M)/6 + β* − 1 − (2ly − M)/12}`.
+    - With `N* = 1 + ℓ` and `M = 1 − ℓ`, the exponent is `(1 + 3ℓ)/12 + β* − 1 = β* − θ_low`
+      exactly, since `θ_low = 11/12 − ℓ/4`. In the 7/8 geometry it is
+      `39/288 − 1/8 − 1/96 = 0` at `β* = 7/8`.
+    - So the exceptional channel has exactly the size of the signal, `Z^{C(β*)}`. A zero of `η` at
+      `β*` produces a pole of `1/L` there, and this channel is where the zero appears in the low
+      separation.
+  - **Consequence.** The `P_a^{1/12}` bias cannot be beaten by analyzing the correlation: it is not
+    a Cauchy–Schwarz loss but the largest signal the energy bounds allow, tight at the threshold.
+    This is a concrete version of the round-3 statement "C–S exact along the signal direction".
+    Any gain from atom 4 must change the probe's energies (`‖A‖`, `‖B‖`), not the pairing.
+  - The heuristic ignores common factors `(s, A) > 1`, shared primes with `k`, and the S-parts.
+    Those contribute lower-order exceptional sets, as in the Gram (`e | C^∞`).
 
 ## Open directions (ranked, revised 2026-10-24, third pass; see `barriers/README.md`)
 
@@ -978,8 +991,9 @@ P 0.19, with `dθ/dR = 0.133`. So 6.8e-6 needs one of:
    `d(μ₁μ₂) = d(μ₁)d(μ₂)(μ₁/μ₂)₃^{±}`, which turns the dual sum into a bilinear form with a cubic-symbol
    kernel (Heath-Brown's cubic large sieve), combined with the large sieve over `R`. Bounding each
    `R` separately loses (`Q·N^{2/3} ≫ N`), so both averages are needed at once.
-3. **Physical side: only the marked energy.** `c_g = 1/12` is closed: it is the exact
-   Cauchy–Schwarz bound `|⟨ρ₆Φ, B⟩| ≤ ‖ρ₆Φ‖‖B‖` along the signal direction (round-3 agent). The
+3. **Physical side: only the marked energy.** `c_g = 1/12` is closed. The exceptional channel
+   of the low separation is the target's own `1/L` (`|⟨A^exc,B⟩| ≈ C–S · Z^{β* − θ_low}`, an exact
+   identity), so the bias is the signal, not a Cauchy–Schwarz loss. The
    marked energy `x + y + ℓ ≤ 1` is the same column branch as item 2, in the regime
    `N ∈ [K, K^{1+δ'}]`. It needs only `δ' ≈ 1.3e-4` for 6.8e-6, about ten times less than item 2
    (`δ' ≈ 1.5e-3`), so **the probe is the cheapest use of any column-branch saving**. A toy over

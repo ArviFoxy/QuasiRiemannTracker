@@ -48,7 +48,7 @@ marks `z = (1 − r)/2 = 0.129`, so `K = Z^{0.742}`, `L = Z^{0.129}` and `N = KL
 
 | goal | needed |
 |---|---|
-| 6.8e-6 (with Lemma F, reaches the milestone 0.8747189) | budget `r + 2z ≤ 1 + 4e-4`, i.e. the column branch `≤ Z^{0.871 − 0.0008}` |
+| 6.8e-6 (with Lemma F, reaches the milestone 0.8747189) | budget `r + 2z ≤ 1 + 5.5e-4`, i.e. the column branch `≤ Z^{0.871 − 0.0011}`. Float model: budget `1.0004` gives `Δθ* = −4.96e-6`. |
 | 1e-5 alone | budget `1 + 5.9e-4` |
 | 1e-5 via the probe instead | `x + y + ℓ ≤ 1 + 1.6e-4`, with at most 16% of the excess kept |
 

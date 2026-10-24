@@ -538,14 +538,15 @@ P 0.19, with `dθ/dR = 0.133`. So 6.8e-6 needs one of:
    `(1+5r)/6` at `r ≈ 1.155` (2.6e-4 for a full 1e-5). This is the most efficient lever. It
    needs zero-density-strength input or a mean value of `Σ_u|M_u(D)|²` beyond the inverse moment's
    diagonal `D ≤ H` (signed off-diagonal cancellation).
-2. **Marked inverse moment budget.** `r + 2z ≤ 1 + 4e-4` in the binding configuration
+2. **Marked inverse moment budget.** `r + 2z ≤ 1 + 5.5e-4` in the binding configuration (float
+   model: budget `1.0004` gives `Δθ* = −4.96e-6`)
    `r ≈ 0.742`, `z ≈ 0.129`. In the binding child (`MIBranches.lean`) the rows have length
    `H = M_c = 2(r+z) − 1 ≈ 0.742`. The column branch runs to dual length `T_d = 3r + 5z − 2m`, and
    relaxing the budget by `Δm` raises `T_d` above the budget `F_c = r + z ≈ 0.871` by `2Δm`. So the
    target is a large-sieve-type bound
-   `Σ_{q_R ~ Z^{0.742}} |Σ_{q_μ ~ Z^{0.871}} d(μ)χ_R(μ)K(μ)|² ≪ Z^{0.871 − 0.0008}‖d‖²`. Here `d`
+   `Σ_{q_R ~ Z^{0.742}} |Σ_{q_μ ~ Z^{0.871}} d(μ)χ_R(μ)K(μ)|² ≪ Z^{0.871 − 0.0011}‖d‖²`. Here `d`
    are reflected cubic-theta (cubic Gauss sum) coefficients and `χ_R` the quadratic twist. That is a
-   saving of `Z^{-0.0008}` over the generic sieve's `N` term. For coefficients not aligned with
+   saving of `Z^{-0.0011}` over the generic sieve's `N` term. For coefficients not aligned with
    quadratic characters the true size is plausibly `Z^{0.742}‖d‖²`, a saving of `Z^{0.129}`, so only
    0.6% of the plausible saving is needed. A possible handle is the twisted multiplicativity
    `d(μ₁μ₂) = d(μ₁)d(μ₂)(μ₁/μ₂)₃^{±}`, which turns the dual sum into a bilinear form with a cubic-symbol

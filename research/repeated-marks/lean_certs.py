@@ -201,3 +201,60 @@ if __name__ == '__main__':
     if outdir:
         json.dump([{ 'node': idx, 'trees': {f"{float(b)}|{k}": tree_lean(T) for (b, k), T in tr.items()}}
                    for idx, (n, p, tr) in enumerate(results)], open(os.path.join(outdir, 'trees.json'), 'w'), indent=0)
+
+
+# ---------- Lean emission ----------
+def frac_lean(x):
+    x = Fr(x)
+    return f"({x.numerator}/{x.denominator})" if x.denominator != 1 else f"({x.numerator})"
+
+def source_lean(n):
+    return "⟨" + ",".join(frac_lean(n[k]) for k in ('B', 'L', 'cap', 'q')) + \
+        ",(1/1000000000000),(1/100000000),(1/10000000)⟩"
+
+def trees_lean(trees, b):
+    rows = []
+    for i in range(2):
+        rows.append("![" + ", ".join(tree_lean(trees[(b, (i, j))]) for j in range(3)) + "]")
+    return "fun k => (![" + ", ".join(rows) + "] : Fin 2 → Fin 3 → Split) k.1 k.2"
+
+HEADER = "/- Repeated marks: a node of the final source graph, checked by `decide +kernel`. -/\n"
+
+def emit(chain, outroot, copies=8):
+    """Write Finite/Node00..NodeNN.lean. Node 00 hangs off Collet's `natural`."""
+    os.makedirs(outroot, exist_ok=True)
+    prev = NATURAL
+    for idx, n in enumerate(chain):
+        ok, msgs, trees = check_node(n, prev, prev, Fr(copies))
+        assert ok, (idx, msgs)
+        cr = crossing(n, prev)
+        name = f"node{idx:02d}"; pname = "natural" if idx == 0 else f"node{idx-1:02d}"
+        imp = ("import Submissions.repeated_marks_20261024.Finite.SourceValid2\n" if idx == 0 else
+               f"import Submissions.repeated_marks_20261024.Finite.Node{idx-1:02d}\n")
+        body = f"""{HEADER}{imp}set_option autoImplicit false
+set_option maxRecDepth 100000
+namespace QRH.RepeatedMarks.Finite
+open Record1252270103Finite
+def {name} : Source := {source_lean(n)}
+def {name}_treesL : Branch → Split := {trees_lean(trees, cr)}
+def {name}_treesR : Branch → Split := {trees_lean(trees, n['cap'])}
+theorem {name}_validC : SourceValidC {name} {pname} (some {pname}) := by decide +kernel
+theorem {name}_highL : HighCertAt {name} {pname} {pname} 8 (crossing {name} {pname}) {name}_treesL := by
+  decide +kernel
+theorem {name}_highR : HighCertAt {name} {pname} {pname} 8 {name}.cap {name}_treesR := by
+  decide +kernel
+theorem {name}_cell : CellRatio {name} {pname} := by decide +kernel
+theorem {name}_valid : SourceValid2 {name} {pname} (some {pname}) := by
+  refine ⟨{name}_validC, ?_, by decide +kernel, {name}_cell⟩
+  intro h hh b hb
+  simp only [Option.mem_def, Option.some.injEq] at hh
+  subst hh
+  simp only [List.mem_cons, List.not_mem_nil, or_false] at hb
+  rcases hb with rfl | rfl
+  · exact ⟨_, {name}_highL⟩
+  · exact ⟨_, {name}_highR⟩
+end QRH.RepeatedMarks.Finite
+"""
+        open(os.path.join(outroot, f"Node{idx:02d}.lean"), 'w').write(body)
+        prev = n
+    return len(chain)

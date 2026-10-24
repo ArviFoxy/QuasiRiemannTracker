@@ -23,10 +23,32 @@ open HeckeDetectorFiberPartition HeckeDetectorDyadicProfiles HeckeDetectorInvers
 open QRH.Record1252270103Source.High
 variable {Row Label Slot : Type*} [Fintype Label]
 
+/-- The amplitude class, clamped to `[0,1/2]` (the identity on actual fibers). -/
+def clampClass (x : ℝ) : ℝ := max 0 (min (1/2) x)
+
+theorem clampClass_mem (x : ℝ) : 0 ≤ clampClass x ∧ clampClass x ≤ 1/2 :=
+  ⟨le_max_left _ _, max_le (by norm_num) (min_le_left _ _)⟩
+
+theorem clampClass_eq {x : ℝ} (h0 : 0 ≤ x) (h1 : x ≤ 1/2) : clampClass x = x := by
+  rw [clampClass, min_eq_right h1, max_eq_right h0]
+
 /-- The detector cutoff of the amplitude class of the bins `g`. -/
 def classCutoff (slots : Finset Slot) (widths g : Slot → ℝ) (copies : ℕ) (δ B lam h : ℝ) : ℝ :=
-  QRH.RepeatedMarks.cutoffP δ (weightedMean slots widths g/δ) copies B lam h
+  QRH.RepeatedMarks.cutoffP δ (clampClass (weightedMean slots widths g/δ)) copies B lam h
     (∑ s∈slots, widths s) 1
+
+/-- Every class cutoff is an admissible detector cutoff. -/
+theorem classCutoff_bounds (slots : Finset Slot) (widths g : Slot → ℝ) (copies : ℕ)
+    {δ B lam h : ℝ} (hδ0 : 1/2 ≤ δ) (hδ1 : δ ≤ 3/4) (hB : 22/23 ≤ B) (hlam : 1 < lam)
+    (hh0 : 0 ≤ h) (hh1 : h ≤ 1) (hS : 0 ≤ ∑ s∈slots, widths s) :
+    1 ≤ classCutoff slots widths g copies δ B lam h ∧
+      classCutoff slots widths g copies δ B lam h ≤ 10/7 := by
+  have hc := clampClass_mem (weightedMean slots widths g/δ)
+  have hP : QRH.RepeatedMarks.ClassParams δ (clampClass (weightedMean slots widths g/δ)) lam :=
+    ⟨hδ0, hδ1, hc.1, hc.2, hlam⟩
+  have hb := QRH.RepeatedMarks.cutoffP_bounds (K:=copies) (S:=∑ s∈slots, widths s) (Q:=1) hP
+    (by positivity) hB hh0 hh1 hS (by norm_num)
+  simpa only [classCutoff, mul_one] using hb
 
 /-- The repeated-mark gain, `copies` copies, normalized ambient exponent `Q`. -/
 def gainRep (copies : ℕ) (ν B lam h S Q : ℝ) : ℝ := QRH.RepeatedMarks.gainK ν copies B lam h S Q
@@ -186,10 +208,14 @@ theorem feedback_fiber_count_K (rows : Finset Row) (hne : rows.Nonempty)
       simpa only [mul_one] using QRH.RepeatedMarks.xiP_le_BQ (K:=copies) (h:=h) (S:=S) (Q:=1) hP'
         hB0 hB1 (by norm_num)
     have hbal : 6*δ*x+(5-6*δ)*t=5 := by
-      simpa only [QRH.RepeatedMarks.w, mul_one] using
-        QRH.RepeatedMarks.cutoffP_balance (K:=copies) (B:=B) (h:=h) (S:=S) (Q:=1) hP'
+      have hb := QRH.RepeatedMarks.cutoffP_balance (K:=copies) (B:=B) (h:=h) (S:=S) (Q:=1) hP'
+      simp only [QRH.RepeatedMarks.w, mul_one] at hb
+      simp only [t, classCutoff, clampClass_eq hp0 hp]
+      exact hb
     have hcut : t = QRH.RepeatedMarks.invThr p copies x S 1 +
-        QRH.RepeatedMarks.plainThr p B lam h x S 1/2 := rfl
+        QRH.RepeatedMarks.plainThr p B lam h x S 1/2 := by
+      simp only [t, classCutoff, clampClass_eq hp0 hp]
+      rfl
     have hh := QRH.RepeatedMarks.fiber_exponent_class (ν:=δ) (B:=B) (lam:=lam) (h:=h) (x:=x)
       (t:=t) (p:=p) (K:=copies) (S:=S) (r:=r) (m:=m) (E:=Real.logb U ((rows.card : ℝ)/A))
       (loss:=154*ε+mesh+εm) (eps:=ε) (zeta:=ζ) ha0 ha hlam hh0 hx0 hxB hB1 hbal hcut hp0 hp

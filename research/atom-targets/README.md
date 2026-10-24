@@ -106,3 +106,31 @@ Consequences:
   face only by `Λ_C 2.8966 → 2.8811` (−0.5%, with `B_C` +2e-4), so the exchange rate reaches the
   faces at about half strength. The physical face's selected pivot changes (0.04 → 0.0395), so its
   two rows are not directly comparable.
+
+## Value of each source-step gate (added 2026-10-24, `compound/gatevoi.py`, `compound/highrelax.py`)
+
+Each source-step gate was disabled or relaxed in turn, then the K = 8 chain was rebuilt. The P face
+here is selected without PR #69's `Λ_P > 3` restriction. That restriction only served FR21, which
+Lemma D removes, and dropping it moves θ* by −2e-7.
+
+| change | envelope `B − Λs` at `s = 0.0412` | θ* (float) | Δθ* |
+|---|---|---|---|
+| none | 0.836795 | 0.87475067 | 0 |
+| centered gate (G5) disabled | 0.836797 | 0.87475066 | −1e-8 |
+| HIGH gate disabled | first node jumps to `(B,Λ) = (0.9785, 2.902)` at pivot 0.0135, then `q < 1/2` stops the chain | — | (≈ +0.022 in envelope) |
+| HIGH gate relaxed by `ε_H = 5e-4` | 0.837110 | 0.87474851 | −2.2e-6 |
+| `ε_H = 1e-3` | 0.837423 | 0.87474634 | −4.3e-6 |
+| `ε_H = 2e-3` | 0.838052 | 0.87474191 | −8.8e-6 |
+| `ε_H = 4e-3` | 0.839325 | 0.87472516 | −2.6e-5 (chain reaches `Λ = 3B` at pivot 0.041 and stops at `q = 1/2`) |
+
+Reading:
+- The HIGH gate alone sets the chain's descent speed. With it switched off, the chain reaches the LOW
+  limit `Λ = 6qB` with `q = 1/2` at once, and the face height at the evaluation widths rises by
+  about 0.02.
+- The marginal value is `dθ*/dε_H ≈ −4.4e-3`, so 1e-5 needs `ε_H ≈ 0.0025`.
+- The HIGH gate is `1 − ρ(ν) − νT − a(5−6ρ) + G(ν) > 0` at `ν = q`. Its count part `ρ − G` is the
+  same three-line count as the return's (at `ν = 0.505`: 0.556 against R(0.505) ≈ 0.555). So the
+  chain route needs a count improvement of 0.0025 at densities 0.5–0.75, about 30 times what the
+  return needs directly (`dθ/dR = 0.133`, so 7.5e-5).
+- The chain is therefore not a cheap amplifier of count improvements. Once `ε_H ≳ 0.004`, the floor
+  `q ≥ 1/2` (LD1) binds next.

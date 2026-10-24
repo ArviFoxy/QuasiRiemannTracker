@@ -83,6 +83,9 @@ marks `z = (1 − r)/2 = 0.129`, so `K = Z^{0.742}`, `L = Z^{0.129}` and `N = KL
 | trilinear Hölder (fourth moments of `B`, `A`) | `K^{5/2}L^{3/2} > K²L²` |
 | a quadratic sieve over `k` with bounds for each `k` separately (cubic sieve inside) | `K·N^{2/3}`-type, worse than `N` |
 | amplify the rows so the marks fit | marks cost `5/3` per unit after amplification, gain `δ ≈ 0.45` |
+| amplify the quadratic rows by squares (`R ↦ Rr²` leaves `(n/R)₂` unchanged, exchange rate 2) | over all moduli `≤ X`, a squarefree part `R₀` has weight `√(X/R₀)`. With `X = KP²` and `P < N/K` (needed to beat `N`), bounding the big family needs non-large-sieve bounds for all `R₀ ≤ N²/X`, which includes `R₀ ≈ K`: circular. The sextic version works only because the theta reflection gives the diagonal over the whole big family. |
+| split the Gauss sums bilinearly (`g̃(ab) = g̃(a)g̃(b)(a/b)₃^{±}`), Cauchy over one variable | the remaining family `(R, a)` of sextic characters has size `KA > K`, so even the diagonal of the sextic sieve exceeds the target |
+| P1 (round-3 agent): Poisson in `R` keeping the reciprocity bicharacter, Patterson/Voronoi for small dual classes `j₀ ≤ N^{2/3}`, Heath-Brown for large `j₀` | the middle range `N^{2/3} < j₀ ≲ K` is column-type again. Exactly, `F(Y) = Y‖c‖² + Σ_{Y'<N} √(Y/Y')·F'(Y')` with `c' = c·ε`, and the `Y' = Y` term reproduces the problem. A toy over `Z[ω]` (`toy/colbranch_exp.py`) puts the true size at the diagonal (0.9–1.2× against an allowance of 6–56×). |
 
 ## 6. Assessment
 

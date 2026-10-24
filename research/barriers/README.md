@@ -56,6 +56,14 @@ Numbers come from `../atom-targets/` (float LP model) unless marked exact.
   so main terms exist for an S-supported `e₀`.
 - Mixtures of probe characters give only positive diagonal main terms. For −1e-5 the bias term must
   become `P_a^{1/6 − 2.5e-4}`.
+- Why it does not move (2026-10-24, late): the bias is the signal channel. Poisson in the row of
+  the low separation `Σ_m A_m B_m` pairs the Gauss-sum polynomial with the completed row through
+  dual frequencies `k`. At `k = a⁶e₀`, the identities (4.7) (`γ₁ = γ₂²G`, `γ₂³ = μα`) turn the
+  row's dual coefficient into `∫Z^tΦ(t)E(t)/L(1+t, η·ξ₀)dt`, the target's own inverse L-function.
+  - With the zero-free hypothesis at `β*` the pairing is the Cauchy–Schwarz bound times
+    `Z^{β* − θ_low}` exactly, `(1 + 3ℓ)/12 + θ_low − 1 = 0` (`../lean-lab/SignalChannel.lean`).
+  - So the bias is the largest signal the energies allow. Only the energies (`‖A‖`, `‖B‖`, i.e.
+    atom 1's marked energy) can move it.
 
 ## What is LP-tight
 

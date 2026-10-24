@@ -127,13 +127,22 @@ predicate computes the crossing as `crossing n low = (low.B − n.B)/(low.L − 
   differs from Lemma F's `a'` by `O(η)`. The child's line lies below the parent's for `z < c_{k−1}`
   and above it beyond, as an ordinary step requires.
 - **Cost of the rotation.** After `K` self steps the face is `(B − ηΣc_k, Λ − Kη)`. With `η = 10⁻⁹`
-  and `K ≈ 10` per node this is invisible in θ.
+  this is invisible in θ.
+- **Number of cells.** The cell length is `Δ = 6a'(B/Λ − h)` with `a' = (qe + r)/(1 − 6qB/Λ)`.
+  With Collet's fees (`e = 10⁻¹²`, `r = 10⁻⁸`) and the chain's thresholds (`1 − 6qB/Λ ≈ 3·10⁻⁴`),
+  `a' ≈ 4·10⁻⁵` and `Δ ≈ 7·10⁻⁵`, i.e. about 200 cells per late node. The fee `r` is a per-node
+  parameter of `Source` (`lowFee`). Raising it to about `3·10⁻⁷` on the self cells gives
+  `a' ≈ 10⁻³` and `Δ ≈ 1.7·10⁻³`, about 9 cells per node. The price is `a'` in the gates: about
+  `1.5a'` in the HIGH gate, against a cap-side HIGH slack of about 0.03 after Lemma F; `9a'` in the
+  centered gate; and `F = 1 − 6a'`. The binding gate of a hybrid node is at the join `b_1`, where
+  the old parent is used, so this choice does not move θ.
 
 So a Lemma F node is a short run of ordinary source steps with nearly equal slopes and increasing
 caps. Formalizing it means generating these extra nodes and their certificates (scalar gates, weak
 cap, density Bernstein checks, HIGH Bernstein trees) with the existing generator and Lean
-infrastructure. No new analytic statement and no new predicate are needed. A rough count is about
-10 self cells per late node (`Δ = 6a'(B/Λ − h)`), i.e. several hundred extra certified nodes.
+infrastructure. No new analytic statement and no new predicate are needed. With raised self-cell
+fees that is several hundred extra certified nodes (about 9 per late node). A parametric
+certificate in `c` plus one Lean induction lemma would avoid them, but that is a new predicate.
 
 The density floor `0.45` (part of the 0.8747257 value) is different. It changes Collet's LD11
 uniform bound and would need an edit to the imported HIGH-count code.

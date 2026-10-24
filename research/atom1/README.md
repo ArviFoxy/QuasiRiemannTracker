@@ -133,6 +133,8 @@ not.
   coefficients, where twisted multiplicativity `γ₂(ab) = γ₂(a)γ₂(b)(a/b)₃²` replaces Hecke relations,
   (ii) a step slightly past the balanced point, and (iii) uniformity in the slot twist. None of the
   three is known.
-- **Toy computation.** For cubic-Gauss-sum coefficients, `S/Diag` is slightly below 1 and falls as
-  `N/K` grows (0.97, 0.94, 0.87 at allowances 6, 22, 56). The off-diagonal is negative on average,
-  unlike random phases (1.00–1.09). A structural reason for this sign would be a lead.
+- **Toy computation.** For cubic-Gauss-sum coefficients `S/Diag` stays between 0.6 and 1.1, with or
+  without the mark sum, at large-sieve allowances from 6 up to 106 (`toy/colbranch_large.log`:
+  `(K, N) = (150, 12000), (300, 12000), (100, 20000)`). Aligned vectors reach the full allowance,
+  and random phases scatter just as much (0.84–1.09). An earlier reading of a systematically
+  negative off-diagonal (0.97, 0.94, 0.87) does not survive the larger runs; it was sampling noise.

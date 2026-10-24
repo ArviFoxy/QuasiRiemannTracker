@@ -1,0 +1,24 @@
+=== K N P0 = 150 12000 60
+#rows=38  #cols=1558  K=150 N=12000
+cubic Gauss g~(n)            S/Diag =   1.084   (LS column bound/Diag ~  44.48)  max_R|D|^2/mean =    2.92
+random phases                S/Diag =   1.037   (LS column bound/Diag ~  44.48)  max_R|D|^2/mean =    3.69
+aligned (n/R0)_2             S/Diag =  44.159   (LS column bound/Diag ~  44.48)  max_R|D|^2/mean =   37.17
+g~(n)*marksum(n)             S/Diag =   0.549   (LS column bound/Diag ~  44.34)  max_R|D|^2/mean =    2.69
+=== K N P0 = 300 12000 60
+#rows=76  #cols=1558  K=300 N=12000
+cubic Gauss g~(n)            S/Diag =   1.018   (LS column bound/Diag ~  22.62)  max_R|D|^2/mean =    3.08
+random phases                S/Diag =   1.002   (LS column bound/Diag ~  22.62)  max_R|D|^2/mean =    6.44
+aligned (n/R0)_2             S/Diag =  19.388   (LS column bound/Diag ~  22.34)  max_R|D|^2/mean =   72.14
+g~(n)*marksum(n)             S/Diag =   0.683   (LS column bound/Diag ~  22.56)  max_R|D|^2/mean =    5.09
+=== K N P0 = 600 12000 60
+#rows=156  #cols=1558  K=600 N=12000
+cubic Gauss g~(n)            S/Diag =   1.050   (LS column bound/Diag ~  11.56)  max_R|D|^2/mean =    4.21
+random phases                S/Diag =   1.005   (LS column bound/Diag ~  11.56)  max_R|D|^2/mean =    8.30
+aligned (n/R0)_2             S/Diag =  10.423   (LS column bound/Diag ~  11.50)  max_R|D|^2/mean =  142.18
+g~(n)*marksum(n)             S/Diag =   0.908   (LS column bound/Diag ~  11.53)  max_R|D|^2/mean =    5.43
+=== K N P0 = 100 20000 60
+#rows=26  #cols=2574  K=100 N=20000
+cubic Gauss g~(n)            S/Diag =   0.592   (LS column bound/Diag ~ 105.69)  max_R|D|^2/mean =    2.24
+random phases                S/Diag =   0.837   (LS column bound/Diag ~ 105.69)  max_R|D|^2/mean =    3.76
+aligned (n/R0)_2             S/Diag = 103.727   (LS column bound/Diag ~ 105.63)  max_R|D|^2/mean =   25.85
+g~(n)*marksum(n)             S/Diag =   0.622   (LS column bound/Diag ~ 105.79)  max_R|D|^2/mean =    4.08

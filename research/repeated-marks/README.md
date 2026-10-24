@@ -20,7 +20,14 @@ $0.8747514$ (`../doubled-marks`).
   `certify_all_k.py`.
 - The return certifier reproduces PR #69's own final certificate exactly
   (`test_return69.py`).
-- Not yet done: the Lean formalization (§10).
+- **Lean, stage A.** The submission `submissions/repeated-marks-20261024` proves
+  $\theta_A=8747565/10^7=0.8747565$ in Lean 4. That is $1.64\cdot10^{-5}$
+  below the record $0.874772906$. It uses the repeated-mark source step and the
+  59-face graph, with Collet's final return re-certified at the new count and
+  physical faces. Lemma D (the global physical face) is not used.
+  `Candidate.bound` depends only on `propext`, `Classical.choice` and
+  `Quot.sound` (§10).
+- **Lean, stage B** ($\theta=0.8747289$, with Lemma D) is not yet formalized.
 
 This note supersedes `../doubled-marks/README.md`, which used each marked slot
 at most twice. Three things change, and everything else in PR #69 is reused
@@ -313,7 +320,7 @@ pipeline:
 |---|---|---|---|
 | PR #70 (record) | PR #69 ($z_I\le S$) | PR #69 | 0.874772906 |
 | `../doubled-marks` (certified) | $K=2$, slack 1/12 | PR #69, $t_f=1/360$ | 0.8747514 |
-| this note: gain only | $\mathcal G'_K$, $K=8$ | PR #69 guards | ≈ 0.874753 (no gain) |
+| this note, stage A (certified, Lean) | $\mathcal G'_K$, $K=8$ | PR #69 guards, $h=799/1000$ | 0.8747565 |
 | this note (certified) | $\mathcal G'_K$, $K=8$ | Lemma D, $s_+=13/250$, $s_P=9/200$, $h=401/500$ | **0.8747289** |
 
 The new faces are flatter (Λ_C ≈ 2.897, Λ_P ≈ 3.038). With PR #69's guards
@@ -398,29 +405,63 @@ them:
   (hypothetically) moves the faces by $5\cdot10^{-5}$ only. The pivot gate,
   inverse capacity against the parent's affine face, is what binds.
 
-## 10. What remains for admission to the tracker
+## 10. The Lean formalization (stage A)
 
-The tracker admits Lean proofs checked by Lean, NanoDa and con-ron. A
-dependency map of Hailey Collet's formalization shows that the HIGH gain is
-hard-coded by name (`High.gain`, `ActualGaps`, `SourceValid`) from
-`feedback_fiber_count` up to `nf_step`. A fork therefore retypes about 75 files
-(about 10k lines), mostly renaming. The genuinely new Lean is:
+The tracker admits Lean proofs checked by Lean, NanoDa and con-ron. Stage A is
+formalized in `submissions/repeated-marks-20261024`. It depends on Collet's
+submission (`hailey-collet-1252270103`) and the OpenAI baseline, and imports
+every untouched declaration from them.
 
-1. **Repeated-mark inverse count.** A $K$-fold selection, and
-   `inverse_fiber_count` through `overlapping_annular_inverse_marked_energy`,
-   which already accepts overlapping lists.
-2. **Per-bin cutoffs.** `binCutoff` already indexes witnesses by amplitude bin;
-   it must use the bin's $p$. `MaxWeighted` must supply one witness per
-   cutoff.
-3. **The gain.** $\mathcal G_K$ and Lemma C in place of
-   `common_gain_reserve` and `root_reserves`'s first component.
-4. **The finite check.** `SourceValid` with a 2-D $(\nu,p)$ Bernstein check,
-   and the 59 node certificates (`decide +kernel`).
-5. **The return.** Lemma D in `Record1252270103Return/PhysicalDirect`. This
-   removes `small_plain_shortening`, `shift_bound`, `large_shift_reserve`, the
-   plain/width window fields and `freeShift` from `PhysicalSchedule`; it sets
-   `cap` $=9/200$ and the C count cap to $13/250$. Then the 36 rectangles and
-   `Candidate.bound`.
+**What is new.**
+1. **The gain** (`Gain/Gain.lean`). It defines the class gains, the
+   repeated-mark gain $\mathcal G_K=\inf_p g_p$ and Lemma C (`gainK_payment`).
+   It also proves width monotonicity, row loss, the $C_{\max}$ bound and
+   homogeneity.
+2. **The repeated-mark count** (`Source/FiberK`, `WeightedK`, `SourceFieldsK`,
+   `ActualWeightedK`). This is Collet's inverse fiber count on the $K$-fold
+   replicated slot set, with one detector cutoff per amplitude class.
+3. **The reserve and the payment** (`Source/PhysicalReserveK`,
+   `GainPaymentK`, `PaymentWrappersK`). The HIGH gap holds with the
+   repeated-mark gain on the cell $2S\le F$, and Lemma C pays the common
+   losses. Collet's $(c+d+f)/12$ slack is dropped; no later step uses it.
+4. **The finite check** (`Finite/HighGate`, `SourceValid2`, `Node00`–`Node58`).
+   These are the bicubic Bernstein certificates of the 59 nodes, checked by
+   `decide`.
+5. **The return** (`FinalReturn/`). The final stage of Collet's return is
+   re-certified at the new count face (node 58) and physical face (node 31):
+   36 row rectangles and 8 admission windows.
+6. **The graph** (`Graph/Chain`, `Graph/Endpoint`) and `Candidate.bound`.
+
+**The mechanical fork** (`Fork/`, 37 modules). Collet's source step names the
+HIGH gain, the uniform detector cutoff and the source validity predicate
+directly. A Lean meta-program (`fork/ForkAnalysis.lean`) computed every
+declaration in the proof of the NF step whose statement depends on one of
+these three. It found 104 declarations in 59 modules (`fork/fork_closure.tsv`).
+`fork_source.py` restates exactly those declarations as `*_rm` copies and
+imports Collet's modules for the rest. It then keeps only the declarations
+reachable from `Source/NFStep2.lean`.
+
+The remaining differences are hand-written:
+- **Hand wrappers.** `Source/GainC.lean` states Collet's gain lemmas for the
+  repeated-mark gain, clamped to nonnegative widths. `Source/*WrappersK.lean`
+  give Collet-shaped entry points.
+- **Semantic edits** (`fork_patches.py`): witnesses at every admissible cutoff,
+  the dropped slack, and width margins on the kept density gates only.
+
+**Rebuilding.**
+
+```
+python3 fork_source.py fork/fork_closure.tsv fork/fork_tainted_all.txt <package dir> <package dir>/Source/NFStep2.lean
+python3 gen_graph_lean.py 59 58 31 <package dir>
+python3 gen_return_lean.py cchain_k8b.json 8747565/10000000 799/1000 58 31 <out dir>
+python3 fork_return.py <out dir> <package dir> 549989/10000000 9/200
+```
+
+**Stage B** still needs Lemma D in `Record1252270103Return/PhysicalDirect`.
+That change removes `small_plain_shortening`, `shift_bound`,
+`large_shift_reserve`, the plain/width window fields and `freeShift` from
+`PhysicalSchedule`, and sets `cap` $=9/200$ and the C count cap to $13/250$.
+The 36 rectangles then need re-certifying at $\theta=0.8747289$.
 
 ## Reproducing
 

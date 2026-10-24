@@ -29,7 +29,7 @@ theorem nf_truncated2 (n low h : Source) (hβ : (51/100:ℝ)≤HeckeZeroSupremum
     (hlow : ParentGood low) (ha : NFAccounting n) (hG : P low) (hGH : P h) :
     ∃loss:ℝ,∀ε:ℝ,0<ε→
       ∀b∈activeWidthGrid (crossing n low) n.cap (nfWidthDelta_rm n low (some h) hv.1 ha loss),
-      ∃m x:ℝ,0<m ∧ 0<x ∧ ∀mesh ξ:ℝ,0<mesh→mesh≤m→0<ξ→ξ≤x→
+      ∃m x:ℝ,0 < m ∧ 0<x ∧ ∀mesh ξ:ℝ,0 < mesh→mesh ≤ m→0<ξ→ξ≤x→
         FixedSubsetTruncatedSupplier n.B n.L n.cap (crossing n low) finalK
           mesh ξ ε b (nfWidthDelta_rm n low (some h) hv.1 ha loss) := by
   have hn:=QRH.RepeatedMarks.Graph.parent_good_of_valid2 hv
@@ -96,8 +96,9 @@ theorem nf_truncated2 (n low h : Source) (hβ : (51/100:ℝ)≤HeckeZeroSupremum
 theorem nf_physical2 (n low h : Source) (hβ : (51/100:ℝ)≤HeckeZeroSupremum.beta)
     (hK : 6*(2*HeckeZeroSupremum.beta-1)≤finalK) (hv : SourceValid2 n low (some h))
     (hlow : ParentGood low) (ha : NFAccounting n) (hG : P low) (hGH : P h) :
-    ∃loss : ℝ,∀ε : ℝ,0<ε → ∃mesh ξ : ℝ,0<mesh ∧ 0<ξ ∧
-      InitialMarkedPhysicalSupplier n.B n.L n.cap (crossing n low) finalK mesh ξ ε
+    ∃loss : ℝ,∀ε : ℝ,0<ε → ∃mesh ξ : ℝ,0 < mesh ∧ 0<ξ ∧
+      QRH.Record1252270103Low.HeightAnchor.InitialMarkedPhysicalSupplier n.B n.L n.cap (crossing n low)
+        finalK mesh ξ ε
         (nfWidthCell_rm n low (some h) hv.1 ha loss) := by
   obtain ⟨loss,hfixed⟩:=nf_truncated2 n low h hβ hK hv hlow ha hG hGH
   have hc:=nf_width_certificate_rm n low (some h) hv.1 ha loss
@@ -130,7 +131,8 @@ theorem nf_step2 : QRH.RepeatedMarks.Graph.NFStep2 := by
     (nf_width_certificate_rm n low (some h) hv.1 ha loss).2.2.2.2.2.1.reference
   change GlobalSource n.B n.L n.cap
   apply globalSource_of_squarefree n.B n.L n.cap hn0 (by linarith)
-  apply uniform_squarefree_source_step n.B n.L n.cap low.B low.L low.cap (crossing n low)
+  apply QRH.Record1252270103Low.HeightAnchor.uniform_squarefree_source_step n.B n.L n.cap low.B
+    low.L low.cap (crossing n low)
     finalK (finalK/6) (nfWidthCell_rm n low (some h) hv.1 ha loss) hn0 hn1
     (by exact_mod_cast hlow.2.1) hLn' hL' hcross hbudget
   · norm_num [finalK]

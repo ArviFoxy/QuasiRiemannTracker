@@ -5,6 +5,7 @@ downstream modules use them unchanged. For a HIGH parent the selected gain is th
 gain on the cell; off the cell condition of Lemma C it is `0`, which only weakens the gap. The
 payments drop Collet's `-(c+d+forced)/12` slack, which no later step uses. -/
 import Submissions.repeated_marks_20261024.Source.GainPaymentK
+import Submissions.repeated_marks_20261024.Source.GainC
 import Submissions.hailey_collet_1252270103.Record1252270103Source.HighScalar.SingletonLoss
 set_option autoImplicit false
 set_option maxHeartbeats 400000
@@ -51,7 +52,14 @@ open Record1252270103Finite PhysicalScalar
 def gainAt_rm (high : Option Source) (ν S F : ℝ) : ℝ :=
   match high with
   | none => Record12518109Gain.gain ν S F
-  | some h => QRH.RepeatedMarks.Source.gainAtK h ν S F
+  | some h => QRH.RepeatedMarks.Source.gainC ν (h.B:ℝ) (h.L:ℝ) (h.cap:ℝ) S F
+
+lemma gainC_eq_gainAtK {h : Source} (hp : QRH.RepeatedMarks.Source.GainParametersK h) {ν : ℝ}
+    (hν0 : 1/2≤ν) (hν1 : ν≤3/4) (S F : ℝ) :
+    QRH.RepeatedMarks.Source.gainC ν (h.B:ℝ) (h.L:ℝ) (h.cap:ℝ) S F=
+      QRH.RepeatedMarks.Source.gainAtK h ν S F := by
+  rw [QRH.RepeatedMarks.Source.gainC_of (QRH.RepeatedMarks.Source.parentParams_of hp hν0 hν1)]
+  rfl
 
 lemma gainParametersK_of {high : Option Source} (hp : GainParameters high) {h : Source}
     (hh : h∈high) : QRH.RepeatedMarks.Source.GainParametersK h :=
@@ -83,6 +91,9 @@ lemma actual_gap_gain_payment_rm (n low : Source) (high : Option Source)
     linarith
   | some h =>
     have hK := gainParametersK_of hp (show h∈some h by simp)
+    change D*(sourceBase n low b ν-1)-ν*(c+d+forced)-
+      QRH.RepeatedMarks.Source.gainC ν (h.B:ℝ) (h.L:ℝ) (h.cap:ℝ) live frequency≤_
+    rw [gainC_eq_gainAtK hK hν0 hν1]
     by_cases hcell : 0≤b-2*(n.allowance:ℝ) ∧
         2*(b-2*(n.allowance:ℝ))≤sourceFReal n low b-(n.allowance:ℝ)
     · have hF : 0≤sourceFReal n low b-(n.allowance:ℝ) := by linarith [hcell.1, hcell.2]
@@ -101,8 +112,6 @@ lemma actual_gap_gain_payment_rm (n low : Source) (high : Option Source)
         have : 0≤c+d+forced := by linarith
         positivity
       have hm := mul_le_mul_of_nonneg_left h1 hD
-      change D*(sourceBase n low b ν-1)-ν*(c+d+forced)-QRH.RepeatedMarks.Source.gainAtK h ν live
-        frequency≤_
       nlinarith
 
 /-- Width monotonicity (Collet's `gainAt_weighted_width_mono`) for the repeated-mark gain. -/
@@ -113,19 +122,7 @@ lemma gainAt_weighted_width_mono_rm (high : Option Source) (hp : GainParameters 
   | none => exact gainAt_weighted_width_mono none hp hν0 hν1 hwidth
   | some h =>
     have hK := gainParametersK_of hp (show h∈some h by simp)
-    have hm := QRH.RepeatedMarks.gainK_width_mono (QRH.RepeatedMarks.Source.parentParams_of hK hν0 hν1)
-      (le_max_right small 0) (max_le_max hwidth le_rfl) (le_max_right Q 0)
-    change ν*small-QRH.RepeatedMarks.gainK ν 8 (h.B:ℝ) (h.L:ℝ) (h.cap:ℝ) (max small 0) (max Q 0)≤
-      ν*full-QRH.RepeatedMarks.gainK ν 8 (h.B:ℝ) (h.L:ℝ) (h.cap:ℝ) (max full 0) (max Q 0)
-    have hs : small-max small 0≤full-max full 0 := by
-      rcases le_total small 0 with h0 | h0
-      · rw [max_eq_right h0]
-        rcases le_total full 0 with h1 | h1
-        · rw [max_eq_right h1]; linarith
-        · rw [max_eq_left h1]; linarith
-      · rw [max_eq_left h0, max_eq_left (h0.trans hwidth)]; linarith
-    have hν : 0≤ν := by linarith
-    nlinarith [mul_le_mul_of_nonneg_left hs hν]
+    exact QRH.Record1252270103Source.High.weighted_exponent_mono_rm hν0 hν1 hK.2.2.1 hwidth
 
 end
 end QRH.Record1252270103Source.HighScalar

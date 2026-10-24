@@ -1,43 +1,58 @@
 # Doubled marks in the source HIGH count
 
-**Claim.** Every Dirichlet $L$-function is nonvanishing on $\Re s>\theta$ for
+**Result.** Every Dirichlet $L$-function is nonvanishing on
 
-$$\theta \approx 0.8747521,$$
+$$\Re s>\theta=\frac{8747514}{10^7}=0.8747514,$$
 
-about $2.1\cdot10^{-5}$ below the current record $0.874772906$ (PR #70) and
-$2.08\cdot10^{-5}$ below PR #69. The gain comes from one new argument in the
-source step of PR #69 (Hailey Collet, *A zero-free half-plane from finite
-ordinary source moments*). Everything else in that proof is reused unchanged.
+excluding the principal pole. The current record is $0.874772906$ (PR #70)
+and PR #69 had $0.8747729897$. The new bound is lower by
+$2.15\cdot10^{-5}$.
 
-Status: the argument is complete and the numbers come from a model of PR #69's
-gates that reproduces all 221 of its certified source nodes. The exact rational
-certificates and the Lean formalization for this specific graph are not yet
-written (see the last section).
+The gain comes from one new argument inside the source step of PR #69 (Hailey
+Collet, *A zero-free half-plane from finite ordinary source moments*): the
+source HIGH count may use each marked slot twice in its inverse witness. The
+analytic input for this is already proved in PR #69's dependency tree; PR #69
+states it but never uses it in the HIGH count. Every other part of PR #69 is
+reused unchanged.
+
+The doubled-mark gate also forces a per-amplitude detector cutoff (§3) and a new
+source graph (§5). One return parameter changes: the free-shift cutoff $t_f$
+(§6).
+
+**Status.**
+- The mathematical argument is complete (§§2–4).
+- Exact rational-arithmetic certificates (Bernstein expansions over $\mathbb Q$,
+  no floating point) cover the new 59-face source graph and the final return.
+  They are in `certificate_doubled_marks.json`, produced by `certify_all.py`.
+- The certifier for the return reproduces PR #69's own final certificate
+  exactly (`test_return69.py`).
+- Not yet done: the Lean formalization required for admission to the tracker
+  (§7).
 
 ## 1. Where the change is
 
-PR #69 proves a finite family of "ordinary source" moments
-$G(B,\Lambda,h)$: $\mathcal E\ll U^{1+\epsilon}$ whenever
-$m_1+m_2+\Lambda s\le B$, $0\le s\le h$ (sources.tex G1). Each new face is
-derived from an earlier LOW parent and an earlier HIGH parent. The derivation
-needs the HIGH gate (feedback.tex HF15, Lean `regular_gate_of_six`)
+PR #69 proves a finite family of ordinary source moments $G(B,\Lambda,h)$:
 
-$$H+\mathcal G(S,F)>e_H,\qquad H=1-\rho-\nu T-a(5-6\rho),$$
+$$\mathcal E\ll U^{1+\epsilon}\quad\text{whenever }m_1+m_2+\Lambda s\le B,\ 0\le s\le h\qquad\text{(sources.tex G1, feedback.tex NF1)}.$$
 
-on the whole density interval $\nu\in[q,3/4]$. Here $\mathcal G$ is the gain
-from counting HIGH rows with the same-zero detector (feedback.tex HF2–HF7).
+Each face is derived from an earlier LOW parent and an earlier HIGH parent
+through the gates NF8–NF13. The HIGH gate (NF11–NF12; Lean
+`Record1252270103Finite.densityGate`) is
 
-In that count the inverse witness uses the child's marked slots **at most once
-each**. Its marked width is
+$$H_\nu+\mathcal G(S,F_p)>f,\qquad H_\nu=1-\rho_\nu-\nu T-a(5-6\rho_\nu),\qquad \nu\in[q,3/4].$$
 
-$$z_I=\min\Bigl(S,\tfrac{Q-r}{2}\Bigr)\qquad\text{(sources.tex LD, feedback.tex HF3; Lean \texttt{inverseThreshold}, \texttt{fiber\_exponent})}.$$
+Here $\mathcal G$ is the gain of the same-zero detector count of HIGH rows
+(feedback.tex HF2–HF10). In that count the inverse witness uses the child's
+marked slots **at most once each**:
 
-The binding facet at every converged face is the "available slots / available
-slots" branch with gain $\varphi S$. At the pivot $r\approx0.80$, so the inverse
-capacity $(Q-r)/2\approx0.10$ is more than twice the available width
-$S\approx0.042$. The capacity is therefore under-used.
+$$z_I=\min\Bigl(S,\frac{Q-r}{2}\Bigr)\qquad\text{(LD, HF3; Lean \texttt{inverseThreshold}, \texttt{fiber\_exponent}, \texttt{inverse\_fiber\_count})}.$$
 
-## 2. The analytic input already exists: repeated prime lists
+At every converged face the binding facet is "available slots / available
+slots", with gain $\varphi S$. At the pivot the inverse capacity
+$(Q-r)/2\approx0.10$ is more than twice the available marked width
+$S\approx0.042$, so the capacity is under-used.
+
+## 2. The analytic input: repeated prime lists
 
 PR #69 foundations.tex, **Lemma 8.1 (overlap adapter for the inverse moment)**:
 
@@ -46,191 +61,215 @@ PR #69 foundations.tex, **Lemma 8.1 (overlap adapter for the inverse moment)**:
 > coefficients. Both admission inequalities may use the full sum of the
 > original slot widths.
 
-The proof is a random $K$-colouring: distinct tuples get prescribed colours
-with probability $K^{-K}$, so the full product is an average over products on
-disjoint coloured lists. Repeated-prime tuples have bounded central mass and are
-frozen before the row norm. The lemma is formalized in the dependency tree of
-PR #69 as
+The proof colours the union of the lists randomly with $K$ colours. Distinct
+tuples receive their prescribed colours with probability $K^{-K}$, so the
+product is $K^K$ times an average of products on disjoint coloured lists. Blocks
+of equal primes have central mass $\ll1$ and are frozen before the row norm.
 
-`Record1252270103Bootstrap.PR67.OAI.SevenEighths.Deletion26.overlapping_inverse_marked_energy`
-
+In Lean this is
+`Record1252270103Bootstrap.PR67.OAI.SevenEighths.Deletion26.overlapping_inverse_marked_energy`.
 It takes arbitrary lists `L : ι → Finset (Ideal O)` with no disjointness
-hypothesis, and admits the energy whenever $r+2\sum_i\ell_i<1$ and
-$2r+8\sum_i\ell_i<3$, with widths counted with multiplicity. PR #69 states the
-lemma but never uses it in the source HIGH count.
+hypothesis, and admits the energy when $r+2\sum_i\ell_i<1$ and
+$2r+8\sum_i\ell_i<3$, with widths counted with multiplicity.
 
-### Lemma A (doubled-mark inverse gate)
-
-Take a HIGH row fiber at density $\nu$ with available marked width $S$ in
-amplitude class $p\in[0,1/2]$. For every $z\in[0,2S]$ with
-$r+2z<Q-c_1$ and $2r+8z<3Q-c_2$,
+**Lemma A (doubled-mark inverse gate).** Take a HIGH row fiber at density
+$\nu$, with available marked width $S$ and slot amplitudes of mean class
+$p\in[0,1/2]$. For every $z\in[0,2S]$ with $r+2z<Q-c_1$ and $2r+8z<3Q-c_2$,
 
 $$\#\text{fiber}\ll U^{\,Q-\nu r-2\nu p z+\text{loss}}.$$
 
-*Proof.* Order the marked slots by amplitude and give each a multiplicity
-$k_i\in\{0,1,2\}$ greedily, filling width $z$ up to one mesh slot. The
-amplitude per unit width of the selected multiset is at least the mean, so the
-product has $|\prod_iQ_i^{k_i}|^2\ge U^{2\nu p z-\text{mesh}}$. Apply the
-overlap adapter to the lists $L_{(i,c)}=L_i$, $c\le k_i$, and then use
-Markov's inequality, exactly as in the one-copy gate `hIM` of
-`fiber_exponent`. $\square$
+*Proof.* Order the slots by amplitude bin and give each a multiplicity
+$k_i\in\{0,1,2\}$ greedily, filling width $z$ up to one mesh slot. The selected
+multiset has mean amplitude at least the overall mean, so its product satisfies
+$|\prod Q_i^{k_i}|^2\ge U^{2\nu pz-\text{mesh}}$. Apply the overlap adapter to
+the lists $L_{(i,c)}=L_i$ for $c\le k_i$, then Markov's inequality, as in the
+one-copy `inverse_fiber_count`. $\square$
 
-## 3. Amplitude classes need their own detector cutoff
+## 3. Amplitude classes get their own detector cutoff
 
-PR #69 passes from $p=1/2$ to general $p$ through the inequality
-$2pz+(1-2p)S\ge z$ for $z\le S$ (LD, "the passage from $p=1/2$ ...";
-Lean `amplitude_credit`). With $z>S$ this inequality fails. The fix uses the
-fact that the detector cutoff is chosen per row class, before any witness is
-taken (paper Prop. 4510; first-return §2 "choose $t=t_*$ before selecting its
-witnesses"). An amplitude bin is such a class.
+PR #69 passes from $p=1/2$ to general $p$ through
+$2pz+(1-2p)S\ge z$ for $z\le S$ (Lean `amplitude_credit`). This fails when
+$z>S$. The fix uses a freedom the detector already has: its cutoff is chosen per
+row class before any witness is taken (paper Prop. 4510; in Lean the witnesses
+are hypotheses of `feedback_fiber_count`). An amplitude bin is such a class.
 
-Write $w=5-6\nu$, $\xi_0=10/(3(5-2\nu))$, and let $(B_H,\Lambda_H,h_H)$ be the
-HIGH parent. For $p\in[0,1/2]$ define the thresholds
+Put $w=5-6\nu$, $\xi_0=10/(3(5-2\nu))$, and let $(B_H,\Lambda_H,h_H)$ be the HIGH
+parent. For $p\in[0,1/2]$ define the inverse and plain thresholds
 
 $$I_p(\xi)=\max\Bigl(\xi-4pS,\ \frac{\xi-pQ}{1-p}\Bigr),\qquad
 P_p(\xi)=\max\Bigl(\xi-2pS,\ \xi-2ph_HQ,\ \frac{\xi-2pB_HQ/\Lambda_H}{1-2p/\Lambda_H}\Bigr).$$
 
-Let $\xi_p$ be the root of
-$6\nu\xi+w\,(I_p(\xi)+P_p(\xi)/2)=5Q$. Put
+Let $\xi_p$ be the root of $6\nu\xi+w\,(I_p(\xi)+P_p(\xi)/2)=5Q$. Set
 
-$$f_p(S,Q)=(1-2p)\nu S+\nu(\xi_p-\xi_0Q),\qquad
-\boxed{\ \mathcal G_2(S,Q)=\min_{0\le p\le 1/2}f_p(S,Q)\ }.$$
+$$f_p(S,Q)=(1-2p)\nu S+\nu(\xi_p-\xi_0Q),\qquad \mathcal G_2(S,Q)=\min_{0\le p\le1/2}f_p(S,Q).$$
 
-### Lemma B (weighted HIGH mass with doubled marks)
+Each $f_p$ is a minimum of six affine forms in $(S,Q)$, one for each
+inverse/plain branch pair.
 
-Put $x=\xi_0Q+\mathcal G_2/\nu$, and in amplitude class $p$ use the cutoff
-$t_p=I_p(x_p')+P_p(x_p')/2$ with $x_p'=x-(1-2p)S$. Then the class's weighted
-mass satisfies
+**Lemma B (weighted mass of an amplitude class).** In class $p$, use the cutoff
+$t_p=I_p(\xi_p)+P_p(\xi_p)/2$. Then
 
-$$E+2\nu pS\le Q-\nu x+\nu S+\text{loss}=\rho Q+\nu S-\mathcal G_2(S,Q)+\text{loss}.$$
+$$E_p+2\nu pS\le Q+2\nu pS-\nu\xi_p=\rho Q+\nu S-f_p(S,Q)\le\rho Q+\nu S-\mathcal G_2(S,Q).$$
 
-This is HF10 with $\mathcal G_*$ replaced by $\mathcal G_2$.
-
-*Proof.* By definition $x_p'\le\xi_p$, and the left side of the cutoff
-equation increases in $\xi$, so $6\nu x_p'+w\,t_p\le5Q$. This pays the long
-branch: for $r>1$, $E\le(1+5t_p)/6-\nu t_p\le Q-\nu x_p'$. The same-zero
+*Proof.* At $\xi=\xi_p$ the cutoff equation holds with equality, which pays the
+long branch: for $r>Q$, $E\le(1+5t_p)/6-\nu t_p=Q-\nu\xi_p$. The same-zero
 alternative (Lean `same_zero_alternative`) gives either
-$r\ge I_p(x_p')-\epsilon$ or $2m\ge P_p(x_p')$.
+$r\ge I_p(\xi_p)-\epsilon$ or $2m\ge P_p(\xi_p)$.
 
-- In the inverse case take $z=\min(2S,(Q-r)/2)$. Then $r+2pz\ge x_p'$, and
-  Lemma A gives $E\le Q-\nu x_p'$.
-- In the plain case take $z_P=\min(S,h_HQ,(B_HQ-2m)/\Lambda_H)$, use the PR #69
-  plain gate, and get $E\le Q-\nu x_p'$.
+- Inverse case: take $z=\min(2S,(Q-r)/2)$. Then $r+2pz\ge\xi_p$, and Lemma A
+  gives $E\le Q-\nu\xi_p$.
+- Plain case: take $z_P=\min(S,h_HQ,(B_HQ-2m)/\Lambda_H)$ with PR #69's plain
+  gate.
 
-Adding the weight $2\nu pS$ gives $Q-\nu x+\nu S$. $\square$
+The cutoff is admissible: $t_p=(5Q-6\nu\xi_p)/w\in[Q,\tfrac{15}{15-6\nu}Q]$
+because $\xi_0Q\le\xi_p\le Q$. $\square$
 
-At $p=1/2$ the thresholds are HF3–HF4 with $2S$ in place of $S$ in the inverse
-branch. The six facets of HF6 become:
+At $p=1/2$ the facets are those of HF6 with $2S$ in the inverse "available
+slots" branch. With $k$ copies the leading facet is $(2k+1)\varphi S/3$.
 
 | inverse branch | plain branch | gain at $p=1/2$ |
 |---|---|---|
 | doubled slots | slots | $\tfrac53\varphi S$ |
 | doubled slots | parent width cap | $\tfrac43\varphi S+\tfrac{\varphi h}{3}Q$ |
 | doubled slots | parent affine cap | $\dfrac{4\nu w(\Lambda-1)}{D_{13}}S+\dfrac{\nu w(Bt_\nu-10)}{t_\nu D_{13}}Q$ |
-| inverse cap | (three branches) | unchanged |
+| inverse cap | any | unchanged from PR #69 |
 
-With $k$ copies the leading facet is $(2k+1)\varphi S/3$.
+Where the faces are used, $\mathcal G_2=f_{1/2}$ except in a small corner,
+$\nu<0.53$ and $S/Q>0.058$. There an amplitude $p\in(0.4915,1/2)$ is worse,
+by less than $10^{-5}$. The certificate uses the full minimum over $p$.
 
-In almost the whole range of use, $\mathcal G_2=f_{1/2}$. A $p<1/2$ wins only in
-a small corner, $\nu<0.53$ and $S/Q>0.058$, by at most $3\cdot10^{-5}$; the
-minimizer there is $p\ge0.476$. The certificates use the exact minimum over
-$p$.
+## 4. Side conditions
 
-## 4. Side conditions (all re-checked)
+- **(C1) Common-width payment** (LD14a / HF12; Lean `common_gain_reserve`).
+  We need
+  $\mathcal G(S,F)-\mathcal G(L,Q)-\nu(c+d)\le-(c+d)/12$ whenever
+  $S\le L+\delta$ and $F\le Q+2\delta$, with $\delta=c+d$. Take class $p$ at
+  actual widths $(L,Q)$; it is enough that
+  $f_p(L,Q)+(\nu-\tfrac1{12})\delta\ge\mathcal G_2(S,F)$. This follows from two
+  facts, each certified per node:
+  - **(i)** For $p\in[9/20,1/2]$, every branch slope satisfies
+    $a+2b\le\nu-1/12$, and every branch has $a,b\ge0$.
+  - **(ii)** For $p\in[0,9/20]$, $\nu\in[q,3/4]$ and $L/Q\in[0,1/4]$,
+    $f_p\ge f_{1/2}$.
 
-- **(C1) Common-width payment** (LD14a / HF12; Lean `common_gain_reserve`, which
-  needs $\mathcal G(S,F)-\mathcal G(L,Q)-\nu(c+d)\le-(c+d)/12$).
-  - $\mathcal G_2$ is a minimum of nonnegative affine forms in $(S,Q)$, one for
-    each amplitude and branch pair. So the bound follows from a slope bound
-    $a+2b\le\nu-1/12$ for a minimizing form at $(L,Q)$.
-  - A minimizer with $p\ge0.476$ exists for every $\nu\ge0.505$ and every
-    $L/Q\in[0,1]$. At $L=0$ all $p$ tie and $p=1/2$ is chosen.
-  - On the new chain, for $\nu\in[q,3/4]$, $p\in[0.476,1/2]$ and all branch
-    pairs, $\nu-1/12-(a+2b)\ge0.0145$. Every node has $q\ge0.5155$.
-  - The crude bound $\varphi+2C_{\max}$ of HF12 must be replaced by this
-    facet-wise bound, because $\tfrac53\varphi+2C_{\max}>\nu$ near $\nu=1/2$.
-- **(C2) Root completion** (HF11–HF14, RT1).
-  - The row-width coefficients do not involve $S$, so doubling leaves them
-    unchanged, and each stays at most $C_{\max}=\nu(1-\xi_0)$.
-  - $\mathcal G_2\le f_{1/2}\le C_{\max}Q$ by the slot-free facets.
-  - So (HF13) and (HF14) apply verbatim.
-- **(C3) Inverse admissions.**
-  - $z\le(Q-r)/2$ and $r\ge I(x)-\epsilon\ge x-2S>Q/2$ give $2r+8z\le4Q-2r<3Q$
-    with a fixed margin.
-  - At the pivots, $r\approx0.80$, $r+4S\approx0.97<1$ and $2r+16S\approx2.27<3$.
-- **(C4) Detector range.** The cutoffs $t_p$ lie in $[Q,\tfrac32Q]$ for every
-  $p$; they run from $1.5(x-S)$ at $p=0$ to $1.5x-2.5S$ at $p=1/2$.
-- **(C5) HF1 floor.** Every HIGH parent used has $B\ge0.95704>22/23$.
+  If $p\ge9/20$, use (i) and monotonicity. If $p<9/20$, use (ii) and then (i)
+  at $p=1/2$. Numerically, slopes exceed $\nu-1/12$ only for $p\le0.405$, and
+  $f_p<f_{1/2}$ only for $p\ge0.4915$.
 
-## 5. The new source chain
+  HF12's crude bound $\varphi+2C_{\max}$ must be replaced by this facet-wise
+  bound, because $\tfrac53\varphi+2C_{\max}>\nu$ near $\nu=1/2$.
+- **(C2) Root completion** (HF11–HF14).
+  - The row-width coefficients do not involve the doubled branch, so each is
+    still at most $C_{\max}$.
+  - $\mathcal G_2\le f_{1/2}\le C_{\max}Q$.
+  - So HF13 and HF14 apply verbatim.
+- **(C3) Inverse admissions.** $z\le(Q-r)/2$ and $r>Q/2$ give
+  $2r+8z\le4Q-2r<3Q$.
+- **(C4) HF1 floor.** Every HIGH parent used has
+  $B\ge0.95704>22/23$.
 
-The chain starts from the natural premise $G(1,4.4973108,0.055)$, with natural
-cost $K=6(2\theta_I-1)$ from PR #69's intermediate bound $\theta_I=0.8747759$.
-It has 59 derived faces with monotone pivots
-$b_\times=0.0135,0.0140,\dots,0.0420,0.04232$ and caps
-$h=\min(0.0549989,\,b_\times+0.016)$. Each face uses the previous face as both
-its LOW parent and its HIGH parent.
+## 5. The new source graph (`cchain_k2.json`)
 
-Each $\Lambda$ is the smallest value passing every PR #69 gate at both width
-endpoints, with the HIGH gain $\mathcal G_2$ above. The gates are the scalar
-LOW, centered, diagonal and cap gates, and the HIGH and special sectors on the
-whole density interval. The gate model (`ss_fb.py`) accepts all 221 printed
-nodes of PR #69's graph with reserves between $4.9\cdot10^{-10}$ and $10^{-8}$.
-With one copy, the same construction lands within $1.3\cdot10^{-4}$ of
-Hailey's height for face C.
+- **Premise.** The graph starts from the natural premise
+  $G(1,\tfrac{11243277}{2500000},\tfrac{11}{200})$, which PR #69 proves from its
+  intermediate bound $\theta_I=0.8747759$ (NF2).
+- **Nodes.** There are 59 derived faces. Their pivots are
+  $b_\times=0.0135,0.0140,\dots,0.0420,0.04232$ and their caps are
+  $h=\min(0.0549989,\,b_\times+0.016)$. Each face uses the previous face as
+  both LOW and HIGH parent, under the schedule
+  $(e,r,f)=(10^{-12},10^{-8},10^{-7})$.
+- **Rational parameters.** $B$, $\Lambda$ and $q$ are given to 13 decimals.
+  They were built with a floating-point reserve of $5\cdot10^{-8}$ on every
+  gate, then certified exactly.
+- **Exact checks per node** (`cert_chain.py`):
+  - NF8 and the HF1 parent domain;
+  - all 16 NF10 scalar gates and the weak guard, at $b_\times$ and $h$;
+  - the three NF13 special sectors, by 1-D Bernstein on $[q,3/4]$;
+  - the doubled-mark HIGH gate, for every branch pair, by 2-D Bernstein on
+    $(\nu,p)\in[q,3/4]\times[0,1/2]$ with subdivision;
+  - (C1)(i), and (C1)(ii) by 3-D Bernstein covers.
+- **Gate model.** The model behind the construction (`ss_fb.py`) accepts all
+  221 printed nodes of PR #69 with reserves of $5\cdot10^{-10}$ to $10^{-8}$
+  (`check_hailey.py`).
 
-| face | pivot | $B$ | $\Lambda$ | height at $s=0.0423245$ |
-|---|---|---|---|---|
-| PR #69 C (`alt_focused_g6_C`) | 0.04232 | 0.962261518 | 3.148131764 | 0.829018 |
-| new C, two copies | 0.04232 | 0.956438687 | 2.955200319 | **0.831361** |
-| PR #69 P (`alt_focused_g7_P`) | 0.03960 | 0.967390311 | 3.273079954 | 0.837776 at $s=0.0396$ |
-| new P, two copies | 0.03950 | 0.962769810 | 3.109026905 | **0.839641** at $s=0.0396$ |
-
-The same construction with one copy gives $0.828887$ and $0.837651$. The gain
-from doubling is therefore $+2.47\cdot10^{-3}$ and $+1.99\cdot10^{-3}$ in face
-height. This matches the envelope ODE ($+2.48\cdot10^{-3}$ and
-$+2.00\cdot10^{-3}$).
+| face | node | pivot | $B$ | $\Lambda$ | height at $s=0.0423245$ |
+|---|---|---|---|---|---|
+| PR #69 C | `alt_focused_g6_C` | 0.04232 | 0.962261518 | 3.148131764 | 0.829018 |
+| **new C** | 58 | 0.04232 | 0.9565707676 | 2.9576608857 | **0.831389** |
+| PR #69 P | `alt_focused_g7_P` | 0.03960 | 0.967390311 | 3.273079954 | 0.837776 at 0.0396 |
+| **new P** | 52 | 0.0395 | 0.9629080170 | 3.1118536669 | **0.839679** at 0.0396 |
 
 ## 6. The final return
 
-These two faces go into PR #69's final return (first-return FR4–FR13): the new C
-face feeds the same-zero count and the new P face feeds the physical numerator.
-The return keeps every admission test of FR8, the weaker faces $B-j/4000$, and
-the six conductor edges. The model is `model69.py`, validated against PR #69 to
-$10^{-9}$. It gives
+The return is PR #69's first-return FR4–FR22 and return NR1–NR14, with the new
+faces C (same-zero count) and P (physical numerator). Everything else is
+unchanged:
 
-$$c=0.1252479354\quad(\text{PR \#69 in the same model: }0.1252270226),\qquad \Delta c=+2.09\cdot10^{-5},$$
+- the count candidates: the natural count, the affine and capped branches of C
+  and P, and the weaker faces $B-j/4000$;
+- the FR8 admission polynomials on upward windows;
+- the six conductor edges;
+- $s_P=1/25$, $r_0=10^{-9}$ and $\theta_I=0.8747759$.
 
-that is, $\theta=1-c\approx0.8747520646$, at $h\approx0.79925$.
+The parameters are
 
-## 7. What remains for a verified submission
+$$\theta=\frac{8747514}{10^7},\qquad h=\frac{79987}{10^5},\qquad t_f=\frac1{360}.$$
 
-1. **Exact rational certificates.**
-   - For each node, prove all gates with strictly positive reserves. The HIGH
-     gate becomes a two-variable $(\nu,p)$ Bernstein check per branch pair.
-   - Certify the two global lemmas: the minimizer location of (C1) and the slope
-     bound.
-   - Certify the return on Bernstein rectangles (FR14–FR16) with the new faces.
-2. **Lean.** The changes are confined to `Record1252270103Source/High`:
-   - `inverseThreshold` with $2S$;
-   - a per-amplitude version of `fiber_exponent`;
-   - `Facets` and `GainBounds` with the new slopes;
-   - the graph and the return certificates.
+**The free-shift cutoff $t_f$.** It changes from $1/400$ to $1/360$. The
+flatter P face makes FR21's sufficient reserve
+$(\tfrac7{18}-\tfrac1{500})t_f+\tfrac{1-B_P}{18}+(\tfrac{\Lambda_P}{18}-\tfrac14)s_P$
+negative at $t_f=1/400$. $t_f$ is a free choice in PR #69: FR18–FR20 need only
+the domain guards for $0\le t\le t_f$, and those are re-checked:
 
-   The analytic input (`overlapping_inverse_marked_energy`) is already proved.
+- physical plain upper: $0.018$;
+- physical width lower: $0.0042$;
+- small-width shortening: $0.003$.
 
-## Files
+**Certificate.**
+- The cover is 64 closed rectangles over the six edges.
+- The minimum return Bernstein coefficient is about $1.3\cdot10^{-8}$; the
+  minimum admission coefficient is about $1.6\cdot10^{-5}$.
+- All 34 domain and complementary reserves are positive. The smallest are:
+  - conductor kink before top: $5.3\cdot10^{-6}$;
+  - incumbent $2(\theta_I-\theta)$: $4.9\cdot10^{-5}$;
+  - large shift: $5.0\cdot10^{-5}$;
+  - short plain shortening: $7.8\cdot10^{-4}$.
+- $\theta=0.87475139$ does not certify, so $0.8747514$ is optimal for these
+  faces.
 
-- `rep_gain.py`: brute-force amplitude-resolved HIGH gain. It reproduces LD2
-  without doubling.
-- `gain_k.py`: exact closed-form $f_p$ and $\mathcal G_k$ with $k$ copies, plus
-  the $p=1/2$ facets.
-- `replay.py`, `check_hailey.py`: gate model and the check that all 221 PR #69
-  nodes pass.
-- `build_chain.py`, `build_chain_pmin.py`, `chainp_k2_0.0005.json`: chain
-  construction with the exact amplitude-minimized gain, and the resulting
-  59-node chain.
-- `verify_chain_pmin.py`: re-verification of every node on a 401-point
-  amplitude grid.
-- `lip_p.py`: the slope bound of (C1).
-- `price_faces.py`: the final return with the new faces.
+## 7. What remains for admission to the tracker
+
+The tracker admits Lean proofs checked by Lean, NanoDa and con-ron against the
+canonical statement. The changes are confined to:
+
+1. **`Record1252270103Source/High`.**
+   - A doubled-mark selection (`select_common_product` with multiplicity at
+     most 2) and `inverse_fiber_count`, both fed by
+     `overlapping_inverse_marked_energy`.
+   - A per-amplitude `fiber_exponent`.
+   - The facets and slopes of $\mathcal G_2$, and the (C1) payment replacing
+     `common_gain_reserve`.
+2. **`Record1252270103Finite`.** A `SourceValid` predicate whose HIGH check is
+   two-dimensional in $(\nu,p)$, plus the 59 node certificates and the
+   (C1)(ii) covers.
+3. **`Record1252270103Return`.** The new faces, $t_f$, $\theta$ and the 64
+   rectangles.
+
+The analytic input, `overlapping_inverse_marked_energy`, is already proved.
+
+## Reproducing
+
+```
+python3 test_return69.py              # return certifier reproduces PR #69 Certificate B
+python3 check_hailey.py               # gate model accepts all 221 PR #69 nodes
+python3 certify_all.py cchain_k2.json # full exact certificate -> certificate_doubled_marks.json
+```
+
+Other files:
+
+- `gain_k.py`, `rep_gain.py`: the amplitude-resolved HIGH gain with $k$ copies.
+- `cchain.py`: builds the rational chain.
+- `build_chain*.py`, `chainp_k*.json`: floating-point chain construction.
+- `lip_p.py`: the (C1) slope check.
+- `model69.py`, `price_faces.py`, `pick_theta*.py`: the return model used to
+  choose $(\theta,h)$.

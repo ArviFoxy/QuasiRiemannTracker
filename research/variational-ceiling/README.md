@@ -73,3 +73,23 @@ Measured (density floor 0.45, Lemma F, same gates and fees as the consolidated c
 
 Height gap continuum − consolidated chain: +3.0e-5 at `s = 0.0135`, then +3.4e-5, +3.8e-5, +4.2e-5,
 +4.7e-5, +5.1e-5, +5.5e-5 at `s = 0.0155, …, 0.0205` (still growing).
+
+## 4. Fees
+
+The fee schedule `(e, r, f)` (allowance, low fee, high fee) is part of the face map. The amplifier
+of a self cell is `a = (qe + r)/den`, so the LOW denominator trades `r/den` in the gates against
+`den` in the threshold. At the optimum `den ≈ √(14.8r)`, and the cost is about `8.85√r` in
+log-slope: 0.09% at Collet's `r = 10⁻⁸` (the solver settles at `den ≈ 3.7·10⁻⁴`), and 100 times less at
+`r = 10⁻¹²`, where the solver settles at `den ≈ 3.7·10⁻⁶`. PR #71's recost of Collet's graph used
+exactly this freedom: the fine tuple `(10⁻¹⁷, 10⁻¹², 10⁻¹⁰)` that the accepted source theorem permits.
+The same recost applies to our graph (`hyb_fees.py`, `continuum.py … 1e-17,1e-12,1e-10`).
+
+| run | `E(0.0412)` | `E(0.045)` | θ* |
+|---|---|---|---|
+| consolidated chain, fees `(10⁻¹², 10⁻⁸, 10⁻⁷)` | 0.8369975 | 0.8261064 | 0.8747257 |
+| same pivots, fees `(10⁻¹⁷, 10⁻¹², 10⁻¹⁰)` | (running) | | |
+| continuum, fine fees | (running) | | |
+
+## 5. Conclusion
+
+(pending the runs)

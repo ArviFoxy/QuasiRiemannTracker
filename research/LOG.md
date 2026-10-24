@@ -464,6 +464,28 @@ A catalogue cross-check (21.9k records) found nothing that moves them. → `cap-
   means have a common phase (positive local factors), so the root sum has no cancellation to
   recover.
 
+- *Re-reflection with de Faveri's sextic sieve in the inverse moment's column branch (checked,
+  no gain).*
+  - **Why it looked promising.** The earlier closure ("Re-reflecting the column branch's dual
+    sums") assumed critical length `Z^H`. It priced the sextic sieve with an `(AB)^{2/3}` term and
+    only near the boundary. At the binding child, `T_d − H = z ≈ 0.129 > H/8`. With
+    de Faveri's optimal bound `A + B + A^{5/6}B^{1/3} + A^{1/3}B^{5/6}` (arXiv 2610.04045,
+    Thm 1.1, `n = 6` over `Q(ζ₃)`, uniform in the coefficients), re-reflecting to `L' = 2H − T_d`
+    would give `Z^{0.823}` against the budget `Z^{0.871}`. That would be a large relaxation.
+  - **Why it fails.** In the hybrid norm (MF2.29) the column branch's dual sum is
+    `Σ_n β(n)χ_k(nb)³χ_P(n)^{-2}`. The theta coefficients are twisted by the row's quadratic
+    character and by the slot tuple's cubic character. The twisted series therefore has conductor
+    `≈ (q_k q_P)²` and critical length `Z^{H+z}`, not `Z^H`. At the binding `T_d = H + z` exactly,
+    so the column branch sits at the joint critical length and there is nothing to re-reflect.
+    Relaxing the budget pushes `T_d` only slightly past `Z^{H+z}`, where re-reflection gives
+    `A^{7/6}` (`A ≈ B`) and is worse than paying the excess. Slot cost 2 is this joint conductor.
+  - **What remains.** The column branch is the quadratic sieve's `N` term for the coefficients
+    `β(n)A(n)` with `A(n) = Σ_P a(P)q_P^{-1/2}χ_P(n)^{-2}`, at `K < N ≤ K·L`. For generic
+    coefficients the true size would be `K·N`, i.e. exponent `H`. A saving of `Z^{-0.0008}` would
+    therefore need a quadratic large sieve beyond the family size for products of cubic-theta
+    coefficients and cubic slot polynomials. No such estimate is known. Treating `(k, P)` as one
+    sextic family with Cauchy over `P` loses more (`A^{7/6}` at `A ≈ N`).
+
 ## Open directions (ranked, revised 2026-10-24, third pass; see `barriers/README.md`)
 
 Exact state: committed Lean branch 0.8747289; best exact value with known lemmas 0.8747257

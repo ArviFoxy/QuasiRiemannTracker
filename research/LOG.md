@@ -317,6 +317,35 @@ A catalogue cross-check (21.9k records) found nothing that moves them. → `cap-
   - The chain's limit is `Λ → 6qB` with `q ≥ 1/2` (LD1), i.e. `Λ_∞ = 3B ≈ 2.87`, 1% below the
     current end (2.897). Reaching it would need a cheap amplifier, i.e. the exchange rate 6 again.
 
+- *Explicit-formula scale transfer for the Möbius witness, made quantitative* (follow-up to the
+  fresh agent's suggestion A and the earlier "residue structure" entry).
+  - **How saturation is obtained.** Saturation of both witnesses (paper Prop. "Two saturated
+    witnesses") comes from the buffered zero-free bin: no zeros right of `a + 2e` in the window
+    gives pointwise upper bounds `|M_r|² ≤ U^{δr}` and `|S_m|² ≤ U^{δ min(m,1−m)}`. The detector
+    gives the product lower bound. Saturation is therefore a statement at one scale only.
+  - **Contributions of the zeros.** By Mellin inversion, a zero `ρ'` of depth `δ'` contributes
+    `A(ρ',D) = D^{δ'/2}/|L'(ρ')|` to the normalized witness at its height.
+    - The bin's own zero (`δ' = δ`) saturates every scale at once, if and only if
+      `|1/L'(ρ)| ≳ 1`. In that case the Möbius block at `r = 1` is saturated, and `I(1) = 1 − δ`
+      (the density hypothesis) would apply.
+    - A left zero (`δ' = δ − 2η'`) saturates the level-δ witness exactly at the scales
+      `D ≤ |1/L'(ρ')|^{1/η'}`.
+  - **What the adversary needs.** At the binding crossing `r* = 0.742`, beating the transfer to
+    `r = 1` needs a left zero with `|1/L'(ρ')| ∈ [U^{r*η'}, U^{η'})`. For the transfer to give
+    nothing beyond the current R (`1 − δ + 2(1 − r*)η' ≥ 0.6047`), the adversary needs
+    `η' ≥ 0.115`, i.e. `|L'(ρ')| ≈ U^{−0.085}`.
+  - **Why it is not excluded.**
+    - Near-double zeros do not supply this: their two residues cancel and act like a double pole,
+      `D^{ρ'} log D / L''`.
+    - A power-small `|L'(ρ')|` needs `Π|ρ' − ρ_j| ≲ U^{−0.085}` over nearby zeros.
+    - Jensen at a point of the zero-free line (`|L| ≥ U^{−ε}`) with the convexity bound still
+      allows about `0.36 log U` zeros within distance `0.12`. That is only mildly above the average
+      density, and enough for `|L'| ≈ U^{−0.085}`.
+    - The truncated left integral (`1/L` on `Re s = a − η`) has the same issue.
+  - **Verdict.** The transfer would need a count of rows with locally elevated zero density left
+    of their rightmost zero, at better than `U^{R}`. No tool gives that (zero counts carry no power
+    saving for multiplicity). Blocked, but the obstruction is now explicit.
+
 ## Open directions (ranked, revised 2026-10-24 after the second pass; see `barriers/README.md`)
 
 1. **Reflected-energy column branch slightly past the diagonal.** One input would move the probe

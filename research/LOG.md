@@ -187,6 +187,20 @@ A catalogue cross-check (21.9k records) found nothing that moves them. → `cap-
   - Any gain would need a structured (non-generic) bound for the dual coefficients `β(n,b)`, and
     that alone would already remove the dual-diagonal term.
 
+- *Why the reflected-energy slot cost is 2, and why the probe cannot avoid it.*
+  - Divisibility marks `p | A` on the theta index are detected by additive characters mod `p`, or
+    equivalently by a twist mod `p` after factoring out `p` (twisted multiplicativity
+    `γ₂(DA') = γ₂(D)γ₂(A')χ_{A'}(D)⁴`). Either way `p` enters the cusp denominator `c`.
+  - The cubic theta reflection at cusp `a/c` rescales by `c²`. That is the `2z_a` in `T_d`.
+  - Probe redesign does not escape it. The high-side sextic slot factor `χ_p(u)` comes only from
+    local exponent `j ≡ ±1 (mod 6)`, i.e. `p ∥ c` (an active mark). Cube marks (`p | n`, inactive,
+    free in the reflection) would give the quadratic factor `χ_p(u)³`, which is tied to the zeros
+    of `L(s, ψ_{u³})`, not the row's own zero. The numerator would then pay up to
+    `κ/2 · ℓ ≈ 0.06` with no count gain.
+  - Removing some active marks pointwise costs `ℓ₂/2` in the low bound for a relaxation of `2ℓ₂`
+    (net `Δθ ≈ +0.13ℓ₂`, a loss). Using zero-free prime-sum bounds on the reflected slot sums is
+    worse than the hybrid's mean-square saving.
+
 ## Open directions (ranked)
 
 1. **Column branch of MI / long Möbius moment beyond amplification.** Both need cancellation in sums

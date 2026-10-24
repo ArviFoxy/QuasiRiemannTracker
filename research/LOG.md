@@ -201,6 +201,17 @@ A catalogue cross-check (21.9k records) found nothing that moves them. → `cap-
     (net `Δθ ≈ +0.13ℓ₂`, a loss). Using zero-free prime-sum bounds on the reflected slot sums is
     worse than the hybrid's mean-square saving.
 
+- *Large-values methods cannot help this framework (Guth–Maynard type, Halász, Huxley).*
+  - Every witness count is Chebyshev applied to a mean value that is already diagonal in its own
+    family. The marked inverse moment is diagonal for `r + 2z < 1`. The plain fourth moment with
+    slots is diagonal on its face. The long branch is the MI's diagonal bound in the amplified
+    family `{v ≤ H}`, where `D < H`.
+  - In each case Chebyshev already gives density-hypothesis strength for that witness and its
+    capacity. All losses against `1 − δ` come from capacities (slot costs 2 and `Λ ≈ 3`) and from
+    the amplification's sparsity (`P⁵`), never from large values.
+  - So an improved large-values estimate, even a Guth–Maynard analogue for the sextic family,
+    would not move `R`. Only longer or cheaper witnesses can.
+
 ## Open directions (ranked)
 
 1. **Column branch of MI / long Möbius moment beyond amplification.** Both need cancellation in sums

@@ -132,7 +132,11 @@ not.
   Hecke-eigenvalue coefficients and prime-square inflation. P1 needs (i) the same for cubic theta
   coefficients, where twisted multiplicativity `γ₂(ab) = γ₂(a)γ₂(b)(a/b)₃²` replaces Hecke relations,
   (ii) a step slightly past the balanced point, and (iii) uniformity in the slot twist. None of the
-  three is known.
+  three is known. Checked against the paper (arXiv 2208.07343): Li's Proposition 3.2 is
+  `S(M, N, t) ≪ (1+|t|)²(M + N log(2 + N/M))`, the large-sieve shape without `ε`, so the `N`-term
+  remains for `N > M`. Past the critical length Li uses the functional equation of `f ⊗ χ_m`. P1 lives
+  strictly between the two regimes, with more terms than moduli (`N > K`) but shorter than the
+  slot-twisted critical length (`N < KL`), and neither tool reaches it.
 - **Toy computation.** For cubic-Gauss-sum coefficients `S/Diag` stays between 0.6 and 1.1, with or
   without the mark sum, at large-sieve allowances from 6 up to 106 (`toy/colbranch_large.log`:
   `(K, N) = (150, 12000), (300, 12000), (100, 20000)`). Aligned vectors reach the full allowance,

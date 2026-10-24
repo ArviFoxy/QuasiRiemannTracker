@@ -346,6 +346,24 @@ A catalogue cross-check (21.9k records) found nothing that moves them. → `cap-
     of their rightmost zero, at better than `U^{R}`. No tool gives that (zero counts carry no power
     saving for multiplicity). Blocked, but the obstruction is now explicit.
 
+- *Re-reflecting the column branch's dual sums (why the recursion cannot continue).*
+  - **The idea.**
+    - In the reflected energy's first branch, the energy is `max(H, v + ℓ_b)`: rows against dual
+      length.
+    - The dual sums are a fixed cusp expansion `d_θ(m)` twisted by the quadratic `χ_h(m)³`, whose
+      conductor is about `N(h) = Z^H`. So their critical length is `Z^H`.
+    - When `T_d = 2H + 2z − N* > H`, the functional equation of `d_θ ⊗ χ_h³` would send length
+      `Z^{T_d}` to `Z^{2H−T_d} = Z^{N*−2z} < Z^H`. The root number disappears in `|·|²`, so the
+      column branch would be diagonal and slot cost 2 would go away.
+  - **Why it fails.** The first reflection turns the row twist into a quadratic one because the
+    Fourier and theta factors combine as `χ_p^{−1}χ_p^{−2} = χ_p^{3}` (paper Step 4). A second
+    reflection multiplies in another theta factor, `χ_p^{3}χ_p^{−2} = χ_p`, so the re-reflected sums
+    are sextic twists again.
+  - **Consequence.** The generic sextic sieve's `(Z^H L')^{2/3}` term is `Z^{4H/3}` near the
+    boundary `L' ≈ Z^H`, which is worse than paying the column excess. Each reflection alternates
+    the twist between quadratic and sextic, and only the quadratic step has a sharp large sieve.
+    This is the precise reason the MI recursion stops, and why slot cost 2 is intrinsic.
+
 ## Open directions (ranked, revised 2026-10-24 after the second pass; see `barriers/README.md`)
 
 1. **Reflected-energy column branch slightly past the diagonal.** One input would move the probe

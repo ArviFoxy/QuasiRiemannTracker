@@ -89,3 +89,12 @@ The exact pipeline with every known refinement (Lemma F, fine pivots, density fl
 - **Explicit-formula scale transfer.** Saturation comes from the zero-free bin, at one scale only.
   The binding crossing needs a left zero with `|1/L'| ≈ U^{0.085}` about `0.23` to the left. Jensen
   allows this with mildly elevated local zero density, and nothing counts such rows below `U^R`.
+- **The source chain is an ODE** (`../chain-ode/`). The envelope obeys `E' = −6qE/(1 − 6qs)` with
+  `q = (15 − 10/X)/6` and `X = E + (1 − g)s`. The two equations are the LOW limit `Λ ≥ 6qB` and the
+  HIGH gate at the pivot. With the measured gain fraction `g(s)` this reproduces the 107-node chain
+  to 1.2e-4. Early in the chain the gain is capped by the inverse cap and the slot supply together.
+  Late in the chain the faces sit on the unmarked zero-density boundary `t = 10/(15 − 6q)`. So the
+  faces are fixed by `ρ(ν)` (the long line), the exchange rate 6 and slot cost 2.
+- **Bin-restricted faces do not exist in this framework.** The source step selects zeros on the
+  transformed joint row `w` of foundations (168), not on the original rows. A zero-free bin on the
+  original rows therefore does not make the HIGH class empty.

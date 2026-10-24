@@ -864,6 +864,13 @@ A catalogue cross-check (21.9k records) found nothing that moves them. → `cap-
   - Each line's diagonal limit (`r ≤ 1`; the plain faces) is where the finite part of the analysis
     ends. Extending a line is the affine-type power-saving problem.
   - Mixed moments, which a product detector would need, are hyperbolic: worse, not better.
+  - **Why the finite-type cross moment cannot be used.** The mollified first moment
+    `Σ_u w_u L(s₀,ψ_u)C_u(s₀)` (natural × theta, type B₃) could plausibly have a power-saving
+    asymptotic. But it is signed: rows with a zero at `s₀` contribute about 0 instead of 1, and the
+    deficit can be offset by other rows. Counting needs positivity, positivity forces second moments
+    (`Σ|1 − J_u|²`, the detector's tail), and the second moments here are affine. Selberg-type
+    first/second moment combinations give positive proportions of nonvanishing, not power-saving
+    zero counts.
   - This is a heuristic map, not a theorem about provability. The paper proves the diagonal ranges
     by inductions, not by multiple Dirichlet series. But it locates every remaining atom at the same
     well-known frontier.

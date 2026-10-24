@@ -880,6 +880,34 @@ A catalogue cross-check (21.9k records) found nothing that moves them. → `cap-
     by inductions, not by multiple Dirichlet series. But it locates every remaining atom at the same
     well-known frontier.
 
+- *Round-4 architecture agent: mixed prime/plain slots* (`mixed-slots/`). **Closed: it needs a
+  diagonal three-plain moment.**
+  - **Reading.** The binding case is the zero amplifying itself through the slots. A bad row's prime
+    slot `−Σ_p w(p)p^{z−1}ψ̄_u(p)` is made coherent, of size `P^{δ/2}`, by the row's own zero. At the
+    binding point the adversary gains net `≈ 0.019` in the balance by saturating it: it pays
+    `δpℓ ≈ 0.038` and the marks win back `≈ 0.019`. That is about 2.5e-3 of θ.
+  - **Proposal.** Replace part of the slot length by squarefree-plain slots, with generating
+    function `L(s,ψ)/L(2s,ψ²)`. A zero does not force these large, and they were assumed markable
+    in the P line at cost `c_S ≈ 1`. The agent's toy gave −3.8e-4.
+  - **Honest toy** (one face budget shared by all marks, `cs_threshold.py`).
+    - At equal cost the mixed design is worse: `+9.7e-5` at prime fraction 0.9, `+1.9e-4` at 0.8.
+      Independently saturable groups enlarge the adversary's choice set.
+    - Break-even is `c_S ≈ 1.85`; −1e-5 needs `c_S ≈ 1.8`, against `Λ = 2.77`.
+    - The agent's gain came mostly from letting plain marks use the unit budget `1 − 2m` outside
+      the face: worth −1.5e-4 even at `c_S = Λ`.
+  - **Why `c_S = Λ` in the paper's machinery** (7/8 §18).
+    - Lemma 18.1's slotless case is unrestricted only because the padded core is extended by
+      reflecting at most its two plains (§18.8).
+    - After both are reflected, a child with a third plain of length `z′` still exceeds its core by
+      `z′`, and reflecting the short factor makes it long. Its only exit is pointwise deletion, the
+      slot mechanism of eq. 18.39: room `6κd` for energy `κd`.
+    - In the zero-free half-plane, Littlewood gives the plain slot the same pointwise bound
+      `Z^{κz}` as (18.12).
+    - So lemma (a) at `c_S ≤ 1.85` is a diagonal three-plain moment for the sextic family. It is the
+      barrier table's "plain fourth moment with slot cost below Λ" (Patterson bias of plain duals).
+  - **Kept.** The self-saturation reading. A new quantitative target: a three-plain diagonal at
+    `c_S ≤ 1.85` is worth ≥ 1e-5, and `c_S = 1` about 9e-5.
+
 ## Open directions (ranked, revised 2026-10-24, third pass; see `barriers/README.md`)
 
 Exact state: committed Lean branch 0.8747289; best exact value with known lemmas 0.8747257
@@ -922,4 +950,6 @@ P 0.19, with `dθ/dR = 0.133`. So 6.8e-6 needs one of:
 
 Closed this pass: seed cap, free amplifier, multi-face HIGH witness, reflected plains in the HIGH
 gate, bin-restricted LOW-only faces, slot contour `z₀`, cutoff `t₀ < 1`, two-cutoff covering
-(independent detections), and large values with a mean-square off-diagonal.
+(independent detections), large values with a mean-square off-diagonal, and mixed prime/plain
+slots (a plain slot is a third plain factor; only two plains reflect, so it costs `Λ` like a prime
+slot; `mixed-slots/`).

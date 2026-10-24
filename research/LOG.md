@@ -420,6 +420,21 @@ A catalogue cross-check (21.9k records) found nothing that moves them. → `cap-
   exponent is `E = 1/2 − 5h/12 + ℓ/2 + δ/2 + δp(ℓ − C(h)/2) + (3/4)hR`, and `∂E/∂h ≈ −7e-4`, so
   `h = 401/500` is stationary. No gain.
 
+- *Bin-restricted faces via LOW-only source steps (idea, refuted).*
+  - **The idea.** The return's plain witness only needs `Σ_{u ∈ bin} |S_u S_u ΠQ_u|²` over rows
+    in one zero bin, and these rows are zero-free right of `a + 2e` in the bin's height window. That
+    is the framework's `ActualLow` predicate (Collet Lean `LowBranch/Gate.lean`: zero maximum
+    `< a + 2e` up to height `3(i+1)Z^τ`). In a source step restricted to such rows the HIGH class
+    would be empty. A LOW-only step at `q ≈ δ ≈ 0.4546` has denominator `1 − 6qB₀/Λ₀ ≈ 0.1`
+    instead of 0.003, which suggested class-restricted faces with `Λ ≈ 6δB ≈ 2.6`.
+  - **Why it fails.** The feedback source step selects zeros on the transformed joint row
+    `w = u₀ε e n_± g₂ v_𝒰 h` (foundations (168): "zero selection uses that whole character"),
+    after both row transforms. The original row's bin says nothing about `χ_w`.
+  - **Without the transforms there is no gain.** Deleting excess slots pointwise on the original
+    bin rows costs `q = δ` per unit, which exactly cancels their threshold value `2pδ = δ` at
+    `p = 1/2`. Amplifying the original rows (`u ↦ ua⁶`) costs 5 per unit of `α` and buys only
+    `6qB₀/Λ₀ ≈ 0.9` of threshold.
+
 ## Open directions (ranked, revised 2026-10-24 after the second pass; see `barriers/README.md`)
 
 1. **Reflected-energy column branch slightly past the diagonal.** One input would move the probe

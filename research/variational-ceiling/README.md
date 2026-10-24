@@ -28,7 +28,11 @@ As the pivot spacing `δ → 0`, a node's LOW and HIGH parents tend to the node 
   `E'(s) = −Λ_min(s, E(s))`,
 
 where `Λ_min(s, e)` is the flattest slope for which some threshold `q` passes every gate at the pivot
-`b = s` and at the cap, for the face `(e + Λs, Λ, cap)` as its own parent (`continuum.py`).
+`b = s` and at the cap, for the face `(e + Λs, Λ, cap)` as its own parent (`continuum.py`;
+`continuum2.py` is the same solver with warm starts). Checking the two endpoints is exact. With a
+self parent the amplifier `a` does not depend on `b`. The scalar gates and the special sectors are
+then affine in `b`, through `T(b) = t(b) + b`. The HIGH gate is affine plus a minimum of affine gain
+forms, hence concave in `b`. So every gate attains its minimum over `[s, cap]` at an endpoint.
 A higher envelope makes the HIGH gate harder, so `Λ_min` is nondecreasing in `e`. Measured:
 `Λ_min(0.025, E ± 0.002) = 3.7683 / 3.8128 / 3.8580` and `Λ_min(0.04, E ± 0.002) = 2.9720 /
 3.0166 / 3.0620` around the chain's heights, i.e. `∂Λ_min/∂E ≈ 22.5`. So a height perturbation

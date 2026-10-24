@@ -502,6 +502,20 @@ A catalogue cross-check (21.9k records) found nothing that moves them. → `cap-
     on squarefree `n`. That part is small. The off-diagonal from Poisson in `k` brings back the same
     `N > K` excess, so the reformulation does not by itself give a proof.
 
+- *Slot cost 2 is a worst case over slot coefficients (refinement of the operator-norm entry).*
+  - Theorem 7.3 holds for arbitrary bounded slot coefficients, hence the operator norm. In each
+    application (the count's inverse witness, the probe's marked energy) the slot coefficients are
+    specific: smooth prime weights times fixed characters, Mellin-twisted by `p^{it}`. The column
+    coefficient `c(n) = β(n)A(n)` then has a large projection onto `span{χ_k³ : k ~ K}` only if it
+    correlates with quadratic characters.
+  - For a generic `c` the projection carries the fraction `K/N` and the sieve sum is the diagonal
+    `K‖c‖²`. A proof would have to show cancellation in the dual (Poisson-in-`k`) terms
+    `Σ_n β(n)A(n)(j/n)` for `j ≤ N²/K`, together with their signed sum over `j`. That is a
+    Type II estimate for cubic Gauss sums twisted by quadratic characters. The nearest known result,
+    Dunn–Radziwiłł Prop. 10.1, saves only an inexplicit `X^{ρ/2}` (`ρ < 1e-4`), for untwisted
+    `g̃(ab)`, partly under GRH-type inputs. We need `Z^{0.0008}`, which is in the same tiny-saving
+    regime, but for the twisted problem. Open.
+
 ## Open directions (ranked, revised 2026-10-24, third pass; see `barriers/README.md`)
 
 Exact state: committed Lean branch 0.8747289; best exact value with known lemmas 0.8747257

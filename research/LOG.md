@@ -212,6 +212,23 @@ A catalogue cross-check (21.9k records) found nothing that moves them. → `cap-
   - So an improved large-values estimate, even a Guth–Maynard analogue for the sextic family,
     would not move `R`. Only longer or cheaper witnesses can.
 
+- *Exact origin of the plain slot cost `6κ` (Collet MF3.70–MF3.72, paper §18.5–18.8).*
+  - The plain moment is proved by induction on the width `M` with invariant
+    `A + (6κ−1)z ≤ M` (`A = n₁ + n₂ + z`). Each step must lower the width by at least `σ`, so the
+    child's excess grows: `(A'−M') − (A−M) ≤ g − d − (K₀−K) + w − w_o ≤ 6(w + ℓ)` (MF3.70).
+  - In the amplified main norm (`w = 0`) the row ball must grow by `6ℓ*` (`= 2σ`) to contain
+    `hp⁶`. That growth also supplies the width progress, and the only allowance is the density
+    saving `ℓ*`, so the ratio is 6. For the valuation-1 extraction error the ratio is `σ/ℓ_p ≤ 6`
+    (pool primes have `ℓ_p ≥ σ/6`); valuations 6 and 7 give ratios `≤ 2` and `≤ 12/7`.
+  - The defect is paid by deleting whole slots pointwise: `|∏Q|² ≤ Z^{κz}` (MF3.47). Deleting
+    length `d` releases `6κd` of capacity for `κd` of energy (MF3.72).
+  - So slot cost = (defect/allowance ratio 6) × (pointwise energy `κ`, or `q` after LOW/HIGH).
+  - Without amplification the step has no allowance at all (`Δ_child ≥ w + ℓ = 0`), so the
+    sixth-power amplifier is what pays for the induction's progress, not something the slots need.
+  - Reducing the ratio needs a cheaper allowance than `G(u, hp⁶) = G(u, h)`. Folding rows modulo
+    the Gauss moduli fails because `H(h) = Σ_u B(u)G(u,h)` has no short period. Reflecting long
+    child plains is already used for `A > 5M/6`.
+
 ## Open directions (ranked)
 
 1. **Column branch of MI / long Möbius moment beyond amplification.** Both need cancellation in sums

@@ -106,3 +106,34 @@ python3 hybchain.py chain_hyb.json                          # Lemma F hybrid, co
 python3 hybchain2.py 0.45 0.0335 0.00025 0.050 chain_h45.json # consolidated chain (~70 min)
 python3 evalchain.py chain_h45.json [relax22] [relaxLP]       # exact return value
 ```
+
+## 5. Formalization route: Lemma F needs no new predicate (2026-10-24)
+
+An earlier note said Lemma F would need a new validity predicate, because the fork's finite
+predicate computes the crossing as `crossing n low = (low.B − n.B)/(low.L − n.L)` and requires
+`n.L < low.L`. That is not necessary.
+
+- **Collet's analytic step already allows it.** `uniform_squarefree_source_step`
+  (`Record1252270103Source/Low/GlobalInitialAssemblyUniform.lean`) takes the crossing `cross` as a
+  free parameter. Its only conditions linking child and parent are `lam ≤ lam₀` (not strict),
+  `cross ≤ cap₀` and `B − B₀ + (lam₀ − lam)·cross ≤ 0`. A self step `(B, Λ, c_{k−1}) → (B, Λ, c_k)`
+  with `cross = c_{k−1}` meets all three with equality.
+- **The finite predicate accepts a rotated self-parent.** Take the child
+  `n = (low.B − η·c_{k−1}, low.L − η, c_k)` for a tiny rational `η > 0`. Then
+  `crossing n low = c_{k−1}` exactly, `n.L < low.L`, and the crossing equals the parent's cap, which
+  `SourceValidC` allows (`crossing n low ≤ low.cap`). Every gate in `SourceFormulas.lean` reads the
+  parent only through `sourceDen`, `sourceA`, `sourceF`, `weakCap` and `low.cap`. With the rotation
+  the excess term `b + (t − low.B)/low.L` equals `(η(b − c_{k−1}) + n.L·e)/low.L`, so the amplifier
+  differs from Lemma F's `a'` by `O(η)`. The child's line lies below the parent's for `z < c_{k−1}`
+  and above it beyond, as an ordinary step requires.
+- **Cost of the rotation.** After `K` self steps the face is `(B − ηΣc_k, Λ − Kη)`. With `η = 10⁻⁹`
+  and `K ≈ 10` per node this is invisible in θ.
+
+So a Lemma F node is a short run of ordinary source steps with nearly equal slopes and increasing
+caps. Formalizing it means generating these extra nodes and their certificates (scalar gates, weak
+cap, density Bernstein checks, HIGH Bernstein trees) with the existing generator and Lean
+infrastructure. No new analytic statement and no new predicate are needed. A rough count is about
+10 self cells per late node (`Δ = 6a'(B/Λ − h)`), i.e. several hundred extra certified nodes.
+
+The density floor `0.45` (part of the 0.8747257 value) is different. It changes Collet's LD11
+uniform bound and would need an edit to the imported HIGH-count code.

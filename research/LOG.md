@@ -526,6 +526,15 @@ A catalogue cross-check (21.9k records) found nothing that moves them. → `cap-
     `r/2 + 5h/12 + 1/6`, minimized at `h = 6r/7` to `6r/7 + 1/6`. That is worse than
     amplification alone, `(1 + 5r)/6 = 1/6 + 5r/6`. No gain.
 
+- *Lemma F fits the existing Lean predicates (formalization route).* Collet's
+  `uniform_squarefree_source_step` takes the crossing as a parameter (`lam ≤ lam₀` not strict,
+  `cross ≤ cap₀`, budget `B − B₀ + (lam₀ − lam)cross ≤ 0`). In the fork's finite predicate a self
+  step is an ordinary step with a rotated parent: child `(low.B − ηc, low.L − η, c')` gives
+  `crossing = c` exactly. All gates read the parent only through `sourceDen`, `sourceA`, `sourceF`,
+  `weakCap` and `low.cap`, and the rotation changes the amplifier by `O(η)`. So Lemma F is a run of
+  ordinary nodes, and formalizing it is certificate generation only (`cap-induction/README.md` §5).
+  The density floor 0.45 is the one piece that needs an edit to imported code (LD11).
+
 ## Open directions (ranked, revised 2026-10-24, third pass; see `barriers/README.md`)
 
 Exact state: committed Lean branch 0.8747289; best exact value with known lemmas 0.8747257

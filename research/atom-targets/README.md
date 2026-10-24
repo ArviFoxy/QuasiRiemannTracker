@@ -63,3 +63,20 @@ costs the full excess, `Σ|T|² ≪ Z^{M+η}`, which is `η/2` in the low bound.
 needs `ω > 0.84`: an almost diagonal quadratic large sieve at dual length `K^{1+η}` for the reflected
 Gauss-sum coefficients. That is the same metaplectic Lindelöf-type input as before (see
 `../LOG.md`, "Amplifying the rows of the MI column branch").
+
+## The plain fourth moment is the decisive lever (added 2026-10-24, `plain2.py`)
+
+Both source faces are faces of the plain fourth moment with slots: `C` for the count's plain
+witness, `P` for the physical numerator. Float model, `θ*` change:
+
+| change | `Δθ*` |
+|---|---|
+| count face `C` → `(B, Λ) = (1, 2)` (slot cost 2, as in the inverse moment) | −5.8e-5 |
+| physical face `P` → `(1, 2)` | −7.6e-4 |
+| both | −1.35e-3 |
+| modest: `Λ_C 2.90 → 2.85`, `Λ_P 3.01 → 2.95` (2%) | −2.5e-5 |
+
+The numerator's capacity `C_N = (B_P h − 4ℓ)/Λ_P` enters `E` as `−qC/2`, which is why `P` dominates.
+The slope is `Λ ≈ 6qB`. The 6 is the descent's defect/allowance ratio from sixth-power row
+amplification (`../LOG.md`, "Exact origin of the plain slot cost"). The `q ≥ 1/2` is the LOW energy,
+pinned by the HIGH gate.

@@ -5,7 +5,8 @@ the best upstream PR (smaller gains count only if they simplify or clarify the p
 
 | reference | θ | note |
 |---|---|---|
-| upstream PR #70 (Mark Lewko), best upstream PR | 0.874772906 | checked 2026-10-24 |
+| upstream PR #70 (Mark Lewko) | 0.874772906 | |
+| upstream PR #71 (recost of PR #69 graph), best upstream PR | 0.87477290596 | 4e-11 below #70; checked 2026-10-24 |
 | this branch, Lean (`submissions/repeated-marks-20261024`) | 0.8747289 | 4.4e-5 below PR #70 |
 | next milestone (1e-5 below this branch) | ≤ 0.8747189 | |
 
@@ -286,6 +287,15 @@ A catalogue cross-check (21.9k records) found nothing that moves them. → `cap-
   - Its challenge to slot cost 2 (slot coefficients are smooth prime sums at one height) is answered
     by the MI-column entry above: the cost is the reflection modulus `c²`, independent of the
     coefficients.
+
+- *Growing the probe's auxiliary modulus `b*` (Gram exceptional frequencies).* In the additive Gram
+  bound (paper Prop. "quantitative additive Gram bound") `P_a = Y'²/Q` with row ball
+  `Q = q_{b*}X'Y'`. A large single prime in `b*`, which leaves the Euler factor ≈ 1, would shrink
+  the exceptional count `P_a^{1/6}` by `q_{b*}^{1/6}`. But the completed-row norm (paper Lemma
+  "compensated completed-row norm") is taken over the same ball and is diagonal there (`∝ Q`).
+  The low bound `Y'^{-1/2}P_a^{1/12}(row norm)^{1/2}` therefore scales as `q_{b*}^{5/12}`, a loss.
+  Fixed `b*` is optimal. The Gram's `P_a^{1/6}` stays a genuine sixth-power-invariance count:
+  `A_{ma⁶} = A_m` and `B_{ma⁶} = B_m` on coprime parts.
 
 ## Open directions (ranked, revised 2026-10-24 after the second pass; see `barriers/README.md`)
 

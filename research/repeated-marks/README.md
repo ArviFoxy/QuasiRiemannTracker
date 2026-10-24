@@ -195,6 +195,13 @@ $\delta=F/2$ can drop below both $A_jS+B_jF$ and $\nu S$. $\square$
 The lemma is formalized in Lean 4 with Mathlib (`lean/LemmaC.lean`:
 `RepeatedMarks.facet_payment`, `RepeatedMarks.lemmaC`).
 
+`lean/RepeatedGain.lean` (Mathlib only, 31 theorems) formalizes:
+- the per-class thresholds, branches and roots, and the identity $f_0=\nu S$;
+- the facet linearity and the coefficient bounds $A,B\ge0$, $B\le C_{\max}$;
+- $\mathcal G_K=\inf_pf_p$ and its basic bounds;
+- Lemma C for $\mathcal G_K$ (`gainK_payment`), width monotonicity
+  (`gainK_width_mono`) and homogeneity (`gainP_smul`).
+
 For comparison, PR #69's HF12 bounds the loss by Lipschitz constants. It needs
 every facet to satisfy $A_j+2B_j\le\nu$; for PR #69's gain this is
 $\varphi_\nu+2C_{\max}\le\nu$, where $C_{\max}=\varphi_\nu/3$ exactly. It also

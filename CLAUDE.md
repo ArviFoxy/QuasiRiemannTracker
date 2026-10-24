@@ -43,3 +43,9 @@
 - The exchange rate 6 is forced by the architecture: order 6 is the only character order whose
   Möbius-twisted Gauss sums collapse to explicitly known (cubic) theta coefficients.
 - Inexplicit savings (Dunn–Radziwiłł type) cannot enter the rational certificates.
+- Why the atoms are hard (proved structure, `research/lean-lab/FEGroup.lean`). Counting zeros needs
+  positivity, which forces second moments. The two second moments behind the count have affine
+  functional-equation groups: C̃₂ (inverse second moment, invariant `s₁+s₂+w`) and D̃₄ (plain fourth
+  moment). Only Hecke moves at cubes and sixth powers change the invariant. Affine type is the
+  boundary where the classical analogues have only log savings unconditionally. Mixed second
+  moments are hyperbolic (worse). Finite-type cross moments are signed and cannot count.

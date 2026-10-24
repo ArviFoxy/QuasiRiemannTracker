@@ -395,6 +395,23 @@ A catalogue cross-check (21.9k records) found nothing that moves them. → `cap-
     canonical square, keeping signed off-diagonal terms (the same conclusion as "Why the MI stops at
     `D = U`"). This is a heuristic (it assumes square-root dual sums on average), not a proof.
 
+- *The source chain is an ODE* (`chain-ode/`). The binding gates reduce the chain to
+  `E'(s) = −6qE/(1 − 6qs)` with `q = (15 − 10/X)/6` and `X = E + (1 − g(s))s`. Here `E` is the
+  envelope, the first equation is the LOW limit `Λ ≥ 6qB`, the second is the HIGH gate at the pivot,
+  and `g` is the marked gain as a fraction of its cap `νS`.
+  - With `g(s)` read off the consolidated chain, the ODE reproduces the 107-node chain to 1.2e-4 in
+    envelope at `s = 0.0412` and `0.045`. So discretization and gate reserves hold less than 1e-6 of
+    θ.
+  - Correction to the "free amplifier" entry: the HIGH gain is far below its cap early in the chain
+    (`g ≈ 0.43` at `s = 0.014`, 0.85 at 0.030) and close to it late (0.95 at 0.042). A perfect gain
+    everywhere would raise both faces by 1.6e-3, about 1.7e-5 in θ. But the early gap is the
+    inverse cap `r + 2z ≤ F` (slot cost 2). The best of all earlier faces as HIGH plain witness,
+    even chosen per amplitude class, gives exactly the same gain.
+  - Late in the chain the faces sit on the unmarked zero-density boundary `t = 10/(15 − 6q)`. So the
+    chain is fixed by `ρ(ν)` (the long line), the exchange rate 6 and slot cost 2.
+  - The ODE is contracting (perturbations lose about 25% per 0.02 of width), which is why the seed
+    does not matter.
+
 ## Open directions (ranked, revised 2026-10-24 after the second pass; see `barriers/README.md`)
 
 1. **Reflected-energy column branch slightly past the diagonal.** One input would move the probe

@@ -66,7 +66,7 @@ Measured (density floor 0.45, Lemma F, same gates and fees as the consolidated c
 | pivot spacing | `E(0.0412)` | `E(0.045)` | θ* |
 |---|---|---|---|
 | 0.002 | 0.8366036 | 0.8256990 | 0.8747301 |
-| 0.001 | (running) | | |
+| 0.001 | 0.8368603 | 0.8259606 | 0.8747273 |
 | 0.0005 | (running) | | |
 | 0.0005 to `s = 0.0335`, then 0.00025 (consolidated) | 0.8369975 | 0.8261064 | 0.8747257 |
 | 0 (continuum) | (running) | | |

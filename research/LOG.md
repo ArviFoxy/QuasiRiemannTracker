@@ -778,6 +778,18 @@ A catalogue cross-check (21.9k records) found nothing that moves them. → `cap-
     parent's deviation (about 7e-5 per step), not by the fees, so the recost is worth about 1e-8.
   - The fees matter only inside Lemma F self cells (consolidated chain −3e-7, continuum −8e-7).
 
+- *Conrey–Iwaniec–Soundararajan's asymptotic large sieve (arXiv:1105.1176) does not reach atom 2.*
+  - Their family is all primitive characters with `q ≍ Q` (size about `Q²`).
+  - Theorem 2.2: `SS(A×B) = SS_diag + O(Q(log Q)^{−C})` for arbitrary coefficients with
+    `N ≤ Q^{1−ε}`.
+  - Theorem 2.3: the same up to `N ≤ Q^{2−ε}` when the coefficients are L-function coefficients of
+    degree `≤ 3` times a mollifier of length `X ≤ Q^{1−ε}` (`X ≤ Q^{1/2}` for degree 3). The
+    off-diagonal "switching moduli" terms supply the secondary main term.
+  - So their asymptotic stays inside the classical diagonal range `N ≤ Q²` of the full family, with
+    log-power savings. Atom 2 needs the opposite: past the diagonal of a thin family (length
+    `D > H` rows), with an explicit power saving. Their remark that degree 4 "can be approximated
+    by two partial sums of length `N ≍ Q²`, but not shorter" marks the same barrier.
+
 ## Open directions (ranked, revised 2026-10-24, third pass; see `barriers/README.md`)
 
 Exact state: committed Lean branch 0.8747289; best exact value with known lemmas 0.8747257

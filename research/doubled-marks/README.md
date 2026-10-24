@@ -1,5 +1,12 @@
 # Doubled marks in the source HIGH count
 
+> **Superseded.** See `../repeated-marks/README.md`. It uses each slot up to $K$ times,
+> replaces §4's (C1) argument by a general payment lemma (Lemma C), and removes
+> PR #69's conservative return guards (Lemma D). The certificate below remains valid for
+> the doubled-mark chain. One correction from independent review: PR #69 already routes
+> the HIGH inverse field through the overlap adapter (pools may overlap); what it never
+> does is repeat a slot.
+
 **Result.** Every Dirichlet $L$-function is nonvanishing on
 
 $$\Re s>\theta=\frac{8747514}{10^7}=0.8747514,$$

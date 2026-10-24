@@ -1,0 +1,67 @@
+node 0 certified
+node 1 certified
+node 2 certified
+node 3 certified
+node 4 certified
+node 5 certified
+node 6 certified
+node 7 certified
+node 8 certified
+node 9 certified
+node 10 certified
+node 11 certified
+node 12 certified
+node 13 certified
+node 14 certified
+node 15 certified
+node 16 certified
+node 17 certified
+node 18 certified
+node 19 certified
+node 20 certified
+node 21 certified
+node 22 certified
+node 23 certified
+node 24 certified
+node 25 certified
+node 26 certified
+node 27 certified
+node 28 certified
+node 29 certified
+node 30 certified
+node 31 certified
+node 32 certified
+node 33 certified
+node 34 certified
+node 35 certified
+node 36 certified
+node 37 certified
+node 38 certified
+node 39 certified
+node 40 certified
+node 41 certified
+node 42 certified
+node 43 certified
+node 44 certified
+node 45 certified
+node 46 certified
+node 47 certified
+node 48 certified
+node 49 certified
+node 50 certified
+node 51 certified
+node 52 certified
+node 53 certified
+node 54 certified
+node 55 certified
+node 56 certified
+node 57 certified
+node 58 certified
+receipt min: principal_z 8.666666666666667e-05 bad: {}
+edge old_small: 1 rectangles, min return coeff 8.641e-02, min admission coeff None
+edge old_peak: 1 rectangles, min return coeff 5.857e-02, min admission coeff None
+edge old_switch: 2 rectangles, min return coeff 2.156e-03, min admission coeff None
+edge new_switch: 2 rectangles, min return coeff 2.156e-03, min admission coeff None
+edge new_kink: 4 rectangles, min return coeff 1.372e-03, min admission coeff None
+edge new_top: 26 rectangles, min return coeff 2.491e-08, min admission coeff 0.0012534577648349201
+CERTIFIED theta = 8747289/10000000 = 0.8747289 rectangles 36

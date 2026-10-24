@@ -65,3 +65,27 @@ The exact pipeline with every known refinement (Lemma F, fine pivots, density fl
 | Lindelöf-quality mean values for cubic Gauss sums twisted by quadratic characters (column branch beyond the diagonal) | atom 1, all three places |
 | a Möbius Type II estimate beyond the diagonal for sextic families, or any zero-density input stronger than the count itself | atom 2, long branch |
 | a plain fourth moment with slots that subtracts the Patterson bias instead of amplifying | atoms 2 and 3 on the plain side; slot cost 2 there would lower the count `R` from 0.6047 to about 0.5996, worth about `7·10⁻⁴` in θ |
+
+## Additions after the second pass (2026-10-24, later)
+
+- **Why slot cost 2 cannot be removed by reflecting again.** The column branch's dual sums are a
+  fixed cusp expansion twisted by the quadratic `χ_h³`. Re-reflecting them past their critical
+  length would make the branch diagonal. But each reflection adds a theta factor `χ_p^{∓2}`, so the
+  twist alternates between quadratic and sextic, and the generic sextic sieve's `(ML)^{2/3}` term
+  then costs more than the excess.
+- **Why the plain slot cost is `6κ` (then `6q`).** Slots are carried unchanged through the two
+  transforms because prime sums cannot be reflected. Only the row scale shrinks, by the amplified
+  ball growth `6ℓ`, against a density allowance `ℓ`. Pointwise deletion at rate `κ` (or `q` for LOW
+  rows) pays the difference.
+- **The source chain is HIGH-limited.**
+  - With the HIGH gate switched off, the chain reaches the LOW limit `Λ = 3B` in one step, about
+    +0.02 in face height at `s ≈ 0.041`.
+  - The marginal value is `dθ*/dε_H ≈ −4.4e-3`, so 1e-5 needs `ε_H ≈ 0.0025`. That is a count
+    improvement at densities 0.5–0.75, about 30 times what the return's count needs directly.
+  - The centered terminal gate and every other gate have no value.
+- **The physical face is evaluated on a level curve of the chain.** `(B − 4ℓ/h)/Λ` is flat along
+  the chain's end, because `B` falls with `Λ`. So PR #69's `Λ_P > 3` restriction (needed only for
+  FR21, which Lemma D removes) is worth just 2e-7.
+- **Explicit-formula scale transfer.** Saturation comes from the zero-free bin, at one scale only.
+  The binding crossing needs a left zero with `|1/L'| ≈ U^{0.085}` about `0.23` to the left. Jensen
+  allows this with mildly elevated local zero density, and nothing counts such rows below `U^R`.

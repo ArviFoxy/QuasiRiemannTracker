@@ -435,22 +435,27 @@ A catalogue cross-check (21.9k records) found nothing that moves them. → `cap-
     `p = 1/2`. Amplifying the original rows (`u ↦ ua⁶`) costs 5 per unit of `α` and buys only
     `6qB₀/Λ₀ ≈ 0.9` of threshold.
 
-## Open directions (ranked, revised 2026-10-24 after the second pass; see `barriers/README.md`)
+## Open directions (ranked, revised 2026-10-24, third pass; see `barriers/README.md`)
 
-1. **Reflected-energy column branch slightly past the diagonal.** One input would move the probe
-   geometry (`dθ/dε = −0.0628`, so `ε = 1.6e-4` gives 1e-5), the count's MI and the HIGH gain at
-   once. It needs an almost diagonal quadratic large sieve at dual length `K^{1+η}` for the
-   reflected cubic-theta coefficients, which is Lindelöf-type input for cubic Gauss sums twisted
-   by quadratic characters.
-2. **Plain fourth moment by a reflection recursion instead of the amplified descent.**
-   - The plain canonical coefficient after Poisson is `γ₁ = γ₂²G = λGγ̄₂`: a twisted conjugate
-     cubic-theta coefficient with no Möbius factor. The inverse moment's is `ᾱγ₂ = μλ̄γ₂`.
-   - It would need the Patterson main term subtracted inside the canonical recursion.
-   - Payoff: slot cost 2 instead of `Λ ≈ 3` gives `R ≈ 0.5996`, about 7e-4 in θ, and the source
-     chain would become unnecessary.
-3. **Long Möbius moment beyond sixth-power amplification.** This needs zero-density-strength
-   input. Bootstrapping with the count is circular at `δ ≈ 0.45–0.5`, and the hybrid `t`-aspect is
-   worse than sixth powers.
-4. Closed this session: joint witnesses (they reproduce Cauchy–Schwarz), the sparse-image large
-   sieve (equivalent to the original problem), large-values methods (no loss to recover), the Gram
-   bias (genuine), probe redesigns (forced active marks), and detector variants.
+Exact state: committed Lean branch 0.8747289; best exact value with known lemmas 0.8747257
+(Lemma F + fine pivots + density floor); milestone 0.8747189, so 6.8e-6 is still missing on top of
+Lemma F. Dual weights of the count's three lines at the binding point (`δ = 0.4546`, `p = 1/2`,
+cutoff `t* = 1.155`, detections `(r, m) = (0.742, 0.413)` and `(1.155, 0)`): I 0.56, L 0.31,
+P 0.19, with `dθ/dR = 0.133`. So 6.8e-6 needs one of:
+
+1. **Long Möbius moment beyond sixth-power amplification.** About 1.6e-4 in the exponent
+   `(1+5r)/6` at `r ≈ 1.155` (2.6e-4 for a full 1e-5). This is the most efficient lever. It
+   needs zero-density-strength input or a mean value of `Σ_u|M_u(D)|²` beyond the inverse moment's
+   diagonal `D ≤ H` (signed off-diagonal cancellation).
+2. **Marked inverse moment budget.** `r + 2z ≤ 1 + 3e-4` in the binding configuration
+   `r ≈ 0.742`, `z ≈ 0.129`. The column-branch excess appears to be a genuine dual diagonal, so
+   this needs an inverse-moment proof that avoids the positive canonical square.
+3. **Physical side.** `c_g = 1/12 − 9e-5` (the sixth-power Gram bias), or the marked energy
+   relaxed to `x + y + ℓ ≤ 1 + 1.1e-4`.
+4. **Source chain.** It is an ODE fixed by `ρ(ν)`, the exchange rate 6 and slot cost 2
+   (`chain-ode/`). It needs `ε_H ≈ 0.0017` (a HIGH count better by 0.0017 at `ν ≈ 0.5–0.75`), or
+   the exchange rate `6 → 5.92`. Discretization holds less than 1.3e-6.
+
+Closed this pass: seed cap, free amplifier, multi-face HIGH witness, reflected plains in the HIGH
+gate, bin-restricted LOW-only faces, slot contour `z₀`, cutoff `t₀ < 1`, two-cutoff covering
+(independent detections), and large values with a mean-square off-diagonal.

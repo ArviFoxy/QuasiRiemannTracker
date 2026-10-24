@@ -122,6 +122,7 @@ Lemma D removes, and dropping it moves θ* by −2e-7.
 | `ε_H = 1e-3` | 0.837423 | 0.87474634 | −4.3e-6 |
 | `ε_H = 2e-3` | 0.838052 | 0.87474191 | −8.8e-6 |
 | `ε_H = 4e-3` | 0.839325 | 0.87472516 | −2.6e-5 (chain reaches `Λ = 3B` at pivot 0.041 and stops at `q = 1/2`) |
+| amplifier free in every gate except the LOW construction (all `a`-terms dropped from HIGH, centered, `1 − T − 5a`, `1 − r₀ − T − 4a`, `1 − r₀ − T − 4.5a`, `1/75 − a`, `L − 7a`) | 0.837046 | 0.87474896 | −1.7e-6 |
 
 Reading:
 - The HIGH gate alone sets the chain's descent speed. With it switched off, the chain reaches the LOW
@@ -134,3 +135,29 @@ Reading:
   return needs directly (`dθ/dR = 0.133`, so 7.5e-5).
 - The chain is therefore not a cheap amplifier of count improvements. Once `ε_H ≳ 0.004`, the floor
   `q ≥ 1/2` (LD1) binds next.
+- The amplifier's own costs are not the limit either. Making it free in every gate (it still
+  shrinks the child scale `F = 1 − 6a` in the LOW construction) gains only 1.7e-6
+  (`compound/voi_freeamp.log`). What limits the descent is the non-amplifier part of the HIGH gate,
+  `1 − ρ(ν) − νT + G(ν)` at `ν = q`, i.e. the HIGH count itself.
+
+## Natural seed cap and the HIGH gate's binding facet (added 2026-10-24, `compound/seedcap.py`)
+
+Collet allows any fixed seed cap `h0` that the natural capacity inequality permits (sources.tex,
+"the first input is the already proved natural theorem G(1,K,h0)"). The chain uses `h0 = 0.055` and
+caps `min(0.0549989, s + 0.016)`. Rebuilding the K = 8 chain with a larger seed cap and larger caps:
+
+| `h0` | cap offset | envelope at `s = 0.0412` | θ* (float) |
+|---|---|---|---|
+| 0.055 | 0.016 | 0.836795 | 0.87475067 |
+| 0.065 | 0.016 | 0.836798 | 0.87475065 |
+| 0.08 | 0.016 | 0.836798 | 0.87475065 |
+| 0.08 | 0.025 | 0.836562 | 0.87475225 |
+| 0.08 | 0.035 | 0.836243 | 0.87475442 |
+
+The seed cap is worth 2e-8. Wider caps lose, because the centered gate binds at `b = cap`.
+
+The reason shows in the HIGH gain at the end of the chain (`ν = q`, `b = cap`). Its binding facet on
+every late node is the pair (inverse cap `r + 2z ≤ F`, parent face `B₀ − Λ₀z`) at `p ≈ 0.45–0.5`.
+The plain cap line `2p·h₀·F` is 4% above it, and the K-copy inverse line is three times above it. A
+larger parent cap therefore cannot raise `G`. The binding inverse facet is the same slot cost 2 that
+binds the return's count.

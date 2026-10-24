@@ -364,6 +364,17 @@ A catalogue cross-check (21.9k records) found nothing that moves them. → `cap-
     the twist between quadratic and sextic, and only the quadratic step has a sharp large sieve.
     This is the precise reason the MI recursion stops, and why slot cost 2 is intrinsic.
 
+- *Free amplifier and natural seed cap (two more chain experiments, `atom-targets/compound/`).*
+  - Making the LOW amplifier free in every gate except its own construction (all `a`-terms dropped
+    from the HIGH, centered and auxiliary gates) gains only 1.7e-6 (`voi_freeamp.log`). The chain's
+    descent is limited by the HIGH gate's count part `1 − ρ(ν) − νT + G` at `ν = q`, i.e. by a
+    zero-density estimate for the family at `σ = (1 + q)/2 ≈ 0.75`. `ρ` is the Xu–Sang exponent.
+  - Raising the natural seed cap `h0` (any fixed `h0` is admissible) from 0.055 to 0.08 gains 2e-8.
+    Wider caps lose 1.6e-6 to 3.8e-6 because the centered gate binds at `b = cap`.
+  - The HIGH gain's binding facet on every late node is (inverse cap `r + 2z ≤ F`, parent face). The
+    plain cap line and the K-copy line are slack. So the chain feels slot cost 2 directly, but only
+    through `ε_H`, at `dθ/dε_H ≈ −4.4e-3`.
+
 ## Open directions (ranked, revised 2026-10-24 after the second pass; see `barriers/README.md`)
 
 1. **Reflected-energy column branch slightly past the diagonal.** One input would move the probe

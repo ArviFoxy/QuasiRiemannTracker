@@ -82,6 +82,29 @@ A catalogue cross-check (21.9k records) found nothing that moves them. → `cap-
   and Möbius×slot pieces raise the amplification cost (marks cost 5/3 > 2δp in the long branch).
   No gain.
 
+- *Count-face selection.* Choosing face C by the binding plain width `(B − 2m*)/Λ` instead of the
+  height at z = 0.045 selects the same node (θ* = 0.8747266). No gain.
+- *Bootstrap re-feed.* Rebuilding the consolidated Lemma-F chain with the natural cost re-fed from
+  θ = 0.8747289 (`K = 4.4967468` instead of 4.4973108) changes face heights by about +3e-6 per node,
+  worth about 1e-8 in θ. The chain's end faces are set by the LOW/HIGH dynamics (q → 1/2), not by the
+  seed. No gain.
+- *Probe geometry decoupled from the pool (x + y < 1 − ℓ).*
+  - The generic return fixes x + y = 1 − ℓ. The marked energy (198) only needs x + y + ℓ ≤ 1, and
+    (199) only needs 1 + 3ℓ < 2(x + y).
+  - At fixed (x, y) the return exponent rises with ℓ (∂E/∂ℓ ≈ +0.47, mostly via the conductor top
+    h = 1 + ℓ − x), which looked like a large gain.
+  - It is not. Collet's own definition of the signal normalization is k = 5/6 − x/3 − ℓ/6
+    (`Cycle61/Assembly/Geometry.signalShift`), which equals (4 + y − x)/6 only on x + y = 1 − ℓ. With
+    the true k, θ_phys = 5/6 + (x + y)/12 − ℓ/6.
+  - E and θ_phys then have opposite gradients along the constraint: a Pareto optimum. No gain.
+- *Self-HIGH-parent induction* (the node at a smaller cap as its own HIGH parent). The chain's HIGH
+  parent is already the immediate predecessor, and at the binding pivot both faces coincide. No gain.
+- *Residue structure of the inverse witness* (idea, not a result). At a zero,
+  `Σ_n μ(n)ψ(n)n^{-ρ}W(n/D) = Ŵ(0)/L'(ρ) + (left-shifted integral)`, so all dyadic inverse witnesses
+  share the residue 1/L'(ρ). If the residue dominated, the inverse witness could always be taken at
+  length r ≈ 1, giving the density-hypothesis value I = 1 − δ. Blocked: the error term needs control
+  of 1/L to the LEFT of the zero, and nothing is known there.
+
 ## Open directions (ranked)
 
 1. **Column branch of MI / long Möbius moment beyond amplification.** Both need cancellation in sums

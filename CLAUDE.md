@@ -24,3 +24,22 @@
   attempts, to build the knowledge base.
 - Do not open pull requests unless asked. Keep research files and this file off any branch used for
   an upstream PR.
+
+## State of play (updated 2026-10-24, late)
+- **Structural levers are exhausted.**
+  - The source graph is at its variational ceiling: θ* = 0.8747241 (continuum, fine fees), against
+    the milestone 0.8747189 (`research/variational-ceiling/`).
+  - The return's receipts, geometry, numerator Hölder step and count faces have no slack
+    (`research/return-slack/`).
+  - The formalizable package (Lemma F cells plus fine fees) is worth 0.8747263, i.e. 2.6e-6, below
+    the bar.
+- **What remains is analytic, and both binding atoms share one root**
+  (`research/barriers/README.md`, "Third pass"). The inverse moment's positivity step restores a
+  dual diagonal, and both atoms need a signed bound past the diagonal with an EXPLICIT exponent:
+  - (A) the quadratic large sieve for slot-twisted cubic theta coefficients stays diagonal up to
+    `K^{1+δ'}`, `δ' ≥ 1.3e-4`;
+  - (B) the sextic Möbius mean value has `λ ≥ 0.16834` (equivalently, the inverse moment stays
+    diagonal up to `D ≤ H^{1+2.7e-4}`).
+- The exchange rate 6 is forced by the architecture: order 6 is the only character order whose
+  Möbius-twisted Gauss sums collapse to explicitly known (cubic) theta coefficients.
+- Inexplicit savings (Dunn–Radziwiłł type) cannot enter the rational certificates.

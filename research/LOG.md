@@ -790,6 +790,59 @@ A catalogue cross-check (21.9k records) found nothing that moves them. → `cap-
     `D > H` rows), with an explicit power saving. Their remark that degree 4 "can be approximated
     by two partial sums of length `N ≍ Q²`, but not shorter" marks the same barrier.
 
+- *Round-4 spectral agent: no spectral route; why positivity pays the diagonal; the functional-
+  equation group is affine.* This is the subagent's report; the claims flagged below are its own
+  and not independently checked.
+  - **No Kuznetsov input exists.** Every off-diagonal object is a Gauss sum `S(r, 0; c)`, an
+    Eisenstein or theta coefficient, times multiplicative twists. It is never `S(m, n; c)` with
+    `mn ≠ 0`. Detecting marks additively, writing `χ_h` through `θ₂`, and Farey sums all collapse
+    back to single-frequency Gauss sums. A spectral large sieve is itself a positivity bound.
+  - **The restored diagonal comes from positivity, not from the theta residual spectrum.**
+    - In the dual row variable it is the pole of `ζ_K` at `w' = 1` from the principal pairs, with
+      mass `∫𝓕Φ = Φ(0)`.
+    - Positivity needs `𝓕Φ ≥ 0`, so `Φ` must be positive definite, and then `Φ(0) = max Φ ≥ 1`.
+    - With an annulus weight (`Φ(0) = 0`) the pole cancels exactly, but what is left is the signed
+      off-diagonal.
+    - `θ₃` (the residual spectrum of the 3-fold cover) is the dual vector itself. Its Patterson
+      pole is absent here because `α` is a nontrivial K-type.
+  - **The functional equations generate the affine Coxeter group C̃₂** (agent's numerical check,
+    scratchpad `specnote/fe_group.py`).
+    - Row Poisson (`w → 1−w`, `s_i → s_i+w−½`) and the column reflections (`s_i → 1−s_i`,
+      `w → w+2s_i−1`) preserve `s₁ + s₂ + w`. This is the formal content of "Poisson twice is the
+      identity".
+    - Only Hecke moves change the invariant: cube completion on `θ₃` and sixth-power copies on the
+      sextic family. That is why the rates 3 and 6 cap every amplifier (`λ = 1/6`).
+    - The second moment of quadratic twists of a GL(2) form has the same group. There only log
+      savings are known at the critical point (X. Li, Invent. Math. 2024).
+    - So atoms 1 and 2 sit at the frontier of the affine multiple-Dirichlet-series problem.
+  - **Unmarked column branch: claimed provable from Prop. 3.1.** With no slot twist, a sum of length
+    `N > K ≥ N(h)` is past its critical length.
+    - Reflect it to length `K²/N`, apply Poisson in `h` (theta becomes μ), and bound the Möbius rows
+      by sixth-power amplification. This gives `Σ_h|S_h|² ≼ K` for every `N > K`.
+    - Plausibly this is what the unmarked toy (ratio ≈ 1 at `N ≈ 10K`) measured.
+    - It is not used anywhere: every column branch in the argument is marked.
+  - **Marked column branch = slot cost 2, exactly.**
+    - With the twist `χ_P^{−2}` the critical length is `K·N(P)`. In the band `[K, K·N(P))`
+      reflection lengthens the sums and the large sieve pays `N`. That is the whole obstruction.
+    - Bookkeeping (mine): if the marked column branch were diagonal (`≼ K = Z^H`), the binding
+      child's condition would become `H ≤ F_c`, i.e. `2(r+z) − m ≤ r + z`, i.e. `r + z ≤ m`. Slot
+      cost would drop from 2 to 1.
+    - So target (A) is atom 1 in its sharpest form. Partial versions (diagonal up to
+      `K^{1+δ'}`) relax the budget by about `δ'H`.
+  - **The assumption that pins both atoms:** metaplectic covers have Hecke operators only at n-th
+    powers (Kazhdan–Patterson).
+    - If `θ₃` were a `U_p`-eigenform at the slot primes, a mark would rescale rather than twist
+      (`c_θ(pn) = c_θ(p)c_θ(n)(n/p)₃^{±}`), and marked (A) would reduce to unmarked (A).
+    - If cubes or squares acted as exact copies on the sextic family, amplification would give
+      `λ = 1/3` or `1/2`.
+    - Both are excluded by theorems.
+  - **Explicit spectral inputs exist but miss the obstruction.**
+    - No exceptional cusp forms at level `Γ₂` of the cubic cover, with `θ₃` the only exceptional
+      point (Dunn).
+    - Flicker's correspondence plus Blomer–Brumley give `Re ν ≤ 7/(64n)` elsewhere.
+    - Kuznetsov on the cubic cover exists (Livné–Patterson, Louvel, Proskurin) but handles only
+      `S(m, n; c)`.
+
 ## Open directions (ranked, revised 2026-10-24, third pass; see `barriers/README.md`)
 
 Exact state: committed Lean branch 0.8747289; best exact value with known lemmas 0.8747257

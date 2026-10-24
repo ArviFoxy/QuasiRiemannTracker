@@ -76,3 +76,21 @@ zero-density exponent `ρ(ν)` near `ν ≈ 0.5–0.75`, the exchange rate 6, an
 the early gain. All three are the atoms listed in `../barriers/README.md`.
 
 Run: `python3 chain_ode.py` (seconds).
+
+## Two LOW classes with an older parent (priced, negative)
+
+The idea: rows with density in `[q₁, q₂)` are erased with an older parent `j` (larger `Λ_j/B_j`,
+so `q₂ < Λ_j/(6B_j)` is allowed). The HIGH gate then starts at `q₂ > q₁`. The amplifier is shared
+by all rows (they are classified after both transforms), so at the pivot it becomes
+`a₂ = q₂·gap_j/(Λ_j − 6q₂B_j)`, where `gap_j` is the envelope's excess over node `j`'s line. The
+HIGH gate pays `a₂(5 − 6ρ)`.
+
+| node | `d(H+G)/dν` at `ν = q` | net HIGH reserve change, `j` = 1, 2, 3, 5, 8 steps back (best margin) |
+|---|---|---|
+| 60 | 0.182 | −2.2e-4, −2.9e-4, −3.5e-4, −4.6e-4, −6.2e-4 |
+| 70 | 0.175 | −2.2e-4, −2.9e-4, −3.5e-4, −4.6e-4, −6.3e-4 |
+| 76 | 0.171 | −2.1e-4, −2.8e-4, −3.5e-4, −4.7e-4, −6.4e-4 |
+
+The gate rises only about 0.17 per unit of density, because the gain fraction falls with `ν`.
+The amplifier the older parent needs always costs more. This is consistent with the earlier
+"multi-ancestor LOW parents: nothing measurable".

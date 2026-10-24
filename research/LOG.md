@@ -676,6 +676,40 @@ A catalogue cross-check (21.9k records) found nothing that moves them. → `cap-
   - So the physical numerator's Hölder weight `3/4` is tied to the count's plain line and is not an
     independent lever.
 
+- *Audit of the long line and the common root of atoms 1 and 2* (2026-10-24, reading OpenAI 7/8
+  §"Amplification on sixth-power-free rows" and §"Initialization of the marked moment", and the
+  alternate 11/12 preprint, Oct 5).
+  - **The amplification is used at full strength.**
+    - The exact identity `M_u(D) = Σ_{d | rad a} μ(d)ψ_u(d)q_d^{−1/2}M_{ua⁶}(D/q_d)` handles shared
+      primes.
+    - `(u, a) ↦ ua⁶` is injective, also with units: all six units are sixth roots of unity, so unit
+      and conjugate lifts add no new rows.
+    - The ball needs `H ≥ D^{1+c}` (the inverse moment's diagonal regime).
+    - So `e(r) = max(1, (1+5r)/6)` is exact for this method. Lifts by units or by `λ = 1+2ω` only
+      twist the target by a fixed ray character, so they are not copies.
+  - **The 11/12 base is the same exchange.** In the alternate proof the target `A₁(D)` has the
+    copies `A_{p⁶}(D) = A₁(D) + O(D/Y)`, about `H^{1/6}` of them, inside the diagonal family bound
+    `Σ_{u≤H}|A_u(D)|² ≪ DH` (with `H = D^{1+ϑ}`). That gives `|A₁|² ≪ DH^{5/6}`, i.e.
+    11/12 = 1 − 1/(2·6). The compensated probe then subtracts `ℓ/4` (7/8 at `ℓ = 1/6`). So the
+    exchange rate 6 sits under the whole architecture, not only under the long line.
+  - **Atoms 1 and 2 share one root.** The inverse moment's initialization expands the row square,
+    applies Poisson in the rows, and writes the nonprincipal expression as a sum over the ray-class
+    expansion `G([z₂][z₁]^{−1}) = Σ_ϑ Ĝ(ϑ)ϑ(·)` of positive canonical squares over the dual rows. This
+    restores the principal pairs with total weight `G(1) = 1`.
+    - With `D` longer than the rows (long line), the dual rows `D²/U` outnumber the length, and the
+      restored dual diagonal is the `+D` of atom 2.
+    - With the mark twist (column branch), the same restored diagonal is the `N` term of atom 1.
+    - Avoiding the restoration needs an asymptotic for the canonical square with power-saving error.
+      Its off-diagonal, after a second Poisson step, is the original off-diagonal again ("Poisson
+      twice is the identity"), so both atoms are one open problem: a signed off-diagonal bound for
+      sextic Möbius/theta mean values past the diagonal.
+  - **Asymptotic-large-sieve subtraction is circular** (checked here). The idea: bound the `U`-lifts'
+    share of the ball by subtracting an asymptotic lower bound for the rest of the ball.
+    - The complement's off-diagonal is exactly minus `P` times the `U`-family's off-diagonal (plus
+      the ball's small one).
+    - Any lower bound for the complement therefore reproduces the original problem.
+    - Positivity (dropping the complement) is exactly what amplification uses.
+
 ## Open directions (ranked, revised 2026-10-24, third pass; see `barriers/README.md`)
 
 Exact state: committed Lean branch 0.8747289; best exact value with known lemmas 0.8747257

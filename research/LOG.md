@@ -730,6 +730,13 @@ A catalogue cross-check (21.9k records) found nothing that moves them. → `cap-
     - Lemma F self cells remain the efficient tool for the cap side, so the formalization estimate
       in `cap-induction/README.md` §5 stands.
 
+- *Multi-face plain line in the count: no gain at the binding point.* At `m* = 0.413` the selected
+  count face C is exactly the chain envelope's best face (`z = 0.045038` against the envelope's
+  `0.045038`, consolidated chain; identical in the 59-node chain). Elsewhere the envelope is better
+  (`+1e-3` in `z` at `m = 0.43`, `+3e-3` at `m = 0.40` from the cap `0.055` against `s_+ = 0.052`).
+  But the count is the crossing `max_m min(I(t−m), P(m))`, and that value depends on `P` only at
+  `m*`. So adding all chain faces as count candidates leaves `R` unchanged.
+
 ## Open directions (ranked, revised 2026-10-24, third pass; see `barriers/README.md`)
 
 Exact state: committed Lean branch 0.8747289; best exact value with known lemmas 0.8747257

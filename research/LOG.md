@@ -443,11 +443,11 @@ Lemma F. Dual weights of the count's three lines at the binding point (`δ = 0.4
 cutoff `t* = 1.155`, detections `(r, m) = (0.742, 0.413)` and `(1.155, 0)`): I 0.56, L 0.31,
 P 0.19, with `dθ/dR = 0.133`. So 6.8e-6 needs one of:
 
-1. **Long Möbius moment beyond sixth-power amplification.** About 1.6e-4 in the exponent
+1. **Long Möbius moment beyond sixth-power amplification.** About 1.8e-4 in the exponent
    `(1+5r)/6` at `r ≈ 1.155` (2.6e-4 for a full 1e-5). This is the most efficient lever. It
    needs zero-density-strength input or a mean value of `Σ_u|M_u(D)|²` beyond the inverse moment's
    diagonal `D ≤ H` (signed off-diagonal cancellation).
-2. **Marked inverse moment budget.** `r + 2z ≤ 1 + 3e-4` in the binding configuration
+2. **Marked inverse moment budget.** `r + 2z ≤ 1 + 4e-4` in the binding configuration
    `r ≈ 0.742`, `z ≈ 0.129`. The column-branch excess appears to be a genuine dual diagonal, so
    this needs an inverse-moment proof that avoids the positive canonical square.
 3. **Physical side.** `c_g = 1/12 − 9e-5` (the sixth-power Gram bias), or the marked energy

@@ -89,13 +89,16 @@ of a self cell is `a = (qe + r)/den`, so the LOW denominator trades `r/den` in t
 log-slope: 0.09% at Collet's `r = 10⁻⁸` (the solver settles at `den ≈ 3.7·10⁻⁴`), and 100 times less at
 `r = 10⁻¹²`, where the solver settles at `den ≈ 3.7·10⁻⁶`. PR #71's recost of Collet's graph used
 exactly this freedom: the fine tuple `(10⁻¹⁷, 10⁻¹², 10⁻¹⁰)` that the accepted source theorem permits.
-The same recost applies to our graph (`hyb_fees.py`, `continuum.py … 1e-17,1e-12,1e-10`).
+The same recost applies to our graph (`hyb_fees.py`, `continuum.py … 1e-17,1e-12,1e-10`). On our
+59-node Lean graph (old-parent cells only) it changes nothing measurable. There the LOW excess at
+the cap (about `7·10⁻⁵` per step) dwarfs the fees. The fees matter only inside Lemma F self cells.
 
 | run | `E(0.0412)` | `E(0.045)` | θ* |
 |---|---|---|---|
 | consolidated chain, fees `(10⁻¹², 10⁻⁸, 10⁻⁷)` | 0.8369975 | 0.8261064 | 0.8747257 |
 | same pivots, fees `(10⁻¹⁷, 10⁻¹², 10⁻¹⁰)` | 0.8370274 | 0.8261371 | 0.8747254 |
 | continuum, fine fees | 0.8371458 | 0.8262527 | **0.8747241** |
+| our 59-node Lean graph (old parents, no Lemma F), Collet's fees / fine fees (`k8_finefees.py`) | | | 0.8747287 / 0.8747287 |
 
 ## 5. Conclusion
 

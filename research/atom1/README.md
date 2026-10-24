@@ -115,3 +115,24 @@ coefficients of the cubic theta function at the reflected cusp) times slot sums
 vectors are quadratic characters). Any proof must use that cubic Gauss sums are not aligned with
 quadratic characters, uniformly over the slot twists. The toy computation in `toy/` says they are
 not.
+
+## 8. Where P1 sits relative to known results
+
+- **Function fields.** Over `F_q[T]` (`q ≡ 1 mod 6`), the twisted sums `Σ_{deg n = m} g̃(n)ψ(n)` come
+  from L-functions of curves, and the Riemann hypothesis for curves (Weil) gives square-root
+  cancellation for each twist. So the column branch is at its diagonal, and P1 holds there for
+  every `N`. This is evidence that P1 is true, not a route to it.
+- **Number fields.** P1 is Lindelöf-on-average for the quadratic twists `θ₃ ⊗ χ_P^{−2} ⊗ (·/R)₂`,
+  `R ≤ K`, at length `N = K^{1+δ'}`. The slot twist makes the conductor about `(KL)²`, so the critical
+  length is `KL ≫ N`, and the sums cannot be reflected. Without slots the critical length would be
+  `K`, a Voronoi reflection (Dunn–Radziwiłł) would send length `N > K` to `K²/N < K`, and
+  Goldmakher–Louvel's sieve would then be diagonal.
+- **Nearest unconditional template.** Li (Invent. Math. 2024) proves the second moment of quadratic
+  twists of a GL(2) form at the balanced point without the `ε` loss, through a large sieve with
+  Hecke-eigenvalue coefficients and prime-square inflation. P1 needs (i) the same for cubic theta
+  coefficients, where twisted multiplicativity `γ₂(ab) = γ₂(a)γ₂(b)(a/b)₃²` replaces Hecke relations,
+  (ii) a step slightly past the balanced point, and (iii) uniformity in the slot twist. None of the
+  three is known.
+- **Toy computation.** For cubic-Gauss-sum coefficients, `S/Diag` is slightly below 1 and falls as
+  `N/K` grows (0.97, 0.94, 0.87 at allowances 6, 22, 56). The off-diagonal is negative on average,
+  unlike random phases (1.00–1.09). A structural reason for this sign would be a lead.

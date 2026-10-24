@@ -105,6 +105,28 @@ A catalogue cross-check (21.9k records) found nothing that moves them. → `cap-
   length r ≈ 1, giving the density-hypothesis value I = 1 − δ. Blocked: the error term needs control
   of 1/L to the LEFT of the zero, and nothing is known there.
 
+- *Where the plain slot cost 6κ comes from* (foundations §7.2.5–7.2.8, MF3.70–MF3.72).
+  - Each plain-descent step amplifies the Gauss-row norm by `h ↦ hp⁶` (density saving ℓ, ball
+    enlargement 6ℓ). The child's capacity defect is at most 6(w + ℓ) against an allowance Δ ≥ w + ℓ.
+  - The defect is paid by deleting slots pointwise (MF3.47). A slot of length d releases 6κd
+    capacity and costs κd energy.
+  - So plain slot cost = 6 × (pointwise slot energy). Slots cannot be reflected through the
+    functional equation, unlike plains, so they have no other exit.
+  - The source chain's LOW/HIGH split lowers the energy κ → q ≈ 1/2 (Λ ≈ 6qB ≈ 2.9). The factor 6 is
+    the same sixth-power exchange rate as the long branch and the LOW amplifier.
+  - Any improvement here needs either a non-pointwise slot treatment inside the descent (the Patterson
+    bias of plain duals is what forces the amplified descent) or a better exchange rate. Both are atoms.
+- *Long Möbius moment = zero density in disguise.*
+  - For D > U, Σ_u|M_u(D)|² beyond the diagonal is a Barban–Davenport–Halberstam-type statement in
+    the regime "polynomial longer than the family". Even for classical characters this needs
+    zero-density input.
+  - Sixth-power amplification gives U^{1/6}D^{5/6} for free. Re-amplification stalls, and splitting
+    rows by zero supremum is circular.
+  - Type I pieces of Vaughan's identity vanish for D > U^{1+ε} (long plain sums are ≈ 0 by Poisson),
+    so the long sum is pure Type II. But Type II with Möbius × rough coefficients has no admissible
+    moment beyond the diagonal.
+- *Conductor top h.* The exact certificate's h = 401/500 is optimal (h = 0.801, 0.803: θ* = 0.8747268).
+
 ## Open directions (ranked)
 
 1. **Column branch of MI / long Möbius moment beyond amplification.** Both need cancellation in sums

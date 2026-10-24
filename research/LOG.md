@@ -246,6 +246,17 @@ A catalogue cross-check (21.9k records) found nothing that moves them. → `cap-
     identity for Möbius-twisted cubic theta series, i.e. an "inverse theta" recursion. That is
     open direction 2, stated precisely.
 
+- *Why the MI stops at `D = U` (mechanism).*
+  - The initialization (paper (17.71)) bounds the nonprincipal Poisson expression by a positive
+    canonical square. To do so it restores the principal (`z₁ = z₂`) terms.
+  - For an inverse polynomial of length `D` over rows `u ~ U`, the dual rows run up to
+    `H' = D²/U`. The restored dual diagonal then contributes `(U/D)·H'·D = D²` (unnormalized),
+    i.e. `D` after normalization.
+  - So any argument that passes through the positive canonical square gives `U + D`, and the
+    diagonal bound needs `D < U`. Beating `D` for `D > U` needs signed cancellation in the
+    off-diagonal (random signs give only `D√U`), not a better bound for the square. This is the
+    analytic form of "the long Möbius moment is zero density in disguise".
+
 ## Open directions (ranked, revised 2026-10-24 after the second pass; see `barriers/README.md`)
 
 1. **Reflected-energy column branch slightly past the diagonal.** One input would move the probe

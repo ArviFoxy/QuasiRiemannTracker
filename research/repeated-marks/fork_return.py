@@ -3,7 +3,8 @@
 Generic modules (Geometry classes, CountScheme, PhysicalDirect, Transport, the intermediate stage)
 are imported unchanged; the modules below hard-code the final constants and are re-instantiated
 with ours.  Usage: python3 fork_return.py GENDIR OUTDIR CAPC CAPP
-(GENDIR = output of gen_return_lean.py, i.e. containing FinalReturn/{windows,edges}.lean.part)."""
+(GENDIR = output of gen_return_lean.py, i.e. containing FinalReturn/{windows,edges}.lean.part).
+An optional fifth argument SC is the constant-width cap of the count windows (default 11/250)."""
 import os, re, sys
 
 SRC = '/home/user/QuasiRiemannTracker/submissions/hailey-collet-1252270103/src/Submissions/hailey_collet_1252270103'
@@ -91,6 +92,7 @@ def strip_block(text, name):
 
 def main():
     gen, out, capC, capP = sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4]
+    sC = sys.argv[5] if len(sys.argv) > 5 else '11/250'
     fr = os.path.join(out, 'FinalReturn')
     os.makedirs(fr, exist_ok=True)
     texts = {m: open(f'{SRC}/Record1252270103Return/{m}.lean').read() for m in FORKED}
@@ -138,6 +140,9 @@ def main():
                                 f'def countGlobal : SourceFace := globalFace countCB countCL ({capC})')
             body = body.replace('def physicalGlobal : SourceFace := globalFace physicalB physicalLambda (549989/10000000)',
                                 f'def physicalGlobal : SourceFace := globalFace physicalB physicalLambda ({capP})')
+            old_w = '⟨countCB-j/4000,countCL,2/5,11/25,17/500,11/250⟩'
+            assert old_w in body
+            body = body.replace(old_w, f'⟨countCB-j/4000,countCL,2/5,11/25,17/500,{sC}⟩')
             # the generic face constructors and restriction lemmas are Collet's own
             for nm in ('def globalFace', 'def broadFace', 'theorem global_restricts_broad',
                        'theorem unit_source_restrict', '/-- The scale is not specialized'):

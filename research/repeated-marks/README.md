@@ -21,10 +21,11 @@ $0.8747514$ (`../doubled-marks`).
 - The return certifier reproduces PR #69's own final certificate exactly
   (`test_return69.py`).
 - **Lean, stage A.** The submission `submissions/repeated-marks-20261024` proves
-  $\theta_A=8747565/10^7=0.8747565$ in Lean 4. That is $1.64\cdot10^{-5}$
+  $\theta_A=8747490/10^7=0.8747490$ in Lean 4. That is $2.39\cdot10^{-5}$
   below the record $0.874772906$. It uses the repeated-mark source step and the
-  59-face graph, with Collet's final return re-certified at the new count and
-  physical faces. Lemma D (the global physical face) is not used.
+  59-face graph. Collet's final return is re-certified at the new count face
+  (node 58) and physical face (node 31), with count cap $s_+=13/250$ in place
+  of $11/250$. Lemma D (the global physical face) is not used.
   `Candidate.bound` depends only on `propext`, `Classical.choice` and
   `Quot.sound` (§10).
 - **Lean, stage B** ($\theta=0.8747289$, with Lemma D) is not yet formalized.
@@ -321,6 +322,7 @@ pipeline:
 | PR #70 (record) | PR #69 ($z_I\le S$) | PR #69 | 0.874772906 |
 | `../doubled-marks` (certified) | $K=2$, slack 1/12 | PR #69, $t_f=1/360$ | 0.8747514 |
 | this note, stage A (certified, Lean) | $\mathcal G'_K$, $K=8$ | PR #69 guards, $h=799/1000$ | 0.8747565 |
+| this note, stage A with $s_+=13/250$ (certified, Lean) | $\mathcal G'_K$, $K=8$ | PR #69 guards, $h=799/1000$ | 0.8747490 |
 | this note (certified) | $\mathcal G'_K$, $K=8$ | Lemma D, $s_+=13/250$, $s_P=9/200$, $h=401/500$ | **0.8747289** |
 
 The new faces are flatter (Λ_C ≈ 2.897, Λ_P ≈ 3.038). With PR #69's guards
@@ -429,7 +431,9 @@ every untouched declaration from them.
    `decide`.
 5. **The return** (`FinalReturn/`). The final stage of Collet's return is
    re-certified at the new count face (node 58) and physical face (node 31):
-   36 row rectangles and 8 admission windows.
+   40 row rectangles and 12 admission windows. The count windows use the cap
+   $s_+=13/250$: the count face is proved up to its own cap $0.0549989$, and
+   the FR8 admissions are rechecked with the new value.
 6. **The graph** (`Graph/Chain`, `Graph/Endpoint`) and `Candidate.bound`.
 
 **The mechanical fork** (`Fork/`, 37 modules). Collet's source step names the
@@ -453,8 +457,8 @@ The remaining differences are hand-written:
 ```
 python3 fork_source.py fork/fork_closure.tsv fork/fork_tainted_all.txt <package dir> <package dir>/Source/NFStep2.lean
 python3 gen_graph_lean.py 59 58 31 <package dir>
-python3 gen_return_lean.py cchain_k8b.json 8747565/10000000 799/1000 58 31 <out dir>
-python3 fork_return.py <out dir> <package dir> 549989/10000000 9/200
+python3 gen_return_lean.py cchain_k8b.json 8747490/10000000 799/1000 58 31 <out dir> 13/250
+python3 fork_return.py <out dir> <package dir> 549989/10000000 9/200 13/250
 ```
 
 **Stage B** still needs Lemma D in `Record1252270103Return/PhysicalDirect`.

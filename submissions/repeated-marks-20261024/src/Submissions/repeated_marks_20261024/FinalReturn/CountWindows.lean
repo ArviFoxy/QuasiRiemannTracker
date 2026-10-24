@@ -10,6 +10,10 @@ import Submissions.repeated_marks_20261024.FinalReturn.Rows.Admission05
 import Submissions.repeated_marks_20261024.FinalReturn.Rows.Admission06
 import Submissions.repeated_marks_20261024.FinalReturn.Rows.Admission07
 import Submissions.repeated_marks_20261024.FinalReturn.Rows.Admission08
+import Submissions.repeated_marks_20261024.FinalReturn.Rows.Admission09
+import Submissions.repeated_marks_20261024.FinalReturn.Rows.Admission10
+import Submissions.repeated_marks_20261024.FinalReturn.Rows.Admission11
+import Submissions.repeated_marks_20261024.FinalReturn.Rows.Admission12
 set_option autoImplicit false
 set_option maxHeartbeats 200000
 namespace QRH.RepeatedMarks.Return
@@ -45,7 +49,7 @@ def ReturnCountWindow.toBranch (w : ReturnCountWindow) : Branch where
   intro δ p q hp hq hpq
   exact w.antitone hp.1 hp.2 hq.2 hpq
 def returnWindow01 : ReturnCountWindow where
- branch := .capC
+ branch := .capP
  nonold := by decide
  deltaLo := (3/8:ℝ)
  deltaHi := (27/64:ℝ)
@@ -54,7 +58,7 @@ def returnWindow01 : ReturnCountWindow where
  pBounds := by norm_num
  certificate := admission01_all
 def returnWindow02 : ReturnCountWindow where
- branch := .capC
+ branch := .C
  nonold := by decide
  deltaLo := (27/64:ℝ)
  deltaHi := (57/128:ℝ)
@@ -63,7 +67,7 @@ def returnWindow02 : ReturnCountWindow where
  pBounds := by norm_num
  certificate := admission02_all
 def returnWindow03 : ReturnCountWindow where
- branch := .capC
+ branch := .C
  nonold := by decide
  deltaLo := (57/128:ℝ)
  deltaHi := (117/256:ℝ)
@@ -72,7 +76,7 @@ def returnWindow03 : ReturnCountWindow where
  pBounds := by norm_num
  certificate := admission03_all
 def returnWindow04 : ReturnCountWindow where
- branch := .P
+ branch := .C
  nonold := by decide
  deltaLo := (117/256:ℝ)
  deltaHi := (15/32:ℝ)
@@ -81,7 +85,7 @@ def returnWindow04 : ReturnCountWindow where
  pBounds := by norm_num
  certificate := admission04_all
 def returnWindow05 : ReturnCountWindow where
- branch := .capC
+ branch := .C
  nonold := by decide
  deltaLo := (117/256:ℝ)
  deltaHi := (237/512:ℝ)
@@ -90,24 +94,60 @@ def returnWindow05 : ReturnCountWindow where
  pBounds := by norm_num
  certificate := admission05_all
 def returnWindow06 : ReturnCountWindow where
- branch := .weakC7
+ branch := .C
+ nonold := by decide
+ deltaLo := (117/256:ℝ)
+ deltaHi := (471/1024:ℝ)
+ pLo := (127/256:ℝ)
+ deltaBounds := by norm_num
+ pBounds := by norm_num
+ certificate := admission06_all
+def returnWindow07 : ReturnCountWindow where
+ branch := .C
+ nonold := by decide
+ deltaLo := (471/1024:ℝ)
+ deltaHi := (237/512:ℝ)
+ pLo := (127/256:ℝ)
+ deltaBounds := by norm_num
+ pBounds := by norm_num
+ certificate := admission07_all
+def returnWindow08 : ReturnCountWindow where
+ branch := .C
+ nonold := by decide
+ deltaLo := (471/1024:ℝ)
+ deltaHi := (945/2048:ℝ)
+ pLo := (255/512:ℝ)
+ deltaBounds := by norm_num
+ pBounds := by norm_num
+ certificate := admission08_all
+def returnWindow09 : ReturnCountWindow where
+ branch := .C
+ nonold := by decide
+ deltaLo := (945/2048:ℝ)
+ deltaHi := (237/512:ℝ)
+ pLo := (255/512:ℝ)
+ deltaBounds := by norm_num
+ pBounds := by norm_num
+ certificate := admission09_all
+def returnWindow10 : ReturnCountWindow where
+ branch := .C
  nonold := by decide
  deltaLo := (237/512:ℝ)
  deltaHi := (15/32:ℝ)
  pLo := (63/128:ℝ)
  deltaBounds := by norm_num
  pBounds := by norm_num
- certificate := admission06_all
-def returnWindow07 : ReturnCountWindow where
- branch := .weakC7
+ certificate := admission10_all
+def returnWindow11 : ReturnCountWindow where
+ branch := .C
  nonold := by decide
  deltaLo := (15/32:ℝ)
  deltaHi := (63/128:ℝ)
  pLo := (15/32:ℝ)
  deltaBounds := by norm_num
  pBounds := by norm_num
- certificate := admission07_all
-def returnWindow08 : ReturnCountWindow where
+ certificate := admission11_all
+def returnWindow12 : ReturnCountWindow where
  branch := .C
  nonold := by decide
  deltaLo := (63/128:ℝ)
@@ -115,8 +155,8 @@ def returnWindow08 : ReturnCountWindow where
  pLo := (31/64:ℝ)
  deltaBounds := by norm_num
  pBounds := by norm_num
- certificate := admission08_all
-def returnWindows : List ReturnCountWindow := [returnWindow01,returnWindow02,returnWindow03,returnWindow04,returnWindow05,returnWindow06,returnWindow07,returnWindow08]
+ certificate := admission12_all
+def returnWindows : List ReturnCountWindow := [returnWindow01,returnWindow02,returnWindow03,returnWindow04,returnWindow05,returnWindow06,returnWindow07,returnWindow08,returnWindow09,returnWindow10,returnWindow11,returnWindow12]
 def returnBranches : List Branch := returnWindows.map ReturnCountWindow.toBranch
 end
 end QRH.RepeatedMarks.Return

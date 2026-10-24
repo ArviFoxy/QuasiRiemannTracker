@@ -19,7 +19,7 @@ def branchL : CountBranch → ℝ
  | .P | .capP => physicalLambda
  | .old => 1
 def branchCap : CountBranch → ℝ
- | .C | .capC | .weakC7 => 11/250
+ | .C | .capC | .weakC7 => 13/250
  | .P | .capP => 43/1000
  | .old => 1/25
 def isCap : CountBranch → Bool

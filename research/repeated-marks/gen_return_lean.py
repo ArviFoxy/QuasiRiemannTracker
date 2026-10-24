@@ -5,7 +5,9 @@ ReturnNNN, AdmissionNN; Record1252270103Return/CountWindows, FinalEdgeCertificat
 constants of our final source faces.  All arithmetic is exact (Fractions); every Bernstein
 certificate is `m + sum g_ij bterm_ij` with `m = min beta > 0`, `g_ij >= 0`.
 
-usage: python3 gen_return_lean.py CHAIN THETA H iC iP OUTDIR
+usage: python3 gen_return_lean.py CHAIN THETA H iC iP OUTDIR [SC]
+SC is the constant-width cap of the count face C (default 11/250, Collet's value); the face is
+proved up to its own cap, so any SC below it is admissible.
 """
 import sys, json, os
 from fractions import Fraction as Fr
@@ -370,14 +372,15 @@ def main():
     th, h = Fr(sys.argv[2]), Fr(sys.argv[3])
     nC, nP = chain[int(sys.argv[4])], chain[int(sys.argv[5])]
     out = sys.argv[6]
+    sC = Fr(sys.argv[7]) if len(sys.argv) > 7 else Fr(11, 250)
     BC, LC, capC = Fr(nC['B']), Fr(nC['L']), Fr(nC['cap'])
     BP, LP, capP = Fr(nP['B']), Fr(nP['L']), Fr(nP['cap'])
     P = dict(theta=th, h=h, BP=BP, LP=LP, BC=BC, LC=LC)
     G = CR.geometry(th, h, BP, LP)
-    rec = CR.receipt(G, BP, LP, capC, capP, Fr(11, 250), Fr(43, 1000), Fr(8747759, 10 ** 7))
+    rec = CR.receipt(G, BP, LP, capC, capP, sC, Fr(43, 1000), Fr(8747759, 10 ** 7))
     bad = {k: v for k, v in rec.items() if v <= 0}
     assert not bad, bad
-    faces = {'C': (BC, LC, Fr(11, 250)), 'P': (BP, LP, Fr(43, 1000))}
+    faces = {'C': (BC, LC, sC), 'P': (BP, LP, Fr(43, 1000))}
     cands = [cd for cd in CR.candidates(faces, G['kap']) if cd[0] in ALLOWED]
     cands.sort(key=lambda cd: ALLOWED.index(cd[0]))
     const_src, V, edges = emit_constants(P)
@@ -385,7 +388,8 @@ def main():
     fr = os.path.join(out, 'FinalReturn')
     open(os.path.join(fr, 'ReturnConstants.lean'), 'w').write(const_src)
     open(os.path.join(fr, 'ReturnFormulas.lean'), 'w').write(
-        module_file('ReturnFormulas', [f'{PKG}.FinalReturn.ReturnConstants'], FORMULAS))
+        module_file('ReturnFormulas', [f'{PKG}.FinalReturn.ReturnConstants'],
+                    FORMULAS.replace(' | .C | .capC | .weakC7 => 11/250', f' | .C | .capC | .weakC7 => {qs(sC)}')))
     open(os.path.join(fr, 'ReturnFacts.lean'), 'w').write(
         module_file('ReturnFacts', [f'{PKG}.FinalReturn.ReturnFormulas'], FACTS))
     # covers

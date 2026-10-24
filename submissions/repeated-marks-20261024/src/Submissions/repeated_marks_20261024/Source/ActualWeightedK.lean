@@ -155,7 +155,7 @@ theorem ordinary_actual_weighted_row_sum_K (copies : ℕ) (hcopies : 1 ≤ copie
           (binCutoffK copies capacity lam cap B.slots B.widths a binWidth bin) n hn σ hσ freq hfreq
         exact he.trans (mul_le_mul_of_nonneg_right hCr' (Real.rpow_nonneg (zero_lt_one.trans hU.1).le _))
     · have he : F=∅ := Finset.not_nonempty_iff_eq_empty.mp hne
-      change FiberMomentsK F _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+      change FiberMomentsK F _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
       rw [he]
       refine ⟨⟨?_,?_,?_,?_⟩,?_⟩
       · simp only [Finset.card_empty,Nat.cast_zero]

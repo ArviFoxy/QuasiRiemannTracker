@@ -75,8 +75,8 @@ theorem replicated_inverse_source_field (copies : ℕ)
     (fun x=>B.relativeHeight x.val.1) B.commonHeight
     (fun x=>B.sigmaLower x.val.1 (hmem x.val x.property))
     (fun x=>B.sigmaUpper x.val.1 (hmem x.val x.property)) r hr
-    (by simpa only [Finset.sum_coe_sort] using hcap1)
-    (by simpa only [Finset.sum_coe_sort] using hcap2)
+    (by have hs := Finset.sum_coe_sort selected (fun x => B.widths x.1); linarith)
+    (by have hs := Finset.sum_coe_sort selected (fun x => B.widths x.1); linarith)
     rows (fun u hu=>B.embeddingNorm u (hrows hu)) (fun u=>B.family u label)
     (fun u hu=>B.idealCoefficients u (hrows hu) label) tstar n hn σ hσ height freq hh hfreq
     (fun u hu=>hchoice u (hrows hu))

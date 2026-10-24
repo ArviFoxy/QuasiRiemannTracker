@@ -447,6 +447,14 @@ A catalogue cross-check (21.9k records) found nothing that moves them. → `cap-
     clustering. Pair counts `Σ_u N_u(σ')² ≤ (log U)·U^{R(σ')}` give no power saving, since
     `R(σ' ≈ 0.6) ≈ 0.85 > 0.604`. Blocked, like the inverse-witness version.
 
+- *Bootstrapping the long moment with the count, quantified.* Bounding each row's
+  `|M_u(U^r)|² ≤ U^{δ'r}` by its rightmost zero and summing with the count gives exponent
+  `max_{δ'}[R(δ') + rδ']`. At `r = 1.155` this is 1.1667 (`p = 0`, attained at `δ' = 0.60`) or
+  1.1532 (`p = 1/2`, at `δ' = 0.65`), against `(1+5r)/6 = 1.1292` from sixth-power amplification.
+  The bootstrap loses by 0.024–0.038, and the loss comes from the few rows with deep zeros
+  (`δ' ≈ 0.6–0.65`), not only from circularity at the binding `δ`. Restricting to the bin does not
+  help either: the bin's images in the amplified family have `H^{R(δ)}D^{δ} = U^{1.223}`.
+
 ## Open directions (ranked, revised 2026-10-24, third pass; see `barriers/README.md`)
 
 Exact state: committed Lean branch 0.8747289; best exact value with known lemmas 0.8747257

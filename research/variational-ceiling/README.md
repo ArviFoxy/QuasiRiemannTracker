@@ -41,29 +41,27 @@ The fees enter here. The amplifier `r/den` costs about `1.5r/den` in the HIGH ga
 costs `q` (`Δq ≈ (Λ/6B)den`, at about 0.17 per unit `q`). So the optimal `den ≈ √(18r)`: with
 Collet's `r = 10⁻⁸` the solver settles at `den ≈ 3.7·10⁻⁴`, about 0.1% in slope.
 
-## 3. The continuum limit is not the ceiling: the lag effect
+## 3. The discrete chain is a first-order (Euler) scheme for the continuum
 
-At the consolidated chain's own points, the continuum needs a steeper slope than the discrete
-chain achieved:
+The chain builder (`../cap-induction/hybchain2.py`) places each new node so that it crosses its
+parent's line at its own pivot. So the envelope at the pivots obeys `E_{k+1} = E_k − Λ_k δ`: an
+explicit Euler step with the node's slope. Two first-order effects compete:
 
-| `s` | chain slope | continuum minimal slope at the chain's `(s, E)` |
-|---|---|---|
-| 0.02 | 4.0831 | 4.0918 |
-| 0.03 | 3.5280 | 3.5376 |
-| 0.04 | 3.0106 | 3.0166 |
+- **At the pivot the node is flatter than the continuum.** Its old-parent cells use the
+  predecessor's larger ratio `R(s − δ)`, and its self cells start at `b₁ > s`, where the node's line
+  lies below the envelope. At the chain's own `(s, E)` the continuum needs 4.0918 / 3.5376 / 3.0166
+  where the chain used 4.0831 / 3.5280 / 3.0106 (`s = 0.02 / 0.03 / 0.04`).
+- **The slope is frozen over the step while the true slope falls** at `|Λ'| ≈ 55`. Over
+  `[0.0195, 0.02]` the continuum averages 4.1068 against the chain's 4.1110.
 
-A finite step has a first-order advantage. A hybrid node at pivot `s` with LOW parent at `s − δ` uses
-the parent's ratio `R(s − δ) ≈ R(s) + |R'|δ` on its old-parent cells `[b_×, b₁]` around the pivot
-(`R = Λ/6B`, `R' ≈ −7.7`). Its self cells start at `b₁ > s`, where the node's line lies below the
-envelope (node 0: `q₁ = 0.7434` against `q₂ = 0.7372`, `b₁ = 0.01391 > 0.0135`). To first order:
-- the old-parent side gains about `0.17|R'|δ ≈ 1.3δ` in the HIGH gate (0.17 per unit `q`) and pays
-  `[q(Λ − 1) + ∂G/∂S]δ/2 ≈ 1.0δ` for sitting at `b_× ≈ s − δ/2`;
-- the self side gains about `2Δb` at `b₁ = s + Δb`;
-- the price is the old-parent excess `(Λ₀ − Λ)(b − b_×)/Λ₀`, amplified by `1/den₁`, which grows like
-  `δ(δ/2 + Δb)/den₁` and limits both.
+The second effect wins, about `(|Λ'|/2 − 19.4)δ ≈ 8.3δ` of slope per unit width. With the
+contraction `∂Λ_min/∂E ≈ 22.5`, the height gap relaxes toward about `8.3δ/22.5`. So **finer is
+better, and the continuum limit is the ceiling**, consistent with the comparison principle. The
+gate is hardest at the smallest width of a node's cell, so a node's slope is always pinned at the
+start of the interval where its line is used. Shifting the crossing does not make the scheme
+second order; only a smaller `δ` closes the gap.
 
-So the ceiling is a discrete optimum with a finite step. Measured on uniform-step hybrid chains
-(density floor 0.45, Lemma F, same gates and fees as the consolidated chain):
+Measured (density floor 0.45, Lemma F, same gates and fees as the consolidated chain):
 
 | pivot spacing | `E(0.0412)` | `E(0.045)` | θ* |
 |---|---|---|---|
@@ -72,3 +70,6 @@ So the ceiling is a discrete optimum with a finite step. Measured on uniform-ste
 | 0.0005 | (running) | | |
 | 0.0005 to `s = 0.0335`, then 0.00025 (consolidated) | 0.8369975 | 0.8261064 | 0.8747257 |
 | 0 (continuum) | (running) | | |
+
+Height gap continuum − consolidated chain: +3.0e-5 at `s = 0.0135`, then +3.4e-5, +3.8e-5, +4.2e-5,
++4.7e-5, +5.1e-5, +5.5e-5 at `s = 0.0155, …, 0.0205` (still growing).

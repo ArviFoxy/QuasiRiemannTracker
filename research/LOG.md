@@ -535,6 +535,39 @@ A catalogue cross-check (21.9k records) found nothing that moves them. → `cap-
   ordinary nodes, and formalizing it is certificate generation only (`cap-induction/README.md` §5).
   The density floor 0.45 is the one piece that needs an edit to imported code (LD11).
 
+- *Fresh agent on the physical side (round 3): c_g is exact, and a toy check of the column branch.*
+  - **c_g = 1/12 is a Cauchy–Schwarz bound, not a Gram loss.** In Lemma 14.1 the `P_a^{1/6}` term
+    is the length of the probe vector along one direction `v_coh(m) ∝ ρ₆(m)Φ(q_m/Q)` (sextic theta
+    coefficients, `Σ_{q_m~Q}|ρ₆|² ≍ Q^{5/6}`). `θ_phys = 5/6 − ℓ/6 + M/12` is exactly
+    `|⟨ρ₆Φ, B⟩| ≤ ‖ρ₆Φ‖‖B‖`, with `1/12 = (1 − 5/6)/2`. Weights `W₀, W₁` and `ξ`-mixtures change only
+    the constant (`∫|Ŵ₀(iv)||Ŵ₁(1/6+iv)|dv > 0`), and thinning the `a`-set loses. Lowering `c_g`
+    would need a priori information about `B` along the signal direction. **Closed.**
+  - **Toy check of the column branch over `Z[ω]`** (`atom1/toy/colbranch_exp.py`; rows are primary
+    squarefree `R`, `N(R) ≤ K`; columns `N(n) ∈ (N/2, N]`; kernel `(n/R)₂`). `Σ_R|D_R|²` over the
+    diagonal, against the large-sieve allowance:
+
+    | coefficients | 66 rows × 684 columns (LS allows 11.9×) |
+    |---|---|
+    | normalized cubic Gauss sums `g̃₃(n)` | 0.94 |
+    | `g̃₃(n)` × cubic mark sum `Σ_π χ_π(n)^{−2}/√N(π)` | 0.91 |
+    | random phases | 1.09 |
+    | aligned `(n/R₀)₂` | 10.1 |
+
+    The agent's larger runs (up to 778 rows, LS allowance 6–56×) give 0.87–1.17 for the Gauss-sum
+    shapes. The column branch is at its diagonal for these coefficient shapes. The large-sieve `N`
+    term needs alignment with one quadratic character, and these coefficients are not aligned.
+    This is evidence only. The toy omits `ϑ`, `Ψ₀`, the `V♯` coupling, `b`-cubes and S-parts.
+  - **Its proposal (P1), assessed.** Prove `Σ_R|D_R|² ≪ (K + N·K^{−δ'})‖β‖²` for
+    `N ∈ [K, K^{1+δ'}]`, i.e. the quadratic sieve stays diagonal slightly past `N = K` for reflected
+    Gauss-sum coefficients. In the probe this gives `x + y + ℓ ≤ 1 + 0.83δ'`, so `δ' ≈ 1.3e-4` is
+    worth 6.8e-6. That is ten times cheaper than the inverse moment's need (`Z^{0.0011}` at
+    `K = Z^{0.742}`, `δ' ≈ 1.5e-3`). A fractional saving is not enough: it must keep at most 16% of
+    the excess. The proposed route has Poisson in `R` with the reciprocity bicharacter kept (an
+    indefinite form), dual frequencies `j = j₀r²`, Heath-Brown for large `j₀`, and Dunn–Radziwiłł's
+    Voronoi formula (Patterson bias subtracted exactly) for `j₀ ≤ N^{2/3}`. **Its middle range
+    `N^{2/3} < j₀ < N²K^{−1−2δ'}` is column-type again**, so the route is circular as it stands. It
+    restates atom 1 sharply as a target and does not prove it.
+
 ## Open directions (ranked, revised 2026-10-24, third pass; see `barriers/README.md`)
 
 Exact state: committed Lean branch 0.8747289; best exact value with known lemmas 0.8747257

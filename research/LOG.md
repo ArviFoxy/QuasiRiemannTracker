@@ -486,6 +486,22 @@ A catalogue cross-check (21.9k records) found nothing that moves them. → `cap-
     coefficients and cubic slot polynomials. No such estimate is known. Treating `(k, P)` as one
     sextic family with Cauchy over `P` loses more (`A^{7/6}` at `A ≈ N`).
 
+- *Atom 1 as an operator norm (reformulation).*
+  - In the column branch at the binding the dual length is `N = Z^{H+z} = K·L`, with `K = Z^H`
+    rows and `L = Z^z` slot tuples. The energy is `Σ_k |Σ_P a'(P) S(k,P)|²`, where
+    `S(k,P) = Σ_n β(n)χ_k(n)³χ_P(n)^{-2}` is, up to normalization, a central value of the theta
+    series twisted by `χ_k³χ_P^{-2}`, and `Σ_P |a'(P)|² ≍ 1`.
+  - The hybrid norm's bound `(K+N)(N+L+(NL)^{2/3}) ≈ K²L²` equals the Frobenius norm `‖S‖_F²`
+    under Lindelöf on average (`|S|² ≈ N`). Since the slot coefficients are arbitrary, the true
+    quantity is the operator norm `‖S‖²_op`.
+  - For a random-like matrix `‖S‖²_op ≈ N(√K + √L)² ≈ K²L`, smaller by `L = Z^{0.129}`. So
+    slot cost 2 is the gap between the Frobenius norm and the operator norm of the row ×
+    slot-tuple central-value matrix, and the lever needs `‖S‖²_op ≤ ‖S‖²_F·Z^{-0.0008}`.
+  - Via `‖S‖_op⁴ ≤ Σ_{P,P'}|Σ_k S(k,P)S̄(k,P')|²` the diagonal (`n₁ = n₂`) part of each correlation
+    is a nontrivial cubic character sum `Σ_n χ_P^{-2}χ_{P'}^{2}(n)` for `P ≠ P'`, since `|g̃(n)| = 1`
+    on squarefree `n`. That part is small. The off-diagonal from Poisson in `k` brings back the same
+    `N > K` excess, so the reformulation does not by itself give a proof.
+
 ## Open directions (ranked, revised 2026-10-24, third pass; see `barriers/README.md`)
 
 Exact state: committed Lean branch 0.8747289; best exact value with known lemmas 0.8747257

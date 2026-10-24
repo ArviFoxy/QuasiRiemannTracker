@@ -80,3 +80,29 @@ The numerator's capacity `C_N = (B_P h − 4ℓ)/Λ_P` enters `E` as `−qC/2`, 
 The slope is `Λ ≈ 6qB`. The 6 is the descent's defect/allowance ratio from sixth-power row
 amplification (`../LOG.md`, "Exact origin of the plain slot cost"). The `q ≥ 1/2` is the LOW energy,
 pinned by the HIGH gate.
+
+## Compounded lever map: the chain's feedback is small (added 2026-10-24, `compound/`)
+
+The tables above hold the source faces fixed. In reality the same atoms also enter the source chain
+(the HIGH count and the LOW amplifier), so the faces move too. `compound/compound.py` rebuilds the
+59-node K = 8 chain with a modified atom, re-selects the faces and re-solves the float return.
+`compound/direct.py` applies the same atom with the base chain's faces held fixed. About 10 CPU-minutes
+per run.
+
+| change | direct `Δθ*` (faces fixed) | compounded `Δθ*` (chain rebuilt) | feedback |
+|---|---|---|---|
+| MI slot cost `2 → 1.99` | −2.01e-5 | −2.03e-5 | 1% |
+| long exponent lowered by `1e-3` | −3.70e-5 | −3.91e-5 | 6% |
+| LOW amplifier exchange rate `6 → 5.94` (1%) | 0 | −5.3e-6 | all |
+
+Base: θ* = 0.87475087 (float model, K = 8 chain faces `C = (0.95609, 2.89662)`,
+`P = (0.96076, 3.00926)`).
+
+Consequences:
+- The sensitivities are linear and additive to about 5%. The chain does not amplify an improvement in
+  the count. The fixed point "better count → lower `q` → flatter faces → better count" contracts
+  quickly.
+- On its own, the sextic exchange rate needs `6 → 5.89` (1.9%) for −1e-5. A 1% cut moves the count
+  face only by `Λ_C 2.8966 → 2.8811` (−0.5%, with `B_C` +2e-4), so the exchange rate reaches the
+  faces at about half strength. The physical face's selected pivot changes (0.04 → 0.0395), so its
+  two rows are not directly comparable.

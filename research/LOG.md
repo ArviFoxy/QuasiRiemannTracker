@@ -257,6 +257,36 @@ A catalogue cross-check (21.9k records) found nothing that moves them. → `cap-
     off-diagonal (random signs give only `D√U`), not a better bound for the square. This is the
     analytic form of "the long Möbius moment is zero density in disguise".
 
+- *Compounded lever map* (`atom-targets/compound/`). The source chain was rebuilt with each atom
+  modified, the faces re-selected and the float return re-solved.
+
+  | change | faces fixed | chain rebuilt |
+  |---|---|---|
+  | MI slot cost 2 → 1.99 | −2.01e-5 | −2.03e-5 |
+  | long exponent −1e-3 | −3.70e-5 | −3.91e-5 |
+  | LOW exchange rate 6 → 5.94 | 0 | −5.3e-6 |
+
+  The chain's feedback adds only 1–6%. The "better count → lower q → flatter faces" loop contracts
+  quickly, so no atom is secretly amplified by the chain. The exchange rate needs 6 → 5.89 for −1e-5.
+- *Fresh-perspective agent on the count (cold read).* Nothing usable; it independently confirms the
+  closures.
+  - Any convex or Hölder combination of the three lines, and several cutoffs at once, gives at best
+    the minimum of the lines. The gap condition `r_I(R) + m_max(R) = r_L(R)` fixes `R` for one
+    cutoff and for many.
+  - Its main proposal is a scale-transfer lemma for the Möbius witness via the residue `1/L'(ρ)`.
+    This is Turán's explicit-formula method.
+    - For `1/L`, the residues `1/L'(ρ')` of the other zeros are unconstrained (near-double zeros
+      make them huge). The regress "cancelled at a smaller scale → a left zero with a larger
+      residue" never closes. This is the same obstruction as the earlier "residue structure" entry.
+    - For `L'/L` the residues are positive multiplicities, so the prime witness is saturated at
+      almost every scale. Only tight clusters need Turán, at a constant loss. But a prime witness
+      has no diagonal mean value at length `U` in this family: the generic sextic sieve carries
+      `(UN)^{2/3}`-type terms, and the theta reflection needs Möbius coefficients. Writing it as
+      `Λ = μ * log` turns it back into the mollifier detector's blocks.
+  - Its challenge to slot cost 2 (slot coefficients are smooth prime sums at one height) is answered
+    by the MI-column entry above: the cost is the reflection modulus `c²`, independent of the
+    coefficients.
+
 ## Open directions (ranked, revised 2026-10-24 after the second pass; see `barriers/README.md`)
 
 1. **Reflected-energy column branch slightly past the diagonal.** One input would move the probe

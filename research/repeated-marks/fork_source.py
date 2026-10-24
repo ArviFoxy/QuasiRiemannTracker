@@ -90,6 +90,8 @@ def rename_refs(text, short_map, in_high=False):
         tok = m.group(1)
         if tok in ('High.gain', 'QRH.Record1252270103Source.High.gain') or (in_high and tok == 'gain'):
             return GAIN_REP
+        if tok in ('SourceValid', 'Record1252270103Finite.SourceValid'):
+            return 'QRH.RepeatedMarks.Finite.SourceValidC'
         parts = tok.split('.')
         if parts[-1] in short_map:
             parts[-1] = parts[-1] + SUFFIX
@@ -98,16 +100,43 @@ def rename_refs(text, short_map, in_high=False):
     return IDENT.sub(rep, text)
 
 
+# Modules replaced wholesale by hand forks: their tainted declarations are not emitted, references
+# are re-pointed to `_rm` names provided by the hand-fork wrapper modules below.
+HAND_MODULES = {
+    f'{CPKG}.Record1252270103Source.High.ActualFiber',
+    f'{CPKG}.Record1252270103Source.High.WeightedFiber',
+    f'{CPKG}.Record1252270103Source.High.WeightedRows',
+    f'{CPKG}.Record1252270103Source.High.SourceFields',
+    f'{CPKG}.Record1252270103Source.High.ActualWeighted',
+}
+# Individual declarations provided (as `<name>_rm`, Collet-shaped) by hand-written wrapper modules.
+HAND_NAMES = {
+    'QRH.Record1252270103Source.PhysicalScalar.selectedGain',
+    'QRH.Record1252270103Source.PhysicalScalar.ActualGaps',
+    'QRH.Record1252270103Source.HighScalar.gainAt',
+    'QRH.Record1252270103Source.HighScalar.actual_gap_gain_payment',
+    'QRH.Record1252270103Source.HighScalar.gainAt_weighted_width_mono',
+}
+WRAPPER_IMPORTS = [f'{PKG}.Source.CountWrappersK', f'{PKG}.Source.GainPaymentK', f'{PKG}.Source.PaymentWrappersK',
+                   f'{PKG}.Finite.SourceValid2']
+
+
 def main():
     tsv, allf, out = sys.argv[1], sys.argv[2], sys.argv[3]
     fork = collections.OrderedDict()
+    hand_names = set()
     for line in open(tsv):
         line = line.rstrip('\n')
         if not line:
             continue
         mod, names = line.split('\t')
-        fork[mod] = [n for n in names.split() if n not in SEEDS]
-    forked_full = {n for ns in fork.values() for n in ns}
+        ns = [n for n in names.split() if n not in SEEDS]
+        if mod in HAND_MODULES:
+            hand_names |= set(ns)
+            continue
+        hand_names |= {n for n in ns if n in HAND_NAMES}
+        fork[mod] = [n for n in ns if n not in HAND_NAMES]
+    forked_full = {n for ns in fork.values() for n in ns} | hand_names
     short_map = collections.defaultdict(set)
     for n in forked_full:
         short_map[n.split('.')[-1]].add(n)
@@ -116,7 +145,7 @@ def main():
         text = open(module_path(mod)).read()
         chunks = attach(split_commands(text))
         keep, ns_stack = [], []
-        imports = [f'import {mod}']
+        imports = [f'import {mod}'] + [f'import {w}' for w in WRAPPER_IMPORTS]
         kept = 0
         for c in chunks:
             first = c.split('\n', 1)[0]

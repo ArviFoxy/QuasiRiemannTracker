@@ -146,3 +146,19 @@ certificate in `c` plus one Lean induction lemma would avoid them, but that is a
 
 The density floor `0.45` (part of the 0.8747257 value) is different. It changes Collet's LD11
 uniform bound and would need an edit to the imported HIGH-count code.
+
+### 5.1 What the Lean graph contract already allows (checked 2026-10-24)
+
+- **Fees.** Collet's `NFAccounting` (`Record1252270103Graph/GraphContract.lean`) is exactly
+  `(e, r, f) = (10⁻¹², 10⁻⁸, 10⁻⁷) ∨ (10⁻¹⁷, 10⁻¹², 10⁻¹⁰)`. So PR #71's fine tuple is already admitted;
+  a recost only needs `Or.inr` in the graph induction and new node records.
+- **Parents.** Our `NFStep2` takes the LOW parent and the HIGH parent separately (`∀ n low h`), so
+  self cells can keep the real HIGH parent.
+- **Cell count, revised.** The fee `r` is fixed by `NFAccounting`, but a self cell's amplifier
+  `a' = (qe + r)/den` can still be raised by choosing a smaller LOW denominator `den` (`q₂` closer to
+  `Λ/6B`). With `a' ≈ 10⁻³`, `den ≈ 10⁻⁵` at `r = 10⁻⁸` (or `10⁻⁹` at `r = 10⁻¹²`), the cell length is
+  `Δ = 6a'(B/Λ − h) ≈ 1.7·10⁻³`, about 6 cells per late node. The cap-side HIGH slack (about 0.03)
+  absorbs `1.5a'`. The formalized hybrid node is one ordinary node on `[b_×, b₁]` plus about 6
+  rotated self cells: about 400 Lean nodes for the consolidated chain, roughly an hour of build at
+  9–10 s per node file.
+

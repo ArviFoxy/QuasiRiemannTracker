@@ -94,3 +94,24 @@ branch whose true size, for the coefficients actually used, is plausibly the dia
 `Z^{0.0011}` out of a plausible `Z^{0.129}` would be enough. But every available large sieve is
 optimal for some coefficient vector, so a proof must use the arithmetic of cubic Gauss sums against
 quadratic characters. That is the open Type II problem above.
+
+## 7. The exact place where a proof must enter (2026-10-24)
+
+The column branch is bounded in three steps (foundations, hybrid norm MF2.29 and positive bound (34)):
+1. Expand `1_{(P,k)=1}`, apply the positive quadratic bound (34) to the rows `k'` with column
+   coefficient `β_D(n, b)·Σ_{P'} a_D(P') q_{P'}^{-1/2} χ_{P'}(n)^{-2}`.
+2. Inside (34), after Cauchy over the cube-square part `t` and Möbius over `(k, c)`, apply (27):
+   the quadratic large sieve over `ℤ[ω]` of Goldmakher–Louvel (Thm 1.1, Cor. 1.2),
+   `Σ*_{q_R ≤ K} |Σ*_{q_n ≤ N} c_n χ_R(n)³|² ≪ (KN)^ε (K + N) Σ|c_n|²`, for arbitrary `R`-independent
+   `c_n`. The column term `NG/C²` of (34) is this sieve's `N`.
+3. Only in the resulting positive sum is `|β| ≤ 1` used.
+
+So P1 is exactly: **beat Goldmakher–Louvel's `N` term for one coefficient class**, namely the
+reflected cubic-theta coefficients `β(n, b) = d_θ(·)` (normalized cubic Gauss sums, the Fourier
+coefficients of the cubic theta function at the reflected cusp) times slot sums
+`Σ_P a(P) q_P^{-1/2} χ_P(n)^{-2}`, in the range `N ∈ [K, K^{1+δ'}]`. The target is a saving of
+`K^{δ'}` with `δ' ≈ 1.3e-4` (probe alone) or the equivalent budget `β ≈ 9e-5` over all four uses
+(probe, I line, lifted L line, chain). The sieve is sharp for arbitrary coefficients (the extremal
+vectors are quadratic characters). Any proof must use that cubic Gauss sums are not aligned with
+quadratic characters, uniformly over the slot twists. The toy computation in `toy/` says they are
+not.

@@ -516,6 +516,16 @@ A catalogue cross-check (21.9k records) found nothing that moves them. → `cap-
     `g̃(ab)`, partly under GRH-type inputs. We need `Z^{0.0008}`, which is in the same tiny-saving
     regime, but for the twisted problem. Open.
 
+- *Re-reflection with the sextic sieve for the long Möbius moment (atom 2, checked).*
+  - Without slots the inverse moment's child has rows `H_c = 2r − m`, columns `F_c = r`, and dual
+    length `T_d = 3r − 2m`, which is beyond the critical length `H_c` by `r − m`. Re-reflecting to
+    `L' = r` and applying de Faveri's sextic sieve gives the child bound `2r − 5m/6`. The direct
+    column bound is `3r − 2m`. Re-reflection wins only for `r > 7m/6`. In final exponents (half the
+    child excess) it gives `r/2 + 7m/12`: 1.161 at `r = 1.155`, against the direct 1.155.
+  - Combined with sixth-power amplification to family size `h`, the bound is
+    `r/2 + 5h/12 + 1/6`, minimized at `h = 6r/7` to `6r/7 + 1/6`. That is worse than
+    amplification alone, `(1 + 5r)/6 = 1/6 + 5r/6`. No gain.
+
 ## Open directions (ranked, revised 2026-10-24, third pass; see `barriers/README.md`)
 
 Exact state: committed Lean branch 0.8747289; best exact value with known lemmas 0.8747257

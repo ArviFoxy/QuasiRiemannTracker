@@ -105,7 +105,6 @@ theorem zeta_from_two_stage_global_sources
 end
 end QRH.RepeatedMarks.Return
 #print axioms QRH.RepeatedMarks.Return.Final.literal_numerator_of_global_sources
-#print axioms QRH.RepeatedMarks.Return.Intermediate.literal_numerator_of_global_sources
 #print axioms QRH.RepeatedMarks.Return.beta_from_two_stage_global_sources
 #print axioms QRH.RepeatedMarks.Return.Final.hecke_of_global_sources
 #print axioms QRH.RepeatedMarks.Return.Final.dirichlet_of_global_sources

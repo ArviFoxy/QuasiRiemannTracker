@@ -7,7 +7,7 @@ set_option maxHeartbeats 200000
 namespace QRH.RepeatedMarks.Return
 open QRH.Record1252270103Return
 noncomputable section
-open Record1252270103Finite
+
 
 theorem branch_lambda_gt_one (b : CountBranch) (hb:b≠.old) : 1<branchL b := by
  cases b <;> norm_num [branchL,countCL,physicalLambda] at *

@@ -9,7 +9,7 @@ set_option maxHeartbeats 200000
 namespace QRH.RepeatedMarks.Return
 open QRH.Record1252270103Return
 noncomputable section
-open Record1252270103Finite
+
 
 theorem C0_hasDerivAt (b : CountBranch) (p : ℝ) :
  HasDerivAt (C0 b) (derivativeC b) p := by

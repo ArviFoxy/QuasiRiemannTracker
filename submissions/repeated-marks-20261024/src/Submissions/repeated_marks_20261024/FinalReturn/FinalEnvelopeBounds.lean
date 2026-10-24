@@ -7,7 +7,7 @@ set_option maxHeartbeats 200000
 namespace QRH.RepeatedMarks.Return.FinalEdges
 open QRH.Record1252270103Return
 noncomputable section
-open Record1252270103Finite
+
 theorem old_count_eq {δ p:ℝ} (hδ:δ∈Set.Icc 0 (3/4)) (hp:p∈Set.Icc 0 (1/2)) :
  QRH.Record12518109Return.countingR kappa δ p=countN .old δ p/countJ .old δ p := by
  have hk : (7/10:ℝ)≤kappa := by norm_num [kappa,c]

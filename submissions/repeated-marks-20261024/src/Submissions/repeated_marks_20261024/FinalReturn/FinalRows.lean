@@ -13,7 +13,7 @@ local instance : Geometry.Parameters := Geometry.finalParameters
 local instance : Geometry.Bounds := Geometry.finalBounds
 local instance : CountScheme := finalCountScheme
 namespace FinalRows
-open Record1252270103Finite
+
 abbrev bs : List Branch := GenericCount.admittedBranches
 
 theorem edge_bound (e:Edge) {δ p:ℝ} (hd:δ∈Set.Icc 0 (3/4)) (hp:p∈Set.Icc 0 (1/2)) :

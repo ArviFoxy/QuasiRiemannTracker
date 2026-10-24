@@ -1,6 +1,7 @@
 /- Repeated marks: fork of Collet's final-stage module WindowSources (Record1252270103Return, Apache-2.0),
 re-instantiated with the final constants of the repeated-mark graph. -/
 import Submissions.hailey_collet_1252270103.Record1252270103Return.CountSource
+import Submissions.repeated_marks_20261024.FinalReturn.SourceInlet
 import Submissions.repeated_marks_20261024.FinalReturn.CountWindows
 set_option autoImplicit false
 set_option maxHeartbeats 200000
@@ -8,7 +9,7 @@ namespace QRH.RepeatedMarks.Return
 open QRH.Record1252270103Return
 noncomputable section
 open scoped Classical BigOperators ContDiff
-open Record1252270103Finite QRH.Record12518109Source QRH.Record12518109Existence
+open QRH.Record12518109Source QRH.Record12518109Existence
 open OAI OAI.SevenEighths Cycle25ProbeFinalAssembly
 
 def countingSource (b:CountBranch) : SourceFace :=

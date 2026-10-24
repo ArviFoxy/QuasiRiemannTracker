@@ -39,4 +39,3 @@ end QRH.RepeatedMarks.Return
 #print axioms QRH.RepeatedMarks.Return.Final.hecke_of_literal_numerator
 #print axioms QRH.RepeatedMarks.Return.Final.dirichlet_of_literal_numerator
 #print axioms QRH.RepeatedMarks.Return.Final.zeta_of_literal_numerator
-#print axioms QRH.RepeatedMarks.Return.Intermediate.beta_of_literal_numerator

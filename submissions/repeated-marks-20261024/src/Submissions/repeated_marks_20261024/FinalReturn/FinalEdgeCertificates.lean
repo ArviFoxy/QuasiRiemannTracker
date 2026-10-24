@@ -12,7 +12,7 @@ set_option maxHeartbeats 200000
 namespace QRH.RepeatedMarks.Return.FinalEdges
 open QRH.Record1252270103Return
 noncomputable section
-open Record1252270103Finite
+
 theorem window01_mem : returnWindow01∈returnWindows := by simp [returnWindows]
 theorem window02_mem : returnWindow02∈returnWindows := by simp [returnWindows]
 theorem window03_mem : returnWindow03∈returnWindows := by simp [returnWindows]

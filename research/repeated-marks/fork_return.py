@@ -75,12 +75,18 @@ def rewrite(text, fork_names, fin_names):
     text = re.sub(r'^namespace ' + re.escape(NS_OLD) + r'(\S*)$', opener, text, flags=re.M)
     text = re.sub(r'^end ' + re.escape(NS_OLD) + r'(\S*)$', lambda m: f'end {NS_NEW}{m.group(1)}', text, flags=re.M)
     text = re.sub(r'^#print axioms ' + re.escape(NS_OLD), '#print axioms ' + NS_NEW, text, flags=re.M)
+    # Collet's finite namespace holds only re-instantiated constants here
+    def drop_finite(m):
+        rest = [t for t in m.group(1).split() if t != 'Record1252270103Finite']
+        return ('open ' + ' '.join(rest)) if rest else ''
+    text = re.sub(r'^open ([^\n]*)$', drop_finite, text, flags=re.M)
     return text
 
 
 def strip_block(text, name):
-    """remove `namespace name ... end name` (one level)."""
-    return re.sub(r'^namespace ' + name + r'\n.*?^end ' + name + r'\n', '', text, flags=re.M | re.S)
+    """remove `namespace name ... end name` (one level) and its axiom prints."""
+    text = re.sub(r'^namespace ' + name + r'\n.*?^end ' + name + r'\n', '', text, flags=re.M | re.S)
+    return re.sub(r'^#print axioms \S*\.' + name + r'\.\S*\n', '', text, flags=re.M)
 
 
 def main():
@@ -132,6 +138,21 @@ def main():
                                 f'def countGlobal : SourceFace := globalFace countCB countCL ({capC})')
             body = body.replace('def physicalGlobal : SourceFace := globalFace physicalB physicalLambda (549989/10000000)',
                                 f'def physicalGlobal : SourceFace := globalFace physicalB physicalLambda ({capP})')
+            # the generic face constructors and restriction lemmas are Collet's own
+            for nm in ('def globalFace', 'def broadFace', 'theorem global_restricts_broad',
+                       'theorem unit_source_restrict', '/-- The scale is not specialized'):
+                i = body.index(nm)
+                j = body.find('\n\n', i)
+                k = min(x for x in (body.find('\ndef ', i + 1), body.find('\ntheorem ', i + 1),
+                                    body.find('\n/--', i + 1), body.find('\nend', i + 1)) if x > 0)
+                body = body[:i] + body[k + 1:]
+            body = body.replace(f'import {CPKG}.Record1252270103Finite.ReturnConstants',
+                                f'import {CPKG}.Record1252270103Finite.ReturnConstants\n'
+                                f'import @@CPKG@@.Record1252270103Return.SourceInlet')
+        if m == 'WindowSources':
+            body = body.replace(f'import {CPKG}.Record1252270103Return.CountSource',
+                                f'import {CPKG}.Record1252270103Return.CountSource\n'
+                                f'import {PKG}.FinalReturn.SourceInlet')
         if m == 'EndpointFromNumerator':
             body = strip_block(body, 'Intermediate')
         if m == 'EndpointFromSources':
@@ -140,6 +161,7 @@ def main():
                                 f'import {CPKG}.Record1252270103Return.EndpointFromNumerator\n'
                                 f'import @@CPKG@@.Record1252270103Return.EndpointFromSources')
         new = rewrite(body, fork_names, fin).replace('@@CPKG@@', CPKG)
+
         open(os.path.join(fr, f'{m}.lean'), 'w').write(HDR.format(m=m) + new)
     print('forked', len(FORKED), 'modules;', len(fork_names), 'qualified names re-pointed')
 

@@ -7,7 +7,7 @@ set_option maxHeartbeats 200000
 namespace QRH.RepeatedMarks.Return
 open QRH.Record1252270103Return
 noncomputable section
-open Record1252270103Finite
+
 
 def ReturnCountWindow.toAdmitted (w:ReturnCountWindow) : AdmittedWindow (naturalK/6) where
  B := branchB w.branch

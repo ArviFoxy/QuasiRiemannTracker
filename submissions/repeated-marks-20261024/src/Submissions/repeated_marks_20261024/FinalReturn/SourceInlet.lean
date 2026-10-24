@@ -1,6 +1,7 @@
 /- Repeated marks: fork of Collet's final-stage module SourceInlet (Record1252270103Return, Apache-2.0),
 re-instantiated with the final constants of the repeated-mark graph. -/
 import Submissions.repeated_marks_20261024.FinalReturn.ReturnConstants
+import Submissions.hailey_collet_1252270103.Record1252270103Return.SourceInlet
 import Submissions.hailey_collet_1252270103.Record12518109Existence.UniformSource
 import Submissions.hailey_collet_1252270103.Record12518109Raw.InitialMomentInlet
 set_option autoImplicit false
@@ -10,12 +11,11 @@ open QRH.Record1252270103Return
 noncomputable section
 open scoped Classical BigOperators SchwartzMap ContDiff
 open OAI OAI.SevenEighths QRH.Record12518109Source QRH.Record12518109Existence
-open HeckeFamily CenteredMomentNaturalFixedRaySource Filter Record1252270103Finite
+open HeckeFamily CenteredMomentNaturalFixedRaySource Filter
 local notation "O" => HeckeFamily.O
 local instance (rayM : Ideal O) [NeZero rayM] : Finite (O⧸rayM) :=
   Ring.HasFiniteQuotients.finiteQuotient (NeZero.ne rayM)
 
-def globalFace (B lam cap : ℝ) : SourceFace := ⟨B,lam,0,B,0,cap⟩
 def countGlobal : SourceFace := globalFace countCB countCL (549989/10000000)
 def physicalGlobal : SourceFace := globalFace physicalB physicalLambda (9/200)
 def countWindow (j : ℕ) : SourceFace :=
@@ -23,24 +23,12 @@ def countWindow (j : ℕ) : SourceFace :=
 def physicalWindow : SourceFace :=
   ⟨physicalB,physicalLambda,2/5,11/25,17/500,43/1000⟩
 
-def broadFace (B lam cap : ℝ) : SourceFace := ⟨B,lam,0,1/2,0,cap⟩
-theorem global_restricts_broad {B lam cap : ℝ} (hB : 1/2≤B) :
-    (globalFace B lam cap).Restricts (broadFace B lam cap) := by
-  constructor <;> simp only [globalFace,broadFace] <;> linarith
-
 theorem count_restricts (j : ℕ) : countGlobal.Restricts (countWindow j) := by
   constructor <;> norm_num [countGlobal,globalFace,countWindow,countCB,countCL]
   positivity
 
 theorem physical_restricts : physicalGlobal.Restricts physicalWindow := by
   constructor <;> norm_num [physicalGlobal,globalFace,physicalWindow,physicalB,physicalLambda]
-
-theorem unit_source_restrict {strong weak : SourceFace} (hface : strong.Restricts weak)
-    {mesh ε : ℝ} (hsource : UnitFaceSource strong mesh ε) : UnitFaceSource weak mesh ε := by
-  intro α _ _ rayM _ H hH W hW hWs bΦ hbΦ η η₀ Q hQray hQ0 hQt hQ72
-  obtain ⟨degree,S,C,hC,hsource⟩ := hsource α rayM H hH W hW hWs bΦ hbΦ η η₀ Q hQray hQ0 hQt hQ72
-  exact ⟨degree,S,C,hC,hsource.mono (fun Z hZ=>initialAffineAt_restrict rayM H hH hface W
-    2 (1/4) (9/4) bΦ mesh (33/50) (33/50) 1 1 ε Z η η₀ Q degree S C (by norm_num) hZ)⟩
 
 /-- One mesh, chosen before the ambient slot type and every live parameter,
 works for both global sources and every weaker count face. -/
@@ -59,8 +47,6 @@ theorem selected_sources_common_mesh
     fun j=>unit_source_restrict (count_restricts j) hcs',
     unit_source_restrict physical_restricts hps'⟩
 
-/-- The scale is not specialized to the original unit root. The threshold,
-controls and constant precede all roots in the entire supplied interval. -/
 theorem source_on_root_interval {face : SourceFace} {unitMesh unitε : ℝ}
     (hsource : UnitFaceSource face unitMesh unitε)
     {α : Type} [Fintype α] [DecidableEq α]

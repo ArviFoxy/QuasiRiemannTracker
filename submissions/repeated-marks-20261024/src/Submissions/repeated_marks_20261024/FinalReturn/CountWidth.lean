@@ -6,7 +6,7 @@ set_option maxHeartbeats 200000
 namespace QRH.RepeatedMarks.Return
 open QRH.Record1252270103Return
 noncomputable section
-open Record1252270103Finite
+
 
 def witnessLower (b:CountBranch) : ℝ := lowerM b-1/10000000
 

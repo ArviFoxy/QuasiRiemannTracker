@@ -7,7 +7,7 @@ set_option maxHeartbeats 200000
 namespace QRH.RepeatedMarks.Return
 open QRH.Record1252270103Return
 noncomputable section
-open Record1252270103Finite
+
 
 def branchCutoff (b : CountBranch) (δ p : ℝ) : ℝ := countT b δ p/countJ b δ p
 def branchInverse (b : CountBranch) (δ p : ℝ) : ℝ := RN b δ p/DJ b δ p

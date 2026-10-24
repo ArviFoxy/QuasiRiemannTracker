@@ -15,14 +15,14 @@ lemma final_C_face :
     Record1252270103Source.globalFace (node58.B:ℝ) (node58.L:ℝ) (node58.cap:ℝ)=
       QRH.RepeatedMarks.Return.countGlobal := by
   norm_num [Record1252270103Source.globalFace,node58,QRH.RepeatedMarks.Return.countGlobal,
-    QRH.RepeatedMarks.Return.globalFace,QRH.RepeatedMarks.Return.countCB,
+    QRH.Record1252270103Return.globalFace,QRH.RepeatedMarks.Return.countCB,
     QRH.RepeatedMarks.Return.countCL]
 
 lemma final_P_face :
     Record1252270103Source.globalFace (node31.B:ℝ) (node31.L:ℝ) (node31.cap:ℝ)=
       QRH.RepeatedMarks.Return.physicalGlobal := by
   norm_num [Record1252270103Source.globalFace,node31,QRH.RepeatedMarks.Return.physicalGlobal,
-    QRH.RepeatedMarks.Return.globalFace,QRH.RepeatedMarks.Return.physicalB,
+    QRH.Record1252270103Return.globalFace,QRH.RepeatedMarks.Return.physicalB,
     QRH.RepeatedMarks.Return.physicalLambda]
 
 theorem final_global_suppliers (seed : SeedStep) (step : NFStep2)

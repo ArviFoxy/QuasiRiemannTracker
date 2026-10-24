@@ -615,6 +615,17 @@ A catalogue cross-check (21.9k records) found nothing that moves them. → `cap-
   - PR #71's idea (recosting under the fine fee tuple `(10⁻¹⁷, 10⁻¹², 10⁻¹⁰)` that the accepted
     source theorem permits) is being applied to our graph (`variational-ceiling/hyb_fees.py`).
 
+- *P1 has a fourth use: the long line through the lifted marked inverse moment.* Lift the rows to a
+  ball of size `H = U^{1+6α}` and apply the marked short inverse there (round-3 long-moment agent).
+  The exponent is `(1 − δ/2 − δt/2) + α(5 − 3δ)`, minimal at `α = (t−1)/6`, where it equals
+  `L(t) = (1+5t)/6 − δt` exactly. The ball then has size `D`, and the budget `t + 2z ≤ t` leaves no
+  room for slots. A relaxed budget `r + 2z ≤ 1 + β` leaves `z = β/2` there, worth `δpβ = δβ/2`,
+  so the long line drops by `δβ/2` as well. With all four uses (probe marked energy
+  `≈ 0.052β`, I line `≈ 0.017β`, lifted L line `≈ 0.133·0.305·δβ/2 ≈ 0.009β`, plus the chain's HIGH
+  inverse cap), P1 is worth about `0.078β` in θ. So `β ≈ 9e-5` would reach the milestone, against
+  `≈ 1.3e-4` for the probe alone. This assumes one column-branch estimate covers all four
+  configurations.
+
 ## Open directions (ranked, revised 2026-10-24, third pass; see `barriers/README.md`)
 
 Exact state: committed Lean branch 0.8747289; best exact value with known lemmas 0.8747257

@@ -63,8 +63,10 @@ small gate reserves, worth under 1e-6 in θ.
   | unmarked count `ρ` lowered by 0.001 / 0.0025 | +5.2e-4 / +6.0e-4; +1.31e-3 / +1.52e-3 |
 
   With `dθ/dB_P ≈ −6.7e-3` and `dθ/dB_C ≈ −4e-3`, envelope gains of about 1e-3 at both widths are
-  worth about 1e-5. The HIGH relaxation row matches the rebuilt discrete chains
-  (`../atom-targets/README.md`, ε_H = 2e-3: +1.26e-3).
+  worth about 1e-5. The rebuilt discrete chains of `../atom-targets/README.md` respond about 20%
+  more strongly than the ODE: `ε_H = 1e-3` gives +6.3e-4 there against +5.2e-4 here, and
+  `ε_H = 2e-3` gives +1.26e-3 against about +1.05e-3. Those chains bind at the cap, where `ε_H`
+  also relaxes the amplifier term. So the ODE's prices are good to about 20%.
 - **The chain forgets its seed.** If `E` is too high, `X` and hence `q` rise and the slope steepens,
   so perturbations decay (by about 25% per 0.02 of width). This is why re-feeding the natural cost
   is worth 1e-8.

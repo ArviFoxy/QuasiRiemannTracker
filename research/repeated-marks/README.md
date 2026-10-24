@@ -158,30 +158,42 @@ and the root-completion bounds):
   $C_{\max}=\nu(1-\xi_0)$, and $\mathcal G\le C_{\max}Q$ (HF11–HF14).
 
 **Lemma C.** Let $\mathcal G(S,F)=\min_{j\in J}(A_jS+B_jF)$ for a family of
-forms with $A_j,B_j\ge0$, and suppose $\mathcal G(S,F)\le\nu S$ for all
-$S,F\ge0$. Then for all $S,F,L,Q,\delta\ge0$ with $S\le L+\delta$ and
-$F\le Q+2\delta$,
+forms with $A_j,B_j\ge0$, and suppose $\mathcal G(S,F)\le\nu S$. Then for all
+$S,F,L,Q,\delta\ge0$ with
+
+$$2S\le F,\qquad S\le L+\delta,\qquad F\le Q+2\delta,$$
+
+we have
 
 $$\mathcal G(S,F)\le\mathcal G(L,Q)+\nu\delta.$$
 
-In particular (P1) holds, and (P2) holds (take $\delta=L-S$).
+Every source cell satisfies $2S\le F$, since $S\le0.055$ and $F_p\ge0.9$. So
+(P1) holds. Only the cell needs $2S\le F$; the actual widths $(L,Q)$ are
+arbitrary.
 
-*Proof.* Fix $j$. By monotonicity,
-$A_jL+B_jQ+\nu\delta\ge\varphi(\delta)$, where
+(P2) holds for all $(S,Q)$ with no condition. Take a facet $j$ that attains
+$\mathcal G(S,Q)$ with $S>0$. Then $A_j\le\nu$, because otherwise
+$A_jS+B_jQ>\nu S\ge\mathcal G(S,Q)$. Hence
+$\mathcal G(L,Q)\le A_jL+B_jQ=\mathcal G(S,Q)+A_j(L-S)\le\mathcal G(S,Q)+\nu(L-S)$
+for $L\ge S$. At $S=0$ use $\mathcal G(0,Q)=0$ and $\mathcal G(L,Q)\le\nu L$.
 
-$$\varphi(\delta')=A_j\max(S-\delta',0)+B_j\max(F-2\delta',0)+\nu\delta'.$$
+*Proof.* Fix $j$.
+- **If $\delta\ge S$:**
+  $A_jL+B_jQ+\nu\delta\ge\nu\delta\ge\nu S\ge\mathcal G(S,F)$.
+- **If $\delta<S$:** then $F-2\delta>0$. By monotonicity,
+  $A_jL+B_jQ+\nu\delta\ge A_jS+B_jF-(A_j+2B_j-\nu)\delta$. The right side is
+  affine in $\delta\in[0,S]$, so it is at least the smaller of its two
+  endpoint values:
+  - at $\delta=0$: $A_jS+B_jF$;
+  - at $\delta=S$: $B_j(F-2S)+\nu S\ge\nu S$, using $2S\le F$.
 
-The function $\varphi$ is convex and piecewise linear on $[0,\infty)$, with
-breakpoints $S$ and $F/2$, and it tends to $\infty$. So its minimum is at
-$0$, $S$ or $F/2$:
-- $\varphi(0)=A_jS+B_jF$.
-- If $S\le F/2$, then $\varphi(S)=B_j(F-2S)+\nu S\ge\nu S$.
-- If $F/2<S$, then
-  $\varphi(F/2)=A_j(S-F/2)+\nu F/2\ge\min(A_j,\nu)S\ge\min(A_jS+B_jF,\nu S)$.
+  Both values are at least $\mathcal G(S,F)$.
 
-Hence
-$A_jL+B_jQ+\nu\delta\ge\min(A_jS+B_jF,\nu S)\ge\min(\mathcal G(S,F),\nu S)=\mathcal G(S,F)$.
-Minimize over $j$. $\square$
+Minimize over $j$. The case $F<2S$ really is excluded: there the bound at
+$\delta=F/2$ can drop below both $A_jS+B_jF$ and $\nu S$. $\square$
+
+The lemma is formalized in Lean 4 with Mathlib (`lean/LemmaC.lean`:
+`RepeatedMarks.facet_payment`, `RepeatedMarks.lemmaC`).
 
 For comparison, PR #69's HF12 bounds the loss by Lipschitz constants. It needs
 every facet to satisfy $A_j+2B_j\le\nu$; for PR #69's gain this is

@@ -297,6 +297,26 @@ A catalogue cross-check (21.9k records) found nothing that moves them. → `cap-
   Fixed `b*` is optimal. The Gram's `P_a^{1/6}` stays a genuine sixth-power-invariance count:
   `A_{ma⁶} = A_m` and `B_{ma⁶} = B_m` on coprime parts.
 
+- *What binds at the end of the source chain* (`atom-targets/compound/bindgates.py`).
+  - Along the K = 8 chain the binding gate is the regular HIGH gate `H_ν + G > f` at `ν = q` and
+    `b = cap`. Only the first node is bound by the centered gate. Every other gate has reserve
+    ≥ 1e-3.
+  - The solver puts `q` just below `Λ0/(6B0)`, the largest value with a positive LOW denominator.
+    So `q` tracks the parent's slope: 0.74 at the start, 0.505 at the end.
+  - The HIGH gate carries the amplifier term `a(5 − 6ρ) ≈ 1.53a`, about 0.0135 at the end, because
+    HIGH child rows are counted in the amplified child. The child has scale `F = 1 − 6a` and budget
+    `F + a`. Rows are classified only after both transforms: the paper enlarges to all rows before
+    any Poisson step. So this term cannot be avoided by classifying first.
+  - Pricing: dropping the term entirely (`HIGH_NOAMP=1`, chain rebuilt) gives only
+    `Δθ* = −3.2e-7` (`noamp.log`). The centered terminal gate `5/6 + αL_ref − T − 9a > 0` binds at
+    once instead.
+  - The real currency is the amplifier width `a = (qX + r)/(1 − 6qB0/Λ0)`. Here `X` is the slot
+    excess at the cap, about 7e-5 per step. The denominator is about 0.003 at the end, so the
+    amplifier mostly pays for its own scale shrink, and every gate containing `a` (HIGH, centered,
+    `1 − T − 5a`, …) feels it.
+  - The chain's limit is `Λ → 6qB` with `q ≥ 1/2` (LD1), i.e. `Λ_∞ = 3B ≈ 2.87`, 1% below the
+    current end (2.897). Reaching it would need a cheap amplifier, i.e. the exchange rate 6 again.
+
 ## Open directions (ranked, revised 2026-10-24 after the second pass; see `barriers/README.md`)
 
 1. **Reflected-energy column branch slightly past the diagonal.** One input would move the probe

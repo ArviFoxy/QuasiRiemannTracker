@@ -412,6 +412,14 @@ A catalogue cross-check (21.9k records) found nothing that moves them. → `cap-
   - The ODE is contracting (perturbations lose about 25% per 0.02 of width), which is why the seed
     does not matter.
 
+- *The slot contour `z₀ = 17/50` in the return (foundations §14.7).* FR13's constants decode as
+  `13h/75 = (z₀ − 1/6)h` and `−9d/100 = (1/4 − z₀)d`. They come from the numerator bound (223),
+  `Y^{-1/2} Z^{ℓ(z₀−1/2)+ℓq} U^{1/4+3R/4−qz_A/2}` with `U = Z^d`. So `z₀` enters `E` only as
+  `z₀(h − d)`, which vanishes at the binding conductor edge `d = h`. The lower limit `z₀ > 1/3`
+  (Euler convergence, `1 − 6z₀ < −1`) is therefore irrelevant at the binding point. At `d = h` the
+  exponent is `E = 1/2 − 5h/12 + ℓ/2 + δ/2 + δp(ℓ − C(h)/2) + (3/4)hR`, and `∂E/∂h ≈ −7e-4`, so
+  `h = 401/500` is stationary. No gain.
+
 ## Open directions (ranked, revised 2026-10-24 after the second pass; see `barriers/README.md`)
 
 1. **Reflected-energy column branch slightly past the diagonal.** One input would move the probe

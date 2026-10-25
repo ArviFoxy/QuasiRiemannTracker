@@ -6,7 +6,6 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import {
   formatBytes,
-  formatCount,
   formatDuration,
   measures,
   sizeEntry,
@@ -29,6 +28,13 @@ const metrics = (overrides = {}) => ({
   bytes: 190000,
   active_bytes: 150000,
   gzip_bytes: 31000,
+  alive: {
+    modules: 70,
+    declarations: 900,
+    removed: 400,
+    active_bytes: 90000,
+    gzip_bytes: 17000,
+  },
   compile: {
     cpu_seconds: 100.5,
     cpu_seconds_by_submission: {
@@ -46,8 +52,8 @@ test("metrics describe a proof's sources and, once measured, its compile cost", 
   assert.equal(validateMetrics(metrics()).result_id, "example-result");
   const { compile, ...sourceOnly } = metrics();
   assert.equal(validateMetrics(sourceOnly).modules, 120);
-  // Files from before the compressed size was recorded stay valid.
-  const { gzip_bytes, active_bytes, ...older } = metrics();
+  // Files from before the compressed sizes were recorded stay valid.
+  const { gzip_bytes, active_bytes, alive, ...older } = metrics();
   assert.equal(validateMetrics(older).modules, 120);
 });
 
@@ -63,6 +69,9 @@ test("malformed metrics are rejected", () => {
     { bytes: "12" },
     { gzip_bytes: -1 },
     { active_bytes: 1.5 },
+    { alive: { ...metrics().alive, gzip_bytes: -1 } },
+    { alive: { ...metrics().alive, declarations: 1.5 } },
+    { alive: { modules: 1 } },
     { compile: { ...metrics().compile, cpu_seconds: -3 } },
     { compile: { ...metrics().compile, cpu_seconds: Infinity } },
     { compile: { ...metrics().compile, peak_rss_bytes: 1.5 } },
@@ -80,20 +89,20 @@ test("malformed metrics are rejected", () => {
 
 test("the site entry separates the OpenAI baseline from what a proof adds", () => {
   assert.deepEqual(sizeEntry(metrics()), {
-    modules: 120,
-    lines: 4800,
     active_bytes: 150000,
     gzip_bytes: 31000,
+    alive_bytes: 90000,
+    alive_gzip_bytes: 17000,
     cpu_seconds: 100.5,
     cpu_seconds_excluding_baseline: 40.3,
     peak_rss_bytes: 5 * 2 ** 30,
   });
   const { compile, ...sourceOnly } = metrics();
   assert.deepEqual(sizeEntry(sourceOnly), {
-    modules: 120,
-    lines: 4800,
     active_bytes: 150000,
     gzip_bytes: 31000,
+    alive_bytes: 90000,
+    alive_gzip_bytes: 17000,
   });
   const standalone = metrics({
     compile: {
@@ -110,14 +119,18 @@ test("measures read their value from a site entry and say when it is missing", (
     measures.map((m) => [m.id, m.value(entry)]),
   );
   assert.deepEqual(values, {
+    alive: 17000,
+    "alive-raw": 90000,
     cpu: 100.5,
     "cpu-own": 40.3,
     gzip: 31000,
-    active: 150000,
     memory: 5 * 2 ** 30,
-    modules: 120,
-    lines: 4800,
   });
+  // Neither the number of modules nor of lines says how big a proof is.
+  assert.equal(
+    measures.some((m) => ["modules", "lines"].includes(m.id)),
+    false,
+  );
   const unmeasured = sizeEntry({ ...metrics(), compile: undefined });
   assert.equal(
     measures.find((m) => m.id === "cpu").value(unmeasured),
@@ -125,7 +138,7 @@ test("measures read their value from a site entry and say when it is missing", (
   );
 });
 
-test("sizes read as durations, bytes and counts", () => {
+test("sizes read as durations and bytes", () => {
   assert.deepEqual(
     [42, 600, 3000, 3599, 3600, 5400, 9000, 36000, 400000].map(formatDuration),
     [
@@ -144,11 +157,6 @@ test("sizes read as durations, bytes and counts", () => {
     [900, 31000, 1.5 * 2 ** 20, 5.25 * 2 ** 30].map(formatBytes),
     ["0.9 KiB", "30.3 KiB", "1.5 MiB", "5.3 GiB"],
   );
-  assert.deepEqual([950, 8300, 1200000].map(formatCount), [
-    "950",
-    "8.3K",
-    "1.2M",
-  ]);
 });
 
 test("the site file keeps measurements of the sources in the repository and drops stale ones", () => {

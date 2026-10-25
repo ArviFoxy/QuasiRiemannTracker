@@ -4,13 +4,14 @@
 
 Each file binds the numbers to the exact sources they describe. Source totals
 are always written; the compile block appears once every module of the
-submission has been measured.
+submission has been measured, and the alive block once bench/alive.mjs has
+worked out its alive code.
 """
 from pathlib import Path
 import argparse, json, os, platform, statistics
 
 import measure
-from measure import BASELINE, ROOT, best_costs, build_graph, digest, environment, environment_key, load_plans, read_measurements
+from measure import BASELINE, BENCH, ROOT, best_costs, build_graph, digest, environment, environment_key, load_plans, read_measurements
 
 SCHEMA = 1
 
@@ -64,7 +65,19 @@ def empty_module_seconds(jobs, costs):
     return round(statistics.median(wrappers), 3) if wrappers else 0.0
 
 
-def summarize(sid, plan, keys, costs, profile_id, empty=0.0):
+ALIVE_FIELDS = ('modules', 'declarations', 'removed', 'active_bytes', 'gzip_bytes')
+
+
+def read_alive(sid, plan):
+    """The alive code of a submission, if it was worked out from these sources."""
+    path = BENCH/'alive'/f'{sid}.json'
+    if not path.exists():
+        return None
+    alive = json.loads(path.read_text())
+    return alive if alive.get('source_tree') == plan['source_tree'] else None
+
+
+def summarize(sid, plan, keys, costs, profile_id, empty=0.0, alive=None):
     """A module costs what compiling it takes beyond an empty file."""
     modules = plan['modules']
     summary = {
@@ -79,6 +92,8 @@ def summarize(sid, plan, keys, costs, profile_id, empty=0.0):
         # Reachable source without comments or layout, as written by plan.mjs.
         **{k: plan[k] for k in ('active_bytes', 'gzip_bytes') if k in plan},
     }
+    if alive:
+        summary['alive'] = {k: alive[k] for k in ALIVE_FIELDS}
     if all(k in costs for k in keys):
         by_owner, gross, peak, heaviest = {}, 0.0, 0, ('', 0.0)
         for module, key in zip(modules, keys):
@@ -112,9 +127,10 @@ def main():
     write = lambda name, value: (args.out/name).write_text(json.dumps(value, indent=2, sort_keys=True)+'\n')
     write('profile.json', prof)
     for sid in order:
-        summary = summarize(sid, plans[sid], members[sid], costs, prof['id'], empty)
+        summary = summarize(sid, plans[sid], members[sid], costs, prof['id'], empty, read_alive(sid, plans[sid]))
         write(f'{sid}.json', summary)
         print(f"{sid:44} {summary['modules']:6d} modules" +
+              (f"  {summary['alive']['gzip_bytes']/1024:8.0f} KiB alive" if 'alive' in summary else '  (alive code not yet worked out)') +
               (f"  {summary['compile']['cpu_seconds']/3600:7.2f} CPU-hours" if 'compile' in summary else '  (compile cost not yet measured)'))
 
 

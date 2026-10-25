@@ -4,7 +4,9 @@
 const identifier = /[A-Za-z0-9_'.]/;
 const character = /^'(?:\\(?:x[0-9a-fA-F]{2}|u\{?[0-9a-fA-F]+\}?|.)|[^'\\\n])'/;
 
-export function activeSource(source) {
+// The source with its comments taken out and everything else, layout included,
+// as it was.
+export function withoutComments(source) {
   let out = "",
     depth = 0,
     i = 0;
@@ -38,9 +40,16 @@ export function activeSource(source) {
       i += match ? match[0].length : 1;
     } else out += source[i++];
   }
-  return out
+  return out;
+}
+
+// One line per line of code: indentation and runs of spaces collapsed, no blank lines.
+export function withoutLayout(source) {
+  return source
     .split("\n")
     .map((line) => line.replace(/[ \t]+/g, " ").trim())
     .filter(Boolean)
     .join("\n");
 }
+
+export const activeSource = (source) => withoutLayout(withoutComments(source));

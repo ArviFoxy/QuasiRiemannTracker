@@ -33,20 +33,71 @@ CPU time is used instead of wall-clock time because it does not depend on the
 number of cores or on how a proof's modules are arranged. Source length is
 recorded for comparison, but it is easy to change without changing the proof.
 
-## Source size
+## Alive code
 
-`plan.mjs` also measures the code itself, without compiling anything. The active
-source of a submission is the text of the modules above, in the order the verifier
-builds them, with block comments (they nest in Lean) and line comments removed,
-string and character literals kept as written, and whitespace within a line
-collapsed. Blank lines are dropped. Its gzip size at level 9 is recorded as
-`gzip_bytes` and its length as `active_bytes`. Compression takes out repetition, so
-generated or copied lines add little, while text that has to be said once adds
-its full length.
+The size that the Pareto tab opens on does not need the compile cost at all. It is
+the Lean code the proof needs, gzipped, as a stand-in for how much has to be said
+to prove the bound.
 
-This counts whole modules that the proof imports. A declaration that nothing uses
-inside such a module still counts; telling those apart needs the compiled
-modules. The size can differ by a few bytes between zlib versions.
+Starting from `Candidate.bound`, a declaration is **alive** if the proof mentions
+it, or something alive does. That is every constant named in the type or the value
+of an alive declaration, the constructors of an alive inductive type, and the
+declarations defined together with an alive one. A declaration that nothing alive
+mentions is **dead**: an unused lemma, a helper nobody calls, a whole file that no
+alive declaration lives in. The alive code of a submission is
+
+- the text of every alive declaration, and
+- the rest of each file that holds one: imports, namespaces, `open` and `variable`
+  lines, notation, macros and tactics, which cannot be told apart from what an
+  alive declaration uses, so they all count, except that a namespace or section
+  that held nothing but dead declarations goes with them, as do `#print`, `#check`,
+  `#eval` and `example`, which leave nothing behind, and
+- definitions that deal in Lean's own syntax and meta types (`Lean.*`) in such
+  files, which is where tactics keep their helpers,
+
+in build order, without comments and with whitespace collapsed (the same
+`active-source.mjs` as above), then gzipped at level 9. Mathlib and the pinned
+libraries are not counted. Dead declarations are cut out by the position Lean
+recorded for them, so renaming, reformatting or commenting changes nothing, and
+neither does adding code that the proof does not use.
+
+How it is worked out, in three steps that can be repeated separately:
+
+1. `measure.py run` compiles every module. When a submission is finished,
+   `alive/Dump.lean` reads the compiled `.olean` files as data and writes the
+   declaration graph of each module that has none (`dumps/<module key>.json.gz`):
+   every constant with its kind, its position in the source, and the constants of
+   the same submission that its type and value mention. Nothing is elaborated or
+   executed. The compiled modules that no unfinished submission builds on are then
+   deleted, so disk use follows the work in progress, not everything compiled.
+   `measure.py dump ID` redoes this for a submission that is still compiled.
+2. `node --max-old-space-size=8192 bench/alive.mjs` follows the graph from the
+   root, cuts the dead declarations out of the sources, and writes
+   `alive/<id>.json` (the sizes) and `alive/<id>.txt.gz` (the text, to read).
+   It needs only the graphs and the sources, not the compiled modules.
+3. `aggregate.py` copies the sizes into `metrics/`.
+
+What this still counts, and does not:
+
+- Alive code is judged by the text of the declarations, not by the proof terms
+  they elaborate to. A proof by `decide` or `native_decide` is short however large
+  the computation is.
+- A file with no alive declaration is left out even if it holds notation that an
+  alive file uses.
+- Auxiliary constants (proofs lifted out of a theorem, equation lemmas) have no
+  position of their own and belong to the declaration whose name they extend.
+- The size can differ by a few bytes between zlib versions.
+
+## Reachable modules
+
+`plan.mjs` also measures the files themselves, without compiling anything. The
+active source of a submission is the text of the modules above, in the order the
+verifier builds them, with block comments (they nest in Lean) and line comments
+removed, string and character literals kept as written, and whitespace within a
+line collapsed. Blank lines are dropped. Its gzip size at level 9 is recorded as
+`gzip_bytes` and its length as `active_bytes`. This counts whole modules that the
+proof imports, including the declarations in them that nothing needs, so it is
+always at least the alive code.
 
 ## Checks on each measurement
 
@@ -75,6 +126,7 @@ python3 bench/setup.py                  # Lean 4.34.1, pinned packages, Mathlib 
 python3 bench/measure.py stats          # unique work across submissions
 python3 bench/measure.py run            # resumable; touch $QRH_BENCH_ROOT/STOP to pause
 python3 bench/measure.py status
+node --max-old-space-size=8192 bench/alive.mjs   # alive code of the finished submissions
 python3 bench/aggregate.py              # writes ../metrics/
 ```
 

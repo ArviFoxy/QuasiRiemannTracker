@@ -9,10 +9,10 @@
     "kernel": "6.18.44-fc-v153",
     "memory_bytes": 16872804352
   },
-  "modules_measured": 324,
+  "modules_measured": 530,
   "noise": {
-    "median_relative_spread": 0.0417,
-    "modules_repeated": 49
+    "median_relative_spread": 0.0354,
+    "modules_repeated": 72
   },
   "packages": {
     "BibtexQuery": "4d8616fd4870d0a3453d845770833eac7951fe1c",

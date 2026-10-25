@@ -16,16 +16,26 @@ without network access and with a scrubbed environment.
   python3 bench/measure.py stats                  unique work across submissions
   python3 bench/measure.py run [--workers 3] [ID...]
   python3 bench/measure.py status
+  python3 bench/measure.py dump [ID...]           declaration graphs of built submissions
+
+Each finished submission also gets the declaration graph of its modules read from
+the compiled files (bench/alive/Dump.lean), after which the compiled files that no
+unfinished submission builds on are deleted, so that disk use follows the work in
+progress rather than everything ever compiled.
 """
 from concurrent.futures import ThreadPoolExecutor, wait, FIRST_COMPLETED
 from pathlib import Path
-import argparse, collections, datetime, hashlib, heapq, json, os, pwd, re, shutil, signal, subprocess, sys, threading, time
+import argparse, collections, datetime, gzip, hashlib, heapq, json, os, pwd, re, shutil, signal, subprocess, sys, threading, time
 
 ROOT = Path(__file__).resolve().parents[1]
 BENCH = Path(os.environ.get('QRH_BENCH_ROOT', ROOT/'.bench')).resolve()
 PLANS, STORE, LIBS, SCRATCH = BENCH/'plans', BENCH/'store', BENCH/'libs', BENCH/'scratch'
 MEASUREMENTS = BENCH/'measurements.jsonl'
+DUMPS = BENCH/'dumps'
+DUMPER = ROOT/'bench/alive/Dump.lean'
 STOP = BENCH/'STOP'
+MIN_FREE = 2.5 * 1024 ** 3  # bytes; below this no new compile starts
+SIDE_CAP = int(1.5 * 1024 ** 2)  # KiB of anonymous memory beside a heavy module
 # Bump when the compiler command line or the products that are kept change.
 RECIPE = 'lean-j1-prof-o-v1'
 # Lean's profiler reports the phases of a run. Importing the dependencies and
@@ -325,10 +335,12 @@ def measure_module(job, view, env, *, anon_cap_kib, timeout, canary=False):
     return records
 
 
-def link_views(job):
+def link_views(job, skip=()):
     """Make a built module importable from every submission view that contains it."""
     entry = STORE/job.key
     for sid in job.submissions:
+        if sid in skip:
+            continue
         for suffix in PRODUCTS:
             source = entry/('module.olean'+suffix)
             if source.exists():
@@ -341,12 +353,123 @@ def link_views(job):
                 os.link(source, target)
 
 
+def is_complete(sid, keys, measured):
+    """Is the submission measured, with the declaration graph of every module kept?"""
+    return (all(k in measured for k in keys) and (DUMPS/'index'/f'{sid}.json').exists()
+            and all((DUMPS/f'{k}.json.gz').exists() for k in keys))
+
+
+def unneeded(order, members, finished, sid):
+    """Compiled modules of a submission that no unfinished submission builds on."""
+    needed = {k for t in order if t not in finished for k in members[t]}
+    return [k for k in members[sid] if k not in needed]
+
+
+def dump_submission(sid, plan, keys, env, *, anon_cap_kib=10*GIB, timeout=3600):
+    """Keep the declaration graph of each module of a built submission that has none.
+
+    The graphs are what the alive code is worked out from, offline, so the compiled
+    files can go once they exist. Returns whether every module has one.
+    """
+    (DUMPS/'index').mkdir(parents=True, exist_ok=True)
+    pending = {k for k in keys if not (DUMPS/f'{k}.json.gz').exists()}
+    if pending:
+        user = unprivileged() if os.getuid() == 0 else None
+        scratch = SCRATCH/f'dump-{sid}-{os.getpid()}'
+        shutil.rmtree(scratch, ignore_errors=True)
+        for part in ['out', 'home', 'tmp']:
+            (scratch/part).mkdir(parents=True)
+        if user:
+            for path in [scratch, *scratch.iterdir()]:
+                os.chown(path, user.pw_uid, user.pw_gid)
+        (scratch/'index.tsv').write_text(''.join(
+            f"{m['name']}\t{STORE/k/'module.olean'}\t{k}\t{int(k in pending)}\n" for m, k in zip(plan['modules'], keys)))
+        lean = Path(env['lean'])/'bin/lean'
+        environment = {'PATH': f"{lean.parent}:/usr/bin:/bin", 'HOME': str(scratch/'home'), 'TMPDIR': str(scratch/'tmp'),
+                       'LANG': 'C.UTF-8'}
+        log = (scratch/'log').open('wb')
+        try:
+            proc = subprocess.Popen(confined([str(lean), '--run', str(DUMPER), str(scratch/'index.tsv'), str(scratch/'out')], environment),
+                                    cwd=ROOT, env={}, stdin=subprocess.DEVNULL, stdout=log, stderr=subprocess.STDOUT,
+                                    start_new_session=True)
+            guard = Guard(proc, anon_cap_kib, timeout)
+            guard.start()
+            code = proc.wait()
+            guard.finished.set()
+            if code or guard.reason:
+                print(f"declaration graph of {sid} failed ({guard.reason or code}): "
+                      f"{(scratch/'log').read_text(errors='replace')[-600:]}", flush=True)
+                return False
+            for key in pending:
+                source = scratch/'out'/f'{key}.json'
+                if not source.is_file() or source.is_symlink():
+                    print(f'declaration graph of {sid}: no output for {key}', flush=True)
+                    return False
+                temporary = DUMPS/f'{key}.json.gz.tmp'
+                with open(source, 'rb') as read, gzip.open(temporary, 'wb', compresslevel=6) as write:
+                    shutil.copyfileobj(read, write)
+                os.replace(temporary, DUMPS/f'{key}.json.gz')
+        finally:
+            log.close()
+            shutil.rmtree(scratch, ignore_errors=True)
+    # The submission's keys in module order, for reading its graphs back.
+    index = DUMPS/'index'/f'{sid}.json'
+    index.write_text(json.dumps(keys)+'\n')
+    return True
+
+
+def collect_garbage(sid, jobs, order, members, finished):
+    """Delete the compiled modules of a finished submission that nobody builds on."""
+    freed = 0
+    for key in unneeded(order, members, finished, sid):
+        job = jobs[key]
+        for name in job.submissions:
+            for suffix in PRODUCTS:
+                (LIBS/name/(job.relative+'.olean'+suffix)).unlink(missing_ok=True)
+        entry = STORE/key
+        freed += sum(f.stat().st_size for f in entry.glob('*') if f.is_file())
+        shutil.rmtree(entry, ignore_errors=True)
+    shutil.rmtree(LIBS/sid, ignore_errors=True)
+    return freed
+
+
 class Runner:
-    def __init__(self, env, order, jobs, members, targets, *, workers, anon_cap_kib, heavy_cap_kib, timeout):
+    def __init__(self, env, order, jobs, members, targets, *, workers, anon_cap_kib, heavy_cap_kib, timeout,
+                 plans=None, dump=False, collect=False, side_cap_kib=None):
         self.env, self.order, self.jobs, self.members = env, order, jobs, members
         self.targets, self.workers = targets, workers
         self.anon_cap_kib, self.heavy_cap_kib, self.timeout = anon_cap_kib, heavy_cap_kib, timeout
+        # Beside a module that needs most of the memory, others get only what almost
+        # every module needs, so nothing is squeezed out of the page cache.
+        self.side_cap_kib = side_cap_kib or min(anon_cap_kib, SIDE_CAP)
+        self.plans, self.dump, self.collect = plans, dump, collect
+        self.finished = set()
         self.lock = threading.Lock()
+        self.last_warning = 0.0
+
+    def finish(self, sid):
+        """A submission is built: keep its declaration graphs, then release what nobody needs."""
+        try:
+            if not dump_submission(sid, self.plans[sid], self.members[sid], self.env):
+                print(f'{sid}: compiled modules kept; run `measure.py dump {sid}` after fixing the dumper', flush=True)
+                return
+            self.finished.add(sid)
+            if self.collect:
+                freed = collect_garbage(sid, self.jobs, self.order, self.members, self.finished)
+                print(f'{sid}: declaration graphs kept, {freed/2**30:.1f} GiB of compiled modules released', flush=True)
+            else:
+                print(f'{sid}: declaration graphs kept', flush=True)
+        except Exception as error:  # Compiling must go on.
+            print(f'{sid}: finishing failed: {error!r}', flush=True)
+
+    def low_disk(self):
+        free = shutil.disk_usage(BENCH).free
+        if free >= MIN_FREE:
+            return False
+        if time.monotonic() - self.last_warning > 300:
+            self.last_warning = time.monotonic()
+            print(f'Only {free/2**30:.1f} GiB free: no new compiles until there is room', flush=True)
+        return True
 
     def append(self, record):
         with self.lock, MEASUREMENTS.open('a') as stream:
@@ -369,14 +492,20 @@ class Runner:
         for path in (SCRATCH, LIBS, STORE):
             path.mkdir(parents=True, exist_ok=True)
         measured = best_costs(read_measurements())
+        # What is measured and has its declaration graphs needs nothing more, and its
+        # compiled modules may be gone.
+        self.finished = {sid for sid in self.targets
+                         if self.dump and is_complete(sid, self.members[sid], measured)}
+        targets = [sid for sid in self.targets if sid not in self.finished]
         built = {k for k in self.jobs if (STORE/k/'module.olean').exists()}
-        wanted = {k for sid in self.targets for k in self.members[sid]}
+        wanted = {k for sid in targets for k in self.members[sid]}
         for key in built & wanted:
-            link_views(self.jobs[key])
+            link_views(self.jobs[key], self.finished)
         todo = wanted - built
+        remaining = {sid: len(set(self.members[sid]) - built) for sid in targets}
         rank = {sid: i for i, sid in enumerate(self.order)}
         priority = {}
-        for sid in sorted(self.targets, key=rank.get, reverse=True):
+        for sid in sorted(targets, key=rank.get, reverse=True):
             for index, key in enumerate(self.members[sid]):
                 priority[key] = (rank[sid], index)
         waiting = {k: {d for d in self.jobs[k].dependencies if d in todo} for k in todo}
@@ -386,7 +515,7 @@ class Runner:
                 dependents[dep].append(key)
         ready = [(priority[k], k) for k in todo if not waiting[k]]
         heapq.heapify(ready)
-        heavy, running, failed, canaries = [], {}, set(), []
+        heavy, deferred, running, failed, canaries = [], [], {}, set(), []
         total, finished, started = len(todo), 0, time.monotonic()
         spent = 0.0
         print(f'{len(wanted)} modules wanted, {len(built & wanted)} already built, {total} to compile', flush=True)
@@ -395,26 +524,42 @@ class Runner:
 
         def start(pool, key, cap, canary=False):
             job = self.jobs[key]
-            view = LIBS/job.submissions[0]
+            # Any view that holds the module's dependencies will do, and the views of
+            # finished submissions are gone.
+            view = LIBS/next((s for s in job.submissions if s not in self.finished), job.submissions[0])
             kind = 'canary' if canary else ('cost' if key not in measured else 'rebuild')
             future = pool.submit(measure_module, job, view, self.env, anon_cap_kib=cap, timeout=self.timeout, canary=canary)
-            running[future] = (key, kind, 2 if cap == self.heavy_cap_kib and not canary else 1)
+            # 1: an ordinary module, 2: one that needs the memory to itself, 3: beside such a module.
+            level = 3 if cap == self.side_cap_kib and cap < self.anon_cap_kib else (2 if cap == self.heavy_cap_kib and not canary else 1)
+            running[future] = (key, kind, level)
 
-        with ThreadPoolExecutor(max_workers=self.workers) as pool:
-            while ready or running or heavy:
-                stopping = STOP.exists()
+        with ThreadPoolExecutor(max_workers=self.workers) as pool, ThreadPoolExecutor(max_workers=1) as after:
+            if self.dump:
+                for sid in targets:
+                    if not remaining[sid]:
+                        after.submit(self.finish, sid)
+            while ready or running or heavy or deferred:
+                stopping = STOP.exists() or self.low_disk()
+                solo = any(level == 2 for _, _, level in running.values())
+                if not solo and deferred:
+                    for key in deferred:
+                        heapq.heappush(ready, (priority[key], key))
+                    deferred.clear()
                 if heavy and not running and not stopping:
                     start(pool, heavy.pop(0), self.heavy_cap_kib)
-                elif not heavy and not stopping:
-                    if not canaries and measured:
-                        canaries = self.choose_canaries(measured)
-                    if canaries and len(running) < self.workers and time.monotonic() - last_canary > CANARY_EVERY:
-                        last_canary = time.monotonic()
-                        start(pool, canaries[canary_round % len(canaries)], self.anon_cap_kib, canary=True)
-                        canary_round += 1
-                    while ready and len(running) < self.workers:
+                elif not stopping and (solo or not heavy):
+                    cap = self.side_cap_kib if solo else self.anon_cap_kib
+                    if not solo:
+                        if not canaries and measured:
+                            canaries = self.choose_canaries(measured)
+                        if canaries and len(running) < self.workers and time.monotonic() - last_canary > CANARY_EVERY:
+                            last_canary = time.monotonic()
+                            start(pool, canaries[canary_round % len(canaries)], cap, canary=True)
+                            canary_round += 1
+                    # Beside a heavy module one other compile runs, so the heavy one keeps the memory.
+                    while ready and len(running) < (2 if solo else self.workers):
                         _, key = heapq.heappop(ready)
-                        start(pool, key, self.anon_cap_kib)
+                        start(pool, key, cap)
                 if not running:
                     break
                 done, _ = wait(running, timeout=20, return_when=FIRST_COMPLETED)
@@ -429,16 +574,24 @@ class Runner:
                     if kind == 'canary':
                         continue
                     if record['status'] == 'ok':
-                        link_views(self.jobs[key])
+                        link_views(self.jobs[key], self.finished)
                         measured = best_costs(read_measurements()) if len(records) > 1 else measured
                         if 'net' in records[0]:
                             measured.setdefault(key, records[0])
                         finished += 1
                         spent += records[0].get('net', 0.0)
+                        for sid in self.jobs[key].submissions:
+                            if sid in remaining:
+                                remaining[sid] -= 1
+                                if not remaining[sid] and self.dump:
+                                    after.submit(self.finish, sid)
                         for dependent in dependents[key]:
                             waiting[dependent].discard(key)
                             if not waiting[dependent] and dependent not in failed:
                                 heapq.heappush(ready, (priority[dependent], dependent))
+                    elif record['status'] == 'memory' and level == 3:
+                        # Beside a heavy module it had less room; try again once that one is done.
+                        deferred.append(key)
                     elif record['status'] == 'memory' and level == 1:
                         print(f"memory cap hit by {record['module']} ({record['peak_anon_kib']//1024} MiB); retrying alone", flush=True)
                         heavy.append(key)
@@ -467,8 +620,12 @@ def main():
     sub = parser.add_subparsers(dest='command', required=True)
     sub.add_parser('stats')
     sub.add_parser('status')
+    dump = sub.add_parser('dump')
+    dump.add_argument('ids', nargs='*')
     run = sub.add_parser('run')
     run.add_argument('ids', nargs='*')
+    run.add_argument('--keep', action='store_true', help='keep the compiled modules of finished submissions')
+    run.add_argument('--no-dump', action='store_true', help='skip the declaration graphs (and so the clean-up)')
     run.add_argument('--workers', type=int, default=3)
     run.add_argument('--anon-cap-gib', type=float, default=4.5)
     run.add_argument('--heavy-cap-gib', type=float, default=11)
@@ -481,6 +638,16 @@ def main():
     env = environment()
     if args.command == 'status':
         status(env, plans)
+    elif args.command == 'dump':
+        order, jobs, members = build_graph(plans, environment_key(env))
+        for sid in args.ids or order:
+            if sid not in plans:
+                raise SystemExit(f'Unknown submission: {sid}')
+            missing = [k for k in members[sid] if not (STORE/k/'module.olean').exists()]
+            if missing:
+                print(f'{sid}: {len(missing)} of {len(members[sid])} modules are not compiled here', flush=True)
+            elif dump_submission(sid, plans[sid], members[sid], env):
+                print(f'{sid}: declaration graphs kept', flush=True)
     elif args.command == 'run':
         unknown = set(args.ids) - set(plans)
         if unknown:
@@ -490,7 +657,8 @@ def main():
         STOP.unlink(missing_ok=True)
         runner = Runner(env, order, jobs, members, targets, workers=args.workers,
                         anon_cap_kib=int(args.anon_cap_gib*GIB), heavy_cap_kib=int(args.heavy_cap_gib*GIB),
-                        timeout=args.timeout)
+                        timeout=args.timeout, plans=plans, dump=not args.no_dump,
+                        collect=not (args.keep or args.no_dump))
         sys.exit(0 if runner.run() else 1)
 
 

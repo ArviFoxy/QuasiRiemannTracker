@@ -1,10 +1,10 @@
 import { test, expect, type Page } from "@playwright/test";
 import { catalogue, record, routeCatalogue } from "./catalogue-fixture";
 
-// The fixture bounds are 7/8 > 8749/10000 > 87489/100000. By compile CPU the
-// newest result is both stronger and cheaper than the improvement, so only the
-// baseline and the newest result are on the front. By lines of Lean every
-// stronger bound costs more, so all three are.
+// The fixture bounds are 7/8 > 8749/10000 > 87489/100000. By compile CPU, alive
+// code and the reachable modules the newest result is both stronger and smaller
+// than the improvement, so only the baseline and the newest result are on the
+// front. Uncompressed, every stronger bound costs more, so all three are.
 const sizes = () => ({
   schema_version: 1,
   profile: {
@@ -16,8 +16,8 @@ const sizes = () => ({
   },
   entries: {
     "fixture-baseline": {
-      modules: 100,
-      lines: 10000,
+      alive_gzip_bytes: 120 * 1024,
+      alive_bytes: 600 * 1024,
       gzip_bytes: 200 * 1024,
       active_bytes: 900 * 1024,
       cpu_seconds: 3600,
@@ -25,8 +25,8 @@ const sizes = () => ({
       peak_rss_bytes: 4 * 2 ** 30,
     },
     "fixture-improvement": {
-      modules: 150,
-      lines: 15000,
+      alive_gzip_bytes: 180 * 1024,
+      alive_bytes: 800 * 1024,
       gzip_bytes: 300 * 1024,
       active_bytes: 1200 * 1024,
       cpu_seconds: 10800,
@@ -34,8 +34,8 @@ const sizes = () => ({
       peak_rss_bytes: 5 * 2 ** 30,
     },
     "fixture-newest": {
-      modules: 140,
-      lines: 20000,
+      alive_gzip_bytes: 150 * 1024,
+      alive_bytes: 1000 * 1024,
       gzip_bytes: 250 * 1024,
       active_bytes: 1500 * 1024,
       cpu_seconds: 7200,
@@ -44,6 +44,7 @@ const sizes = () => ({
     },
   },
 });
+const cpu = "?tab=pareto&size=cpu";
 const point = (page: Page, id: string) =>
   page.locator(`[data-pareto-id="${id}"]`);
 const open = async (page: Page, query = "?tab=pareto", data = sizes()) => {
@@ -76,7 +77,7 @@ test("Pareto is a tab between the leaderboard and milestones, not the landing vi
 test("every verified result is plotted and the front is marked", async ({
   page,
 }) => {
-  await open(page);
+  await open(page, cpu);
   await expect(page.locator(".pareto-measure select")).toHaveValue("cpu");
   // The pending and historical fixtures are not verified results.
   await expect(page.locator("[data-pareto-id]")).toHaveCount(3);
@@ -118,7 +119,7 @@ test("every verified result is plotted and the front is marked", async ({
 test("focusing a result explains its bound, size and what dominates it", async ({
   page,
 }) => {
-  await open(page);
+  await open(page, cpu);
   await point(page, "fixture-improvement").focus();
   const tooltip = page.locator(".chart-tooltip");
   await expect(tooltip).toContainText("Example researcher · Improved bound");
@@ -202,46 +203,26 @@ test("results that overlap are reached by stepping through them", async ({
   );
 });
 
-test("the size measure can be changed and survives reload and sharing", async ({
+test("the proof is sized by its alive code unless another measure is asked for", async ({
   page,
-  context,
 }) => {
   await open(page);
-  await page.locator(".pareto-measure select").selectOption("lines");
-  expect(new URL(page.url()).searchParams.get("size")).toBe("lines");
-  await expect(page.locator('[data-pareto-id][data-front="true"]')).toHaveCount(
-    3,
-  );
-  await expect(page.locator(".pareto-note")).toContainText("Lines of source");
-  await page.reload();
-  await expect(page.locator(".pareto-measure select")).toHaveValue("lines");
-  const shared = await context.newPage();
-  await open(shared, "?tab=pareto&size=memory");
-  await expect(shared.locator(".pareto-measure select")).toHaveValue("memory");
-  await expect(
-    shared.locator('.chart [data-axis="size"]').first(),
-  ).toContainText("GiB");
-  await open(shared, "?tab=pareto&size=unknown");
-  await expect(shared.locator(".pareto-measure select")).toHaveValue("cpu");
-  await shared.close();
-});
-
-test("the gzipped size of the active source is a measure of its own", async ({
-  page,
-}) => {
-  await open(page, "?tab=pareto&size=gzip");
-  await expect(page.locator(".pareto-measure select")).toHaveValue("gzip");
+  await expect(page.locator(".pareto-measure select")).toHaveValue("alive");
   await expect(page.locator(".pareto-note")).toContainText(
-    "reachable from the proof root",
+    "Candidate.bound depends on",
   );
   await expect(page.locator("[data-pareto-id]")).toHaveCount(3);
-  await expect(
-    page.locator('.chart [data-axis="size"]').filter({ hasText: "200 KiB" }),
-  ).toHaveCount(1);
   await expect(page.locator(".pareto-chart")).toContainText(
-    "Gzipped active source · log scale",
+    "Alive code, gzipped · log scale",
   );
-  // Compressed, the newest result is both smaller and stronger than the improvement.
+  // The size axis is logarithmic: round numbers of KiB, not evenly spaced values.
+  const ticks = await page
+    .locator('.chart [data-axis="size"]')
+    .allTextContents();
+  expect(ticks.length).toBeGreaterThanOrEqual(3);
+  expect(ticks.every((tick) => /^\d+(\.\d)? KiB$/.test(tick))).toBe(true);
+  // A source measure does not depend on the machine that compiled anything.
+  await expect(page.locator(".pareto-panel .chart-note")).toHaveCount(0);
   await expect(page.locator('[data-pareto-id][data-front="true"]')).toHaveCount(
     2,
   );
@@ -250,13 +231,73 @@ test("the gzipped size of the active source is a measure of its own", async ({
     "false",
   );
   // Uncompressed, the stronger bounds are larger, so every result is on the front.
-  await page.locator(".pareto-measure select").selectOption("active");
+  await page.locator(".pareto-measure select").selectOption("alive-raw");
   await expect(page.locator('[data-pareto-id][data-front="true"]')).toHaveCount(
     3,
   );
   await page.locator(".pareto-table summary").click();
   await expect(page.locator(".pareto-table tbody tr").nth(0)).toContainText(
-    "900 KiB",
+    "600 KiB",
+  );
+});
+
+test("neither the number of modules nor of lines is a measure of a proof", async ({
+  page,
+}) => {
+  await open(page);
+  const options = await page
+    .locator(".pareto-measure option")
+    .evaluateAll((all) => all.map((o) => (o as HTMLOptionElement).value));
+  expect(options).toEqual([
+    "alive",
+    "alive-raw",
+    "cpu",
+    "cpu-own",
+    "gzip",
+    "memory",
+  ]);
+  // An old link to one of them opens the default instead.
+  await open(page, "?tab=pareto&size=modules");
+  await expect(page.locator(".pareto-measure select")).toHaveValue("alive");
+});
+
+test("the size measure can be changed and survives reload and sharing", async ({
+  page,
+  context,
+}) => {
+  await open(page);
+  await page.locator(".pareto-measure select").selectOption("gzip");
+  expect(new URL(page.url()).searchParams.get("size")).toBe("gzip");
+  await expect(page.locator('[data-pareto-id][data-front="true"]')).toHaveCount(
+    2,
+  );
+  await expect(page.locator(".pareto-note")).toContainText(
+    "Every file the proof imports",
+  );
+  await page.reload();
+  await expect(page.locator(".pareto-measure select")).toHaveValue("gzip");
+  const shared = await context.newPage();
+  await open(shared, "?tab=pareto&size=memory");
+  await expect(shared.locator(".pareto-measure select")).toHaveValue("memory");
+  await expect(
+    shared.locator('.chart [data-axis="size"]').first(),
+  ).toContainText("GiB");
+  await open(shared, "?tab=pareto&size=unknown");
+  await expect(shared.locator(".pareto-measure select")).toHaveValue("alive");
+  await shared.close();
+});
+
+test("the reachable modules, gzipped, are a measure of their own", async ({
+  page,
+}) => {
+  await open(page, "?tab=pareto&size=gzip");
+  await expect(page.locator(".pareto-measure select")).toHaveValue("gzip");
+  await expect(page.locator("[data-pareto-id]")).toHaveCount(3);
+  await expect(
+    page.locator('.chart [data-axis="size"]').filter({ hasText: "200 KiB" }),
+  ).toHaveCount(1);
+  await expect(page.locator(".pareto-chart")).toContainText(
+    "Reachable modules, gzipped · log scale",
   );
 });
 
@@ -275,7 +316,7 @@ test("selecting a result opens its leaderboard entry", async ({ page }) => {
 test("the table view lists the same results and what dominates them", async ({
   page,
 }) => {
-  await open(page);
+  await open(page, cpu);
   const table = page.locator(".pareto-table");
   await table.locator("summary").click();
   const rows = table.locator("tbody tr");
@@ -295,7 +336,7 @@ test("the table view lists the same results and what dominates them", async ({
   ).toBeVisible();
 });
 
-test("measures nobody has measured yet are offered but not selectable, and source sizes stand in", async ({
+test("measures nobody has measured yet are offered but not selectable, and alive code stands in", async ({
   page,
 }) => {
   const sourceOnly = sizes();
@@ -307,31 +348,31 @@ test("measures nobody has measured yet are offered but not selectable, and sourc
     ])
       delete (entry as Record<string, number>)[key];
   await open(page, "?tab=pareto", sourceOnly);
-  await expect(page.locator(".pareto-measure select")).toHaveValue("gzip");
+  await expect(page.locator(".pareto-measure select")).toHaveValue("alive");
   await expect(page.locator("[data-pareto-id]")).toHaveCount(3);
-  const cpu = page.locator(".pareto-measure option[value='cpu']");
-  await expect(cpu).toHaveJSProperty("disabled", true);
-  await expect(cpu).toContainText("not measured yet");
+  const cpuOption = page.locator(".pareto-measure option[value='cpu']");
+  await expect(cpuOption).toHaveJSProperty("disabled", true);
+  await expect(cpuOption).toContainText("not measured yet");
 });
 
-test("counts stand in when neither compile cost nor source size is known", async ({
+test("the reachable modules stand in until alive code and compile cost are known", async ({
   page,
 }) => {
-  const counts = sizes();
-  for (const entry of Object.values(counts.entries))
+  const modulesOnly = sizes();
+  for (const entry of Object.values(modulesOnly.entries))
     for (const key of [
       "cpu_seconds",
       "cpu_seconds_excluding_baseline",
       "peak_rss_bytes",
-      "gzip_bytes",
-      "active_bytes",
+      "alive_gzip_bytes",
+      "alive_bytes",
     ])
       delete (entry as Record<string, number>)[key];
-  await open(page, "?tab=pareto", counts);
-  await expect(page.locator(".pareto-measure select")).toHaveValue("modules");
+  await open(page, "?tab=pareto", modulesOnly);
+  await expect(page.locator(".pareto-measure select")).toHaveValue("gzip");
   await expect(page.locator("[data-pareto-id]")).toHaveCount(3);
   await expect(
-    page.locator(".pareto-measure option[value='gzip']"),
+    page.locator(".pareto-measure option[value='alive']"),
   ).toContainText("not measured yet");
 });
 
@@ -343,7 +384,7 @@ test("results without a measurement are listed as missing, not plotted", async (
   await open(page, "?tab=pareto", partial);
   await expect(page.locator("[data-pareto-id]")).toHaveCount(2);
   await expect(page.locator(".pareto-panel .chart-note").first()).toContainText(
-    "1 verified result has no cpu time measurement yet and is not plotted.",
+    "1 verified result has no alive code measurement yet and is not plotted.",
   );
 });
 

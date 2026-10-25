@@ -1,5 +1,12 @@
 {
   "active_bytes": 1002,
+  "alive": {
+    "active_bytes": 693,
+    "declarations": 1,
+    "gzip_bytes": 368,
+    "modules": 2,
+    "removed": 1
+  },
   "bytes": 1438,
   "compile": {
     "cpu_seconds": 0.1,

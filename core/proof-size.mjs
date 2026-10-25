@@ -2,11 +2,6 @@
 // Each submission has metrics/<result-id>.json, written by bench/aggregate.py.
 export const BASELINE_ID = "openai-baseline";
 
-const compact = new Intl.NumberFormat("en-US", {
-  notation: "compact",
-  maximumFractionDigits: 1,
-});
-export const formatCount = (n) => compact.format(n);
 export function formatDuration(seconds) {
   if (seconds < 90) return `${Math.round(seconds)} s`;
   const minutes = Math.round(seconds / 60);
@@ -30,9 +25,26 @@ const seconds = [
   { size: 3600, max: 900 },
 ];
 const sizes = [2 ** 10, 2 ** 20, 2 ** 30].map((size) => ({ size, max: 900 }));
-const counts = [1, 1e3, 1e6, 1e9].map((size) => ({ size, max: 900 }));
 
 export const measures = [
+  {
+    id: "alive",
+    label: "Alive code, gzipped",
+    short: "Alive code",
+    value: (e) => e.alive_gzip_bytes,
+    format: formatBytes,
+    units: sizes,
+    note: "The Lean code the proof needs: every declaration that Candidate.bound depends on, directly or not, in the files that hold them, without comments or layout, gzipped. Declarations that nothing alive uses are left out, and so are files with none. Mathlib and the pinned libraries are not included.",
+  },
+  {
+    id: "alive-raw",
+    label: "Alive code, uncompressed",
+    short: "Alive code, raw",
+    value: (e) => e.alive_bytes,
+    format: formatBytes,
+    units: sizes,
+    note: "The same text before gzip. Repetition makes it longer than it is hard to write down, which is what compression removes.",
+  },
   {
     id: "cpu",
     label: "Compile CPU time",
@@ -53,21 +65,12 @@ export const measures = [
   },
   {
     id: "gzip",
-    label: "Gzipped active source",
-    short: "Gzipped source",
+    label: "Reachable modules, gzipped",
+    short: "Reachable modules",
     value: (e) => e.gzip_bytes,
     format: formatBytes,
     units: sizes,
-    note: "The Lean source reachable from the proof root, as the verifier compiles it: the modules Candidate.Main imports, transitively, without comments or layout, gzipped. Mathlib and the pinned libraries are not included. Unused files in a submission do not count.",
-  },
-  {
-    id: "active",
-    label: "Active source, uncompressed",
-    short: "Active source",
-    value: (e) => e.active_bytes,
-    format: formatBytes,
-    units: sizes,
-    note: "The same text before gzip. Repetition makes it larger than it is hard to write down, which is what compression removes.",
+    note: "Every file the proof imports, directly or not, whole and without comments or layout, gzipped. Alive code leaves out the declarations in those files that nothing needs.",
   },
   {
     id: "memory",
@@ -77,24 +80,6 @@ export const measures = [
     format: formatBytes,
     units: sizes,
     note: "Largest resident set of any single compile. It includes the memory-mapped Mathlib libraries every compile loads.",
-  },
-  {
-    id: "modules",
-    label: "Lean modules",
-    short: "Modules",
-    value: (e) => e.modules,
-    format: formatCount,
-    units: counts,
-    note: "Modules in the import closure of the proof, as compiled by the verifier. Counts files, not their content.",
-  },
-  {
-    id: "lines",
-    label: "Lines of Lean",
-    short: "Lines",
-    value: (e) => e.lines,
-    format: formatCount,
-    units: counts,
-    note: "Lines of source in those modules. Easy to change without changing the proof, so it is shown for comparison.",
   },
 ];
 export const measureById = (id) => measures.find((m) => m.id === id);
@@ -121,6 +106,14 @@ export function validateMetrics(m) {
   if (![m.modules, m.lines, m.bytes].every(count)) fail("source totals");
   for (const key of ["active_bytes", "gzip_bytes"])
     if (m[key] !== undefined && !count(m[key])) fail(key);
+  const a = m.alive;
+  if (
+    a !== undefined &&
+    !["modules", "declarations", "removed", "active_bytes", "gzip_bytes"].every(
+      (key) => count(a[key]),
+    )
+  )
+    fail("alive code");
   const c = m.compile;
   if (c !== undefined) {
     if (
@@ -145,10 +138,12 @@ export function validateMetrics(m) {
 export function sizeEntry(m) {
   const c = m.compile;
   return {
-    modules: m.modules,
-    lines: m.lines,
     ...(m.active_bytes !== undefined && { active_bytes: m.active_bytes }),
     ...(m.gzip_bytes !== undefined && { gzip_bytes: m.gzip_bytes }),
+    ...(m.alive && {
+      alive_bytes: m.alive.active_bytes,
+      alive_gzip_bytes: m.alive.gzip_bytes,
+    }),
     ...(c && {
       cpu_seconds: c.cpu_seconds,
       cpu_seconds_excluding_baseline: +(

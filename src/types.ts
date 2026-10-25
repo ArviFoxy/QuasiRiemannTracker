@@ -39,10 +39,10 @@ export type Event = {
   replacement?: string;
 };
 export type SizeEntry = {
-  modules: number;
-  lines: number;
   active_bytes?: number;
   gzip_bytes?: number;
+  alive_bytes?: number;
+  alive_gzip_bytes?: number;
   cpu_seconds?: number;
   cpu_seconds_excluding_baseline?: number;
   peak_rss_bytes?: number;

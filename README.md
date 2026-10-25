@@ -45,20 +45,23 @@ the normal online main-branch build to recover older receipts from the archive.
 
 The Pareto tab plots each verified bound against the size of its proof, on a log
 scale. A result is on the Pareto front when no other result has both a stronger
-bound and a smaller proof. Two sizes describe a proof:
+bound and a smaller proof. Size is the Lean code the proof needs, gzipped, as a
+stand-in for how much has to be said to prove the bound:
 
-- **Gzipped active source**: the Lean code reachable from the proof root, that is
-  the modules `Candidate.Main` imports, directly or not, in build order, with
-  comments and layout removed, gzipped. It includes the OpenAI baseline that most
-  proofs build on and leaves out Mathlib and the pinned libraries. Files a proof
-  does not import do not count, and renaming, reformatting or commenting does not
-  change it.
+- **Alive code, gzipped** (the default): the declarations that `Candidate.bound`
+  depends on, directly or not, in the files that hold them, without comments or
+  layout. Unused lemmas, helpers nobody calls and files nothing alive lives in are
+  left out, and so are Mathlib and the pinned libraries. Renaming, reformatting
+  or commenting does not change it, and neither does adding code the proof does
+  not use.
 - **Compile CPU time**: the CPU time to compile every module of the proof once
   from scratch, leaving out what every file pays however small: importing its
   dependencies and starting up.
+- **Reachable modules, gzipped**: the same as alive code, but whole files, so
+  unused declarations inside them count.
 
-The tab can also show peak memory, uncompressed source, the number of modules and
-lines of Lean. Until compile costs are measured it opens on the gzipped source.
+The tab can also show the alive code uncompressed and peak memory. Until a size
+has been measured for most results the tab opens on the next one that has.
 
 `metrics/<result-id>.json` holds the measurements of each submission, bound to
 its exact source tree, and `metrics/profile.json` records the machine and

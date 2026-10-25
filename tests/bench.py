@@ -95,6 +95,7 @@ class RunnerTests(unittest.TestCase):
         self.addCleanup(temp.cleanup)
         root = Path(temp.name)
         for name, value in [('STORE', root/'store'), ('LIBS', root/'libs'), ('SCRATCH', root/'scratch'),
+                            ('DUMPS', root/'dumps'), ('BENCH', root),
                             ('MEASUREMENTS', root/'measurements.jsonl'), ('STOP', root/'STOP')]:
             patcher = patch.object(measure, name, value)
             patcher.start()
@@ -144,6 +145,123 @@ class RunnerTests(unittest.TestCase):
         self.run_all()
         self.assertEqual(self.compiled, [])
 
+    def test_a_full_disk_stops_new_work_like_a_pause_request(self):
+        from collections import namedtuple
+        usage = namedtuple('usage', 'total used free')
+        with patch.object(measure.shutil, 'disk_usage', return_value=usage(100, 99, 1)):
+            self.run_all()
+        self.assertEqual(self.compiled, [])
+
+    def fake_dump(self, sid, plan, keys, env, **options):
+        (measure.DUMPS/'index').mkdir(parents=True, exist_ok=True)
+        self.dumped.append((sid, all((measure.STORE/k/'module.olean').exists() for k in keys)))
+        if not self.dump_works:
+            return False
+        for key in keys:
+            (measure.DUMPS/f'{key}.json.gz').write_bytes(b'graph')
+        (measure.DUMPS/'index'/f'{sid}.json').write_text(json.dumps(keys))
+        return True
+
+    def run_clean(self, collect=True):
+        runner = measure.Runner({'lean': '/none', 'libraries': []}, self.order, self.jobs, self.members, self.order,
+                                workers=2, anon_cap_kib=1, heavy_cap_kib=2, timeout=1,
+                                plans=self.plans, dump=True, collect=collect)
+        with patch.object(measure, 'compile_module', self.fake), patch.object(measure, 'dump_submission', self.fake_dump):
+            return runner.run()
+
+    def test_a_finished_submission_leaves_its_graphs_and_only_what_others_build_on_is_kept(self):
+        self.dumped, self.dump_works = [], True
+        self.assertTrue(self.run_clean())
+        # Each submission is dumped once, while every one of its modules is still compiled.
+        self.assertEqual(sorted(self.dumped), [('next', True), (measure.BASELINE, True)])
+        self.assertEqual(self.dumped[0][0], measure.BASELINE)
+        # Nothing is left to build on once both are done, but the costs and graphs are.
+        self.assertEqual(list(measure.STORE.glob('*')), [])
+        self.assertEqual(list(measure.LIBS.glob('*')), [])
+        self.assertEqual(len(measure.best_costs(measure.read_measurements())), 3)
+        for sid in self.order:
+            self.assertTrue((measure.DUMPS/'index'/f'{sid}.json').exists())
+        # Finished work is not repeated, even though its modules are gone.
+        self.compiled.clear()
+        self.dumped.clear()
+        self.assertTrue(self.run_clean())
+        self.assertEqual((self.compiled, self.dumped), ([], []))
+
+    def test_modules_a_later_submission_needs_survive_until_it_is_done(self):
+        self.dumped, self.dump_works = [], True
+        original = measure.collect_garbage
+        released = []
+        def spy(sid, jobs, order, members, finished):
+            freed = original(sid, jobs, order, members, finished)
+            released.append((sid, sorted(p.name for p in measure.STORE.glob('*'))))
+            return freed
+        with patch.object(measure, 'collect_garbage', spy):
+            self.run_clean()
+        # The baseline's modules are still there when its own clean-up is done, because
+        # the next submission builds on them; whether the next one's own module has been
+        # compiled by then depends on timing.
+        self.assertTrue(set(self.members[measure.BASELINE]) <= set(dict(released)[measure.BASELINE]))
+        self.assertEqual(dict(released)['next'], [])
+
+    def test_compiled_modules_stay_when_their_graphs_could_not_be_kept(self):
+        self.dumped, self.dump_works = [], False
+        self.run_clean()
+        self.assertEqual(len(list(measure.STORE.glob('*'))), 3)
+
+    def test_the_clean_up_can_be_switched_off(self):
+        self.dumped, self.dump_works = [], True
+        self.run_clean(collect=False)
+        self.assertEqual(len(list(measure.STORE.glob('*'))), 3)
+        self.assertEqual(len(self.dumped), 2)
+
+    def test_a_module_that_outgrows_its_memory_runs_with_at_most_one_light_neighbour(self):
+        # Three independent modules; the first needs more than the ordinary cap.
+        modules = [module(f'Submissions.base.M{i}', f'm{i}', owner='base') for i in range(5)]
+        self.plans = {measure.BASELINE: plan(measure.BASELINE, modules)}
+        self.order, self.jobs, self.members = measure.build_graph(self.plans, 'env')
+        heavy = self.members[measure.BASELINE][0]
+        live, calls = [], []
+        def fake(job, view, env, **options):
+            cap = options['anon_cap_kib']
+            with self.lock:
+                live.append((job.key, cap))
+                calls.append((job.key, cap, len(live)))
+            try:
+                if job.key == heavy and cap <= 100:
+                    status = 'memory'
+                else:
+                    status = 'ok'
+                    entry = measure.STORE/job.key
+                    entry.mkdir(parents=True, exist_ok=True)
+                    (entry/'module.olean').write_bytes(b'olean')
+                import time as _time
+                _time.sleep(0.05)
+                result = record(job.key, 2.0, 2.0 - measure.SLACK, module=job.module['name'], owner=job.module['owner'])
+                result['status'] = status
+                result['peak_anon_kib'] = cap + 1
+                return result
+            finally:
+                with self.lock:
+                    live.remove((job.key, cap))
+        runner = measure.Runner({'lean': '/none', 'libraries': []}, self.order, self.jobs, self.members, self.order,
+                                workers=3, anon_cap_kib=100, heavy_cap_kib=1000, timeout=1, side_cap_kib=10)
+        with patch.object(measure, 'compile_module', fake):
+            self.assertTrue(runner.run())
+        retry = [c for c in calls if c[0] == heavy and c[1] == 1000]
+        self.assertEqual(len(retry), 1)
+        # While the heavy module ran there was at most one other compile, under the light cap.
+        self.assertEqual(retry[0][2], 1)
+        others = [c for c in calls if c[1] == 10]
+        self.assertTrue(all(c[2] <= 2 for c in others))
+        self.assertEqual(len(measure.best_costs(measure.read_measurements())), 5)
+
+    def test_what_nobody_builds_on_is_named_per_submission(self):
+        order, members = ['a', 'b', 'c'], {'a': ['x', 'y'], 'b': ['x', 'z'], 'c': ['y', 'w']}
+        self.assertEqual(measure.unneeded(order, members, set(), 'a'), [])
+        self.assertEqual(measure.unneeded(order, members, {'a'}, 'a'), [])
+        self.assertEqual(measure.unneeded(order, members, {'a', 'b'}, 'b'), ['x', 'z'])
+        self.assertEqual(measure.unneeded(order, members, {'a', 'b', 'c'}, 'c'), ['y', 'w'])
+
 
 class AggregateTests(unittest.TestCase):
     def test_costs_add_up_by_owner_and_peak_memory_is_the_largest(self):
@@ -178,6 +296,24 @@ class AggregateTests(unittest.TestCase):
         summary = aggregate.summarize('next', plan('next', modules), ['km'], {}, 'profile0001')
         self.assertNotIn('compile', summary)
         self.assertEqual(summary['modules'], 1)
+
+    def test_alive_code_is_reported_for_the_sources_it_was_worked_out_from(self):
+        modules = [module('Candidate.Main', 'm', owner='next')]
+        p = plan('next', modules)
+        alive = {'source_tree': p['source_tree'], 'modules': 1, 'declarations': 3, 'removed': 2,
+                 'active_bytes': 900, 'gzip_bytes': 400, 'root': 'x', 'total_modules': 1}
+        summary = aggregate.summarize('next', p, ['km'], {}, 'profile0001', alive=alive)
+        self.assertEqual(summary['alive'], {'modules': 1, 'declarations': 3, 'removed': 2,
+                                            'active_bytes': 900, 'gzip_bytes': 400})
+        self.assertNotIn('alive', aggregate.summarize('next', p, ['km'], {}, 'profile0001'))
+        with tempfile.TemporaryDirectory() as directory:
+            with patch.object(aggregate, 'BENCH', Path(directory)):
+                self.assertIsNone(aggregate.read_alive('next', p))
+                (Path(directory)/'alive').mkdir()
+                (Path(directory)/'alive/next.json').write_text(json.dumps(alive))
+                self.assertEqual(aggregate.read_alive('next', p)['gzip_bytes'], 400)
+                (Path(directory)/'alive/next.json').write_text(json.dumps({**alive, 'source_tree': 'c'*40}))
+                self.assertIsNone(aggregate.read_alive('next', p))
 
 
 if __name__ == '__main__':

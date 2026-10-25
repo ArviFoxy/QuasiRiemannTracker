@@ -52,7 +52,7 @@ export default function Pareto({
   const fallback =
     measures.find(
       (m) => available(m) > 0 && available(m) >= records.length / 2,
-    ) ?? measureById("modules")!;
+    ) ?? measureById("gzip")!;
   const measure = (requested && measureById(requested)) || fallback;
   const points: Point[] = useMemo(
     () =>

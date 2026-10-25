@@ -71,3 +71,15 @@ Use (a) (the inverse-moment budget) only needs `(K + N^{1−η} K^η)‖c‖²` 
 Files: `NOTES.md` (details), `zw.py`, `build.py`, `test_gauss.py`, `test_absorb.py`, `exp_spectral.py`,
 `exp_adversary.py`, `exp_prime_adversary.py`, `exp_typeI.py`, `exp_frame_nck.py` (frame bounds,
 written but not run), `logs_*.txt`.
+
+## Addendum (2026-10-25): the frame/NCK experiment, run
+
+`exp_frame_nck.py 600 60000 400` (`logs_frame_nck_600_60000_400.txt`; K′ = 156 rows, N′ = 7796
+columns, L′ = 60 marks):
+- The quadratic dictionary is a near-tight frame: `σ²/N′ ∈ [0.38, 1.37]`, quartiles 0.86, 0.95, 1.04.
+- `‖S‖²_op` divided by the matrix-concentration variance proxy `σ²`: **2.14** for the true `g̃`,
+  2.10 with an independent random phase per multiplicative block, 2.17 with fully random phases.
+- `‖S‖²_op/(N′K′) ≈ 2.4–2.5`, against the large-sieve product `(K′+N′)(N′+L′)/(N′K′) = 51.4`.
+
+So at this size the actual Gauss-sum coefficients are indistinguishable from block-randomized ones
+(within 2%). That is numerical support for Lemma BD (block decoupling), not a proof.

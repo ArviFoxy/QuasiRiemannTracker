@@ -1,0 +1,12 @@
+built /home/user/QuasiRiemannTracker/research/round7/signal-processing/data/m_K600_N60000_L400.npz: rows=156 cols=7796 marks=60 in 35.8s
+K=600 N=60000 L=400: K'=156 N'=7796 L'=60
+  frame bounds of quadratic rows: sigma^2/N' in [0.380, 1.369], quartiles [0.861 0.95  1.041]
+  true g~                                      ||S||_op^2 / sigma^2 = 2.139   ||S||_op^2/(N'K') = 2.445
+  g~ x random phase per block (largest prime)  ||S||_op^2 / sigma^2 = 2.095   ||S||_op^2/(N'K') = 2.395
+  fully random phases                          ||S||_op^2 / sigma^2 = 2.169   ||S||_op^2/(N'K') = 2.479
+  NCK proxy sigma^2/(N'K') = 1.143;  large-sieve product (K'+N')(N'+L')/(N'K') = 51.4
+
+real	0m36.883s
+user	0m28.874s
+sys	0m8.651s
+EXIT 0

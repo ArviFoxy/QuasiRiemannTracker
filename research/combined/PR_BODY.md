@@ -14,8 +14,8 @@ The proof combines two existing developments, and it is also much cheaper to ver
 
 1. **Sil's fourth-power source face** (`sil-fourth-power-20261025`, PR #74).
    - **The face.** It is `GlobalSource (99999/100000) (93/25) (3/50)`: slot cost 3.72 per unit of slot width, against the natural 9/2.
-   - **Why it is vendored.** Sil's modules live under `Candidate/` and cannot be imported, so the import closure of his `actual_global_source` (421 of his 478 modules) is included under `FourthPower/`. It keeps his Apache-2.0 notices and namespaces.
-   - **The one change.** His statement assumes `theta < beta` for his target 1749387/2000000. The construction uses that only through `51/100 ≤ beta`. In eight files the hypothesis is stated as `51/100 ≤ beta`, and the two uses become `have hβ := hcontra`. No other proof changes; `research/combined/fork_sil.py` asserts this and shows the diff.
+   - **Why it is vendored.** Sil's modules live under `Candidate/` and cannot be imported, so the import closure of Sil's `actual_global_source` (421 of the 478 modules of PR #74) is included under `FourthPower/`. It keeps the Apache-2.0 notices and namespaces of PR #74.
+   - **The one change.** Sil's statement assumes `theta < beta` for the target 1749387/2000000 of PR #74. The construction uses that only through `51/100 ≤ beta`. In eight files the hypothesis is stated as `51/100 ≤ beta`, and the two uses become `have hβ := hcontra`. No other proof changes; `research/combined/fork_sil.py` asserts this and shows the diff.
 2. **Our repeated-mark face family and final return** (`arvi-repeated-marks-20261024`, PR #73), started on Sil's face instead of Collet's natural face.
    - **Tangency start.** The family must start where the continuum flow of the source step is tangent to the start face, at s = 0.0329365.
      - Away from the tangency, the first step's LOW amplifier `(q·(L_S − L)(b − s₀)/L_S + fee)/(1 − 6q·B_S/L_S)` stays near `0.7(b − s₀)`, because the slope gap cancels between numerator and denominator. At the cap that is above its gate 1/75.
@@ -45,7 +45,7 @@ Against PR #73, measured locally on 4 cores and 15 GB:
    - The packed formula is proved to represent the rational one, and is checked once against literal integer data. The Bernstein trees and interval tests then run on that data.
    - The common denominators are the least ones Lean itself accepts.
 2. **A single stage.**
-   - The natural cost is K = 9/2, whose cap 6(2β − 1) ≤ K is the baseline's β ≤ 7/8. Collet's seed step, his intermediate return and the PR #67 re-proof (`incumbent_beta`) are no longer in the proof.
+   - The natural cost is K = 9/2, whose cap 6(2β − 1) ≤ K is the baseline's β ≤ 7/8. Collet's seed step and intermediate return and the PR #67 re-proof (`incumbent_beta`) are no longer in the proof.
    - In the single-stage measurement that removes about 1.6 GB of export.
 3. **Fewer certificates.** Starting at Sil's tangency, the face family needs three pieces instead of five. Building the whole family takes 468 s of CPU, of which the 36 HIGH modules are 308 s.
 4. **The rest of our package**, excluding Sil's modules, builds in 3172 s of CPU (about 13 minutes on 4 cores). Sil's vendored closure takes 3597 s.
@@ -61,7 +61,7 @@ Against PR #73, measured locally on 4 cores and 15 GB:
 
 ## Research notes
 
-- The combination, the three exact constraints found on the way, and why Sil's slope 93/25 = 2 + 4·(43/100) cannot be lowered below 26/7 in his argument: https://github.com/ArviFoxy/QuasiRiemannTracker/tree/ccr-48c53b87-r20g37/research/combined
+- The combination, the three exact constraints found on the way, and why Sil's slope 93/25 = 2 + 4·(43/100) cannot be lowered below 26/7 in Sil's argument: https://github.com/ArviFoxy/QuasiRiemannTracker/tree/ccr-48c53b87-r20g37/research/combined
 - The speedups (packing, single stage, measurements): https://github.com/ArviFoxy/QuasiRiemannTracker/blob/ccr-48c53b87-r20g37/research/verification/AUDIT_FOLLOWUP.md
 - The face family: https://github.com/ArviFoxy/QuasiRiemannTracker/tree/ccr-48c53b87-r20g37/research/faceless-chain
 

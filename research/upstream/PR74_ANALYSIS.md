@@ -56,7 +56,7 @@ PR 71.
   - Collet's `Graph.P s` is `GlobalSource s.B s.L s.cap`.
   - Sil's `RepairedRestrictedSource.actual_global_source` proves
     `GlobalSource (99999/100000) (93/25) (3/50)`.
-  - So his theorem can be the first parent of our chain, in place of `natural92`, which comes
+  - So Sil's theorem can be the first parent of our chain, in place of `natural92`, which comes
     from Collet's `natural_global_source`.
   - The steps still use the cap `6(2β − 1) ≤ 9/2`, which holds from the baseline's 7/8.
 - **Where the family must start: at the tangency.** The family begins where the flow's slope
@@ -81,7 +81,7 @@ PR 71.
   | Sil at tangency | …, 0.0470 | (0.96824, 2.9215) / (0.97187, 3.0000) | **0.8746076** |
 
 - **About 8.6e-5 below PR 74, and 7.6e-5 below the target 0.8746835.** The chain's physical face
-  (0.97187, 3.0) beats Sil's (0.96886, 3.142) at every width, as a chain built on his face should.
+  (0.97187, 3.0) beats Sil's (0.96886, 3.142) at every width, as a chain built on that face should.
 - **Earlier pricing does not apply.** The finding `dθ*/dK ≈ 6e-5` was for tiny changes of the
   natural cost. A much better start face moves the tangency itself, from 0.0124 to 0.0329.
 

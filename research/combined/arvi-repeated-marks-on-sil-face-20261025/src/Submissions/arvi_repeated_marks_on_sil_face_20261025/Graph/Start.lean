@@ -1,8 +1,8 @@
 /- The source theorem of the chain's first parent.
 
 Sil proves `GlobalSource (99999/100000) (93/25) (3/50)` from a fourth-power source moment
-(`RepairedRestrictedSource.actual_global_source`, upstream PR 74, Apache-2.0). His statement assumes
-`theta < beta` for his target `theta = 1749387/2000000`, and the construction uses that only through
+(`RepairedRestrictedSource.actual_global_source`, upstream PR 74, Apache-2.0). That statement assumes
+`theta < beta` for the target `theta = 1749387/2000000` of PR 74, and the construction uses that only through
 `51/100 ≤ beta`. The copy in `FourthPower/` states it with `51/100 ≤ beta`
 (`research/combined/fork_sil.py`), so the face holds for every `beta` above `51/100`. -/
 import Submissions.arvi_repeated_marks_on_sil_face_20261025.Graph.StartFace

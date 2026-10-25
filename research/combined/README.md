@@ -11,7 +11,7 @@ The package is `arvi-repeated-marks-on-sil-face-20261025`.
 ## 1. Why it works
 
 - **Sil's face.** Sil proves one strong source face, `GlobalSource (99999/100000) (93/25) (3/50)`,
-  with slot cost 3.72 against Collet's natural 4.5. His return uses only faces implied by it.
+  with slot cost 3.72 against Collet's natural 4.5. The return of PR 74 uses only faces implied by it.
 - **Our chain.** Our chain is a continuum of source steps (repeated-mark HIGH count, Lemma F) that
   lowers the slope of the face as `s` grows. It can start from any global source face.
 - **The interface matches exactly.** Collet's graph predicate `Graph.P s` is
@@ -53,11 +53,11 @@ The package is `arvi-repeated-marks-on-sil-face-20261025`.
 ## 4. Sil's source theorem, vendored and forked
 
 - **Why vendor.** Upstream imports only modules under `src/Submissions/<id>/`, and Sil's code is in
-  `src/Candidate/FourthPower/`. So the import closure of his theorem (421 of his 478 modules,
+  `src/Candidate/FourthPower/`. So the import closure of that theorem (421 of the 478 modules of PR 74,
   82k lines) is copied into our package as `Submissions.arvi_repeated_marks_on_sil_face_20261025.FourthPower.*`.
   It is Apache-2.0, and the headers are kept.
 - **The fork (`fork_sil.py`).**
-  - Sil's statement assumes `theta < β` (his `theta = 0.8746935`). The construction uses that only
+  - Sil's statement assumes `theta < β` (with `theta = 0.8746935`, the target of PR 74). The construction uses that only
     through `contrary_inputs hcontra).1 : 51/100 ≤ β`.
   - The script replaces the hypothesis by `51/100 ≤ β` in the eight files that state or pass it.
     Two of those edits are `have hβ := hcontra`.
@@ -154,7 +154,7 @@ Nine read-only scans, one per module group (`fourthpower_map/A_core.md` … `I_r
   `α → (12α − 7)/(6α − 1)` runs from 2 to `7/6 + δ`.
   - Our round-11 scope study had found no sextic sieve in the formal library.
   - It is the missing input of the single-mark route (`F_P ≪ N·K^{7/6}`).
-- **Sil's return cannot take our faces.** His return admits only faces implied by his source face
+- **Sil's return cannot take our faces.** The return of PR 74 admits only faces implied by its own source face
   (`Face.Included`), and it sits within 1.4e-7 of its certificate's limit.
 - **It overturns one recorded barrier.** `../barriers/README.md` (2) says twisted multipliers
   "orthogonalize rather than amplify". Sil's twist is a function of the multiplier and the modulus

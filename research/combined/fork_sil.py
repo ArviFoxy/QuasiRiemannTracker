@@ -2,7 +2,7 @@
 into our package, with the contrary hypothesis weakened.
 
 Sil proves `GlobalSource (99999/100000) (93/25) (3/50)`
-(`RepairedRestrictedSource.actual_global_source`) under `theta < beta`, with his
+(`RepairedRestrictedSource.actual_global_source`) under `theta < beta`, with the PR 74
 `theta = 1749387/2000000`. The construction uses that hypothesis only through
 `contrary_inputs hcontra).1 : 51/100 ≤ beta`. This script copies the import closure of that
 theorem and replaces the hypothesis by `51/100 ≤ beta` in the eight files that state or pass it.

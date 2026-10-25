@@ -92,12 +92,16 @@
   chain curve is proved optimal within the method's gates (`research/lean-lab/ChainOptimal.lean`).
   The continuum ceiling 0.8747241 is only 0.9e-6 further.
 - The remaining 6.1e-6 needs one analytic input (`research/P1_PROBLEM.md`):
-  - **P1**, localized in round 9 to the hard core. Only Gauss sums at primes of norm `> K` need
-    arithmetic; the smooth columns are diagonal times a frame constant for any block phases.
+  - **P1**: round 9 shows P1 ⟸ BG + HC (both unproved). BG is the frame bound on the smooth
+    columns (largest prime ≤ K), numerically at Marchenko–Pastur; it holds for any block
+    multipliers with the cofactor data fixed, not for arbitrary Gauss sums. HC is P1 on the hard
+    core (a prime factor of norm > K), where every adversary lives. Given BG, HC ⟺ P1.
   - **The long Möbius moment**, which is the only input that moves the unmarked count
     `ρ(ν) = 1 − 10ν/(15 − 6ν)`. `ρ` is exactly the value of a lattice game whose extremal adversary
     is `L ≈ 1 + bU^{−s₀(s−a)}` (`research/lean-lab/ZeroDensityGame.lean`).
   - Numerically both are at their diagonals (long moment: ratio 0.89–0.99 up to `D = U^{1.4}`).
+  - Conditional θ (`research/round9/conditional/`): a diagonal long moment would give −7.9e-3; the
+    needed 6.1e-6 is a `U^{1.5e-4}` saving over amplification at `r ≈ 1.155`.
 - Closed in round 9: per-row arguments, the dual sixth-power restriction (an `X`-dilation),
   ω-weighted witnesses (scale shift), Shen–Stucky/Li inflation (keeps the `N`-term), and the
   bootstrap of the long moment.

@@ -1,0 +1,13 @@
+{
+  "bytes": 65804262,
+  "dependency_trees": {
+    "lewko-acyclic-bootstrap-874772906": "0a07c961b4ed9bb9dd2a83bf4d642a2a452a3597",
+    "openai-baseline": "e470d11a2c5b310e5d8fe5a6263acb376aff9cd6"
+  },
+  "lines": 1036498,
+  "modules": 8310,
+  "profile": "74047c32eb9b",
+  "result_id": "lewko-acyclic-bootstrap-874772906",
+  "schema_version": 1,
+  "source_tree": "b58265f50fcef585d7deaccf99c6d9313ec2501b"
+}

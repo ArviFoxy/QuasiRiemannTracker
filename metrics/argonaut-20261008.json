@@ -1,0 +1,13 @@
+{
+  "bytes": 26368892,
+  "dependency_trees": {
+    "argonaut-20261008": "e7222506644ba351b65a671637467f7468274e51",
+    "openai-baseline": "e470d11a2c5b310e5d8fe5a6263acb376aff9cd6"
+  },
+  "lines": 509180,
+  "modules": 3060,
+  "profile": "74047c32eb9b",
+  "result_id": "argonaut-20261008",
+  "schema_version": 1,
+  "source_tree": "dae7c188c436ede3ff99815bce59c0fbb0b595f9"
+}

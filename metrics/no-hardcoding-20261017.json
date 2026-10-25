@@ -1,0 +1,13 @@
+{
+  "bytes": 33892023,
+  "dependency_trees": {
+    "no-hardcoding-20261017": "b0d9f04b4df4760128765a4d97f3b51bad830bd0",
+    "openai-baseline": "e470d11a2c5b310e5d8fe5a6263acb376aff9cd6"
+  },
+  "lines": 638959,
+  "modules": 3836,
+  "profile": "74047c32eb9b",
+  "result_id": "no-hardcoding-20261017",
+  "schema_version": 1,
+  "source_tree": "dc156951a8a86ceb1a8af10840963cf2b8e2e4b8"
+}

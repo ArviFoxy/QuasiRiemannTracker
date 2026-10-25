@@ -38,3 +38,21 @@ export type Event = {
   reason: string;
   replacement?: string;
 };
+export type SizeEntry = {
+  modules: number;
+  lines: number;
+  cpu_seconds?: number;
+  cpu_seconds_excluding_baseline?: number;
+  peak_rss_bytes?: number;
+};
+export type SizeData = {
+  schema_version: 1;
+  profile?: {
+    id: string;
+    lean_version: string;
+    machine: { cpu: string; cores: number; memory_bytes: number };
+    workers: number | null;
+    modules_measured: number;
+  };
+  entries: Record<string, SizeEntry>;
+};

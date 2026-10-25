@@ -2,8 +2,9 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { MathJax } from "better-react-mathjax";
 import { Github, GitPullRequest, X } from "lucide-react";
 import Chart from "./Chart";
+import Pareto from "./Pareto";
 import { cmp, decimal, recordHistory } from "../core/rational.mjs";
-import type { Contribution } from "./types";
+import type { Contribution, SizeData } from "./types";
 import {
   contributionDate,
   verifiedHere,
@@ -23,7 +24,8 @@ const leanTheorem = `theorem quasi_riemann_bound
     LFunction χ s ≠ 0 := by
   sorry`;
 export default function App() {
-  const { tab, graph, setTab, setGraph, tabHref } = useNavigation();
+  const { tab, graph, size, setTab, setGraph, setSize, tabHref } =
+    useNavigation();
   const navigate = (event: React.MouseEvent<HTMLAnchorElement>, next: Tab) => {
     if (
       event.button ||
@@ -43,6 +45,8 @@ export default function App() {
       direction: "ascending" | "descending";
     }>({ key: "bound", direction: "ascending" }),
     [selected, setSelected] = useState<string | null>(null),
+    [sizes, setSizes] = useState<SizeData | null>(null),
+    [sizesLoaded, setSizesLoaded] = useState(false),
     [error, setError] = useState(""),
     [modal, setModal] = useState<"submit" | "policy" | null>(null);
   const dialog = useRef<HTMLDialogElement>(null);
@@ -60,6 +64,11 @@ export default function App() {
         setRepository(config.repository);
       })
       .catch((e) => setError(e.message));
+    // Proof sizes only feed the Pareto tab; the rest works without them.
+    read("sizes.json")
+      .then((data) => setSizes(data.schema_version === 1 ? data : null))
+      .catch(() => setSizes(null))
+      .finally(() => setSizesLoaded(true));
   }, []);
   useEffect(() => {
     if (modal && !dialog.current?.open) dialog.current?.showModal();
@@ -255,6 +264,17 @@ export default function App() {
                       )}
                       selected={selected}
                       onSelect={(r) => revealRecord(r.id)}
+                    />
+                  )}
+                  {tab === "Pareto" && (
+                    <Pareto
+                      records={all.filter(verifiedHere)}
+                      sizes={sizes}
+                      loading={!sizesLoaded}
+                      measure={size}
+                      onMeasure={setSize}
+                      selected={selected}
+                      onSelect={revealRecord}
                     />
                   )}{" "}
                   <Leaderboard

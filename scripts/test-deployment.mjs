@@ -91,6 +91,7 @@ try {
   );
   for (const name of [
     "catalogue.json",
+    "sizes.json",
     "site.json",
     "favicon.svg",
     ...verified.map((r) => r.certificate_url),

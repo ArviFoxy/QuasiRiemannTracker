@@ -1103,3 +1103,118 @@ dialog .protocol-grid h2 {
   color: #56677f;
   background: #edf1f6;
 }
+
+.pareto-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 20px;
+}
+.pareto-measure {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  font-size: 0.8125rem;
+  color: #475661;
+}
+.pareto-measure select {
+  min-height: 36px;
+  min-width: 0;
+}
+@media (max-width: 640px) {
+  .pareto-measure {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
+    flex: 1 1 100%;
+  }
+}
+.pareto-note {
+  max-width: 760px;
+  margin: 12px 0 4px;
+  font-size: 0.75rem;
+  line-height: 1.6;
+  color: var(--muted);
+}
+.chart.pareto-chart {
+  height: 400px;
+  cursor: default;
+  touch-action: pan-y;
+}
+.pareto-panel .chart-tooltip {
+  left: auto;
+  bottom: auto;
+}
+.pareto-panel .chart-tooltip strong {
+  max-width: 340px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.legend-dot.front {
+  background: var(--teal);
+}
+.legend-triangle {
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 9px solid #82959e;
+}
+.pareto-table {
+  margin-top: 8px;
+  font-size: 0.8125rem;
+}
+.pareto-table summary {
+  cursor: pointer;
+  padding: 8px 0;
+  color: #475661;
+}
+.pareto-table table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 4px;
+}
+.pareto-table th,
+.pareto-table td {
+  padding: 8px 12px 8px 0;
+  text-align: left;
+  font-weight: 400;
+  border-top: 1px solid var(--line);
+  vertical-align: top;
+}
+.pareto-table thead th {
+  color: var(--muted);
+  font-size: 0.75rem;
+  border-top: 0;
+}
+.pareto-table td {
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+.pareto-table tbody th button {
+  padding: 0;
+  text-align: left;
+  color: var(--teal);
+}
+.pareto-table tbody th button:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.pareto-table tr.selected th button {
+  font-weight: 500;
+}
+@media (max-width: 640px) {
+  .pareto-table th:nth-child(2),
+  .pareto-table td:nth-child(2) {
+    display: none;
+  }
+}
+@media (max-width: 380px) {
+  .view-nav {
+    flex-wrap: wrap;
+    column-gap: 14px;
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "bytes": 1438,
+  "compile": {
+    "cpu_seconds": 1.5,
+    "cpu_seconds_by_submission": {
+      "classical-euler-product": 1.5
+    },
+    "gross_cpu_seconds": 12.2,
+    "heaviest_module": {
+      "cpu_seconds": 0.8,
+      "name": "Submissions.classical_euler_product.Main"
+    },
+    "peak_rss_bytes": 4040089600
+  },
+  "dependency_trees": {
+    "classical-euler-product": "9b7fd696cdf775b190b5c71c1abb1ebed0c064bf"
+  },
+  "lines": 35,
+  "modules": 2,
+  "profile": "74047c32eb9b",
+  "result_id": "classical-euler-product",
+  "schema_version": 1,
+  "source_tree": "90aa6cbd8313edca3db27de2e84056431f1e0029"
+}

@@ -56,7 +56,7 @@ test("milestone overview is opt-in and both fit controls preserve points", async
   await expect(chart.locator('[data-axis="date"]')).toHaveText(initialDates);
 });
 
-test("milestones sit between leaderboard and protocol and fit narrow screens", async ({
+test("milestones sit between the Pareto view and protocol and fit narrow screens", async ({
   page,
 }) => {
   await routeCatalogue(page);
@@ -65,6 +65,7 @@ test("milestones sit between leaderboard and protocol and fit narrow screens", a
   await expect(nav.getByRole("link")).toHaveText([
     "Timeline",
     /Leaderboard/,
+    "Pareto",
     "Milestones",
     "Protocol",
   ]);

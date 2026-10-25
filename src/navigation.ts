@@ -3,6 +3,7 @@ import { useSyncExternalStore } from "react";
 export const tabs = [
   "Timeline",
   "Leaderboard",
+  "Pareto",
   "Milestones",
   "Protocol",
 ] as const;
@@ -17,7 +18,8 @@ export type UpdateGraph = (
   update: (current: GraphView) => GraphView,
   history?: HistoryMode,
 ) => void;
-type View = { tab: Tab; graph: GraphView };
+// size names the measure of proof size on the Pareto tab.
+type View = { tab: Tab; graph: GraphView; size: string | null };
 
 const defaultGraph = (): GraphView => ({
   overview: false,
@@ -48,10 +50,12 @@ function readView(url: URL): View {
     graph.window = x;
   if (y && y[0] >= 0.0001 && y[0] <= 1e6 && Math.abs(y[1]) <= 1e6)
     graph.vertical = { scale: y[0], offset: y[1] };
+  const size = params.get("size");
   return {
     tab:
       tabs.find((tab) => tab.toLowerCase() === params.get("tab")) ?? "Timeline",
     graph,
+    size: size && /^[a-z-]{1,24}$/.test(size) ? size : null,
   };
 }
 
@@ -67,6 +71,9 @@ function viewUrl(view: View, href = window.location.href) {
   else url.searchParams.set("x", x.join(","));
   if (y.scale === 1 && y.offset === 0) url.searchParams.delete("y");
   else url.searchParams.set("y", `${y.scale},${y.offset}`);
+  if (view.tab === "Pareto" && view.size)
+    url.searchParams.set("size", view.size);
+  else url.searchParams.delete("size");
   return url;
 }
 
@@ -94,6 +101,8 @@ function subscribe(notify: () => void) {
 const snapshot = () => window.location.href;
 const setTab = (tab: Tab) =>
   writeView({ ...readView(new URL(snapshot())), tab }, "push");
+const setSize = (size: string | null) =>
+  writeView({ ...readView(new URL(snapshot())), size }, "push");
 const setGraph: UpdateGraph = (update, mode = "push") => {
   const current = readView(new URL(snapshot()));
   const next = { ...current, graph: update(current.graph) };
@@ -108,6 +117,7 @@ export function useNavigation() {
     ...view,
     setTab,
     setGraph,
+    setSize,
     tabHref: (tab: Tab) => viewUrl({ ...view, tab }, href).href,
   };
 }

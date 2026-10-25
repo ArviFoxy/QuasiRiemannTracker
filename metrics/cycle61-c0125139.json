@@ -1,0 +1,13 @@
+{
+  "bytes": 32951487,
+  "dependency_trees": {
+    "cycle61-c0125139": "90ff24b61da8267b8d74450c308f0a2f4ca0576c",
+    "openai-baseline": "e470d11a2c5b310e5d8fe5a6263acb376aff9cd6"
+  },
+  "lines": 623960,
+  "modules": 3118,
+  "profile": "74047c32eb9b",
+  "result_id": "cycle61-c0125139",
+  "schema_version": 1,
+  "source_tree": "9c78352effe045e6c2aca81d4e45c6e4eda486dc"
+}

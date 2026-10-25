@@ -1,0 +1,13 @@
+{
+  "bytes": 32984603,
+  "dependency_trees": {
+    "gao-cycle61-plane-20261013": "44b6b40dc575e5f3837e760b89e3fc406675db8e",
+    "openai-baseline": "e470d11a2c5b310e5d8fe5a6263acb376aff9cd6"
+  },
+  "lines": 624123,
+  "modules": 3130,
+  "profile": "74047c32eb9b",
+  "result_id": "gao-cycle61-plane-20261013",
+  "schema_version": 1,
+  "source_tree": "07fb831bef50674bf637dacde61b106573a760b4"
+}

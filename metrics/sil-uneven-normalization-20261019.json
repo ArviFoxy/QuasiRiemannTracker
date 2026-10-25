@@ -1,0 +1,13 @@
+{
+  "bytes": 48882791,
+  "dependency_trees": {
+    "openai-baseline": "e470d11a2c5b310e5d8fe5a6263acb376aff9cd6",
+    "sil-uneven-normalization-20261019": "bc0d103646a16771127b776112950f57a37654bb"
+  },
+  "lines": 884437,
+  "modules": 4479,
+  "profile": "74047c32eb9b",
+  "result_id": "sil-uneven-normalization-20261019",
+  "schema_version": 1,
+  "source_tree": "75c15a513946e91e3abfa9c869dd88b7c8753e30"
+}

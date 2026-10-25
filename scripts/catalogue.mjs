@@ -6,6 +6,7 @@ import {
 } from "../core/catalogue-revisions.mjs";
 import { certificate } from "../verifier/certificate.mjs";
 import { reconcileAdmissions } from "./reconcile-admissions.mjs";
+import { buildSizes } from "./proof-sizes.mjs";
 const data = validateCatalogue(await reconcileAdmissions());
 for (const record of catalogueProofRecords(data)) {
   if (record.status !== "framework-verified") continue;
@@ -32,6 +33,9 @@ writeFileSync(
   "public/site.json",
   JSON.stringify({ ...config, repository }, null, 2) + "\n",
 );
+const sizes = buildSizes();
+writeFileSync("public/sizes.json", JSON.stringify(sizes, null, 2) + "\n");
 console.log(
   `Catalogue: ${data.records.length} results with matching verification records.`,
 );
+console.log(`Proof sizes: ${Object.keys(sizes.entries).length} results.`);

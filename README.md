@@ -41,6 +41,21 @@ PR head, bound and source tree. Metadata edits and reruns cannot reset that date
 The offline admission cache retains all eligible receipts; refresh it through
 the normal online main-branch build to recover older receipts from the archive.
 
+## Proof size
+
+The Pareto tab plots each verified bound against the size of its proof. A result
+is on the Pareto front when no other result has both a stronger bound and a
+smaller proof. Size is the CPU time to compile every module of the proof once
+from scratch, leaving out the time Lean spends importing dependencies. The tab
+can also show peak memory, the number of modules and lines of Lean.
+
+`metrics/<result-id>.json` holds the measurements of each submission, bound to
+its exact source tree, and `metrics/profile.json` records the machine and
+toolchain they were taken with. Compare sizes only within one profile. Website
+builds combine these files into `public/sizes.json` and skip metrics whose
+sources have since changed. [bench/README.md](bench/README.md) explains how they
+are measured and how to measure a new submission.
+
 ## Submit
 
 1. Start from the current `main` branch. Add Lean source under

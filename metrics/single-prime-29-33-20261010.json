@@ -1,0 +1,15 @@
+{
+  "bytes": 26035521,
+  "dependency_trees": {
+    "argonaut-20261008": "e7222506644ba351b65a671637467f7468274e51",
+    "cycle25-quartic-20261010": "d63c7de31604e8aa08acc71e671d4de37d78a5fc",
+    "openai-baseline": "e470d11a2c5b310e5d8fe5a6263acb376aff9cd6",
+    "single-prime-29-33-20261010": "eb250b90d568021263a5f66f7b02ac499e673629"
+  },
+  "lines": 501601,
+  "modules": 2876,
+  "profile": "74047c32eb9b",
+  "result_id": "single-prime-29-33-20261010",
+  "schema_version": 1,
+  "source_tree": "f0cc940a9e5c5cf119c98f5d235b9729e707af9d"
+}

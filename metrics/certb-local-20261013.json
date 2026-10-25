@@ -1,0 +1,15 @@
+{
+  "bytes": 31939713,
+  "dependency_trees": {
+    "certb-local-20261013": "c73dd9c07f445a8bc1758f1fb270fac2afd1e289",
+    "local44-20261013": "513a3b2319a208e075107a17a403ae02974dfd30",
+    "openai-baseline": "e470d11a2c5b310e5d8fe5a6263acb376aff9cd6",
+    "reserve-local-20261013": "e1eead2ce139c135b8e6767e9d59f11b44fa3d24"
+  },
+  "lines": 605480,
+  "modules": 3036,
+  "profile": "74047c32eb9b",
+  "result_id": "certb-local-20261013",
+  "schema_version": 1,
+  "source_tree": "a7983e308b91f8bda7376e9e58824a47a5ebe5f9"
+}

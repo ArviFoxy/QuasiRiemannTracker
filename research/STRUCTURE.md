@@ -123,6 +123,18 @@ the ODE `E′ = −6q*E/(1 − 6q*s)` with the closed form
 Each class flow is solved by Lambert W. Ceiling about 0.874724. Only the regular HIGH gate at
 `ν = q` binds, and half its value lies in the last 0.01 of slot width (`ν ≈ 0.51`, `p ≈ 0.2`).
 
+**Why this curve** (`chain-structure/README.md`). The closed form is an exact AM–GM balance over
+amplitude classes between the slot term `4s` and the plain term `E`, written as a sum of squares
+(`lean-lab/ChainAMGM.lean`), so it is the maximum over all classes. Each class flow has the
+zero-length line `E = 0` as a double invariant line, whose exponential factor `exp((5s − p)/E)` gives
+the Lambert W solutions (`lean-lab/ChainLambertOrigin.lean`). The switching flow has no invariant
+curve of degree ≤ 2 besides `E = 0`. Within the method the curve is optimal up to 0.9e-6, so only
+the atoms move it.
+
+**The proof now uses this curve** (`faceless-chain/README.md`). The Lean source chain is one
+family of faces, the secant lines of a five-piece cubic envelope following the flow, each piece
+certified for all its 2¹⁶ faces at once. Lean value 34989/40000 = 0.874725.
+
 ## 7. Why it is stuck
 
 - **Fourier steps preserve an invariant.** Poisson and theta reflections generate an affine

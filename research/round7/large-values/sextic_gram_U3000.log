@@ -1,0 +1,55 @@
+[build] rows=778 primeideals=2327 time 0.5s
+
+== y=0.4140 Y=28 cols=9 Neff=4.8 rows=778
+  E|G(u,v)|^2/sum w^4 = 0.899 (random-phase prediction 1);
+  E|G(u,v)|^2/Neff = 0.731;  P(|G|>Neff^delta) = 0.318;  Neff^(1/2-delta) = 1.073; median|G|/Neff^delta = 0.786
+  ||G_full|| = 776.9  (rows 778, Neff 4.8, rows*Neff/min(rows,cols) = 411.4)
+  random R=8: Halasz rowsum/(R Neff^d)=0.84  E2/(R^2 Neff)=0.597  S3/E2^1.5=0.2637  S3/(R^3 Neff)=0.275  S3/(3trDO^2)=0.254  ||G_R||/(R+Neff)=1.05
+  random R=54: Halasz rowsum/(R Neff^d)=0.95  E2/(R^2 Neff)=0.726  S3/E2^1.5=0.4146  S3/(R^3 Neff)=0.560  S3/(3trDO^2)=2.873  ||G_R||/(R+Neff)=1.09
+  top-54 rows of |mu-poly|: level |D|^2/||xi||^2 = Neff^0.608; E2/(R^2 Neff)=1.532  S3/E2^1.5=0.8403  S3/(R^3 Neff)=3.476  S3/(3trDO^2)=8.600
+  top-54 rows of |one-poly|: level |D|^2/||xi||^2 = Neff^0.663; E2/(R^2 Neff)=1.606  S3/E2^1.5=0.8373  S3/(R^3 Neff)=3.718  S3/(3trDO^2)=8.582
+
+== y=0.6000 Y=122 cols=37 Neff=17.0 rows=778
+  E|G(u,v)|^2/sum w^4 = 0.924 (random-phase prediction 1);
+  E|G(u,v)|^2/Neff = 0.736;  P(|G|>Neff^delta) = 0.351;  Neff^(1/2-delta) = 1.137; median|G|/Neff^delta = 0.814
+  ||G_full|| = 870.8  (rows 778, Neff 17.0, rows*Neff/min(rows,cols) = 356.8)
+  random R=18: Halasz rowsum/(R Neff^d)=0.99  E2/(R^2 Neff)=0.713  S3/E2^1.5=0.2032  S3/(R^3 Neff)=0.514  S3/(3trDO^2)=0.249  ||G_R||/(R+Neff)=1.43
+  random R=54: Halasz rowsum/(R Neff^d)=0.98  E2/(R^2 Neff)=0.713  S3/E2^1.5=0.2165  S3/(R^3 Neff)=0.537  S3/(3trDO^2)=0.793  ||G_R||/(R+Neff)=1.43
+  top-54 rows of |mu-poly|: level |D|^2/||xi||^2 = Neff^0.367; E2/(R^2 Neff)=1.103  S3/E2^1.5=0.4536  S3/(R^3 Neff)=2.165  S3/(3trDO^2)=2.052
+  top-54 rows of |one-poly|: level |D|^2/||xi||^2 = Neff^0.332; E2/(R^2 Neff)=0.935  S3/E2^1.5=0.3594  S3/(R^3 Neff)=1.339  S3/(3trDO^2)=1.515
+
+== y=0.7435 Y=385 cols=118 Neff=53.7 rows=778
+  E|G(u,v)|^2/sum w^4 = 0.890 (random-phase prediction 1);
+  E|G(u,v)|^2/Neff = 0.741;  P(|G|>Neff^delta) = 0.383;  Neff^(1/2-delta) = 1.198; median|G|/Neff^delta = 0.849
+  ||G_full|| = 1048.4  (rows 778, Neff 53.7, rows*Neff/min(rows,cols) = 354.0)
+  random R=54: Halasz rowsum/(R Neff^d)=1.05  E2/(R^2 Neff)=0.739  S3/E2^1.5=0.1256  S3/(R^3 Neff)=0.587  S3/(3trDO^2)=0.263  ||G_R||/(R+Neff)=1.62
+  random R=59: Halasz rowsum/(R Neff^d)=1.07  E2/(R^2 Neff)=0.729  S3/E2^1.5=0.1272  S3/(R^3 Neff)=0.581  S3/(3trDO^2)=0.291  ||G_R||/(R+Neff)=1.63
+  top-54 rows of |mu-poly|: level |D|^2/||xi||^2 = Neff^0.242; E2/(R^2 Neff)=0.870  S3/E2^1.5=0.1665  S3/(R^3 Neff)=0.990  S3/(3trDO^2)=0.369
+  top-54 rows of |one-poly|: level |D|^2/||xi||^2 = Neff^0.266; E2/(R^2 Neff)=0.935  S3/E2^1.5=0.1891  S3/(R^3 Neff)=1.253  S3/(3trDO^2)=0.443
+
+== y=0.8717 Y=1074 cols=326 Neff=151.0 rows=778
+  E|G(u,v)|^2/sum w^4 = 0.894 (random-phase prediction 1);
+  E|G(u,v)|^2/Neff = 0.738;  P(|G|>Neff^delta) = 0.415;  Neff^(1/2-delta) = 1.256; median|G|/Neff^delta = 0.885
+  ||G_full|| = 1353.0  (rows 778, Neff 151.0, rows*Neff/min(rows,cols) = 360.5)
+  random R=54: Halasz rowsum/(R Neff^d)=1.09  E2/(R^2 Neff)=0.720  S3/E2^1.5=0.0733  S3/(R^3 Neff)=0.551  S3/(3trDO^2)=0.091  ||G_R||/(R+Neff)=1.60
+  random R=163: Halasz rowsum/(R Neff^d)=1.04  E2/(R^2 Neff)=0.724  S3/E2^1.5=0.0742  S3/(R^3 Neff)=0.562  S3/(3trDO^2)=0.278  ||G_R||/(R+Neff)=1.68
+  top-54 rows of |mu-poly|: level |D|^2/||xi||^2 = Neff^0.178; E2/(R^2 Neff)=0.821  S3/E2^1.5=0.0870  S3/(R^3 Neff)=0.795  S3/(3trDO^2)=0.114
+  top-54 rows of |one-poly|: level |D|^2/||xi||^2 = Neff^0.202; E2/(R^2 Neff)=0.766  S3/E2^1.5=0.0827  S3/(R^3 Neff)=0.682  S3/(3trDO^2)=0.104
+
+== y=1.0000 Y=3000 cols=904 Neff=421.8 rows=778
+  E|G(u,v)|^2/sum w^4 = 0.899 (random-phase prediction 1);
+  E|G(u,v)|^2/Neff = 0.742;  P(|G|>Neff^delta) = 0.445;  Neff^(1/2-delta) = 1.316; median|G|/Neff^delta = 0.924
+  ||G_full|| = 2045.5  (rows 778, Neff 421.8, rows*Neff/min(rows,cols) = 421.8)
+  random R=54: Halasz rowsum/(R Neff^d)=1.16  E2/(R^2 Neff)=0.728  S3/E2^1.5=0.0447  S3/(R^3 Neff)=0.574  S3/(3trDO^2)=0.033  ||G_R||/(R+Neff)=1.48
+  random R=389: Halasz rowsum/(R Neff^d)=1.09  E2/(R^2 Neff)=0.739  S3/E2^1.5=0.0459  S3/(R^3 Neff)=0.599  S3/(3trDO^2)=0.248  ||G_R||/(R+Neff)=1.77
+  top-54 rows of |mu-poly|: level |D|^2/||xi||^2 = Neff^0.173; E2/(R^2 Neff)=0.823  S3/E2^1.5=0.0498  S3/(R^3 Neff)=0.764  S3/(3trDO^2)=0.038
+  top-54 rows of |one-poly|: level |D|^2/||xi||^2 = Neff^0.172; E2/(R^2 Neff)=0.891  S3/E2^1.5=0.0554  S3/(R^3 Neff)=0.956  S3/(3trDO^2)=0.044
+
+== y=1.1539 Y=10286 cols=3114 Neff=1446.3 rows=778
+  E|G(u,v)|^2/sum w^4 = 0.899 (random-phase prediction 1);
+  E|G(u,v)|^2/Neff = 0.742;  P(|G|>Neff^delta) = 0.485;  Neff^(1/2-delta) = 1.391; median|G|/Neff^delta = 0.978
+  ||G_full|| = 3881.4  (rows 778, Neff 1446.3, rows*Neff/min(rows,cols) = 1446.3)
+  random R=54: Halasz rowsum/(R Neff^d)=1.22  E2/(R^2 Neff)=0.725  S3/E2^1.5=0.0271  S3/(R^3 Neff)=0.637  S3/(3trDO^2)=0.011  ||G_R||/(R+Neff)=1.31
+  random R=389: Halasz rowsum/(R Neff^d)=1.15  E2/(R^2 Neff)=0.739  S3/E2^1.5=0.0250  S3/(R^3 Neff)=0.605  S3/(3trDO^2)=0.073  ||G_R||/(R+Neff)=1.66
+  top-54 rows of |mu-poly|: level |D|^2/||xi||^2 = Neff^0.150; E2/(R^2 Neff)=0.875  S3/E2^1.5=0.0184  S3/(R^3 Neff)=0.571  S3/(3trDO^2)=0.008
+  top-54 rows of |one-poly|: level |D|^2/||xi||^2 = Neff^0.112; E2/(R^2 Neff)=0.818  S3/E2^1.5=0.0241  S3/(R^3 Neff)=0.680  S3/(3trDO^2)=0.010

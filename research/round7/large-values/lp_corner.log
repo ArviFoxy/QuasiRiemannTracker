@@ -1,0 +1,25 @@
+calibrated face B=0.95311, Lam=2.6:  R=0.603700 t*=1.1539 r*=0.7435 m*=0.4104
+with B=0.94 exactly: R=0.604166 t*=1.1552 r*=0.7415 m*=0.4137
+  dR/d(lower I line) = 0.5055  -> line drop needed for -7.5e-5: 1.48e-04
+  dR/d(lower P line) = 0.2218  -> line drop needed for -7.5e-5: 3.38e-04
+  dR/d(lower L line) = 0.2766  -> line drop needed for -7.5e-5: 2.71e-04
+  dR/d(lower I and P together) = 0.7235
+nu=0.45: rho=0.634146 (LP 0.634135) t=1.2195 r=0.8130 m=0.4065  sens I 0.354 P 0.177 L 0.439
+nu=0.4546: rho=0.629575 (LP 0.629564) t=1.2222 r=0.8148 m=0.4074  sens I 0.351 P 0.175 L 0.444
+nu=0.48: rho=0.603960 (LP 0.603949) t=1.2376 r=0.8251 m=0.4125  sens I 0.331 P 0.165 L 0.475
+nu=0.5: rho=0.583333 (LP 0.583323) t=1.2500 r=0.8333 m=0.4167  sens I 0.313 P 0.156 L 0.500
+nu=0.51: rho=0.572864 (LP 0.572854) t=1.2563 r=0.8375 m=0.4187  sens I 0.303 P 0.152 L 0.513
+
+=== method table at the corner ===
+witness lengths: inverse(marked) y=0.8717, Moebius alone y=0.7435, plain S^2Q y=0.8717, S alone 0.4104, long t=1.1539
+  coefficient-blind floor y(1-d) for I marked: 0.4754
+  coefficient-blind floor y(1-d) for Moeb alone: 0.4055
+  coefficient-blind floor y(1-d) for P (S^2Q): 0.4754
+  coefficient-blind floor y(1-d) for long: 0.6294
+  long line L(t*)=0.6037  vs blind floor t*(1-d)=0.6294  (L below floor iff t>1)
+Halasz best (length past conductor U^2): 2(1-d) = 1.0908
+Jutila/HB: exponent 1 + k*y*(1-2d) >= 1 for all k,y  (1-2d=0.0908)
+GM+(H2) with proved width-2 4th moment: rho(y)= y*0.4241 + 0.6667; at I-witness 1.0364, Moeb 0.9820, S^2Q 1.0364; fixed point y=rho: 1.1577
+GM+(H2) with ideal width-1 4th moment (H1): rho(y)= y*0.4241 + 0.3333; at I-witness 0.7031, Moeb 0.6487, S^2Q 0.7031; fixed point y=rho: 0.5788
+nu=0.5 GM+(H2) proved: rho(y) = y*0.3333+0.6667; fixed point 1.0000
+nu=0.5 GM+(H2) ideal (H1): rho(y) = y*0.3333+0.3333; fixed point 0.5000

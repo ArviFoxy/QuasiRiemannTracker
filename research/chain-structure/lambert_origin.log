@@ -1,0 +1,7 @@
+A form: 0
+D form: 0
+D - pA - (1-p)^2 E: 0
+X(g/E) = 5*p**2 - 10*p + 5
+cofactor of L_p: 5*E*p - 15*E + 4*p**2 - 20*p*s  check -5A-2(5-2p^2): 0
+X(I) = 0
+extactic (lines) = -10*E**2*(p - 1)**2*(2*E*p**2 + 7*E*p - 15*E + 8*p**3*s - 4*p**2 - 20*p*s + 10)

@@ -1,0 +1,2 @@
+L=100 bounded=True d=0.0 omega= 0.25  k_min=None  k/L=nan  height-span=nan
+L=100 bounded=True d=0.0 omega= 0.50  k_min=None  k/L=nan  height-span=nan

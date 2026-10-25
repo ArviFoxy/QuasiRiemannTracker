@@ -8,8 +8,9 @@ the best upstream PR (smaller gains count only if they simplify or clarify the p
 | upstream PR #70 (Mark Lewko) | 0.874772906 | |
 | upstream PR #71 (recost of PR #69 graph) | 0.87477290596 | 4e-11 below #70; checked 2026-10-24 |
 | upstream PR #72 (Das, bootstrap + fine graph), best upstream PR | 0.874771265 | 1.64e-6 below #71; bar now 0.874761265 (checked 2026-10-25) |
-| this branch, Lean (`submissions/arvi-repeated-marks-20261024`, branch `submission-repeated-marks-20261024` @ `39130516` (one commit, author Arvi); upstream PR #73, renamed with the `arvi-` prefix on 2026-10-25) | 0.8747289 | 4.24e-5 below PR #72 |
-| next milestone (1e-5 below this branch) | ≤ 0.8747189 | |
+| this branch, Lean (`submissions/arvi-repeated-marks-20261024`, branch `submission-repeated-marks-20261024`; upstream PR #73, renamed with the `arvi-` prefix on 2026-10-25) | 0.8747289 | 4.24e-5 below PR #72 (commit `39130516`) |
+| this branch, Lean, face family (`faceless-chain/`, commit `0b0d6ad2` on the same branch, 2026-10-25) | 34989/40000 = 0.874725 | −3.9e-6: a simplification (no source graph), below the bar on its own |
+| next milestone (1e-5 below this branch) | ≤ 0.874715 (≤ 0.8747189 against the PR's previous value) | |
 
 Conventions: `θ*` values are exact-return evaluations (rational certificates) unless marked "float".
 Each entry records the idea, the measured effect, and where the artifacts are. Negative results are
@@ -1237,6 +1238,51 @@ A catalogue cross-check (21.9k records) found nothing that moves them. → `cap-
     self-dual point `N = K`. That is an asymptotic large sieve at the critical length with a
     power-saving error. Conrey–Iwaniec–Soundararajan's asymptotic large sieve gives only log savings
     even for the full family of Dirichlet characters.
+
+- *Round 7 (large values, interpolation lemma, signal processing): all negative* (`round7/`).
+  - **Large values** (`round7/large-values/`). No large-values method lowers `R = 0.6037` or
+    `ρ(0.5) = 7/12` with the chain's inputs. Halász–Montgomery fails because the off-diagonals of the
+    thin sextic family are genuinely of size `Y^{1/2}`; Huxley and Jutila give at least 1. Poisson is
+    an exact self-duality of the sextic family, `τ(ψ_uψ̄_v) = c(u, v)τ(ψ_u)τ(ψ̄_v)`, so root numbers
+    cancel around every cycle and the Guth–Maynard triangle sum S3 gets no saving. With an assumed
+    width-1 coset fourth moment and an assumed S3 saving of `Y^{0.136}`, `ρ(0.5)` would drop to 0.5769,
+    but no mechanism for the S3 saving was found.
+  - **Interpolation lemma** (`round7/interpolation/`). A resonance model, `L ≈ P(Y)` with
+    `P | 1 + cY^{k₂}` and all coefficients of `P` and `1/P` of modulus at most 1, meets every
+    constraint the count uses and realizes the corner with its dip: rigorously `ΔR = 0`. The
+    identity `r* + m* = t*` is exactly this factorization. A lossless interpolation would hold
+    outside the zero-density band `[0.0659, 0.0693)·log U`, and the model lies inside it.
+  - **Signal processing for P1** (user suggestion: compressed sensing, frame theory;
+    `round7/signal-processing/`). Matrix concentration proves the column branch diagonal for random
+    coefficients, using only the quadratic and cubic large sieves, so P1 is a derandomization
+    problem. Uncertainty principles cap at `‖S‖_F²/N² ≈ 0.92–0.98`. An explicit adversary that keeps
+    every algebraic property (unimodularity, twisted multiplicativity, `β³ = n/|n|`) reaches 3.4–5.8×
+    the diagonal, so any proof must use the automorphy of `θ₃`. Cleanest open lemmas: Q3
+    (quadratic–cubic uncertainty, `‖E‖_op ≤ N^{1−η}`, no Gauss sums) and BD (block decoupling).
+    **Correction:** use (a), the inverse-moment budget, needs only `(K + N^{1−η}K^η)‖c‖²` with
+    `η ≥ 0.0085`, since `N/K = Z^{0.129}`. The remark "`K + N^{1−η}K^η` never suffices" above applies
+    to use (b), the probe, only.
+- *The faceless chain in Lean: 34989/40000 = 0.874725* (user request; `faceless-chain/README.md`).
+  The 59-node source graph is replaced by one family of faces: secant lines of a five-piece cubic
+  envelope that follows the closed-form switching flow (2¹⁶ faces per piece). Each piece is proved
+  valid for all its faces at once (one-variable certificates for the scalar gates; Bernstein trees
+  in `(u, p)` with polynomial-in-`y` coefficients for the HIGH gate; a Kronecker-substitution test
+  keeps the kernel in `Nat`). Four junction steps join the pieces. Return regenerated (34 rows,
+  11 windows). Standard axioms; the canonical challenge wrapper and the upstream `npm run check`
+  pass. −3.9e-6 against 0.8747289, 0.9e-6 above the continuum ceiling 0.8747241. Committed on the
+  PR branch as `0b0d6ad2`.
+- *Why the chain is the curve it is* (user question; `chain-structure/README.md`).
+  - The binding threshold is an AM–GM optimum over amplitude classes: `D_p = pA_p + (1 − p)²E`,
+    and `(a + 2b)²[(a − 2b)²D_p − (2 − a² − 4ab)A_p] = 4(bA_p − a(1 − a² − 2b²))²`
+    (`lean-lab/ChainAMGM.lean`). So `6q* = 5(√E − 2√s)²/(2 − E − 4√(Es))` bounds every class, not
+    only at a critical point; the binding class is `p* = (E + √(Es) − 1)/(√(Es) − 2s)`.
+  - Lambert W comes from a double invariant line: in each class flow `X((5s − p)/E) = 5(1 − p)²` is
+    constant, the extactic polynomial is `10(1 − p)²E²L_p`, and `exp((5s − p)/E)` is the exponential
+    factor (`lean-lab/ChainLambertOrigin.lean`).
+  - The switching flow (moving class) has no invariant curve of degree ≤ 2 besides `E = 0`, so the
+    Lambert structure is per class only.
+  - Optimal within the method up to 0.9e-6: exact maximum per step, comparison principle along the
+    chain, tangent faces, and θ* is flat in the count-face position at the end of the chain.
 
 ## Open directions (ranked, revised 2026-10-24, third pass; see `barriers/README.md`)
 

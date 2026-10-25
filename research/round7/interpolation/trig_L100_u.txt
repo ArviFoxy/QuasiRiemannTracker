@@ -1,0 +1,9 @@
+L=100 bounded=False d=0.0 omega= 0.25  k_min=10  k/L=0.1000  height-span=0.0250
+L=100 bounded=False d=0.0 omega= 0.50  k_min=7  k/L=0.0700  height-span=0.0350
+L=100 bounded=False d=0.0 omega= 1.00  k_min=6  k/L=0.0600  height-span=0.0600
+L=100 bounded=False d=0.0 omega= 2.00  k_min=6  k/L=0.0600  height-span=0.1200
+L=100 bounded=False d=0.0 omega= 3.00  k_min=6  k/L=0.0600  height-span=0.1800
+L=100 bounded=False d=0.0 omega= 4.00  k_min=6  k/L=0.0600  height-span=0.2400
+L=100 bounded=False d=0.0 omega= 6.00  k_min=6  k/L=0.0600  height-span=0.3600
+L=100 bounded=False d=0.0 omega= 8.00  k_min=6  k/L=0.0600  height-span=0.4800
+L=100 bounded=False d=0.0 omega=12.00  k_min=8  k/L=0.0800  height-span=0.9600

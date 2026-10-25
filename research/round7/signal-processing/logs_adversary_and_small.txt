@@ -1,0 +1,60 @@
+### verbatim outputs of runs made in this session (copied from the terminal)
+
+$ python3 test_gauss.py
+max |direct - twisted-mult| over 40 composite n: 1.0235750533041806e-15
+(g~(pi)^2 / (conj g~(pi) * pi/|pi|) = 1 for the 8 smallest primary primes)
+
+$ python3 test_absorb.py
+max |g~(n)conj((n/P)_3) - g~(nP)/g~(P)| = 8.671119018262734e-16   (other orientation: 1.7320508075688783 )
+
+$ python3 exp_spectral.py 300 12000 60
+K=300 N=12000 L=60: rows K'=76 cols N'=1558 marks L'=14   K'/N'=0.0488  N'/K'=20.5
+  g~                                 |Phi c|^2/Diag=  1.018  ||P_V c||^2/||c||^2=0.0507 (=K'/N' x   1.04)  LS/Diag=  22.6
+  random phases                      |Phi c|^2/Diag=  1.079  ||P_V c||^2/||c||^2=0.0520 (=K'/N' x   1.07)  LS/Diag=  22.6
+  g~ * A  (A=sum_P q^-1/2 (n/P)_3)   |Phi c|^2/Diag=  0.683  ||P_V c||^2/||c||^2=0.0323 (=K'/N' x   0.66)  LS/Diag=  22.6
+  g~ * conj-orientation A            |Phi c|^2/Diag=  1.007  ||P_V c||^2/||c||^2=0.0450 (=K'/N' x   0.92)  LS/Diag=  22.6
+  aligned (n/k0)_2                   |Phi c|^2/Diag= 22.534  ||P_V c||^2/||c||^2=1.0000 (=K'/N' x  20.50)  LS/Diag=  22.6
+  S: beta=g~ slot (n/P)_3 op2/MP=0.848 Fro/KLN=0.925 srank 7.47; conj slot 1.039/0.911/6.01; random 0.807/0.904/7.68; Gaussian 0.834/0.974/8.00; adversarial 8.007/1.926/1.65
+  principal angles V vs W: max cos^2=0.0923 (random W 0.0919, MP edge 0.0996)
+  single-mark F_P/Diag_P over 14 marks: mean 0.985  min 0.884  max 1.108
+
+$ python3 exp_spectral.py 1000 24000 40
+K=1000 N=24000 L=40: rows K'=256 cols N'=3106 marks L'=10
+  g~ 0.853 | random 1.001 | g~*A 1.001 | g~*conj-A 0.906 | aligned 13.660 (LS/Diag 13.8)
+  S: g~ 0.964/0.983/7.11 ; conj 0.866/0.960/7.73 ; random 0.870/0.943/7.56 ; Gaussian 0.932/0.997/7.46 ; adversarial 6.729/1.704/1.77
+  principal angles: max cos^2=0.1181 (random 0.1036, MP edge 0.1182); single-mark mean 1.046 [1.026, 1.095]
+
+$ python3 exp_adversary.py 300 12000 3
+K=300 N=12000 marks=none: K'=76 N'=1558 primes-in-play=912 prime columns=654 (41.98%)
+  large-sieve allowance (K'+N')||c||^2/Diag = 22.6
+  true Gauss sums: ratio = 1.018
+  adversary, free unimodular prime values (start: true Gauss sums):
+    [free] sweep 1: ratio = 10.558
+    [free] sweep 2: ratio = 12.321
+    [free] sweep 3: ratio = 13.055
+  adversary, prime values constrained to cube roots of lam (start: true Gauss sums):
+    [cube] sweep 1: ratio = 7.922
+    [cube] sweep 2: ratio = 9.082
+    [cube] sweep 3: ratio = 9.694
+
+$ python3 exp_prime_adversary.py 300 12000 60
+unmarked (A=1): K'=76 N'=1558 prime columns 42.0%; allowance 22.6
+   true beta = g~                               ratio=  1.018  max_k|S_k|^2/N'=    2.99  median=  0.79
+   aligned to one chi_k0 (primes only)          ratio=  3.590  max_k|S_k|^2/N'=  199.90  median=  0.54
+   aligned to spread F (primes only)            ratio=  2.801  max_k|S_k|^2/N'=    8.97  median=  2.06
+marked, A=sum_P q^-1/2 conj((n/P)_3): K'=76 N'=1558 prime columns 42.0%; allowance 22.6
+   true beta = g~                               ratio=  1.007  max_k|S_k|^2/N'=    0.61  median=  0.13
+   aligned to one chi_k0 (primes only)          ratio=  3.407  max_k|S_k|^2/N'=   28.93  median=  0.17
+   aligned to spread F (primes only)            ratio=  2.795  max_k|S_k|^2/N'=    1.61  median=  0.34
+
+$ python3 exp_prime_adversary.py 600 60000 60
+unmarked (A=1): K'=156 N'=7796 prime columns 36.0%; allowance 53.7
+   true beta = g~                               ratio=  1.032  max_k|S_k|^2/N'=    4.32  median=  0.68
+   aligned to one chi_k0 (primes only)          ratio=  5.777  max_k|S_k|^2/N'=  719.17  median=  0.51
+   aligned to spread F (primes only)            ratio=  3.866  max_k|S_k|^2/N'=   13.23  median=  3.23
+marked, A=sum_P q^-1/2 conj((n/P)_3): K'=156 N'=7796 prime columns 36.0%; allowance 53.6
+   true beta = g~                               ratio=  1.027  max_k|S_k|^2/N'=    0.57  median=  0.14
+   aligned to one chi_k0 (primes only)          ratio=  5.333  max_k|S_k|^2/N'=  108.08  median=  0.14
+   aligned to spread F (primes only)            ratio=  3.564  max_k|S_k|^2/N'=    2.16  median=  0.47
+
+(binding-like run: logs_spectral_600_60000_400.txt; Type I run: logs_typeI_600_60000_6000.txt)

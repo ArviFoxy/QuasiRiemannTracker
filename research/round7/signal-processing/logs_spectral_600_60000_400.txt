@@ -1,0 +1,18 @@
+K=600 N=60000 L=400: rows K'=156 cols N'=7796 marks L'=60   K'/N'=0.0200  N'/K'=50.0
+column-vector tests (P_V = projection on span of quadratic characters):
+  g~                                 |Phi c|^2/Diag=  1.032  ||P_V c||^2/||c||^2=0.0212 (=K'/N' x   1.06)  LS/Diag=  53.7
+  conj g~                            |Phi c|^2/Diag=  1.032  ||P_V c||^2/||c||^2=0.0212 (=K'/N' x   1.06)  LS/Diag=  53.7
+  lam^(1/3) * random cube root       |Phi c|^2/Diag=  1.174  ||P_V c||^2/||c||^2=0.0228 (=K'/N' x   1.14)  LS/Diag=  53.7
+  random phases                      |Phi c|^2/Diag=  1.028  ||P_V c||^2/||c||^2=0.0204 (=K'/N' x   1.02)  LS/Diag=  53.7
+  g~ * A  (A=sum_P q^-1/2 (n/P)_3)   |Phi c|^2/Diag=  0.869  ||P_V c||^2/||c||^2=0.0174 (=K'/N' x   0.87)  LS/Diag=  53.6
+  g~ * conj-orientation A            |Phi c|^2/Diag=  0.966  ||P_V c||^2/||c||^2=0.0196 (=K'/N' x   0.98)  LS/Diag=  53.6
+  random * A                         |Phi c|^2/Diag=  0.968  ||P_V c||^2/||c||^2=0.0190 (=K'/N' x   0.95)  LS/Diag=  53.6
+  aligned (n/k0)_2                   |Phi c|^2/Diag= 46.028  ||P_V c||^2/||c||^2=1.0000 (=K'/N' x  49.97)  LS/Diag=  53.0
+matrix S = Phi diag(beta) X  (K' x L'):
+  beta=g~, slot (n/P)_3      ||S||_op^2/(N'(sqrtK'+sqrtL')^2)= 0.921  ||S||_F^2/(K'L'N')= 0.952  stable rank= 23.61 (L'=60)  op2/Fro2=0.042
+  beta=g~, conj slot         ||S||_op^2/(N'(sqrtK'+sqrtL')^2)= 0.931  ||S||_F^2/(K'L'N')= 0.918  stable rank= 22.53 (L'=60)  op2/Fro2=0.044
+  beta=random phase          ||S||_op^2/(N'(sqrtK'+sqrtL')^2)= 0.899  ||S||_F^2/(K'L'N')= 0.945  stable rank= 24.02 (L'=60)  op2/Fro2=0.042
+  iid Gaussian (variance N') ||S||_op^2/(N'(sqrtK'+sqrtL')^2)= 0.932  ||S||_F^2/(K'L'N')= 0.976  stable rank= 23.94 (L'=60)  op2/Fro2=0.042
+  adversarial beta=(n/k0)conj(n/P0) ||S||_op^2/(N'(sqrtK'+sqrtL')^2)=15.171  ||S||_F^2/(K'L'N')= 1.488  stable rank=  2.24 (L'=60)  op2/Fro2=0.446
+principal angles V vs W: max cos^2=0.0493, mean cos^2=0.0201; random W: max 0.0514 mean 0.0201; MP edge 0.0525; K'/N'=0.0200
+single-mark F_P/Diag_P over 60 marks: mean 1.004  min 0.806  max 1.171

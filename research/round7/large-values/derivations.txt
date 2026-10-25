@@ -1,0 +1,65 @@
+Large values for the sextic bad-row count: derivation notes (fresh7b)
+=====================================================================
+Notation: witness W_u of length Y=U^y, coefficients |xi_n|<=1, ||xi||^2 ~ Y, saturated:
+|W_u|^2 >= Y^{1+delta} (unnormalized).  Gram G(u,v)=sum_n w(Nn/Y)^2 psi_u psibar_v(n),
+diag ~ Y, off-diagonal = smooth sum of psi_{u/v} (conductor N(u)N(v)/N(gcd)^2 ~ U^2).
+Every large-values method below bounds s1^2 = ||G_R|| and uses R*Y^{1+delta} <= ||xi||^2 s1^2.
+
+0. Corner (lp_corner.py, face B=0.9531 calibrated to R=0.6037, Lam=2.6):
+   t*=1.1539 r*=0.7435 m*=0.4104;  dR/dI=0.506, dR/dL=0.277, dR/dP=0.222 (sum 1).
+   For -7.5e-5 in R: I must drop 1.5e-4, or L 2.7e-4, or P 3.4e-4.
+   rho(0.5)=7/12: dRho/dI=0.31, dP 0.16, dL 0.50 -> -1.6e-3 needs I 5.1e-3 / P 1.0e-2 / L 3.2e-3.
+
+1. Halasz-Montgomery (Schur test): R(Y^{1+d} - Y*avg_v|G(u,v)|) <= Y^2.
+   E_v|G(u,v)|^2 ~ sum w^4 ~ Y (proved by orthogonality for Y<=U^{1/2-eps}; numerics 0.89-0.95 of
+   sum w^4 for y in [0.41,1.15]), so row sums ~ R Y^{1/2} > R Y^d for d<1/2: inequality vacuous for
+   every R.  Not an estimate-quality issue: true size, so GRH/Lindelof do not help.  Only escape:
+   length past the conductor (k-th powers, Y>=U^{2+eps}): R <= Y^{1-d} = U^{2(1-d)} = U^{1.091}
+   (nu=0.5: U^{1.000}; nu=0.51: U^{0.98}; PV route Y>=U^{1/nu}: U^{0.96}).  Amplified copies u a^6:
+   |G(ua^6,ub^6)| ~ Y (rank-one blocks), no gain.  Products / marks: same sigma=(1+d)/2, same failure.
+   Saturated slots: all bad rows share the component along the fixed slot vector, off-diagonals of
+   the slot Gram are >= P^d by construction (larger, not smaller).
+
+2. Huxley subdivision.  Subfamilies with small mutual conductor = rows with common factor g:
+   conductor (U/G)^2, threshold condition scale-invariant; total >= G (U/G)^{2(1-d)} =
+   U^{2(1-d)} G^{2d-1} >= U (d<1/2).  Prime rows are not covered.  Sixth-power cosets: duplicates.
+   Residue classes (psi_u(p) fixed for p<=y): makes off-diagonals larger.  Exponent: 1 (trivial).
+
+3. Jutila / Heath-Brown moment-of-off-diagonals (Hoelder over v in R with the 2k-th moment over the
+   full family, even an ideal one U Y^k):  R <= Y^{1-d} + U Y^{k(1-2d)}  >= U.  Exponent >= 1.
+   Hilbert-Schmidt: s1^2 <= Y + E2^{1/2}, E2>=~R^2 Y: vacuous for d<1/2.
+   "Moments of the large-values set" with the available moments (2nd mu, 4th plain, amplified 2nd)
+   = Chebyshev on I,P,L; Hoelder recombinations are LP-tight (barriers/README).
+
+4. Guth-Maynard cubic trace (GM Lemma 4.2):  R <~ Y^{1-d} + Y^{-d}(3Y E2 + S3)^{1/3},
+   E2 = sum_{u!=v in R}|G|^2, S3 = tr(O^3), O = off-diagonal part of G_R.
+   * S3 always contains the column-diagonal term R^3 sum w^6 ~ 0.6 R^3 Y (numerics 0.55-0.64);
+     harmless for d>1/3.  Need: |S3 - R^3 sum w^6| <= R^3 Y^{3d-eta}, i.e. a power saving
+     Y^{3(1/2-d)+eta} = Y^{0.136+eta} over Schatten |tr O^3| <= E2^{3/2}.
+   * Mechanism in t-aspect: GM Prop 7.1 (dilation integral after Poisson, gains ~T).  Here Poisson
+     is an exact self-duality: tau(psi_u psibar_v) = c(u,v) tau(psi_u) tau(psibar_v) (CRT, c = finite
+     order reciprocity bicharacter), so G_Y - Y I = (Y/U) D (C o (G'_{U^2/Y} - L I)) D^*,
+     D = diag(root numbers): root numbers cancel around every cycle, S3(Y)=(Y/U)^3 S3(U^2/Y);
+     dual weight separable by Mellin with heights U^eps; row heights confined to U^tau.  The only
+     invariance of the triangle sum is n_i -> k n_i (multiplicity Y/A, no oscillation).  So no
+     analogue of Prop 7.1; the multiplicative energy E_x(R) can be bounded exactly as GM Lemma 11.4
+     (|xi|<=1, D extends to all characters c = u1 u2/u3) but never enters S3 with a saving.
+   * E2: available = plain 4th moment with moving twist psibar_u (effective width M=2):
+     E2 <= R^{3/2} U^{1+eps} Y.  (H1) width 1 (U^{1+eps}) is open beyond Y<=U^{1/4}
+     (de Faveri diagonal for B=Y^2<=A^{1/2}).
+   * With proved inputs: collapses to HS -> vacuous.
+   * Conditional (H1)+(H2'): rho <= y(4-6d)/3 + 1/3 (valid y>=rho).  Corner witnesses
+     (y=0.7435: 0.649; y=0.8717: 0.703) not improved; only a free-length saturated slot product
+     of length ~U^{0.58} gives the fixed point 0.5788.  Unmarked: nu=0.5 -> 0.5769, nu=0.51 -> 0.5629,
+     nu=0.45 -> no change (gm_conditional.py).
+
+5. Long line: any coefficient-blind bound is >= Y^{1-d} up to logs (random-sign combination
+   xi = R^{-1/2} sum_{u in R} eps_u psibar_u makes any R <= Y^{1-d}/C rows large values).
+   t*(1-d) = 0.6294 > L(t*) = 0.6037; nu=0.5: 0.625 > 0.5833.  L(t) < t(1-d) iff t>1.
+   So the L line can only move through mu-specific mean values.
+
+6. Numerics (sextic_gram.py; actual (u/n)_6 over Z[w]; U=3000 (778 rows), U=8000 (2076 rows)):
+   E|G|^2/sum w^4 = 0.89-0.95; median|G|/Neff^d = 0.79-0.98 growing like Neff^{1/2-d};
+   Halasz row-sum ratio max_u sum_{v in R}|G|/(R Neff^d) = 0.9-1.2 (needs <<1), growing;
+   S3/(R^3 Neff) = 0.55-0.64 (random R), S3/E2^{3/2} ~ Neff^{-1/2};
+   empirical large-value sets only reach level Y^{0.15-0.24} (cannot probe saturation d=0.45).

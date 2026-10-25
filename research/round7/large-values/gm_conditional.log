@@ -1,0 +1,7 @@
+marked corner, no GM:           (np.float64(0.6037249333333333), np.float64(1.154))
+marked, GM proved (a=2/3):       (np.float64(0.6037249333333333), np.float64(1.154))
+marked, GM (H1)+(H2') witnesses only: (np.float64(0.6037249333333333), np.float64(1.154))
+marked, GM (H1)+(H2') + free slot products: (0.5788376939106276, np.float64(1.154))
+nu=0.45: rho=0.6341  unmarked+GM proved: 0.6343  unmarked+GM(H1)(H2'): 0.6343
+nu=0.5: rho=0.5833  unmarked+GM proved: 0.5833  unmarked+GM(H1)(H2'): 0.5769
+nu=0.51: rho=0.5729  unmarked+GM proved: 0.5730  unmarked+GM(H1)(H2'): 0.5629

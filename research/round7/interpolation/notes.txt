@@ -1,0 +1,28 @@
+fresh7a -- interpolation lemma (Moebius scale-profile dip at the corner)   [scratch notes]
+
+Corner (PR69 face C, delta=0.4546, p=1/2): R=0.604207, r*=0.74128, m*=0.41399, t*=1.15527   (corner_check.py)
+Saturation-normalised witness F_r(s') = D^{s'-a} sum mu psi(n) W(n/D) n^{-s'};  |F|>=U^{-c} <=> |M_r|^2 >= U^{delta r-2c}.
+Explicit formula: F_r(s') = sum_j What(rho_j - s') U^{r(rho_j-a)}/L'(rho_j) + left integral; s' enters only via What
+=> every admissible witness is a 1/log U-window average of the sharp profile g(v)=sum_j U^{v(rho_j-a)}/L'(rho_j).
+
+1. Gram identity (exact): z_j=U^{r(rho_j-a)}/L'(rho_j), W>=0:
+     sum_i conj(z_i) F_r(2a - conj(rho_i)) = int W(e^w) |g(r+w/log U)|^2 dw.
+   Reflected points have Re >= a (admissible). Dip at all box points <=> dip of one local-energy profile.
+2. Ingham: equal real parts, height gaps > 2pi/(l log U) => no exponential dip on length l.
+   Tent => zero density at Re~a >= m*/(2pi) = 0.065889 log U per unit height (spacing 15.18/log U).
+3. Littlewood + unmarked 4th moment: mean log_U|L(1/2+it)| over window >= pi*delta*nu  => count 1-4 pi delta nu.
+   Beats R-7.5e-5 iff nu >= 0.069296 (ratio 1.0517 to Beurling threshold). At nu=m*/(2pi): 1-2 delta m* = 0.62360
+   = unslotted P line; missing exactly the slot term 0.01939.
+4. Free-coefficient minima (dip + saturation at r*,t*):
+     unbounded: kappa -> 0.0230 (pot_lp.py); finite LP: 7/10/15 terms at L=100/200/400 (finiteL.py)
+     with pointwise bound |F_r|<=1 on [0,3]: confluent (tight) clusters 1.44 log U (impossible; Jensen+PL: <=1.36 rho logU zeros in radius rho)
+     equally spaced single crystal (circle_lp.py, L->inf): 0.086-0.12 log U for omega in [12.6,15.1], but needs residue phase step
+     omega r* mod 2pi per zero (seen in LP at L=200: median step 2.3-2.6 vs 2.19 at omega=14) -- impossible for one crystal
+     (two-sided zero-free bound: averaged d/dt arg A = d_x log|A| = o(log U)).
+5. Extremal (realizable) model -- resonance: Y=U^{-m1(s-a)}, P | 1 + c Y^{k2}, |c|=1, deg P=d, d m1=m*, k2 m1 = t*.
+     L ~ P(Y), 1/L = A(Y)/(1+cY^{k2}), A=(1+cY^{k2})/P of degree k1=k2-d (scale r*).  L*A = 1 + c U^{-t*(s-a)}.
+     Zeros: d-of-k2 sub-lattice of a + i(2 pi k + phi)/(t* log U), density m*/(2pi) (Beurling threshold), |L'(rho)| ~ log U.
+     Beatty occupation S={floor(j k2/d)}: all |coeffs| of P and 1/P <= 1; 1/P == 0 on (r*,t*)+t*Z; unimodular at 0,r*-m*,m*,r*,t*.
+     mean log_U|L| = 0 on Re=a (no small values off zeros), = m*(a-x) to the left (=0.0941 on critical line = plain saturation level).
+     Satisfies |L|^{+-1}<=U^{o(1)} right of a, PL, all pointwise bounds; saturates I(r*), P(m*), L(t*) simultaneously.
+   => single-L-function analysis cannot prove the interpolation lemma; Delta R = 0.

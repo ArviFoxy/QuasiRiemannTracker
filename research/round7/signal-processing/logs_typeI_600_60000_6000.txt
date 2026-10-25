@@ -1,0 +1,27 @@
+K=600 N=60000 L=6000: N'=7796 K'=156; slots: 14502 primary P (N(P)<=4L, smooth bump at L); dual mu: 498 elements N(mu)<=135
+  span of 237 cubic-character columns: dim/N' = 0.030
+  fraction of c_I = g~ * A_paper   in cubic span: 0.987760
+  fraction of     g~ * A_other     in cubic span: 0.0645
+  fraction of     A_paper alone    in cubic span: 0.1502
+  fraction of random phases        in cubic span: 0.0292
+  c_I (paper orientation)    ||Phi c||^2/Diag = 0.883   (allowance 53.5)
+  other orientation          ||Phi c||^2/Diag = 0.925   (allowance 53.5)
+  principal angles quad span (dim 156) vs cubic span (dim 237): max cos^2=0.0838 (random-subspace edge 0.0997); mean cos^2=0.0261 (K'/N'=0.0200)
+K=600 N=60000 L=6000: N'=7796 K'=156; slots: 14502 primary P (N(P)<=4L, smooth bump at L); dual mu: 966 elements N(mu)<=270
+  span of 456 cubic-character columns: dim/N' = 0.058
+  fraction of c_I = g~ * A_paper   in cubic span: 0.991320
+  fraction of     g~ * A_other     in cubic span: 0.1155
+  fraction of     A_paper alone    in cubic span: 0.2002
+  fraction of random phases        in cubic span: 0.0545
+  c_I (paper orientation)    ||Phi c||^2/Diag = 0.883   (allowance 53.5)
+  other orientation          ||Phi c||^2/Diag = 0.925   (allowance 53.5)
+  principal angles quad span (dim 156) vs cubic span (dim 456): max cos^2=0.1271 (random-subspace edge 0.1469); mean cos^2=0.0527 (K'/N'=0.0200)
+K=600 N=60000 L=6000: N'=7796 K'=156; slots: 14502 primary P (N(P)<=4L, smooth bump at L); dual mu: 1482 elements N(mu)<=405
+  span of 705 cubic-character columns: dim/N' = 0.090
+  fraction of c_I = g~ * A_paper   in cubic span: 0.991605
+  fraction of     g~ * A_other     in cubic span: 0.1594
+  fraction of     A_paper alone    in cubic span: 0.2497
+  fraction of random phases        in cubic span: 0.0873
+  c_I (paper orientation)    ||Phi c||^2/Diag = 0.883   (allowance 53.5)
+  other orientation          ||Phi c||^2/Diag = 0.925   (allowance 53.5)
+  principal angles quad span (dim 156) vs cubic span (dim 705): max cos^2=0.1716 (random-subspace edge 0.1955); mean cos^2=0.0836 (K'/N'=0.0200)

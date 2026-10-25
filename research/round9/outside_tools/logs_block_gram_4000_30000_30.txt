@@ -5,3 +5,5 @@ K'=1030 N'=3874  N'/K'=3.8   log N/log K = 1.243
   smooth     : cols  2312 (59.7%)  blocks   534 (mean size  4.33) CB/diag= 1.007  blk/diag= 1.000  op/MP= 2.606  adv/diag=  2.395  wub/diag=   2.92 (frame   2.92, (1+sqrt(m/K))^2= 2.96)  LS/diag=   3.5
   hard core  : cols  1562 (40.3%)  blocks  1526 (mean size  1.02) CB/diag= 0.979  blk/diag= 1.001  op/MP= 1.742  adv/diag=  3.618  wub/diag=   4.86 (frame   4.85, (1+sqrt(m/K))^2= 4.92)  LS/diag=   2.5
   P+ in(1,63]: cols    72 ( 1.9%)  blocks     6 (mean size 12.00) CB/diag= 0.922  blk/diag= 0.995  op/MP= 2.123  adv/diag=  1.057  wub/diag=   1.07 (frame   1.08, (1+sqrt(m/K))^2= 1.16)  LS/diag=   1.2
+  P+ in(63,4000]: cols  2240 (57.8%)  blocks   528 (mean size  4.24) CB/diag= 1.027  blk/diag= 1.000  op/MP= 2.635  adv/diag=  2.384  wub/diag=   2.91 (frame   2.91, (1+sqrt(m/K))^2= 2.94)  LS/diag=   3.4
+ column vector: random phase * A

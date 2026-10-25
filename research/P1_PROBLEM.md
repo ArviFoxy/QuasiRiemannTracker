@@ -79,6 +79,20 @@ Either one, with the stated size, is worth about 6–7e-6 in θ in the float mod
   `K ≤ N^{2/3}`); OpenAI's unconditional cubic first moment, Prop. 4.1 (structured beats generic,
   near two narrow configurations, inexplicit).
 
+## Localization (round 9, `round9/outside_tools/NOTES.md`)
+
+Split the columns by their largest prime factor `π`, with `c(πm) = g̃(π)e_π(m)`.
+- On the columns with `N(π) ≤ K`, the column branch is at most `2K^{1+ε}·F·‖c‖²` for **any**
+  values of the Gauss sums at the block primes. `F` is the frame constant of the block vectors
+  (rigorous). It is numerically at Marchenko–Pastur, flat in `N/K`.
+- So P1 needs arithmetic only on the **hard core**, the columns with a prime factor of norm `> K`:
+
+  `Σ_{N(k)≤K} |Σ_{n: N(P⁺(n))>K} c(n)(n/k)₂ W(N(n)/N)|² ≪ K^{1+0.16δ′+o(1)}Σ|c|²` (use (b)).
+
+  For use (a) the right side is `(K + N^{1−η}K^η)Σ|c|²`.
+- Caveat: by Vaughan's identity the hard core is P1 modulo the frame bound, so the reduction
+  localizes the difficulty but does not remove it.
+
 ## Cleanest sub-lemmas
 
 - **Lemma BD (block decoupling).** `‖Σ_π g̃(π)S_π‖²_op ≤ N^{o(1)}max(‖ΣS_πS_π*‖, ‖ΣS_π*S_π‖)` for the

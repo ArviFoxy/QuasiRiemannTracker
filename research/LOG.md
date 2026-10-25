@@ -8,7 +8,7 @@ the best upstream PR (smaller gains count only if they simplify or clarify the p
 | upstream PR #70 (Mark Lewko) | 0.874772906 | |
 | upstream PR #71 (recost of PR #69 graph) | 0.87477290596 | 4e-11 below #70; checked 2026-10-24 |
 | upstream PR #72 (Das, bootstrap + fine graph), best upstream PR | 0.874771265 | 1.64e-6 below #71; bar now 0.874761265 (checked 2026-10-25) |
-| this branch, Lean (`submissions/repeated-marks-20261024`) | 0.8747289 | 4.24e-5 below PR #72 |
+| this branch, Lean (`submissions/repeated-marks-20261024`, branch `submission-repeated-marks-20261024` @ `f8960c1d`, author Arvi; PR to upstream prepared 2026-10-25) | 0.8747289 | 4.24e-5 below PR #72 |
 | next milestone (1e-5 below this branch) | ≤ 0.8747189 | |
 
 Conventions: `θ*` values are exact-return evaluations (rational certificates) unless marked "float".

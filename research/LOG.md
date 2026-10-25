@@ -1094,6 +1094,27 @@ A catalogue cross-check (21.9k records) found nothing that moves them. → `cap-
   - **New bar** (1e-5 below the best upstream PR): `0.874761265`. Our Lean submission 0.8747289 clears it
     by 3.2e-5, a lead of 4.24e-5 over #72.
 
+- *Cross-check against Das's hill-climb PR #28 (rohanarun/quasi-rh-hillclimb, 2026-10-23), the
+  precursor of upstream #72.*
+  - **Adaptive caps.** Round A of #72 is a very fine source chain: Λ decrement 1/16000, per-stage cap
+    "previous crossing + 3e-5", 21,527 + 19,529 stages, `h = 0.80008783`. That is a discretization
+    approaching the continuum limit of Collet's chain, without repeated marks. Our continuum ceiling
+    for our chain (0.8747241, `variational-ceiling/`) bounds what the same treatment can give us: at
+    most 4.8e-6, sub-bar.
+  - **Lemma S.** After cubic reflection the slot-tuple coefficient is
+    `A(P) = Π c(p) · Π_{p<q} (q/p)₃^{±2}`. Splitting the slots into two groups, the cubic large sieve
+    gives `|Σ_P A(P) q_P^{−1/2} χ_P(j)^{−2}|² ≪ Z^ε (Z^{z₁} + Z^{z₂} + Z^{2z_a/3})`, a saving of
+    `z_a/3` for balanced groups.
+    - This is the same mechanism as our `lean-lab/CoupledHybrid.lean` (cubic-symbol coupling between
+      slot groups removes the `L` term of MF2.29).
+    - It reaches the same conclusion: it improves only the row branch, and the column branch still
+      forces `r + 2z < m` (their Lean `BranchAlgebra.column_branch_iff`; ours `MIBranches.lean`).
+  - **Their what-if.** Slot cost `λ = 5/3` (column target plus Lemma S) gives θ ≈ 0.87387. This agrees
+    with our atom-1 lever map.
+  - **Their floor.** They also record a Lean floor: θ > 13/15 for this probe family
+    (`theta_gt_13_15`).
+  - Independent confirmation, no new input.
+
 ## Open directions (ranked, revised 2026-10-24, third pass; see `barriers/README.md`)
 
 Exact state: committed Lean branch 0.8747289; best exact value with known lemmas 0.8747257

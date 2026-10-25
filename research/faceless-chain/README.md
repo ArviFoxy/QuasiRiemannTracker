@@ -70,6 +70,9 @@ files about 55 s, the steps 34 s. The full candidate build is 15707 jobs. `Candi
 on `propext`, `Classical.choice`, `Quot.sound` only, as does `Candidate.bound_sharp`. The canonical
 challenge wrapper compiles at the declared `8747289/10000000` and, with the sharp statement, at
 `34989/40000`. The upstream `npm run check` passes (316 tests).
+The verifier's external kernels handle the certificates: the heaviest one (`p2_high_0_12`, with its
+2554 dependencies) is accepted by nanoda (pinned `998e0a8`) in 35 s and by con-ron (from the judge
+toolchain Lean 4.35.0-rc2) in 1 min 48 s, against 96 s for Lean.
 
 The final return was regenerated for the new faces:
 `../repeated-marks/gen_return_lean.py faces.json 8747250/10000000 401/500 0 1 OUT 13/250 9/200 global`

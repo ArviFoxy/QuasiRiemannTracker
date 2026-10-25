@@ -1333,8 +1333,11 @@ A catalogue cross-check (21.9k records) found nothing that moves them. → `cap-
   - **Our certificates under an external kernel.** Pinned lean4export (`076e8e5`) and nanoda
     (`998e0a8`) were built locally. nanoda checks the heaviest face-family certificate
     `p2_high_0_12` together with its 2554 dependencies in 35 s with no errors (Lean compiles that
-    module in 96 s). A streamed nanoda check of the whole `Candidate.bound` /
-    `Candidate.bound_sharp` proof is running (`scratchpad/kernels/`).
+    module in 96 s). con-ron from the verifier's judge toolchain (Lean 4.35.0-rc2, archive sha256
+    matching the pin `b67d0e0b…`) accepts the same export (2297 declarations, `--verified`) in
+    1 min 48 s. So both external kernels handle the face-family certificates at about Lean's own
+    speed. A streamed nanoda check of the whole `Candidate.bound` / `Candidate.bound_sharp` proof is
+    running (`scratchpad/kernels/`).
 
 ## Open directions (ranked, revised 2026-10-24, third pass; see `barriers/README.md`)
 

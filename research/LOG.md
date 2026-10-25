@@ -1404,3 +1404,23 @@ slot; `mixed-slots/`).
     unavoidable. Signed slot classes only force the bad set to be closed under fixed twists.
   - the literature of 2025–2026: no input for P1, atom 2 or the interpolation lemma; the GL(2)
     analogue of P1 (level-uniform second moments of quadratic twists) is open.
+
+### Revision 2026-10-25 (after rounds 7–8 and the face family)
+
+- **Bar.** The best upstream PR is ours (#73, declared 0.8747289); PR #71 is now verified upstream at
+  0.874772906. The milestone is ≤ 0.8747189.
+- **Reserve.** The face family proves 34989/40000 = 0.874725 (`Candidate.bound_sharp`), so 3.9e-6 of
+  the 1e-5 is in hand and **6.1e-6 is still needed**. Everything else in the face map and the return
+  is closed: the curve is proved maximal for the gates in both regimes
+  (`lean-lab/ChainOptimal.lean`). The remaining guards are worth at most 1e-7 each (`Λ_P ≥ 3`) or
+  under 1e-6 together (`B_H ≥ 22/23` plus `q ≥ 1/2`, with the count face moved to `s ≈ 0.045`: 7e-7).
+- **What 6.1e-6 needs** (any one):
+  1. **P1, use (b) (probe):** the quadratic sieve stays at its diagonal up to `N = K^{1+1.1e-4}` for
+     `g̃·(slot sum)` coefficients. Equivalent to a stable rank `≥ N^η` for the matrix of twisted
+     metaplectic central values `S(k, P)` (`round8/README.md`).
+  2. **P1, use (a) (inverse budget):** `(K + N^{1−η}K^η)` with `η ≥ 0.0076` at `N/K = Z^{0.129}`.
+  3. **Long Möbius moment:** about 1.6e-4 below `(1+5r)/6` at `r ≈ 1.155`.
+  4. **HIGH count near `ν ≈ 0.5`, `p ≈ 0.2`:** `ε_H ≈ 1e-3` (late chain only).
+  5. **Exchange rate:** `6 → 5.93`.
+- **Running:** round 9 (two independent fresh-perspective agents: framing/assumptions, and
+  outside-domain tools); a full independent nanoda kernel check of `Candidate.bound`.

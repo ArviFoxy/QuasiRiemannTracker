@@ -78,6 +78,14 @@ Poisson, the LOW part costs `max_LOW|Q_u|²·Σ_u|M_u|² ≈ Z^{m+qz}` against t
   sixth-root series converges with weight `N(B)^{−3/2}`. θ* is flat in the count-face position at
   the end of the chain (1e-7 per 2000 grid steps), so relaxing this guard is worth well under 1e-6.
 
+**Extending the family past its end.** The count face is used at slot width about 0.045, past
+its tangent point 0.0424, where a later tangent would sit about 1.9e-4 higher (convexity,
+`|Λ′| ≈ 55`). Pricing θ* with the count face taken from the continued flow: s = 0.0435, 0.045,
+0.0465, 0.048, 0.050 give 8747246, **8747243**, 8747245, 8747252, 8747270. So the best possible gain
+is 7e-7. It would need two guards relaxed: `B_H ≥ 22/23`, and the density floor `q ≥ 1/2`
+(`q = 0.4973` already at `s = 0.0435`). The floor is an analytic requirement (atom 3), so this is
+closed.
+
 ## 4. Literature (checked again)
 
 No new input. Dunn 2403.13151 (cusp-form kernel), Baier 2605.01635 / 2609.21195 (square moduli),

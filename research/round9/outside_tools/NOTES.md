@@ -179,8 +179,9 @@ Proof: `CB(c) ≤ 2CB(c_smooth) + 2CB(c_HC)` and §2.
     norm `< L`.
   - Its `m = 1` term is `c` itself, with coefficient exactly 1. The terms `m > 1` are P1 at
     length `N/N(m) ≥ K` for `g̃·χ_m·A`, with `χ_m = conj((m/·)₃)`.
-  - The Type II pieces have both factors `≥ L` and are block pieces of BG type. So the route is
-    circular.
+  - The Type II pieces are bilinear forms with both variables long, i.e. block decompositions as
+    in §2 with arbitrary coefficients on one variable. They need a frame bound of BG type for new
+    cofactor data. So the route is circular.
   - Without the decomposition, the hard core's prime sums `Σ_{π~X} g̃(π)conj((π/mP)₃)(π/k)₂`
     (`X ∈ (K, N]`) lie at or below their critical length, since `N(k)N(m)N(P) ≳ N ≥ X` for
     typical rows. Heath-Brown–Patterson type savings need `X` large compared to the conductor.
@@ -203,6 +204,23 @@ Proof: `CB(c) ≤ 2CB(c_smooth) + 2CB(c_HC)` and §2.
 - For use (b) the hard core is "a prime of norm in `(K, K^{1+δ′}]` times a cofactor of norm
   `< K^{δ′}`". Round 7's algebraic adversary (`g̃` changed at primes of norm `> N/7`) lives
   entirely inside it once `N/K > 7`.
+
+**Precise form, for quoting.**
+- P1 ⟸ BG + HC [R].
+- BG is unproved. It is numerically at the random-matrix level, and it involves `g̃` at primes
+  `≤ K` through the cofactor data.
+- HC is unproved. It is where every adversary found so far lives.
+- Two statements are proved only modulo BG:
+  - "P1 needs arithmetic only at primes `> K`";
+  - "HC alone implies P1".
+
+**Relation to Lemma BD** (`../../P1_PROBLEM.md`).
+- HC follows from Lemma BD restricted to the hard-core blocks `{πm : N(m) < N/K}`, `π` prime of
+  norm `> K`.
+- There `F ≈ m/K` is the full `N`-term, so the decoupling of the block phases `g̃(π)` is the
+  whole content.
+- On the smooth blocks, block-phase decoupling comes for free given BG. Any block multipliers
+  cost only `F ≈ MP`.
 
 ## 5. Second attempt: witness design at the corner (LP lens)
 
@@ -278,8 +296,7 @@ slope `κ − δ = 0.294 < 5/6 − δ = 0.378`.
   `Σ_{N(k)≤K} |Σ_{n: N(P⁺(n))>K} c(n)(n/k)₂ W|² ≪ K^{1+0.16δ′+o(1)}Σ|c|²`. For use (a) the same
   with `(K + N^{1−η}K^η)`, `η ≥ 0.0076`.
   - Evidence: true-phase ratios `CB/diag` of 0.91–1.12 on the hard core in every run (0.86–1.24
-    without slots). The adversary needs
-    non-Gauss values at primes `> K`.
+    without slots). The adversary needs non-Gauss values at primes `> K`.
 - **Lemma BG (believed true).** `F ≤ N^{o(1)}` for the smooth blocks.
   - Evidence: `F/MP ∈ [0.88, 0.99]` in 11 configurations with the true data, flat in `N/K`.
     Random cofactor phases give the same values.
@@ -293,7 +310,7 @@ slope `κ − δ = 0.294 < 5/6 − δ = 0.378`.
     length.
 - **Assumptions.**
   - The toy model has: split-squarefree columns; prime slots with uniform weights (no `ϑ`, `Ψ₀`,
-    cube parts or S-parts); `K′ ≤ 520` rows; `N/K ≤ 80`; `log N/log K ∈ [1.24, 1.79]`, against the
+    cube parts or S-parts); `K′ ≤ 1030` rows; `N/K ≤ 80`; `log N/log K ∈ [1.24, 1.79]`, against the
     real 1.174.
   - The model's hard-core fraction is larger than Dickman's `log u`, since primes are a large
     share of small split-squarefree columns.

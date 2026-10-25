@@ -1459,9 +1459,20 @@ slot; `mixed-slots/`).
   Möbius correlations, of Chowla type.
 - **Outside-tools agent** (`round9/outside_tools/NOTES.md`).
   - Frame theory localizes P1. On the columns whose largest prime factor has norm `≤ K`, the
-    column branch is the diagonal times a frame constant `F`, for every choice of block Gauss sums
-    (rigorous). `F` is numerically at Marchenko–Pastur.
-  - So the arithmetic is needed only at primes in `(K, N]`, the hard core. The hard core is P1
-    modulo the frame bound (Vaughan), so there is no closure.
+    column branch is the diagonal times a frame constant `F`, for every choice of unimodular block
+    multipliers with the cofactor data fixed (rigorous). `F` is numerically at Marchenko–Pastur.
+  - Precise status: P1 ⟸ BG + HC, where BG is the frame bound `F ≤ N^{o(1)}` (unproved; it
+    involves `g̃` at primes `≤ K` through the cofactor data) and HC is P1 on the hard core
+    (columns with a prime factor of norm `> K`). Only modulo BG is the arithmetic needed just at
+    primes in `(K, N]`. Given BG, HC ⟺ P1, and Vaughan's identity is circular, so there is no
+    closure.
+  - Correction (same day): the first synthesis said "for any values of the Gauss sums at the block
+    primes" and gave HC alone as the sharpest form of P1. Both overstated the agent's result;
+    fixed in `P1_PROBLEM.md` and `round9/README.md` §5.
+- **Conditional θ** (`round9/conditional/`): the float model of the return with one atom moved,
+  faces fixed. A diagonal long moment gives Δθ* = −7.9e-3; a 1% lower long-line slope gives
+  −3.9e-4; the 6.1e-6 still needed corresponds to `b_L ≈ 4.9992`, a power saving of about
+  `U^{1.5e-4}` over amplification at `r ≈ 1.155`. Halving the inverse slot cost gives −4.2e-3 and
+  stops binding once the long line is diagonal.
   - New witnesses: prime-factor-weighted Möbius blocks, with DH-strength mean values. They are
     defeated by the lattice adversary, because prime-factor weights are scale shifts.

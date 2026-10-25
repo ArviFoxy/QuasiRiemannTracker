@@ -1,0 +1,5 @@
+base (float model)                         theta* = 0.8747496   change +0.00e+00
+long line diagonal                         theta* = 0.8668468   change -7.90e-03
+long line 1% better slope (bL = 4.95)      theta* = 0.8743558   change -3.94e-04
+inverse slot cost halved, sI = 1           theta* = 0.8705715   change -4.18e-03
+long line diagonal + sI = 1                theta* = 0.8668468   change -7.90e-03

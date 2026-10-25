@@ -81,17 +81,27 @@ Either one, with the stated size, is worth about 6–7e-6 in θ in the float mod
 
 ## Localization (round 9, `round9/outside_tools/NOTES.md`)
 
-Split the columns by their largest prime factor `π`, with `c(πm) = g̃(π)e_π(m)`.
-- On the columns with `N(π) ≤ K`, the column branch is at most `2K^{1+ε}·F·‖c‖²` for **any**
-  values of the Gauss sums at the block primes. `F` is the frame constant of the block vectors
-  (rigorous). It is numerically at Marchenko–Pastur, flat in `N/K`.
-- So P1 needs arithmetic only on the **hard core**, the columns with a prime factor of norm `> K`:
+Split the columns by their largest prime factor `π`, with `c(πm) = g̃(π)e_π(m)`. The cofactor
+data `e_π(m) = g̃(m)·conj((m/π)₃)·A(πm)` still contain `g̃` at the primes dividing `m`.
+- **Frame bound** (rigorous). On the columns with `N(π) ≤ K` (the smooth part), the column branch
+  is at most `2K^{1+ε}·F·‖c‖²`. `F` is the frame constant of the normalized block vectors.
+  - The bound holds for any unimodular **block multiplier** put in place of `g̃(π)`, with the
+    cofactor data `e_π` held fixed.
+  - It is not freedom in the Gauss sums themselves: changing `g̃` at a prime `p ≤ K` also changes
+    the cofactor data of every larger block that `p` divides.
+- **Lemma BG**: `F ≤ N^{o(1)}` on the smooth blocks. Unproved. Numerically `F` is at
+  Marchenko–Pastur, flat in `N/K`. BG is itself P1 on the smooth part, for every choice of block
+  multipliers, and it involves `g̃` at primes `≤ K` through the cofactor data.
+- **Lemma HC** (the hard core: columns with a prime factor of norm `> K`). Unproved; every
+  adversary found so far lives here. For use (b):
 
-  `Σ_{N(k)≤K} |Σ_{n: N(P⁺(n))>K} c(n)(n/k)₂ W(N(n)/N)|² ≪ K^{1+0.16δ′+o(1)}Σ|c|²` (use (b)).
+  `Σ_{N(k)≤K} |Σ_{n: N(P⁺(n))>K} c(n)(n/k)₂ W(N(n)/N)|² ≪ K^{1+0.16δ′+o(1)}Σ|c|²`.
 
   For use (a) the right side is `(K + N^{1−η}K^η)Σ|c|²`.
-- Caveat: by Vaughan's identity the hard core is P1 modulo the frame bound, so the reduction
-  localizes the difficulty but does not remove it.
+- **Status.** P1 ⟸ BG + HC (triangle inequality), and given BG, HC ⟺ P1. Only modulo BG does a
+  proof of P1 need arithmetic just at primes `> K`. Vaughan's identity does not reach HC: its
+  `d = 1` Type I term contains `c` itself with coefficient 1. So the reduction localizes the
+  difficulty but does not remove it.
 
 ## Cleanest sub-lemmas
 

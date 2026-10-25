@@ -160,8 +160,11 @@ Möbius correlations for this; only averages over moduli (Barban–Davenport–H
 
 - **Block decomposition** [rigorous].
   - Every squarefree column `n` has a largest prime factor `π`, and `c(πm) = g̃(π)·e_π(m)`.
-  - On the columns with `N(π) ≤ K`, the column branch is at most `2K^{1+ε}·F·‖c‖²` for **every**
-    choice of the Gauss sums at the block primes.
+  - On the columns with `N(π) ≤ K`, the column branch is at most `2K^{1+ε}·F·‖c‖²` for every
+    choice of unimodular **block multipliers** in place of `g̃(π)`, with the cofactor data
+    `e_π(m) = g̃(m)·conj((m/π)₃)·A(πm)` held fixed. Changing `g̃` at a prime `p ≤ K` also changes
+    the cofactor data of every larger block that `p` divides, so this is not freedom in the Gauss
+    sums themselves.
   - `F` is the frame constant of the normalized block vectors. Each block is in the diagonal
     regime, since its cofactor has norm `≤ K`.
   - The trivial frame bound `F ≤ 1 + N/K` reproduces the large sieve.
@@ -169,9 +172,12 @@ Möbius correlations for this; only averages over moduli (Barban–Davenport–H
   `N/K` from 5 to 80). Adversarial block phases gain only about 2.5×, while the allowance grows to
   20×. `F` fails only for cofactor data aligned with a quadratic character; the true data is
   indistinguishable from random.
-- **Localization.** All of P1's possible `N`-term excess sits on the **hard core**: columns with a
-  prime factor of norm `> K`. A proof of P1 needs arithmetic input on `g̃` only at primes in
-  `(K, N]`. Round 7's algebraic adversary (primes `> N/7`) lives entirely there.
+- **Localization, modulo the frame bound.** Call `F ≤ N^{o(1)}` on the smooth blocks **Lemma BG**.
+  BG is unproved: it is numerically at the random-matrix level, and it involves `g̃` at primes
+  `≤ K` through the cofactor data. Given BG, all of P1's possible `N`-term excess sits on the
+  **hard core** (columns with a prime factor of norm `> K`), and a proof of P1 needs arithmetic
+  input on `g̃` only at primes in `(K, N]`. Every adversary found so far lives on the hard core,
+  including round 7's algebraic one (primes `> N/7`).
 - **No closure** [rigorous].
   - A power-saving frame bound is P1 on the smooth part with arbitrary block phases.
   - Vaughan's identity shows that the hard core is P1 modulo the frame bound, with coefficient
@@ -191,13 +197,16 @@ Möbius correlations for this; only averages over moduli (Barban–Davenport–H
   - The exchange rate 6 is the exact stabilizer (Kummer).
   - Higher-rank theta functions carry the sextic Gauss sums, but they lengthen the sums.
 
-**Sharpest form of P1 after round 9.** For `N = K^{1+δ′}` (use (b)), with `c(n) = g̃(n)A(n)` and the
-sum over columns `n` with `N(P⁺(n)) > K`:
+**Sharpest form of P1 after round 9: P1 ⟸ BG + HC** (rigorous; given BG, HC ⟺ P1).
+- **BG.** `F ≤ N^{o(1)}` for the frame constant of the smooth blocks (largest prime factor of norm
+  `≤ K`).
+- **HC.** For `N = K^{1+δ′}` (use (b)), with `c(n) = g̃(n)A(n)` and the sum over columns `n` with
+  `N(P⁺(n)) > K`:
 
   `Σ_{N(k)≤K} |Σ_n c(n)(n/k)₂ W(N(n)/N)|² ≪ K^{1+0.16δ′+o(1)}Σ|c|²`.
 
-This is a statement about cubic Gauss sums at primes larger than the row count, against
-quadratic × slot characters at the critical length. With the twist, these are sextic Gauss sums at
+HC alone does not imply P1. HC is a statement about cubic Gauss sums at primes larger than the row
+count, against quadratic × slot characters at the critical length. With the twist, these are sextic Gauss sums at
 primes, and Kazhdan–Patterson puts their theta functions out of reach.
 
 ## 6. Why multiple Dirichlet series stall here (remark)

@@ -109,3 +109,30 @@ with slots is diagonal on `m₁ + m₂ + Λz ≤ B`.
   - Simplification: no seed step, no intermediate return and no PR 67 re-proof (−38% export
     bytes), plus about 15× less kernel time in our certificates.
 
+## 4. Which "twists" need bilinear-form estimates (question from Arvi, 2026-10-25)
+
+- **Twist averaging (§2): none.**
+  - Rows `ub²` are rows of a larger family. Averaging over them uses the same full-family Möbius
+    mean value (Poisson in the rows plus theta reflection) that amplification uses.
+  - It bounds the average over twists, not the untwisted moment, which is why it does not help.
+- **The slot twist (atom 1, P1): yes.**
+  - The column branch is `Σ_{k,P} a(P) b_k S(k,P)` with
+    `S(k,P) = Σ_n g̃(n)χ_k(n)³·conj((n/P)₃)`.
+  - By `g̃(n)·conj((n/P)₃) = g̃(nP)/g̃(P)` this is a Type II sum `Σ_{n,P} α_n β_P g̃(nP)`,
+    twisted by the quadratic `χ_k(nP)`.
+  - It is needed **in mean square over `k`**, with the `N` term of the quadratic sieve reduced by
+    `N^{η}`, `η ≈ 1.1e-4` (use (b)).
+  - **A pointwise Type II bound is too weak.** Dunn–Radziwiłł Prop. 10.1 saves `X^{ρ/2}` with an
+    inexplicit `ρ < 1e-4`, partly under GRH. Even made explicit, a pointwise saving summed over
+    `K` rows loses a whole factor `N` against the per-row diagonal.
+  - The relevant template is a dispersion or corrected-large-sieve estimate, as in Dunn–Radziwiłł
+    Prop. 9.1 (the cubic large sieve with the Patterson bias subtracted). It would have to be
+    transplanted to quadratic twists of cubic-Gauss-sum vectors. `../LOG.md` (2026-10-24, "Slot
+    cost 2 is a worst case…") records the same reduction.
+- **Atom 2: yes, also bilinear.**
+  - The long Möbius moment's off-diagonal is the twisted Chowla-type form
+    `Σ_{n≠n'} μ(n)μ(n') Σ_u ψ_u(n)·conj(ψ_u(n'))`. After Poisson it becomes a Type II sum in
+    sextic Gauss sums.
+  - The Möbius coefficients put it outside any unconditional Type II result (Dunn–Radziwiłł need
+    GRH-type inputs for Möbius-like sequences).
+

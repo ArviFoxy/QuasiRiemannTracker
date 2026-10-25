@@ -1,0 +1,13 @@
+base theta* = 8746075
+{"kind": "param", "name": "LP", "eps": 0.0001, "theta": 8746076, "delta": 1, "secs": 24.4}
+{"kind": "param", "name": "BC", "eps": 0.0001, "theta": 8746071, "delta": -4, "secs": 26.9}
+{"kind": "param", "name": "BP", "eps": 0.0001, "theta": 8746068, "delta": -7, "secs": 28.4}
+{"kind": "param", "name": "LC", "eps": 0.0001, "theta": 8746075, "delta": 0, "secs": 28.8}
+{"kind": "param", "name": "h", "eps": 0.0001, "theta": 8746075, "delta": 0, "secs": 28.7}
+{"kind": "param", "name": "sC", "eps": 0.0001, "theta": 8746075, "delta": 0, "secs": 28.8}
+{"kind": "param", "name": "sP", "eps": 0.0001, "theta": 8746075, "delta": 0, "secs": 28.5}
+{"kind": "param", "name": "tf", "eps": 0.0001, "theta": 8746075, "delta": 0, "secs": 29.4}
+{"kind": "knob", "name": "branch_affine:74:22:3", "eps": 0.0001, "theta": 8746075, "delta": 0, "secs": 30.9}
+{"kind": "knob", "name": "branch_affine:74:41:2", "eps": 0.0001, "theta": 8746075, "delta": 0, "secs": 31.5}
+{"kind": "knob", "name": "branch_affine:75:23:1", "eps": 0.0001, "theta": 8746075, "delta": 0, "secs": 31.8}
+{"kind": "knob", "name": "branch_affine:75:32:2", "eps": 0.0001, "theta": 8746075, "delta": 0, "secs": 31.3}

@@ -101,7 +101,81 @@ the physical receipt needs):
   The mixed step has no such charge: in the faceless family the excess, and so `d`, is
   infinitesimal at each pivot. Only the regress condition `c·qβ < e + q` matters there.
 
-## 4. What decides it (open)
+## 4. Sil's ledger, traced exactly (`SIL_LEDGER_TRACE.md`)
+
+- **No net W factor.** The original energy carries `#active ≈ 256^#J·W` (Cauchy over selected
+  assignments) and `scale = W` (regrouping). The reference is quadratic in the volume, and its
+  `selectedVolume²` cancels both. That cancellation is the `−2d` in the declared width.
+- **The saving d is used once,** in the nonexceptional (native) component:
+  `Z^{κS}/W ≤ Z^{κS − d}`, under `Gates.Wlower`. That component sees no K4 dilation.
+- **The dilation is paid in the other components** of the second Poisson:
+
+  | component | how W enters | exponent ≤ 0 |
+  |---|---|---|
+  | zero frequency | `16·K·W³` | `P + S − R + 3d` |
+  | nonexceptional | `1/W` | `κS − d` |
+  | exceptional | `W^{7/3}` | `P + S − 5R/6 + 7d/3 − 2l/3` |
+  | short reference | conductor `R + d` | `R + d + 2l − P + S − R/2` |
+
+  The gate `P + 2S + 4d < R` is "the reference interval for `l` is nonempty"
+  (`2S = 3/2 + 1/2`, `4d = 7/2 + 1/2`).
+- **The native deletion is pointwise per row.** The rows are the non-fixed-inducing dual
+  frequencies, with exponent `κ·w` per slot and κ from the global β. A smaller rate on a
+  subfamily of rows needs a per-row slot bound at that rate. None exists, so Sil-LOW needs new
+  input as well as new plumbing.
+
+**Consequence for the step.** Collet's pool has the same shape:
+- its saving `a` is used in the RAW LOW branch, against erasure at rate `q`;
+- its costs land on the other components (centered `9a`, true diagonal `5a`, reference `7a`,
+  HIGH `a(5 − 6ρ)`) and on the RAW scale `Q = 1 − 6a`.
+
+In the faceless family every amplifier width is infinitesimal at the pivot. Only the RAW LOW
+regress counts, so what decides the mixed step is: does the selected transfer's dilation land on
+the scale of the parent call, the way the pool's `6a` does? Collet's side is traced in
+`COLLET_LOW_TRACE.md` (pending).
+
+## 5. Collet's side traced (`COLLET_LOW_TRACE.md`) and the combined ledger
+
+**Collet (verified).**
+- In the RAW excess (RC3) the MAIN radius cancels exactly (`actual_raw_coordinate_identity`).
+  The pool's dilation reaches LOW only through the scale `Q = 1 − 6a − δ`, i.e. the capacity `z`.
+  Per unit of `a`: RC3 −1, `Q` −6, MAIN +6, centered +4.
+- Columns are `u = (one prime per live slot)·v₀·v₁`, and a slot enters both as a factor of the
+  Gauss modulus and through its coefficient.
+- One volume `V = X₁X₂∏Pᵢ` serves as the normalization, the column size and the `X` of the MAIN
+  radius. RC3 responds as `2κ − ν₁ − ν₂`, where `κ` is the change in column size and `ν` the
+  change in normalization; a slot in the columns is therefore RC3-neutral.
+- The LOW erasure is pointwise per LOW row (`ActualLow`: zero maximum `< a + 2e`), at rate `q`,
+  and comes before the parent call. The capacity is `cap = min((B·Q − Pcap)/Λ, hQ)`.
+
+**Combined (inferred; to be checked adversarially).** A selected block of width `d` moved from the
+columns to the frequency, with the original normalization kept (`ν = 0`, since the target is
+fixed):
+
+| term | change |
+|---|---|
+| RC3: column size `2κ` | −2d |
+| RC3: Cauchy–Schwarz over `#D ≈ W = Z^d` selected products (`|pair coeff| ≤ 1`) | +d |
+| RC3 net (the saving `e = 1`) | **−d** |
+| `Q` (dilation `D⁴`; the bounded-fibre pushforward to the enlarged radius) | −4d (capacity −4dβ) |
+| width passed to the parent | −d (avoids `q·d` of erasure) |
+| MAIN radius | −2d + 4d = +2d (cancels in RC3) |
+
+- **Mixed LOW payment.** `a(1 − 6qβ) + d(1 + q − 4qβ) ≥ qX₀ + r`. This is the `e = 1, c = 4`
+  reading (`erase4`, exchange rate `4q/(1+q)`).
+- **The −2d in Sil's `Rdecl`** is the same column-size `−2d`. In Sil's chain it cancels the
+  `#active·scale ≈ W²` of Cauchy–Schwarz plus regrouping; the D-average's `1/W` is the saving `d`.
+- **The other gates.** The centered, true-diagonal, reference and HIGH gates get `O(d)` terms. In
+  the faceless family `d` is infinitesimal at each pivot, so only the regress counts, as for the
+  pool's `a` now.
+- **The agent's own figure** `qd(4β − 1)` is the same ledger without the Cauchy–Schwarz and
+  normalization saving.
+
+**Value if it holds.** The family flattens to the return floor: −2.7e-5. Widening the count window
+`sC` from 13/250 to 0.054 lowers the floor to 0.8745760, i.e. −3.15e-5
+(`../strip-mine/floor_scan.py`).
+
+## 6. What decides it (open)
 
 The readings differ in one fact: whether the transfer saves energy (`e = 1`) or only moves the
 selected block from the modulus to the frequency (`e = 0`).
@@ -121,7 +195,7 @@ selected block from the modulus to the frequency (`e = 0`).
 - **Exact trace.** An agent is tracing Sil's exponent chain from the original energy to the final
   bound: `SIL_LEDGER_TRACE.md`.
 
-## 5. Status
+## 7. Status
 
 - Pricing done. The two principled candidates are worth −1.75e-5 (mixed step, cautious reading)
   and −2.7e-5 (Sil-LOW). The optimistic readings are larger but not yet scoreable.

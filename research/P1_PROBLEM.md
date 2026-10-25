@@ -89,3 +89,20 @@ Either one, with the stated size, is worth about 6–7e-6 in θ in the float mod
   `c_I(n) = Σ_{N(μ) ≲ 27N/L} φ(μ)(μ/n)₃` (no Gauss sum). Poisson in `μ` returns it to the original
   problem. The operator-norm version over all `φ` (round 7's Lemma Q3) has trivial bound `N^{1.118}`,
   because Heath-Brown's cubic-sieve term `(MN)^{2/3}` dominates.
+
+## Companion: the long Möbius moment (atom 2), round 9
+
+The other input of the right size is the long Möbius moment
+`Σ_{u sixth-power-free, N(u)≍U} |D^{−1/2}Σ_n μ(n)(u/n)₆ W(N(n)/D)|²` at `D = U^t`, `t ∈ (1, 3/2)`.
+- **Known.** Sixth-power amplification (7/8 Lemma 17.6) gives `U^{(1+5t)/6+ε}`.
+- **Needed.** About 1.6e-4 less at `t ≈ 1.155` for the bar (the λ test: `λ ≥ 1/6 + 1.03e-3`).
+- **Why it matters.** It is the only input that moves the unmarked zero-density exponent
+  `ρ(ν) = 1 − 10ν/(15 − 6ν)`, with sensitivity `4ν/(5 − 2ν)` (`round9/README.md` §1,
+  `lean-lab/ZeroDensityGame.lean`).
+- **Numerics.** On the actual family (2076 rows at `U = 8000`), the moment stays at its diagonal
+  (ratio 0.89–0.99) up to `t = 1.4`, where amplification allows a factor 20
+  (`round9/numerics/`).
+- **Where a proof would have to enter.** Square-root cancellation in the Möbius bilinear form
+  `Σ_{n≠n′} μ(n)μ(n′) Σ_u χ_n(u) conj(χ_{n′}(u))`. Its kernel has conductor up to `D² ≫ U`, which
+  makes this a twisted Chowla-type correlation. Even for all characters to one modulus, only
+  averages over the modulus (Barban–Davenport–Halberstam) avoid such correlations.

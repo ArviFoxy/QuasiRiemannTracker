@@ -32,7 +32,8 @@ The large sieve (Goldmakher–Louvel over `Z[ω]`) gives `(K + N)^{1+o(1)}Σ|c|�
 
   `Σ_k |Σ_n c(n)χ_k(n)W|² ≪ (K + N^{1−η}K^{η})Σ|c|²`  with `η ≥ 0.0076`.
 
-Either one, with the stated size, gives at least 6.1e-6 in θ through the exact return.
+Either one, with the stated size, is worth about 6–7e-6 in θ in the float model of the return
+(`LOG.md`, "Open directions"); the exact prices on the face-family chain may differ slightly.
 
 ## Equivalent forms
 

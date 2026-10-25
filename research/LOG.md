@@ -1618,3 +1618,11 @@ slot; `mixed-slots/`).
     case. Sil's gain comes from using the selected slots themselves as the amplifier: their twists
     are what the transfer removes, and their D-family supplies the density. So a mixed step must
     route selected slots into the amplifier.
+- **The return's face choice is optimal** (`combined/experiments/thirdface.py`).
+  - Extra count faces from the family between P and C (y = 0.70 … 0.95 of the last piece) leave
+    θ* at 8746075.
+  - With Sil's face as an extra branch it never gets chosen (`sbranch.py`).
+  - The binding box (`new_top`, p → 1/2) is covered best by the last face, which sits at the q
+    floor L/B = 3.
+  - So the only way down is a higher intercept at that boundary: about 9e-6 per 1e-3 of
+    intercept. The mixed step's float model raises it by 0.0019 (`mixedstep.py`: θ* ≈ 0.8745898).

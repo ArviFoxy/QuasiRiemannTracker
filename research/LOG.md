@@ -1052,6 +1052,35 @@ A catalogue cross-check (21.9k records) found nothing that moves them. → `cap-
     the atoms. The agent independently upholds the earlier dismissals (pointwise and higher Hölder,
     joint numerator × witness, sparse Halász, pair-zero). Nothing on the high side is cheaper than P1.
 
+- *Round-6 literature sweep (2025–2026): no new input for any atom.*
+  - **Xu–Sang, arXiv:2610.15291 (Oct 2026), "Amplified moments and a refinement of the quasi-Riemann
+    hypothesis".** It reaches 0.8748867 from OpenAI's inputs, weaker than the community chain.
+    - Its high-side "amplified first moment" (Prop. 5.1:
+      `Σ_{u∈B}|L(1/2+ϑ+it, ψ̄*_u)| ≪ U^{(3R+1)/4 − ϑ/2}`) is the same Hölder step (`#C^{3/4}` times the
+      slotted fourth moment) as Collet's `(3h/4)R` term.
+    - Its low-side decay retention (`ℓ ≤ 1/5`) and its κ-range extension (to `[13/18, 1]`) are already
+      inside the community chain.
+  - **Xu–Sang, arXiv:2610.17675 (Oct 2026), "A matching lower bound for the sextic large sieve and
+    structured prime moments".**
+    - It gives a lower bound `(AB)^{−ε}(A + B + A^{5/6}B^{1/3} + A^{1/3}B^{5/6})` matching de Faveri's
+      sextic sieve over the full range (`Q^{7/6}` at balance), via Gauss-type extremal vectors. So the
+      generic sextic sieve cannot be improved, which confirms the re-reflection closures.
+    - Its zero-density estimate for the sextic family is `N ≪ Q^{(31−32σ)/(21−12σ)+ε}`. With
+      `σ = (1+ν)/2` this is exactly the community's unmarked count `ρ(ν) = 1 − 10ν/(15−6ν)`, so it
+      adds nothing. It is built from the same three inputs (Lemma 18.1 zero-slot case, Lemma 17.6,
+      Prop. 8.3).
+    - Its prime moment `Q^{(37−10√6)/6} = Q^{2.084}` comes from bins times that count times pointwise
+      prime bounds. That is our amplitude-bin mechanism.
+  - **de Faveri–Dunn–Hoffstein, arXiv:2607.07911 (Jul 2026).** The cubic and quartic large sieves are
+    not perfectly orthogonal, and the obstruction is the Gauss-sum bias. Its input "Lindelöf on average
+    for the second moment of Kubota's series in the twist aspect" averages over the additive twist `r`,
+    not over quadratic twists, so it does not reach P1. P1 needs an operator norm over slot
+    combinations, and a twist-aspect average gives only the Frobenius norm.
+  - **Wilson, arXiv:2506.22667 (Jun 2025), Hooley neutralisers in the quadratic large sieve.** Its
+    savings are logarithmic, only in the hyper-skewed range `N² ≲ M`, with the `N`-type term
+    remaining. No power saving.
+  - Upstream is unchanged (main `0ce80fdd`, PRs through #71).
+
 ## Open directions (ranked, revised 2026-10-24, third pass; see `barriers/README.md`)
 
 Exact state: committed Lean branch 0.8747289; best exact value with known lemmas 0.8747257

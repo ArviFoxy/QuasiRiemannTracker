@@ -8,7 +8,7 @@ the best upstream PR (smaller gains count only if they simplify or clarify the p
 | upstream PR #70 (Mark Lewko) | 0.874772906 | |
 | upstream PR #71 (recost of PR #69 graph) | 0.87477290596 | 4e-11 below #70; checked 2026-10-24 |
 | upstream PR #72 (Das, bootstrap + fine graph), best upstream PR | 0.874771265 | 1.64e-6 below #71; bar now 0.874761265 (checked 2026-10-25) |
-| this branch, Lean (`submissions/repeated-marks-20261024`, branch `submission-repeated-marks-20261024` @ `f8960c1d`, author Arvi; PR to upstream prepared 2026-10-25) | 0.8747289 | 4.24e-5 below PR #72 |
+| this branch, Lean (`submissions/arvi-repeated-marks-20261024`, branch `submission-repeated-marks-20261024` @ `9e1f034c`, author Arvi; upstream PR #73, renamed with the `arvi-` prefix on 2026-10-25) | 0.8747289 | 4.24e-5 below PR #72 |
 | next milestone (1e-5 below this branch) | ≤ 0.8747189 | |
 
 Conventions: `θ*` values are exact-return evaluations (rational certificates) unless marked "float".
@@ -1171,6 +1171,17 @@ A catalogue cross-check (21.9k records) found nothing that moves them. → `cap-
     `Λ = 6qB`.
   - This answers the user's question about hidden structure, and could support a short
     "continuous chain" proof.
+
+- *Round 6 probe redesign: the probe has no free direction* (`probe-redesign/README.md`).
+  - A float model on faces 58/52 with `s_P = 9/200` reproduces 0.8747289; only the top row `d = h`
+    binds (`δ = 0.455`, `p = 1/2`, `R = 0.6037`, `C = 0.0331`).
+  - Exchange rates: `θ_low` +0.78, bad-row exponent `E` +0.222, `R` +0.135, `C` −0.026, energy room
+    −0.063. So 1e-5 needs 4.5e-5 off `E` or 1.6e-4 of energy room.
+  - A general slot operation `I(Xp^{α₁}, Yp^{α₂}, Zp^{α₃})` is an exact reparametrization (symbolic):
+    `α₁, α₂` cancel, `α₃` rescales `Z` and `ℓ`. Inverse-type numerators lose the principal pole or
+    cost +0.010. Marks outside the theta index lose the signal. Freezing slots or running past the
+    energy wall loses 0.33 per unit (break-even needs a low-side loss rate below 0.08).
+  - Closed. Any gain must come from `R`, `C`, the energy room or a joint same-zero count.
 
 ## Open directions (ranked, revised 2026-10-24, third pass; see `barriers/README.md`)
 

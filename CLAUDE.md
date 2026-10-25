@@ -39,12 +39,31 @@
     no change on our side can make the hosted check pass.
   - The fix is upstream incremental verification, or a Collet-free base.
 
+## How Arvi wants the code (user rules, 2026-10-25)
+- **Parameterize, do not hardcode.** Prefer parameters to literal constants, and keep a single
+  source of truth for every constant: one definition that generators, Lean and docs all read. Do
+  not duplicate formula constants in a second place (e.g. a Python list mirroring Lean constants).
+- **Packing/encoding helpers must be transparent and modular.** Example: the Kronecker packing of
+  polynomials into big integers.
+  - It lives in one helper module.
+  - It translates ordinary polynomials to and from the packed form, with pack/unpack proved to be
+    inverse isomorphisms (an `Equiv` on the bounded domain) and the arithmetic proved compatible
+    (homomorphism lemmas).
+  - It must not complicate the main proof: the certificates use the helper's theorems, not ad-hoc
+    representation relations.
+- Finish engineering at a good point, then switch back to math and bound improvement.
+- **Interests.** Explain obstructions in harmonic-analysis terms (Fourier transform, uncertainty,
+  duality). Consider tensor-network and representation-theory ideas for multilinear forms.
+
 ## Goal and bar
 - Goal: lower the all-moduli Dirichlet zero-free boundary θ (smaller is stronger) with new
   mathematics, formalized in Lean.
 - Bar for a new submission: at least 1e-5 below the best upstream PR of
   https://github.com/GTimG/QuasiRiemannTracker. A smaller gain counts only if it brings new math
   that simplifies or clarifies the proof.
+- Arvi, 2026-10-25: the bar must be passed **on top of PR 73**. The single-stage follow-up
+  (`arvi-single-stage-20261025`, 0.8747252, prepared, not posted) is not enough by itself. It is
+  the base to which new mathematics must add at least 6.1e-6, reaching ≤ 0.8747189.
 - Work autonomously. Do not stop because an approach looks impossible, and do not wait for other
   people's work or papers. Pick a direction, commit, explore, repeat.
 

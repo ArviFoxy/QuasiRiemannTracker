@@ -1161,3 +1161,25 @@ gate, bin-restricted LOW-only faces, slot contour `z₀`, cutoff `t₀ < 1`, two
 (independent detections), large values with a mean-square off-diagonal, and mixed prime/plain
 slots (a plain slot is a third plain factor; only two plains reflect, so it costs `Λ` like a prime
 slot; `mixed-slots/`).
+
+### Revision 2026-10-25 (after rounds 5–6)
+
+- **Bar.** The best upstream PR is #72 at 0.874771265, so the bar is 0.874761265. The Lean
+  submission (0.8747289) clears it by 3.2e-5. The milestone below our own value is still ≤ 0.8747189.
+- **Stackable sub-bar gains.** A fine chain (adaptive caps, as in #72) together with Lemma F
+  self-cells is bounded by the continuum ceiling 0.8747241 (−4.8e-6). Any new idea worth at least
+  5.2e-6 would therefore reach the milestone when stacked with it.
+- **New target 5: Möbius scale-profile interpolation (round 5).** For all but `U^{R−7.5e-5}` bad
+  rows, saturation at `r = 0.741` and `r = 1.155` must imply `|M₁(ρ)|² ≥ U^{δ−2c}` with
+  `c ≤ 0.0294`, needed only near the corner. The escaping rows carry clusters of `≳ κ log U` zeros
+  (Turán: a fixed number of zeros cannot dip over an interval of scales). Counting them needs a
+  multiplicity-sensitive zero count with a power saving. Jensen plus moments controls only
+  `≳ 0.1 log U` clusters, so this is out of reach.
+- **Closed in rounds 5–6:**
+  - every L·A detector redesign (triple-tight corner, `lean-lab/DetectorCorner.lean`);
+  - every signed step of the high side (the high side is the signal mechanism acting on the bad
+    row's own zero);
+  - slot amplitude below 1/2. It is free for the adversary when `η ∈ T̂`, and `η = 1` (ζ) is
+    unavoidable. Signed slot classes only force the bad set to be closed under fixed twists.
+  - the literature of 2025–2026: no input for P1, atom 2 or the interpolation lemma; the GL(2)
+    analogue of P1 (level-uniform second moments of quadratic twists) is open.

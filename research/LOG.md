@@ -1002,6 +1002,56 @@ A catalogue cross-check (21.9k records) found nothing that moves them. → `cap-
     - So counting cluster rows needs a zero count sensitive to multiplicity, with a power saving.
       This sharpens round 3's pair-zero lemma, localized to the corner.
 
+- *Round-5 positivity agent (audit every signed step of the binding balance): no slack; the high side is
+  the probe's signal mechanism applied to the bad row's own zero.* Float model and scripts in the
+  session scratchpad (`fresh5a/`: `bal.py`, `sens.py`, `pfix.py`, `fe4.py`).
+  - **The binding class.** For one class (bin `δ`, amplitude `p`) at `d = h`, the high side bounds
+    `Σ_{u∈C} q_u^{−z} ξ̄(u) N_u(Y;s,z) Π_i Q_i(u;z) / L^S(s, ηψ̄_u)`, on `Re s = a + 16e`, `Re z = 17/50`
+    (Collet (192), (195), (216), (223); 7/8 Lemma 20.1). Here
+    `Q_i = −Σ_p w_i(q_p/P_i) q_p^{z−1} ψ̄_u(p)` and `N_u ≈ Y^{−1/2} ε_u S_{ψ̄_u}(U^{n0})`, with
+    `n0 = 2ℓ/h = 0.418`.
+  - **One zero does everything when `η = 1`.** The compensation strips `η` from the denominator's local
+    factor, so for `η = 1` the denominator, the slots and the numerator are one L-function. `η = 1` is
+    unavoidable: `ζ_K = ζ·L(χ_{−3})` is a target.
+    - So one zero `ρ = a + iγ` with `|γ| ≲ Z^ε` and `|L′(ρ)| = U^{o(1)}` saturates the `s`-contour
+      (residue `Z^ρ/L′(ρ)`).
+    - It saturates every slot (the residue of `−L′/L` is the multiplicity).
+    - It supplies the witnesses. The numerator is essentially the plain witness (`n0 = 0.418` against
+      `m* ≈ 0.41`).
+    - This is the high-side twin of atom 4: the probe amplifies a row's zero exactly as it amplifies
+      the target's.
+  - **Checks against that adversary.**
+    - The float model reproduces `θ* = 0.8747256` from the receipts' faces (`δ* = 0.4552`,
+      `R = 0.6034`, `ℓ = 0.16776`).
+    - The only `z`-oscillation is `(Z^{1+ℓ}/(Xq_u))^{i Im z}`, stationary exactly at `d = h`. Shifting
+      `γ_u` by `O(1/log Z)` aligns `ε_u`, `ξ̄(u)` and `arg 1/L′(ρ)` without any count noticing, so the
+      bin's triangle inequality is intrinsic.
+    - The Hölder optimum `4ν = 1 − R − 2qz_A` gives `ν = 0.0944`, against the pointwise
+      `δn0/2 = 0.0952`. Since `R + 2δn0 + 2qz_A = 1.003`, the class carries the whole numerator fourth
+      moment.
+    - The L line's amplification ball is carried exactly by the lifts:
+      `R + δt* + (t* − 1)/6 = t* = 1.155`.
+    - The denominator's pointwise bound `U^{R+δ/h} = U^{1.171}` already beats the L-line moment
+      `U^{1.206}`.
+  - **Levers found, each needing a new input.**
+    - *Slot amplitude:* `p ≤ 0.4985` in the binding class is worth 1e-5, and `p = 0` would give
+      `θ = 0.87132`. For `η ∉ T̂`, one zero cannot saturate both `ηψ̄_u` (denominator) and `θψ̄_u`
+      (slots). But counting rows with two twisted zeros at one height needs
+      `Σ_u|M_r(ηψ̄_u)M_{r′}(θψ̄_u)|²` with `r, r′ ≥ 1/2`. That has four theta columns, which the
+      Coxeter classifier rates hyperbolic (min eigenvalue −0.414). And `η = 1` must be covered anyway.
+    - *Channel-split low side:* a bias-free Gram for `u ≠ 1` would gain `P_a^{1/12}`. It fails because
+      `B`'s row-space norm is the long Möbius moment at `(1+ℓ)/h = 1.456`, not the marked energy.
+      Carried row by row it gives `#C ≤ U^{1−δ(1+ℓ)/h}`, which is atom 2.
+    - *Numerator:* a class-restricted saving `η = 1.4e-4` is a P-line improvement (atoms 2–3). The only
+      route outside the atoms is a growth rate below `n0 = 0.418` just left of `a` at `|t| ≲ 1`, where
+      Phragmén–Lindelöf gives `1/2`. Burgess is weaker than the zero-free PL value.
+    - *Denominator `δ/2`:* the residue at the row's own zero (`dθ/d(·) = −0.221`). Beating it needs
+      control of `1/L` left of the zero (pair-zero).
+  - **Verdict.** The bin triangle inequality, the `δ/2` term and the `δpℓ` term are intrinsic. The
+    Hölder exponent `3/4`, the `h/4` diagonal and the count's Chebyshev steps are tight only through
+    the atoms. The agent independently upholds the earlier dismissals (pointwise and higher Hölder,
+    joint numerator × witness, sparse Halász, pair-zero). Nothing on the high side is cheaper than P1.
+
 ## Open directions (ranked, revised 2026-10-24, third pass; see `barriers/README.md`)
 
 Exact state: committed Lean branch 0.8747289; best exact value with known lemmas 0.8747257

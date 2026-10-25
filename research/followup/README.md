@@ -1,8 +1,16 @@
-# Follow-up package: the repeated-mark proof in one stage (K = 9/2)
+# Follow-up submission: the repeated-mark proof in one stage (K = 9/2), with packed certificates
 
-This is a working copy of the PR 73 submission (`arvi-repeated-marks-20261024`, frozen) for the
-next submission. It is not a submission yet: the next record still needs a new mathematical gain.
-What it changes is the verification cost (`../verification/AUDIT_FOLLOWUP.md`).
+`arvi-single-stage-20261025/` is a submission package in the upstream layout: `metadata.json`,
+`src/Candidate/Main.lean` and `src/Submissions/arvi_single_stage_20261025/`.
+- **Statement.** `Candidate.bound` proves nonvanishing for `Re s > 2186813/2500000 = 0.8747252`.
+- **Build.** It builds from scratch in the PR 73 Lake project (13,627 jobs).
+- **Axioms.** `propext`, `Classical.choice`, `Quot.sound`.
+- **Not posted upstream.** It is also committed on the local branch
+  `submission-single-stage-20261025`, which is based on `upstream/main`.
+
+Against PR 73 (`arvi-repeated-marks-20261024`, frozen, declared 0.8747289):
+- **Gain:** 3.7e-6.
+- **Simplification:** see below and `../verification/AUDIT_FOLLOWUP.md`.
 
 ## What changes against PR 73
 
@@ -19,8 +27,8 @@ What it changes is the verification cost (`../verification/AUDIT_FOLLOWUP.md`).
   - Breakpoints `σ = 0.0122820, 0.01942, 0.0252, 0.0310, 0.0367, 0.0424122`.
   - Physical face at grid index 41756.
   - Return: 32 rows and 9 windows.
-- **Value.** `CandidateFollowup.bound_sharp` is 2186813/2500000 = 0.8747252 (PR 73: 0.8747250).
-  `CandidateFollowup.bound` states 8747289/10^7, as PR 73 does.
+- **Value.** `Candidate.bound` is 2186813/2500000 = 0.8747252 (PR 73's sharp value: 0.8747250;
+  its declared value: 0.8747289).
 - **New or rewritten files.**
   - `Graph/NaturalCap.lean`, `Graph/Endpoint.lean` (single stage);
   - `FinalReturn/EndpointFromSources.lean` (two-stage theorems removed);
@@ -44,16 +52,16 @@ What it changes is the verification cost (`../verification/AUDIT_FOLLOWUP.md`).
 | export time | 511 s | 245 s |
 | Collet's share | 2336 MB | 714 MB |
 
-- Axioms of both `CandidateFollowup` theorems: `propext`, `Classical.choice`, `Quot.sound`.
+- Axioms of `Candidate.bound`: `propext`, `Classical.choice`, `Quot.sound`.
 - `incumbent_beta`, Collet's `seed_step` and `Intermediate.beta_of_global_sources` are not in the
   closure.
 
 ## Build
 
-Copy `src/Submissions/arvi_followup` into the Lake project's `Submissions/` and
-`src/Candidate/Followup.lean` into `Candidate/`, then run `lake build Candidate.Followup`. The
-project is the one of PR 73: Lean 4.34.1, Mathlib `d13f23b7`, with the OpenAI baseline and Collet's
-`hailey-collet-1252270103`.
+Copy `arvi-single-stage-20261025/src/Submissions/arvi_single_stage_20261025` into the Lake project's
+`Submissions/` and `src/Candidate/Main.lean` into `Candidate/`, then run
+`lake build Candidate.Main`. The project is the one of PR 73: Lean 4.34.1, Mathlib `d13f23b7`, with
+the OpenAI baseline and Collet's `hailey-collet-1252270103`.
 
 ## Regenerate
 
@@ -62,7 +70,7 @@ environment. Their defaults reproduce PR 73 byte for byte.
 
 ```sh
 export QRH_K=9/2 QRH_SIG=0.0122820,0.01942,0.0252,0.0310,0.0367,0.0424122
-export QRH_PKG=Submissions.arvi_followup QRH_NATURAL=QRH.RepeatedMarks.natural92
+export QRH_PKG=Submissions.arvi_single_stage_20261025 QRH_NATURAL=QRH.RepeatedMarks.natural92
 cd ../faceless-chain
 python3 gen_certk.py <lake project> ck.txt   # packed HIGH data (needs the built package)
 python3 gen_certs.py <lake project> cs.txt   # packed sector data

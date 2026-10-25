@@ -1126,6 +1126,36 @@ A catalogue cross-check (21.9k records) found nothing that moves them. → `cap-
     proof of the chain could replace the finite graph. That would be a simplification that also
     reaches the ceiling (up to −4.8e-6).
 
+- *Round-6 capability audit (unused generality in Collet's foundations lemmas): no survivor* (float
+  models; scripts in the session scratchpad `fresh6b/`).
+  - The agent audited every foundations lemma that the source step or the return invokes (2.1,
+    3.1–3.4, 4.1, 5.1, 7.1–7.7, 8.1, 9.x, 10.x, 12.2–12.3, 14.1–14.2, 14.12–14.13, and the faces).
+    No unused generality relaxes a binding constraint.
+  - **F1: repeats and extra prime lists act only through "available slots", and that facet binds
+    nowhere.** Every slot-consuming moment has a budget on total width with multiplicity: the marked
+    inverse moment has `r + 2z ≤ m`, every face has `m₁ + m₂ + Λz ≤ BQ`.
+    - The supply facet is slack for the inverse moment (supply 2–4× the cap) and in the return
+      (1.6×).
+    - On the plain side it is *tied* with the affine cap at every continuum pivot, and this is
+      structural. Gate equality forces `ξ_{p*} = t + 2p*S`, so the plain total is `y* = t`, and the
+      face's own capacity at `t` is `(B − t)/Λ = s`.
+  - **F2: the HIGH-gain shortfall is entirely the long line, which carries no slots.**
+    - Letting the long line use slots at efficiency λ: λ = 0.25 lifts the gain fraction from 0.957
+      to 0.993 at `s = 0.042`. In the return, λ ≈ 0.26% alone would give 1e-5.
+    - But the only marked long moment (the marked form of 7/8 Lemma 17.6) moves the long line by
+      `+(10/6 − 2pν)` per unit of slot width, i.e. λ = −2.67 at `p = 1/2`.
+    - The reason: the long line's slope `5/6 − ν` is positive, so an extra saturated factor makes
+      an amplified witness worse.
+  - **Rechecks.**
+    - Two-cutoff covering, including adaptive second cutoffs: the adversary puts the first witness
+      at its crossing and the second at the pure long end.
+    - Repeated plain slots: closed, for the degeneracy reason in F1.
+    - Lemma E: equivalent to bounding the HIGH-class energy by the parent face, with the same
+      height-uniformity obstruction.
+  - **Measured on the continuum ceiling.** Only the regular HIGH gate at `ν = q` binds; every other
+    gate has reserve ≥ 1.1e-3. The binding amplitude class drifts from `p* = 1/2` (`s ≤ 0.02`)
+    to 0.22 and then 0.15.
+
 ## Open directions (ranked, revised 2026-10-24, third pass; see `barriers/README.md`)
 
 Exact state: committed Lean branch 0.8747289; best exact value with known lemmas 0.8747257

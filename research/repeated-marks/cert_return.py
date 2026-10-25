@@ -233,6 +233,10 @@ def receipt(G, BP, LP, capC, capP, sC, sP_, theta_I, tf=Fr(1, 400)):
         'principal_z': h/600 - Fr(1, 1000) - Fr(1, 4000),
         'holomorphic_box': th - Fr(17, 20),
         'source_lambda_low': LP - 3, 'source_lambda_high': Fr(9, 2) - LP,
+        # Lemma D return (ReturnD/Schedule.lean): 2 <= lambda_P <= 9/2 and small_plain_global;
+        # the PR 69 bound lambda_P > 3 is only needed by FR21 (dropped in 'lemmaD' mode)
+        'schedule_lambda_low': LP - 2,
+        'schedule_small_plain_global': 1 - BP/2 - (Fr(9, 2) - LP/2)*sP,
         'source_intercept': 1 - BP,
         'source_C_cap': capC - sC, 'source_P_cap': capP - sP_,
         'numerator_cap_sP_le_capP': capP - sP,
@@ -252,6 +256,8 @@ def run(theta, h, C, Pf, theta_I=THETA_I, verbose=True, tf=Fr(1, 400), sP=Fr(1, 
     rec = receipt(G, BP, LP, capC, capP, sC, sPp, theta_I, tf)
     if mode == 'global':
         rec = {k: v for k, v in rec.items() if k not in GLOBAL_DROP}
+    if mode == 'lemmaD':   # our Lean return: global physical face, schedule bounds 2 <= lambda_P <= 9/2
+        rec = {k: v for k, v in rec.items() if k not in GLOBAL_DROP + ('source_lambda_low',)}
     bad = {k: float(v) for k, v in rec.items() if v <= 0}
     if verbose:
         print("receipt min:", min(rec.items(), key=lambda kv: kv[1])[0], float(min(rec.values())), "bad:", bad)

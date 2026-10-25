@@ -1156,6 +1156,22 @@ A catalogue cross-check (21.9k records) found nothing that moves them. → `cap-
     gate has reserve ≥ 1.1e-3. The binding amplitude class drifts from `p* = 1/2` (`s ≤ 0.02`)
     to 0.22 and then 0.15.
 
+- *The continuum source chain is one explicit switching ODE, and each branch is Darboux-integrable*
+  (`chain-ode/README.md` "The p-family", `lean-lab/ChainFamilyIntegrable.lean`, proved).
+  - For binding amplitude class `p` the HIGH gate reduces exactly (the ρ-terms cancel) to
+    `6q_p = 5((3−p)E + 4ps − 2)/((1+p)E + 4p²s − 2p)`.
+  - The class flow `E′ = −6q_pE/(1 − 6q_ps)` has the invariant lines `E = 0` and
+    `L_p = (3−2p)(5+p)E + 4p(5−2p²)s − 2(5−2p²) = 0`, and the first integral
+    `I_p = log(L_p/E) + 2(5−2p²)(5s−p)/(5(1−p)²E)`.
+  - The switching flow (`6q* = max_p 6q_p`, `E(0) = 1`, seed slope `6κ`) reproduces the full
+    continuum-ceiling envelope to **6e-7** at `s = 0.0412` and `0.045`, with `p*` drifting from 1/2 to
+    0.19.
+  - So every source graph (ours, Collet's, #72's 21k-node one) approximates this explicit ODE. Its
+    inputs are exactly the atoms: `ρ(ν)` from exchange rate 6, slot cost 2, the supply facet and
+    `Λ = 6qB`.
+  - This answers the user's question about hidden structure, and could support a short
+    "continuous chain" proof.
+
 ## Open directions (ranked, revised 2026-10-24, third pass; see `barriers/README.md`)
 
 Exact state: committed Lean branch 0.8747289; best exact value with known lemmas 0.8747257

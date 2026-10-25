@@ -123,3 +123,54 @@ Consequences:
   `../lean-lab/MaximalEnvelope.lean`) could replace the finite graph and reach the ceiling. Next
   step: the early regime `g < 1`, where `X = E + (1 − g)s` and `g` comes from the binding facets.
 
+## The p-family: the whole continuum chain in closed form (2026-10-25)
+
+**Gate reduction.** Fix the binding amplitude class `p` of the HIGH count, with its two binding
+facets: the marked-inverse budget, inverse branch `(1/(1−p), pF/(1−p))`, and the slot supply, plain
+branch `(1, 2pS)` (`../repeated-marks/gain_fast.py`).
+- The ρ-terms of the HIGH gate cancel identically, since `αF/(ν + 3k/2) = 10/(15 − 6ν) = 1 − ρ(ν)`.
+  The gate becomes the cutoff root `ξ = E + 2ps`.
+- Solving for the threshold:
+
+  `6q_p(s, E) = 5((3 − p)E + 4ps − 2) / ((1 + p)E + 4p²s − 2p)`,
+
+  which gives `15 − 10/E` at `p = 0` and `5(5E + 4s − 4)/(3E + 2s − 2)` at `p = 1/2`.
+
+**Each class flow is Darboux-integrable.** The flow `E′ = −6q_pE/(1 − 6q_p s)` (`darboux.py`,
+`family_p.py`, `first_integrals.py`):
+- has the invariant lines `E = 0` and
+  `L_p = (3 − 2p)(5 + p)E + 4p(5 − 2p²)s − 2(5 − 2p²) = 0`;
+- has the integrating factor `1/(E² L_p)`;
+- has the first integral
+
+  `I_p(s, E) = log(L_p/E) + 2(5 − 2p²)(5s − p) / (5(1 − p)² E)`.
+
+The special cases are `p = 0`: `log(3 − 2/E) + 10s/E` (up to constants), and `p = 1/2`:
+`log((11E + 9s − 9)/E) + (36s − 3.6)/E`. Lean: `../lean-lab/ChainFamilyIntegrable.lean`
+(gate reduction, threshold formula, Lie derivative zero for every `p`).
+
+**The chain is the switching flow.** The HIGH count's gain is a minimum over classes, so the
+binding class maximizes the threshold (`envelope_flow.py`):
+
+  `E′ = −6q*E/(1 − 6q*s)`, `6q* = max_{p ∈ [0, 1/2]} 6q_p(s, E)`, `E(0) = 1`, slope capped at `K = 4.4973108`.
+
+| `s` | E (closed-form flow) | E (continuum ceiling, full 16-gate solver) | `p*` |
+|---|---|---|---|
+| 0.0135 | 0.9393161 | | 0.500 |
+| 0.0200 | 0.9115839 | | 0.491 |
+| 0.0300 | 0.8734638 | | 0.347 |
+| 0.0412 | 0.8371464 | 0.8371458 | 0.221 |
+| 0.0450 | 0.8262533 | 0.8262527 | 0.186 |
+
+The agreement is 6e-7. So the whole face map (gates, fees, Lemma F self cells, caps) contributes
+nothing beyond this one-line ODE at the accuracy that matters for θ. The 59-node Lean graph,
+Collet's 64 faces and upstream #72's 21,527 count transitions all approximate the same explicit
+switching flow. Its only inputs are:
+- the unmarked count `ρ(ν) = 1 − 10ν/(15 − 6ν)`;
+- slot cost 2, in the inverse facet;
+- the slot supply facet;
+- the LOW limit `Λ = 6qB` (exchange rate 6);
+- the natural seed slope `K = 6κ`.
+
+So the ceiling is an explicit functional of the four atoms.
+

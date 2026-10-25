@@ -1,0 +1,7 @@
+[build] rows=778 primeideals=4625 time 0.9s
+U=3000 rows=778 build 0.9s
+t=0.600 D=122 sqfree cols=35: mean|M|^2=0.1405 diag=0.1304 ratio=1.077  (amplification allowance 1.00; max|M|^2/diag=5.97) [0.0s]
+t=0.800 D=605 sqfree cols=168: mean|M|^2=0.1262 diag=0.1389 ratio=0.909  (amplification allowance 1.00; max|M|^2/diag=5.75) [0.0s]
+t=1.000 D=3000 sqfree cols=848: mean|M|^2=0.1342 diag=0.1374 ratio=0.977  (amplification allowance 1.00; max|M|^2/diag=7.28) [0.1s]
+t=1.155 D=10377 sqfree cols=2932: mean|M|^2=0.1401 diag=0.1388 ratio=1.009  (amplification allowance 2.81; max|M|^2/diag=9.08) [0.5s]
+t=1.250 D=22202 sqfree cols=6254: mean|M|^2=0.1427 diag=0.1387 ratio=1.029  (amplification allowance 5.30; max|M|^2/diag=8.05) [0.7s]

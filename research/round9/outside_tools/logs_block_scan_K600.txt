@@ -1,0 +1,17 @@
+K=600 Lslot=60
+built K=600 N=6000 Lslot=60: rows 156, cols 778, marks 14 (0.3s)
+ N=6000: N'/K'=5.0
+  smooth     : cols   340 (43.7%)  blocks    94 (mean size  3.62) CB/diag= 1.084  blk/diag= 0.988  op/MP= 1.340  adv/diag=  2.654  wub/diag=   3.10 (frame   3.14, (1+sqrt(m/K))^2= 3.16)  LS/diag=   3.5
+  hard core  : cols   438 (56.3%)  blocks   396 (mean size  1.11) CB/diag= 1.080  blk/diag= 1.002  op/MP= 1.389  adv/diag=  4.820  wub/diag=   6.38 (frame   6.36, (1+sqrt(m/K))^2= 6.72)  LS/diag=   3.9
+built K=600 N=12000 Lslot=60: rows 156, cols 1558, marks 14 (1.2s)
+ N=12000: N'/K'=10.0
+  smooth     : cols   548 (35.2%)  blocks    94 (mean size  5.83) CB/diag= 1.024  blk/diag= 0.999  op/MP= 1.249  adv/diag=  2.617  wub/diag=   3.01 (frame   3.01, (1+sqrt(m/K))^2= 3.16)  LS/diag=   4.9
+  hard core  : cols  1010 (64.8%)  blocks   812 (mean size  1.24) CB/diag= 1.117  blk/diag= 1.001  op/MP= 1.355  adv/diag=  7.506  wub/diag=  10.84 (frame  10.84, (1+sqrt(m/K))^2=10.77)  LS/diag=   7.7
+built K=600 N=24000 Lslot=60: rows 156, cols 3106, marks 14 (4.4s)
+ N=24000: N'/K'=19.9
+  smooth     : cols   948 (30.5%)  blocks    92 (mean size 10.30) CB/diag= 0.802  blk/diag= 1.001  op/MP= 1.328  adv/diag=  2.717  wub/diag=   3.05 (frame   3.05, (1+sqrt(m/K))^2= 3.13)  LS/diag=   7.7
+  hard core  : cols  2158 (69.5%)  blocks  1590 (mean size  1.36) CB/diag= 0.911  blk/diag= 1.004  op/MP= 1.258  adv/diag= 12.716  wub/diag=  18.06 (frame  18.00, (1+sqrt(m/K))^2=17.58)  LS/diag=  15.4
+built K=600 N=48000 Lslot=60: rows 156, cols 6226, marks 14 (15.1s)
+ N=48000: N'/K'=39.9
+  smooth     : cols  1680 (27.0%)  blocks    90 (mean size 18.67) CB/diag= 0.889  blk/diag= 1.001  op/MP= 1.062  adv/diag=  2.515  wub/diag=   2.84 (frame   2.83, (1+sqrt(m/K))^2= 3.10)  LS/diag=  12.8
+  hard core  : cols  4546 (73.0%)  blocks  3046 (mean size  1.49) CB/diag= 0.938  blk/diag= 1.000  op/MP= 1.213  adv/diag= 19.969  wub/diag=  31.10 (frame  31.11, (1+sqrt(m/K))^2=29.36)  LS/diag=  31.3

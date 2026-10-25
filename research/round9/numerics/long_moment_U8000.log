@@ -1,0 +1,8 @@
+[build] rows=2076 primeideals=47782 time 27.4s
+U=8000 rows=2076 build 27.4s
+t=0.800 D=1326 sqfree cols=374: mean|M|^2=0.1256 diag=0.1380 ratio=0.910  (amplification allowance 1.00; max|M|^2/diag=6.76) [0.1s]
+t=1.000 D=8000 sqfree cols=2252: mean|M|^2=0.1367 diag=0.1381 ratio=0.989  (amplification allowance 1.00; max|M|^2/diag=7.21) [0.6s]
+t=1.100 D=19652 sqfree cols=5533: mean|M|^2=0.1327 diag=0.1388 ratio=0.956  (amplification allowance 2.11; max|M|^2/diag=7.10) [2.0s]
+t=1.155 D=32216 sqfree cols=9094: mean|M|^2=0.1341 diag=0.1389 ratio=0.965  (amplification allowance 3.19; max|M|^2/diag=9.79) [2.2s]
+t=1.250 D=75659 sqfree cols=21337: mean|M|^2=0.1242 diag=0.1389 ratio=0.894  (amplification allowance 6.50; max|M|^2/diag=6.78) [6.5s]
+t=1.400 D=291290 sqfree cols=82200: mean|M|^2=0.1364 diag=0.1388 ratio=0.983  (amplification allowance 20.00; max|M|^2/diag=10.25) [23.1s]

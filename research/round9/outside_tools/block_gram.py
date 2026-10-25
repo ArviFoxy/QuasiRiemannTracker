@@ -94,10 +94,13 @@ def part_stats(Phi, c, mask, big, name, rng):
         best = max(best, np.real(np.vdot(x, G @ x)))
     sizes = np.array([len(b) for b in bl])
     ls = (Kp + len(idx)) * np.sum(np.abs(cp) ** 2) / diag
+    nrm = np.linalg.norm(Wm, axis=0); nrm[nrm == 0] = 1
+    fr = np.linalg.svd(Wm / nrm, compute_uv=False)[0] ** 2      # frame bound of normalized block profiles
+    wub = blk * fr / diag                                           # weighted Cauchy-Schwarz bound, any block phases
     print(f'  {name:11s}: cols {len(idx):5d} ({len(idx)/len(c):5.1%})  blocks {m:5d} (mean size {sizes.mean():5.2f}) '
           f'CB/diag={CB/diag:6.3f}  blk/diag={blk/diag:6.3f}  op/MP={op/mp:6.3f}  '
-          f'adv/diag={best/diag:7.3f}  ub/diag={m*op/diag:8.2f}  LS/diag={ls:6.1f}  srank={blk/op:7.2f}', flush=True)
-    return dict(CB=CB, diag=diag, blk=blk, op=op, mp=mp, adv=best, m=m)
+          f'adv/diag={best/diag:7.3f}  wub/diag={wub:7.2f} (frame {fr:6.2f}, (1+sqrt(m/K))^2={(1+math.sqrt(m/Kp))**2:5.2f})  LS/diag={ls:6.1f}', flush=True)
+    return dict(CB=CB, diag=diag, blk=blk, op=op, mp=mp, adv=best, m=m, fr=fr, ls=ls)
 
 
 def main():

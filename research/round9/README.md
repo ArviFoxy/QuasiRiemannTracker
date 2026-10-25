@@ -143,3 +143,15 @@ of `ζ(6z)`, so the signal is preserved, as the agent said.
 its optimum. Restricting the dual sixth-power content is a reweighted `X`-dilation whose low side
 is worse. The high-side gain would need a probe whose low estimate does not grow with `X`. The
 marked-energy wall says that is P1 (use (b)). Closed.
+
+## 4. Numerics: the long Möbius moment is at its diagonal (`numerics/README.md`)
+
+For the actual sextic family over `Z[ω]` (778 rows at `U = 3000`, 2076 rows at `U = 8000`), the
+mean of `|M_u(U^t)|²` stays within 0.89–1.08 of its diagonal for `t` from 0.6 up to 1.4. Over
+that range amplification allows a factor up to 20 (`t = 1.4`). So atom 2 is an artifact of the
+method, like P1 in round 7's toy models.
+
+A proof would need square-root cancellation in a Möbius bilinear form whose kernel is incomplete
+sextic character sums of conductor up to `D² ≫ U`. That is a twisted Chowla-type correlation on
+the wrong side of the parity barrier. Even the full family of characters to one modulus needs
+Möbius correlations for this; only averages over moduli (Barban–Davenport–Halberstam) avoid them.

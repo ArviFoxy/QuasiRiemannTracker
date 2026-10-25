@@ -265,3 +265,42 @@ selected block from the modulus to the frequency (`e = 0`).
   - Either is of the order of Sil's 421-file development; not started.
 - Proved in Lean: the payment algebra, the thresholds `6q/(1+q)` vs `6q`, Sil's floor `26/7` and
   when it beats `6κ`.
+
+## 10. Discrete start, exact gates, and the return lever s_P (2026-10-25, late)
+
+**The start is a fan** (`discrete_chain.py`, `fan.py`, `mixed_certs.py`).
+- The continuum run starts on Sil's face at `s = 0.016` and jumps from slope 3.72 to 2.52. A finite
+  chain with coarse steps stalls on the line `L/B = 6q/(1+q)` at `q = 0.7499` (den3 → 0), and with
+  `q` optimized it trails the continuum by ~0.0015 in E.
+- But the jump is realizable as a **fan**: faces through the one point `(s0, E0)` on Sil's line,
+  each a legal mixed step from the previous one. With `q = 7499/10000` and `s0 = 16/1000`, **21 fan
+  steps pass the exact draft SourceValid3** (`mixed_certs.py`: the 16 scalar gates with
+  `den3, F′, a + d`, the new gates `b − 2e − d ≥ 0` and `d ≥ 0`, the weak cap at `F′`, the three
+  sectors, and HIGH Bernstein trees). Slope 3.72 → 2.5219723 at `B = 0.9808216`
+  (`L/B = 2.5712855 < 18/(7 − 4·2⁻¹⁵)`), so the fine family can start with `q ≤ 3/4`.
+- `d(cap)` in the fan steps is about 0.006, not infinitesimal. The draft gates charge it like the
+  pool, and they hold.
+
+**The faces no longer bind** (`floor_lemmaD.py`, `diag_return.py`). At `s_P = 0.052`,
+`s_C = 0.054`, θ* = 0.8744022 does not move when `B_P` or `B_C` rise by 0.005 or `L_P` drops by
+0.1. The binding is the `new_top` cover at `δ ≈ 0.4385`, `p → 1/2`. There the capacity is
+`C_N(d₊) = min(s_P·h, (2y − (2 − B_P)h)/L_P)`, and with the mixed faces its first branch binds.
+(With PR 76's faces the second branch binds instead: `(B_P − 0.843)/3 ≈ 0.043 < s_P`.)
+
+**The `dMinus` cliff is not real.** The receipt `ds ≥ 3/4` is the field `dMinus_lower : 3/4 < dMinus`
+of `ReturnD/Schedule.lean`. All 9 of its uses in our fork need only `dMinus > 1/2`:
+`GenericFeedback` (d ≥ 0), `PhysicalDirect/Geometry` (d > 0), `Active` (1/2 < d), `SelectedBin`
+(0 < d, 1/2 ≤ d), `SourceSelection` (1/200 ≤ dm, 1/2 ≤ d). With the field relaxed to 1/2
+(`sp_beyond.py`):
+
+| s_P | face caps | θ* |
+|---|---|---|
+| 0.052 | 0.0549989 | 0.8744022 |
+| 0.053 | 0.0549989 | 0.8743795 |
+| 0.054 | 0.0549989 | 0.8743568 |
+| 0.0549 | 0.0549989 | 0.8743364 |
+| 0.056 | 0.065 | 0.8743115 |
+
+The next limit is the second branch, `s_P ≤ (B_P − (2 − 2y/h))/L_P ≈ 0.0565–0.0575` along the mixed
+flow. That is where the faces matter again, through `(B − 0.843)/L`. The continuum gates allow face
+caps up to 0.08.

@@ -34,7 +34,7 @@ def noise(records, costs):
             'median_relative_spread': round(statistics.median(ratios), 4) if ratios else None}
 
 
-def profile(env, records, costs):
+def profile(env, records, costs, empty):
     """What the numbers were measured with. Only the toolchain, the recipe and
     the processor identify it: how many compiles ran at once changes nothing."""
     machine_info = machine()
@@ -50,12 +50,22 @@ def profile(env, records, costs):
         'packages': env['packages'],
         'machine': machine_info,
         'workers': workers[0] if len(workers) == 1 else workers,
+        'empty_module_cpu_seconds': empty,
         'modules_measured': len(costs),
         'noise': noise(records, costs),
     }
 
 
-def summarize(sid, plan, keys, costs, profile_id):
+def empty_module_seconds(jobs, costs):
+    """CPU time of a file with no content, after import and startup: each submission's
+    Candidate.Main is a few lines that only re-export the bound."""
+    wrappers = sorted(r['net'] for k, r in costs.items()
+                      if jobs[k].module['name'] == 'Candidate.Main' and jobs[k].module['lines'] <= 10)
+    return round(statistics.median(wrappers), 3) if wrappers else 0.0
+
+
+def summarize(sid, plan, keys, costs, profile_id, empty=0.0):
+    """A module costs what compiling it takes beyond an empty file."""
     modules = plan['modules']
     summary = {
         'schema_version': SCHEMA,
@@ -66,16 +76,18 @@ def summarize(sid, plan, keys, costs, profile_id):
         'modules': len(modules),
         'lines': sum(m['lines'] for m in modules),
         'bytes': sum(m['bytes'] for m in modules),
+        # Reachable source without comments or layout, as written by plan.mjs.
+        **{k: plan[k] for k in ('active_bytes', 'gzip_bytes') if k in plan},
     }
     if all(k in costs for k in keys):
         by_owner, gross, peak, heaviest = {}, 0.0, 0, ('', 0.0)
         for module, key in zip(modules, keys):
             r = costs[key]
-            by_owner[module['owner']] = by_owner.get(module['owner'], 0.0) + r['net']
+            by_owner[module['owner']] = by_owner.get(module['owner'], 0.0) + r['net'] - empty
             gross += r['cpu_user'] + r['cpu_system']
             peak = max(peak, r['maxrss_kib'] * 1024)
-            if r['net'] > heaviest[1]:
-                heaviest = (module['name'], r['net'])
+            if r['net'] - empty > heaviest[1]:
+                heaviest = (module['name'], r['net'] - empty)
         summary['compile'] = {
             'cpu_seconds': round(sum(by_owner.values()), 1),
             'cpu_seconds_by_submission': {k: round(v, 1) for k, v in sorted(by_owner.items())},
@@ -94,12 +106,13 @@ def main():
     order, jobs, members = build_graph(plans, environment_key(env))
     records = read_measurements()
     costs = best_costs(records)
-    prof = profile(env, records, costs)
+    empty = empty_module_seconds(jobs, costs)
+    prof = profile(env, records, costs, empty)
     args.out.mkdir(exist_ok=True)
     write = lambda name, value: (args.out/name).write_text(json.dumps(value, indent=2, sort_keys=True)+'\n')
     write('profile.json', prof)
     for sid in order:
-        summary = summarize(sid, plans[sid], members[sid], costs, prof['id'])
+        summary = summarize(sid, plans[sid], members[sid], costs, prof['id'], empty)
         write(f'{sid}.json', summary)
         print(f"{sid:44} {summary['modules']:6d} modules" +
               (f"  {summary['compile']['cpu_seconds']/3600:7.2f} CPU-hours" if 'compile' in summary else '  (compile cost not yet measured)'))

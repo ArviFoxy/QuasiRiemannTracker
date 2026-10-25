@@ -158,6 +158,21 @@ class AggregateTests(unittest.TestCase):
         self.assertEqual(compiled['heaviest_module'], {'name': 'Submissions.base.A', 'cpu_seconds': 10.0})
         self.assertEqual((summary['modules'], summary['lines']), (2, 20))
 
+    def test_every_module_costs_what_it_takes_beyond_an_empty_file(self):
+        modules = [module('Submissions.base.A', 'a', owner='base'),
+                   module('Candidate.Main', 'm', ['Submissions.base.A'], owner='next', lines=3)]
+        costs = {'ka': record('ka', 10.0, 9.9), 'km': record('km', 0.7, 0.6)}
+        p = plan('next', modules)
+        jobs = measure.build_graph({'next': p}, 'env')[1]
+        keys = measure.module_keys(p, 'env')
+        costs = {keys['Submissions.base.A']: costs['ka'], keys['Candidate.Main']: costs['km']}
+        empty = aggregate.empty_module_seconds(jobs, costs)
+        self.assertEqual(empty, 0.7)
+        compiled = aggregate.summarize('next', p, [keys[m['name']] for m in modules], costs, 'profile0001', empty)['compile']
+        self.assertEqual(compiled['cpu_seconds_by_submission'], {'base': 9.3, 'next': 0.0})
+        self.assertEqual(compiled['cpu_seconds'], 9.3)
+        self.assertEqual(aggregate.empty_module_seconds(jobs, {}), 0.0)
+
     def test_a_submission_with_unmeasured_modules_reports_only_its_sources(self):
         modules = [module('Candidate.Main', 'm', owner='next')]
         summary = aggregate.summarize('next', plan('next', modules), ['km'], {}, 'profile0001')

@@ -1,5 +1,5 @@
 import { test, expect, type Page } from "@playwright/test";
-import { routeCatalogue } from "./catalogue-fixture";
+import { catalogue, record, routeCatalogue } from "./catalogue-fixture";
 
 // The fixture bounds are 7/8 > 8749/10000 > 87489/100000. By compile CPU the
 // newest result is both stronger and cheaper than the improvement, so only the
@@ -18,6 +18,8 @@ const sizes = () => ({
     "fixture-baseline": {
       modules: 100,
       lines: 10000,
+      gzip_bytes: 200 * 1024,
+      active_bytes: 900 * 1024,
       cpu_seconds: 3600,
       cpu_seconds_excluding_baseline: 0.1,
       peak_rss_bytes: 4 * 2 ** 30,
@@ -25,6 +27,8 @@ const sizes = () => ({
     "fixture-improvement": {
       modules: 150,
       lines: 15000,
+      gzip_bytes: 300 * 1024,
+      active_bytes: 1200 * 1024,
       cpu_seconds: 10800,
       cpu_seconds_excluding_baseline: 7200,
       peak_rss_bytes: 5 * 2 ** 30,
@@ -32,6 +36,8 @@ const sizes = () => ({
     "fixture-newest": {
       modules: 140,
       lines: 20000,
+      gzip_bytes: 250 * 1024,
+      active_bytes: 1500 * 1024,
       cpu_seconds: 7200,
       cpu_seconds_excluding_baseline: 3600,
       peak_rss_bytes: 6 * 2 ** 30,
@@ -58,8 +64,12 @@ test("Pareto is a tab between the leaderboard and milestones, not the landing vi
   await expect(page.locator(".pareto-panel")).toHaveCount(0);
   await nav.getByRole("link", { name: "Pareto", exact: true }).click();
   expect(new URL(page.url()).searchParams.get("tab")).toBe("pareto");
-  await expect(page.getByRole("region", { name: "Bound against proof size" })).toBeVisible();
-  await expect(page.locator(".chart-panel[aria-label='Bound progress']")).toHaveCount(0);
+  await expect(
+    page.getByRole("region", { name: "Bound against proof size" }),
+  ).toBeVisible();
+  await expect(
+    page.locator(".chart-panel[aria-label='Bound progress']"),
+  ).toHaveCount(0);
   await expect(page.getByRole("list", { name: "Contributions" })).toBeVisible();
 });
 
@@ -70,16 +80,30 @@ test("every verified result is plotted and the front is marked", async ({
   await expect(page.locator(".pareto-measure select")).toHaveValue("cpu");
   // The pending and historical fixtures are not verified results.
   await expect(page.locator("[data-pareto-id]")).toHaveCount(3);
-  await expect(page.locator('[data-pareto-id][data-front="true"]')).toHaveCount(2);
-  await expect(point(page, "fixture-improvement")).toHaveAttribute("data-front", "false");
-  await expect(point(page, "fixture-newest")).toHaveAttribute("data-front", "true");
-  await expect(page.locator(".pareto-front")).toHaveAttribute("d", /^M [\d.]+ [\d.]+ H /);
-  expect(await page.locator('.chart [data-axis="size"]').allTextContents()).toContain("1 h");
+  await expect(page.locator('[data-pareto-id][data-front="true"]')).toHaveCount(
+    2,
+  );
+  await expect(point(page, "fixture-improvement")).toHaveAttribute(
+    "data-front",
+    "false",
+  );
+  await expect(point(page, "fixture-newest")).toHaveAttribute(
+    "data-front",
+    "true",
+  );
+  await expect(page.locator(".pareto-front")).toHaveAttribute(
+    "d",
+    /^M [\d.]+ [\d.]+ H /,
+  );
+  expect(
+    await page.locator('.chart [data-axis="size"]').allTextContents(),
+  ).toContain("1 h");
   await expect(page.locator(".pareto-panel .chart-note")).toContainText(
     "Lean 4.34.1 on Example CPU, 4 cores",
   );
   // Weaker bounds are higher and larger proofs further right.
-  const box = async (id: string) => (await point(page, id).locator("circle").nth(2).boundingBox())!;
+  const box = async (id: string) =>
+    (await point(page, id).locator("circle").nth(2).boundingBox())!;
   const [baseline, improvement, newest] = [
     await box("fixture-baseline"),
     await box("fixture-improvement"),
@@ -99,7 +123,9 @@ test("focusing a result explains its bound, size and what dominates it", async (
   const tooltip = page.locator(".chart-tooltip");
   await expect(tooltip).toContainText("Example researcher · Improved bound");
   await expect(tooltip).toContainText("θ = 8749/10000 · cpu time 3 h");
-  await expect(tooltip).toContainText("Dominated by Example team · Newest improvement");
+  await expect(tooltip).toContainText(
+    "Dominated by Example team · Newest improvement",
+  );
   await point(page, "fixture-newest").focus();
   await expect(tooltip).toContainText("On the Pareto front");
   await point(page, "fixture-newest").blur();
@@ -117,6 +143,65 @@ test("arrow keys move between results in order of size", async ({ page }) => {
   await expect(point(page, "fixture-newest")).toBeFocused();
 });
 
+test("results that overlap are reached by stepping through them", async ({
+  page,
+}) => {
+  // A twin a hair larger and weaker than the newest result lands under it.
+  const data = catalogue();
+  data.records.push(
+    record({
+      id: "fixture-twin",
+      title: "Example team · Twin result",
+      authors: [{ name: "Example team" }],
+      theta: { numerator: "874891", denominator: "1000000" },
+      timeline_at: "2030-10-09T06:00:00Z",
+      first_verified_at: "2030-10-11T13:00:00Z",
+      certificate_url: "certificates/fixture-twin.json",
+    }),
+  );
+  const withTwin = sizes();
+  Object.assign(withTwin.entries, {
+    "fixture-twin": {
+      ...withTwin.entries["fixture-newest"],
+      gzip_bytes: 251 * 1024,
+    },
+  });
+  await routeCatalogue(page, data);
+  await page.route("**/sizes.json", (route) =>
+    route.fulfill({ json: withTwin }),
+  );
+  await page.goto("/?tab=pareto&size=gzip");
+  await expect(page.locator("[data-pareto-id]")).toHaveCount(4);
+  await point(page, "fixture-newest").hover();
+  await expect(page.locator(".chart-tooltip")).toContainText(
+    "2 results overlap here",
+  );
+  await point(page, "fixture-newest").click();
+  await expect(point(page, "fixture-newest")).toHaveAttribute(
+    "aria-pressed",
+    "true",
+  );
+  await point(page, "fixture-newest").click();
+  await expect(point(page, "fixture-twin")).toHaveAttribute(
+    "aria-pressed",
+    "true",
+  );
+  await expect(
+    page.locator("#entry-fixture-twin .entry-details"),
+  ).toBeVisible();
+  await point(page, "fixture-newest").click();
+  await expect(point(page, "fixture-newest")).toHaveAttribute(
+    "aria-pressed",
+    "true",
+  );
+  // A result with nothing under it is selected as before.
+  await point(page, "fixture-baseline").click();
+  await expect(point(page, "fixture-baseline")).toHaveAttribute(
+    "aria-pressed",
+    "true",
+  );
+});
+
 test("the size measure can be changed and survives reload and sharing", async ({
   page,
   context,
@@ -124,24 +209,67 @@ test("the size measure can be changed and survives reload and sharing", async ({
   await open(page);
   await page.locator(".pareto-measure select").selectOption("lines");
   expect(new URL(page.url()).searchParams.get("size")).toBe("lines");
-  await expect(page.locator('[data-pareto-id][data-front="true"]')).toHaveCount(3);
+  await expect(page.locator('[data-pareto-id][data-front="true"]')).toHaveCount(
+    3,
+  );
   await expect(page.locator(".pareto-note")).toContainText("Lines of source");
   await page.reload();
   await expect(page.locator(".pareto-measure select")).toHaveValue("lines");
   const shared = await context.newPage();
   await open(shared, "?tab=pareto&size=memory");
   await expect(shared.locator(".pareto-measure select")).toHaveValue("memory");
-  await expect(shared.locator('.chart [data-axis="size"]').first()).toContainText("GiB");
+  await expect(
+    shared.locator('.chart [data-axis="size"]').first(),
+  ).toContainText("GiB");
   await open(shared, "?tab=pareto&size=unknown");
   await expect(shared.locator(".pareto-measure select")).toHaveValue("cpu");
   await shared.close();
 });
 
+test("the gzipped size of the active source is a measure of its own", async ({
+  page,
+}) => {
+  await open(page, "?tab=pareto&size=gzip");
+  await expect(page.locator(".pareto-measure select")).toHaveValue("gzip");
+  await expect(page.locator(".pareto-note")).toContainText(
+    "reachable from the proof root",
+  );
+  await expect(page.locator("[data-pareto-id]")).toHaveCount(3);
+  await expect(
+    page.locator('.chart [data-axis="size"]').filter({ hasText: "200 KiB" }),
+  ).toHaveCount(1);
+  await expect(page.locator(".pareto-chart")).toContainText(
+    "Gzipped active source · log scale",
+  );
+  // Compressed, the newest result is both smaller and stronger than the improvement.
+  await expect(page.locator('[data-pareto-id][data-front="true"]')).toHaveCount(
+    2,
+  );
+  await expect(point(page, "fixture-improvement")).toHaveAttribute(
+    "data-front",
+    "false",
+  );
+  // Uncompressed, the stronger bounds are larger, so every result is on the front.
+  await page.locator(".pareto-measure select").selectOption("active");
+  await expect(page.locator('[data-pareto-id][data-front="true"]')).toHaveCount(
+    3,
+  );
+  await page.locator(".pareto-table summary").click();
+  await expect(page.locator(".pareto-table tbody tr").nth(0)).toContainText(
+    "900 KiB",
+  );
+});
+
 test("selecting a result opens its leaderboard entry", async ({ page }) => {
   await open(page);
   await point(page, "fixture-improvement").click();
-  await expect(point(page, "fixture-improvement")).toHaveAttribute("aria-pressed", "true");
-  await expect(page.locator("#entry-fixture-improvement .entry-details")).toBeVisible();
+  await expect(point(page, "fixture-improvement")).toHaveAttribute(
+    "aria-pressed",
+    "true",
+  );
+  await expect(
+    page.locator("#entry-fixture-improvement .entry-details"),
+  ).toBeVisible();
 });
 
 test("the table view lists the same results and what dominates them", async ({
@@ -155,25 +283,56 @@ test("the table view lists the same results and what dominates them", async ({
   await expect(rows.nth(0)).toContainText("Example author · Initial bound");
   await expect(rows.nth(0)).toContainText("1 h");
   await expect(rows.nth(0)).toContainText("Yes");
-  await expect(rows.nth(2)).toContainText("Example researcher · Improved bound");
-  await expect(rows.nth(2)).toContainText("No, dominated by Example team · Newest improvement");
+  await expect(rows.nth(2)).toContainText(
+    "Example researcher · Improved bound",
+  );
+  await expect(rows.nth(2)).toContainText(
+    "No, dominated by Example team · Newest improvement",
+  );
   await rows.nth(2).getByRole("button").click();
-  await expect(page.locator("#entry-fixture-improvement .entry-details")).toBeVisible();
+  await expect(
+    page.locator("#entry-fixture-improvement .entry-details"),
+  ).toBeVisible();
 });
 
-test("measures nobody has measured yet are offered but not selectable, and counts stand in", async ({
+test("measures nobody has measured yet are offered but not selectable, and source sizes stand in", async ({
   page,
 }) => {
   const sourceOnly = sizes();
   for (const entry of Object.values(sourceOnly.entries))
-    for (const key of ["cpu_seconds", "cpu_seconds_excluding_baseline", "peak_rss_bytes"])
+    for (const key of [
+      "cpu_seconds",
+      "cpu_seconds_excluding_baseline",
+      "peak_rss_bytes",
+    ])
       delete (entry as Record<string, number>)[key];
   await open(page, "?tab=pareto", sourceOnly);
-  await expect(page.locator(".pareto-measure select")).toHaveValue("modules");
+  await expect(page.locator(".pareto-measure select")).toHaveValue("gzip");
   await expect(page.locator("[data-pareto-id]")).toHaveCount(3);
   const cpu = page.locator(".pareto-measure option[value='cpu']");
   await expect(cpu).toHaveJSProperty("disabled", true);
   await expect(cpu).toContainText("not measured yet");
+});
+
+test("counts stand in when neither compile cost nor source size is known", async ({
+  page,
+}) => {
+  const counts = sizes();
+  for (const entry of Object.values(counts.entries))
+    for (const key of [
+      "cpu_seconds",
+      "cpu_seconds_excluding_baseline",
+      "peak_rss_bytes",
+      "gzip_bytes",
+      "active_bytes",
+    ])
+      delete (entry as Record<string, number>)[key];
+  await open(page, "?tab=pareto", counts);
+  await expect(page.locator(".pareto-measure select")).toHaveValue("modules");
+  await expect(page.locator("[data-pareto-id]")).toHaveCount(3);
+  await expect(
+    page.locator(".pareto-measure option[value='gzip']"),
+  ).toContainText("not measured yet");
 });
 
 test("results without a measurement are listed as missing, not plotted", async ({
@@ -197,7 +356,9 @@ test("the rest of the site works when proof sizes cannot be loaded", async ({
   await page.route("**/sizes.json", (route) => route.fulfill({ status: 404 }));
   await page.goto("/?tab=pareto");
   await expect(page.locator("[data-pareto-id]")).toHaveCount(0);
-  await expect(page.locator(".pareto-chart")).toContainText("No results have this measurement yet.");
+  await expect(page.locator(".pareto-chart")).toContainText(
+    "No results have this measurement yet.",
+  );
   await expect(page.locator(".notice.error")).toHaveCount(0);
   await page
     .getByRole("navigation", { name: "Research views" })

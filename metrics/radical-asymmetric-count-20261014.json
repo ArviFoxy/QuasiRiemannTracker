@@ -1,9 +1,11 @@
 {
+  "active_bytes": 31172209,
   "bytes": 33485681,
   "dependency_trees": {
     "openai-baseline": "e470d11a2c5b310e5d8fe5a6263acb376aff9cd6",
     "radical-asymmetric-count-20261014": "ac2f71c39f5ba4da1747eb41314041260e3b8a1c"
   },
+  "gzip_bytes": 5341451,
   "lines": 631808,
   "modules": 3809,
   "profile": "74047c32eb9b",

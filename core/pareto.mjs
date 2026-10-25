@@ -6,7 +6,8 @@ import { BASELINE, cmp, reduced, sub } from "./rational.mjs";
 // Each point is { id, theta: { numerator, denominator }, size: positive number }.
 export function paretoFront(points) {
   const order = [...points].sort(
-    (a, b) => a.size - b.size || cmp(a.theta, b.theta) || (a.id < b.id ? -1 : 1),
+    (a, b) =>
+      a.size - b.size || cmp(a.theta, b.theta) || (a.id < b.id ? -1 : 1),
   );
   const front = [];
   let best = null;
@@ -60,23 +61,50 @@ export function thetaDomain(thetas) {
   };
 }
 
-// Tick values of the form m * 10^k, for the smallest mantissa set that gives
-// a readable count. Works on any positive range; the log axis uses these.
-export function logTicks(min, max, scale = 1) {
-  const lo = min / scale,
-    hi = max / scale;
-  const sets = [[1], [1, 3], [1, 2, 5], [1, 1.5, 2, 3, 5, 7], [1, 1.2, 1.5, 2, 2.5, 3, 4, 5, 6, 8]];
-  let ticks = [];
+// Tick values for a log axis: round numbers in the unit they are printed in
+// (200 KiB, 5 MiB, 2 h), using the fewest per decade that still gives four and
+// none closer on screen than gap. Each unit is { size, max }: how many base
+// units it is worth, and the largest count of it worth printing (59 minutes,
+// but 900 KiB). position maps a value to its place on the axis.
+export function logTicks(
+  min,
+  max,
+  units,
+  { position = Math.log, gap = 0 } = {},
+) {
+  const sets = [
+    [1],
+    [1, 3],
+    [1, 2, 5],
+    [1, 1.5, 2, 3, 5, 7],
+    [1, 1.2, 1.5, 2, 2.5, 3, 4, 5, 6, 8],
+  ];
+  let kept = [];
   for (const mantissas of sets) {
-    ticks = [];
-    for (let k = Math.floor(Math.log10(lo)) - 1; k <= Math.ceil(Math.log10(hi)); k++)
-      for (const m of mantissas) {
-        const v = m * 10 ** k;
-        if (v >= lo * (1 - 1e-9) && v <= hi * (1 + 1e-9)) ticks.push(v);
-      }
-    if (ticks.length >= 4) break;
+    const ticks = [];
+    for (const { size, max: limit } of units)
+      for (let k = 0; 10 ** k <= limit; k++)
+        for (const m of mantissas) {
+          const count = m * 10 ** k,
+            value = count * size;
+          if (
+            count <= limit &&
+            value >= min * (1 - 1e-9) &&
+            value <= max * (1 + 1e-9)
+          )
+            ticks.push(value);
+        }
+    ticks.sort((a, b) => a - b);
+    kept = [];
+    for (const t of ticks)
+      if (
+        !kept.length ||
+        (t !== kept.at(-1) && position(t) - position(kept.at(-1)) >= gap)
+      )
+        kept.push(t);
+    if (kept.length >= 4) break;
   }
-  return ticks.map((v) => v * scale);
+  return kept;
 }
 
 // Evenly spaced tick values at multiples of 1, 2 or 5 times a power of ten.
@@ -93,7 +121,11 @@ export function linearTicks(min, max, target = 5) {
       .toPrecision(12),
   );
   const ticks = [];
-  for (let v = Math.ceil(min / step - 1e-9) * step; v <= max + step * 1e-9; v += step)
+  for (
+    let v = Math.ceil(min / step - 1e-9) * step;
+    v <= max + step * 1e-9;
+    v += step
+  )
     ticks.push(Number(v.toPrecision(12)));
   return { ticks, step };
 }

@@ -1,9 +1,11 @@
 {
+  "active_bytes": 38607311,
   "bytes": 41683632,
   "dependency_trees": {
     "gao-balanced-marked-20261017": "d4d4860d11683915a3c357f63863e7d7bf6d19a2",
     "openai-baseline": "e470d11a2c5b310e5d8fe5a6263acb376aff9cd6"
   },
+  "gzip_bytes": 6515814,
   "lines": 766326,
   "modules": 4543,
   "profile": "74047c32eb9b",

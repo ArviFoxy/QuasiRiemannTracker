@@ -1,10 +1,12 @@
 {
+  "active_bytes": 29536515,
   "bytes": 31793517,
   "dependency_trees": {
     "affine-local-20261013": "9bdf300dd61cfd233dc588fb7603fb2b58f8554f",
     "local44-20261013": "513a3b2319a208e075107a17a403ae02974dfd30",
     "openai-baseline": "e470d11a2c5b310e5d8fe5a6263acb376aff9cd6"
   },
+  "gzip_bytes": 5294456,
   "lines": 604895,
   "modules": 3035,
   "profile": "74047c32eb9b",

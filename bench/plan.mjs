@@ -7,6 +7,8 @@ import { mkdirSync, readdirSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { parseArgs } from "node:util";
+import { gzipSync } from "node:zlib";
+import { activeSource } from "./active-source.mjs";
 import { submission } from "../verifier/manifest.mjs";
 import { dependencyGraph } from "../verifier/submission-dependencies.mjs";
 import { leanImports } from "../verifier/actions/imports.mjs";
@@ -31,7 +33,15 @@ const load = (id) => {
   return loaded.get(id);
 };
 
-export function plan(id) {
+// Most submissions share the baseline's modules, so strip each source once.
+const stripped = new Map();
+const active = (file) => {
+  if (!stripped.has(file.sha256))
+    stripped.set(file.sha256, activeSource(file.bytes.toString()));
+  return stripped.get(file.sha256);
+};
+
+export function plan(id, { sizes = true } = {}) {
   const graph = dependencyGraph(id, load);
   const lines = (bytes) => bytes.toString().split("\n").length - 1;
   const modules = graph.order.map((name) => {
@@ -49,8 +59,19 @@ export function plan(id) {
       ),
     };
   });
+  // The code reachable from the proof root, in build order: the modules the
+  // verifier compiles, without comments or layout, and how small it compresses.
+  const text = sizes
+    ? graph.order
+        .map((name) => active(graph.modules.get(name).file))
+        .join("\n") + "\n"
+    : "";
   return {
     id,
+    ...(sizes && {
+      active_bytes: Buffer.byteLength(text),
+      gzip_bytes: gzipSync(text, { level: 9 }).length,
+    }),
     // The same tree identities the admission archive binds to a verified result.
     source_tree: git("rev-parse", `HEAD:submissions/${id}/src`),
     dependency_trees: Object.fromEntries(
@@ -78,7 +99,9 @@ if (git("status", "--porcelain", "--", "submissions"))
 if (values["package-imports"]) {
   const modules = new Set(
     ids.flatMap((id) =>
-      plan(id).modules.flatMap((module) => module.package_imports),
+      plan(id, { sizes: false }).modules.flatMap(
+        (module) => module.package_imports,
+      ),
     ),
   );
   console.log(JSON.stringify([...modules].sort()));

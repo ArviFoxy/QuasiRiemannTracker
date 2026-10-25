@@ -41,6 +41,8 @@ export type Event = {
 export type SizeEntry = {
   modules: number;
   lines: number;
+  active_bytes?: number;
+  gzip_bytes?: number;
   cpu_seconds?: number;
   cpu_seconds_excluding_baseline?: number;
   peak_rss_bytes?: number;

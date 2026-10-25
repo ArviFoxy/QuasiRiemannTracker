@@ -1,9 +1,11 @@
 {
+  "active_bytes": 24652692,
   "bytes": 26246602,
   "dependency_trees": {
     "openai-baseline": "e470d11a2c5b310e5d8fe5a6263acb376aff9cd6",
     "proofcouncil-20261009": "1051e8ab5231e1bfd72ed6fa95e788a9fc7be0d7"
   },
+  "gzip_bytes": 4230431,
   "lines": 505023,
   "modules": 3099,
   "profile": "74047c32eb9b",

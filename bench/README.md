@@ -11,9 +11,12 @@ measures that size: how much compile work each submission's proof takes.
   dependency code.
 - Each module is compiled once with `lean -j1`, from scratch. Its cost is the CPU
   time (user plus system) of that process, less the time Lean's profiler reports
-  for importing dependencies and starting up. Every file pays that fixed price,
-  about four seconds here however small it is, so counting it would make the cost
-  a function of how a proof is split into files.
+  for importing dependencies and starting up, and less what a file with no
+  content costs beyond that. Every file pays those fixed prices, about four
+  seconds here however small it is, so counting them would make the cost a
+  function of how a proof is split into files. The cost of an empty file is read
+  from the data: it is the median over submissions of their `Candidate.Main`,
+  a few lines that only re-export the bound.
 - A submission's cost is the sum over its modules. Mathlib and the pinned
   libraries are prebuilt, as in verification, and are not counted. Peak memory is
   the largest resident set of any one compile, which includes the memory-mapped
@@ -30,6 +33,21 @@ CPU time is used instead of wall-clock time because it does not depend on the
 number of cores or on how a proof's modules are arranged. Source length is
 recorded for comparison, but it is easy to change without changing the proof.
 
+## Source size
+
+`plan.mjs` also measures the code itself, without compiling anything. The active
+source of a submission is the text of the modules above, in the order the verifier
+builds them, with block comments (they nest in Lean) and line comments removed,
+string and character literals kept as written, and whitespace within a line
+collapsed. Blank lines are dropped. Its gzip size at level 9 is recorded as
+`gzip_bytes` and its length as `active_bytes`. Compression takes out repetition, so
+generated or copied lines add little, while text that has to be said once adds
+its full length.
+
+This counts whole modules that the proof imports. A declaration that nothing uses
+inside such a module still counts; telling those apart needs the compiled
+modules. The size can differ by a few bytes between zlib versions.
+
 ## Checks on each measurement
 
 Lean reports where a run spent its time. The phases other than import and startup
@@ -39,14 +57,10 @@ cold or the machine was busy, is repeated, and the closest agreement is kept.
 Time the main thread spends blocked on tasks repeats work Lean attributes to the
 task, so it is left out of the sum.
 
-The first measurements show how small the effect of running three compiles at once
-is: the same modules cost the same alone or together, once import time is removed.
-`metrics/profile.json` records the machine, the toolchain and the spread of
-repeated measurements.
-
-What this measure still counts: Lean's interpreter also runs the initializers of
-imported modules when a file starts, about half a second per file, and that is
-not separated from the interpreter work a proof does.
+Running several compiles at once adds system time while a file imports its
+dependencies, which is subtracted with the import, so the same module costs the
+same alone or alongside others. `metrics/profile.json` records the machine, the
+toolchain, the cost of an empty file and the spread of repeated measurements.
 
 ## Reproduce
 

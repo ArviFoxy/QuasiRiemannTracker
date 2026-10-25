@@ -61,16 +61,31 @@ test("the front does not depend on input order", () => {
   const expected = ids(paretoFront(points).front);
   for (let shift = 1; shift < points.length; shift++)
     assert.deepEqual(
-      ids(paretoFront([...points.slice(shift), ...points.slice(0, shift)]).front),
+      ids(
+        paretoFront([...points.slice(shift), ...points.slice(0, shift)]).front,
+      ),
       expected,
     );
   assert.deepEqual(expected, ["c", "a", "e", "d"]);
 });
 
 test("bounds that differ beyond float precision are ranked exactly", () => {
-  const weaker = point("weaker", "875000000000000000000000000001", "1000000000000000000000000000000", 10);
-  const stronger = point("stronger", "875000000000000000000000000000", "1000000000000000000000000000000", 10);
-  assert.equal(Number(weaker.theta.numerator) / Number(weaker.theta.denominator), Number(stronger.theta.numerator) / Number(stronger.theta.denominator));
+  const weaker = point(
+    "weaker",
+    "875000000000000000000000000001",
+    "1000000000000000000000000000000",
+    10,
+  );
+  const stronger = point(
+    "stronger",
+    "875000000000000000000000000000",
+    "1000000000000000000000000000000",
+    10,
+  );
+  assert.equal(
+    Number(weaker.theta.numerator) / Number(weaker.theta.denominator),
+    Number(stronger.theta.numerator) / Number(stronger.theta.denominator),
+  );
   assert.deepEqual(ids(paretoFront([weaker, stronger]).front), ["stronger"]);
 });
 
@@ -87,7 +102,11 @@ test("only bounds at or below the OpenAI baseline are in scale", () => {
 });
 
 test("the vertical domain contains every bound with room around it", () => {
-  const thetas = [rational("874773", "1000000"), rational("7", "8"), rational("87477299", "100000000")];
+  const thetas = [
+    rational("874773", "1000000"),
+    rational("7", "8"),
+    rational("87477299", "100000000"),
+  ];
   const { low, high } = thetaDomain(thetas);
   for (const t of thetas) {
     assert.equal(cmp(low, t) < 0, true);
@@ -99,15 +118,62 @@ test("the vertical domain contains every bound with room around it", () => {
   assert.equal(cmp(single.low, rational("7", "8")) < 0, true);
 });
 
-test("log ticks are round numbers inside the range, in the requested unit", () => {
-  assert.deepEqual(logTicks(1500, 30000, 3600).map((v) => v / 3600), [0.5, 1, 2, 5]);
-  const ticks = logTicks(2500, 9800);
-  assert.deepEqual(ticks, [2500, 3000, 4000, 5000, 6000, 8000]);
-  for (const [min, max] of [[1, 1000], [0.3, 0.9], [4e9, 6.5e9]]) {
-    const t = logTicks(min, max);
-    assert.equal(t.length >= 3, true);
-    assert.equal(t.every((v) => v >= min * (1 - 1e-9) && v <= max * (1 + 1e-9)), true);
+test("log ticks are round numbers inside the range, in the unit they are printed in", () => {
+  const time = [
+    { size: 1, max: 59 },
+    { size: 60, max: 59 },
+    { size: 3600, max: 900 },
+  ];
+  const bytes = [2 ** 10, 2 ** 20, 2 ** 30].map((size) => ({ size, max: 900 }));
+  assert.deepEqual(logTicks(3600, 36000, time), [3600, 7200, 18000, 36000]);
+  assert.deepEqual(logTicks(1.5 * 60, 40 * 60, time), [120, 300, 600, 1200]);
+  // Across KiB and MiB each tick is a round number of its own unit.
+  assert.deepEqual(
+    logTicks(0.4 * 1024, 10 * 2 ** 20, bytes).map((v) => v / 1024),
+    [1, 10, 100, 1024, 10240],
+  );
+  assert.deepEqual(
+    logTicks(3.3 * 2 ** 20, 10.3 * 2 ** 20, bytes).map((v) => v / 2 ** 20),
+    [4, 5, 6, 8, 10],
+  );
+  for (const [min, max] of [
+    [1, 1000],
+    [0.3, 0.9],
+    [4e9, 6.5e9],
+  ]) {
+    const t = logTicks(min, max, [
+      { size: 1, max: 900 },
+      { size: 1e3, max: 900 },
+      { size: 1e6, max: 900 },
+      { size: 1e9, max: 900 },
+    ]);
+    assert.equal(
+      t.every((v) => v >= min * (1 - 1e-9) && v <= max * (1 + 1e-9)),
+      true,
+    );
+    assert.deepEqual(
+      t,
+      [...t].sort((a, b) => a - b),
+    );
   }
+});
+
+test("log ticks keep their distance on screen and never repeat", () => {
+  const bytes = [2 ** 10, 2 ** 20].map((size) => ({ size, max: 900 }));
+  const position = (v) => 100 * Math.log(v);
+  const crowded = logTicks(700 * 1024, 2 * 2 ** 20, bytes, {
+    position,
+    gap: 58,
+  });
+  for (let i = 1; i < crowded.length; i++)
+    assert.equal(position(crowded[i]) - position(crowded[i - 1]) >= 58, true);
+  // 900 KiB and 1 MiB are 13 px apart here, so only one of them is kept.
+  assert.equal(
+    crowded.filter((v) => v === 900 * 1024 || v === 2 ** 20).length <= 1,
+    true,
+  );
+  assert.equal(new Set(crowded).size, crowded.length);
+  assert.deepEqual(logTicks(10, 20, [{ size: 1, max: 900 }]), [10, 12, 15, 20]);
 });
 
 test("linear ticks use the step nearest the target spacing", () => {

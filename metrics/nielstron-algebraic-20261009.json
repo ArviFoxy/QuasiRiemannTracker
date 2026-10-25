@@ -1,4 +1,5 @@
 {
+  "active_bytes": 24566947,
   "bytes": 26154836,
   "dependency_trees": {
     "nielstron-20261009-tightening": "7397f8b7b4ef54bcc9b6a5e737233c7c36a53f4e",
@@ -6,6 +7,7 @@
     "openai-baseline": "e470d11a2c5b310e5d8fe5a6263acb376aff9cd6",
     "proofcouncil-20261009": "1051e8ab5231e1bfd72ed6fa95e788a9fc7be0d7"
   },
+  "gzip_bytes": 4183484,
   "lines": 504299,
   "modules": 3102,
   "profile": "74047c32eb9b",

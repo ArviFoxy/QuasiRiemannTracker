@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Maximize2, Search } from "lucide-react";
-import { decimal, relativePosition } from "../core/rational.mjs";
+import { cmp, decimal, relativePosition } from "../core/rational.mjs";
 import {
   inScale,
   linearTicks,
@@ -50,10 +50,10 @@ export default function Pareto({
     records.filter((r) => m.value(entries[proofRevision(r)] ?? {}) > 0).length;
   // Measured costs are the point of this view; fall back to what can be counted.
   const fallback =
-    measures.find((m) => available(m) > 0 && available(m) >= records.length / 2) ??
-    measures[3];
-  const measure =
-    (requested && measureById(requested)) || fallback;
+    measures.find(
+      (m) => available(m) > 0 && available(m) >= records.length / 2,
+    ) ?? measureById("modules")!;
+  const measure = (requested && measureById(requested)) || fallback;
   const points: Point[] = useMemo(
     () =>
       records.flatMap((record) => {
@@ -103,23 +103,29 @@ export default function Pareto({
     xMax = xs.length ? Math.max(...xs) * 1.18 : 10;
   const logSpan = Math.log(xMax) - Math.log(xMin) || 1;
   const x = (size: number) =>
-    L + Math.max(0, Math.min(1, (Math.log(size) - Math.log(xMin)) / logSpan)) * width;
+    L +
+    Math.max(0, Math.min(1, (Math.log(size) - Math.log(xMin)) / logSpan)) *
+      width;
   const y = (theta: Point["theta"]) =>
-    T + height * (1 - Math.max(-0.15, Math.min(1.15, relativePosition(theta, low, high))));
+    T +
+    height *
+      (1 - Math.max(-0.15, Math.min(1.15, relativePosition(theta, low, high))));
   const lowN = Number(decimal(low, 15).replace("…", "")),
     highN = Number(decimal(high, 15).replace("…", ""));
   const yTicks = useMemo(() => linearTicks(lowN, highN, 5), [lowN, highN]);
   const decimals = Math.max(0, Math.ceil(-Math.log10(yTicks.step) - 1e-9));
-  const yAt = (value: number) => T + height * (1 - (value - lowN) / (highN - lowN));
-  const xTicks = useMemo(
-    () => (xs.length ? logTicks(xMin, xMax, measure.tickScale(xMax)) : []),
-    [xs.length, xMin, xMax, measure],
-  );
+  const yAt = (value: number) =>
+    T + height * (1 - (value - lowN) / (highN - lowN));
+  const xTicks = xs.length
+    ? logTicks(xMin, xMax, measure.units, { position: x, gap: 58 })
+    : [];
   const offScale = (p: Point) => !fitAll && near.length > 0 && !inScale(p);
   const steps = front.filter((p) => !offScale(p));
   let path = "";
   steps.forEach((p, i) => {
-    path += i ? ` H ${x(p.size)} V ${y(p.theta)}` : `M ${x(p.size)} ${y(p.theta)}`;
+    path += i
+      ? ` H ${x(p.size)} V ${y(p.theta)}`
+      : `M ${x(p.size)} ${y(p.theta)}`;
   });
   if (steps.length) path += ` H ${W - R}`;
   const label = (p: Point) => {
@@ -128,21 +134,83 @@ export default function Pareto({
   };
   // Estimated, not measured: enough to keep a label inside the plot.
   const textWidth = (text: string) => text.length * 6.6;
-  const flip = (p: Point) => x(p.size) + 10 + textWidth(label(p)) > W - R;
   const offLabel = (p: Point) =>
     `θ = ${+Number(decimal(p.theta, 12).replace("…", "")).toPrecision(4)}`;
-  const best = steps[steps.length - 1];
-  const labelled = new Set(
-    [steps[0], best, points.find((p) => p.id === selected)]
-      .filter(Boolean)
-      .map((p) => p!.id),
+  const ordered = [...points].sort(
+    (a, b) =>
+      a.size - b.size || cmp(a.theta, b.theta) || (a.id < b.id ? -1 : 1),
   );
-  const ordered = [...points].sort((a, b) => a.size - b.size);
+  const spot = (p: Point) => ({
+    x: x(p.size),
+    y: offScale(p) ? T - 16 : y(p.theta),
+  });
+  // Results a few pixels apart cannot be told apart by pointing, so each click
+  // on such a spot moves on to the next one underneath.
+  const stackOf = (p: Point) => {
+    const at = spot(p);
+    return ordered.filter(
+      (q) => Math.hypot(spot(q).x - at.x, spot(q).y - at.y) <= 7,
+    );
+  };
+  const choose = (p: Point) => {
+    const stack = stackOf(p),
+      current = stack.findIndex((q) => q.id === selected);
+    onSelect(
+      stack.length > 1 && current >= 0
+        ? stack[(current + 1) % stack.length].id
+        : p.id,
+    );
+  };
+  const best = steps[steps.length - 1];
+  // Names go on the selection, then the strongest and the cheapest point on the
+  // front; a name that would overlap another is dropped.
+  const labels = (() => {
+    type Box = [number, number, number, number];
+    const taken: Box[] = [],
+      placed: {
+        id: string;
+        text: string;
+        x: number;
+        y: number;
+        end: boolean;
+      }[] = [];
+    const free = (b: Box) =>
+      b[0] >= 0 &&
+      b[2] <= W - 4 &&
+      taken.every(
+        (t) => b[2] < t[0] || b[0] > t[2] || b[3] < t[1] || b[1] > t[3],
+      );
+    const put = (p: Point, text: string, dy: number) => {
+      const w = textWidth(text),
+        at = spot(p);
+      for (const end of [false, true]) {
+        const x0 = end ? at.x - 10 - w : at.x + 10;
+        const box: Box = [x0, at.y + dy - 12, x0 + w, at.y + dy + 4];
+        if (!free(box)) continue;
+        taken.push(box);
+        placed.push({
+          id: p.id,
+          text,
+          x: end ? at.x - 10 : at.x + 10,
+          y: at.y + dy,
+          end,
+        });
+        return;
+      }
+    };
+    points.filter(offScale).forEach((p) => put(p, offLabel(p), 4));
+    for (const p of [points.find((q) => q.id === selected), best, steps[0]])
+      if (p && !offScale(p) && !placed.some((l) => l.id === p.id))
+        put(p, label(p), -10);
+    return placed;
+  })();
   const focusNeighbour = (id: string, step: number) => {
     const next = ordered[ordered.findIndex((p) => p.id === id) + step];
     if (next)
       svg.current
-        ?.querySelector<SVGGElement>(`[data-pareto-id="${CSS.escape(next.id)}"]`)
+        ?.querySelector<SVGGElement>(
+          `[data-pareto-id="${CSS.escape(next.id)}"]`,
+        )
         ?.focus();
   };
   const dominatedBy = (p: Point) => dominators.get(p.id)?.[0]?.record.title;
@@ -158,7 +226,10 @@ export default function Pareto({
     };
   };
   return (
-    <section className="panel chart-panel pareto-panel" aria-label="Bound against proof size">
+    <section
+      className="panel chart-panel pareto-panel"
+      aria-label="Bound against proof size"
+    >
       <div className="pareto-controls">
         <label className="pareto-measure">
           <span>Proof size</span>
@@ -209,8 +280,20 @@ export default function Pareto({
         >
           {yTicks.ticks.map((t) => (
             <g key={t}>
-              <line x1={L} x2={W - R} y1={yAt(t)} y2={yAt(t)} stroke="#e1e7ea" />
-              <text x={L - 12} y={yAt(t) + 4} textAnchor="end" className="axis" data-axis="bound">
+              <line
+                x1={L}
+                x2={W - R}
+                y1={yAt(t)}
+                y2={yAt(t)}
+                stroke="#e1e7ea"
+              />
+              <text
+                x={L - 12}
+                y={yAt(t) + 4}
+                textAnchor="end"
+                className="axis"
+                data-axis="bound"
+              >
                 {t.toFixed(decimals)}
               </text>
             </g>
@@ -218,7 +301,13 @@ export default function Pareto({
           {xTicks.map((t) => (
             <g key={t}>
               <line x1={x(t)} x2={x(t)} y1={T} y2={H - B} stroke="#e1e7ea" />
-              <text x={x(t)} y={H - B + 20} textAnchor="middle" className="axis" data-axis="size">
+              <text
+                x={x(t)}
+                y={H - B + 20}
+                textAnchor="middle"
+                className="axis"
+                data-axis="size"
+              >
                 {measure.format(t)}
               </text>
             </g>
@@ -226,11 +315,21 @@ export default function Pareto({
           <text x={L - 12} y={T - 14} textAnchor="end" className="axis-label">
             θ
           </text>
-          <text x={L + width / 2} y={H - 10} textAnchor="middle" className="axis-label">
+          <text
+            x={L + width / 2}
+            y={H - 10}
+            textAnchor="middle"
+            className="axis-label"
+          >
             {measure.label} · log scale
           </text>
           {!points.length && !loading && (
-            <text x={L + width / 2} y={T + height / 2} textAnchor="middle" className="axis-label">
+            <text
+              x={L + width / 2}
+              y={T + height / 2}
+              textAnchor="middle"
+              className="axis-label"
+            >
               No results have this measurement yet.
             </text>
           )}
@@ -245,7 +344,9 @@ export default function Pareto({
             />
           )}
           {[...points]
-            .sort((a, b) => Number(onFront.has(a.id)) - Number(onFront.has(b.id)))
+            .sort(
+              (a, b) => Number(onFront.has(a.id)) - Number(onFront.has(b.id)),
+            )
             .map((p) => {
               const front = onFront.has(p.id);
               const off = offScale(p);
@@ -268,12 +369,15 @@ export default function Pareto({
                       : `Dominated by ${dominatedBy(p) ?? "another result"}`
                   }
                   aria-pressed={isSelected}
-                  onClick={() => onSelect(p.id)}
+                  onClick={() => choose(p)}
                   onKeyDown={(e) => {
                     if (e.key === "Enter" || e.key === " ") {
                       e.preventDefault();
                       onSelect(p.id);
-                    } else if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
+                    } else if (
+                      e.key === "ArrowRight" ||
+                      e.key === "ArrowLeft"
+                    ) {
                       e.preventDefault();
                       focusNeighbour(p.id, e.key === "ArrowRight" ? 1 : -1);
                     }
@@ -284,7 +388,9 @@ export default function Pareto({
                   onMouseLeave={() => setHover(null)}
                 >
                   <circle cx={px} cy={py} r={16} fill="transparent" />
-                  {isSelected && <circle cx={px} cy={py} r={13} fill={`${teal}22`} />}
+                  {isSelected && (
+                    <circle cx={px} cy={py} r={13} fill={`${teal}22`} />
+                  )}
                   <circle cx={px} cy={py} r={7} fill={surface} />
                   {off ? (
                     <path
@@ -300,31 +406,26 @@ export default function Pareto({
             })}
           {W > 600 && (
             <g aria-hidden="true" pointerEvents="none">
-              {points.map((p) => {
-                const off = offScale(p);
-                if (!off && !labelled.has(p.id)) return null;
-                const px = x(p.size);
-                return off ? (
-                  <text key={p.id} x={px + 10} y={T - 12} className="point-label">
-                    {offLabel(p)}
-                  </text>
-                ) : (
-                  <text
-                    key={p.id}
-                    x={flip(p) ? px - 10 : px + 10}
-                    y={y(p.theta) - 10}
-                    textAnchor={flip(p) ? "end" : "start"}
-                    className="point-label"
-                  >
-                    {label(p)}
-                  </text>
-                );
-              })}
+              {labels.map((l) => (
+                <text
+                  key={l.id}
+                  x={l.x}
+                  y={l.y}
+                  textAnchor={l.end ? "end" : "start"}
+                  className="point-label"
+                >
+                  {l.text}
+                </text>
+              ))}
             </g>
           )}
         </svg>
         {hover && (
-          <div className="chart-tooltip" role="status" style={tooltipStyle(hover)}>
+          <div
+            className="chart-tooltip"
+            role="status"
+            style={tooltipStyle(hover)}
+          >
             <strong>{hover.record.title}</strong>
             <span>
               θ = {boundLabel(hover.record)} · {measure.short.toLowerCase()}{" "}
@@ -336,6 +437,12 @@ export default function Pareto({
                 : `Dominated by ${dominatedBy(hover) ?? "another result"}`}
               {offScale(hover) ? " · weaker than the OpenAI baseline" : ""}
             </small>
+            {stackOf(hover).length > 1 && (
+              <small>
+                {stackOf(hover).length} results overlap here. Click again to
+                step through them.
+              </small>
+            )}
           </div>
         )}
       </div>
@@ -362,10 +469,10 @@ export default function Pareto({
           {missing === 1 ? "is" : "are"} not plotted.
         </p>
       )}
-      {sizes?.profile && measure.id !== "modules" && measure.id !== "lines" && (
+      {sizes?.profile && ["cpu", "cpu-own", "memory"].includes(measure.id) && (
         <p className="chart-note">
-          Measured with Lean {sizes.profile.lean_version} on {sizes.profile.machine.cpu},{" "}
-          {sizes.profile.machine.cores} cores.
+          Measured with Lean {sizes.profile.lean_version} on{" "}
+          {sizes.profile.machine.cpu}, {sizes.profile.machine.cores} cores.
         </p>
       )}
       <details className="pareto-table">
@@ -381,9 +488,14 @@ export default function Pareto({
           </thead>
           <tbody>
             {ordered.map((p) => (
-              <tr key={p.id} className={selected === p.id ? "selected" : undefined}>
+              <tr
+                key={p.id}
+                className={selected === p.id ? "selected" : undefined}
+              >
                 <th scope="row">
-                  <button onClick={() => onSelect(p.id)}>{p.record.title}</button>
+                  <button onClick={() => onSelect(p.id)}>
+                    {p.record.title}
+                  </button>
                 </th>
                 <td>{boundLabel(p.record)}</td>
                 <td>{measure.format(p.size)}</td>

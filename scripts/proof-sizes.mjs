@@ -17,11 +17,16 @@ function sourceTree(root, id) {
   }
 }
 
-export function buildSizes(root = process.cwd(), { onStale = console.warn } = {}) {
+export function buildSizes(
+  root = process.cwd(),
+  { onStale = console.warn } = {},
+) {
   const directory = join(root, "metrics");
   const empty = { schema_version: 1, entries: {} };
   if (!existsSync(join(directory, "profile.json"))) return empty;
-  const profile = JSON.parse(readFileSync(join(directory, "profile.json"), "utf8"));
+  const profile = JSON.parse(
+    readFileSync(join(directory, "profile.json"), "utf8"),
+  );
   const entries = {};
   for (const name of readdirSync(directory).sort()) {
     if (!name.endsWith(".json") || name === "profile.json") continue;
@@ -40,7 +45,8 @@ export function buildSizes(root = process.cwd(), { onStale = console.warn } = {}
     }
     entries[metrics.result_id] = sizeEntry(metrics);
   }
-  const { id, lean_version, machine, workers, noise, modules_measured } = profile;
+  const { id, lean_version, machine, workers, noise, modules_measured } =
+    profile;
   return {
     schema_version: 1,
     profile: { id, lean_version, machine, workers, noise, modules_measured },

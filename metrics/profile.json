@@ -1,4 +1,5 @@
 {
+  "empty_module_cpu_seconds": 0.704,
   "id": "74047c32eb9b",
   "lean": "e8baaa71855a616dc351028f3ad2200051b0671f423a1696a100e809302d5550",
   "lean_version": "4.34.1",
@@ -8,10 +9,10 @@
     "kernel": "6.18.44-fc-v153",
     "memory_bytes": 16872804352
   },
-  "modules_measured": 191,
+  "modules_measured": 324,
   "noise": {
-    "median_relative_spread": 0.0419,
-    "modules_repeated": 28
+    "median_relative_spread": 0.0417,
+    "modules_repeated": 49
   },
   "packages": {
     "BibtexQuery": "4d8616fd4870d0a3453d845770833eac7951fe1c",

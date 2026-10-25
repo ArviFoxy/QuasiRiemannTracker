@@ -1,9 +1,11 @@
 {
+  "active_bytes": 31288611,
   "bytes": 33653916,
   "dependency_trees": {
     "gao-affine-asymmetric-20261015": "937f2b1180f235caa98365fc20aac62210796106",
     "openai-baseline": "e470d11a2c5b310e5d8fe5a6263acb376aff9cd6"
   },
+  "gzip_bytes": 5341860,
   "lines": 634906,
   "modules": 3820,
   "profile": "74047c32eb9b",

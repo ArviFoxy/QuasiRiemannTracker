@@ -1,9 +1,11 @@
 {
+  "active_bytes": 25398619,
   "bytes": 27015385,
   "dependency_trees": {
     "liu-20261008": "d60d4fc3a1ce89f8d9d2d4cebbf14219c8c400f8",
     "openai-baseline": "e470d11a2c5b310e5d8fe5a6263acb376aff9cd6"
   },
+  "gzip_bytes": 4348649,
   "lines": 518511,
   "modules": 3146,
   "profile": "74047c32eb9b",

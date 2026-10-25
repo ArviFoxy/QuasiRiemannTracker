@@ -965,6 +965,43 @@ A catalogue cross-check (21.9k records) found nothing that moves them. → `cap-
   - The heuristic ignores common factors `(s, A) > 1`, shared primes with `k`, and the S-parts.
     Those contribute lower-order exceptional sets, as in the Gram (`e | C^∞`).
 
+- *Round-5 detector agent (redesign the zero detector from scratch): no unconditional gain; a sharp
+  conditional target, the Möbius scale-profile interpolation.* Scripts in the session scratchpad
+  (`fresh5b/`).
+  - **The corner is triple-tight.** Model `R = 0.604207` at `t* = 1.1553`,
+    `(r*, m*) = (0.7413, 0.4140)`.
+    - The adversary's comfort sets are `{r : Lin(r) ≥ R} = [0, 0.741] ∪ [1.155, ∞)` and
+      `{m : P(m) ≥ R} = [0, 0.414]`. They cover every total length, touching at `t*`.
+    - Since `r* + m* = t*`, counting the corner block `M_r S_m` as one polynomial costs exactly
+      `L(t*) = R`, even with a perfect mixed moment and amplification.
+    - So bilinear and product detectors, `L′/L` and `log L` detectors (primes are budget-limited,
+      not supply-limited), K-fold mollifiers, slot-twisted or sieved mollifiers, and evaluation at
+      `1 − ρ̄` or nearby points all give `ΔR ≥ 0`.
+  - **New identity: the tail straddles the cutoff.**
+    `Σ_{l|n, l≤2D*} μ(l)V = −Σ_{l|n, l≥D*} μ(l)(1−V)`. So every level carrying the tail has a
+    saturated pair on each side of the cutoff.
+    - At the corner, every binding row has `M` saturated at both `r = 0.741` and `r = 1.155`, `S`
+      saturated at `0.414`, and saturated primes.
+    - To escape the I line, its Möbius scale profile must dip below saturation on `(0.741, 1.155)`
+      by the tent `c(r) = (R − Lin(r))/2`, peak `0.0294` at `r = 1`.
+    - Unconditionally this only makes `R(t)` flat on `[r*, t*]`.
+  - **Conditional target (interpolation lemma).** For all but `U^{R−7.5e-5}` rows, saturation at
+    `j₁ = 0.741` and `j₂ = 1.155` implies `|M₁(ρ)|² ≥ U^{δ−2c}`, which gives `R = 1 − δ + 2c`.
+    - The milestone needs `c ≤ 0.0294`, and only within about `4e-4` (in `log_U`) of the corner.
+    - Lossless interpolation (`c → 0`) gives `ΔR = −0.059`, `Δθ ≈ −7.8e-3`.
+    - The witness `M` at `r = 1` is an available input (marked inverse moment). The interpolation
+      itself is not.
+  - **Why it is not free.** `M_r(ρ) ≈ log2/L′(ρ) + Σ_{ρ′} c_{ρ′}U^{r(ρ′−ρ)} + (left integral)`.
+    - The terms' log-moduli are linear in `r`, so a dip needs cancellation across a whole window.
+    - By Turán's second main theorem (heuristic) it needs about `0.004·log U` zeros within about
+      `0.025` of `Re s = a` near `γ`, or `|L| ≲ U^{−0.1}` on a line left of `ρ`.
+    - Jensen turns such a cluster into a small value of `L` at its centre. The two branches at that
+      centre give the marked inverse moment at `r = 1` with a threshold boost, about
+      `1 − δ + 0.017`, or the full detector at `δ − 0.025`, about `R + 0.024`. The worse branch
+      binds.
+    - So counting cluster rows needs a zero count sensitive to multiplicity, with a power saving.
+      This sharpens round 3's pair-zero lemma, localized to the corner.
+
 ## Open directions (ranked, revised 2026-10-24, third pass; see `barriers/README.md`)
 
 Exact state: committed Lean branch 0.8747289; best exact value with known lemmas 0.8747257

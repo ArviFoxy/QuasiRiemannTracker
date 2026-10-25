@@ -1336,8 +1336,10 @@ A catalogue cross-check (21.9k records) found nothing that moves them. → `cap-
     module in 96 s). con-ron from the verifier's judge toolchain (Lean 4.35.0-rc2, archive sha256
     matching the pin `b67d0e0b…`) accepts the same export (2297 declarations, `--verified`) in
     1 min 48 s. So both external kernels handle the face-family certificates at about Lean's own
-    speed. A streamed nanoda check of the whole `Candidate.bound` / `Candidate.bound_sharp` proof is
-    running (`scratchpad/kernels/`).
+    speed. **The whole proof passes nanoda:** lean4export streamed into nanoda checks all 158,499
+    declarations behind `Candidate.bound` and `Candidate.bound_sharp` with no type-checker errors in
+    20 min 17 s (43 min CPU), permitting only `propext`, `Classical.choice`, `Quot.sound` with
+    unpermitted axioms a hard error.
 
 ## Open directions (ranked, revised 2026-10-24, third pass; see `barriers/README.md`)
 

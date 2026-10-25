@@ -1,0 +1,48 @@
+t = 1.155, delta = 0.4546: amplified long line L(t) = 0.6041
+   prime length p = 0.000: bin cap 0.6041   global strip (delta* = 0.749) 0.6041
+   prime length p = 0.050: bin cap 0.5852   global strip (delta* = 0.749) 0.5999
+   prime length p = 0.100: bin cap 0.5662   global strip (delta* = 0.749) 0.5957
+   prime length p = 0.155: bin cap 0.5454   global strip (delta* = 0.749) 0.5910
+   prime length p = 0.200: bin cap 0.5659   global strip (delta* = 0.749) 0.6247
+   prime length p = 0.250: bin cap 0.5886   global strip (delta* = 0.749) 0.6622
+   prime length p = 0.300: bin cap 0.6113   global strip (delta* = 0.749) 0.6996
+   prime length p = 0.350: bin cap 0.6340   global strip (delta* = 0.749) 0.7371
+   prime length p = 0.400: bin cap 0.6568   global strip (delta* = 0.749) 0.7745
+   prime length p = 0.500: bin cap 0.7022   global strip (delta* = 0.749) 0.8494
+   prime length p = 0.750: bin cap 0.8159   global strip (delta* = 0.749) 1.0367
+   prime length p = 1.000: bin cap 0.9295   global strip (delta* = 0.749) 1.2239
+   prime length p = 1.155: bin cap 1.0000   global strip (delta* = 0.749) 1.3400
+   pieces beating L(t) with the bin cap: p in (0.0000, 0.2841)
+   lattice adversary scale s0 = 0.4074: its pieces sit at p = s0, 2s0, 3s0 -> [0.6296, 0.8148, 1.0] at t = 3s0 (rho = 0.6296)
+t = 1.2195, delta = 0.45: amplified long line L(t) = 0.6341
+   prime length p = 0.000: bin cap 0.6341   global strip (delta* = 0.749) 0.6341
+   prime length p = 0.050: bin cap 0.6150   global strip (delta* = 0.749) 0.6299
+   prime length p = 0.100: bin cap 0.5958   global strip (delta* = 0.749) 0.6257
+   prime length p = 0.220: bin cap 0.5500   global strip (delta* = 0.749) 0.6156
+   prime length p = 0.200: bin cap 0.5575   global strip (delta* = 0.749) 0.6173
+   prime length p = 0.250: bin cap 0.5637   global strip (delta* = 0.749) 0.6385
+   prime length p = 0.300: bin cap 0.5862   global strip (delta* = 0.749) 0.6759
+   prime length p = 0.350: bin cap 0.6087   global strip (delta* = 0.749) 0.7134
+   prime length p = 0.400: bin cap 0.6312   global strip (delta* = 0.749) 0.7508
+   prime length p = 0.500: bin cap 0.6762   global strip (delta* = 0.749) 0.8257
+   prime length p = 0.750: bin cap 0.7887   global strip (delta* = 0.749) 1.0130
+   prime length p = 1.000: bin cap 0.9012   global strip (delta* = 0.749) 1.2002
+   prime length p = 1.220: bin cap 1.0000   global strip (delta* = 0.749) 1.3646
+   pieces beating L(t) with the bin cap: p in (0.0000, 0.4065)
+   lattice adversary scale s0 = 0.4065: its pieces sit at p = s0, 2s0, 3s0 -> [0.6341, 0.8171, 1.0] at t = 3s0 (rho = 0.6341)
+t = 1.25, delta = 0.5: amplified long line L(t) = 0.5833
+   prime length p = 0.000: bin cap 0.5833   global strip (delta* = 0.749) 0.5833
+   prime length p = 0.050: bin cap 0.5667   global strip (delta* = 0.749) 0.5791
+   prime length p = 0.100: bin cap 0.5500   global strip (delta* = 0.749) 0.5749
+   prime length p = 0.250: bin cap 0.5000   global strip (delta* = 0.749) 0.5623
+   prime length p = 0.200: bin cap 0.5167   global strip (delta* = 0.749) 0.5665
+   prime length p = 0.250: bin cap 0.5000   global strip (delta* = 0.749) 0.5623
+   prime length p = 0.300: bin cap 0.5250   global strip (delta* = 0.749) 0.5997
+   prime length p = 0.350: bin cap 0.5500   global strip (delta* = 0.749) 0.6372
+   prime length p = 0.400: bin cap 0.5750   global strip (delta* = 0.749) 0.6746
+   prime length p = 0.500: bin cap 0.6250   global strip (delta* = 0.749) 0.7495
+   prime length p = 0.750: bin cap 0.7500   global strip (delta* = 0.749) 0.9367
+   prime length p = 1.000: bin cap 0.8750   global strip (delta* = 0.749) 1.1240
+   prime length p = 1.250: bin cap 1.0000   global strip (delta* = 0.749) 1.3113
+   pieces beating L(t) with the bin cap: p in (0.0000, 0.4167)
+   lattice adversary scale s0 = 0.4167: its pieces sit at p = s0, 2s0, 3s0 -> [0.5833, 0.7917, 1.0] at t = 3s0 (rho = 0.5833)

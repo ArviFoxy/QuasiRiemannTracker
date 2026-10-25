@@ -1474,5 +1474,24 @@ slot; `mixed-slots/`).
   −3.9e-4; the 6.1e-6 still needed corresponds to `b_L ≈ 4.9992`, a power saving of about
   `U^{1.5e-4}` over amplification at `r ≈ 1.155`. Halving the inverse slot cost gives −4.2e-3 and
   stops binding once the long line is diagonal.
+
+### Round 10 (2026-10-25): the long witness from the real-L-function side (`round10/README.md`)
+
+- **`μ·log = −Λ∗μ` pieces** (`round10/pieces.py`). With the bin's prime-amplitude cap
+  (`|Q(P)|² ≤ P^{1+δ}`) on the prime factor and the inverse moment or amplification on the
+  Möbius factor, a piece with prime length `p` counts `1 − tδ + pδ` (`p ≥ t − 1`). It beats the
+  amplified line exactly when `p < (L(t) − 1 + tδ)/δ`, which is `p < s₀` at `t = 3s₀`. The lattice
+  adversary's pieces sit at `p = s₀` (exactly `ρ`), `2s₀` and `3s₀`, so the identity reproduces the game.
+- **Amplification = the 11/12 strip.** `(1 + 5t)/6 = 1 + (t − 1)(2·11/12 − 1)`; amplification
+  makes `Σ_u|1/L(σ)|²` diagonal exactly for `σ > 11/12`. A global-supremum strip `β* ≈ 0.875`
+  would give the long slope `2β* − 1 ≈ 0.749` if any identity confined the pointwise factor to the
+  excess length `D/U`. None does: Vaughan's middle range, Heath-Brown's all-Möbius products and
+  the long-prime pieces all exceed it.
+- **The adversary as an L-function.** Its zeros fill a fraction `s₀ ≈ 0.41` of a unit window on
+  `Re = a`. Littlewood plus the fourth moment gives `ρ`. A sixth moment with excess below `s₀δ`
+  would beat it (the Burgess route has excess 0.375). The bin's window gives `|L(1/2 + it)| ≤ U^{δ/4}`
+  (Lindelöf right of `a`, then Phragmén–Lindelöf), so the adversary fits because `s₀ < 1/2`.
+  Killing it needs a window subconvexity of `U^{0.02}`. The functional equation adds nothing: the
+  dual sum supplies `|L(1 − a)|` without touching any witness.
   - New witnesses: prime-factor-weighted Möbius blocks, with DH-strength mean values. They are
     defeated by the lattice adversary, because prime-factor weights are scale shifts.

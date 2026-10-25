@@ -96,3 +96,30 @@ HIGH gate pays `a₂(5 − 6ρ)`.
 The gate rises only about 0.17 per unit of density, because the gain fraction falls with `ν`.
 The amplifier the older parent needs always costs more. This is consistent with the earlier
 "multi-ancestor LOW parents: nothing measurable".
+
+## A first integral (2026-10-25)
+
+With the gain at its cap (`g = 1`, which holds to within 2–5% for `s ≳ 0.035`), `X = E` and
+`6q = 15 − 10/E`. The flow becomes
+
+  `E′ = −E(15E − 10)/(E − 15sE + 10s)`.
+
+Write it as `M ds + N dE = 0` with `M = 15E² − 10E` and `N = E − 15sE + 10s`. Then
+`(M_E − N_s)/M = 2/E + 3/(3E − 2)` depends on `E` only, so `μ = 1/(E²(3E − 2))` is an integrating
+factor. The potential is
+
+  **`F(s, E) = 10s/E + log(3 − 2/E)`, constant along the flow.**
+
+- Lean: `../lean-lab/ChainFirstIntegral.lean` (Lie derivative zero; constancy along solutions).
+- Numerically, RK4 from `(0.0135, 0.9)` keeps `F` constant to 1e-13.
+- The continuum chain's faces at `s = 0.0412` and `0.045` give `F = −6.2e-4` and `−1.08e-3`. They
+  differ because `g ≈ 0.95–0.98` there, not 1. The difference is worth about 1.2e-4 in `E`.
+
+Consequences:
+- The late chain is a level curve of an explicit function, so its envelope (and the ceiling it
+  feeds) involves a logarithm. It is transcendental rather than algebraic. Nice closed forms of the
+  method's inputs (θ = 11/12 − ℓ/4, the corner `R = N/J`, `ρ(ν)`) do not make the optimum algebraic.
+- A closed-form or monotone-flow proof of the chain (invariant plus the comparison principle of
+  `../lean-lab/MaximalEnvelope.lean`) could replace the finite graph and reach the ceiling. Next
+  step: the early regime `g < 1`, where `X = E + (1 − g)s` and `g` comes from the binding facets.
+

@@ -1115,6 +1115,17 @@ A catalogue cross-check (21.9k records) found nothing that moves them. → `cap-
     (`theta_gt_13_15`).
   - Independent confirmation, no new input.
 
+- *A first integral of the continuum source chain* (`chain-ode/README.md`,
+  `lean-lab/ChainFirstIntegral.lean`, proved).
+  - With the HIGH gain at its cap the chain ODE is `E′ = −E(15E − 10)/(E − 15sE + 10s)`.
+  - It has the integrating factor `1/(E²(3E − 2))` and the conserved quantity
+    `10s/E + log(3 − 2/E)`.
+  - The late chain is therefore a level curve of an explicit function, so the method's ceiling is
+    transcendental, not algebraic.
+  - Next: extend the invariant to the early regime (`g < 1`), then decide whether a monotone-flow
+    proof of the chain could replace the finite graph. That would be a simplification that also
+    reaches the ceiling (up to −4.8e-6).
+
 ## Open directions (ranked, revised 2026-10-24, third pass; see `barriers/README.md`)
 
 Exact state: committed Lean branch 0.8747289; best exact value with known lemmas 0.8747257

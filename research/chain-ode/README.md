@@ -263,3 +263,33 @@ So a new HIGH-count lemma only has to work for `ν ∈ [0.45, 0.52]`, `p ∈ [0.
 curve (a continuous induction in `s`, with one uniform gate inequality) would replace the 59
 certified nodes. Its value is at most the ceiling, 0.8747241 (−4.8e-6), so it is a simplification,
 not a route to the bar.
+
+## Design note: a faceless chain proof (2026-10-25)
+
+This sketches what eliminating the 59 faces would take in Lean. It is not implemented.
+
+- **Family.** For `s` in `[s₀, s₁] = [0.0135, 0.052]`, fix an explicit lower envelope `E_lo(s)`:
+  a piecewise polynomial under the closed-form switching flow, minus a margin `μ(s) = O(Δ)`. Its
+  faces are the tangents `F(s) = (E_lo − sE_lo′, −E_lo′)` with caps read off the curve.
+- **Claim.** Every `F(s_k)` on the grid `s_k = s₀ + kΔ` is a valid face.
+- **Proof.** Induction on `k`.
+  - Base: the natural face `(1, 6κ)`.
+  - Step: `NFStep2` with LOW parent `F(s_{k−1})` (a Lemma F self cell where it pays) and HIGH
+    parent `F(s_{k−j})`.
+  - The gate inequalities become one polynomial inequality in `(s, ν, p)` on
+    `[s₀, s₁] × [q, 3/4] × [0, 1/2]`. It is certified once by 3-D Bernstein subdivision instead of
+    59 separate 2-D certificates. The margin `μ` absorbs the Euler error (about `8.3Δ` of slope per
+    unit width).
+- **New Lean pieces.**
+  - a parametrized `NFStep2` instance (parents given as functions of `s`);
+  - a 3-D extension of the Bernstein soundness lemma;
+  - Lemma F as a rotated ordinary step (certificate only, per `cap-induction/README.md` §5);
+  - the density floor 0.45, an edit to imported code (LD11).
+- **Value.**
+  - `Δ = 2.5e-4` gives about 0.8747254;
+  - `Δ → 0` with fine fees tends to the ceiling 0.8747241, i.e. −3.5e-6 to −4.8e-6 against the
+    Lean 0.8747289.
+  - The certificate becomes one uniform statement, and θ becomes an explicit functional of the
+    atoms.
+- **Verdict.** Below the 1e-5 bar on its own, so it only pays combined with a new analytic input
+  worth at least 5.2e-6.

@@ -125,11 +125,17 @@ outside power `X^{1/3}Z^{s−5/6}Z^{ℓ/6}`. Then `Σ_b f(b⁶)/N(b) = 1`, which
 of `ζ(6z)`, so the signal is preserved, as the agent said.
 
 **Low side.**
-- The raw low bound is `Z^{C(θ_low)}` with `θ_low = 2/3 + (x + y)/4` and the outside power
-  `X^{1/3}`, so it grows like `X^{7/12}`.
-- The terms therefore weigh `N(b)^{−3 + 6·7/12} = N(b)^{+1/2}`. The sum is dominated by the
-  largest `b`, before any marked-energy wall is even met (`x + y + ℓ ≤ 1` is crossed at once,
-  since every term has `x′ ≥ x + ε′`).
+- Every dilated term has the same `Y` and slot length `ℓ` but `x′ ≥ x + ε′`. So it violates the
+  marked-energy wall `x + y + ℓ ≤ 1`, which is tight at the optimum, and its energy pays the
+  dead-zone (`N`-term) excess.
+- Even before the wall, the terms weigh `N(b)^{−3 + 6g}`, where `X^g` is the growth of the raw
+  low bound at fixed `Y`.
+  - With `g = 7/12` (outside power `X^{1/3}` times the `x`-slope `1/4` of
+    `θ_low = 2/3 + (x + y)/4`) the sum is dominated by the largest `b`.
+  - With `g = 5/12` (Gram diagonal `X^{1/2}` times the bias `X^{−1/12}`) it converges, and
+    `θ_low` rises by about `ε′/12`. That is about the high-side gain `0.09ε′`: the agent's
+    "break-even".
+  - Either way the wall cost comes on top.
 - Taking the base probe at `x − ε′` instead extends the dual range to `h + ε′`, and the restriction
   then removes exactly that extension. The top is back at `h`.
 

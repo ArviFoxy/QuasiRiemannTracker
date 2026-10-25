@@ -213,5 +213,31 @@ continuation.
 
 The same affine structure appears in the fourth moment of quadratic Dirichlet L-functions. Over
 `F_q(T)`, Bucur–Diaconu handle it by Kac–Moody (affine) multiple Dirichlet series, where
-everything is rational. Over number fields it is open beyond conditional results. So P1, and with
-it the reflected-energy slot cost 2, sits at the same frontier as that problem.
+everything is rational. Over `Q` it is no longer open:
+- Shen–Stucky (arXiv 2402.01497, 2024) prove the fourth-moment asymptotic unconditionally,
+  building on Li (2208.07343).
+- Their stated new ingredients are a quadratic large sieve at the fourth moment, and cancellation
+  between the diagonal and off-diagonal terms.
+
+That cancellation is exactly what P1 lacks (the restored dual diagonal). Whether their method
+transfers to P1 is the next thing to check (§7).
+
+## 7. Shen–Stucky checked: no route to P1
+
+Shen–Stucky (arXiv 2402.01497) Prop. 1.3 is a quadratic large sieve for the fourth power,
+`Σ_{M<|m|≤2M} |Σ_n χ_m(n) n^{−1/2−it} G(n/N)|⁴ ≤ L(1+|t|)²(M + N² log(2 + N²/M)) log⁶(2+MN)`.
+- **How it is proved** (Li's method). The rows are inflated by prime squares (`m ↦ mp²`, exchange
+  rate 2) until there are `X ≥ L·N²` of them. Poisson in `m` then shortens the dual by the constant
+  `L`, and a nested induction on `(M, N)` closes with log precision. The square rows (trivial
+  characters) are subtracted, and their contribution cancels the square dual terms. That is the
+  "diagonal/off-diagonal cancellation" of the abstract.
+- **Why it does not reach P1.** The bound keeps the `N`-term, `N² log(N²/M)` for `N² > M`. It
+  removes the `ε` at the critical range `M ≍ N²` and does not go past it. Li's Prop. 3.2 has the
+  same shape (already noted in `../atom1/README.md`). P1 needs a power below the `N`-term at
+  `N = K^{1+δ′}`.
+- Square inflation of the rows was already tried for P1 (`../atom1/README.md` §5, "amplify the
+  quadratic rows by squares"). It is circular there, because the bound for the big family needs
+  rows `R₀ ≈ K` again.
+
+Net: the fourth moment of quadratic Dirichlet L-functions is solved, but by a method that works
+at the diagonal edge, not beyond it. P1's frontier is unchanged.

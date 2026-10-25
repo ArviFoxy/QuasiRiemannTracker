@@ -117,3 +117,10 @@ tracker record, and no newer follow-up was found.
   quadratic twists.
 - Baier, arXiv 2605.01635 (and 2603.00768, 2603.25814, 2609.21195): the large sieve for square
   moduli; unrelated to P1.
+
+- **Shen–Stucky, arXiv 2402.01497 (Feb 2024).** The fourth moment of quadratic Dirichlet
+  L-functions, unconditional, with four main terms. Built on Li 2208.07343 (inflation of the rows
+  by prime squares plus nested induction) and Soundararajan–Young.
+  - Prop. 1.3: `Σ_m|Σ_n χ_m(n)n^{−1/2−it}G(n/N)|⁴ ≪ (1+|t|)²(M + N²log(2+N²/M))log⁶`. This is
+    log precision at the critical range `M ≍ N²`, and the `N`-term remains past it.
+  - Not a route to P1 (`../round9/README.md` §7).

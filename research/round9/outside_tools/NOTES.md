@@ -8,14 +8,14 @@ Status labels: **[R]** rigorous (proof given or standard), **[H]** heuristic, **
 No gain. The attempt produced one rigorous reduction, one localization and four closures.
 
 1. **Main attempt (P1, atom 1), tool: frame/Gram matrices.**
-   - Split the columns by their largest prime factor. On the columns whose largest prime factor
-     has norm at most `K`, the column branch is bounded by the large sieve's *diagonal* times one
-     frame constant `F`. This holds for **every** choice of the Gauss sums at the block primes
-     [R].
+   - Split the columns by their largest prime factor `π`. On the columns with `N(π) ≤ K`, the
+     column branch is bounded by the large sieve's *diagonal* times one frame constant `F`. This
+     holds for **every** choice of unimodular block multipliers put in place of the Gauss sum
+     `g̃(π)` in front of each block, with the cofactor data kept [R].
    - Numerically `F` sits at the Marchenko–Pastur value `(1 + √(m/K))²` (ratio 0.88–0.99 in
-     all 8 scan configurations, never above), independent of `N/K` (5 to 80). The best block
-     phases stay at about 2.5× the diagonal, while the large-sieve allowance grows to 20× [N].
-     Random cofactor data gives the same `F` as the true data.
+     all 11 configurations with the true data, never above), independent of `N/K` (4 to 80).
+     The best block phases stay at about 2.5× the diagonal, while the large-sieve allowance
+     grows to 20× [N]. Random cofactor data gives the same `F` as the true data.
    - So in the model the whole `N`-term excess that an adversary can reach sits on the **hard
      core**: columns with a prime factor of norm `> K`. By Dickman these are a fraction
      `log(log N/log K)` of the columns, which is 0.160 for use (a) and about `δ′ ≈ 1.1e-4` for
@@ -67,7 +67,12 @@ Notation as in `P1_PROBLEM.md`: `Φ` is the `K × N` matrix `(n/k)₂`, and
   cofactor length `N/N(π) ≤ K`. Goldmakher–Louvel in the diagonal regime then gives
   `‖w′_π‖² ≤ (2K)^{1+ε}‖c·1_{B_π}‖²`. Hence
 
-  **`CB(c·1_smooth) ≤ 2K^{1+ε} · F · ‖c‖²` for every choice of Gauss sums at the block primes.**
+  **`CB(c·1_smooth) ≤ 2K^{1+ε} · F · ‖c‖²` for every choice of unimodular block multipliers
+  `x_π` in place of `g̃(π)` (cofactor data `e_π` kept).**
+
+  A block multiplier is not the same as changing `g̃` at the prime `π`. For `N(π) ≤ K` the
+  prime also divides cofactors of larger blocks. For `N(π) > K` it is the same, since such a
+  `π` divides only columns of its own block.
 
   `L`-smooth columns take as block index their least-norm divisor with norm `≥ L`. That norm is
   `< L² ≤ K`, so they are covered in the same way.
@@ -83,7 +88,7 @@ Notation as in `P1_PROBLEM.md`: `Φ` is the `K × N` matrix `(n/k)₂`, and
 ## 3. Numerics [N]
 
 Script `block_gram.py` (logs `logs_block_gram_*.txt`). Rows are quadratic symbols with
-`N(k) ≤ K`, columns are split-squarefree with `N(n) ∈ (N/2, N]`, and the slots are `14–60` prime
+`N(k) ≤ K`, columns are split-squarefree with `N(n) ∈ (N/2, N]`, and the slots are `6–60` prime
 marks. `adv` is the best block phases found by a phase power iteration (a lower bound for the
 maximum). `LS` is the large-sieve allowance `(K′ + N′)‖c‖²/diag`.
 
@@ -108,10 +113,24 @@ maximum). `LS` is the large-sieve allowance `(K′ + N′)‖c‖²/diag`.
 - The weighted bound `wub = blk·F/diag` is nearly attained: the adversary reaches 82–92% of it
   on the smooth part, so the frame inequality is sharp up to about 15%.
 - On the hard core the adversary reaches 61–76% of `wub`. It grows with the number of hard-core
-  blocks (`F ≈ MP ≈ m/K′`), roughly like `(N/K)^{0.7}` in this range, and reaches 48–131% of the
+  blocks (`F ≈ MP ≈ m/K′`), roughly like `(N/K)^{0.7}` in this range, and reaches 48–145% of the
   nominal allowance. The allowance `(K′ + N′)` is not a strict bound: the large sieve holds up to
   constants and `ε`.
 - In the true problem `m/K ≈ 1/log K`, so the smooth factor tends to 1.
+
+**Three single configurations** (`block_gram.py K N Lslot`, logs `logs_block_gram_K_N_Lslot.txt`;
+three column vectors each):
+
+| K, N, Lslot | N′/K′ | smooth F/MP: true / random / no slots | smooth adv/diag (LS) | hard core adv/diag (LS) |
+|---|---|---|---|---|
+| 300, 12000, 60 | 20.5 | 0.92 / 0.90 / 1.01 | 2.71 (6.7) | 12.96 (16.9) |
+| 4000, 30000, 30 | 3.8 | 0.99 / 0.99 / 0.98 | 2.40 (3.5) | 3.62 (2.5) |
+| 600, 60000, 400 (60 marks) | 50.0 | 0.97 / 1.00 / 0.93 | 2.53 (15.2) | 22.68 (39.5) |
+
+At `K = 4000` the blocks are very unequal (mean size 4.3). The *unweighted* operator norm
+`‖W‖²_op` is then 2.6 times its i.i.d. random-matrix value (`op/MP` in the log), while the
+*normalized* frame constant is 0.99 of `MP`. That is why the weighted Cauchy–Schwarz is the
+right inequality.
 
 **What `F` depends on** (`bg_dependence.py`, logs `logs_bg_dependence_*.txt`). The cofactor data
 `e_π` was replaced while the blocks were kept:
@@ -170,15 +189,17 @@ Proof: `CB(c) ≤ 2CB(c_smooth) + 2CB(c_HC)` and §2.
   at the `N`-term still has exponent `N`. Only exponents count as `Z → ∞`.
 
 **What is new: a localization of where the excess can live.**
-- On the smooth part, the Gauss sums at the largest prime factor (the block phases, primes of
-  norm `≤ K`) can be replaced by arbitrary unimodular numbers. The cost is at most `F`.
+- On the smooth part, the block multipliers (one unimodular number per largest prime factor
+  `π` of norm `≤ K`, in place of `g̃(π)` in front of its block) can be chosen freely. The cost
+  is at most `F`.
 - For the true cofactor data `F` stays at the random-matrix value `(1 + √(m/K))²`, which tends
   to 1 since `m/K ≈ 1/log K`.
-- So no choice of Gauss sums at primes of norm `≤ K`, made largest-prime-factor-wise, creates an
-  `N`-term excess. An excess must come from one of two places:
+- So no choice of block multipliers on the smooth part creates an `N`-term excess. An excess
+  must come from one of two places:
   - alignment of the cofactor data with quadratic characters (BG fails). This is not seen: the
     true data is indistinguishable from random;
-  - the hard core, where the adversary reaches the full allowance.
+  - the hard core, where block multipliers are exactly the values of `g̃` at primes `> K`, and
+    the adversary reaches the full allowance.
 - For use (b) the hard core is "a prime of norm in `(K, K^{1+δ′}]` times a cofactor of norm
   `< K^{δ′}`". Round 7's algebraic adversary (`g̃` changed at primes of norm `> N/7`) lives
   entirely inside it once `N/K > 7`.
@@ -260,8 +281,12 @@ slope `κ − δ = 0.294 < 5/6 − δ = 0.378`.
     without slots). The adversary needs
     non-Gauss values at primes `> K`.
 - **Lemma BG (believed true).** `F ≤ N^{o(1)}` for the smooth blocks.
-  - Evidence: `F/MP ∈ [0.88, 0.99]` in 8 configurations, flat in `N/K`. It holds for random
-    cofactor phases (matrix concentration, round 7 §3.2).
+  - Evidence: `F/MP ∈ [0.88, 0.99]` in 11 configurations with the true data, flat in `N/K`.
+    Random cofactor phases give the same values.
+  - For random cofactor data a proof is matrix Bernstein (as in round 7 §3.2) plus a bound for
+    the expected frame `‖E Σ_π w̃_π w̃_π*‖ ≈ sup_y K^{−1}Σ_n |Y(n)|²/|B(n)|`. That is `O(1)` when
+    every block has size `≳ N/K`. Small blocks (very smooth columns) need the large sieve on a
+    sparse set, which is not available in general.
   - BG + HC ⟹ P1 [R], worth 6–7e-6 in θ per `P1_PROBLEM.md`.
   - But HC ⟺ P1 modulo BG [R], so HC is the real content. It is a statement about Gauss sums at
     **primes** larger than the row count, against quadratic × slot characters, at the critical
@@ -282,4 +307,4 @@ slope `κ − δ = 0.294 < 5/6 − δ = 0.378`.
 | `block_gram.py` | block decomposition by largest prime factor, frame constant, adversarial block phases |
 | `block_scan.py` | scan in `N` at fixed `K` |
 | `bg_dependence.py` | dependence of `F` on the cofactor data |
-| `logs_*.txt` | verbatim outputs |
+| `logs_*.txt` | verbatim outputs of the current scripts (fixed seeds) |

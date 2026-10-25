@@ -11,6 +11,8 @@ playwright-report/
 /evidence/
 /catalogue/results.json
 /public/catalogue.json
+/public/sizes.json
 
 # Builds generate public verification records from metadata and admissions.
 /public/certificates/*.json
+/.bench/

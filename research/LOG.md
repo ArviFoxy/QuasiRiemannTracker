@@ -755,6 +755,18 @@ A catalogue cross-check (21.9k records) found nothing that moves them. → `cap-
   - So the sextic family, and with it the exchange rate 6 (11/12 = 1 − 1/(2·6), the long line, the
     plain descent), is forced by the one case with explicit theta coefficients. A smaller exchange
     rate would need a different automorphic input, not a different character order.
+  - (Added 2026-10-25, prompted by the user's question "why never 5th power?") The precise reason
+    behind "explicit theta coefficients": by Kazhdan–Patterson, the theta representation of the
+    `n`-fold cover of `GL(r)` has a unique Whittaker model only for `n = r` or `n = r + 1`. On
+    `GL(2)` that is `n = 2, 3`. For `n ≥ 4` the theta coefficients are not determined by local data.
+    - Odd prime order 5 fails all three needs at once:
+      - there is no quadratic subcharacter, so μ is not absorbed;
+      - there is no explicit quintic theta on `GL(2)`;
+      - the leftover twist after any reflection is quintic, not quadratic, so it pays de Faveri's
+        sharp higher-order terms.
+    - `Q(ζ₅)` also has degree 4 and infinite units.
+    - What it would be worth: the amplification `A_{pⁿ} ≈ A₁` gives the baseline `1 − 1/(2n)`
+      (`n = 6`: 11/12, `n = 5`: 9/10, `n = 4`: 7/8, `n = 3`: 5/6).
 
 - *The crispest form of atom 2: the inverse moment slightly past its diagonal.* Suppose the
   unmarked inverse moment `Σ_{q_v≤H}|M_v(D)|² ≪ H^{1+o(1)}` held for `D ≤ H^{1+ε}` and not only for

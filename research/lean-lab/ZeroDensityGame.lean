@@ -19,6 +19,9 @@ Rows of the sextic family with a zero at `Re = a`, `δ = ν = 2a − 1`, carry s
   `s₀ℕ`, whose count is at least `rho` (`lattice_counts_ge`). So no combination of the three
   inputs beats `rho`; only a better long line (or a new input) can.
 * `rho_sens`: the exponent's sensitivity to the long line's intercept is `4ν/(5 − 2ν)`.
+* `bootstrap_fails`: bounding the long moment row by row through the zero count,
+  `max_δ′ ρ(δ′) + tδ′`, is worse than amplification `(1 + 5t)/6` at the corners `t = 231/200` and
+  `t = 5/4` (witness `δ′ = 3/5`).
 Status: proved.
 -/
 import Mathlib
@@ -192,5 +195,13 @@ theorem rho_sens {ν ε : ℝ} (hν : ν < 5 / 6) :
     linear_combination ((5 + 6 * ε) / 6) * hJ
   · simp only [t, short, rho, div_eq_mul_inv]
     linear_combination (-10 * ν * (15 - 6 * ν)⁻¹) * hJ + (10 * ν / 3 * (5 - 2 * ν)⁻¹) * hI
+
+/-- **The bootstrap fails.** Feeding the zero count back into the long moment
+(`Σ_u |M_u(U^t)|² ≤ Σ_{δ′} U^{ρ(δ′) + tδ′}`) is worse than sixth-power amplification at the count's
+corners: already the bin `δ′ = 3/5` exceeds `(1 + 5t)/6`. -/
+theorem bootstrap_fails :
+    (1 + 5 * (231 / 200 : ℝ)) / 6 < rho (3 / 5) + (231 / 200) * (3 / 5) ∧
+    (1 + 5 * (5 / 4 : ℝ)) / 6 < rho (3 / 5) + (5 / 4) * (3 / 5) := by
+  unfold rho; constructor <;> norm_num
 
 end ZeroDensityGame

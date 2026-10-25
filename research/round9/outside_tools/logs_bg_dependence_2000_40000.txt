@@ -1,0 +1,9 @@
+built K=2000 N=40000 Lslot=60: rows 520, cols 5170, marks 14 (12.7s)
+twisted-multiplicativity check on the smooth blocks: max err 3.51e-16
+K'=520 N'=5170 smooth cols 2288 blocks m=288  (1+sqrt(m/K'))^2=3.04
+  true          F=   2.94  F/(1+sqrt(m/K'))^2=  0.97  blk/diag= 0.99  max_phases CB/diag=   2.42  LS/diag=  5.8
+  noslot        F=   2.95  F/(1+sqrt(m/K'))^2=  0.97  blk/diag= 1.00  max_phases CB/diag=   2.52  LS/diag=  5.8
+  gtm only      F=   3.30  F/(1+sqrt(m/K'))^2=  1.08  blk/diag= 1.00  max_phases CB/diag=   2.68  LS/diag=  5.8
+  random        F=   2.91  F/(1+sqrt(m/K'))^2=  0.96  blk/diag= 1.00  max_phases CB/diag=   2.48  LS/diag=  5.8
+  aligned       F=   5.22  F/(1+sqrt(m/K'))^2=  1.71  blk/diag= 1.00  max_phases CB/diag=   4.99  LS/diag=  5.7
+  half-aligned  F=   3.67  F/(1+sqrt(m/K'))^2=  1.21  blk/diag= 1.00  max_phases CB/diag=   2.98  LS/diag=  5.7

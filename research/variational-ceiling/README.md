@@ -132,3 +132,13 @@ the cap (about `7·10⁻⁵` per step) dwarfs the fees. The fees matter only ins
   would need a parametric certificate (a new predicate for a one-parameter family of faces).
   Neither passes the 1e-5 bar on its own. Task: `../LOG.md`, open directions.
 
+**Conductor top re-optimized (2026-10-25, `evalfaces_h.py`, logs in `hscan/`).** With the continuum
+fine-fee faces the return's `h` optimum moves from `401/500` to about 0.8025–0.803. The ceiling
+falls only from 0.8747241 to 0.8747240:
+
+| h | 0.800 | 0.801 | 0.802 | 0.8025 | 0.803 | 0.804 | 0.806 | 0.808 |
+|---|---|---|---|---|---|---|---|---|
+| θ* | 0.8747253 | 0.8747245 | 0.8747241 | 0.8747240 | 0.8747240 | 0.8747244 | 0.8747264 | 0.8747300 |
+
+Upstream #72 uses `h = 0.80008783` for Collet's (unmarked-repeat) chain. That is a different face
+set, and for ours the shift is negligible.

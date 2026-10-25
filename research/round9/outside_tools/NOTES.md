@@ -13,15 +13,18 @@ No gain. The attempt produced one rigorous reduction, one localization and four 
      frame constant `F`. This holds for **every** choice of the Gauss sums at the block primes
      [R].
    - Numerically `F` sits at the Marchenko–Pastur value `(1 + √(m/K))²` (ratio 0.88–0.99 in
-     all 8 scan configurations, never above), independent of `N/K` (5 to 80). The best block phases stay at about 2.5× the diagonal, while
-     the large-sieve allowance grows to 20× [N].
-   - So the whole possible `N`-term excess of P1 sits on the **hard core**: columns with a prime
-     factor of norm `> K`. By Dickman these are a fraction `log(log N/log K)` of the columns, which
-     is 0.160 for use (a) and about `δ′ ≈ 1.1e-4` for use (b).
-   - It does not close. A power-saving bound for `F` is equivalent to P1 on the smooth part with
-     arbitrary block phases, and the trivial bound `F ≤ 1 + N/K` is exactly the large sieve. The
-     hard core needs the arithmetic of `g̃` at primes `> K`, and through Vaughan's `d = 1` term it is
-     equivalent to P1 again [R].
+     all 8 scan configurations, never above), independent of `N/K` (5 to 80). The best block
+     phases stay at about 2.5× the diagonal, while the large-sieve allowance grows to 20× [N].
+     Random cofactor data gives the same `F` as the true data.
+   - So in the model the whole `N`-term excess that an adversary can reach sits on the **hard
+     core**: columns with a prime factor of norm `> K`. By Dickman these are a fraction
+     `log(log N/log K)` of the columns, which is 0.160 for use (a) and about `δ′ ≈ 1.1e-4` for
+     use (b).
+   - It does not close. A bound for `F` is *equivalent* to P1 on the smooth part for every
+     choice of block multipliers, and the trivial bound for `F` is exactly the large sieve. Given
+     the frame bound, the hard core is equivalent to P1, and the standard route to it (a
+     combinatorial decomposition of the large prime) contains the full column vector `c` in its
+     `d = 1` Type I term [R].
 2. **Second attempt (count corner, items 2 and 4), tool: LP/witness design.**
    - A new witness family, Möbius blocks weighted by the number of prime factors in a band, has a
      rigorous density-hypothesis-strength mean value at every length `t ≥ 1`. That is far better
@@ -68,11 +71,14 @@ Notation as in `P1_PROBLEM.md`: `Φ` is the `K × N` matrix `(n/k)₂`, and
 
   `L`-smooth columns take as block index their least-norm divisor with norm `≥ L`. That norm is
   `< L² ≤ K`, so they are covered in the same way.
-- **The trivial frame bound reproduces the large sieve.** Cauchy–Schwarz in the cofactor gives
-  `F ≤ (1/K)·Σ_n |Y(n)|²/‖y‖² ≤ 1 + N/K` with `Y(n) = Σ_k ȳ_k(n/k)₂`. With this the inequality is
-  `2(K + N)‖c‖²`, the large sieve. Any power saving in `F` is therefore new information.
+- **The trivial frame bound reproduces the large sieve.** `⟨w′_π, y⟩ = Σ_m e_π(m)Y(πm)` with
+  `Y(n) = Σ_k ȳ_k(n/k)₂`. If every block is non-degenerate (`‖w′_π‖² ≥ K‖e_π‖²/C`), Cauchy–Schwarz
+  in the cofactor gives `F ≤ (C/K)·sup_y Σ_n |Y(n)|²/‖y‖² ≤ C(1 + N/K)` by the dual large sieve.
+  With this the inequality is `≍ (K + N)‖c‖²`, the large sieve. Any power saving in `F` is
+  therefore new information.
 - **Hard core.** These are the columns with `N(P⁺(n)) > K`, i.e. `n = πm` with `N(m) < N/K`. There
-  are more than `K` blocks, so `F ≥ #blocks/K ≫ 1`, and no phase-free bound can work there.
+  are `N^{1−o(1)} > K` blocks (the primes of norm in `(K, N]`), so `F ≥ #blocks/K ≫ 1`
+  (`λ_max ≥ trace/K`), and no phase-free bound can work there.
 
 ## 3. Numerics [N]
 
@@ -132,28 +138,50 @@ character, and the true data is indistinguishable from random.
 Proof: `CB(c) ≤ 2CB(c_smooth) + 2CB(c_HC)` and §2.
 
 **Obstructions.**
-- **BG is not easier than P1 [R].** By the cofactor Cauchy–Schwarz of §2, a power saving in `F`
-  says that no quadratic polynomial `Y` correlates with the cofactor vectors on many blocks at once.
-  That is P1 on the smooth part with arbitrary block phases. A sufficient pointwise route (flat
-  profiles `|Σ_m e_π(m)(m/k)₂|² ≤ L^{1−η}M`) is square-root cancellation for short sums of Gauss
-  sums far below their critical length (`M ≤ K` against `≈ K²L`), which is out of reach. The
-  frame is phase-free but not coefficient-free.
+- **BG is P1 for a larger family [R].** Exactly,
+  `F = sup { ‖Σ_π x_π w′_π‖² / Σ_π |x_π|²‖w′_π‖² : x ∈ ℂ^m }`. So BG is P1 on the smooth part,
+  measured against the block diagonal, for **every** coefficient vector `x_π e_π(m)` (arbitrary
+  block multipliers). It contains the true `c` (`x_π = g̃(π)`). Unimodular `x` give
+  `sup_y (Σ_π |⟨w′_π, y⟩|)² ≤ blk·F`, and numerically they reach 82–92% of it.
+  - What BG needs is non-alignment of the cofactor vectors `e_π` with quadratic polynomials
+    `Y` across many blocks at once (table above: aligned cofactors break it).
+  - The cofactor data still contains `g̃(m)` at primes `< N(π) ≤ K`, so BG is not free of
+    arithmetic. It is free of the block phases.
+  - A sufficient pointwise route (flat profiles `|Σ_m e_π(m)(m/k)₂|² ≤ L^{1−η}M`) is
+    square-root cancellation for short sums of Gauss sums far below their critical length
+    (`M ≤ K` against `≈ K²L`), which is out of reach.
+  - The frame is phase-free but not coefficient-free.
 - **HC is P1-hard [R].**
-  - Vaughan's identity for the prime factor `π` writes the hard core as Type II pieces plus Type I
-    pieces.
-  - The Type II pieces have both factors `≥ L` and so are block pieces of BG type.
-  - The Type I piece with `d = 1` is the full column vector with weight `log`, so
-    `HC ⟺ P1` modulo BG, with coefficient exactly 1.
-  - With the slot twist, the hard core's prime sums `Σ_{π~X} g̃(π)conj((π/mP)₃)(π/k)₂` lie below
-    their critical length `kN(mP) ≥ X`. Heath-Brown–Patterson type savings need the opposite.
+  - Given BG, HC ⟺ P1, since `c = c_smooth + c_HC` and `CB` obeys the triangle inequality.
+  - The standard route to HC writes `1[π prime] = Λ(π)/log N(π)` and decomposes `Λ` (Vaughan or
+    Heath-Brown).
+  - The Type I term with `d = 1` replaces the prime `π > K` by an arbitrary `j` with
+    `N(j) > K`. That gives `Σ_{N(m)<L} c·1_{m|n}`, i.e. `c(n)` times the number of divisors of
+    norm `< L`.
+  - Its `m = 1` term is `c` itself, with coefficient exactly 1. The terms `m > 1` are P1 at
+    length `N/N(m) ≥ K` for `g̃·χ_m·A`, with `χ_m = conj((m/·)₃)`.
+  - The Type II pieces have both factors `≥ L` and are block pieces of BG type. So the route is
+    circular.
+  - Without the decomposition, the hard core's prime sums `Σ_{π~X} g̃(π)conj((π/mP)₃)(π/k)₂`
+    (`X ∈ (K, N]`) lie at or below their critical length, since `N(k)N(m)N(P) ≳ N ≥ X` for
+    typical rows. Heath-Brown–Patterson type savings need `X` large compared to the conductor.
+    This is a statement about the range of the available tools, not a proof that HC is false.
 - **The density of the hard core does not help [R].** A fixed fraction (0.16, or `δ′`) of columns
   at the `N`-term still has exponent `N`. Only exponents count as `Z → ∞`.
 
-**What is new.** The localization. A proof of P1 needs arithmetic input on Gauss sums **only at
-primes of norm `> K`**. Elsewhere the Gauss sums at the block primes may be replaced by arbitrary
-unimodular numbers without changing the frame constant, and numerically even adversarial ones
-gain only `(1 + √(m/K))² → 1`. For use (b) the hard core is essentially the primes in
-`(K, K^{1+δ′}]`. Round 7's algebraic adversary (primes of norm `> N/7`) lives entirely inside it.
+**What is new: a localization of where the excess can live.**
+- On the smooth part, the Gauss sums at the largest prime factor (the block phases, primes of
+  norm `≤ K`) can be replaced by arbitrary unimodular numbers. The cost is at most `F`.
+- For the true cofactor data `F` stays at the random-matrix value `(1 + √(m/K))²`, which tends
+  to 1 since `m/K ≈ 1/log K`.
+- So no choice of Gauss sums at primes of norm `≤ K`, made largest-prime-factor-wise, creates an
+  `N`-term excess. An excess must come from one of two places:
+  - alignment of the cofactor data with quadratic characters (BG fails). This is not seen: the
+    true data is indistinguishable from random;
+  - the hard core, where the adversary reaches the full allowance.
+- For use (b) the hard core is "a prime of norm in `(K, K^{1+δ′}]` times a cofactor of norm
+  `< K^{δ′}`". Round 7's algebraic adversary (`g̃` changed at primes of norm `> N/7`) lives
+  entirely inside it once `N/K > 7`.
 
 ## 5. Second attempt: witness design at the corner (LP lens)
 

@@ -15,3 +15,6 @@ K'=156 N'=7796  N'/K'=50.0   log N/log K = 1.720
  column vector: g~ (no slots)
   all        : cols  7796 (100.0%)  blocks  3854 (mean size  2.02) CB/diag= 1.032  blk/diag= 1.004  op/MP= 1.507  adv/diag= 24.564  wub/diag=  37.14 (frame  36.99, (1+sqrt(m/K))^2=35.65)  LS/diag=  53.7
   smooth     : cols  2016 (25.9%)  blocks    92 (mean size 21.91) CB/diag= 1.056  blk/diag= 1.011  op/MP= 1.027  adv/diag=  2.624  wub/diag=   2.93 (frame   2.90, (1+sqrt(m/K))^2= 3.13)  LS/diag=  15.3
+  hard core  : cols  5780 (74.1%)  blocks  3762 (mean size  1.54) CB/diag= 0.859  blk/diag= 1.002  op/MP= 1.192  adv/diag= 26.449  wub/diag=  36.24 (frame  36.17, (1+sqrt(m/K))^2=34.94)  LS/diag=  39.5
+  P+ in(1,24]: empty
+  P+ in(24,600]: cols  2016 (25.9%)  blocks    92 (mean size 21.91) CB/diag= 1.056  blk/diag= 1.011  op/MP= 1.027  adv/diag=  2.646  wub/diag=   2.93 (frame   2.90, (1+sqrt(m/K))^2= 3.13)  LS/diag=  15.3

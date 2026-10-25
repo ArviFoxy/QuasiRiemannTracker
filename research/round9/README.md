@@ -199,3 +199,19 @@ sum over columns `n` with `N(P⁺(n)) > K`:
 This is a statement about cubic Gauss sums at primes larger than the row count, against
 quadratic × slot characters at the critical length. With the twist, these are sextic Gauss sums at
 primes, and Kazhdan–Patterson puts their theta functions out of reach.
+
+## 6. Why multiple Dirichlet series stall here (remark)
+
+The second moment behind P1 is a triple Dirichlet series. It runs over the quadratic twists `k`
+and over two copies of the cubic theta series twisted by `k` and the slot. Its functional
+equations are the Poisson and theta-reflection steps.
+
+`../lean-lab/FEGroup.lean` shows that they generate an affine Weyl group (`C̃₂`, or `D̃₄` for the
+plain fourth moment), which is infinite. The standard multiple Dirichlet series machinery
+(Bochner's tube theorem over a finite group of functional equations) then gives no meromorphic
+continuation.
+
+The same affine structure appears in the fourth moment of quadratic Dirichlet L-functions. Over
+`F_q(T)`, Bucur–Diaconu handle it by Kac–Moody (affine) multiple Dirichlet series, where
+everything is rational. Over number fields it is open beyond conditional results. So P1, and with
+it the reflected-energy slot cost 2, sits at the same frontier as that problem.

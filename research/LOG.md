@@ -1231,6 +1231,12 @@ A catalogue cross-check (21.9k records) found nothing that moves them. → `cap-
     than its critical length by `L = Z^{0.129}`, the metaplectic analogue of the open
     level-uniform `GL(2)` problem.
   - New literature (2607.07911, 2607.27131) does not reach it (`literature/README.md`).
+  - **What the bar actually asks of P1.** A bound of the form `K + N^{1−η}K^{η}` never suffices, since it
+    still exceeds `K` for every `N > K`. To stay diagonal up to `N = K^{1+ε}` (the four uses need
+    a budget of about `β ≈ 9e-5`), the off-diagonal must already be a power below the diagonal at the
+    self-dual point `N = K`. That is an asymptotic large sieve at the critical length with a
+    power-saving error. Conrey–Iwaniec–Soundararajan's asymptotic large sieve gives only log savings
+    even for the full family of Dirichlet characters.
 
 ## Open directions (ranked, revised 2026-10-24, third pass; see `barriers/README.md`)
 

@@ -255,7 +255,31 @@ special-sector certificates (`Piece.secB`, about 2.1 s each, `Rat` arithmetic ag
 | field, weak, cell | 6.7 s | 6.0 s |
 | **total** | **289.5 s** | **60.7 s** |
 
-## 8. Status
+## 8. External kernels on the submission (`arvi-single-stage-20261025`)
+
+Local, 4 cores, 15 GB. The hosted runner has 4 vCPU and 16 GB, with a 600 s export limit and one
+kernel job.
+
+| step | PR 73 | single stage |
+|---|---|---|
+| `lean4export` of `Candidate.bound` | 4315 MB, 511 s, 12.3 GB peak | **2734 MB, 300 s, 11.8 GB peak** |
+| con-ron `--verified`, 4 jobs, from the file | killed (out of memory) at 731 s | **accepted, 134,933 declarations, 894 s, 8.5 GB peak** |
+| nanoda, 4 threads, from the file | killed at 471 s | killed at 301 s (13.0 GB) |
+| nanoda, export streamed on stdin, 4 threads | passed in 20 min 17 s | killed at 581 s (13.5 GB with the exporter) |
+| nanoda, 2 threads, streamed | — | (running) |
+
+- **Our certificates are cheap for nanoda.**
+  - The heaviest packed HIGH certificate (`p2_high_0_12_pos`, 10,733 declarations with its
+    dependencies) checks in 8 s at 438 MB.
+  - All five pieces' certificates together (`piece{0..4}_certs`, 12,376 declarations: the 60 HIGH,
+    120 sector and remaining scalar certificates) check in 39 s at 835 MB.
+- **The memory goes to the rest of the closure.** Mathlib, the baseline and Collet's large admission
+  declarations are checked several at a time. PR 73's streamed pass was presumably close to the
+  same limit.
+- **Admission is not at risk.** Maintainers verify offline with raised budgets, and every hosted
+  run since PR 63 has timed out anyway.
+
+## 9. Status
 
 - **Our face-family certificates:** 168 s of kernel time in total, against about 2600 s in
   PR 73. HIGH is 107 s, scalar 61 s.

@@ -1,20 +1,5 @@
-built K=600 N=60000 Lslot=400: rows 156, cols 7796, marks 60 (28.0s)
+built K=600 N=60000 Lslot=400: rows 156, cols 7796, marks 60 (49.3s)
 K'=156 N'=7796  N'/K'=50.0   log N/log K = 1.720
  column vector: g~ * A (true)
-  all        : cols  7796 (100.0%)  blocks  3854 (mean size  2.02) CB/diag= 0.966  blk/diag= 0.998  op/MP= 1.518  adv/diag= 20.800  ub/diag=   53.98  LS/diag=  53.6  srank=  71.23
-  smooth     : cols  2016 (25.9%)  blocks    92 (mean size 21.91) CB/diag= 0.860  blk/diag= 0.994  op/MP= 0.995  adv/diag=  2.534  ub/diag=    3.09  LS/diag=  15.2  srank=  29.59
-  hard core  : cols  5780 (74.1%)  blocks  3762 (mean size  1.54) CB/diag= 1.124  blk/diag= 0.999  op/MP= 1.251  adv/diag= 22.680  ub/diag=   43.67  LS/diag=  39.5  srank=  86.04
-  P+ in(1,24]: empty
-  P+ in(24,600]: cols  2016 (25.9%)  blocks    92 (mean size 21.91) CB/diag= 0.860  blk/diag= 0.994  op/MP= 0.995  adv/diag=  2.497  ub/diag=    3.09  LS/diag=  15.2  srank=  29.59
- column vector: random phase * A
-  all        : cols  7796 (100.0%)  blocks  3854 (mean size  2.02) CB/diag= 0.947  blk/diag= 1.000  op/MP= 1.565  adv/diag= 21.088  ub/diag=   55.77  LS/diag=  53.6  srank=  69.10
-  smooth     : cols  2016 (25.9%)  blocks    92 (mean size 21.91) CB/diag= 0.871  blk/diag= 1.001  op/MP= 1.044  adv/diag=  2.788  ub/diag=    3.27  LS/diag=  15.2  srank=  28.18
-  hard core  : cols  5780 (74.1%)  blocks  3762 (mean size  1.54) CB/diag= 0.973  blk/diag= 0.999  op/MP= 1.247  adv/diag= 22.767  ub/diag=   43.56  LS/diag=  39.5  srank=  86.32
-  P+ in(1,24]: empty
-  P+ in(24,600]: cols  2016 (25.9%)  blocks    92 (mean size 21.91) CB/diag= 0.871  blk/diag= 1.001  op/MP= 1.044  adv/diag=  2.788  ub/diag=    3.27  LS/diag=  15.2  srank=  28.18
- column vector: g~ (no slots)
-  all        : cols  7796 (100.0%)  blocks  3854 (mean size  2.02) CB/diag= 1.032  blk/diag= 1.004  op/MP= 1.507  adv/diag= 24.564  ub/diag=   53.94  LS/diag=  53.7  srank=  71.75
-  smooth     : cols  2016 (25.9%)  blocks    92 (mean size 21.91) CB/diag= 1.056  blk/diag= 1.011  op/MP= 1.027  adv/diag=  2.624  ub/diag=    3.24  LS/diag=  15.3  srank=  28.65
-  hard core  : cols  5780 (74.1%)  blocks  3762 (mean size  1.54) CB/diag= 0.859  blk/diag= 1.002  op/MP= 1.192  adv/diag= 26.449  ub/diag=   41.73  LS/diag=  39.5  srank=  90.34
-  P+ in(1,24]: empty
-  P+ in(24,600]: cols  2016 (25.9%)  blocks    92 (mean size 21.91) CB/diag= 1.056  blk/diag= 1.011  op/MP= 1.027  adv/diag=  2.646  ub/diag=    3.24  LS/diag=  15.3  srank=  28.65
+  all        : cols  7796 (100.0%)  blocks  3854 (mean size  2.02) CB/diag= 0.966  blk/diag= 0.998  op/MP= 1.518  adv/diag= 20.800  wub/diag=  36.70 (frame  36.79, (1+sqrt(m/K))^2=35.65)  LS/diag=  53.6
+  smooth     : cols  2016 (25.9%)  blocks    92 (mean size 21.91) CB/diag= 0.860  blk/diag= 0.994  op/MP= 0.995  adv/diag=  2.534  wub/diag=   3.02 (frame   3.04, (1+sqrt(m/K))^2= 3.13)  LS/diag=  15.2

@@ -1457,3 +1457,11 @@ slot; `mixed-slots/`).
   long Möbius moment stays within 0.89–0.99 of its diagonal up to `D = U^{1.4}`, where
   amplification allows a factor 20. Atom 2 is a limitation of the method. A proof needs twisted
   Möbius correlations, of Chowla type.
+- **Outside-tools agent** (`round9/outside_tools/NOTES.md`).
+  - Frame theory localizes P1. On the columns whose largest prime factor has norm `≤ K`, the
+    column branch is the diagonal times a frame constant `F`, for every choice of block Gauss sums
+    (rigorous). `F` is numerically at Marchenko–Pastur.
+  - So the arithmetic is needed only at primes in `(K, N]`, the hard core. The hard core is P1
+    modulo the frame bound (Vaughan), so there is no closure.
+  - New witnesses: prime-factor-weighted Möbius blocks, with DH-strength mean values. They are
+    defeated by the lattice adversary, because prime-factor weights are scale shifts.

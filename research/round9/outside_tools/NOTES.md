@@ -12,8 +12,8 @@ No gain. The attempt produced one rigorous reduction, one localization and four 
      has norm at most `K`, the column branch is bounded by the large sieve's *diagonal* times one
      frame constant `F`. This holds for **every** choice of the Gauss sums at the block primes
      [R].
-   - Numerically `F` equals the Marchenko–Pastur value `(1 + √(m/K))²` to within 3–8%,
-     independent of `N/K` (5 to 80). The best block phases stay at about 2.5× the diagonal, while
+   - Numerically `F` sits at the Marchenko–Pastur value `(1 + √(m/K))²` (ratio 0.88–0.99 in
+     all 8 scan configurations, never above), independent of `N/K` (5 to 80). The best block phases stay at about 2.5× the diagonal, while
      the large-sieve allowance grows to 20× [N].
    - So the whole possible `N`-term excess of P1 sits on the **hard core**: columns with a prime
      factor of norm `> K`. By Dickman these are a fraction `log(log N/log K)` of the columns, which
@@ -95,11 +95,16 @@ maximum). `LS` is the large-sieve allowance `(K′ + N′)‖c‖²/diag`.
 | 2000 | 80000 | 20 | 0.98 | 2.56 | 9.5 | 11.8 | 13.6 |
 
 `MP = (1 + √(m/K′))²`, where `m` is the number of blocks. With the true Gauss sums, `CB/diag` is
-0.80–1.11 on both parts.
+0.80–1.12 on both parts.
 
 - On the smooth part, adversarial block phases gain a bounded factor (about 2.5, which is
   `(1 + √(m/K′))²` with `m/K′ ≈ 0.55–0.6` here). The factor does not grow with `N/K`.
-- On the hard core the adversary follows the allowance (50–100% of it).
+- The weighted bound `wub = blk·F/diag` is nearly attained: the adversary reaches 82–92% of it
+  on the smooth part, so the frame inequality is sharp up to about 15%.
+- On the hard core the adversary reaches 61–76% of `wub`. It grows with the number of hard-core
+  blocks (`F ≈ MP ≈ m/K′`), roughly like `(N/K)^{0.7}` in this range, and reaches 48–131% of the
+  nominal allowance. The allowance `(K′ + N′)` is not a strict bound: the large sieve holds up to
+  constants and `ε`.
 - In the true problem `m/K ≈ 1/log K`, so the smooth factor tends to 1.
 
 **What `F` depends on** (`bg_dependence.py`, logs `logs_bg_dependence_*.txt`). The cofactor data
@@ -223,7 +228,8 @@ slope `κ − δ = 0.294 < 5/6 − δ = 0.378`.
 - **Lemma HC (believed true).** For use (b): with `N = K^{1+δ′}`, `δ′ ≤ 2e-4`,
   `Σ_{N(k)≤K} |Σ_{n: N(P⁺(n))>K} c(n)(n/k)₂ W|² ≪ K^{1+0.16δ′+o(1)}Σ|c|²`. For use (a) the same
   with `(K + N^{1−η}K^η)`, `η ≥ 0.0076`.
-  - Evidence: true-phase ratios 0.86–1.12 on the hard core in every run. The adversary needs
+  - Evidence: true-phase ratios `CB/diag` of 0.91–1.12 on the hard core in every run (0.86–1.24
+    without slots). The adversary needs
     non-Gauss values at primes `> K`.
 - **Lemma BG (believed true).** `F ≤ N^{o(1)}` for the smooth blocks.
   - Evidence: `F/MP ∈ [0.88, 0.99]` in 8 configurations, flat in `N/K`. It holds for random

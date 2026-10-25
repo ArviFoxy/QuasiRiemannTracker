@@ -155,3 +155,47 @@ A proof would need square-root cancellation in a Möbius bilinear form whose ker
 sextic character sums of conductor up to `D² ≫ U`. That is a twisted Chowla-type correlation on
 the wrong side of the parity barrier. Even the full family of characters to one modulus needs
 Möbius correlations for this; only averages over moduli (Barban–Davenport–Halberstam) avoid them.
+
+## 5. Outside-tools agent: frame theory localizes P1 to large primes (`outside_tools/NOTES.md`)
+
+- **Block decomposition** [rigorous].
+  - Every squarefree column `n` has a largest prime factor `π`, and `c(πm) = g̃(π)·e_π(m)`.
+  - On the columns with `N(π) ≤ K`, the column branch is at most `2K^{1+ε}·F·‖c‖²` for **every**
+    choice of the Gauss sums at the block primes.
+  - `F` is the frame constant of the normalized block vectors. Each block is in the diagonal
+    regime, since its cofactor has norm `≤ K`.
+  - The trivial frame bound `F ≤ 1 + N/K` reproduces the large sieve.
+- **Numerics.** `F` sits at the Marchenko–Pastur value `(1 + √(m/K))²` (0.88–0.99 of it, flat in
+  `N/K` from 5 to 80). Adversarial block phases gain only about 2.5×, while the allowance grows to
+  20×. `F` fails only for cofactor data aligned with a quadratic character; the true data is
+  indistinguishable from random.
+- **Localization.** All of P1's possible `N`-term excess sits on the **hard core**: columns with a
+  prime factor of norm `> K`. A proof of P1 needs arithmetic input on `g̃` only at primes in
+  `(K, N]`. Round 7's algebraic adversary (primes `> N/7`) lives entirely there.
+- **No closure** [rigorous].
+  - A power-saving frame bound is P1 on the smooth part with arbitrary block phases.
+  - Vaughan's identity shows that the hard core is P1 modulo the frame bound, with coefficient
+    exactly 1.
+  - The hard core's density does not help: it is a fixed fraction, `0.16` for use (a) and `δ′` for
+    use (b), at full exponent.
+- **The ω-witness.**
+  - Möbius blocks weighted by the number of prime factors in a band have a density-hypothesis
+    mean value at every length `t ≥ 1`. This is rigorous, using the bin's zero-free window and
+    Lemma 17.6.
+  - They fail anyway. By the explicit formula, prime-factor weights act on the zeros' residue
+    profile as a scale shift (`μ·log = −μ∗Λ`), so the lattice adversary of §1 defeats them. This
+    is target 5 (scale transfer) again.
+- **Short closures.**
+  - SDP combinations of `J` witnesses gain at most a factor `J`.
+  - Slot spikiness is a constant.
+  - The exchange rate 6 is the exact stabilizer (Kummer).
+  - Higher-rank theta functions carry the sextic Gauss sums, but they lengthen the sums.
+
+**Sharpest form of P1 after round 9.** For `N = K^{1+δ′}` (use (b)), with `c(n) = g̃(n)A(n)` and the
+sum over columns `n` with `N(P⁺(n)) > K`:
+
+  `Σ_{N(k)≤K} |Σ_n c(n)(n/k)₂ W(N(n)/N)|² ≪ K^{1+0.16δ′+o(1)}Σ|c|²`.
+
+This is a statement about cubic Gauss sums at primes larger than the row count, against
+quadratic × slot characters at the critical length. With the twist, these are sextic Gauss sums at
+primes, and Kazhdan–Patterson puts their theta functions out of reach.

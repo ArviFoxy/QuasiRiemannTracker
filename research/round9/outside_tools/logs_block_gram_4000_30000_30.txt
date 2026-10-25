@@ -1,20 +1,7 @@
-built K=4000 N=30000 Lslot=30: rows 1030, cols 3874, marks 6 (7.1s)
+built K=4000 N=30000 Lslot=30: rows 1030, cols 3874, marks 6 (18.8s)
 K'=1030 N'=3874  N'/K'=3.8   log N/log K = 1.243
  column vector: g~ * A (true)
-  all        : cols  3874 (100.0%)  blocks  2060 (mean size  1.88) CB/diag= 0.972  blk/diag= 1.000  op/MP= 3.038  adv/diag=  4.175  ub/diag=   17.71  LS/diag=   5.0  srank= 116.36
-  smooth     : cols  2312 (59.7%)  blocks   534 (mean size  4.33) CB/diag= 1.007  blk/diag= 1.000  op/MP= 2.606  adv/diag=  2.395  ub/diag=    7.71  LS/diag=   3.5  srank=  69.27
-  hard core  : cols  1562 (40.3%)  blocks  1526 (mean size  1.02) CB/diag= 0.979  blk/diag= 1.001  op/MP= 1.742  adv/diag=  3.618  ub/diag=    8.57  LS/diag=   2.5  srank= 178.21
-  P+ in(1,63]: cols    72 ( 1.9%)  blocks     6 (mean size 12.00) CB/diag= 0.922  blk/diag= 0.995  op/MP= 2.123  adv/diag=  1.057  ub/diag=    2.45  LS/diag=   1.2  srank=   2.44
-  P+ in(63,4000]: cols  2240 (57.8%)  blocks   528 (mean size  4.24) CB/diag= 1.027  blk/diag= 1.000  op/MP= 2.635  adv/diag=  2.384  ub/diag=    7.76  LS/diag=   3.4  srank=  68.05
- column vector: random phase * A
-  all        : cols  3874 (100.0%)  blocks  2060 (mean size  1.88) CB/diag= 1.079  blk/diag= 1.000  op/MP= 2.880  adv/diag=  4.212  ub/diag=   16.79  LS/diag=   5.0  srank= 122.71
-  smooth     : cols  2312 (59.7%)  blocks   534 (mean size  4.33) CB/diag= 1.033  blk/diag= 1.001  op/MP= 2.453  adv/diag=  2.376  ub/diag=    7.26  LS/diag=   3.5  srank=  73.59
-  hard core  : cols  1562 (40.3%)  blocks  1526 (mean size  1.02) CB/diag= 0.975  blk/diag= 1.000  op/MP= 1.739  adv/diag=  3.633  ub/diag=    8.55  LS/diag=   2.5  srank= 178.49
-  P+ in(1,63]: cols    72 ( 1.9%)  blocks     6 (mean size 12.00) CB/diag= 0.986  blk/diag= 0.997  op/MP= 2.120  adv/diag=  1.049  ub/diag=    2.45  LS/diag=   1.2  srank=   2.44
-  P+ in(63,4000]: cols  2240 (57.8%)  blocks   528 (mean size  4.24) CB/diag= 1.045  blk/diag= 1.001  op/MP= 2.483  adv/diag=  2.369  ub/diag=    7.32  LS/diag=   3.4  srank=  72.21
- column vector: g~ (no slots)
-  all        : cols  3874 (100.0%)  blocks  2060 (mean size  1.88) CB/diag= 0.954  blk/diag= 1.001  op/MP= 2.798  adv/diag=  4.660  ub/diag=   16.32  LS/diag=   5.0  srank= 126.33
-  smooth     : cols  2312 (59.7%)  blocks   534 (mean size  4.33) CB/diag= 0.946  blk/diag= 1.001  op/MP= 2.329  adv/diag=  2.423  ub/diag=    6.90  LS/diag=   3.5  srank=  77.48
-  hard core  : cols  1562 (40.3%)  blocks  1526 (mean size  1.02) CB/diag= 0.924  blk/diag= 1.000  op/MP= 1.018  adv/diag=  4.172  ub/diag=    5.00  LS/diag=   2.5  srank= 305.06
-  P+ in(1,63]: cols    72 ( 1.9%)  blocks     6 (mean size 12.00) CB/diag= 0.974  blk/diag= 0.990  op/MP= 1.470  adv/diag=  1.058  ub/diag=    1.69  LS/diag=   1.2  srank=   3.52
-  P+ in(63,4000]: cols  2240 (57.8%)  blocks   528 (mean size  4.24) CB/diag= 0.949  blk/diag= 1.002  op/MP= 2.379  adv/diag=  2.435  ub/diag=    7.02  LS/diag=   3.4  srank=  75.37
+  all        : cols  3874 (100.0%)  blocks  2060 (mean size  1.88) CB/diag= 0.972  blk/diag= 1.000  op/MP= 3.038  adv/diag=  4.175  wub/diag=   6.01 (frame   6.01, (1+sqrt(m/K))^2= 5.83)  LS/diag=   5.0
+  smooth     : cols  2312 (59.7%)  blocks   534 (mean size  4.33) CB/diag= 1.007  blk/diag= 1.000  op/MP= 2.606  adv/diag=  2.395  wub/diag=   2.92 (frame   2.92, (1+sqrt(m/K))^2= 2.96)  LS/diag=   3.5
+  hard core  : cols  1562 (40.3%)  blocks  1526 (mean size  1.02) CB/diag= 0.979  blk/diag= 1.001  op/MP= 1.742  adv/diag=  3.618  wub/diag=   4.86 (frame   4.85, (1+sqrt(m/K))^2= 4.92)  LS/diag=   2.5
+  P+ in(1,63]: cols    72 ( 1.9%)  blocks     6 (mean size 12.00) CB/diag= 0.922  blk/diag= 0.995  op/MP= 2.123  adv/diag=  1.057  wub/diag=   1.07 (frame   1.08, (1+sqrt(m/K))^2= 1.16)  LS/diag=   1.2

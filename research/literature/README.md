@@ -83,3 +83,28 @@ Follow-ups import both unchanged: Xu–Sang 2610.15291, and Liu 2610.12234 / 261
 Extracted texts are in the session scratchpad (not committed): Dunn–Radziwiłł, Heath-Brown,
 David–de Faveri–Dunn–Stucky, DDHL, de Faveri, Guth–Maynard, Chen–Gupta–Li, Baier–Young,
 Blomer–Goldmakher–Louvel, Gao–Zhao, Louvel.
+
+## Additional sweep (2026-10-25)
+
+**de Faveri–Dunn–Hoffstein, 2607.07911** (Non-orthogonality of the cubic and quartic large sieves
+via Rankin–Selberg).
+- Thm 1.1, over `Q(ζ₃)`: the cubic large sieve's operator norm is `≫ (AB)^{−ε}(A + B + (AB)^{2/3})`
+  for all `A, B`. So the `(AB)^{2/3}` term is sharp, caused by the Gauss-sum bias.
+- (2.10): Lindelöf on average in the cubic twist aspect, `Σ_{N(a)≤A}|ψ^{(3)}(a, 1+ε+it)|² ≪ A^{1+ε}`,
+  via Zagier's Rankin–Selberg regularization.
+- **Not usable.** P1 needs quadratic twists `χ_k³` of the theta coefficients in a family of size `K`
+  below the critical length `KL`, i.e. a thin family. The cubic sieve part of the hybrid norm is
+  in its diagonal regime at the binding (`v ≥ 2z_a`).
+
+**Diaconu–Ion–Paşol–Popa, 2607.27131** (Second moment of `r`-th order Hecke L-functions).
+- Asymptotic first and second twisted moments of `L(1/2, χ_a)` over squarefree `a`, for fields
+  containing `μ_{2r}`, `r ≥ 3`, via Weyl group multiple Dirichlet series.
+- For `r = 3` over `Q(√−3)` the error is `X^{5/6+ε}` unconditionally (`X^{3/4}` under GRH),
+  recovering David–de Faveri–Dunn–Stucky.
+- **Not usable.** Our binding mean values are the inverse (Möbius) moment past its diagonal and
+  the marked column branch. Neither is a moment of `L` itself, and the plain moments are already
+  diagonal.
+
+**QRH follow-ups.** Sang 2610.15291 (0.8748867) and Liu 2610.12234 (0.874957) are far above the
+tracker record, and no newer follow-up was found.
+

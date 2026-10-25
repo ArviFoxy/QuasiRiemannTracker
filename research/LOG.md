@@ -1213,6 +1213,25 @@ A catalogue cross-check (21.9k records) found nothing that moves them. → `cap-
   - Eliminating the faces is possible in principle (continuous induction along the curve), but it
     is worth at most the ceiling (−4.8e-6). It is a simplification, not a route to the bar.
 
+- *P1 seen three ways (synthesis, 2026-10-25; heuristic reformulations).*
+  - **Signed dual.** Poisson in the rows writes the column branch as its diagonal plus a dual
+    form whose dual diagonal exactly cancels the subtracted `n = n′` terms. What remains is a
+    bilinear form signed by reciprocity. Any positivity step (large sieve, Cauchy–Schwarz)
+    re-creates the `N` term. Beating it means showing that the second moments in the different
+    reciprocity-sign classes agree to a power saving. That is an affine-type equidistribution
+    problem, where even the `GL(2)` quadratic-twist analogue has only log savings unconditionally
+    (Li 2024).
+  - **Kazhdan–Patterson in disguise.** After that second Poisson step, the dual coefficients are
+    cubic times quadratic Gauss sums. By Hasse–Davenport these are sextic Gauss sums, so their
+    sums are coefficients of 6-fold-cover objects with no explicit theta. This is the same barrier
+    that rules out order 5 (user question). The first Poisson step absorbed μ into `θ₃`; the
+    second brings the sextic structure back.
+  - **Thin-family Lindelöf.** The marked twist `χ_k³χ_P^{−2}` has conductor `≈ K²L²` and critical
+    length `KL = N`, while the family has size `K`. P1 is Lindelöf on average in a family thinner
+    than its critical length by `L = Z^{0.129}`, the metaplectic analogue of the open
+    level-uniform `GL(2)` problem.
+  - New literature (2607.07911, 2607.27131) does not reach it (`literature/README.md`).
+
 ## Open directions (ranked, revised 2026-10-24, third pass; see `barriers/README.md`)
 
 Exact state: committed Lean branch 0.8747289; best exact value with known lemmas 0.8747257

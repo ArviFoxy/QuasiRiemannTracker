@@ -58,13 +58,15 @@ return (`theta_eval.theta_star`, `h = 401/500`).
 | pure (Collet; calibration) | `6q` | 0.8746073 | −2e-7 (model error) |
 | live excess kept at 2, native `q` paid by selected (Sil's ledger on the excess) | `min(6q, (2+6q)/(1+q))` | **0.8745898** | **−1.75e-5** |
 | transfer with no saving (`e = 0`, `c = 4`) | `min(6q, 4)` | 0.8746073 | 0 (`no_saving_useless`) |
-| `e = 1`, `c = 6`: unselected excess erased at `q` | `6q/(1+q)` | not scoreable[^1] | ≫ 1e-5 |
-| `e = 1`, `c = 4` | `4q/(1+q)` | not scoreable[^1] | ≫ 1e-5 |
+| `e = 1`, `c = 6`: unselected excess erased at `q` | `6q/(1+q)` | **0.8745804**[^1] | **−2.7e-5** (the return floor) |
+| `e = 1`, `c = 4` | `4q/(1+q)` | at least as good | −2.7e-5 (floor) |
 | Sil-LOW: Sil's argument as the LOW branch at native rate `q`, no parent | LOW region `t + (2+6q)/(1+q)·b ≤ 1` | **0.8745804** | **−2.7e-5** |
 
 [^1]: The flow never reaches the HIGH floor `q* = 1/2` before the cap 0.06. Every face after the
-start has slope below 3, which the current return's physical receipt needs. At `s = 0.06` the
-`e = 1, c = 6` family has `C = (0.9827, 2.226)`, against our `(0.9677, 2.911)` at 0.047.
+start has slope below 3, which the current return's physical receipt `source_lambda_low` needs.
+Lemma D makes that receipt unnecessary (`../barriers/README.md`). `optimistic_theta.py` drops it
+(hypothetical; our Lean return would need the same change) and scans P. Every P from `s = 0.03` to
+0.055, with `C = (0.98269, 2.2260)` at `s = 0.06`, gives the floor 0.8745804.
 
 **Sil-LOW.** `E(s) = max{E : E + (2+6q*)/(1+q*)·s ≤ 1}`. It gives P = (0.98094, 3.0) at
 `s = 0.0403`, against our (0.97187, 3.0). θ* is flat in C, so the return's other atoms bind

@@ -204,4 +204,64 @@ theorem bootstrap_fails :
     (1 + 5 * (5 / 4 : ℝ)) / 6 < rho (3 / 5) + (5 / 4) * (3 / 5) := by
   unfold rho; constructor <;> norm_num
 
+
+/-! ### Round 10: pieces of `μ·log = −Λ∗μ` (`../round10/README.md` §1)
+
+On squarefree `n`, `μ(n) log n = −Σ_{p|n} log p · μ(n/p)`, so the long witness `M(U^t)` splits
+into pieces `Q(U^p)·M(U^{t−p})`. On bin rows the prime block is bounded pointwise by the amplitude
+cap `|Q|² ≤ P^{1+ν}` (7/8 Lemma 19.1). The Möbius block gets the inverse moment when `t − p ≤ 1`
+(`pieceShort`) and amplification when `t − p ≥ 1` (`pieceLong`). -/
+
+/-- Count exponent of a piece whose Möbius block has length `t − p ≤ 1`. -/
+noncomputable def pieceShort (ν t p : ℝ) : ℝ := 1 - t * ν + p * ν
+
+/-- Count exponent of a piece whose Möbius block has length `t − p ≥ 1` (amplified). -/
+noncomputable def pieceLong (ν t p : ℝ) : ℝ := L ν t - (5 / 6 - ν) * p
+
+/-- At the adversary's own length `t = 3s₀`, a piece with a short Möbius block beats the long
+line exactly when its prime block is shorter than `s₀`. -/
+theorem piece_threshold {ν p : ℝ} (hν0 : 0 < ν) (hν : ν < 5 / 6) :
+    pieceShort ν (3 * s0 ν) p < L ν (3 * s0 ν) ↔ p < s0 ν := by
+  rw [← rho_eq_long hν, rho_eq_plain hν]
+  unfold pieceShort pcount
+  constructor
+  · intro h
+    by_contra hc
+    push Not at hc
+    nlinarith [mul_le_mul_of_nonneg_left hc hν0.le]
+  · intro h
+    nlinarith [mul_lt_mul_of_pos_left h hν0]
+
+/-- The adversary's first piece, prime block at `s₀` and Möbius block at `2s₀`, counts exactly `ρ`. -/
+theorem piece_at_s0 {ν : ℝ} (hν : ν < 5 / 6) : pieceShort ν (3 * s0 ν) (s0 ν) = rho ν := by
+  rw [rho_eq_plain hν]; unfold pieceShort pcount; ring
+
+/-- With an amplified Möbius block, every piece with a prime factor of positive length beats the
+long line. -/
+theorem pieceLong_lt {ν t p : ℝ} (hν : ν < 5 / 6) (hp : 0 < p) : pieceLong ν t p < L ν t := by
+  unfold pieceLong
+  have : 0 < (5 / 6 - ν) * p := mul_pos (by linarith) hp
+  linarith
+
+/-- At `t = 3s₀` the inverse-moment regime `p ≥ t − 1` starts below `s₀` (because `2s₀ < 1`),
+so every prime length in `(0, s₀)` gives a piece below the long line. -/
+theorem regimes_meet_below_s0 {ν : ℝ} (hν : ν < 5 / 6) : 3 * s0 ν - 1 < s0 ν := by
+  have h := den_pos hν
+  have hs : s0 ν * (15 - 6 * ν) = 5 := by unfold s0; field_simp
+  have hpos : 0 < s0 ν := by unfold s0; positivity
+  nlinarith
+
+/-- **Amplification is the 11/12 strip on the excess length**:
+`(1 + 5t)/6 = 1 + (t − 1)(2·(11/12) − 1)`. -/
+theorem amplification_is_eleven_twelfths (t : ℝ) :
+    (1 + 5 * t) / 6 = 1 + (t - 1) * (2 * (11 / 12) - 1) := by ring
+
+/-- The dual asymptotic needed to beat amplification at length `t`: a relative error
+`(D²/U)^{−η}` beats `U^{1/6}D^{5/6}` iff `η ≥ (t − 1)/(6(2t − 1))` (exponents in `log U`). -/
+theorem dual_asymptotic_threshold {t η : ℝ} (ht : 1 < t) :
+    t * (1 - 2 * η) + η ≤ (1 + 5 * t) / 6 ↔ (t - 1) / (6 * (2 * t - 1)) ≤ η := by
+  have h : 0 < 6 * (2 * t - 1) := by linarith
+  rw [div_le_iff₀ h]
+  constructor <;> intro h' <;> nlinarith
+
 end ZeroDensityGame

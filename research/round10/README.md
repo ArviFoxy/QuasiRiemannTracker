@@ -98,3 +98,42 @@ hence the bar, needs one of:
 - a sixth moment with excess below `s₀δ`;
 - a window subconvexity;
 - a factorization identity whose pointwise factor is confined to the excess length.
+
+## 5. Two structural reasons the long moment resists (added the same day)
+
+- **Every decomposition carries the long prime sum.** `μ log = −Λ∗μ`, Vaughan, Heath-Brown and
+  largest-prime splittings all contain the piece with `n` prime, i.e. `Q(D) = Σ_{p~D} χ(p)`.
+  - This family has no mean value for prime sums beyond `U^{1/2}`. The general sextic sieve
+    (7/8 Lemma 9.1) carries `(KD)^{2/3}`, and the reflected witnesses need Möbius coefficients.
+  - The only bound on `Q(D)` for `D > U` comes through the Möbius polynomial itself:
+    amplification of the inverse moment bounds it implicitly.
+  - So no identity can confine the pointwise factor to the excess length `D/U` (§2).
+- **Poisson duality is exactly self-dual.**
+  - Poisson in the rows writes the off-diagonal as `(U/D²)·[Σ_{h ≲ D²/U}|T_h|² − (dual diagonal)]`,
+    with `T_h = Σ_n μ(n)ε(n)χ_n(h)` and `ε(n)` the normalized sextic Gauss sum.
+  - The dual is in the diagonal regime (`D²/U > D`). A power-saving asymptotic for it, with
+    relative error `(D²/U)^{−η}`, `η > (t − 1)/(6(2t − 1)) ≈ 0.02`, would beat amplification at
+    `t = 1.155`.
+  - But Poisson in `h` returns the original off-diagonal, up to fixed reciprocity twists from Θ:
+    the root numbers combine to `|ε(n)|² = 1`.
+  - So an asymptotic for the dual is equivalent to one for the original. Breaking the symmetry
+    needs arithmetic input from outside Poisson duality: Möbius correlations, metaplectic spectral
+    theory, or the bin structure.
+
+## 6. Literature check (round 10)
+
+- **Liu**, arXiv:2610.26835 (19 Oct 2026). Hecke L-functions over number fields via
+  `K(ζ₁₂)` and class-field descent.
+  - Boundary `B♭ = 0.874886647…`, the root of a quartic, reached by a limiting argument as the
+    infimum of a refined comparison system.
+  - It is behind upstream (0.874773) and us (0.8747289). Its ingredients (parameter variation,
+    Xu–Sang's averaged numerator, limiting argument) add nothing new for the atoms.
+  - The limiting idea (prove every `B > B♭`, conclude the open half-plane) is what the face family
+    already does. The continuum ceiling 0.8747241 is 0.9e-6 from the face family and needs no new
+    analytic input.
+- **Darbar–Kerr–Munsch–Shparlinski**, arXiv:2604.02960. Zero density over sets of characters
+  mod `q` with a small product set. Not applicable: the sextic family's product set
+  `{χ_{uu′}}` has size about `U²`.
+- **Sang** 2610.15291 (0.8748867) and the 2610.12234 parameter variations: as recorded before.
+- Nothing found on sixth moments, short-sum large values or past-diagonal Möbius moments for
+  cubic or sextic families.

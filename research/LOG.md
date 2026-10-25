@@ -7,7 +7,7 @@ the best upstream PR (smaller gains count only if they simplify or clarify the p
 |---|---|---|
 | upstream PR #70 (Mark Lewko) | 0.874772906 | |
 | upstream PR #71 (recost of PR #69 graph), best upstream PR | 0.87477290596 | 4e-11 below #70; checked 2026-10-24 |
-| this branch, Lean (`submissions/repeated-marks-20261024`) | 0.8747289 | 4.4e-5 below PR #70 |
+| this branch, Lean (`submissions/repeated-marks-20261024`) | 0.8747289 | 4.4e-5 below PR #70; 4.24e-5 below PR #72 (0.874771265, best upstream as of 2026-10-25) |
 | next milestone (1e-5 below this branch) | ≤ 0.8747189 | |
 
 Conventions: `θ*` values are exact-return evaluations (rational certificates) unless marked "float".
@@ -1080,6 +1080,18 @@ A catalogue cross-check (21.9k records) found nothing that moves them. → `cap-
     savings are logarithmic, only in the hyper-skewed range `N² ≲ M`, with the `N`-type term
     remaining. No power saving.
   - Upstream is unchanged (main `0ce80fdd`, PRs through #71).
+
+- *Upstream PR #72 (Das, "das-acyclic-bootstrap-874771265"): θ = 0.874771265.* It refines PR #71 by
+  1.64e-6 with two ordered bootstrap rounds.
+  - Each round re-prices the natural root at `6(2θ_input − 1)` and rebuilds Collet's source graph
+    very finely (21,527 count and 19,529 physical transitions; every child uses its predecessor as
+    both LOW and HIGH supplier). It then certifies a common-envelope physical return.
+  - It introduces no new analytic input: "a parameter refinement of existing machinery". Both
+    ingredients are already measured for our chain. The re-feed is worth about 1e-8 ("Bootstrap
+    re-feed" above). A fine graph is bounded by the continuum ceiling 0.8747241
+    (`variational-ceiling/`).
+  - **New bar** (1e-5 below the best upstream PR): `0.874761265`. Our Lean submission 0.8747289 clears it
+    by 3.2e-5, a lead of 4.24e-5 over #72.
 
 ## Open directions (ranked, revised 2026-10-24, third pass; see `barriers/README.md`)
 

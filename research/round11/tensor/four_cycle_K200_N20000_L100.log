@@ -1,0 +1,10 @@
+K=200 N=20000 L=100: K'=50 N'=2574 L'=20  (N'/(K'L') = 2.574)
+theta g~: tr((SS*)^2) = 4.3168e+11  (sum T = 4.3168e+11)  sum_P F_P^2 = 3.0590e+11  MM = 1.2578e+11  ||S||^2 = 3.1804e+05
+   dddd=+0.005  dddo=+0.000  ddod=+0.000  ddoo=-0.000  dodd=+0.000  dodo=+0.277  dood=-0.000  dooo=-0.003  oddd=+0.000  oddo=-0.000  odod=+0.693  odoo=-0.001  oodd=-0.000  oodo=-0.003  oood=-0.001  oooo=+0.033
+random #0: tr((SS*)^2) = 4.7769e+11  (sum T = 4.7769e+11)  sum_P F_P^2 = 3.4530e+11  MM = 1.3239e+11  ||S||^2 = 3.0803e+05
+   dddd=+0.005  dddo=+0.000  ddod=+0.000  ddoo=+0.000  dodd=+0.000  dodo=+0.250  dood=+0.000  dooo=+0.015  oddd=+0.000  oddo=+0.000  odod=+0.626  odoo=+0.042  oodd=+0.000  oodo=+0.015  oood=+0.042  oooo=+0.003
+random #1: tr((SS*)^2) = 4.0424e+11  (sum T = 4.0424e+11)  sum_P F_P^2 = 2.8025e+11  MM = 1.2399e+11  ||S||^2 = 2.9930e+05
+   dddd=+0.006  dddo=+0.000  ddod=+0.000  ddoo=-0.000  dodd=+0.000  dodo=+0.296  dood=-0.000  dooo=-0.012  oddd=+0.000  oddo=-0.000  odod=+0.740  odoo=-0.030  oodd=-0.000  oodo=-0.012  oood=-0.030  oooo=+0.043
+random #2: tr((SS*)^2) = 3.9298e+11  (sum T = 3.9298e+11)  sum_P F_P^2 = 2.8680e+11  MM = 1.0618e+11  ||S||^2 = 2.9682e+05
+   dddd=+0.006  dddo=+0.000  ddod=+0.000  ddoo=-0.000  dodd=+0.000  dodo=+0.304  dood=-0.000  dooo=-0.009  oddd=+0.000  oddo=-0.000  odod=+0.761  odoo=-0.027  oodd=-0.000  oodo=-0.009  oood=-0.027  oooo=+0.001
+scales: N'^2K'L'(K'+L') = 4.638e+11  L'^2 K' N'^2 = 1.325e+11  N'^4 = 4.390e+13  K'N' = 1.287e+05  N'^2 = 6.625e+06

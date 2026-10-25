@@ -136,3 +136,29 @@ with slots is diagonal on `m₁ + m₂ + Λz ≤ B`.
   - The Möbius coefficients put it outside any unconditional Type II result (Dunn–Radziwiłł need
     GRH-type inputs for Möbius-like sequences).
 
+
+## 5. The bilinear route (agent, done; `bilinear_notes.md`)
+
+- **Per-slot conductor.** A single slot's conductor is `N(k)²N(P)`, so its critical length is
+  `K·L^{1/2}`. The root number factorizes as `ε₁(k)ε₂(P)`. The slot combination is still
+  self-dual at `K·L` (proved from Dunn–Radziwiłł Prop. 5.2 and their twisted-theta Fricke lemma).
+- **Quadratic and sextic twists are Voronoi-dual.** A quadratic twist of `θ₃` is dual to a sextic
+  twist, so after Voronoi one faces the sextic sieve and its Gauss bias.
+- **The slot-free case `L = 1` at `N ≈ K`** needs exactly a zero-free strip `Re s > 11/12` for the
+  CM Hecke L-functions `L(s, ξ₀ψ)` of `Q(ω)`. This follows from the Hasse–Davenport identity
+  `g̃₃g̃₆ = μ·conj((4/·)₆)·g̃₂·(·/|·|)`, checked numerically. Open question: could the QRH machinery
+  itself supply this strip by bootstrapping (`0.8747 < 11/12`)? It would need the whole method
+  for Hecke characters of `Q(ω)`, which is not formalized.
+- **Single mark at use (a), sketch:** `F_P ≪ N·K^{7/6}`, i.e. `η ≈ 0.041` on the slot-diagonal
+  part. The cross terms remain.
+
+## 6. The tensor route (done; `tensor/README.md`)
+
+- **Reduction.** P1(a) via the fourth moment reduces to one alternating 4-point sector. Every
+  other sector is bounded rigorously, given the single-mark bound.
+- **Equivalent form.** The missing statement is derandomized asymptotic freeness of two explicit
+  operators under the diagonal unitary `diag(g̃)`.
+- **Numerics.** The theta phases behave like random phases there.
+- **By-product (§7 there).** Averaging the slot weights over their Mellin height would remove the
+  cross terms. Use (a) would then follow from the single-mark bound. The architecture and
+  formalization feasibility are being scoped (`tau_average_scope.md`).

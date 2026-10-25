@@ -1,0 +1,7 @@
+K=200 N=20000 L=100: K'=50 N'=2574 L'=20  N'/(K'L')=2.574
+theta      tr4=4.3168e+11  oooo=+1.4326e+10 (+0.033 of tr4)  CS=||BoAo||_F^2=1.5227e+13  oooo/CS=+0.0009  CS/N'^2||S||_F^2=0.942
+           2pt: dooo=-0.0032  odoo=-0.0003 of tr4;  ||S||_F^2/diag=0.9977  (||S||_F^2-diag)*L'N'/tr4=-0.0007  *K'N'/tr4=-0.0016
+random0    tr4=3.7947e+11  oooo=+3.3018e+09 (+0.009 of tr4)  CS=||BoAo||_F^2=1.4635e+13  oooo/CS=+0.0002  CS/N'^2||S||_F^2=0.953
+           2pt: dooo=-0.0142  odoo=-0.0436 of tr4;  ||S||_F^2/diag=0.9473  (||S||_F^2-diag)*L'N'/tr4=-0.0175  *K'N'/tr4=-0.0437
+random1    tr4=3.9343e+11  oooo=-1.7011e+10 (-0.043 of tr4)  CS=||BoAo||_F^2=1.5227e+13  oooo/CS=-0.0011  CS/N'^2||S||_F^2=0.951
+           2pt: dooo=-0.0019  odoo=-0.0124 of tr4;  ||S||_F^2/diag=0.9882  (||S||_F^2-diag)*L'N'/tr4=-0.0038  *K'N'/tr4=-0.0095

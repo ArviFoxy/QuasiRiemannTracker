@@ -1532,3 +1532,35 @@ slot; `mixed-slots/`).
     bytes) and packed certificates.
   - It falls under the "smaller gains count if they simplify the proof" clause. The 1e-5 milestone
     (0.8747189) still needs 6.1e-6 of new mathematics.
+- **Bilinear route to P1** (agent; `round11/bilinear_notes.md`). Not in reach. Results:
+  - **Proved from Dunn–Radziwiłł:**
+    - a single slot has conductor `N(k)²N(P)`, not `N(k)²N(P)²`, so its critical length is
+      `K·L^{1/2}`;
+    - the root number factorizes as `ε₁(k)ε₂(P)`;
+    - the slot combination's self-dual point is still `K·L`.
+  - **Quadratic twists of θ₃ are Voronoi-dual to sextic twists.** So "Voronoi plus
+    Goldmakher–Louvel is diagonal without slots" (atom1 §8) was wrong.
+  - **Proved classically, checked numerically:**
+    - `g̃₃g̃₆ = μ·conj((4/·)₆)·g̃₂·(·/|·|)`;
+    - the slot-free case `L = 1` holds for `N ≥ K^{3/2+ε}`;
+    - under GRH for Hecke L-functions of `Q(ω)` it holds for every `N`.
+  - **The one input for `L = 1` at `N ≈ K`:** a zero-free strip `Re s > 11/12` for CM Hecke
+    L-functions `L(s, ξ₀ψ)` of `Q(ω)`, with ∞-type `z/|z|`.
+  - **New, sketch:** single mark at use (a), `F_P ≪ N·K^{7/6}` (Voronoi to length `K`, then
+    de Faveri's sextic sieve). That is `η ≈ 0.041` on the slot-diagonal part. The cross terms
+    (Lemma MM) stay open.
+- **Tensor route** (`round11/tensor/README.md`; question from Arvi).
+  - The fourth moment `tr((SS*)²)` splits exactly into propagator sectors.
+  - **Phase-free sectors** are about 95–97% of it numerically. They are `≤ N⁴/L + N⁴/K` by the
+    large sieve and cubic orthogonality.
+  - **2-point sectors** are weights times `‖S‖_F² − diag`. They are `≤ N⁴·Z^{−0.0053}` given the
+    single-mark bound.
+  - **One sector remains:** the alternating 4-point term `tr((B̃_oA_o)²)`. Making it small is
+    *derandomized asymptotic freeness* of the off-diagonal cubic slot Gram and the
+    theta-conjugated quadratic Gram, via `tr(BCBC) = tr(B²C²) − ½‖[B,C]‖_F²`.
+  - **Numerics:** about 1000× below Cauchy–Schwarz, for theta as for random phases.
+  - **Status:** no tool proves it. Use (b) would need `p ≈ 10⁴` moments.
+  - **By-product.** Averaging over slot heights or random slot signs would kill the slot cross
+    terms and leave the single-mark bound, enough for use (a) (`η ≈ 0.041 > 0.0076`). Round 9's
+    dismissal of `τ`-averaging predates the single-mark bound. Architecture and formalization
+    feasibility are being scoped (`round11/tau_average_scope.md`).

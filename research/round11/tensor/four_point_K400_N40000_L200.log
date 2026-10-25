@@ -1,0 +1,8 @@
+built /home/user/QuasiRiemannTracker/research/round11/tensor/data/m_K400_N40000_L200.npz: rows=98 cols=5170 marks=32 in 15.1s
+K=400 N=40000 L=200: K'=98 N'=5170 L'=32  N'/(K'L')=1.649
+theta      tr4=1.0392e+13  oooo=+2.7521e+11 (+0.026 of tr4)  CS=||BoAo||_F^2=3.9575e+14  oooo/CS=+0.0007  CS/N'^2||S||_F^2=0.948
+           2pt: dooo=+0.0019  odoo=+0.0060 of tr4;  ||S||_F^2/diag=1.0112  (||S||_F^2-diag)*L'N'/tr4=+0.0028  *K'N'/tr4=+0.0085
+random0    tr4=1.0164e+13  oooo=-8.1542e+10 (-0.008 of tr4)  CS=||BoAo||_F^2=3.9824e+14  oooo/CS=-0.0002  CS/N'^2||S||_F^2=0.949
+           2pt: dooo=+0.0032  odoo=+0.0121 of tr4;  ||S||_F^2/diag=1.0169  (||S||_F^2-diag)*L'N'/tr4=+0.0043  *K'N'/tr4=+0.0130
+random1    tr4=9.6687e+12  oooo=-1.8173e+11 (-0.019 of tr4)  CS=||BoAo||_F^2=3.9119e+14  oooo/CS=-0.0005  CS/N'^2||S||_F^2=0.951
+           2pt: dooo=-0.0009  odoo=-0.0033 of tr4;  ||S||_F^2/diag=0.9968  (||S||_F^2-diag)*L'N'/tr4=-0.0008  *K'N'/tr4=-0.0026

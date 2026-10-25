@@ -1,0 +1,8 @@
+K=400 N=40000 L=200: K'=98 N'=5170 L'=32  (N'/(K'L') = 1.649)
+theta g~: tr((SS*)^2) = 1.0392e+13  (sum T = 1.0392e+13)  sum_P F_P^2 = 7.6672e+12  MM = 2.7244e+12  ||S||^2 = 1.1444e+06
+   dddd=+0.004  dddo=+0.000  ddod=+0.000  ddoo=+0.000  dodd=+0.000  dodo=+0.234  dood=+0.000  dooo=+0.002  oddd=+0.000  oddo=+0.000  odod=+0.716  odoo=+0.007  oodd=+0.000  oodo=+0.002  oood=+0.007  oooo=+0.026
+random #0: tr((SS*)^2) = 9.7644e+12  (sum T = 9.7644e+12)  sum_P F_P^2 = 7.4071e+12  MM = 2.3574e+12  ||S||^2 = 1.0871e+06
+   dddd=+0.005  dddo=+0.000  ddod=+0.000  ddoo=-0.000  dodd=+0.000  dodo=+0.249  dood=-0.000  dooo=-0.001  oddd=+0.000  oddo=-0.000  odod=+0.762  odoo=-0.006  oodd=-0.000  oodo=-0.001  oood=-0.006  oooo=-0.002
+random #1: tr((SS*)^2) = 9.7635e+12  (sum T = 9.7635e+12)  sum_P F_P^2 = 7.4886e+12  MM = 2.2749e+12  ||S||^2 = 1.1033e+06
+   dddd=+0.005  dddo=+0.000  ddod=+0.000  ddoo=-0.000  dodd=+0.000  dodo=+0.249  dood=-0.000  dooo=-0.001  oddd=+0.000  oddo=-0.000  odod=+0.762  odoo=-0.000  oodd=-0.000  oodo=-0.001  oood=-0.000  oooo=-0.014
+scales: N'^2K'L'(K'+L') = 1.090e+13  L'^2 K' N'^2 = 2.682e+12  N'^4 = 7.144e+14  K'N' = 5.067e+05  N'^2 = 2.673e+07

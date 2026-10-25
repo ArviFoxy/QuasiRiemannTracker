@@ -1308,6 +1308,21 @@ A catalogue cross-check (21.9k records) found nothing that moves them. → `cap-
   - PR #73's description still names `submissions/repeated-marks-20261024/` in "Local checks" and
     describes the 59-face graph; a corrected description is in `faceless-chain/PR_BODY_DRAFT.md`
     (the upstream repository is not writable from this session).
+- *Round 8: the curve is proved optimal; P1 re-derived* (`round8/README.md`).
+  - `lean-lab/ChainOptimal.lean` (proved): class thresholds increase with `E` (`Q_mono`), class rates
+    increase in `Q` and `E` (`rate_mono`), so every envelope passing all class gates stays below the
+    binding-class flow (`maximal_envelope`); in the interior regime the binding class is `p*` with
+    the closed-form rate (`closed_form_binding`). Hypotheses hold along the chain with margins
+    `A ≥ 0.17`, `D ≥ 0.29`, `1 − Qs ≥ 0.87`.
+  - P1 as near-orthogonality of the quadratic-character span and the prime-dilated theta span, and
+    as a bilinear bound for the matrix of twisted central values `S(k, P)` (all at their critical
+    point). The hybrid norm proves `‖S‖²_op ≤ N²`, which equals the *conjectured* Frobenius norm;
+    the rigorous Frobenius bound is `LN²`. So P1 is two levels beyond what is proved.
+  - Correction to round 7: Lemma Q3's "trivial" operator-norm bound is `N^{1.118}`, not `N^{1+ε}`
+    (Heath-Brown's `(MN)^{2/3}` dominates at `M ≍ 27K`). Use (a) needs only the smooth-weight vector
+    inequality, which Poisson returns to the original problem.
+  - The `22/23` HIGH-parent guard enters Collet's root completion; relaxing it is worth well under
+    1e-6.
 
 ## Open directions (ranked, revised 2026-10-24, third pass; see `barriers/README.md`)
 

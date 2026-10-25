@@ -124,7 +124,8 @@ Within the face-map method, yes, up to 0.9e-6:
 1. **Per step.** The threshold is the exact maximum over classes (section 2). The full 16-gate
    continuum solver, with fees, caps and Lemma F self cells, agrees with the closed form to 6e-7
    (`../chain-ode/README.md`), so no other gate or class binds.
-2. **Along the chain.** The descent rate `F(s, E) = 6q*E/(1 − 6q*s)` increases with `E`, since `6q*`
+2. **Along the chain** (formal: `../lean-lab/ChainOptimal.lean`, `maximal_envelope` and
+   `closed_form_binding`). The descent rate `F(s, E) = 6q*E/(1 − 6q*s)` increases with `E`, since `6q*`
    increases with `√E` when `√E > 2√s`. So by the comparison principle
    (`../lean-lab/MaximalEnvelope.lean`) every admissible envelope stays below the equality solution
    from the natural seed.

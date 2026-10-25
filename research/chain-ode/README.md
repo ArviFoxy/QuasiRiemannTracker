@@ -174,3 +174,14 @@ switching flow. Its only inputs are:
 
 So the ceiling is an explicit functional of the four atoms.
 
+**The binding class is explicit** (`pstar.py`). `∂_p(6q_p) = 0` is quadratic in `p`:
+`s(4s − E)p² − 2s(3E − 2)p + (E − 1)² − Es = 0`, up to a factor −4. Its interior root is
+
+  `p*(s, E) = [s(3E − 2) − √(Es)·(1 − E − 2s)] / (s(E − 4s))`, clipped to `[0, 1/2]`,
+
+and at the maximum `6q* = 5(E − 4s)/(2 − E − 8p*s)`. It matches the numerical argmax to 5 decimals:
+`p* = 0.34689, 0.22129, 0.18554` at `s = 0.03, 0.0412, 0.045`. So the chain's vector field is
+explicit:
+- for `s ≲ 0.02` it is the rational field of `p = 1/2`;
+- after that, the algebraic field above (involving `√(Es)`), up to the seed cap `K`.
+

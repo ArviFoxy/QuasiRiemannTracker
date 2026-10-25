@@ -1,0 +1,40 @@
+U=20000: 326 rows, |g|: 1.000..1.000
+ N=1500: 457 columns; random 0.995 ± 0.052; top singular^2/#cols 3.34
+    conj(g)·s3^0   1.109
+    g·s3^0         0.914
+    conj(g)·s3^1   1.058
+    g·s3^1         0.986
+    conj(g)·s3^2   0.939
+    g·s3^2         1.045
+    conj(g)·s3^3   1.035
+    g·s3^3         1.089
+    conj(g)·s3^4   1.106
+    g·s3^4         0.977
+    conj(g)·s3^5   1.087
+    g·s3^5         0.955
+ N=5000: 1512 columns; random 0.991 ± 0.028; top singular^2/#cols 2.12
+    conj(g)·s3^0   1.176
+    g·s3^0         0.925
+    conj(g)·s3^1   1.054
+    g·s3^1         0.917
+    conj(g)·s3^2   1.022
+    g·s3^2         1.023
+    conj(g)·s3^3   1.077
+    g·s3^3         1.010
+    conj(g)·s3^4   1.080
+    g·s3^4         1.014
+    conj(g)·s3^5   1.015
+    g·s3^5         1.000
+ N=15000: 4531 columns; random 0.998 ± 0.014; top singular^2/#cols 1.61
+    conj(g)·s3^0   1.078
+    g·s3^0         1.001
+    conj(g)·s3^1   1.054
+    g·s3^1         1.008
+    conj(g)·s3^2   1.039
+    g·s3^2         0.988
+    conj(g)·s3^3   1.099
+    g·s3^3         0.988
+    conj(g)·s3^4   1.061
+    g·s3^4         0.990
+    conj(g)·s3^5   1.019
+    g·s3^5         1.000

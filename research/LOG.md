@@ -1495,3 +1495,40 @@ slot; `mixed-slots/`).
   dual sum supplies `|L(1 − a)|` without touching any witness.
   - New witnesses: prime-factor-weighted Möbius blocks, with DH-strength mean values. They are
     defeated by the lattice adversary, because prime-factor weights are scale shifts.
+
+### Round 11 (2026-10-25): the binding inequality, atom 2 localized, and the follow-up (`round11/`)
+
+- **What binds at θ\*** (`round11/README.md` §1). No receipt constant binds. The only binding
+  cover is `new_top`, i.e. the return polynomial itself (high-side balance at `d = h`,
+  `δ ≈ 0.4534`, `p = 1/2`, count from face C). So sharpening a lemma constant cannot help.
+- **Atom 2, fresh look** (agent; `round11/sextic_moment_notes.md`). No power saving. Proved or
+  checked:
+  - twist averaging (`λ = 1/2` over cubic twists) gives twists, not copies;
+  - thickened and sparse families, and `t`- and `a`-averages, give nothing beyond copies.
+  - Bootstrap + grouping gives only a constant saving even given (A), because the
+    `U^{0.172}`-rough core (about 1% of the mass) gains nothing.
+  - The binding case is a sixth moment of a prime polynomial of length `U^{0.385}`.
+- **(A) is heuristically false past `U^{4/5}`** (correction to the agent).
+  - The numerics put the dyadic family's large-sieve constant at the random-matrix edge.
+  - But `b_u = conj g̃₆(1, u)` meets the sixth-power dual frequencies `h = a⁶`. That gives
+    `N^{5/6}U^{1/3}` (de Faveri's `A^{1/3}B^{5/6}`), which hides inside the edge's constant.
+  - Direct test (`round11/gauss_bias.py`): the conjugate Gauss vector exceeds random vectors by
+    8–19% at `U = 2·10⁴` (2–7σ). That is a real bias, but smaller than the heuristic's constant at
+    these sizes.
+  - So the face `(1, 1)`, worth about −2e-3 in θ, is not to be had from a general large sieve.
+- **Follow-up verification cost** (`verification/AUDIT_FOLLOWUP.md` §6–8).
+  - The HIGH certificates in packed integer arithmetic take 107 s of kernel time (was about
+    2120 s): a coefficient check against literal data plus a tree check.
+  - The tree's interval test reads the shifted coefficients as base-`Y` digits of the packed
+    number, with `Y = 2^e X − k`, because `2^{e(L−1)}A(X)` is the scaled shift evaluated at `Y`.
+  - The sector certificates, packed the same way, take 61 s for all scalar certificates (was
+    290 s).
+  - The face-family certificates now cost about 168 s against about 2600 s in PR 73.
+  - Lean: `Faceless/Packed.lean`, `TreeZ.lean`, `ScalarZ.lean`, all on the three standard axioms.
+- **Follow-up as a submission.** A package `arvi-single-stage-20261025` is prepared on branch
+  `submission-single-stage-20261025`. It is not posted upstream.
+  - Value: 2186813/2500000 = 0.8747252, 3.7e-6 below PR 73's declared 0.8747289.
+  - Simplification: single stage (no seed step, intermediate return or PR 67 re-proof, −38% export
+    bytes) and packed certificates.
+  - It falls under the "smaller gains count if they simplify the proof" clause. The 1e-5 milestone
+    (0.8747189) still needs 6.1e-6 of new mathematics.

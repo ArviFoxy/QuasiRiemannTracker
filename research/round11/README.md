@@ -53,10 +53,29 @@ scripts `factor_split_mass.py` and `ls_constant_support.py` with their logs.
       `N^{5/6}U^{1/3}`. That is de Faveri's `A^{1/3}B^{5/6}` term, and it exceeds `U` for
       `N > U^{4/5}`.
   - **Why the numerics missed it.** It is the same sixth-power-frequency mechanism as the probe's
-    signal channel `k = a⁶e₀`. At `U = 8000`, `N ≈ U` it is about `N·0.6·U^{1/6} ≈ 2.7N`. That is
-    within the constant of the edge `(√R + √C)² ≈ 4N`, so the numerics cannot separate it.
-  - So (A) for general coefficients fails at least on `(U^{4/5}, U]`. The `A^{5/6}B^{1/3}` term
-    (theta coefficients at the rows) probably makes it fail past `U^{1/2}`.
+    signal channel `k = a⁶e₀`. The singular value of the whole matrix is at the edge
+    `(√R + √C)²`, about 4 times the diagonal at `R ≈ C`. A bias of this size hides inside that
+    constant.
+  - **Direct test** (`gauss_bias.py`, logs `gauss_bias_U20000*.log`).
+    - Setup: rows are primary primes with `N(π) ≡ 1 (36)`, so the unit symbols are 1 and
+      reciprocity has no signs. The dual form is compared for `b = conj(g̃)` and for random
+      unimodular `b`.
+    - Results (`U = 2·10⁴`, 326 rows):
+
+      | `N` | `conj(g̃)` | random |
+      |---|---|---|
+      | 1500 | 1.11 | 0.995 ± 0.05 |
+      | 5000 | 1.18 | 0.991 ± 0.03 |
+      | 15000 | 1.08 | 0.998 ± 0.014 |
+
+    - `g̃` without conjugation and the twisted versions sit at or below random. At `U = 10⁴`,
+      `N = 6000` the excess is 1.13 against 0.978 ± 0.010.
+    - So a Gauss-sum bias is visible, at 2–7σ, but it is 5–10 times smaller at these sizes than
+      the crude constant of the heuristic.
+  - **Conclusion.** (A) for general coefficients is heuristically false on `(U^{4/5}, U]`. That is
+    de Faveri's sharp term, and the `A^{5/6}B^{1/3}` term probably makes it fail past `U^{1/2}`.
+    The edge-level numerics do not establish (A). The asymptotic claim is a heuristic, not a
+    theorem.
 - **The atom, localized.** At the binding point the rough core is round 10's adversary (three
   primes of size `U^{0.385}`). There the problem is equivalent to a sixth moment with no `μ`:
   `Σ_u |Σ_{p~P} ψ_u(p)p^{−s}|⁶ ≤ U^{1.129−η}(E|Q|²)³` with `P = U^{t/3}`.
@@ -72,3 +91,15 @@ with slots is diagonal on `m₁ + m₂ + Λz ≤ B`.
   - the unconditional range is `N ≤ U^{1/2}`, which gives the useless face `(1/2, 1)`.
 - That restricted version is atom 1 again, since its dead zone is exactly where the slots break
   the plain reflection.
+
+## 3. Verification and the follow-up submission
+
+- **Packed certificates.** The HIGH and sector certificates now run in packed integer arithmetic.
+  The face-family certificates take about 168 s of kernel time, against about 2600 s in PR 73
+  (`../verification/AUDIT_FOLLOWUP.md` §6–8).
+- **The submission package.** The single-stage follow-up is packaged as
+  `arvi-single-stage-20261025` on branch `submission-single-stage-20261025`. It is not posted.
+  - Value: 2186813/2500000 = 0.8747252, which is 3.7e-6 below PR 73.
+  - Simplification: no seed step, no intermediate return and no PR 67 re-proof (−38% export
+    bytes), plus about 15× less kernel time in our certificates.
+

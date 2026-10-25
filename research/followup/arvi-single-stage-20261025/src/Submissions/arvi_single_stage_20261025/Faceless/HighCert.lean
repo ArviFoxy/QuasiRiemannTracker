@@ -13,8 +13,12 @@ branch `k`, the cleared HIGH gate
 with `ν = q + u (3/4 - q)`, is a bicubic in `(u, p)` whose coefficients `CuP` are polynomials in `y`.
 They are computed by polynomial arithmetic from the samples of `gateG` at `ν, p ∈ {0, 1, -1, 2}`
 (`gateG` is affine in the amplifier `a` and in `F`). A bisection tree in `(u, p)` with positive
-Bernstein coefficients on every leaf, each certified on `y ∈ [0, 1]` by `Poly.posOn`, proves the gate
-positive for every `y`, `ν ∈ [q, 3/4]`, `p ∈ [0, 1/2]`.
+Bernstein coefficients on every leaf, each positive for `y ∈ [0, 1]`, proves the gate positive for
+every `y`, `ν ∈ [q, 3/4]`, `p ∈ [0, 1/2]` (`Piece.high_pos_of_U`, `HighCoeffPos`).
+
+This file has the formulas and the Bernstein transforms of the leaves, on integer polynomials and on
+packed ones (`PP`). `Packed.lean` computes the coefficients in packed arithmetic, and `TreeZ.lean`
+checks the trees.
 -/
 
 set_option autoImplicit false
@@ -27,41 +31,9 @@ open Record1252270103Finite QRH.RepeatedMarks QRH.RepeatedMarks.Finite Poly
 def dIP (p : ℚ) : Fin 2 → Poly := ![[1], [1 - p]]
 def ePP (p : ℚ) (L : Poly) : Fin 3 → Poly := ![[1], [1], add L [-2*p]]
 def gPP (L : Poly) : Fin 3 → Poly := ![[1], [1], L]
-def bIP (p K : ℚ) (S F : Poly) : Fin 2 → Poly := ![smul (2*p*K) S, smul p F]
-def hPP (p hc : ℚ) (B S F : Poly) : Fin 3 → Poly :=
-  ![smul (2*p) S, smul (2*p*hc) F, mul (smul (2*p) B) F]
-
 def gateMP (ν p : ℚ) (L : Poly) (k : Branch) : Poly :=
   add (smul (12*ν) (mul (dIP p k.1) (ePP p L k.2)))
     (smul (5 - 6*ν) (add (smul 2 (ePP p L k.2)) (mul (dIP p k.1) (gPP L k.2))))
-
-def gateNP (ν p K hc : ℚ) (B L S F : Poly) (k : Branch) : Poly :=
-  add (smul 10 (mul F (mul (dIP p k.1) (ePP p L k.2))))
-    (smul (5 - 6*ν) (add (smul 2 (mul (ePP p L k.2) (bIP p K S F k.1)))
-      (mul (dIP p k.1) (hPP p hc B S F k.2))))
-
-def gateGP (a T S F : Poly) (fee K : ℚ) (B L : Poly) (hc ν p : ℚ) (k : Branch) : Poly :=
-  add (mul (gateMP ν p L k)
-      (add (add (smul (15 - 6*ν) (sub a (smul ν T))) (smul ν (sub [10] (smul 60 a))))
-        (add (smul ((15 - 6*ν)*(1 - 2*p)*ν) S) (add (smul (-10*ν) F) [-fee*(15 - 6*ν)]))))
-    (smul (ν*(15 - 6*ν)) (gateNP ν p K hc B L S F k))
-
-theorem eval_gateGP (a T S F : Poly) (fee K : ℚ) (B L : Poly) (hc ν p : ℚ) (k : Branch) (y : ℚ) :
-    eval (gateGP a T S F fee K B L hc ν p k) y =
-      gateG (eval a y) (eval T y) (eval S y) (eval F y) fee K (eval B y) (eval L y) hc ν p k := by
-  rcases k with ⟨i, j⟩
-  fin_cases i <;> fin_cases j <;>
-    simp [gateGP, gateMP, gateNP, dIP, ePP, gPP, bIP, hPP, gateG, gateM, gateN, dI, eP, gP, bI, hP,
-      -mul_eq_mul_left_iff, -mul_eq_mul_right_iff] <;>
-    ring
-
-/-- `gateG` is affine in the amplifier `a` and in `F`. -/
-theorem gateG_affine (a T S F fee K B L hc ν p : ℚ) (k : Branch) :
-    gateG a T S F fee K B L hc ν p k = gateG 0 T S 0 fee K B L hc ν p k
-      + (gateG 1 T S 0 fee K B L hc ν p k - gateG 0 T S 0 fee K B L hc ν p k) * a
-      + (gateG 0 T S 1 fee K B L hc ν p k - gateG 0 T S 0 fee K B L hc ν p k) * F := by
-  rcases k with ⟨i, j⟩
-  fin_cases i <;> fin_cases j <;> simp [gateG, gateM, gateN, dI, eP, gP, bI, hP] <;> ring
 
 /-! ## The cleared samples -/
 
@@ -168,87 +140,7 @@ theorem eval_cuP (c : Fin 4 → Fin 4 → Poly) (α β D : Poly) (a j : Fin 4) (
       -mul_eq_mul_left_iff, -mul_eq_mul_right_iff] <;>
     ring
 
-def shift3P (c : Fin 4 → Poly) (a s : ℚ) : Fin 4 → Poly :=
-  ![add (add (c 0) (smul a (c 1))) (add (smul (a^2) (c 2)) (smul (a^3) (c 3))),
-    smul s (add (add (c 1) (smul (2*a) (c 2))) (smul (3*a^2) (c 3))),
-    smul (s^2) (add (c 2) (smul (3*a) (c 3))),
-    smul (s^3) (c 3)]
-
-def bern3P (e : Fin 4 → Poly) : Fin 4 → Poly :=
-  ![e 0, add (e 0) (smul (1/3) (e 1)), add (add (e 0) (smul (2/3) (e 1))) (smul (1/3) (e 2)),
-    add (add (e 0) (e 1)) (add (e 2) (e 3))]
-
-def bern33P (c : Fin 4 → Fin 4 → Poly) (a s b t : ℚ) (I J : Fin 4) : Poly :=
-  bern3P (fun j => bern3P (fun i => shift3P (fun i' => shift3P (c i') b t j) a s i) I) J
-
-theorem eval_shift3P (c : Fin 4 → Poly) (a s y : ℚ) (i : Fin 4) :
-    eval (shift3P c a s i) y = shift3 (fun i => eval (c i) y) a s i := by
-  fin_cases i <;> simp [shift3P, shift3, -mul_eq_mul_left_iff, -mul_eq_mul_right_iff] <;> ring
-
-theorem eval_bern3P (e : Fin 4 → Poly) (y : ℚ) (i : Fin 4) :
-    eval (bern3P e i) y = bern3 (fun i => eval (e i) y) i := by
-  fin_cases i <;> simp [bern3P, bern3, -mul_eq_mul_left_iff, -mul_eq_mul_right_iff] <;> ring
-
-theorem eval_bern33P (c : Fin 4 → Fin 4 → Poly) (a s b t y : ℚ) (I J : Fin 4) :
-    eval (bern33P c a s b t I J) y = bern33 (fun i j => eval (c i j) y) a s b t I J := by
-  simp only [bern33P, bern33, eval_bern3P, eval_shift3P]
-
 /-! ## Bisection trees in `(u, p)` with breakpoint lists in `y` -/
-
-inductive UTree where
-  | leaf : List (List ℚ) → UTree
-  | u : UTree → UTree → UTree
-  | p : UTree → UTree → UTree
-  deriving Repr
-
-/-- Every Bernstein coefficient of the leaf box is positive on `y ∈ [0, 1]`; the breakpoint list
-of coefficient `(I, J)` is entry `4 I + J`. -/
-def leafCheck (c : Fin 4 → Fin 4 → Poly) (a s b t : ℚ) (br : List (List ℚ)) : Bool :=
-  (List.finRange 4).all fun I => (List.finRange 4).all fun J =>
-    let bs := br.getD (4 * I.val + J.val) []
-    !bs.isEmpty && decide (1 ≤ lastPt 0 bs) && posOn (bern33P c a s b t I J) 0 bs
-
-def uCheck (c : Fin 4 → Fin 4 → Poly) : UTree → ℚ → ℚ → ℚ → ℚ → Bool
-  | .leaf br, a, s, b, t => leafCheck c a s b t br
-  | .u l r, a, s, b, t => uCheck c l a (s/2) b t && uCheck c r (a + s/2) (s/2) b t
-  | .p l r, a, s, b, t => uCheck c l a s b (t/2) && uCheck c r a s (b + t/2) (t/2)
-
-theorem leafCheck_sound (c : Fin 4 → Fin 4 → Poly) (a s b t : ℚ) (br : List (List ℚ))
-    (hc : leafCheck c a s b t br = true) (y : ℚ) (hy0 : 0 ≤ y) (hy1 : y ≤ 1) (I J : Fin 4) :
-    0 < bern33 (fun i j => eval (c i j) y) a s b t I J := by
-  simp only [leafCheck, List.all_eq_true, List.mem_finRange, true_implies, Bool.and_eq_true,
-    decide_eq_true_eq] at hc
-  obtain ⟨⟨hne, hlast⟩, hpos⟩ := hc I J
-  rw [← eval_bern33P]
-  refine posOn_sound _ 0 _ hpos y hy0 (hy1.trans hlast) ?_
-  intro h; rw [h] at hne; simp at hne
-
-theorem uCheck_sound (c : Fin 4 → Fin 4 → Poly) (T : UTree) :
-    ∀ (a s b t : ℚ), 0 < s → 0 < t → uCheck c T a s b t = true →
-      ∀ y : ℚ, 0 ≤ y → y ≤ 1 → ∀ u p : ℝ, (a:ℝ) ≤ u → u ≤ (a:ℝ) + s → (b:ℝ) ≤ p → p ≤ (b:ℝ) + t →
-        0 < ∑ i : Fin 4, ∑ j : Fin 4, ((eval (c i j) y : ℚ) : ℝ) * u ^ (i:ℕ) * p ^ (j:ℕ) := by
-  induction T with
-  | leaf br =>
-    intro a s b t hs ht hc y hy0 hy1 u p hu0 hu1 hp0 hp1
-    apply bicubic_pos (fun i j => ((eval (c i j) y : ℚ) : ℝ)) (a := (a:ℝ)) (s := (s:ℝ)) (b := (b:ℝ))
-      (t := (t:ℝ)) (by exact_mod_cast hs) (by exact_mod_cast ht) hu0 hu1 hp0 hp1
-    intro I J
-    rw [← bern33_cast]
-    exact_mod_cast leafCheck_sound c a s b t br hc y hy0 hy1 I J
-  | u l r ihl ihr =>
-    intro a s b t hs ht hc y hy0 hy1 u p hu0 hu1 hp0 hp1
-    simp only [uCheck, Bool.and_eq_true] at hc
-    rcases le_total u ((a:ℝ) + (s:ℝ)/2) with hu | hu
-    · exact ihl a (s/2) b t (by linarith) ht hc.1 y hy0 hy1 u p hu0 (by push_cast; linarith) hp0 hp1
-    · exact ihr (a + s/2) (s/2) b t (by linarith) ht hc.2 y hy0 hy1 u p (by push_cast; linarith)
-        (by push_cast; linarith) hp0 hp1
-  | p l r ihl ihr =>
-    intro a s b t hs ht hc y hy0 hy1 u p hu0 hu1 hp0 hp1
-    simp only [uCheck, Bool.and_eq_true] at hc
-    rcases le_total p ((b:ℝ) + (t:ℝ)/2) with hp | hp
-    · exact ihl a s b (t/2) hs (by linarith) hc.1 y hy0 hy1 u p hu0 hu1 hp0 (by push_cast; linarith)
-    · exact ihr a s (b + t/2) (t/2) hs (by linarith) hc.2 y hy0 hy1 u p hu0 hu1 (by push_cast; linarith)
-        (by push_cast; linarith)
 
 /-! ## The uniform HIGH gate of a piece -/
 
@@ -351,22 +243,13 @@ theorem high_pos_of_U (b : Poly) (k : Branch) (y : ℚ)
     rw [key]; exact hpos
   exact pos_of_mul_pos_right this hfac.le
 
-theorem high_pos_of_cert (b : Poly) (k : Branch) (T : UTree)
-    (hc : uCheck (P.highU b k) T 0 1 0 (1/2) = true)
-    (y : ℚ) (hy0 : 0 ≤ y) (hy1 : y ≤ 1)
-    (hB : 0 < P.B (y - P.Dy)) (hL : 0 < P.L (y - P.Dy)) (hq : P.q y < 3/4)
-    (ν p : ℝ) (hν : ν ∈ Set.Icc ((P.q y : ℚ) : ℝ) (3/4)) (hp : p ∈ Set.Icc (0:ℝ) (1/2)) :
-    0 < highGateReal (P.node y) (P.node (y - P.Dy)) (P.node (y - P.Dy)) 8
-      ((eval b y : ℚ) : ℝ) ν p k :=
-  P.high_pos_of_U b k y (fun u p hu0 hu1 hp0 hp1 => uCheck_sound (P.highU b k) T 0 1 0 (1/2) one_pos
-    (by norm_num) hc y hy0 hy1 u p (by simpa using hu0) (by simpa using hu1) (by simpa using hp0)
-    (by simpa using hp1)) hB hL hq ν p hν hp
-
 end Piece
 
 /-! ## Integer leaves: Bernstein coefficients on dyadic boxes with integer arithmetic -/
 
 namespace IPoly
+
+open Faceless.Kronecker
 
 /-- `2^{3m} · shift3 c (k/2^m) (1/2^m)`. -/
 def ishift3A (c : Fin 4 → IPoly) (k A : ℤ) : Fin 4 → IPoly :=
@@ -436,10 +319,10 @@ theorem eval_ib33 (c : Fin 4 → Fin 4 → IPoly) (ka : ℤ) (m : ℕ) (kb : ℤ
 /-! ### Packed leaves
 
 A polynomial `q = A − B` (`A, B` natural coefficient lists) is carried as the four numbers
-`⟨A(X), B(X), A(1), B(1)⟩`. The Bernstein transform of a leaf is a linear combination with integer
-weights, so it acts on these numbers directly: one big-number operation per term instead of one
-per coefficient. The coefficients are read back as base-`X` digits, which is exact once
-`A(1), B(1) < X` (no carries). -/
+`⟨A(X), B(X), A(1), B(1)⟩` (`Kronecker.pack`). The Bernstein transform of a leaf is a linear
+combination with integer weights, so it acts on these numbers directly: one big-number operation
+per term instead of one per coefficient. The coefficients are the base-`X` digits, exactly once
+`A(1), B(1) < X` (`Kronecker.unpack_pack_of_one_lt`); `TreeZ.lean` reads them off directly. -/
 
 structure PP where
   pos : ℕ
@@ -455,18 +338,16 @@ def smul (w : ℤ) (r : PP) : PP :=
   if 0 ≤ w then ⟨w.toNat * r.pos, w.toNat * r.neg, w.toNat * r.pos1, w.toNat * r.neg1⟩
   else ⟨(-w).toNat * r.neg, (-w).toNat * r.pos, (-w).toNat * r.neg1, (-w).toNat * r.pos1⟩
 
+/-- Pack both parts of `q` at base `X` and at `1`. -/
 def pack (X : ℕ) (q : IPoly) : PP :=
-  ⟨NP.evalN (q.map Int.toNat) X, NP.evalN (q.map fun c => (-c).toNat) X,
-    NP.evalN (q.map Int.toNat) 1, NP.evalN (q.map fun c => (-c).toNat) 1⟩
-
-def unpack (X L : ℕ) (r : PP) : IPoly :=
-  List.zipWith (fun (a b : ℕ) => (a:ℤ) - (b:ℤ)) (NP.digits X L r.pos) (NP.digits X L r.neg)
+  ⟨Kronecker.pack X (posPart q), Kronecker.pack X (negPart q), Kronecker.pack 1 (posPart q),
+    Kronecker.pack 1 (negPart q)⟩
 
 /-- `r` packs `q` at base `X`, with at most `L` coefficients. -/
 def Rep (X L : ℕ) (r : PP) (q : IPoly) : Prop :=
-  ∃ A B : List ℕ, A.length ≤ L ∧ B.length ≤ L ∧ r.pos = NP.evalN A X ∧ r.neg = NP.evalN B X ∧
-    r.pos1 = NP.evalN A 1 ∧ r.neg1 = NP.evalN B 1 ∧
-    ∀ y : ℚ, eval q y = NP.evalQ A y - NP.evalQ B y
+  ∃ A B : List ℕ, A.length ≤ L ∧ B.length ≤ L ∧ r.pos = Kronecker.pack X A ∧
+    r.neg = Kronecker.pack X B ∧ r.pos1 = Kronecker.pack 1 A ∧ r.neg1 = Kronecker.pack 1 B ∧
+    ∀ y : ℚ, eval q y = evalQ A y - evalQ B y
 
 theorem rep_pack (X L : ℕ) (q : IPoly) (hq : q.length ≤ L) : Rep X L (pack X q) q :=
   ⟨_, _, by simpa using hq, by simpa using hq, rfl, rfl, rfl, rfl, fun y => eval_eq_parts q y⟩
@@ -475,55 +356,39 @@ theorem rep_add {X L : ℕ} {r s : PP} {q q' : IPoly} (hr : Rep X L r q) (hs : R
     Rep X L (add r s) (IPoly.add q q') := by
   obtain ⟨A, B, hA, hB, h1, h2, h3, h4, h5⟩ := hr
   obtain ⟨A', B', hA', hB', h1', h2', h3', h4', h5'⟩ := hs
-  refine ⟨NP.addN A A', NP.addN B B', ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
-  · rw [NP.length_addN]; omega
-  · rw [NP.length_addN]; omega
-  · simp only [add, h1, h1', NP.evalN_addN]
-  · simp only [add, h2, h2', NP.evalN_addN]
-  · simp only [add, h3, h3', NP.evalN_addN]
-  · simp only [add, h4, h4', NP.evalN_addN]
-  · intro y; rw [IPoly.eval_add, h5, h5', NP.evalQ_addN, NP.evalQ_addN]; ring
+  refine ⟨addN A A', addN B B', ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
+  · rw [length_addN]; omega
+  · rw [length_addN]; omega
+  · simp only [add, h1, h1', pack_addN]
+  · simp only [add, h2, h2', pack_addN]
+  · simp only [add, h3, h3', pack_addN]
+  · simp only [add, h4, h4', pack_addN]
+  · intro y; rw [IPoly.eval_add, h5, h5', evalQ_addN, evalQ_addN]; ring
 
 theorem rep_smul {X L : ℕ} {r : PP} {q : IPoly} (w : ℤ) (hr : Rep X L r q) :
     Rep X L (smul w r) (IPoly.smul w q) := by
   obtain ⟨A, B, hA, hB, h1, h2, h3, h4, h5⟩ := hr
   by_cases hw : 0 ≤ w
   · have hc : ((w.toNat : ℕ) : ℚ) = (w : ℚ) := by exact_mod_cast Int.toNat_of_nonneg hw
-    refine ⟨NP.smulN w.toNat A, NP.smulN w.toNat B, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
-    · rwa [NP.length_smulN]
-    · rwa [NP.length_smulN]
-    · simp only [smul, hw, ite_true, h1, NP.evalN_smulN]
-    · simp only [smul, hw, ite_true, h2, NP.evalN_smulN]
-    · simp only [smul, hw, ite_true, h3, NP.evalN_smulN]
-    · simp only [smul, hw, ite_true, h4, NP.evalN_smulN]
-    · intro y; rw [IPoly.eval_smul, h5, NP.evalQ_smulN, NP.evalQ_smulN, hc]; ring
+    refine ⟨smulN w.toNat A, smulN w.toNat B, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
+    · rwa [length_smulN]
+    · rwa [length_smulN]
+    · simp only [smul, hw, ite_true, h1, pack_smulN]
+    · simp only [smul, hw, ite_true, h2, pack_smulN]
+    · simp only [smul, hw, ite_true, h3, pack_smulN]
+    · simp only [smul, hw, ite_true, h4, pack_smulN]
+    · intro y; rw [IPoly.eval_smul, h5, evalQ_smulN, evalQ_smulN, hc]; ring
   · have hw' : 0 ≤ -w := by omega
     have hc : (((-w).toNat : ℕ) : ℚ) = -(w : ℚ) := by
       have := Int.toNat_of_nonneg hw'; push_cast at this ⊢; exact_mod_cast this
-    refine ⟨NP.smulN (-w).toNat B, NP.smulN (-w).toNat A, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
-    · rwa [NP.length_smulN]
-    · rwa [NP.length_smulN]
-    · simp only [smul, hw, ite_false, h2, NP.evalN_smulN]
-    · simp only [smul, hw, ite_false, h1, NP.evalN_smulN]
-    · simp only [smul, hw, ite_false, h4, NP.evalN_smulN]
-    · simp only [smul, hw, ite_false, h3, NP.evalN_smulN]
-    · intro y; rw [IPoly.eval_smul, h5, NP.evalQ_smulN, NP.evalQ_smulN, hc]; ring
-
-theorem length_digits (X n V : ℕ) : (NP.digits X n V).length = n := by
-  induction n generalizing V with
-  | zero => rfl
-  | succ n ih => simp [NP.digits, ih]
-
-theorem eval_unpack {X L : ℕ} {r : PP} {q : IPoly} (hr : Rep X L r q) (hp : r.pos1 < X)
-    (hn : r.neg1 < X) (y : ℚ) : eval (unpack X L r) y = eval q y := by
-  obtain ⟨A, B, hA, hB, h1, h2, h3, h4, h5⟩ := hr
-  have hX : 0 < X := lt_of_le_of_lt (Nat.zero_le _) hp
-  have hp' : NP.evalN A 1 < X := h3 ▸ hp
-  have hn' : NP.evalN B 1 < X := h4 ▸ hn
-  have hdA := NP.digits_evalN X hX A (fun c hc => lt_of_le_of_lt (NP.le_evalN_one A c hc) hp') L hA
-  have hdB := NP.digits_evalN X hX B (fun c hc => lt_of_le_of_lt (NP.le_evalN_one B c hc) hn') L hB
-  rw [unpack, eval_zipWith_sub _ _ (by rw [length_digits, length_digits]), h1, h2, h5,
-    list_eq_of_getD L (length_digits _ _ _) hA hdA y, list_eq_of_getD L (length_digits _ _ _) hB hdB y]
+    refine ⟨smulN (-w).toNat B, smulN (-w).toNat A, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
+    · rwa [length_smulN]
+    · rwa [length_smulN]
+    · simp only [smul, hw, ite_false, h2, pack_smulN]
+    · simp only [smul, hw, ite_false, h1, pack_smulN]
+    · simp only [smul, hw, ite_false, h4, pack_smulN]
+    · simp only [smul, hw, ite_false, h3, pack_smulN]
+    · intro y; rw [IPoly.eval_smul, h5, evalQ_smulN, evalQ_smulN, hc]; ring
 
 end PP
 
@@ -569,11 +434,6 @@ theorem rep_pb33 {X L : ℕ} {c' : Fin 4 → Fin 4 → PP} {c : Fin 4 → Fin 4 
   rep_pbern3 (fun j => rep_pbern3 (fun i => rep_pshift3A _ _
     (fun i' => rep_pshift3A _ _ (fun j' => h i' j') j) i) I) J
 
-/-- The sum of the absolute values of the coefficients, over a coefficient array. -/
-def sumAbs16 (c : Fin 4 → Fin 4 → IPoly) : ℕ :=
-  (List.finRange 4).foldr (fun i acc => (List.finRange 4).foldr
-    (fun j acc' => (absSum (c i j)).toNat + acc') acc) 0
-
 /-- The largest length over a coefficient array. -/
 def maxLen16 (c : Fin 4 → Fin 4 → IPoly) : ℕ :=
   (List.finRange 4).foldr (fun i acc => (List.finRange 4).foldr
@@ -612,128 +472,13 @@ theorem length_le_maxLen16 (c : Fin 4 → Fin 4 → IPoly) (i j : Fin 4) :
       · exact le_trans (ih hl) (le_foldr_max_init (fun j => (c z j).length) _ _)
   exact key _ (List.mem_finRange i)
 
-/-- Every Bernstein coefficient of the dyadic leaf box is positive on `y ∈ [0, 1]`; the Bernstein
-transform runs on packed polynomials. -/
-def leafCheckI (c : Fin 4 → Fin 4 → IPoly) (ka m kb n : ℕ) (br : List (List (ℕ × ℕ))) : Bool :=
-  let X := (sumAbs16 c + 1) * 2 ^ (3 * (m + n) + 16)
-  let L := maxLen16 c
-  (List.finRange 4).all fun I => (List.finRange 4).all fun J =>
-    let r := pb33 (fun i j => PP.pack X (c i j)) ka m kb n I J
-    let l := br.getD (4 * I.val + J.val) []
-    decide (r.pos1 < X) && decide (r.neg1 < X) && !l.isEmpty && posOn (PP.unpack X L r) 0 0 l
-
 inductive UTreeI where
   | leaf : List (List (ℕ × ℕ)) → UTreeI
   | u : UTreeI → UTreeI → UTreeI
   | p : UTreeI → UTreeI → UTreeI
   deriving Repr
 
-/-- The box `u ∈ [ka/2^m, (ka+1)/2^m]`, `p ∈ [kb/2^n, (kb+1)/2^n]`. -/
-def uCheckI (c : Fin 4 → Fin 4 → IPoly) : UTreeI → ℕ → ℕ → ℕ → ℕ → Bool
-  | .leaf br, ka, m, kb, n => leafCheckI c ka m kb n br
-  | .u l r, ka, m, kb, n => uCheckI c l (2*ka) (m+1) kb n && uCheckI c r (2*ka+1) (m+1) kb n
-  | .p l r, ka, m, kb, n => uCheckI c l ka m (2*kb) (n+1) && uCheckI c r ka m (2*kb+1) (n+1)
-
-theorem leafCheckI_sound (c : Fin 4 → Fin 4 → IPoly) (ka m kb n : ℕ) (br : List (List (ℕ × ℕ)))
-    (hc : leafCheckI c ka m kb n br = true) (y : ℚ) (hy0 : 0 ≤ y) (hy1 : y ≤ 1) (I J : Fin 4) :
-    0 < bern33 (fun i j => eval (c i j) y) ((ka:ℚ) / 2 ^ m) (1 / 2 ^ m) ((kb:ℚ) / 2 ^ n)
-      (1 / 2 ^ n) I J := by
-  simp only [leafCheckI, List.all_eq_true, List.mem_finRange, true_implies, Bool.and_eq_true,
-    Bool.not_eq_true', decide_eq_true_eq] at hc
-  obtain ⟨⟨⟨hp, hn⟩, hne⟩, hpos⟩ := hc I J
-  have hrep := rep_pb33 (X := (sumAbs16 c + 1) * 2 ^ (3 * (m + n) + 16)) (L := maxLen16 c)
-    (c' := fun i j => PP.pack ((sumAbs16 c + 1) * 2 ^ (3 * (m + n) + 16)) (c i j))
-    (fun i j => PP.rep_pack _ _ (c i j) (length_le_maxLen16 c i j)) ka m kb n I J
-  have h := posOn_sound _ 0 0 _ hpos y (by simpa using hy0) hy1
-    (by intro h; rw [h] at hne; simp at hne)
-  rw [PP.eval_unpack hrep hp hn, eval_ib33] at h
-  have hk : (0:ℚ) < 9 * ((2:ℚ) ^ m) ^ 3 * ((2:ℚ) ^ n) ^ 3 := by positivity
-  exact pos_of_mul_pos_right h hk.le
-
-theorem uCheckI_sound (c : Fin 4 → Fin 4 → IPoly) (T : UTreeI) :
-    ∀ (ka m kb n : ℕ), uCheckI c T ka m kb n = true →
-      ∀ y : ℚ, 0 ≤ y → y ≤ 1 → ∀ u p : ℝ, (ka:ℝ) / 2 ^ m ≤ u → u ≤ ((ka:ℝ) + 1) / 2 ^ m →
-        (kb:ℝ) / 2 ^ n ≤ p → p ≤ ((kb:ℝ) + 1) / 2 ^ n →
-        0 < ∑ i : Fin 4, ∑ j : Fin 4, ((eval (c i j) y : ℚ) : ℝ) * u ^ (i:ℕ) * p ^ (j:ℕ) := by
-  induction T with
-  | leaf br =>
-    intro ka m kb n hc y hy0 hy1 u p hu0 hu1 hp0 hp1
-    have hs : (0:ℝ) < 1 / 2 ^ m := by positivity
-    have ht : (0:ℝ) < 1 / 2 ^ n := by positivity
-    apply bicubic_pos (fun i j => ((eval (c i j) y : ℚ) : ℝ)) (a := (ka:ℝ) / 2 ^ m) (s := 1 / 2 ^ m)
-      (b := (kb:ℝ) / 2 ^ n) (t := 1 / 2 ^ n) hs ht hu0 (by rw [← add_div]; exact hu1) hp0
-      (by rw [← add_div]; exact hp1)
-    intro I J
-    have h := leafCheckI_sound c ka m kb n br hc y hy0 hy1 I J
-    have hcast := bern33_cast (fun i j => eval (c i j) y) ((ka:ℚ) / 2 ^ m) (1 / 2 ^ m)
-      ((kb:ℚ) / 2 ^ n) (1 / 2 ^ n) I J
-    push_cast at hcast
-    rw [← hcast]
-    exact_mod_cast h
-  | u l r ihl ihr =>
-    intro ka m kb n hc y hy0 hy1 u p hu0 hu1 hp0 hp1
-    simp only [uCheckI, Bool.and_eq_true] at hc
-    have h2 : (0:ℝ) < 2 ^ m := by positivity
-    rcases le_total u ((((2 * ka : ℕ) : ℝ) + 1) / 2 ^ (m + 1)) with hu | hu
-    · refine ihl (2*ka) (m+1) kb n hc.1 y hy0 hy1 u p ?_ hu hp0 hp1
-      rw [pow_succ]; push_cast
-      calc (2 * (ka:ℝ)) / (2 ^ m * 2) = (ka:ℝ) / 2 ^ m := by field_simp
-        _ ≤ u := hu0
-    · refine ihr (2*ka+1) (m+1) kb n hc.2 y hy0 hy1 u p ?_ ?_ hp0 hp1
-      · push_cast at hu ⊢; exact hu
-      · rw [pow_succ]; push_cast
-        calc u ≤ ((ka:ℝ) + 1) / 2 ^ m := hu1
-          _ = (2 * (ka:ℝ) + 1 + 1) / (2 ^ m * 2) := by field_simp; ring
-  | p l r ihl ihr =>
-    intro ka m kb n hc y hy0 hy1 u p hu0 hu1 hp0 hp1
-    simp only [uCheckI, Bool.and_eq_true] at hc
-    have h2 : (0:ℝ) < 2 ^ n := by positivity
-    rcases le_total p ((((2 * kb : ℕ) : ℝ) + 1) / 2 ^ (n + 1)) with hp | hp
-    · refine ihl ka m (2*kb) (n+1) hc.1 y hy0 hy1 u p hu0 hu1 ?_ hp
-      rw [pow_succ]; push_cast
-      calc (2 * (kb:ℝ)) / (2 ^ n * 2) = (kb:ℝ) / 2 ^ n := by field_simp
-        _ ≤ p := hp0
-    · refine ihr ka m (2*kb+1) (n+1) hc.2 y hy0 hy1 u p hu0 hu1 ?_ ?_
-      · push_cast at hp ⊢; exact hp
-      · rw [pow_succ]; push_cast
-        calc p ≤ ((kb:ℝ) + 1) / 2 ^ n := hp1
-          _ = (2 * (kb:ℝ) + 1 + 1) / (2 ^ n * 2) := by field_simp; ring
-
 end IPoly
-
-/-- The common denominator of a coefficient array. -/
-def lcmDen16 (c : Fin 4 → Fin 4 → Poly) : ℕ :=
-  (List.finRange 4).foldr (fun i acc => (List.finRange 4).foldr
-    (fun j acc' => Nat.lcm (IPoly.lcmDen (c i j)) acc') acc) 1
-
-def intOK16 (c : Fin 4 → Fin 4 → Poly) (D : ℕ) : Bool :=
-  (List.finRange 4).all fun i => (List.finRange 4).all fun j => IPoly.isIntMul (c i j) D
-
-/-- The integer certificate of a coefficient array. -/
-def certI (c : Fin 4 → Fin 4 → Poly) (T : IPoly.UTreeI) : Bool :=
-  let D := lcmDen16 c
-  decide (0 < D) && intOK16 c D && IPoly.uCheckI (fun i j => IPoly.ofPoly (c i j) D) T 0 0 0 1
-
-theorem certI_sound (c : Fin 4 → Fin 4 → Poly) (T : IPoly.UTreeI) (hc : certI c T = true)
-    (y : ℚ) (hy0 : 0 ≤ y) (hy1 : y ≤ 1) (u p : ℝ) (hu0 : 0 ≤ u) (hu1 : u ≤ 1) (hp0 : 0 ≤ p)
-    (hp1 : p ≤ 1/2) :
-    0 < ∑ i : Fin 4, ∑ j : Fin 4, ((eval (c i j) y : ℚ) : ℝ) * u ^ (i:ℕ) * p ^ (j:ℕ) := by
-  simp only [certI, Bool.and_eq_true, decide_eq_true_eq] at hc
-  obtain ⟨⟨hD, hint⟩, hu⟩ := hc
-  have h := IPoly.uCheckI_sound _ T 0 0 0 1 hu y hy0 hy1 u p (by simpa using hu0)
-    (by simpa using hu1) (by simpa using hp0) (by norm_num; linarith)
-  simp only [intOK16, List.all_eq_true, List.mem_finRange, true_implies] at hint
-  have hD' : (0:ℝ) < (lcmDen16 c : ℝ) := by exact_mod_cast hD
-  have heq : ∀ i j, ((IPoly.eval (IPoly.ofPoly (c i j) (lcmDen16 c)) y : ℚ) : ℝ) =
-      (lcmDen16 c : ℝ) * ((eval (c i j) y : ℚ) : ℝ) := by
-    intro i j; rw [IPoly.eval_ofPoly _ _ (hint i j)]; push_cast; ring
-  simp only [heq] at h
-  have : ∑ i : Fin 4, ∑ j : Fin 4, (lcmDen16 c : ℝ) * ((eval (c i j) y : ℚ) : ℝ) * u ^ (i:ℕ) * p ^ (j:ℕ)
-      = (lcmDen16 c : ℝ) * ∑ i : Fin 4, ∑ j : Fin 4, ((eval (c i j) y : ℚ) : ℝ) * u ^ (i:ℕ) * p ^ (j:ℕ) := by
-    simp only [Finset.mul_sum]; apply Finset.sum_congr rfl; intro i _
-    apply Finset.sum_congr rfl; intro j _; ring
-  rw [this] at h
-  exact pos_of_mul_pos_right h hD'.le
 
 /-- The bicubic in `(u, p)` with coefficients `c i j (y)` is positive on the certified box for every
 `y ∈ [0, 1]` (what every HIGH certificate proves). -/
@@ -741,39 +486,8 @@ def HighCoeffPos (c : Fin 4 → Fin 4 → Poly) : Prop :=
   ∀ y : ℚ, 0 ≤ y → y ≤ 1 → ∀ u p : ℝ, 0 ≤ u → u ≤ 1 → 0 ≤ p → p ≤ 1/2 →
     0 < ∑ i : Fin 4, ∑ j : Fin 4, ((eval (c i j) y : ℚ) : ℝ) * u ^ (i:ℕ) * p ^ (j:ℕ)
 
-theorem certI_coeffPos (c : Fin 4 → Fin 4 → Poly) (T : IPoly.UTreeI) (hc : certI c T = true) :
-    HighCoeffPos c := fun y hy0 hy1 u p hu0 hu1 hp0 hp1 => certI_sound c T hc y hy0 hy1 u p hu0 hu1 hp0 hp1
-
-/-- `certI` with the integer coefficient array given as data `cL`: the array is compared with the
-computed one once, and every leaf check then runs on the data. -/
-def certL (c : Fin 4 → Fin 4 → Poly) (cL : Fin 4 → Fin 4 → IPoly) (T : IPoly.UTreeI) : Bool :=
-  let D := lcmDen16 c
-  decide (0 < D) && intOK16 c D &&
-    ((List.finRange 4).all fun i => (List.finRange 4).all fun j => decide (IPoly.ofPoly (c i j) D = cL i j)) &&
-    IPoly.uCheckI cL T 0 0 0 1
-
-theorem certI_of_certL (c : Fin 4 → Fin 4 → Poly) (cL : Fin 4 → Fin 4 → IPoly) (T : IPoly.UTreeI)
-    (h : certL c cL T = true) : certI c T = true := by
-  simp only [certL, certI, Bool.and_eq_true, decide_eq_true_eq, List.all_eq_true, List.mem_finRange,
-    true_implies] at h ⊢
-  obtain ⟨⟨⟨hD, hint⟩, heq⟩, hu⟩ := h
-  refine ⟨⟨hD, hint⟩, ?_⟩
-  have e : (fun i j => IPoly.ofPoly (c i j) (lcmDen16 c)) = cL := by funext i j; exact heq i j
-  rw [e]; exact hu
-
 namespace Piece
 variable (P : Piece)
-
-/-- The uniform HIGH gate of a piece from an integer certificate. -/
-theorem high_pos_of_certI (b : Poly) (k : Branch) (T : IPoly.UTreeI)
-    (hc : certI (P.highU b k) T = true)
-    (y : ℚ) (hy0 : 0 ≤ y) (hy1 : y ≤ 1)
-    (hB : 0 < P.B (y - P.Dy)) (hL : 0 < P.L (y - P.Dy)) (hq : P.q y < 3/4)
-    (ν p : ℝ) (hν : ν ∈ Set.Icc ((P.q y : ℚ) : ℝ) (3/4)) (hp : p ∈ Set.Icc (0:ℝ) (1/2)) :
-    0 < highGateReal (P.node y) (P.node (y - P.Dy)) (P.node (y - P.Dy)) 8
-      ((eval b y : ℚ) : ℝ) ν p k :=
-  P.high_pos_of_U b k y (fun u p hu0 hu1 hp0 hp1 => certI_sound _ T hc y hy0 hy1 u p hu0 hu1 hp0 hp1)
-    hB hL hq ν p hν hp
 
 end Piece
 

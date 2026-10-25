@@ -1,4 +1,5 @@
 import Submissions.arvi_single_stage_20261025.Faceless.Poly
+import Submissions.arvi_single_stage_20261025.Faceless.Kronecker
 
 /-!
 # Integer polynomials and the integer Taylor test on dyadic intervals
@@ -29,18 +30,6 @@ def add : IPoly → IPoly → IPoly
 
 def smul (c : ℤ) (p : IPoly) : IPoly := p.map (c * ·)
 
-def mul : IPoly → IPoly → IPoly
-  | [], _ => []
-  | a :: p, q => add (smul a q) (0 :: mul p q)
-
-/-- The coefficients of `t ↦ p (k + t)`. -/
-def shift (p : IPoly) (k : ℤ) : IPoly := p.foldr (fun c acc => add [c] (mul [k, 1] acc)) []
-
-/-- `x ↦ 2^{e n} p(x / 2^e)` with `n + 1 = length p` (coefficient `i` times `2^{e(n-i)}`). -/
-def scale (e : ℕ) : IPoly → IPoly
-  | [] => []
-  | c :: cs => (c * ((2 ^ (e * cs.length) : ℕ) : ℤ)) :: scale e cs
-
 @[simp] theorem eval_nil (x : ℚ) : eval [] x = 0 := rfl
 @[simp] theorem eval_cons (c : ℤ) (cs : IPoly) (x : ℚ) : eval (c :: cs) x = c + x * eval cs x := rfl
 
@@ -58,33 +47,6 @@ def scale (e : ℕ) : IPoly → IPoly
   | cons a p ih =>
     simp only [smul, List.map_cons, eval_cons] at ih ⊢
     rw [ih]; push_cast; ring
-
-@[simp] theorem eval_mul (p q : IPoly) (x : ℚ) : eval (mul p q) x = eval p x * eval q x := by
-  induction p with
-  | nil => simp [mul]
-  | cons a p ih => simp [mul, ih]; ring
-
-@[simp] theorem eval_shift (p : IPoly) (k : ℤ) (t : ℚ) : eval (shift p k) t = eval p (k + t) := by
-  induction p with
-  | nil => simp [shift]
-  | cons c p ih =>
-    have : shift (c :: p) k = add [c] (mul [k, 1] (shift p k)) := rfl
-    rw [this, eval_add, eval_mul, ih]
-    simp
-
-theorem eval_scale (e : ℕ) (p : IPoly) (x : ℚ) :
-    eval (scale e p) x = 2 ^ (e * (p.length - 1)) * eval p (x / 2 ^ e) := by
-  have h2 : (2:ℚ) ^ e ≠ 0 := by positivity
-  induction p with
-  | nil => simp [scale]
-  | cons c cs ih =>
-    simp only [scale, eval_cons, ih, List.length_cons, Nat.add_sub_cancel]
-    push_cast
-    rcases cs with _ | ⟨d, ds⟩
-    · simp
-    · simp only [List.length_cons, Nat.add_sub_cancel]
-      rw [show e * (ds.length + 1) = e * ds.length + e by ring, pow_add]
-      field_simp
 
 /-! ## The integer Taylor test on `t ∈ [0, 1]` -/
 
@@ -142,269 +104,81 @@ theorem tm1_sound (Q : IPoly) (hc : tm1 Q = true) (t : ℚ) (ht0 : 0 ≤ t) (ht1
     simp only [eval_cons]
     nlinarith
 
-/-- The test on the dyadic interval `[k/2^e, (k+1)/2^e]`. -/
-def tm1On (p : IPoly) (k e : ℕ) : Bool := tm1 (shift (scale e p) k)
+/-! ## Signed polynomials as packed pairs, and the Kronecker test
 
-theorem tm1On_sound (p : IPoly) (k e : ℕ) (hc : tm1On p k e = true) (y : ℚ)
-    (hy0 : (k:ℚ) / 2 ^ e ≤ y) (hy1 : y ≤ ((k:ℚ) + 1) / 2 ^ e) : 0 < eval p y := by
-  have h2 : (0:ℚ) < 2 ^ e := by positivity
-  set t := y * 2 ^ e - k with ht
-  have ht0 : 0 ≤ t := by rw [div_le_iff₀ h2] at hy0; linarith
-  have ht1 : t ≤ 1 := by rw [le_div_iff₀ h2] at hy1; linarith
-  have hQ := tm1_sound _ hc t ht0 ht1
-  rw [eval_shift, eval_scale] at hQ
-  have hy : ((k:ℤ):ℚ) + t = y * 2 ^ e := by rw [ht]; push_cast; ring
-  rw [hy, mul_div_cancel_right₀ _ h2.ne'] at hQ
-  exact pos_of_mul_pos_right hQ (by positivity)
+An integer polynomial is the difference of its positive and negative parts, two polynomials with
+natural coefficients. Each part is packed with `Kronecker.pack`, and read back with
+`Kronecker.unpack` (`eval_subD_unpack`, `subD_unpack_pack`). The Kronecker test reads the
+coefficients of `t ↦ 2^{e n} p((k + t)/2^e)` off as base-`X` digits of one packed value
+(`Kronecker.unpack_shift`), with `X` above the coefficient sums so that no digit carries. -/
 
-/-! ## The Kronecker test: one shift is a few big-number operations
+open Faceless.Kronecker
 
-The coefficients of `t ↦ 2^{e n} p((k + t)/2^e)` are read off as base-`X` digits of one Horner value,
-separately for the positive and negative parts of `p`; `X` exceeds the coefficient sums, so no digit
-carries. -/
+/-- The positive part: `q = posPart q − negPart q`. -/
+def posPart (q : IPoly) : List ℕ := q.map Int.toNat
 
-namespace NP
+/-- The negative part: `q = posPart q − negPart q`. -/
+def negPart (q : IPoly) : List ℕ := q.map fun c => (-c).toNat
 
-def evalN : List ℕ → ℕ → ℕ
-  | [], _ => 0
-  | c :: cs, x => c + x * evalN cs x
+@[simp] theorem length_posPart (q : IPoly) : (posPart q).length = q.length := by simp [posPart]
 
-def evalQ : List ℕ → ℚ → ℚ
-  | [], _ => 0
-  | c :: cs, x => (c : ℚ) + x * evalQ cs x
+@[simp] theorem length_negPart (q : IPoly) : (negPart q).length = q.length := by simp [negPart]
 
-def addN : List ℕ → List ℕ → List ℕ
-  | [], q => q
-  | a :: p, [] => a :: p
-  | a :: p, b :: q => (a + b) :: addN p q
-
-def smulN (c : ℕ) (p : List ℕ) : List ℕ := p.map (c * ·)
-
-def mulN : List ℕ → List ℕ → List ℕ
-  | [], _ => []
-  | _ :: _, [] => []
-  | a :: p, b :: q => addN (smulN a (b :: q)) (0 :: mulN p (b :: q))
-
-/-- The Taylor shift (used in proofs only). -/
-def shiftN (p : List ℕ) (k : ℕ) : List ℕ := p.foldr (fun c acc => addN [c] (mulN [k, 1] acc)) []
-
-def scaleN (e : ℕ) : List ℕ → List ℕ
-  | [] => []
-  | c :: cs => (c * 2 ^ (e * cs.length)) :: scaleN e cs
-
-/-- `n` base-`X` digits of `V`. -/
-def digits (X : ℕ) : ℕ → ℕ → List ℕ
-  | 0, _ => []
-  | n + 1, V => V % X :: digits X n (V / X)
-
-theorem evalN_addN (p q : List ℕ) (x : ℕ) : evalN (addN p q) x = evalN p x + evalN q x := by
-  induction p generalizing q with
-  | nil => simp [addN, evalN]
-  | cons a p ih => cases q with
-    | nil => simp [addN, evalN]
-    | cons b q => simp [addN, evalN, ih]; ring
-
-theorem evalN_smulN (c : ℕ) (p : List ℕ) (x : ℕ) : evalN (smulN c p) x = c * evalN p x := by
-  induction p with
-  | nil => simp [smulN, evalN]
-  | cons a p ih => simp only [smulN, List.map_cons, evalN] at ih ⊢; rw [ih]; ring
-
-theorem evalN_mulN (p q : List ℕ) (x : ℕ) : evalN (mulN p q) x = evalN p x * evalN q x := by
-  induction p with
-  | nil => simp [mulN, evalN]
-  | cons a p ih =>
-    cases q with
-    | nil => simp [mulN, evalN]
-    | cons b q => simp only [mulN] at ih ⊢; simp [evalN, evalN_addN, evalN_smulN, ih]; ring
-
-theorem evalN_shiftN (p : List ℕ) (k x : ℕ) : evalN (shiftN p k) x = evalN p (k + x) := by
-  induction p with
-  | nil => simp [shiftN, evalN]
-  | cons c p ih =>
-    have : shiftN (c :: p) k = addN [c] (mulN [k, 1] (shiftN p k)) := rfl
-    rw [this, evalN_addN, evalN_mulN, ih]; simp [evalN]
-
-theorem evalQ_addN (p q : List ℕ) (x : ℚ) : evalQ (addN p q) x = evalQ p x + evalQ q x := by
-  induction p generalizing q with
-  | nil => simp [addN, evalQ]
-  | cons a p ih => cases q with
-    | nil => simp [addN, evalQ]
-    | cons b q => simp [addN, evalQ, ih]; ring
-
-theorem evalQ_smulN (c : ℕ) (p : List ℕ) (x : ℚ) : evalQ (smulN c p) x = c * evalQ p x := by
-  induction p with
-  | nil => simp [smulN, evalQ]
-  | cons a p ih => simp only [smulN, List.map_cons, evalQ] at ih ⊢; rw [ih]; push_cast; ring
-
-theorem evalQ_mulN (p q : List ℕ) (x : ℚ) : evalQ (mulN p q) x = evalQ p x * evalQ q x := by
-  induction p with
-  | nil => simp [mulN, evalQ]
-  | cons a p ih =>
-    cases q with
-    | nil => simp [mulN, evalQ]
-    | cons b q => simp only [mulN] at ih ⊢; simp [evalQ, evalQ_addN, evalQ_smulN, ih]; ring
-
-theorem evalQ_shiftN (p : List ℕ) (k : ℕ) (t : ℚ) : evalQ (shiftN p k) t = evalQ p (k + t) := by
-  induction p with
-  | nil => simp [shiftN, evalQ]
-  | cons c p ih =>
-    have : shiftN (c :: p) k = addN [c] (mulN [k, 1] (shiftN p k)) := rfl
-    rw [this, evalQ_addN, evalQ_mulN, ih]; simp [evalQ]
-
-theorem evalQ_scaleN (e : ℕ) (p : List ℕ) (x : ℚ) :
-    evalQ (scaleN e p) x = 2 ^ (e * (p.length - 1)) * evalQ p (x / 2 ^ e) := by
-  have h2 : (2:ℚ) ^ e ≠ 0 := by positivity
-  induction p with
-  | nil => simp [scaleN, evalQ]
-  | cons c cs ih =>
-    simp only [scaleN, evalQ, ih, List.length_cons, Nat.add_sub_cancel]
-    push_cast
-    rcases cs with _ | ⟨d, ds⟩
-    · simp [evalQ]
-    · simp only [List.length_cons, Nat.add_sub_cancel]
-      rw [show e * (ds.length + 1) = e * ds.length + e by ring, pow_add]
-      field_simp
-
-theorem length_addN (p q : List ℕ) : (addN p q).length = max p.length q.length := by
-  induction p generalizing q with
-  | nil => simp [addN]
-  | cons a p ih => cases q with
-    | nil => simp [addN]
-    | cons b q => simp [addN, ih, Nat.succ_max_succ]
-
-theorem length_smulN (c : ℕ) (p : List ℕ) : (smulN c p).length = p.length := by simp [smulN]
-
-theorem length_mulN_le (p q : List ℕ) : (mulN p q).length ≤ p.length + q.length - 1 := by
-  induction p with
-  | nil => simp [mulN]
-  | cons a p ih =>
-    cases q with
-    | nil => simp [mulN]
-    | cons b q =>
-      simp only [mulN, length_addN, length_smulN, List.length_cons] at ih ⊢
-      omega
-
-theorem length_shiftN (p : List ℕ) (k : ℕ) : (shiftN p k).length ≤ p.length := by
-  induction p with
-  | nil => simp [shiftN]
-  | cons c p ih =>
-    have : shiftN (c :: p) k = addN [c] (mulN [k, 1] (shiftN p k)) := rfl
-    rw [this, length_addN]
-    have := length_mulN_le [k, 1] (shiftN p k)
-    simp only [List.length_cons, List.length_nil] at this ⊢
-    omega
-
-theorem le_evalN_one (L : List ℕ) : ∀ c ∈ L, c ≤ evalN L 1 := by
-  induction L with
-  | nil => simp
-  | cons a L ih =>
-    intro c hc
-    simp only [List.mem_cons] at hc
-    rcases hc with rfl | hc
-    · simp [evalN]
-    · have := ih c hc; simp [evalN]; omega
-
-/-- Digits of `evalN L X` when every entry is below `X`; trailing zeros pad up to `n`. -/
-theorem digits_evalN (X : ℕ) (hX : 0 < X) (L : List ℕ) (hL : ∀ c ∈ L, c < X) (n : ℕ)
-    (hn : L.length ≤ n) : ∀ i < n, (digits X n (evalN L X)).getD i 0 = L.getD i 0 := by
-  induction n generalizing L with
-  | zero => intro i hi; omega
-  | succ n ih =>
-    intro i hi
-    cases L with
-    | nil =>
-      have h0 : ∀ m V, V = 0 → ∀ j, (digits X m V).getD j 0 = 0 := by
-        intro m
-        induction m with
-        | zero => intro V _ j; simp [digits]
-        | succ m ihm =>
-          intro V hV j; subst hV
-          cases j with
-          | zero => simp [digits]
-          | succ j => simpa [digits] using ihm 0 rfl j
-      simp only [evalN]; rw [h0 _ 0 rfl]; simp
-    | cons a L =>
-      have ha : a < X := hL a (by simp)
-      have hmod : evalN (a :: L) X % X = a := by
-        simp only [evalN]; rw [Nat.add_mul_mod_self_left, Nat.mod_eq_of_lt ha]
-      have hdiv : evalN (a :: L) X / X = evalN L X := by
-        simp only [evalN]; rw [Nat.add_mul_div_left _ _ hX, Nat.div_eq_of_lt ha, zero_add]
-      cases i with
-      | zero => simp [digits, hmod]
-      | succ i =>
-        simp only [digits, List.getD_cons_succ, hdiv]
-        exact ih L (fun c hc => hL c (by simp [hc])) (by simp at hn; omega) i (by omega)
-
-end NP
-
-/-- The test of `tm1On` by Kronecker substitution. -/
-def tm1K (p : IPoly) (k e : ℕ) : Bool :=
-  let Rp := NP.scaleN e (p.map Int.toNat)
-  let Rm := NP.scaleN e (p.map fun c => (-c).toNat)
-  let X := max (NP.evalN Rp (k + 1)) (NP.evalN Rm (k + 1)) + 1
-  let dp := NP.digits X p.length (NP.evalN Rp (k + X))
-  let dm := NP.digits X p.length (NP.evalN Rm (k + X))
-  tm1 (List.zipWith (fun (a b : ℕ) => (a:ℤ) - (b:ℤ)) dp dm)
-
-theorem eval_eq_parts (p : IPoly) (x : ℚ) :
-    eval p x = NP.evalQ (p.map Int.toNat) x - NP.evalQ (p.map fun c => (-c).toNat) x := by
-  induction p with
-  | nil => simp [NP.evalQ]
-  | cons c p ih =>
-    simp only [eval_cons, List.map_cons, NP.evalQ, ih]
+theorem eval_eq_parts (q : IPoly) (x : ℚ) :
+    eval q x = evalQ (posPart q) x - evalQ (negPart q) x := by
+  induction q with
+  | nil => simp [posPart, negPart, evalQ]
+  | cons c q ih =>
+    simp only [posPart, negPart] at ih
+    simp only [posPart, negPart, eval_cons, List.map_cons, evalQ, ih]
     have h := Int.toNat_sub_toNat_neg c
     have : (c : ℚ) = ((c.toNat : ℕ) : ℚ) - (((-c).toNat : ℕ) : ℚ) := by exact_mod_cast h.symm
     rw [this]; ring
 
-theorem eval_zipWith_sub (A B : List ℕ) (hl : A.length = B.length) (t : ℚ) :
-    eval (List.zipWith (fun (a b : ℕ) => (a:ℤ) - (b:ℤ)) A B) t = NP.evalQ A t - NP.evalQ B t := by
+/-- The difference `A − B` of two natural coefficient lists. -/
+def subD (A B : List ℕ) : IPoly := List.zipWith (fun (a b : ℕ) => (a:ℤ) - (b:ℤ)) A B
+
+theorem eval_subD (A B : List ℕ) (hl : A.length = B.length) (t : ℚ) :
+    eval (subD A B) t = evalQ A t - evalQ B t := by
   induction A generalizing B with
   | nil => cases B with
-    | nil => simp [NP.evalQ]
+    | nil => simp [subD, evalQ]
     | cons _ _ => simp at hl
   | cons a A ih => cases B with
     | nil => simp at hl
     | cons b B =>
-      simp only [List.zipWith_cons_cons, eval_cons, NP.evalQ]
+      simp only [subD, List.zipWith_cons_cons, eval_cons, evalQ] at ih ⊢
       rw [ih B (by simpa using hl)]; push_cast; ring
 
-/-- The digits recovered by `tm1K` are the shifted coefficients. -/
-theorem digits_shift (R : List ℕ) (k n : ℕ) (hn : R.length ≤ n) (X : ℕ)
-    (hX : NP.evalN R (k + 1) < X) :
-    ∀ i < n, (NP.digits X n (NP.evalN R (k + X))).getD i 0 = (NP.shiftN R k).getD i 0 := by
-  have hX0 : 0 < X := lt_of_le_of_lt (Nat.zero_le _) hX
-  rw [← NP.evalN_shiftN]
-  apply NP.digits_evalN X hX0
-  · intro c hc
-    have := NP.le_evalN_one _ c hc
-    rw [NP.evalN_shiftN] at this
-    omega
-  · exact (NP.length_shiftN R k).trans hn
+theorem subD_parts (q : IPoly) : subD (posPart q) (negPart q) = q := by
+  induction q with
+  | nil => rfl
+  | cons c q ih =>
+    simp only [subD, posPart, negPart, List.map_cons, List.zipWith_cons_cons] at ih ⊢
+    rw [ih, Int.toNat_sub_toNat_neg]
 
-theorem list_eq_of_getD {A B : List ℕ} (n : ℕ) (hA : A.length = n) (hB : B.length ≤ n)
-    (h : ∀ i < n, A.getD i 0 = B.getD i 0) (t : ℚ) : NP.evalQ A t = NP.evalQ B t := by
-  induction n generalizing A B with
-  | zero =>
-    have : A = [] := List.length_eq_zero_iff.mp hA
-    have : B = [] := List.length_eq_zero_iff.mp (by omega)
-    subst_vars; rfl
-  | succ n ih =>
-    cases A with
-    | nil => simp at hA
-    | cons a A =>
-      cases B with
-      | nil =>
-        have h0 : ∀ i < n + 1, (a :: A).getD i 0 = 0 := fun i hi => by simpa using h i hi
-        have hz : ∀ i < n, A.getD i 0 = ([] : List ℕ).getD i 0 := by
-          intro i hi; simpa using h0 (i + 1) (by omega)
-        have := ih (B := []) (by simpa using hA) (by simp) hz
-        have ha : a = 0 := by simpa using h0 0 (by omega)
-        simp [NP.evalQ, this, ha]
-      | cons b B =>
-        have hab : a = b := by simpa using h 0 (by omega)
-        have := ih (A := A) (B := B) (by simpa using hA) (by simp at hB; omega)
-          (fun i hi => by simpa using h (i + 1) (by omega))
-        simp [NP.evalQ, this, hab]
+/-- Signed unpacking: `A − B` from `A(X)` and `B(X)`, once both coefficient sums are below `X`. -/
+theorem eval_subD_unpack {X L : ℕ} {A B : List ℕ} (hA : pack 1 A < X) (hB : pack 1 B < X)
+    (hAL : A.length ≤ L) (hBL : B.length ≤ L) (y : ℚ) :
+    eval (subD (unpack X L (pack X A)) (unpack X L (pack X B))) y = evalQ A y - evalQ B y := by
+  rw [eval_subD _ _ (by simp), evalQ_unpack_pack A hA hAL, evalQ_unpack_pack B hB hBL]
+
+/-- Signed `unpack_pack`: an integer polynomial is recovered from its two packed parts. -/
+theorem subD_unpack_pack {X : ℕ} (q : IPoly) (hp : pack 1 (posPart q) < X)
+    (hn : pack 1 (negPart q) < X) :
+    subD (unpack X q.length (pack X (posPart q))) (unpack X q.length (pack X (negPart q))) = q := by
+  rw [unpack_pack_of_one_lt _ hp (by simp), unpack_pack_of_one_lt _ hn (by simp)]
+  simp only [length_posPart, length_negPart, Nat.sub_self, List.replicate_zero, List.append_nil]
+  exact subD_parts q
+
+/-- The test `tm1` of `t ↦ 2^{e(n−1)} p((k + t)/2^e)`, `n = p.length`, i.e. positivity of `p` on
+`[k/2^e, (k+1)/2^e]`, by Kronecker substitution: the shifted coefficients of each part are the
+base-`X` digits of one packed value (`Kronecker.unpack_shift`). -/
+def tm1K (p : IPoly) (k e : ℕ) : Bool :=
+  let Rp := scaleN e (posPart p)
+  let Rm := scaleN e (negPart p)
+  let X := max (pack (k + 1) Rp) (pack (k + 1) Rm) + 1
+  tm1 (subD (unpack X p.length (pack (k + X) Rp)) (unpack X p.length (pack (k + X) Rm)))
 
 theorem tm1K_sound (p : IPoly) (k e : ℕ) (hc : tm1K p k e = true) (y : ℚ)
     (hy0 : (k:ℚ) / 2 ^ e ≤ y) (hy1 : y ≤ ((k:ℚ) + 1) / 2 ^ e) : 0 < eval p y := by
@@ -413,39 +187,16 @@ theorem tm1K_sound (p : IPoly) (k e : ℕ) (hc : tm1K p k e = true) (y : ℚ)
   have ht0 : 0 ≤ t := by rw [div_le_iff₀ h2] at hy0; linarith
   have ht1 : t ≤ 1 := by rw [le_div_iff₀ h2] at hy1; linarith
   simp only [tm1K] at hc
-  set Rp := NP.scaleN e (p.map Int.toNat) with hRp
-  set Rm := NP.scaleN e (p.map fun c => (-c).toNat) with hRm
-  set X := max (NP.evalN Rp (k + 1)) (NP.evalN Rm (k + 1)) + 1 with hX
-  have hlp : Rp.length = p.length := by
-    have : ∀ (e : ℕ) (L : List ℕ), (NP.scaleN e L).length = L.length := by
-      intro e L; induction L with
-      | nil => rfl
-      | cons a L ih => simp [NP.scaleN, ih]
-    rw [hRp, this]; simp
-  have hlm : Rm.length = p.length := by
-    have : ∀ (e : ℕ) (L : List ℕ), (NP.scaleN e L).length = L.length := by
-      intro e L; induction L with
-      | nil => rfl
-      | cons a L ih => simp [NP.scaleN, ih]
-    rw [hRm, this]; simp
-  have hdl : ∀ (V : ℕ), (NP.digits X p.length V).length = p.length := by
-    intro V
-    have : ∀ n V, (NP.digits X n V).length = n := by
-      intro n; induction n with
-      | zero => intro V; rfl
-      | succ n ih => intro V; simp [NP.digits, ih]
-    exact this _ V
+  set Rp := scaleN e (posPart p) with hRp
+  set Rm := scaleN e (negPart p) with hRm
+  set X := max (pack (k + 1) Rp) (pack (k + 1) Rm) + 1 with hX
   have hQ := tm1_sound _ hc t ht0 ht1
-  rw [eval_zipWith_sub _ _ (by rw [hdl, hdl])] at hQ
-  rw [list_eq_of_getD p.length (hdl _) ((NP.length_shiftN Rp k).trans hlp.le)
-      (digits_shift Rp k p.length hlp.le X (by omega)) t,
-    list_eq_of_getD p.length (hdl _) ((NP.length_shiftN Rm k).trans hlm.le)
-      (digits_shift Rm k p.length hlm.le X (by omega)) t] at hQ
-  rw [NP.evalQ_shiftN, NP.evalQ_shiftN, hRp, hRm, NP.evalQ_scaleN, NP.evalQ_scaleN] at hQ
+  rw [eval_subD _ _ (by simp),
+    evalQ_unpack_shift Rp k p.length X (by simp [hRp]) (by omega) t,
+    evalQ_unpack_shift Rm k p.length X (by simp [hRm]) (by omega) t,
+    hRp, hRm, evalQ_scaleN, evalQ_scaleN, length_posPart, length_negPart] at hQ
   have hy : ((k:ℕ):ℚ) + t = y * 2 ^ e := by rw [ht]; ring
-  rw [hy, mul_div_cancel_right₀ _ h2.ne'] at hQ
-  simp only [List.length_map] at hQ
-  rw [← mul_sub, ← eval_eq_parts] at hQ
+  rw [hy, mul_div_cancel_right₀ _ h2.ne', ← mul_sub, ← eval_eq_parts] at hQ
   exact pos_of_mul_pos_right hQ (by positivity)
 
 /-- Positivity on `[k₀/2^{e₀}, 1]` over contiguous dyadic intervals `(k, e)`. -/

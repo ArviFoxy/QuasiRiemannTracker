@@ -3,13 +3,14 @@ import Submissions.arvi_single_stage_20261025.Faceless.Packed
 /-!
 # Fast HIGH trees: the interval tests read the packed leaf polynomials directly
 
-`IPoly.uCheckI` unpacks every leaf polynomial to a list of integers and re-packs it for every
-`y`-interval. Here the interval test works on the packed numbers. If `r` packs `A − B` at base `X`
-(`r.pos = A(X)`) and `k + 1 ≤ 2^e`, the scaled shift `t ↦ 2^{e(L−1)} A((k + t)/2^e)` has natural
-coefficients, and its value at `Y = 2^e X − k` is `2^{e(L−1)} A(X)`. So its coefficients are the
+The interval test works on the packed numbers of a leaf polynomial, without unpacking it. If `r`
+packs `A − B` at base `X` (`r.pos = A(X)`) and `k + 1 ≤ 2^e`, the scaled shift
+`t ↦ 2^{e(L−1)} A((k + t)/2^e)` has natural coefficients, and its value at `Y = 2^e X − k` is
+`2^{e(L−1)} A(X)` (`Kronecker.pack_scaleN`, `Kronecker.pack_shiftN`). So its coefficients are the
 base-`Y` digits of `2^{e(L−1)} r.pos`, exactly when their sum `2^{e(L−1)} A((k+1)/2^e)` is below
-`Y`, which `2^{e(L−1)} r.pos1 < Y` guarantees. The test `tm1` then runs on these digits in
-natural numbers. The base `X` is data, and the packed inputs are shared by all leaves of a tree.
+`Y`, which `2^{e(L−1)} r.pos1 < Y` guarantees (`Kronecker.unpack_shift`). The test `tm1` then runs
+on these digits in natural numbers. The base `X` is data, and the packed inputs are shared by all
+leaves of a tree.
 -/
 
 set_option autoImplicit false
@@ -17,6 +18,8 @@ set_option autoImplicit false
 namespace QRH.RepeatedMarks.Faceless
 
 namespace IPoly
+
+open Faceless.Kronecker
 
 /-- `Σ |a_i − b_i|`, in natural numbers. -/
 def absDiffSum : List ℕ → List ℕ → ℕ
@@ -32,14 +35,15 @@ def tm1D : List ℕ → List ℕ → Bool
   | _, _ => false
 
 theorem absDiffSum_cast (A B : List ℕ) (h : A.length = B.length) :
-    ((absDiffSum A B : ℕ) : ℤ) = absSum (List.zipWith (fun (a b : ℕ) => (a:ℤ) - (b:ℤ)) A B) := by
+    ((absDiffSum A B : ℕ) : ℤ) = absSum (subD A B) := by
   induction A generalizing B with
-  | nil => cases B <;> simp_all [absDiffSum, absSum]
+  | nil => cases B <;> simp_all [absDiffSum, absSum, subD]
   | cons a A ih =>
     cases B with
     | nil => simp at h
     | cons b B =>
-      simp only [absDiffSum, List.zipWith_cons_cons, absSum, Nat.cast_add]
+      simp only [subD] at ih
+      simp only [absDiffSum, subD, List.zipWith_cons_cons, absSum, Nat.cast_add]
       rw [ih B (by simpa using h)]
       have key : (((a - b : ℕ) : ℤ) + ((b - a : ℕ) : ℤ)) = |(a:ℤ) - (b:ℤ)| := by
         rcases le_total a b with hab | hab
@@ -48,67 +52,16 @@ theorem absDiffSum_cast (A B : List ℕ) (h : A.length = B.length) :
       rw [key]
 
 theorem tm1_of_tm1D (A B : List ℕ) (h : A.length = B.length) (hc : tm1D A B = true) :
-    tm1 (List.zipWith (fun (a b : ℕ) => (a:ℤ) - (b:ℤ)) A B) = true := by
+    tm1 (subD A B) = true := by
   rcases A with _ | ⟨a₀, _ | ⟨a₁, as⟩⟩ <;> rcases B with _ | ⟨b₀, _ | ⟨b₁, bs⟩⟩ <;>
     simp only [tm1D, Bool.false_eq_true] at hc <;> simp at h
   · simp only [decide_eq_true_eq] at hc
-    simp only [List.zipWith_cons_cons, List.zipWith_nil_left, tm1, decide_eq_true_eq]
+    simp only [subD, List.zipWith_cons_cons, List.zipWith_nil_left, tm1, decide_eq_true_eq]
     omega
   · simp only [Bool.and_eq_true, decide_eq_true_eq] at hc
-    simp only [List.zipWith_cons_cons, tm1, decide_eq_true_eq]
-    rw [← absDiffSum_cast as bs h, lt_min_iff]
+    simp only [subD, List.zipWith_cons_cons, tm1, decide_eq_true_eq]
+    rw [← subD, ← absDiffSum_cast as bs h, lt_min_iff]
     omega
-
-namespace NP
-
-theorem evalN_append_zeros (A : List ℕ) (n x : ℕ) :
-    evalN (A ++ List.replicate n 0) x = evalN A x := by
-  induction A with
-  | nil =>
-    simp only [List.nil_append, evalN]
-    induction n with
-    | zero => rfl
-    | succ n ih => simp only [List.replicate_succ, evalN, ih]; simp
-  | cons a A ih => simp [evalN, ih]
-
-theorem evalQ_append_zeros (A : List ℕ) (n : ℕ) (x : ℚ) :
-    evalQ (A ++ List.replicate n 0) x = evalQ A x := by
-  induction A with
-  | nil =>
-    simp only [List.nil_append, evalQ]
-    induction n with
-    | zero => rfl
-    | succ n ih => simp only [List.replicate_succ, evalQ, ih]; simp
-  | cons a A ih => simp [evalQ, ih]
-
-theorem length_scaleN (e : ℕ) (A : List ℕ) : (scaleN e A).length = A.length := by
-  induction A with
-  | nil => rfl
-  | cons a A ih => simp [scaleN, ih]
-
-theorem evalN_mono (A : List ℕ) {x x' : ℕ} (hx : x ≤ x') : evalN A x ≤ evalN A x' := by
-  induction A with
-  | nil => simp [evalN]
-  | cons a A ih => simp only [evalN]; exact Nat.add_le_add_left (Nat.mul_le_mul hx ih) a
-
-/-- The scaled polynomial at `2^e x`. -/
-theorem evalN_scaleN_pow (e x : ℕ) (A : List ℕ) :
-    evalN (scaleN e A) (2 ^ e * x) = 2 ^ (e * (A.length - 1)) * evalN A x := by
-  induction A with
-  | nil => simp [scaleN, evalN]
-  | cons c cs ih =>
-    simp only [scaleN, evalN, ih, List.length_cons, Nat.add_sub_cancel]
-    rcases cs with _ | ⟨d, ds⟩
-    · simp [scaleN, evalN]
-    · simp only [List.length_cons, Nat.add_sub_cancel]
-      rw [show e * (ds.length + 1) = e * ds.length + e by ring, pow_add]; ring
-
-theorem evalN_scaleN_le (e k : ℕ) (A : List ℕ) (hk : k + 1 ≤ 2 ^ e) :
-    evalN (scaleN e A) (k + 1) ≤ 2 ^ (e * (A.length - 1)) * evalN A 1 := by
-  calc evalN (scaleN e A) (k + 1) ≤ evalN (scaleN e A) (2 ^ e * 1) := evalN_mono _ (by simpa using hk)
-    _ = _ := evalN_scaleN_pow e 1 A
-
-end NP
 
 /-- One dyadic interval `[k/2^e, (k+1)/2^e]`, read off the packed polynomial `r` (base `X`, at most
 `L` coefficients): the coefficients of `t ↦ 2^{e(L−1)} q((k + t)/2^e)` are the base-`Y` digits of
@@ -117,7 +70,7 @@ def tm1Y (r : PP) (X L k e : ℕ) : Bool :=
   let s := 2 ^ (e * (L - 1))
   let Y := 2 ^ e * X - k
   decide (k + 1 ≤ 2 ^ e) && decide (s * r.pos1 < Y) && decide (s * r.neg1 < Y) &&
-    tm1D (NP.digits Y L (s * r.pos)) (NP.digits Y L (s * r.neg))
+    tm1D (Kronecker.unpack Y L (s * r.pos)) (Kronecker.unpack Y L (s * r.neg))
 
 theorem tm1Y_sound {X L : ℕ} {r : PP} {q : IPoly} (hr : PP.Rep X L r q) (k e : ℕ)
     (hc : tm1Y r X L k e = true) (y : ℚ) (hy0 : (k:ℚ) / 2 ^ e ≤ y)
@@ -127,45 +80,29 @@ theorem tm1Y_sound {X L : ℕ} {r : PP} {q : IPoly} (hr : PP.Rep X L r q) (k e :
   obtain ⟨⟨⟨hk, hp⟩, hn⟩, htm⟩ := hc
   set s := 2 ^ (e * (L - 1)) with hs
   set Y := 2 ^ e * X - k with hY
+  -- pad both parts to `L` coefficients, so that both scale by `2^{e(L−1)}`
   set A' := A ++ List.replicate (L - A.length) 0 with hA'def
   set B' := B ++ List.replicate (L - B.length) 0 with hB'def
   have hA' : A'.length = L := by simp only [hA'def, List.length_append, List.length_replicate]; omega
   have hB' : B'.length = L := by simp only [hB'def, List.length_append, List.length_replicate]; omega
-  set RA := NP.scaleN e A' with hRA
-  set RB := NP.scaleN e B' with hRB
-  have hlA : RA.length = L := by rw [hRA, NP.length_scaleN, hA']
-  have hlB : RB.length = L := by rw [hRB, NP.length_scaleN, hB']
-  have hbA : NP.evalN RA (k + 1) < Y := by
-    calc NP.evalN RA (k + 1) ≤ 2 ^ (e * (A'.length - 1)) * NP.evalN A' 1 :=
-          NP.evalN_scaleN_le e k A' hk
-      _ = s * r.pos1 := by rw [hA', hA'def, NP.evalN_append_zeros, h3]
-      _ < Y := hp
-  have hbB : NP.evalN RB (k + 1) < Y := by
-    calc NP.evalN RB (k + 1) ≤ 2 ^ (e * (B'.length - 1)) * NP.evalN B' 1 :=
-          NP.evalN_scaleN_le e k B' hk
-      _ = s * r.neg1 := by rw [hB', hB'def, NP.evalN_append_zeros, h4]
-      _ < Y := hn
   have hkY : k + Y = 2 ^ e * X := by omega
-  have hdA : ∀ i < L, (NP.digits Y L (s * r.pos)).getD i 0 = (NP.shiftN RA k).getD i 0 := by
-    have hv : s * r.pos = NP.evalN RA (k + Y) := by
-      rw [hkY, hRA, NP.evalN_scaleN_pow, hA', hA'def, NP.evalN_append_zeros, h1]
-    rw [hv]; exact digits_shift RA k L hlA.le Y hbA
-  have hdB : ∀ i < L, (NP.digits Y L (s * r.neg)).getD i 0 = (NP.shiftN RB k).getD i 0 := by
-    have hv : s * r.neg = NP.evalN RB (k + Y) := by
-      rw [hkY, hRB, NP.evalN_scaleN_pow, hB', hB'def, NP.evalN_append_zeros, h2]
-    rw [hv]; exact digits_shift RB k L hlB.le Y hbB
+  -- `s · A(X)` is the scaled `A'` packed at base `k + Y`; its coefficient sum at `k + 1` is `< Y`
+  have hvA : s * r.pos = pack (k + Y) (scaleN e A') := by
+    rw [hkY, pack_scaleN, hA', hA'def, pack_append_zeros, h1]
+  have hvB : s * r.neg = pack (k + Y) (scaleN e B') := by
+    rw [hkY, pack_scaleN, hB', hB'def, pack_append_zeros, h2]
+  have hbA : pack (k + 1) (scaleN e A') < Y := lt_of_le_of_lt (pack_scaleN_le e k A' hk)
+    (by rw [hA', hA'def, pack_append_zeros, ← h3]; exact hp)
+  have hbB : pack (k + 1) (scaleN e B') < Y := lt_of_le_of_lt (pack_scaleN_le e k B' hk)
+    (by rw [hB', hB'def, pack_append_zeros, ← h4]; exact hn)
   have h2e : (0:ℚ) < 2 ^ e := by positivity
   set t := y * 2 ^ e - k with ht
   have ht0 : 0 ≤ t := by rw [div_le_iff₀ h2e] at hy0; linarith
   have ht1 : t ≤ 1 := by rw [le_div_iff₀ h2e] at hy1; linarith
-  have hl : (NP.digits Y L (s * r.pos)).length = (NP.digits Y L (s * r.neg)).length := by
-    rw [PP.length_digits, PP.length_digits]
-  have hQ := tm1_sound _ (tm1_of_tm1D _ _ hl htm) t ht0 ht1
-  rw [eval_zipWith_sub _ _ hl,
-    list_eq_of_getD L (PP.length_digits _ _ _) ((NP.length_shiftN RA k).trans hlA.le) hdA t,
-    list_eq_of_getD L (PP.length_digits _ _ _) ((NP.length_shiftN RB k).trans hlB.le) hdB t,
-    NP.evalQ_shiftN, NP.evalQ_shiftN, hRA, hRB, NP.evalQ_scaleN, NP.evalQ_scaleN, hA', hB',
-    hA'def, hB'def, NP.evalQ_append_zeros, NP.evalQ_append_zeros] at hQ
+  have hQ := tm1_sound _ (tm1_of_tm1D _ _ (by simp) htm) t ht0 ht1
+  rw [eval_subD _ _ (by simp), hvA, hvB,
+    evalQ_unpack_shift _ k L Y (by simp [hA']) hbA t, evalQ_unpack_shift _ k L Y (by simp [hB']) hbB t,
+    evalQ_scaleN, evalQ_scaleN, hA', hB', hA'def, hB'def, evalQ_append_zeros, evalQ_append_zeros] at hQ
   have hy : ((k:ℕ):ℚ) + t = y * 2 ^ e := by rw [ht]; ring
   rw [hy, mul_div_cancel_right₀ _ h2e.ne', ← mul_sub, ← h5] at hQ
   exact pos_of_mul_pos_right hQ (by positivity)
@@ -298,7 +235,7 @@ end IPoly
 
 namespace Pk
 
-open IPoly
+open IPoly Faceless.Kronecker
 
 /-- Phase 1 with the packing base `X` as data (no first pass at `X = 1`): the packed coefficients,
 read back at base `X`, are `g` times the data `cK`. -/
@@ -355,12 +292,6 @@ theorem coeffPos_of_decKgXZ (Δ eIn : ℕ) (P : Piece) (b : Poly) (k : Branch) (
     (hd : decKgX Δ eIn P b k g X cK = true) (ht : IPoly.checkZ cK XZ L T = true) :
     HighCoeffPos (P.highU b k) :=
   coeffPos_of_decKgX_of Δ eIn P b k g X cK hd (IPoly.checkZ_sound cK XZ L T ht)
-
-/-- Phases 1 and 2 with the packed tree check (`IPoly.checkZ`). -/
-theorem coeffPos_of_decKgZ (Δ eIn : ℕ) (P : Piece) (b : Poly) (k : Branch) (g : ℕ)
-    (cK : Fin 4 → Fin 4 → IPoly) (X L : ℕ) (T : IPoly.UTreeI) (hd : decKg Δ eIn P b k g cK = true)
-    (ht : IPoly.checkZ cK X L T = true) : HighCoeffPos (P.highU b k) :=
-  coeffPos_of_decKg_of Δ eIn P b k g cK hd (IPoly.checkZ_sound cK X L T ht)
 
 end Pk
 

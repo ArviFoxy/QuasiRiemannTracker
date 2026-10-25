@@ -289,3 +289,51 @@ kernel job.
   Mathlib 379 s.
 - **The follow-up candidate** rebuilds in about 200 s wall on 4 cores, and both theorems use
   only the three standard axioms.
+
+## 10. One packing module with its isomorphism proved; dead code removed
+
+**The module.** All packing now lives in `Faceless/Kronecker.lean`, which imports only Mathlib.
+- **Pack and unpack.** A polynomial with natural coefficients `p` packs to `pack X p = p(X)`.
+  `unpack X L V` reads back the `L` lowest base-`X` digits.
+- **Isomorphism.**
+  - `unpack_pack`: unpacking inverts packing when every coefficient is below `X`.
+  - `pack_unpack`: `pack X (unpack X L V) = V % X^L`.
+  - `equiv`: the two maps are a bijection between lists of length `L` with entries below `X` and
+    `Fin (X^L)`.
+- **Arithmetic.** `pack_addN`, `pack_smulN`, `pack_mulN`: a polynomial product is one big-number
+  product.
+- **No carries.**
+  - `le_pack_one`: every coefficient is at most `p(1)`.
+  - `unpack_pack_of_one_lt`: the digits are the coefficients, padded with zeros, once `p(1) < X`.
+- **Change of base.**
+  - `pack_shiftN`: a Taylor shift is a change of base, `pack x (shiftN p k) = pack (k + x) p`.
+  - `unpack_shift`: the shifted coefficients are the base-`Y` digits of `pack (k + Y) p`.
+
+**The signed layer** is in `IPoly.lean`: `posPart`/`negPart`, the difference `subD`,
+`eval_subD_unpack`, and the signed isomorphism `subD_unpack_pack`.
+
+**What uses it.** The certificates use only these lemmas:
+- `tm1K`, the sector certificates;
+- `PP.pack`, the HIGH leaves;
+- `Pk.unpack`, phase 1;
+- `tm1Y`, phase 2.
+
+The old digit-by-digit lemmas (`digits_evalN`, `digits_shift`, `list_eq_of_getD`) are gone. The
+soundness proofs of `tm1Y` and `tm1K` are now a few rewrites with `evalQ_unpack_shift`.
+
+**Dead code.** A reachability scan from `Candidate.bound` (`Scratch/DeadCode.lean`) found 411
+unused declarations in the package.
+- **Removed from the Faceless modules**, all superseded by the packed path:
+  - the `Rat` tree check (`UTree`, `uCheck`, `certI`, `certL`);
+  - the unpacked integer tree check (`uCheckI`, `leafCheckI`);
+  - the first packed phase-1 variants (`decK`, `decKg`, `certK`);
+  - the rational Taylor test of `Poly.lean`, and `IPoly.tm1On`.
+- **Kept on purpose.** Simp lemmas proved by `rfl` are kept, even when the scan calls them unused,
+  because `simp` uses them without leaving a reference in the proof term.
+- **Effect.** These files go from 2596 lines (124 kB) to 2063 lines (95 kB), including the new
+  module.
+- **Left in place.** The rest is small lemmas in the return modules.
+
+**Verification.** The candidate rebuilds from the changed modules (13628 jobs) in about 4 minutes
+wall on 4 cores. `Candidate.bound` still depends only on `propext`, `Classical.choice` and
+`Quot.sound`.

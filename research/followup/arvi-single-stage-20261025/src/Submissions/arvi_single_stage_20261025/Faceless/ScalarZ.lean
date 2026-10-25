@@ -19,9 +19,6 @@ open Record1252270103Finite QRH.RepeatedMarks.Finite Poly
 /-- `p > 0` on `y ∈ [0, 1]`. -/
 def PosOn01 (p : Poly) : Prop := ∀ y : ℚ, 0 ≤ y → y ≤ 1 → 0 < eval p y
 
-theorem posOn01_of_pos1I {p : Poly} {l : List (ℕ × ℕ)} (h : pos1I p l = true) : PosOn01 p :=
-  fun y hy0 hy1 => pos1I_sound p l h y hy0 hy1
-
 namespace Pk
 
 open IPoly

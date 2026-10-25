@@ -116,6 +116,7 @@ class RunnerTests(unittest.TestCase):
             entry = measure.STORE/job.key
             entry.mkdir(parents=True)
             (entry/'module.olean').write_bytes(b'olean')
+            (entry/'module.ilean').write_text('{}')
         with self.lock:
             self.compiled.append(job.module['name'])
         return record(job.key, 2.0, 2.0 - measure.SLACK, module=job.module['name'], owner=job.module['owner'])
@@ -208,6 +209,32 @@ class RunnerTests(unittest.TestCase):
         self.run_clean()
         self.assertEqual(len(list(measure.STORE.glob('*'))), 3)
 
+    def test_a_fast_run_only_builds_and_is_finished_without_any_cost(self):
+        self.dumped, self.dump_works = [], True
+        flags = []
+        def fast_fake(job, view, env, **options):
+            flags.append(options.get('fast'))
+            result = self.fake(job, view, env, **options)
+            for field in ('net', 'work', 'profile'):
+                result.pop(field, None)
+            return result
+        runner = measure.Runner({'lean': '/none', 'libraries': []}, self.order, self.jobs, self.members, self.order,
+                                workers=2, anon_cap_kib=1, heavy_cap_kib=2, timeout=1,
+                                plans=self.plans, dump=True, collect=True, fast=True)
+        with patch.object(measure, 'compile_module', fast_fake), patch.object(measure, 'dump_submission', self.fake_dump):
+            self.assertTrue(runner.run())
+        self.assertEqual(flags, [True, True, True])
+        records = measure.read_measurements()
+        self.assertEqual({r['kind'] for r in records}, {'build'})
+        self.assertEqual(measure.best_costs(records), {})
+        # Both submissions are finished, so nothing is built again.
+        self.compiled.clear()
+        with patch.object(measure, 'compile_module', fast_fake), patch.object(measure, 'dump_submission', self.fake_dump):
+            self.assertTrue(runner.run())
+        self.assertEqual(self.compiled, [])
+        # Measuring would still want costs for what was only built.
+        self.assertFalse(measure.is_complete(measure.BASELINE, self.members[measure.BASELINE], {}))
+
     def test_the_clean_up_can_be_switched_off(self):
         self.dumped, self.dump_works = [], True
         self.run_clean(collect=False)
@@ -234,6 +261,7 @@ class RunnerTests(unittest.TestCase):
                     entry = measure.STORE/job.key
                     entry.mkdir(parents=True, exist_ok=True)
                     (entry/'module.olean').write_bytes(b'olean')
+                    (entry/'module.ilean').write_text('{}')
                 import time as _time
                 _time.sleep(0.05)
                 result = record(job.key, 2.0, 2.0 - measure.SLACK, module=job.module['name'], owner=job.module['owner'])
@@ -254,6 +282,30 @@ class RunnerTests(unittest.TestCase):
         others = [c for c in calls if c[1] == 10]
         self.assertTrue(all(c[2] <= 2 for c in others))
         self.assertEqual(len(measure.best_costs(measure.read_measurements())), 5)
+
+    def test_the_names_a_declaration_mentions_come_from_the_ilean_file(self):
+        ilean = {'references': {
+            '{"c":{"m":"T.A","n":"T.helper"}}': {'definition': None, 'usages': [[4, 18, 4, 24, 'T.useSimp'], [7, 17, 7, 23]]},
+            '{"c":{"m":"T.A","n":"T.unrelated"}}': {'definition': None, 'usages': [[6, 8, 6, 17, 'T.viaUnused']]},
+            '{"c":{"m":"Mathlib.X","n":"Nat.add"}}': {'definition': None, 'usages': [[1, 1, 1, 2, 'T.useSimp']]},
+            '{"c":{"m":"T.C","n":"T.useSimp"}}': {'definition': [3, 8, 3, 15], 'usages': [[9, 1, 9, 5, 'T.useSimp']]},
+            '{"f":{"id":"x"}}': {'definition': [1, 1, 1, 2], 'usages': [[2, 1, 2, 2, 'T.useSimp']]},
+        }}
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory)/'module.ilean'
+            path.write_text(json.dumps(ilean))
+            pairs, context = measure.text_references(path, {'T.A', 'T.C'})
+        # Names of libraries and local variables are left out, and so is a declaration naming itself.
+        self.assertEqual(pairs, [('T.useSimp', 'T.helper'), ('T.viaUnused', 'T.unrelated')])
+        self.assertEqual(context, ['T.helper'])
+
+    def test_a_module_is_built_only_with_its_name_references(self):
+        entry = measure.STORE/'k'
+        entry.mkdir(parents=True)
+        (entry/'module.olean').write_bytes(b'x')
+        self.assertFalse(measure.is_built('k'))
+        (entry/'module.ilean').write_text('{}')
+        self.assertTrue(measure.is_built('k'))
 
     def test_what_nobody_builds_on_is_named_per_submission(self):
         order, members = ['a', 'b', 'c'], {'a': ['x', 'y'], 'b': ['x', 'z'], 'c': ['y', 'w']}

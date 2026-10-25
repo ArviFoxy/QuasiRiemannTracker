@@ -1,9 +1,12 @@
 // Alive code: the Lean source a submission's root proof needs, and nothing else.
 //
 // Declarations are followed from Candidate.bound through everything their types
-// and values mention, using the declaration graph that bench/alive/Dump.lean
-// reads from the compiled modules. A declaration that nothing alive needs is left
-// out of its file, and a file with no alive declaration is left out altogether.
+// and values mention, and everything their text names, even where the proof does
+// not end up using it, so that what is left stands on its own as source. The
+// graph comes from bench/alive/Dump.lean, which reads the compiled modules, and
+// from the name references the compiler wrote. A declaration that nothing alive
+// needs is left out of its file, and a file with no alive declaration is left out
+// altogether.
 // What remains is read the way size is counted everywhere else: without comments
 // or layout, in build order, gzipped.
 //
@@ -118,6 +121,25 @@ function offsets(source) {
   };
 }
 
+// Where the commands that apply to the one starting at an offset begin:
+// `omit [..] in`, `open Foo in`, `set_option .. in` and the like belong to the
+// declaration after them, so they go when it does.
+function withPrefixes(source, start) {
+  let begin = start;
+  for (;;) {
+    let end = begin;
+    while (end > 0 && /\s/.test(source[end - 1])) end--;
+    if (!/(?:^|\s)in$/.test(source.slice(Math.max(0, end - 3), end)))
+      return begin;
+    // The command starts at the last line at the margin up to the one that ends with `in`.
+    let line = source.lastIndexOf("\n", end - 1) + 1;
+    while (line > 0 && /^\s/.test(source[line]))
+      line = source.lastIndexOf("\n", line - 2) + 1;
+    if (line >= begin) return begin;
+    begin = line;
+  }
+}
+
 // The text of a file without its dead declarations. ranges are
 // [line, column, endLine, endColumn] for each group of constants declared
 // together, with whether any of them is alive.
@@ -141,7 +163,7 @@ export function withoutDead(source, groups) {
     from = 0;
   for (const { start, end } of dead) {
     if (end <= from) continue;
-    out += source.slice(from, Math.max(from, start));
+    out += source.slice(from, Math.max(from, withPrefixes(source, start)));
     from = Math.max(from, end);
   }
   return out + source.slice(from);
@@ -191,13 +213,18 @@ export function withoutEmptyBlocks(source) {
 }
 
 // A dump read back into names: { module, aliases, constants: [{ name, kind,
-// range, lean, uses: [names] }] }.
+// range, lean, uses: [names] }], references: [[declaration, constant]],
+// context: [constant] }. The references are what the text of each declaration
+// names, whether or not its proof ends up using it; the context is what the
+// file names outside any declaration.
 export function readDump(text) {
   const raw = JSON.parse(text);
   const names = raw.names;
   return {
     module: raw.module,
     aliases: raw.aliases,
+    references: raw.references ?? [],
+    context: raw.context ?? [],
     constants: raw.constants.map((c) => ({
       name: names[c.n],
       kind: c.k,
@@ -226,11 +253,16 @@ function declaredAs(name, ranges) {
 export function aliveCode({ modules, dumps, source, root = ROOT }) {
   const consts = new Map(),
     aliases = new Map(),
-    inModule = new Map();
+    inModule = new Map(),
+    named = new Map(),
+    context = new Map();
   for (const m of modules) {
     const dump = dumps.get(m.name);
     if (!dump) throw Error(`No declaration graph for ${m.name}`);
     inModule.set(m.name, dump.constants);
+    context.set(m.name, dump.context);
+    for (const [from, to] of dump.references)
+      named.set(from, [...(named.get(from) ?? []), to]);
     for (const c of dump.constants)
       consts.set(c.name, { ...c, module: m.name });
     for (const [alias, target] of dump.aliases) aliases.set(alias, target);
@@ -262,6 +294,8 @@ export function aliveCode({ modules, dumps, source, root = ROOT }) {
       alive.add(name);
       liveModules.add(c.module);
       for (const used of c.uses) if (!alive.has(used)) queue.push(used);
+      for (const used of named.get(name) ?? [])
+        if (!alive.has(used)) queue.push(used);
     }
     for (const c of consts.values())
       if (
@@ -271,6 +305,9 @@ export function aliveCode({ modules, dumps, source, root = ROOT }) {
         !alive.has(c.name)
       )
         queue.push(c.name);
+    for (const module of liveModules)
+      for (const used of context.get(module) ?? [])
+        if (!alive.has(used)) queue.push(used);
     if (!queue.length) break;
   }
 

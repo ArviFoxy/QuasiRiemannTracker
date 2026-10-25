@@ -81,6 +81,7 @@ unsafe def dump (names : Std.HashSet Name) (data : ModuleData) (module : Name) :
     table := t
     index := ix
     let mut refs : Array Nat := #[]
+    let mut seen : Std.HashSet Nat := {}
     let mut usesLean := false
     for n in needs c do
       if n.getRoot == `Lean then usesLean := true
@@ -88,7 +89,9 @@ unsafe def dump (names : Std.HashSet Name) (data : ModuleData) (module : Name) :
         let (i, t, ix) := intern table index n
         table := t
         index := ix
-        if !refs.contains i then refs := refs.push i
+        if !seen.contains i then
+          seen := seen.insert i
+          refs := refs.push i
     let range := match ranges[c.name]? with
       | some r => s!",\"r\":[{r.range.pos.line},{r.range.pos.column},{r.range.endPos.line},{r.range.endPos.column}]"
       | none => ""

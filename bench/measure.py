@@ -14,9 +14,13 @@ Submitted Lean is untrusted code: every compile runs as an unprivileged user,
 without network access and with a scrubbed environment.
 
   python3 bench/measure.py stats                  unique work across submissions
-  python3 bench/measure.py run [--workers 3] [ID...]
+  python3 bench/measure.py run [--workers 3] [--fast] [ID...]
   python3 bench/measure.py status
   python3 bench/measure.py dump [ID...]           declaration graphs of built submissions
+
+With --fast the modules are only built, not measured: no profiler, no kernel
+type checking (the compiled files are the same), no repeats, one more worker. That is
+enough for the alive code, which needs the compiled modules but not their cost.
 
 Each finished submission also gets the declaration graph of its modules read from
 the compiled files (bench/alive/Dump.lean), after which the compiled files that no
@@ -250,7 +254,7 @@ class Guard(threading.Thread):
                 return
 
 
-def compile_module(job, view, env, *, anon_cap_kib, timeout, attempt=1, keep=True):
+def compile_module(job, view, env, *, anon_cap_kib, timeout, attempt=1, keep=True, fast=False):
     """Compile one module once and measure the whole process. Returns a record."""
     user = unprivileged() if os.getuid() == 0 else None
     scratch = SCRATCH/f'{job.key[:16]}-{attempt}-{os.getpid()}-{threading.get_ident()}'
@@ -263,12 +267,16 @@ def compile_module(job, view, env, *, anon_cap_kib, timeout, attempt=1, keep=Tru
             os.chown(path, user.pw_uid, user.pw_gid)
     lean = Path(env['lean'])/'bin/lean'
     libraries = ':'.join([str(view), *env['libraries']])
-    command = [str(lean), '-j1', '-Dprofiler=true', '-Dprofiler.threshold=100000000',
-               '-o', str(scratch/'out/module.olean'), job.relative+'.lean']
+    # The kernel's check changes nothing in what is written, so a build can skip it.
+    flags = ['-j1', '-Ddebug.skipKernelTC=true'] if fast else ['-j1', '-Dprofiler=true', '-Dprofiler.threshold=100000000']
+    # The .ilean file says where every name in the source points, which is what the
+    # alive code needs to know about what the text of a declaration mentions.
+    command = [str(lean), *flags, '-o', str(scratch/'out/module.olean'), '-i', str(scratch/'out/module.ilean'),
+               job.relative+'.lean']
     environment = {'PATH': f"{lean.parent}:/usr/bin:/bin", 'HOME': str(scratch/'home'), 'TMPDIR': str(scratch/'tmp'),
                    'LANG': 'C.UTF-8', 'LEAN_ABORT_ON_PANIC': '1', 'LEAN_PATH': libraries}
     record = {'key': job.key, 'module': job.module['name'], 'owner': job.module['owner'], 'attempt': attempt,
-              'lines': job.module['lines'], 'started_at': now()}
+              'lines': job.module['lines'], 'started_at': now(), **({'mode': 'fast'} if fast else {})}
     log = (scratch/'log').open('wb')
     try:
         started = time.monotonic()
@@ -317,20 +325,25 @@ def compile_module(job, view, env, *, anon_cap_kib, timeout, attempt=1, keep=Tru
                     if product.exists():
                         os.rename(product, entry/('module.olean'+suffix))
                         record['store_bytes'] = record.get('store_bytes', 0) + (entry/('module.olean'+suffix)).stat().st_size
+                references = scratch/'out/module.ilean'
+                if references.is_symlink():
+                    raise RuntimeError('Symlink compiler output')
+                if references.exists():
+                    os.rename(references, entry/'module.ilean')
         return record
     finally:
         log.close()
         shutil.rmtree(scratch, ignore_errors=True)
 
 
-def measure_module(job, view, env, *, anon_cap_kib, timeout, canary=False):
+def measure_module(job, view, env, *, anon_cap_kib, timeout, canary=False, fast=False):
     """Compile a module, repeating a run whose CPU time and profile disagree."""
     records = []
     for attempt in range(1, ATTEMPTS+1):
         record = compile_module(job, view, env, anon_cap_kib=anon_cap_kib, timeout=timeout, attempt=attempt,
-                                keep=not canary and attempt == 1)
+                                keep=not canary and attempt == 1, fast=fast)
         records.append(record)
-        if record['status'] != 'ok' or consistent(record):
+        if fast or record['status'] != 'ok' or consistent(record):
             break
     return records
 
@@ -353,9 +366,35 @@ def link_views(job, skip=()):
                 os.link(source, target)
 
 
-def is_complete(sid, keys, measured):
-    """Is the submission measured, with the declaration graph of every module kept?"""
-    return (all(k in measured for k in keys) and (DUMPS/'index'/f'{sid}.json').exists()
+def is_built(key):
+    """A module is built when its compiled file and its name references are both kept."""
+    return (STORE/key/'module.olean').exists() and (STORE/key/'module.ilean').exists()
+
+
+def text_references(path, modules):
+    """What the source of each declaration names, from the compiler's .ilean file.
+
+    Returns pairs (declaration, constant) and the constants named outside any
+    declaration (an `attribute [simp] foo`), for constants of the given modules.
+    """
+    data = json.loads(Path(path).read_text())
+    pairs, context = set(), set()
+    for reference, info in data.get('references', {}).items():
+        named = json.loads(reference).get('c')
+        if not named or named['m'] not in modules:
+            continue
+        for usage in info.get('usages', []):
+            if len(usage) > 4:
+                if usage[4] != named['n']:
+                    pairs.add((usage[4], named['n']))
+            else:
+                context.add(named['n'])
+    return sorted(pairs), sorted(context)
+
+
+def is_complete(sid, keys, measured, costs=True):
+    """Is the submission measured (unless only built), with the declaration graph of every module kept?"""
+    return ((not costs or all(k in measured for k in keys)) and (DUMPS/'index'/f'{sid}.json').exists()
             and all((DUMPS/f'{k}.json.gz').exists() for k in keys))
 
 
@@ -400,14 +439,17 @@ def dump_submission(sid, plan, keys, env, *, anon_cap_kib=10*GIB, timeout=3600):
                 print(f"declaration graph of {sid} failed ({guard.reason or code}): "
                       f"{(scratch/'log').read_text(errors='replace')[-600:]}", flush=True)
                 return False
+            names = {m['name'] for m in plan['modules']}
             for key in pending:
                 source = scratch/'out'/f'{key}.json'
                 if not source.is_file() or source.is_symlink():
                     print(f'declaration graph of {sid}: no output for {key}', flush=True)
                     return False
+                graph = json.loads(source.read_bytes())
+                graph['references'], graph['context'] = text_references(STORE/key/'module.ilean', names)
                 temporary = DUMPS/f'{key}.json.gz.tmp'
-                with open(source, 'rb') as read, gzip.open(temporary, 'wb', compresslevel=6) as write:
-                    shutil.copyfileobj(read, write)
+                with gzip.open(temporary, 'wt', compresslevel=6) as write:
+                    json.dump(graph, write, separators=(',', ':'))
                 os.replace(temporary, DUMPS/f'{key}.json.gz')
         finally:
             log.close()
@@ -435,14 +477,14 @@ def collect_garbage(sid, jobs, order, members, finished):
 
 class Runner:
     def __init__(self, env, order, jobs, members, targets, *, workers, anon_cap_kib, heavy_cap_kib, timeout,
-                 plans=None, dump=False, collect=False, side_cap_kib=None):
+                 plans=None, dump=False, collect=False, side_cap_kib=None, fast=False):
         self.env, self.order, self.jobs, self.members = env, order, jobs, members
         self.targets, self.workers = targets, workers
         self.anon_cap_kib, self.heavy_cap_kib, self.timeout = anon_cap_kib, heavy_cap_kib, timeout
         # Beside a module that needs most of the memory, others get only what almost
         # every module needs, so nothing is squeezed out of the page cache.
         self.side_cap_kib = side_cap_kib or min(anon_cap_kib, SIDE_CAP)
-        self.plans, self.dump, self.collect = plans, dump, collect
+        self.plans, self.dump, self.collect, self.fast = plans, dump, collect, fast
         self.finished = set()
         self.lock = threading.Lock()
         self.last_warning = 0.0
@@ -495,9 +537,9 @@ class Runner:
         # What is measured and has its declaration graphs needs nothing more, and its
         # compiled modules may be gone.
         self.finished = {sid for sid in self.targets
-                         if self.dump and is_complete(sid, self.members[sid], measured)}
+                         if self.dump and is_complete(sid, self.members[sid], measured, costs=not self.fast)}
         targets = [sid for sid in self.targets if sid not in self.finished]
-        built = {k for k in self.jobs if (STORE/k/'module.olean').exists()}
+        built = {k for k in self.jobs if is_built(k)}
         wanted = {k for sid in targets for k in self.members[sid]}
         for key in built & wanted:
             link_views(self.jobs[key], self.finished)
@@ -527,8 +569,9 @@ class Runner:
             # Any view that holds the module's dependencies will do, and the views of
             # finished submissions are gone.
             view = LIBS/next((s for s in job.submissions if s not in self.finished), job.submissions[0])
-            kind = 'canary' if canary else ('cost' if key not in measured else 'rebuild')
-            future = pool.submit(measure_module, job, view, self.env, anon_cap_kib=cap, timeout=self.timeout, canary=canary)
+            kind = 'canary' if canary else ('build' if self.fast else ('cost' if key not in measured else 'rebuild'))
+            future = pool.submit(measure_module, job, view, self.env, anon_cap_kib=cap, timeout=self.timeout,
+                                 canary=canary, fast=self.fast)
             # 1: an ordinary module, 2: one that needs the memory to itself, 3: beside such a module.
             level = 3 if cap == self.side_cap_kib and cap < self.anon_cap_kib else (2 if cap == self.heavy_cap_kib and not canary else 1)
             running[future] = (key, kind, level)
@@ -549,7 +592,7 @@ class Runner:
                     start(pool, heavy.pop(0), self.heavy_cap_kib)
                 elif not stopping and (solo or not heavy):
                     cap = self.side_cap_kib if solo else self.anon_cap_kib
-                    if not solo:
+                    if not solo and not self.fast:
                         if not canaries and measured:
                             canaries = self.choose_canaries(measured)
                         if canaries and len(running) < self.workers and time.monotonic() - last_canary > CANARY_EVERY:
@@ -626,6 +669,7 @@ def main():
     run.add_argument('ids', nargs='*')
     run.add_argument('--keep', action='store_true', help='keep the compiled modules of finished submissions')
     run.add_argument('--no-dump', action='store_true', help='skip the declaration graphs (and so the clean-up)')
+    run.add_argument('--fast', action='store_true', help='only build: no profile, no kernel check, no repeats')
     run.add_argument('--workers', type=int, default=3)
     run.add_argument('--anon-cap-gib', type=float, default=4.5)
     run.add_argument('--heavy-cap-gib', type=float, default=11)
@@ -643,7 +687,7 @@ def main():
         for sid in args.ids or order:
             if sid not in plans:
                 raise SystemExit(f'Unknown submission: {sid}')
-            missing = [k for k in members[sid] if not (STORE/k/'module.olean').exists()]
+            missing = [k for k in members[sid] if not is_built(k)]
             if missing:
                 print(f'{sid}: {len(missing)} of {len(members[sid])} modules are not compiled here', flush=True)
             elif dump_submission(sid, plans[sid], members[sid], env):
@@ -658,7 +702,7 @@ def main():
         runner = Runner(env, order, jobs, members, targets, workers=args.workers,
                         anon_cap_kib=int(args.anon_cap_gib*GIB), heavy_cap_kib=int(args.heavy_cap_gib*GIB),
                         timeout=args.timeout, plans=plans, dump=not args.no_dump,
-                        collect=not (args.keep or args.no_dump))
+                        collect=not (args.keep or args.no_dump), fast=args.fast)
         sys.exit(0 if runner.run() else 1)
 
 

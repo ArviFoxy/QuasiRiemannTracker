@@ -11,7 +11,7 @@ import {
 } from "../bench/alive.mjs";
 
 // A dump in the form Dump.lean writes: names are numbered per module.
-function dump(module, constants, aliases = []) {
+function dump(module, constants, aliases = [], extra = {}) {
   const names = [];
   const id = (n) => {
     if (!names.includes(n)) names.push(n);
@@ -26,7 +26,9 @@ function dump(module, constants, aliases = []) {
       u: uses.map(id),
     }),
   );
-  return readDump(JSON.stringify({ module, names, aliases, constants: raw }));
+  return readDump(
+    JSON.stringify({ module, names, aliases, constants: raw, ...extra }),
+  );
 }
 const lines = (...text) => text.join("\n") + "\n";
 const run = (modules, dumps, sources) =>
@@ -355,4 +357,106 @@ test("alive code leaves out the comments, checks and empty blocks of the files i
     text,
     lines("theorem bound : True := trivial", "export M (bound)"),
   );
+});
+
+test("the commands that apply to a dead declaration go with it, and only those", () => {
+  const source = lines(
+    "namespace A",
+    "omit [Fintype F] in",
+    "theorem dead : True := trivial",
+    "open Foo",
+    "set_option maxHeartbeats 400000 in",
+    "open Bar in",
+    "omit [A]",
+    "  [B] in",
+    "/-- doc -/",
+    "theorem alsoDead : True := trivial",
+    "omit [C] in",
+    "theorem alive : True := trivial",
+    "end A",
+  );
+  const text = withoutDead(source, [
+    { range: [3, 0, 3, 30], alive: false },
+    { range: [9, 0, 10, 34], alive: false },
+    { range: [12, 0, 12, 30], alive: true },
+  ]);
+  assert.equal(
+    text,
+    lines(
+      "namespace A",
+      "",
+      "open Foo",
+      "",
+      "omit [C] in",
+      "theorem alive : True := trivial",
+      "end A",
+    ),
+  );
+});
+
+test("what the text of an alive declaration names stays, even if its proof does not use it", () => {
+  const modules = [
+    { name: "M", owner: "s" },
+    { name: "Candidate.Main", owner: "s" },
+  ];
+  const sources = {
+    M: lines(
+      "theorem unusedArg : True := trivial",
+      "theorem bound : True := by simp [unusedArg]",
+      "theorem other : True := trivial",
+    ),
+    "Candidate.Main": lines("export M (bound)"),
+  };
+  const dumps = [
+    dump(
+      "M",
+      [
+        { name: "unusedArg", range: [1, 0, 1, 33] },
+        { name: "bound", range: [2, 0, 2, 41] },
+        { name: "other", range: [3, 0, 3, 31] },
+      ],
+      [],
+      { references: [["bound", "unusedArg"]] },
+    ),
+    dump("Candidate.Main", [], [["Candidate.bound", "bound"]]),
+  ];
+  const { text } = run(modules, dumps, sources);
+  assert.equal(text.includes("theorem unusedArg"), true);
+  assert.equal(text.includes("theorem other"), false);
+});
+
+test("what an alive file names outside any declaration stays, and a dead file's does not", () => {
+  const modules = [
+    { name: "A", owner: "s" },
+    { name: "B", owner: "s" },
+    { name: "Dead", owner: "s" },
+    { name: "Candidate.Main", owner: "s" },
+  ];
+  const sources = {
+    A: lines(
+      "theorem simpLemma : True := trivial",
+      "theorem lemmaForDead : True := trivial",
+    ),
+    B: lines(
+      "import A",
+      "attribute [simp] simpLemma",
+      "theorem bound : True := trivial",
+    ),
+    Dead: lines("import A", "attribute [simp] lemmaForDead"),
+    "Candidate.Main": lines("export B (bound)"),
+  };
+  const dumps = [
+    dump("A", [
+      { name: "simpLemma", range: [1, 0, 1, 35] },
+      { name: "lemmaForDead", range: [2, 0, 2, 38] },
+    ]),
+    dump("B", [{ name: "bound", range: [3, 0, 3, 30] }], [], {
+      context: ["simpLemma"],
+    }),
+    dump("Dead", [], [], { context: ["lemmaForDead"] }),
+    dump("Candidate.Main", [], [["Candidate.bound", "bound"]]),
+  ];
+  const { text } = run(modules, dumps, sources);
+  assert.equal(text.includes("theorem simpLemma"), true);
+  assert.equal(text.includes("lemmaForDead"), false);
 });

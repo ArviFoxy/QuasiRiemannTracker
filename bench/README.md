@@ -41,8 +41,10 @@ to prove the bound.
 
 Starting from `Candidate.bound`, a declaration is **alive** if the proof mentions
 it, or something alive does. That is every constant named in the type or the value
-of an alive declaration, the constructors of an alive inductive type, and the
-declarations defined together with an alive one. A declaration that nothing alive
+of an alive declaration, the constructors of an alive inductive type, the
+declarations defined together with an alive one, and every name that the text of
+an alive declaration writes, even a lemma handed to `simp` that the proof then did
+not need, so that what is left is source that compiles on its own. A declaration that nothing alive
 mentions is **dead**: an unused lemma, a helper nobody calls, a whole file that no
 alive declaration lives in. The alive code of a submission is
 
@@ -63,12 +65,16 @@ neither does adding code that the proof does not use.
 
 How it is worked out, in three steps that can be repeated separately:
 
-1. `measure.py run` compiles every module. When a submission is finished,
+1. `measure.py run` compiles every module (with `--fast`, about twice as quickly:
+   the profiler, the kernel's check, which leaves the compiled files unchanged, and
+   the repeats are skipped, and one more compile runs at a time). When a submission is finished,
    `alive/Dump.lean` reads the compiled `.olean` files as data and writes the
    declaration graph of each module that has none (`dumps/<module key>.json.gz`):
    every constant with its kind, its position in the source, and the constants of
-   the same submission that its type and value mention. Nothing is elaborated or
-   executed. The compiled modules that no unfinished submission builds on are then
+   the same submission that its type and value mention. The `.ilean` file the
+   compiler writes alongside adds what the text of each declaration names, and
+   what a file names outside any declaration (an `attribute [simp] foo`). Nothing
+   is elaborated or executed. The compiled modules that no unfinished submission builds on are then
    deleted, so disk use follows the work in progress, not everything compiled.
    `measure.py dump ID` redoes this for a submission that is still compiled.
 2. `node --max-old-space-size=8192 bench/alive.mjs` follows the graph from the
@@ -124,7 +130,8 @@ outside directories closed to other users.
 ```sh
 python3 bench/setup.py                  # Lean 4.34.1, pinned packages, Mathlib cache
 python3 bench/measure.py stats          # unique work across submissions
-python3 bench/measure.py run            # resumable; touch $QRH_BENCH_ROOT/STOP to pause
+python3 bench/measure.py run            # measures compile cost; resumable; touch $QRH_BENCH_ROOT/STOP to pause
+python3 bench/measure.py run --fast     # only builds, for the alive code: no profile, no kernel check
 python3 bench/measure.py status
 node --max-old-space-size=8192 bench/alive.mjs   # alive code of the finished submissions
 python3 bench/aggregate.py              # writes ../metrics/

@@ -1,5 +1,14 @@
 # Notes for Claude sessions on this fork
 
+## Who the user is
+- The user is **Arvi**: GitHub `ArviFoxy`, email arvi.pub@gmail.com. Attribute submissions, commit
+  authorship and metadata to Arvi / ArviFoxy. Never attribute anything to "Pawel" or "pawel834".
+- Submission PRs go to `GTimG/QuasiRiemannTracker` from branches on `ArviFoxy/QuasiRiemannTracker`.
+  A session started on the fork cannot attach the upstream repo, because both have the same name.
+  Give the user a prefilled compare link, or have them start a session with the upstream selected.
+- `submission-repeated-marks-20261024` (commit `f8960c1d`, author Arvi) proves θ = 0.8747289. It was
+  sent upstream on 2026-10-25 at the user's request.
+
 ## Goal and bar
 - Goal: lower the all-moduli Dirichlet zero-free boundary θ (smaller is stronger) with new
   mathematics, formalized in Lean.

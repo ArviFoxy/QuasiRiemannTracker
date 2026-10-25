@@ -14,8 +14,14 @@
   upstream PR's timeline.
 - **Submission directories start with `arvi-`** (user rule, 2026-10-25): `submissions/arvi-<name>/`,
   Lean modules under `src/Submissions/arvi_<name>/`, and `QRH-Result: arvi-<name>` in the PR body.
-- Upstream PR 73 (opened by ArviFoxy from `submission-repeated-marks-20261024`, one commit `39130516`,
-  author Arvi) proves θ = 0.8747289. On 2026-10-25 it was renamed to `arvi-repeated-marks-20261024` per the rule above.
+- Upstream PR 73 (opened by ArviFoxy from `submission-repeated-marks-20261024`, author Arvi) declares
+  θ = 0.8747289. On 2026-10-25 it was renamed to `arvi-repeated-marks-20261024` per the rule above.
+  Its head `41ddc0dd` replaces the 59-node source graph by the face family; `Candidate.bound_sharp`
+  proves 34989/40000 = 0.874725, while `Candidate.bound` keeps the declared value. The PR body on
+  GitHub still describes the old graph; the paste-ready replacement is
+  `research/faceless-chain/PR_BODY_DRAFT.md` (only the user can edit the upstream PR).
+- Upstream CI (`pr-admission.yml`) times out at about 3h06m for every recent PR (#71, #72, #73);
+  maintainers verify offline. Not a proof error.
 
 ## Goal and bar
 - Goal: lower the all-moduli Dirichlet zero-free boundary θ (smaller is stronger) with new
@@ -31,9 +37,10 @@
   `research/LOG.md` first (closed routes and open directions), then `research/barriers/README.md`
   (the four binding atoms). `research/lean-lab/` holds small Lean lemmas, kept even when a route
   failed.
-- Our submission: `submissions/repeated-marks-20261024` on that branch, θ = 8747289/10⁷ = 0.8747289.
-  As of 2026-10-24 that is 4.4e-5 below the best upstream PR (#71, 0.87477290596). It has not been
-  opened upstream.
+- Our submission: branch `submission-repeated-marks-20261024`, directory
+  `submissions/arvi-repeated-marks-20261024`. Declared θ = 8747289/10⁷; proven internally
+  34989/40000. It is the best upstream PR, so the next milestone is θ ≤ 0.8747189: 6.1e-6 below what
+  the face family proves.
 - Check upstream PRs with `git ls-remote https://github.com/GTimG/QuasiRiemannTracker`.
 
 ## Conventions
@@ -79,3 +86,19 @@
   moment). Only Hecke moves at cubes and sixth powers change the invariant. Affine type is the
   boundary where the classical analogues have only log savings unconditionally. Mixed second
   moments are hyperbolic (worse). Finite-type cross moments are signed and cannot count.
+
+## State of play (updated 2026-10-25, after round 9)
+- The face family (`research/faceless-chain/`, `research/chain-structure/`) proves 0.874725. The
+  chain curve is proved optimal within the method's gates (`research/lean-lab/ChainOptimal.lean`).
+  The continuum ceiling 0.8747241 is only 0.9e-6 further.
+- The remaining 6.1e-6 needs one analytic input (`research/P1_PROBLEM.md`):
+  - **P1**, localized in round 9 to the hard core. Only Gauss sums at primes of norm `> K` need
+    arithmetic; the smooth columns are diagonal times a frame constant for any block phases.
+  - **The long Möbius moment**, which is the only input that moves the unmarked count
+    `ρ(ν) = 1 − 10ν/(15 − 6ν)`. `ρ` is exactly the value of a lattice game whose extremal adversary
+    is `L ≈ 1 + bU^{−s₀(s−a)}` (`research/lean-lab/ZeroDensityGame.lean`).
+  - Numerically both are at their diagonals (long moment: ratio 0.89–0.99 up to `D = U^{1.4}`).
+- Closed in round 9: per-row arguments, the dual sixth-power restriction (an `X`-dilation),
+  ω-weighted witnesses (scale shift), Shen–Stucky/Li inflation (keeps the `N`-term), and the
+  bootstrap of the long moment.
+- Read `research/round9/README.md` before starting a new round.

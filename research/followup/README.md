@@ -66,11 +66,13 @@ the OpenAI baseline and Collet's `hailey-collet-1252270103`.
 ## Regenerate
 
 The generators take the natural cost, breakpoints, package and natural-node name from the
-environment. Their defaults reproduce PR 73 byte for byte.
+environment. Their defaults reproduce PR 73 byte for byte. All parameters of this submission are set
+in one file, `single_stage.env`. The common denominators `Δ` of the packed certificates are not
+parameters: the extraction lets Lean find the least `Δ` that passes the formula's own divisibility
+checks.
 
 ```sh
-export QRH_K=9/2 QRH_SIG=0.0122820,0.01942,0.0252,0.0310,0.0367,0.0424122
-export QRH_PKG=Submissions.arvi_single_stage_20261025 QRH_NATURAL=QRH.RepeatedMarks.natural92
+source single_stage.env
 cd ../faceless-chain
 python3 gen_certk.py <lake project> ck.txt   # packed HIGH data (needs the built package)
 python3 gen_certs.py <lake project> cs.txt   # packed sector data
@@ -78,8 +80,8 @@ QRH_CK=ck.txt QRH_CS=cs.txt python3 gen_all.py OUT/Faceless/Gen && python3 gen_s
 python3 theta_family2.py $QRH_SIG          # θ* = 8747252
 python3 exact_check.py $QRH_SIG && python3 exact_junctions.py $QRH_SIG
 cd ../repeated-marks          # faces92.json: faces C (y = 1 − Dy) and P (y = 41756 Dy) of piece 4
-python3 gen_return_lean.py faces92.json 8747252/10000000 401/500 0 1 RET 13/250 9/200 global
-python3 fork_return.py RET OUT 549989/10000000 549989/10000000 13/250 9/200 transport
+python3 gen_return_lean.py faces92.json $QRH_THETA $QRH_H 0 1 RET $QRH_SC $QRH_SP global
+python3 fork_return.py RET OUT $QRH_CAP $QRH_CAP $QRH_SC $QRH_SP transport
 ```
 
 Then copy `RET/FinalReturn/*.lean` and `RET/FinalReturn/Rows` over the forked `OUT/FinalReturn`,

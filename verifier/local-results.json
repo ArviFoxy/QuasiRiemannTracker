@@ -178,5 +178,23 @@
     "repository": "GTimG/QuasiRiemannTracker",
     "number": 70,
     "head_sha": "8ee28f244ec11b180d09c9d3f92e34ee078c746a"
+  },
+  {
+    "schema_version": 1,
+    "result_id": "slayer-recost-0p87477290596",
+    "theta_exact": "21869322649/25000000000",
+    "verified_at": "2026-10-24T21:41:24.094983+00:00",
+    "source_repository": "GTimG/QuasiRiemannTracker",
+    "source_commit": "17d05f9a81bbea54ae55597eb0a449b27e33a06d",
+    "kernels": [
+      "Lean default",
+      "nanoda",
+      "con-ron"
+    ],
+    "report_url": "https://github.com/GTimG/QuasiRiemannTracker/blob/54f1a9135b14dbc41762c69edfdc362317821702/verifier/standard/receipts/pr71-17d05f9a-20261024/result.json",
+    "report_sha256": "e8d412c8d30bee176a694d2528b84ecc1b1d2b1136379c900ce2668b409377c6",
+    "repository": "GTimG/QuasiRiemannTracker",
+    "number": 71,
+    "head_sha": "17d05f9a81bbea54ae55597eb0a449b27e33a06d"
   }
 ]

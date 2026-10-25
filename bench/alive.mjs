@@ -250,9 +250,9 @@ function declaredAs(name, ranges) {
   }
 }
 
-// modules: the submission's modules in build order, each { name, owner };
-// dumps: Map of module name to its dump; source(module) gives its text.
-export function aliveCode({ modules, dumps, source, root = ROOT }) {
+// Which constants and files the root needs. modules: the submission's modules in
+// build order, each { name, owner }; dumps: Map of module name to its dump.
+export function findAlive({ modules, dumps, root = ROOT }) {
   const consts = new Map(),
     aliases = new Map(),
     inModule = new Map(),
@@ -314,42 +314,49 @@ export function aliveCode({ modules, dumps, source, root = ROOT }) {
         if (!alive.has(used)) queue.push(used);
     if (!queue.length) break;
   }
+  return { root: target, alive, liveModules, inModule };
+}
 
+// The declarations of one file as the groups withoutDead cuts by: each is the
+// position of a declaration, with whether anything declared there is alive.
+export function declarationGroups(constants, alive) {
+  const ranges = new Map(
+    constants.filter((c) => c.range).map((c) => [c.name, c.range]),
+  );
+  const groups = new Map();
+  for (const c of constants) {
+    const home = declaredAs(c.name, ranges);
+    if (home === null) continue;
+    const key = ranges.get(home).join(",");
+    const group = groups.get(key) ?? { range: ranges.get(home), alive: false };
+    group.alive ||= alive.has(c.name);
+    groups.set(key, group);
+  }
+  return [...groups.values()];
+}
+
+// source(module) gives the text of a file.
+export function aliveCode({ modules, dumps, source, root = ROOT }) {
+  const found = findAlive({ modules, dumps, root });
   const parts = [];
   let declarations = 0,
     removed = 0;
   for (const m of modules) {
-    if (!liveModules.has(m.name)) continue;
-    const constants = inModule.get(m.name);
-    const ranges = new Map(
-      constants.filter((c) => c.range).map((c) => [c.name, c.range]),
-    );
-    const groups = new Map();
-    for (const c of constants) {
-      const home = declaredAs(c.name, ranges);
-      if (home === null) continue;
-      const key = ranges.get(home).join(",");
-      const group = groups.get(key) ?? {
-        range: ranges.get(home),
-        alive: false,
-      };
-      group.alive ||= alive.has(c.name);
-      groups.set(key, group);
-    }
-    const text = source(m);
+    if (!found.liveModules.has(m.name)) continue;
+    const groups = declarationGroups(found.inModule.get(m.name), found.alive);
     const kept = withoutEmptyBlocks(
-      withoutDebris(withoutComments(withoutDead(text, [...groups.values()]))),
+      withoutDebris(withoutComments(withoutDead(source(m), groups))),
     );
-    declarations += [...groups.values()].filter((g) => g.alive).length;
-    removed += [...groups.values()].filter((g) => !g.alive).length;
+    declarations += groups.filter((g) => g.alive).length;
+    removed += groups.filter((g) => !g.alive).length;
     const active = withoutLayout(kept);
     if (active) parts.push(active);
   }
   const text = parts.join("\n") + "\n";
   return {
     text,
-    root: target,
-    modules: liveModules.size,
+    root: found.root,
+    modules: found.liveModules.size,
     declarations,
     removed,
     active_bytes: Buffer.byteLength(text),

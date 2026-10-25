@@ -78,3 +78,27 @@ already proved. The new parts are:
 - the failed bootstrap.
 
 Files: `lattice_game.py`, `lattice_game.log`, `../lean-lab/ZeroDensityGame.lean`.
+
+## 2. Fresh-framing agent (`fresh_framing/README.md`)
+
+- **No per-row lever.** In one row of the binding class, all of these co-occur:
+  - the count corner;
+  - slot saturation at `p = 1/2`;
+  - the Hölder-critical numerator (length `n₀ = 0.418`);
+  - the saturated long Möbius sum.
+
+  Round 7's resonance model had to be repaired first: with a fixed small degree its slot sums
+  vanish at generic lengths. A fine lattice with a Beatty set coprime to its period keeps the dip
+  and `p = 1/2` together. A perturbation `L = P(Y)(1 + εY^{j₀})` covers the numerator with a dip
+  margin of −3e-4. With one face for both uses, the refill decays at `δ(1 − 2p/Λ)/2` against the
+  tent's `δ(1 − p)/2`, so the two are compatible iff `Λ > 2`.
+- **One new candidate (B): restrict the dual sixth-power content.**
+  - After Poisson the dual frequency is `H = u·a⁶`, and the probe's weight sees only `N(H)`.
+  - Dropping the frequencies with `N(a) < Z^{ε′/6}` removes the top rows (`q_u > Z^{h−ε′}`) and
+    leaves the principal row almost all of its `Z^{h/6}` copies.
+  - The high side's top moves to `h − ε′`, worth `Δθ ≈ −(0.09–0.13)ε′` before the low side.
+  - On the original side the restriction is a non-integral shift of `χ_A(m)`, and the restricted
+    pieces have no low-side bound. The agent priced the naive version at break-even.
+  - Not proved impossible. Logged as an open candidate.
+- Otherwise the agent confirms the atoms: P1 use (a) for the actual smooth prime vector
+  (`η ≥ 0.0085`), and the long line (`λ ≥ 0.1676` at `t = 1.155`).

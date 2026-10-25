@@ -29,9 +29,10 @@ def ts(P, lo=8725000, hi=8747700):
         mid = (lo + hi)//2
         lo, hi = (lo, mid) if ok(mid, P) else (mid, hi)
     return hi
-for a in sys.argv[1:]:
-    P = dict(DEF)
-    for kv in a.split(','):
-        if kv: k, v = kv.split('='); P[k] = v
-    P = {k: Fr(v) for k, v in P.items()}
-    print(a, ts(P), flush=True)
+if __name__ == "__main__":
+  for a in sys.argv[1:]:
+      P = dict(DEF)
+      for kv in a.split(','):
+          if kv: k, v = kv.split('='); P[k] = v
+      P = {k: Fr(v) for k, v in P.items()}
+      print(a, ts(P), flush=True)

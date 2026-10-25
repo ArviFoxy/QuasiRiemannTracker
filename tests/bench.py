@@ -315,6 +315,72 @@ class RunnerTests(unittest.TestCase):
         self.assertEqual(measure.unneeded(order, members, {'a', 'b', 'c'}, 'c'), ['y', 'w'])
 
 
+def toolchain():
+    """A Lean toolchain to run the whole chain on, if there is one here."""
+    candidates = [os.environ.get('QRH_LEAN')] if os.environ.get('QRH_LEAN') else []
+    candidates += sorted(Path(os.environ.get('QRH_BENCH_ROOT', ROOT/'.bench')).glob('lean-*'))
+    return next((Path(c) for c in candidates if c and (Path(c)/'bin/lean').exists()), None)
+
+
+@unittest.skipUnless(toolchain(), 'needs a Lean toolchain (QRH_LEAN or a bench setup)')
+class AliveChainTests(unittest.TestCase):
+    """Compile three small modules, read their graphs, and work out the alive code."""
+    sources = {
+        'T.A': 'namespace T\n/-- Used by B. -/\ntheorem helper : 1 + 1 = 2 := rfl\ntheorem unrelated : 2 + 2 = 4 := rfl\n'
+               'def value : Nat := 3\ntheorem lemmaForSimp : value = 3 := rfl\nstructure P where\n  x : Nat\n  y : Nat\nend T\n',
+        'T.B': 'import T.A\nnamespace T\ntheorem bound : 2 = 1 + 1 := by\n  have h : 1 + 1 = 2 := helper\n  have g : True := by simp [lemmaForSimp]\n'
+               '  exact h.symm\ntheorem deadInB : True := trivial\nexample : True := trivial\n#print axioms bound\nend T\n',
+        'Candidate.Main': 'import T.B\nnamespace Candidate\nexport T (bound)\nend Candidate\n',
+    }
+
+    def test_the_alive_code_of_a_compiled_submission_is_what_the_root_needs(self):
+        import gzip, hashlib, subprocess
+        lean = toolchain()/'bin/lean'
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            for name, text in self.sources.items():
+                path = root/'submissions/s/src'/(name.replace('.', '/')+'.lean')
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text(text)
+            modules, keys, store = [], [], root/'store'
+            for name in self.sources:
+                relative = name.replace('.', '/')
+                key = hashlib.sha256(name.encode()).hexdigest()
+                (store/key).mkdir(parents=True)
+                (root/'out'/Path(relative).parent).mkdir(parents=True, exist_ok=True)
+                done = subprocess.run([str(lean), '-o', str(root/'out'/(relative+'.olean')), '-i', str(root/'out'/(relative+'.ilean')),
+                                       relative+'.lean'], cwd=root/'submissions/s/src', capture_output=True, text=True,
+                                      env={**os.environ, 'LEAN_PATH': str(root/'out')})
+                self.assertEqual(done.returncode, 0, done.stdout + done.stderr)
+                shutil_copy = __import__('shutil').copy
+                shutil_copy(root/'out'/(relative+'.olean'), store/key/'module.olean')
+                shutil_copy(root/'out'/(relative+'.ilean'), store/key/'module.ilean')
+                text = (root/'submissions/s/src'/(relative+'.lean')).read_bytes()
+                modules.append({'name': name, 'owner': 's', 'path': 'src/'+relative+'.lean', 'sha256': hashlib.sha256(text).hexdigest(),
+                                'dependencies': [], 'lines': 1, 'bytes': len(text), 'package_imports': []})
+                keys.append(key)
+            plan = {'id': 's', 'source_tree': 'a'*40, 'dependency_trees': {}, 'modules': modules}
+            with patch.object(measure, 'STORE', store), patch.object(measure, 'DUMPS', root/'dumps'), \
+                    patch.object(measure, 'SCRATCH', root/'scratch'), patch.object(measure, 'BENCH', root), \
+                    patch.object(measure, 'confined', lambda command, env: command):
+                (root/'scratch').mkdir()
+                self.assertTrue(measure.dump_submission('s', plan, keys, {'lean': str(toolchain())}))
+            (root/'plans').mkdir()
+            (root/'plans/s.json').write_text(json.dumps(plan))
+            done = subprocess.run(['node', str(ROOT/'bench/alive.mjs'), 's'], capture_output=True, text=True,
+                                  env={**os.environ, 'QRH_BENCH_ROOT': str(root), 'QRH_SUBMISSIONS': str(root/'submissions')})
+            self.assertEqual(done.returncode, 0, done.stdout + done.stderr)
+            alive = json.loads((root/'alive/s.json').read_text())
+            text = gzip.decompress((root/'alive/s.txt.gz').read_bytes()).decode()
+        self.assertEqual(alive['root'], 'T.bound')
+        # The proof needs helper, and its text names lemmaForSimp, which the term does not use.
+        for kept in ('theorem helper', 'theorem lemmaForSimp', 'def value', 'theorem bound', 'export T (bound)'):
+            self.assertIn(kept, text)
+        for dead in ('unrelated', 'deadInB', 'structure P', '#print', 'example'):
+            self.assertNotIn(dead, text)
+        self.assertEqual(alive['modules'], 3)
+
+
 class AggregateTests(unittest.TestCase):
     def test_costs_add_up_by_owner_and_peak_memory_is_the_largest(self):
         modules = [module('Submissions.base.A', 'a', owner='base'), module('Candidate.Main', 'm', ['Submissions.base.A'], owner='next')]

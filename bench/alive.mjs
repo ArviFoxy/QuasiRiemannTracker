@@ -10,12 +10,14 @@
 // What remains is read the way size is counted everywhere else: without comments
 // or layout, in build order, gzipped.
 //
-// Everything that is not a declaration of the proof stays in a file that has an
-// alive declaration: imports, namespaces, open and variable lines, notation,
-// macros and tactics. They cannot be told apart from what an alive declaration
-// uses, so counting them keeps code from hiding there. Definitions that deal in
-// Lean's own syntax and meta types are alive wherever their file is, because
-// that is where tactics and macros keep their helpers.
+// Everything that is not a declaration stays in a file that has an alive
+// declaration: imports, namespaces, open and variable lines, notation, macros and
+// tactics. They cannot be told apart from what an alive declaration uses, so
+// counting them keeps code from hiding there. Two things go: a namespace or
+// section that held only dead declarations, and commands that leave nothing
+// behind (#print, #check, #eval, example). Definitions that deal in Lean's own
+// syntax and meta types are alive wherever their file is, because that is where
+// tactics and macros keep their helpers.
 import { createHash } from "node:crypto";
 import {
   existsSync,
@@ -261,8 +263,10 @@ export function aliveCode({ modules, dumps, source, root = ROOT }) {
     if (!dump) throw Error(`No declaration graph for ${m.name}`);
     inModule.set(m.name, dump.constants);
     context.set(m.name, dump.context);
-    for (const [from, to] of dump.references)
-      named.set(from, [...(named.get(from) ?? []), to]);
+    for (const [from, to] of dump.references) {
+      if (!named.has(from)) named.set(from, []);
+      named.get(from).push(to);
+    }
     for (const c of dump.constants)
       consts.set(c.name, { ...c, module: m.name });
     for (const [alias, target] of dump.aliases) aliases.set(alias, target);
@@ -364,6 +368,7 @@ const invoked =
 if (invoked) {
   const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
   const bench = resolve(process.env.QRH_BENCH_ROOT ?? join(root, ".bench"));
+  const submissions = process.env.QRH_SUBMISSIONS ?? join(root, "submissions");
   const out = join(bench, "alive");
   mkdirSync(out, { recursive: true });
   const ids =
@@ -395,7 +400,7 @@ if (invoked) {
       throw Error(`${id}: the graphs are of another list of modules`);
     const dumps = new Map(plan.modules.map((m, i) => [m.name, graph(keys[i])]));
     const source = (m) => {
-      const bytes = readFileSync(join(root, "submissions", m.owner, m.path));
+      const bytes = readFileSync(join(submissions, m.owner, m.path));
       if (createHash("sha256").update(bytes).digest("hex") !== m.sha256)
         throw Error(`${id}: ${m.name} changed since it was compiled`);
       return bytes.toString();

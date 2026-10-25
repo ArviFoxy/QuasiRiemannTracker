@@ -1,0 +1,4 @@
+drop nothing 8746075
+drop ['N-tail'] 8746075
+drop ['Mn-mLDJ'] 8746075
+drop ['N-tail', 'Mn-mLDJ'] 8746075

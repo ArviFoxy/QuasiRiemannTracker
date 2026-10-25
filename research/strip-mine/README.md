@@ -56,3 +56,26 @@ face C. Two-sided; no free gain.
   `s_P·h ≤ C_N`.
 - **Example.** With the mixed-step faces the binding at the floor is the `new_top` cover at
   `δ ≈ 0.503`. There the capacity is `s_P·h = 0.0361`, not the face's 0.047 (`../mixed-step/`).
+
+## Source atlas (EPS = 3e-3; `source_atlas_eps0.003.json`)
+
+The flow is started from Sil's face at its tangency, with end faces C (last) and P (slope 3),
+scored by the exact return. The base float value is 0.8746073 (Lean: 0.8746075).
+
+| knob | Δθ* (1e-7) | reading |
+|---|---|---|
+| `B0` (Sil's intercept 0.99999) | −229 | dθ/dB₀ ≈ −7.6e-3. Not a lever, since faces need B ≤ 1. |
+| HIGH closed form `6q* = 5(√E − 2√s)²/(2 − E − 4√(Es))`, its literals | −66 … +25 | dθ*/d ln(6q*) ≈ 4.7e-4: −1e-5 needs the HIGH threshold about 2% lower along the chain |
+| `lam` (Sil's slope 93/25) | +28 | dθ/dλ ≈ 2.5e-4; 93/25 → 26/7 is worth −1.4e-6 |
+| `LOW6` (the LOW exchange rate 6) | +15 | dθ/d(rate) ≈ 8.3e-5: −1e-5 needs the rate 6 → 4.8 |
+| `qfloor` | +2 | negligible |
+| `den`, `phi`, clamp literals | 0 | |
+
+So on the source side the LOW exchange rate (atom 2, plain side) is the lever. The mixed step's
+`6q → c·q/(1+q)` moves far past what −1e-5 needs (`../mixed-step/`), which is why it reaches the
+return floor.
+
+**Dropped admissions** (`drop_admission.py`). Removing the `N-tail` or `Mn − mL·DJ` tests, or
+both, leaves θ* = 0.8746075. The atlas's large values for their literals are one-sided cliffs:
+tightening a test removes branch C's admission, loosening it gains nothing. At the current θ* the
+binding is branch C's return polynomial at `new_top` alone.

@@ -77,8 +77,14 @@ scripts `factor_split_mass.py` and `ls_constant_support.py` with their logs.
     The edge-level numerics do not establish (A). The asymptotic claim is a heuristic, not a
     theorem.
 - **The atom, localized.** At the binding point the rough core is round 10's adversary (three
-  primes of size `U^{0.385}`). There the problem is equivalent to a sixth moment with no `μ`:
+  primes of size `U^{0.385}`). The agent restated it as a sixth moment with no `μ`:
   `Σ_u |Σ_{p~P} ψ_u(p)p^{−s}|⁶ ≤ U^{1.129−η}(E|Q|²)³` with `P = U^{t/3}`.
+  - **Caveat (added here).** This is harder than the Möbius moment, not equivalent to it.
+    - Amplification reaches `U^{1/6}D^{5/6}` only because the full family's moment at length `D`
+      is diagonal for **Möbius** vectors (the inverse moment, through theta reflection).
+    - For the prime cube `Q³` the general sextic sieve has the bias term `D^{7/6}` at `V = N = D`.
+      So even `U^{1.129}` is unknown for this sixth moment.
+  - The Möbius structure is essential, consistent with round 10 §5.
 
 **What (A) would have been worth.** The source chain's faces certify that the plain fourth moment
 with slots is diagonal on `m₁ + m₂ + Λz ≤ B`.

@@ -1595,3 +1595,15 @@ slot; `mixed-slots/`).
     with asserted counts. It changes no proof beyond `have hβ := hcontra`.
   - **Generators.** `gen_steps.py` now generates the chain assembly for any number of pieces, with
     the faces C and P (`family2.face_C/face_P`) and their exact values.
+- **The exchange-rate barrier, revisited** (`combined/BARRIER_REVISITED.md`).
+  - **Where it was wrong.** Atom 2's "twisted multipliers orthogonalize rather than amplify" fails
+    for Gauss-type amplification, where the multiplier enters the frequency and the row is the
+    modulus. There Sil's twist `χ_a(D)²` depends only on `(D, a)`, and `whole_column` makes it an
+    exact energy transfer to `D⁴k`.
+  - **Where it holds.** It remains true for Möbius-type rows, `M_u = Σ μ(n)χ_n(u)` (the long line,
+    the 11/12 base). There `χ_n(ua⁴) = χ_n(u)χ_n(a)⁴` adds a cubic twist in `n`, i.e. a slot.
+  - **Read backwards.** The same identity absorbs a slot into the row at cost 4 per unit, against 2
+    in the marked inverse moment: no gain.
+  - **Consequences.** Sil's ledger `2 + 4φ`, under the native gate `κ(1 − φ) < φ`, beats `6κ` iff
+    `κ > 1/√3`. The candidate for our chain is the source step (float −1.75e-5;
+    `mixed-step/`, in progress).

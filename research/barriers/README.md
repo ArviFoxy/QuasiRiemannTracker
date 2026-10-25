@@ -40,7 +40,13 @@ Numbers come from `../atom-targets/` (float LP model) unless marked exact.
   - the plain descent's slot cost (`Λ ≈ 6qB`);
   - the LOW amplifier denominator `1 − 6qB₀/Λ₀ ≈ 0.007`.
 - Why it does not move: exact invariance cannot use a denser multiplier set. Twisted
-  multipliers (`p³`, `p²`) orthogonalize rather than amplify. The long moment beyond the family is
+  multipliers (`p³`, `p²`) orthogonalize rather than amplify.
+  - **Correction (2026-10-25, after PR 74):** this is true only where the multiplier enters the
+    argument of characters attached to the summation variable (Möbius-type rows: the long line, the
+    11/12 base). Where it enters the frequency of Gauss sums with the row as modulus, the twist
+    `χ_a(D)²` of `G_a(D⁴k) = χ_a(D)² G_a(k)` depends on `(D, row)` only. Sil's `whole_column` turns
+    the twisted family into the same polynomial at `D⁴k`, an exact energy transfer, and the source
+    face's slot cost drops from `6κ` to `2 + 4φ` (93/25). See `../combined/BARRIER_REVISITED.md`. The long moment beyond the family is
   equivalent to zero-density input, and bootstrapping with the count itself is circular exactly at
   the binding `δ ≈ 0.45–0.5`.
 

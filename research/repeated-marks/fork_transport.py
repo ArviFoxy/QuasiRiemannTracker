@@ -43,8 +43,9 @@ KEEP_NS = ('QRH.Record1252270103Return.Geometry',)
 EXCLUDE = {'Record1252270103Return.FinalSchedule', 'Record1252270103Return.FinalRows',
            'Record1252270103Return.EndpointFromSources', 'Record1252270103Return.EndpointFromGlobalSources',
            'Record1252270103Return.EndpointFromNumerator', 'Record1252270103Return.TransportInstances'}
-# the relaxed bounds: theta = 8747289/10^7 at h = 401/500 has ell = 0.16775, y = 0.46650
-RELAXED = {'h': '803/1000', 'y': '467/1000', 'ell': '1678/10000'}
+# the relaxed bounds (upper ends of h, y, ell): the default is PR 73's, where theta = 8747289/10^7 at
+# h = 401/500 has ell = 0.16775, y = 0.46650; QRH_RELAXED='h,y,ell' overrides it
+RELAXED = dict(zip(('h', 'y', 'ell'), os.environ.get('QRH_RELAXED', '803/1000,467/1000,1678/10000').split(',')))
 TRANSPORT_GEOMETRY_PATCH = (
     '''namespace QRH.Record1252270103Return.Geometry
 noncomputable section

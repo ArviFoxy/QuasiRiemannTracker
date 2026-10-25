@@ -13,8 +13,8 @@ def node_raw(fam, j, y):
 sig = [float(x) for x in sys.argv[1].split(',')]
 fam, _ = F2.build2(sig, m=16)
 Dy = fam.Dy
-# first step: parent natural
-nat = dict(B=Fr(1), L=F2.K, cap=Fr(11, 200), q=Fr(0), allowance=Fr(1, 10**12), lowFee=Fr(1, 10**8), highFee=Fr(1, 10**7))
+# first step: parent = the start face
+from chain_params import START as nat
 n0 = node_at(fam, 0, Fr(0))
 ok, msgs, trees = LC.check_node(n0, nat, nat, Fr(8)); cr = LC.crossing(n0, nat)
 print("first step:", ok, msgs[:4], "crossing", float(cr), "q", float(n0['q']), "den", float(LC.sourceDen(n0, nat)))

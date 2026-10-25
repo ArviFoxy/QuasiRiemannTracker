@@ -65,9 +65,8 @@ def bernstein_min(a, box):
 ETA = Fr(1, 10**7)
 M_MINUS, M_PLUS, S_MINUS = Fr(2, 5), Fr(11, 25), Fr(17, 500)
 R0 = Fr(1, 10**9)
-K_I = Fr(os.environ.get('QRH_K', '11243277/2500000'))   # natural cost; QRH_K overrides
+from chain_params import K as K_I, THETA_I   # natural cost and its incumbent bound (one source)
 M_H = (1 - K_I*Fr(17, 500))/2
-THETA_I = (1 + K_I/6)/2   # the beta cap implied by the natural cost (8747759/10^7 at the default K)
 V = sub(const(Fr(5, 6)), DEL)
 
 def branch_affine(B, L, capped=False, zs=None):

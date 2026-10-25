@@ -1575,3 +1575,23 @@ slot; `mixed-slots/`).
   - That is only `2·10⁻⁷`, because `dθ*/dK ≈ 6·10⁻⁵`: the chain's end sits on the flow's
     attractor, not at its start.
   - A second stage would double the proof for that.
+- **Upstream PR 74 is the new bar** (Sil, 0.8746935; `upstream/PR74_ANALYSIS.md`). Target:
+  ≤ 0.8746835.
+- **The combined proof** (`combined/README.md`, package `arvi-fourth-power-chain-20261025`).
+  - **Construction.** Our face family is started on Sil's fourth-power source face
+    `GlobalSource (99999/100000) (93/25) (3/50)` instead of Collet's natural face. It runs
+    through 3 pieces to the end, then into our final return.
+  - **Exact θ\* = 349843/400000 = 0.8746075.** That is 8.6e-5 below PR 74 and 7.6e-5 below the
+    target.
+  - **Three exact constraints:**
+    1. **Start at the tangency, to within about 1e-7.** Away from it the first step's amplifier
+       tends to `q(b − s₀)B/E ≈ 0.7(b − s₀)`, above 1/75 at the cap, because the slope gap cancels
+       between the numerator and the denominator. `s₀ = 0.0329365` gives `a(cap) = 0.0010`.
+    2. **The q floor `q ≥ 1/2`** ends the family where `L/B` reaches 3 (`s = 0.0472`). It costs
+       1.1e-6.
+    3. **The HIGH-parent floor `B ≥ 22/23`.** It is not binding here.
+  - **Fork of Sil's source theorem.** It assumes `theta < β` but uses only `51/100 ≤ β`.
+    `combined/fork_sil.py` vendors the 421-module closure and swaps the hypothesis in 8 files,
+    with asserted counts. It changes no proof beyond `have hβ := hcontra`.
+  - **Generators.** `gen_steps.py` now generates the chain assembly for any number of pieces, with
+    the faces C and P (`family2.face_C/face_P`) and their exact values.

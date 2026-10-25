@@ -97,3 +97,16 @@ PR 71.
    - the end faces satisfy the return's receipts (e.g. physical slope `≥ 3`: here 3.011);
    - the step machinery accepts a `globalFace` start other than Collet's natural face;
    - the build time with a 106k-line dependency.
+
+## 4. Update: exact result of the combination (see `../combined/README.md`)
+
+- **Exact θ\* = 349843/400000 = 0.8746075** (float estimate above: 0.8746076).
+- **Breakpoints** `0.0329365, 0.0376, 0.0423, 0.0472`.
+  - The start must be at the tangency to within about 1e-7.
+  - The end is set by the q floor (`L/B ≥ 3`), not by the HIGH-parent floor.
+- **Return:** `h = 401/500`, 42 rows, 17 windows. The binding box is the `new_top` edge at
+  `p → 1/2`, covered by the count face C.
+- **Return transport bound.** At this θ, `ℓ = 11/3 − 4θ = 0.16824` exceeds the bound `ℓ < 0.1678`
+  that the transport layer was forked with. `fork_transport.py` now takes the bounds from
+  `QRH_RELAXED`. With `ℓ < 0.1690` the regenerated layer differs in three lines, and only weak facts
+  use that bound (`4ℓ < h`, `ℓ ≤ 1`).

@@ -23,7 +23,7 @@ PKG = os.environ.get('QRH_PKG', 'Submissions.arvi_repeated_marks_20261024')
 NS = 'QRH.RepeatedMarks.Faceless'
 E, R, F = F2.FEES
 CAP = F2.CAPMAX
-K_N = Fr(os.environ.get('QRH_K', '11243277/2500000'))
+from chain_params import K as K_N   # the natural cost (cap 6(2β−1) ≤ K) used in the gates
 CERTL = bool(os.environ.get('QRH_CERTL'))   # emit HIGH certificates with literal integer data
 CK = os.environ.get('QRH_CK')                 # packed two-phase HIGH certificates from this extraction
 HIGHPOS = bool(CK or os.environ.get('QRH_HIGHPOS'))   # Certs.high stated as `HighCoeffPos`

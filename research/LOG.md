@@ -1195,6 +1195,24 @@ A catalogue cross-check (21.9k records) found nothing that moves them. → `cap-
     energy wall loses 0.33 per unit (break-even needs a low-side loss rate below 0.08).
   - Closed. Any gain must come from `R`, `C`, the energy room or a joint same-zero count.
 
+- *The faces are tangent lines of one explicit curve* (user question, 2026-10-25;
+  `chain-ode/README.md` "The faces are tangent lines…", `chain-ode/faces_closed_form.py`,
+  `lean-lab/ChainSwitching.lean`, proved).
+  - The faces are the supporting lines of the convex unproven region in (plain length, slot
+    width), and in the limit the tangent lines `(B, Λ) = (E − sE′, −E′)` of the envelope (a
+    Legendre transform).
+  - Every class flow is solved by Lambert W: `1/E = W(Cγ/β·e^{αγ/β})/γ − α/β`, matching
+    numerical integration to 2e-13.
+  - The binding class collapses to `6q* = 5(√E − 2√s)²/(2 − E − 4√(Es))`, proved in Lean and
+    matching brute force to 3e-10. So the continuum chain is one algebraic ODE, clipped to
+    `p = 1/2` early and capped by the natural face.
+  - Importance profile of a better HIGH count (`ε_H = 1e-3` on windows of width 0.005): worth 0
+    before `s ≈ 0.012` (the natural face caps the slope), then rising about 2.3× toward the end.
+    Half the value lies in the last 0.01 of width, at `ν ≈ 0.51`, `p ≈ 0.2`. There the count is the
+    unmarked corner, whose inverse and plain lines are exact diagonals, so only atom 2 can move it.
+  - Eliminating the faces is possible in principle (continuous induction along the curve), but it
+    is worth at most the ceiling (−4.8e-6). It is a simplification, not a route to the bar.
+
 ## Open directions (ranked, revised 2026-10-24, third pass; see `barriers/README.md`)
 
 Exact state: committed Lean branch 0.8747289; best exact value with known lemmas 0.8747257

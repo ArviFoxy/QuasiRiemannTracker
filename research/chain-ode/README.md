@@ -185,3 +185,81 @@ explicit:
 - for `s ≲ 0.02` it is the rational field of `p = 1/2`;
 - after that, the algebraic field above (involving `√(Es)`), up to the seed cap `K`.
 
+
+## The faces are tangent lines of one explicit curve (2026-10-25)
+
+Prompted by the user's question whether the faces form a polytope with hidden structure. Script:
+`faces_closed_form.py`, output `faces_closed_form.log`.
+
+**The polygon.** A face `(B, Λ)` proves the slotted plain fourth moment on the half-plane
+`m₁ + m₂ + Λz ≤ B` (per-face caps aside). The unproven part of the (plain length, slot width)
+quadrant is therefore an intersection of half-planes, hence convex. The faces are its supporting
+lines, and the 59 Lean faces are the edges of a convex 59-gon.
+
+**Its limit curve.** With fine pivots the edges become the tangent lines of the envelope `E(s)`:
+
+  `(B, Λ) = (E − sE′, −E′)`,  i.e. `B(Λ) = min_s (E(s) + Λs)` and `dB/dΛ = s`.
+
+So the face set is the Legendre transform of one convex curve, and the source step's gate is an
+ODE for that curve.
+
+**Each class flow is solved by the Lambert W function.** On a level set of `I_p`, `y = 1/E`
+satisfies `(α + β(s)y)·e^{γ(s)y} = C`, with:
+- `α = (3−2p)(5+p)`;
+- `β(s) = 4p(5−2p²)s − 2(5−2p²)`;
+- `γ(s) = κ(5s − p)`, `κ = 2(5−2p²)/(5(1−p)²)`.
+
+Hence
+
+  `1/E(s) = W(C·γ(s)/β(s)·e^{αγ(s)/β(s)})/γ(s) − α/β(s)`,
+
+using the branch `W₀` or `W₋₁` by continuity. It matches numerical integration to 2e-13 for
+`p = 0, 0.15, 0.22, 0.35, 1/2`.
+
+**The binding class collapses to one square-root formula.** With `a = √E` and `b = √s`, the
+interior root `p*` gives `(2 − E − 8p*s)(E − 4s) = (a + 2b)²(2 − a² − 4ab)` (sympy), so
+
+  `6q* = max_p 6q_p = 5(√E − 2√s)² / (2 − E − 4√(Es))`   (while 0 < p* < 1/2).
+
+Brute-force maximization over `p` agrees to 3e-10. The continuum chain is therefore the single ODE
+
+  `E′ = −6q*E/(1 − 6q*s)`,
+
+with three pieces:
+- slope capped by the natural face `K = 4.4973108` until `s ≈ 0.0135`;
+- class `p = 1/2` (rational field) while `p* ≥ 1/2`, up to `s ≈ 0.02`;
+- the square-root field above after that.
+
+Integrated from `E(0) = 1` it gives `E(0.0412) = 0.83714` and `E(0.045) = 0.8262527`, which
+reproduces `envelope_flow.py` and the ceiling.
+
+**Where a better HIGH count pays (importance profile).** Lower the unmarked count by `ε_H = 1e-3`
+(gate `q(ξ_p − E − 2ps) + ε_H = 0`) on one window of slot width 0.005 at a time:
+
+| window | `ΔE(0.0412)` | `ΔE(0.045)` |
+|---|---|---|
+| `[0, 0.010)` | 0 | 0 |
+| `[0.010, 0.015)` | 3.1e-5 | 2.9e-5 |
+| `[0.015, 0.020)` | 6.9e-5 | 6.4e-5 |
+| `[0.020, 0.025)` | 8.8e-5 | 8.1e-5 |
+| `[0.025, 0.030)` | 1.09e-4 | 1.00e-4 |
+| `[0.030, 0.035)` | 1.33e-4 | 1.22e-4 |
+| `[0.035, 0.040)` | 1.61e-4 | 1.48e-4 |
+| `[0.040, 0.045)` | 4.3e-5 (part) | 1.78e-4 |
+
+Reading:
+- Before `s ≈ 0.012` the natural face caps the slope, so the HIGH gate is worth nothing there.
+- After that the weight rises about 2.3× toward the end of the chain: the chain forgets its past.
+- Half of the total comes from the last 0.01 of width. There the binding gate is the regular HIGH
+  gate at `ν = q ≈ 0.51`, class `p* ≈ 0.19–0.22`.
+- The windows add up to the uniform price (about 6e-4 per 1e-3).
+
+So a new HIGH-count lemma only has to work for `ν ∈ [0.45, 0.52]`, `p ∈ [0.15, 0.25]` and
+`s ∈ [0.03, 0.045]`. That late-chain HIGH count is the unmarked three-line corner
+`ρ(ν) = 1 − 10ν/(15 − 6ν)`. Its inverse and plain lines are exact diagonals at the corner
+(`r* = 2m* ≈ 0.84 < 1`, `2m* < 1`), so only the long line (atom 2) can lower it.
+
+**Consequence.** Eliminating the faces is possible in principle. A proof that pivots along this
+curve (a continuous induction in `s`, with one uniform gate inequality) would replace the 59
+certified nodes. Its value is at most the ceiling, 0.8747241 (−4.8e-6), so it is a simplification,
+not a route to the bar.

@@ -1429,3 +1429,19 @@ slot; `mixed-slots/`).
   5. **Exchange rate:** `6 → 5.93`.
 - **Running:** round 9 (two independent fresh-perspective agents: framing/assumptions, and
   outside-domain tools); a full independent nanoda kernel check of `Candidate.bound`.
+
+### Round 9 (2026-10-25): why `ρ(ν)` is what it is
+
+- **The unmarked zero-density exponent is the value of a lattice game** (`round9/README.md` §1,
+  `lean-lab/ZeroDensityGame.lean`, proved). The extremal adversary is the two-term model
+  `L ≈ 1 + bU^{−s₀(s−a)}` with `s₀ = 5/(15 − 6ν)`. Its Möbius blocks are saturated exactly at
+  `s₀ℕ` and its plain block at `s₀`, so every count that depends only on a witness's length gives
+  at least `ρ`. This closes mixed moments, products, prime blocks, fractional moments and
+  multi-`t` detectors.
+- Only the long moment at `3s₀ ∈ [1, 3/2]` moves `ρ`, with sensitivity `4ν/(5 − 2ν)` (0.44 at
+  ν = 0.45, 0.5 at ν = 0.5).
+- Bootstrapping the long moment from zero counts gives 1.1667 at `t = 1.155` and 1.2273 at
+  `t = 1.25`. That is worse than amplification (1.1292 and 1.2083).
+- The amplitude cap `p ≤ 1/2` is the paper's own zero-free bound (Lemma 19.1), so no
+  zero-free-region bootstrap lowers the binding class (`round8/README.md` §3).
+- Upstream: no PRs after #73. The bar is unchanged (milestone ≤ 0.8747189, 6.1e-6 still needed).

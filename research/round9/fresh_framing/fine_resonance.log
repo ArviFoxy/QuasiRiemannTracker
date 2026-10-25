@@ -1,0 +1,20 @@
+check against round-7 small d (expect max coeffs <= 1):
+  d=  5 k2=  14  max|P|=1.000 max|A|=1.000  slot range n<= 2: min|p_n|=0.357 median=0.401 frac(|p_n|<0.5)=1.00
+  d=  9 k2=  25  max|P|=1.000 max|A|=1.000  slot range n<= 4: min|p_n|=0.128 median=0.556 frac(|p_n|<0.5)=0.50
+  d= 14 k2=  39  max|P|=1.000 max|A|=1.000  slot range n<= 7: min|p_n|=0.089 median=0.535 frac(|p_n|<0.5)=0.43
+  d= 24 k2=  67  max|P|=1.000 max|A|=1.000  slot range n<= 12: min|p_n|=0.077 median=0.408 frac(|p_n|<0.5)=0.58
+  d= 43 k2= 120  max|P|=1.000 max|A|=1.000  slot range n<= 21: min|p_n|=0.027 median=0.431 frac(|p_n|<0.5)=0.57
+fine lattice:
+  d= 100 k2=  279  max|P|=1.000 max|A|=1.000  lead/trail |P0|,|Pd|,|A0|,|Ak1| = (np.float64(1.0), np.float64(1.0), np.float64(1.0), np.float64(1.0))  slots: min|p_n|=0.020 median=0.419 frac<0.5=0.64 frac<0.1=0.12
+  d= 200 k2=  558  max|P|=1.000 max|A|=1.000  lead/trail |P0|,|Pd|,|A0|,|Ak1| = (np.float64(1.0), np.float64(1.0), np.float64(1.0), np.float64(1.0))  slots: min|p_n|=0.000 median=0.000 frac<0.5=0.63 frac<0.1=0.53
+  d= 400 k2= 1116  max|P|=1.000 max|A|=1.000  lead/trail |P0|,|Pd|,|A0|,|Ak1| = (np.float64(1.0), np.float64(1.0), np.float64(1.0), np.float64(1.0))  slots: min|p_n|=0.000 median=0.000 frac<0.5=0.78 frac<0.1=0.76
+  d= 800 k2= 2232  max|P|=1.000 max|A|=1.000  lead/trail |P0|,|Pd|,|A0|,|Ak1| = (np.float64(1.0), np.float64(1.0), np.float64(1.0), np.float64(1.0))  slots: min|p_n|=0.000 median=0.000 frac<0.5=0.88 frac<0.1=0.88
+  d=1600 k2= 4465  max|P|=1.000 max|A|=1.000  lead/trail |P0|,|Pd|,|A0|,|Ak1| = (np.float64(1.0), np.float64(1.0), np.float64(1.0), np.float64(1.0))  slots: min|p_n|=0.000 median=0.000 frac<0.5=0.82 frac<0.1=0.81
+  d=1600 k2= 4465  max|P|=1.000 max|A|=1.000  lead/trail |P0|,|Pd|,|A0|,|Ak1| = (np.float64(1.0), np.float64(1.0), np.float64(1.0), np.float64(1.0))  slots: min|p_n|=0.000 median=0.000 frac<0.5=0.82 frac<0.1=0.81
+coprime k2:
+  d= 100 k2=  279 max|P|=1.000 max|A|=1.000  single-scale |p_n|: min=0.0200 median=0.419 frac<0.1=0.12   two-scale window |p_n+p_n+1|: min=0.0423 median=0.830
+  d= 200 k2=  559 max|P|=1.000 max|A|=1.000  single-scale |p_n|: min=0.0098 median=0.408 frac<0.1=0.10   two-scale window |p_n+p_n+1|: min=0.0207 median=0.831
+  d= 400 k2= 1117 max|P|=1.000 max|A|=1.000  single-scale |p_n|: min=0.0070 median=0.439 frac<0.1=0.11   two-scale window |p_n+p_n+1|: min=0.0142 median=0.887
+  d= 800 k2= 2233 max|P|=1.000 max|A|=1.000  single-scale |p_n|: min=0.0015 median=0.439 frac<0.1=0.11   two-scale window |p_n+p_n+1|: min=0.0047 median=0.872
+  d=1600 k2= 4467 max|P|=1.000 max|A|=1.000  single-scale |p_n|: min=0.0019 median=0.439 frac<0.1=0.11   two-scale window |p_n+p_n+1|: min=0.0038 median=0.867
+  d=3200 k2= 8931 max|P|=1.000 max|A|=1.000  single-scale |p_n|: min=0.0004 median=0.437 frac<0.1=0.11   two-scale window |p_n+p_n+1|: min=0.0011 median=0.876

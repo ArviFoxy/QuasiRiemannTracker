@@ -175,7 +175,37 @@ fixed):
 `sC` from 13/250 to 0.054 lowers the floor to 0.8745760, i.e. −3.15e-5
 (`../strip-mine/floor_scan.py`).
 
-## 6. What decides it (open)
+## 6. Full-gate check (`continuum_mixed.py`, `score_continuum.py`)
+
+The float models above use only the HIGH gate and the LOW limit. Flatter faces could wake up the
+other gates (centered G5, true diagonal, reference, sectors, HIGH-parent floor). So I reran the
+full-gate continuum solver, the float mirror of every Lean gate (`../faceless-chain/gates.py`),
+with:
+- the mixed LOW payment, with `q` searched over `[1/2, 3/4)`;
+- `d` charged like the pool in every other gate (conservative); `d` is tiny at the pivots anyway.
+
+| run | faces | θ* (slope receipt dropped, `sC = 27/500`) |
+|---|---|---|
+| pure (calibration) | ends at (0.96733, 2.902), `q = 1/2`; matches our C | 0.8746075 (Lean) |
+| `e = 1, c = 6` | from `s = 0.016`: `L ≈ 2.52 → 2.17`, `B ≈ 0.98 → 0.968`, `q ≈ 0.75 → 0.60` | **0.8745760** |
+| `e = 1, c = 4` | `L ≈ 1.66 → 1.57`, `B ≈ 0.967 → 0.964`, `q ≈ 0.75 → 0.69` | **0.8745760** |
+
+Both reach the return floor (−3.15e-5 against PR 76). With the full gate set, every value hinges
+on `e`, the selected block's energy saving in the step's LOW branch: `e = 1` gives the floor,
+`e = 0` gives nothing.
+
+**Red flag (under adversarial review, `ADVERSARIAL_REVIEW.md`).**
+- **The comparison.** At `q = κ = 3/4` the same induction would put the natural slot cost at
+  `cκ/(1+κ) ≈ 1.7–2.6`, against 6κ = 4.5. Sil's direct (non-inductive) argument with the same
+  transfer gets only 3.72.
+- **Sil's costs.** Live slots cost 2 in Sil's exceptional and short-reference components, against
+  about 1 through `T` in Collet's step gates; the dilation costs `W³` and `W^{7/3}` there.
+- **Possible resolution.** The induction amortizes: `d` is infinitesimal per step, so those costs
+  vanish.
+- **Open question.** Whether that resolution is real, or Collet's exceptional handling hides the
+  same cost.
+
+## 7. What decides it (open)
 
 The readings differ in one fact: whether the transfer saves energy (`e = 1`) or only moves the
 selected block from the modulus to the frequency (`e = 0`).
@@ -195,7 +225,7 @@ selected block from the modulus to the frequency (`e = 0`).
 - **Exact trace.** An agent is tracing Sil's exponent chain from the original energy to the final
   bound: `SIL_LEDGER_TRACE.md`.
 
-## 7. Status
+## 8. Status
 
 - Pricing done. The two principled candidates are worth −1.75e-5 (mixed step, cautious reading)
   and −2.7e-5 (Sil-LOW). The optimistic readings are larger but not yet scoreable.

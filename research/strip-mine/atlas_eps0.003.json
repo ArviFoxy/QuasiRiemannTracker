@@ -1,0 +1,1214 @@
+{
+ "base": 8746075,
+ "eps": 0.003,
+ "results": [
+  {
+   "kind": "knob",
+   "name": "branch_affine:81:26:1",
+   "eps": 0.003,
+   "theta": 8747157,
+   "delta": 1082,
+   "secs": 19.5
+  },
+  {
+   "kind": "knob",
+   "name": "return_poly:139:30:13",
+   "eps": 0.003,
+   "theta": 8747000,
+   "delta": 925,
+   "secs": 41.4
+  },
+  {
+   "kind": "knob",
+   "name": "return_poly:139:40:75",
+   "eps": 0.003,
+   "theta": 8745153,
+   "delta": -922,
+   "secs": 31.2
+  },
+  {
+   "kind": "knob",
+   "name": "admission_polys:109:39:1",
+   "eps": 0.003,
+   "theta": 8746897,
+   "delta": 822,
+   "secs": 48.5
+  },
+  {
+   "kind": "knob",
+   "name": "branch_affine:77:69:2",
+   "eps": 0.003,
+   "theta": 8746724,
+   "delta": 649,
+   "secs": 30.2
+  },
+  {
+   "kind": "knob",
+   "name": "return_poly:139:65:2",
+   "eps": 0.003,
+   "theta": 8746632,
+   "delta": 557,
+   "secs": 52.3
+  },
+  {
+   "kind": "knob",
+   "name": "admission_polys:98:53:2",
+   "eps": 0.003,
+   "theta": 8746617,
+   "delta": 542,
+   "secs": 41.0
+  },
+  {
+   "kind": "knob",
+   "name": "return_poly:139:69:9/100",
+   "eps": 0.003,
+   "theta": 8745595,
+   "delta": -480,
+   "secs": 34.2
+  },
+  {
+   "kind": "knob",
+   "name": "branch_affine:79:22:1",
+   "eps": 0.003,
+   "theta": 8746541,
+   "delta": 466,
+   "secs": 35.4
+  },
+  {
+   "kind": "knob",
+   "name": "edges:130:37:2",
+   "eps": 0.003,
+   "theta": 8746478,
+   "delta": 403,
+   "secs": 37.2
+  },
+  {
+   "kind": "knob",
+   "name": "branch_affine:78:23:1",
+   "eps": 0.003,
+   "theta": 8746424,
+   "delta": 349,
+   "secs": 25.1
+  },
+  {
+   "kind": "knob",
+   "name": "branch_affine:74:22:3",
+   "eps": 0.003,
+   "theta": 8746419,
+   "delta": 344,
+   "secs": 48.1
+  },
+  {
+   "kind": "knob",
+   "name": "branch_old:89:30:1",
+   "eps": 0.003,
+   "theta": 8746260,
+   "delta": 185,
+   "secs": 44.9
+  },
+  {
+   "kind": "param",
+   "name": "BP",
+   "eps": 0.003,
+   "theta": 8745902,
+   "delta": -173,
+   "secs": 36.9
+  },
+  {
+   "kind": "knob",
+   "name": "edges:130:30:2",
+   "eps": 0.003,
+   "theta": 8745902,
+   "delta": -173,
+   "secs": 23.0
+  },
+  {
+   "kind": "knob",
+   "name": "V:5/6",
+   "eps": 0.003,
+   "theta": 8746228,
+   "delta": 153,
+   "secs": 49.1
+  },
+  {
+   "kind": "knob",
+   "name": "branch_old:91:45:1/2",
+   "eps": 0.003,
+   "theta": 8746198,
+   "delta": 123,
+   "secs": 37.5
+  },
+  {
+   "kind": "knob",
+   "name": "branch_affine:77:26:3",
+   "eps": 0.003,
+   "theta": 8745965,
+   "delta": -110,
+   "secs": 36.9
+  },
+  {
+   "kind": "knob",
+   "name": "branch_affine:78:32:2",
+   "eps": 0.003,
+   "theta": 8745965,
+   "delta": -110,
+   "secs": 42.8
+  },
+  {
+   "kind": "param",
+   "name": "BC",
+   "eps": 0.003,
+   "theta": 8745987,
+   "delta": -88,
+   "secs": 34.1
+  },
+  {
+   "kind": "knob",
+   "name": "branch_old:89:50:1",
+   "eps": 0.003,
+   "theta": 8746155,
+   "delta": 80,
+   "secs": 33.4
+  },
+  {
+   "kind": "knob",
+   "name": "branch_affine:77:40:4",
+   "eps": 0.003,
+   "theta": 8746136,
+   "delta": 61,
+   "secs": 34.3
+  },
+  {
+   "kind": "knob",
+   "name": "branch_affine:80:46:1",
+   "eps": 0.003,
+   "theta": 8746017,
+   "delta": -58,
+   "secs": 61.5
+  },
+  {
+   "kind": "knob",
+   "name": "branch_affine:74:41:2",
+   "eps": 0.003,
+   "theta": 8746021,
+   "delta": -54,
+   "secs": 43.7
+  },
+  {
+   "kind": "knob",
+   "name": "branch_affine:75:23:1",
+   "eps": 0.003,
+   "theta": 8746127,
+   "delta": 52,
+   "secs": 40.2
+  },
+  {
+   "kind": "param",
+   "name": "h",
+   "eps": 0.003,
+   "theta": 8746114,
+   "delta": 39,
+   "secs": 30.6
+  },
+  {
+   "kind": "knob",
+   "name": "branch_old:89:17:2",
+   "eps": 0.003,
+   "theta": 8746113,
+   "delta": 38,
+   "secs": 36.1
+  },
+  {
+   "kind": "knob",
+   "name": "branch_affine:77:78:4",
+   "eps": 0.003,
+   "theta": 8746111,
+   "delta": 36,
+   "secs": 29.7
+  },
+  {
+   "kind": "param",
+   "name": "LP",
+   "eps": 0.003,
+   "theta": 8746101,
+   "delta": 26,
+   "secs": 34.6
+  },
+  {
+   "kind": "knob",
+   "name": "return_poly:140:52:2",
+   "eps": 0.003,
+   "theta": 8746101,
+   "delta": 26,
+   "secs": 34.0
+  },
+  {
+   "kind": "param",
+   "name": "LC",
+   "eps": 0.003,
+   "theta": 8746092,
+   "delta": 17,
+   "secs": 33.7
+  },
+  {
+   "kind": "param",
+   "name": "sC",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 38.7
+  },
+  {
+   "kind": "param",
+   "name": "sP",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 39.1
+  },
+  {
+   "kind": "param",
+   "name": "tf",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 40.8
+  },
+  {
+   "kind": "knob",
+   "name": "branch_affine:75:32:2",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 41.5
+  },
+  {
+   "kind": "knob",
+   "name": "branch_affine:75:56:2",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 31.5
+  },
+  {
+   "kind": "knob",
+   "name": "branch_affine:78:57:2",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 44.4
+  },
+  {
+   "kind": "knob",
+   "name": "branch_old:88:22:3",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 36.1
+  },
+  {
+   "kind": "knob",
+   "name": "branch_old:88:36:2",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 38.8
+  },
+  {
+   "kind": "knob",
+   "name": "branch_old:88:43:3",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 37.4
+  },
+  {
+   "kind": "knob",
+   "name": "branch_old:89:59:1",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 27.8
+  },
+  {
+   "kind": "knob",
+   "name": "branch_old:91:26:1",
+   "eps": 0.003,
+   "theta": null,
+   "delta": null,
+   "secs": 8.3
+  },
+  {
+   "kind": "knob",
+   "name": "branch_old:89:66:3",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 28.0
+  },
+  {
+   "kind": "knob",
+   "name": "admission_polys:100:55:2",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 26.6
+  },
+  {
+   "kind": "knob",
+   "name": "admission_polys:101:66:2",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 28.1
+  },
+  {
+   "kind": "knob",
+   "name": "admission_polys:106:30:12499/10000",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 28.7
+  },
+  {
+   "kind": "knob",
+   "name": "admission_polys:107:35:23/37",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 28.6
+  },
+  {
+   "kind": "knob",
+   "name": "admission_polys:109:48:-2",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 27.6
+  },
+  {
+   "kind": "knob",
+   "name": "admission_polys:109:67:-2",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 28.0
+  },
+  {
+   "kind": "knob",
+   "name": "geometry:119:10:11/3",
+   "eps": 0.003,
+   "theta": null,
+   "delta": null,
+   "secs": 4.3
+  },
+  {
+   "kind": "knob",
+   "name": "admission_polys:114:67:2",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 28.2
+  },
+  {
+   "kind": "knob",
+   "name": "geometry:119:22:4",
+   "eps": 0.003,
+   "theta": null,
+   "delta": null,
+   "secs": 0.1
+  },
+  {
+   "kind": "knob",
+   "name": "geometry:120:29:2",
+   "eps": 0.003,
+   "theta": null,
+   "delta": null,
+   "secs": 2.0
+  },
+  {
+   "kind": "knob",
+   "name": "admission_polys:114:95:2",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 27.7
+  },
+  {
+   "kind": "knob",
+   "name": "geometry:118:34:1/25",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 27.0
+  },
+  {
+   "kind": "knob",
+   "name": "geometry:120:8:1",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 27.7
+  },
+  {
+   "kind": "knob",
+   "name": "geometry:121:10:2",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 29.0
+  },
+  {
+   "kind": "knob",
+   "name": "geometry:121:20:1",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 28.2
+  },
+  {
+   "kind": "knob",
+   "name": "geometry:122:9:1/200",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 28.3
+  },
+  {
+   "kind": "knob",
+   "name": "geometry:122:33:1/10000000000",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 29.1
+  },
+  {
+   "kind": "knob",
+   "name": "geometry:123:9:2",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 28.4
+  },
+  {
+   "kind": "knob",
+   "name": "geometry:123:14:1",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 28.3
+  },
+  {
+   "kind": "knob",
+   "name": "geometry:123:18:6",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 28.6
+  },
+  {
+   "kind": "knob",
+   "name": "geometry:124:9:2",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 25.5
+  },
+  {
+   "kind": "knob",
+   "name": "geometry:124:14:2",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 27.5
+  },
+  {
+   "kind": "knob",
+   "name": "edges:129:26:2",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 28.4
+  },
+  {
+   "kind": "knob",
+   "name": "return_poly:139:19:1/2",
+   "eps": 0.003,
+   "theta": null,
+   "delta": null,
+   "secs": 3.6
+  },
+  {
+   "kind": "knob",
+   "name": "edges:129:36:6",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 26.9
+  },
+  {
+   "kind": "knob",
+   "name": "return_poly:139:52:2",
+   "eps": 0.003,
+   "theta": null,
+   "delta": null,
+   "secs": 2.4
+  },
+  {
+   "kind": "knob",
+   "name": "return_poly:140:18:1/2",
+   "eps": 0.003,
+   "theta": null,
+   "delta": null,
+   "secs": 2.5
+  },
+  {
+   "kind": "knob",
+   "name": "return_poly:141:67:3/4",
+   "eps": 0.003,
+   "theta": null,
+   "delta": null,
+   "secs": 4.3
+  },
+  {
+   "kind": "knob",
+   "name": "receipt:199:56:1/400",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 35.2
+  },
+  {
+   "kind": "knob",
+   "name": "receipt:202:19:1",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 29.3
+  },
+  {
+   "kind": "knob",
+   "name": "receipt:203:36:2",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 28.8
+  },
+  {
+   "kind": "knob",
+   "name": "receipt:203:46:2",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 27.5
+  },
+  {
+   "kind": "knob",
+   "name": "receipt:204:11:1",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 27.9
+  },
+  {
+   "kind": "knob",
+   "name": "receipt:205:20:4/25",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 36.5
+  },
+  {
+   "kind": "knob",
+   "name": "receipt:205:34:3/20",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 37.8
+  },
+  {
+   "kind": "knob",
+   "name": "receipt:205:46:51/100",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 45.9
+  },
+  {
+   "kind": "knob",
+   "name": "receipt:205:62:67/100",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 51.1
+  },
+  {
+   "kind": "knob",
+   "name": "receipt:205:78:3/20",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 54.4
+  },
+  {
+   "kind": "knob",
+   "name": "receipt:207:90:1/5",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 54.4
+  },
+  {
+   "kind": "knob",
+   "name": "receipt:208:36:2",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 55.8
+  },
+  {
+   "kind": "knob",
+   "name": "receipt:211:110:1/1000000000000000000000000000000",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 56.3
+  },
+  {
+   "kind": "knob",
+   "name": "receipt:212:37:2",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 56.1
+  },
+  {
+   "kind": "knob",
+   "name": "receipt:215:45:264/625",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 55.9
+  },
+  {
+   "kind": "knob",
+   "name": "receipt:216:28:9/50",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 51.2
+  },
+  {
+   "kind": "knob",
+   "name": "receipt:216:41:2",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 45.9
+  },
+  {
+   "kind": "knob",
+   "name": "receipt:216:50:1",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 34.5
+  },
+  {
+   "kind": "knob",
+   "name": "receipt:216:55:1/1000000000000000000000000000000",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 34.0
+  },
+  {
+   "kind": "knob",
+   "name": "receipt:217:33:3/4",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 29.4
+  },
+  {
+   "kind": "knob",
+   "name": "receipt:219:32:43/1000",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 28.1
+  },
+  {
+   "kind": "knob",
+   "name": "receipt:220:34:1",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 28.0
+  },
+  {
+   "kind": "knob",
+   "name": "receipt:220:38:2",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 28.4
+  },
+  {
+   "kind": "knob",
+   "name": "receipt:220:47:9/2",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 27.7
+  },
+  {
+   "kind": "knob",
+   "name": "receipt:220:56:17/500",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 28.0
+  },
+  {
+   "kind": "knob",
+   "name": "receipt:221:34:1",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 27.4
+  },
+  {
+   "kind": "knob",
+   "name": "receipt:221:38:2/5",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 27.2
+  },
+  {
+   "kind": "knob",
+   "name": "receipt:221:52:2",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 27.3
+  },
+  {
+   "kind": "knob",
+   "name": "receipt:221:57:9/2",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 26.7
+  },
+  {
+   "kind": "knob",
+   "name": "receipt:221:71:2",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 28.0
+  },
+  {
+   "kind": "knob",
+   "name": "receipt:222:24:7/18",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 27.7
+  },
+  {
+   "kind": "knob",
+   "name": "receipt:222:36:1/500",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 28.1
+  },
+  {
+   "kind": "knob",
+   "name": "receipt:222:54:1",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 27.2
+  },
+  {
+   "kind": "knob",
+   "name": "receipt:222:62:18",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 28.0
+  },
+  {
+   "kind": "knob",
+   "name": "receipt:222:71:18",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 27.2
+  },
+  {
+   "kind": "knob",
+   "name": "receipt:222:76:1/4",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 26.9
+  },
+  {
+   "kind": "knob",
+   "name": "receipt:223:31:1/2",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 27.4
+  },
+  {
+   "kind": "knob",
+   "name": "receipt:223:42:1/500",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 28.9
+  },
+  {
+   "kind": "knob",
+   "name": "receipt:223:55:1",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 29.2
+  },
+  {
+   "kind": "knob",
+   "name": "receipt:223:58:2",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 29.7
+  },
+  {
+   "kind": "knob",
+   "name": "receipt:224:28:1/2",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 29.9
+  },
+  {
+   "kind": "knob",
+   "name": "receipt:224:39:1",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 29.1
+  },
+  {
+   "kind": "knob",
+   "name": "receipt:224:42:2",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 28.5
+  },
+  {
+   "kind": "knob",
+   "name": "receipt:224:50:1/500",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 29.3
+  },
+  {
+   "kind": "knob",
+   "name": "receipt:225:36:1/5",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 29.8
+  },
+  {
+   "kind": "knob",
+   "name": "receipt:226:41:2",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 32.7
+  },
+  {
+   "kind": "knob",
+   "name": "receipt:226:28:2",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 34.1
+  },
+  {
+   "kind": "knob",
+   "name": "receipt:227:37:2",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 36.4
+  },
+  {
+   "kind": "knob",
+   "name": "receipt:227:44:2",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 38.7
+  },
+  {
+   "kind": "knob",
+   "name": "receipt:228:21:2",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 34.1
+  },
+  {
+   "kind": "knob",
+   "name": "receipt:229:32:7/10",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 34.8
+  },
+  {
+   "kind": "knob",
+   "name": "receipt:229:57:1",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 30.9
+  },
+  {
+   "kind": "knob",
+   "name": "receipt:229:82:1/2",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 29.9
+  },
+  {
+   "kind": "knob",
+   "name": "receipt:230:23:4",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 28.2
+  },
+  {
+   "kind": "knob",
+   "name": "receipt:230:34:6",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 29.4
+  },
+  {
+   "kind": "knob",
+   "name": "receipt:230:38:1/200",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 37.9
+  },
+  {
+   "kind": "knob",
+   "name": "receipt:231:22:1/20",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 43.9
+  },
+  {
+   "kind": "knob",
+   "name": "receipt:231:35:13",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 52.9
+  },
+  {
+   "kind": "knob",
+   "name": "receipt:231:40:75",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 57.3
+  },
+  {
+   "kind": "knob",
+   "name": "receipt:231:47:2",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 54.8
+  },
+  {
+   "kind": "knob",
+   "name": "receipt:231:51:63/50",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 55.4
+  },
+  {
+   "kind": "knob",
+   "name": "receipt:232:25:20",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 55.3
+  },
+  {
+   "kind": "knob",
+   "name": "receipt:232:31:1",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 56.0
+  },
+  {
+   "kind": "knob",
+   "name": "receipt:232:38:1000",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 55.5
+  },
+  {
+   "kind": "knob",
+   "name": "receipt:232:45:1/4000",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 58.8
+  },
+  {
+   "kind": "knob",
+   "name": "receipt:233:25:600",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 58.7
+  },
+  {
+   "kind": "knob",
+   "name": "receipt:235:34:3",
+   "eps": 0.003,
+   "theta": null,
+   "delta": null,
+   "secs": 1.4
+  },
+  {
+   "kind": "knob",
+   "name": "receipt:233:31:1/1000",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 59.0
+  },
+  {
+   "kind": "knob",
+   "name": "receipt:233:45:1/4000",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 59.2
+  },
+  {
+   "kind": "knob",
+   "name": "receipt:234:32:17/20",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 56.3
+  },
+  {
+   "kind": "knob",
+   "name": "receipt:235:59:9/2",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 55.3
+  },
+  {
+   "kind": "knob",
+   "name": "receipt:236:28:1",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 57.2
+  },
+  {
+   "kind": "knob",
+   "name": "receipt:239:34:1/8",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 57.1
+  },
+  {
+   "kind": "knob",
+   "name": "receipt:239:45:5/288",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 57.7
+  },
+  {
+   "kind": "knob",
+   "name": "receipt:239:58:25/784",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 57.1
+  },
+  {
+   "kind": "knob",
+   "name": "M_MINUS",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 59.8
+  },
+  {
+   "kind": "knob",
+   "name": "M_PLUS",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 54.7
+  },
+  {
+   "kind": "knob",
+   "name": "S_MINUS",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 48.9
+  },
+  {
+   "kind": "knob",
+   "name": "M_H:17/500",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 49.8
+  },
+  {
+   "kind": "knob",
+   "name": "R0",
+   "eps": 0.003,
+   "theta": 8746075,
+   "delta": 0,
+   "secs": 36.9
+  }
+ ]
+}

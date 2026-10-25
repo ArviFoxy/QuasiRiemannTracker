@@ -195,6 +195,11 @@
     "report_sha256": "e8d412c8d30bee176a694d2528b84ecc1b1d2b1136379c900ce2668b409377c6",
     "repository": "GTimG/QuasiRiemannTracker",
     "number": 71,
-    "head_sha": "17d05f9a81bbea54ae55597eb0a449b27e33a06d"
+    "head_sha": "17d05f9a81bbea54ae55597eb0a449b27e33a06d",
+    "reuse": {
+      "schema_version": 1,
+      "policy_sha256": "b8bf491d68ed3d0c2d1cb5053ca5ae460e3d7897657d4d34206327db111f05c7",
+      "runtime_sha256": "bdf40c9ce9c3ccb826f0bd3247071cb83979a80ffb899edee783671085629cb3"
+    }
   }
 ]

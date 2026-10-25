@@ -56,6 +56,10 @@ alive declaration lives in. The alive code of a submission is
   `#eval` and `example`, which leave nothing behind, and
 - definitions that deal in Lean's own syntax and meta types (`Lean.*`) in such
   files, which is where tactics keep their helpers,
+- simp lemmas proved by `rfl`, and definitions marked `@[simp]`, in such files
+  that mention only what is already alive: `simp` uses them by unfolding, which
+  leaves nothing in the proof term, yet the source does not compile without
+  them,
 
 in build order, without comments and with whitespace collapsed (the same
 `active-source.mjs` as above), then gzipped at level 9. Mathlib and the pinned

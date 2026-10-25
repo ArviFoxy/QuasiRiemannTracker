@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import { gzipSync } from "node:zlib";
 import {
   aliveCode,
+  commandHead,
   commandKeyword,
   readDump,
   withoutDead,
@@ -18,11 +19,12 @@ function dump(module, constants, aliases = [], extra = {}) {
     return names.indexOf(n);
   };
   const raw = constants.map(
-    ({ name, kind = "thm", range, uses = [], lean }) => ({
+    ({ name, kind = "thm", range, uses = [], lean, rfl }) => ({
       n: id(name),
       k: kind,
       ...(range && { r: range }),
       ...(lean && { m: 1 }),
+      ...(rfl && { d: 1 }),
       u: uses.map(id),
     }),
   );
@@ -459,4 +461,120 @@ test("what an alive file names outside any declaration stays, and a dead file's 
   const { text } = run(modules, dumps, sources);
   assert.equal(text.includes("theorem simpLemma"), true);
   assert.equal(text.includes("lemmaForDead"), false);
+});
+
+test("the attributes of a command are read from its list, however they are written", () => {
+  const head = commandHead(
+    "/-- doc -/\n@[simp↓, local norm_cast, to_additive (attr := simp), ext]\nprivate lemma a",
+    0,
+  );
+  assert.equal(head.keyword, "lemma");
+  assert.deepEqual(head.attributes, [
+    "simp",
+    "norm_cast",
+    "to_additive",
+    "ext",
+  ]);
+  assert.deepEqual(commandHead("@[simp] @[inline]\ndef f", 0).attributes, [
+    "simp",
+    "inline",
+  ]);
+  assert.deepEqual(commandHead("theorem t", 0).attributes, []);
+});
+
+test("a simp lemma proved by rfl, or a simp definition, stays when it only mentions what is alive", () => {
+  const modules = [
+    { name: "M", owner: "s" },
+    { name: "Dead", owner: "s" },
+    { name: "Candidate.Main", owner: "s" },
+  ];
+  const sources = {
+    M: lines(
+      "def helper := 1",
+      "@[simp] theorem rflLemma : helper = 1 := rfl",
+      "@[simp] theorem otherLemma : helper + 0 = 1 := by simp [helper]",
+      "@[simp] def unfolded := helper",
+      "instance : Inhabited Nat := ⟨helper⟩",
+      "@[inline] def inlined := 2",
+      "def onlyDead := 3",
+      "@[simp] theorem needsDead : onlyDead = 3 := rfl",
+      "theorem bound : helper = 1 := by simp",
+    ),
+    Dead: lines("@[simp] theorem simpInDead : True := rfl"),
+    "Candidate.Main": lines("export M (bound)"),
+  };
+  const dumps = [
+    dump("M", [
+      { name: "helper", kind: "def", range: [1, 0, 1, 15] },
+      { name: "rflLemma", range: [2, 0, 2, 44], uses: ["helper"], rfl: true },
+      { name: "otherLemma", range: [3, 0, 3, 64], uses: ["helper"] },
+      { name: "unfolded", kind: "def", range: [4, 0, 4, 28], uses: ["helper"] },
+      {
+        name: "instInhabitedNat",
+        kind: "def",
+        range: [5, 0, 5, 37],
+        uses: ["helper"],
+      },
+      { name: "inlined", kind: "def", range: [6, 0, 6, 28] },
+      { name: "onlyDead", kind: "def", range: [7, 0, 7, 17] },
+      {
+        name: "needsDead",
+        range: [8, 0, 8, 47],
+        uses: ["onlyDead"],
+        rfl: true,
+      },
+      { name: "bound", range: [9, 0, 9, 36], uses: ["helper"] },
+    ]),
+    dump("Dead", [{ name: "simpInDead", range: [1, 0, 1, 42], rfl: true }]),
+    dump("Candidate.Main", [], [["Candidate.bound", "bound"]]),
+  ];
+  const { text } = run(modules, dumps, sources);
+  for (const kept of [
+    "def helper",
+    "rflLemma",
+    "def unfolded",
+    "theorem bound",
+  ])
+    assert.equal(text.includes(kept), true, kept);
+  // A simp lemma that the proof used is in its term, so it is only alive when something names it;
+  // one that mentions something dead cannot have been used by anything alive.
+  for (const gone of [
+    "otherLemma",
+    "instance : Inhabited",
+    "inlined",
+    "onlyDead",
+    "needsDead",
+    "simpInDead",
+  ])
+    assert.equal(text.includes(gone), false, gone);
+});
+
+test("ambient declarations that depend on each other join one after the other", () => {
+  const modules = [
+    { name: "M", owner: "s" },
+    { name: "Candidate.Main", owner: "s" },
+  ];
+  const sources = {
+    M: lines(
+      "def base := 1",
+      "@[simp] theorem second : base = 1 := rfl",
+      "@[simp] theorem third : second = second := rfl",
+      "theorem bound : base = base := rfl",
+    ),
+    "Candidate.Main": lines("export M (bound)"),
+  };
+  const dumps = [
+    dump("M", [
+      { name: "base", kind: "def", range: [1, 0, 1, 13] },
+      { name: "second", range: [2, 0, 2, 40], uses: ["base"], rfl: true },
+      { name: "third", range: [3, 0, 3, 46], uses: ["second"], rfl: true },
+      { name: "bound", range: [4, 0, 4, 34], uses: ["base"] },
+    ]),
+    dump("Candidate.Main", [], [["Candidate.bound", "bound"]]),
+  ];
+  const { text } = run(modules, dumps, sources);
+  assert.equal(
+    text.includes("theorem second") && text.includes("theorem third"),
+    true,
+  );
 });

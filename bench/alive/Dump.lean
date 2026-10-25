@@ -31,6 +31,16 @@ def kind : ConstantInfo → String
   | .ctorInfo _ => "ctor"
   | .recInfo _ => "rec"
 
+/-- A proof that is `rfl`, under any binders: simp uses such a lemma by unfolding,
+and leaves no trace of it in the proof term. -/
+partial def isRfl : Expr → Bool
+  | .lam _ _ b _ => isRfl b
+  | .mdata _ b => isRfl b
+  | e =>
+    let f := e.getAppFn
+    f.isConstOf ``Eq.refl || f.isConstOf ``rfl || f.isConstOf ``Iff.refl || f.isConstOf ``Iff.rfl ||
+      f.isConstOf ``HEq.refl || f.isConstOf ``HEq.rfl
+
 /-- Every constant the declaration needs to be checked: its type, its value, and
 the declarations that are defined together with it. -/
 def needs (c : ConstantInfo) : Array Name :=
@@ -95,7 +105,10 @@ unsafe def dump (names : Std.HashSet Name) (data : ModuleData) (module : Name) :
     let range := match ranges[c.name]? with
       | some r => s!",\"r\":[{r.range.pos.line},{r.range.pos.column},{r.range.endPos.line},{r.range.endPos.column}]"
       | none => ""
-    let flag := if usesLean then ",\"m\":1" else ""
+    let rflThm := match c with
+      | .thmInfo d => isRfl d.value
+      | _ => false
+    let flag := (if usesLean then ",\"m\":1" else "") ++ (if rflThm then ",\"d\":1" else "")
     out := out ++ (if first then "" else ",") ++
       "{\"n\":" ++ toString here ++ ",\"k\":\"" ++ kind c ++ "\"" ++ range ++ flag ++
       ",\"u\":" ++ toString refs.toList ++ "}"

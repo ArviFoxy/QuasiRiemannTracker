@@ -17,7 +17,9 @@
 // section that held only dead declarations, and commands that leave nothing
 // behind (#print, #check, #eval, example). Definitions that deal in Lean's own
 // syntax and meta types are alive wherever their file is, because that is where
-// tactics and macros keep their helpers.
+// tactics and macros keep their helpers. So are simp lemmas proved by rfl and
+// definitions with a simp-like attribute: a proof that used one leaves no trace
+// of it in its term, and the source does not compile without it.
 import { createHash } from "node:crypto";
 import {
   existsSync,
@@ -64,10 +66,72 @@ const modifiers = new Set([
   "scoped",
 ]);
 
-// The first keyword of the command that starts at an offset, after any doc
-// comment, attributes and modifiers.
-export function commandKeyword(source, start) {
+// Attributes that let a declaration take part in what other declarations do
+// without being named: a simp lemma rewrites, an ext lemma is applied. Almost
+// always a proof that used one has it in its term; but a simp lemma proved by
+// rfl, or a definition simp unfolds, leaves no trace there, and the source does
+// not compile without it. So those are alive wherever their file is.
+const ambient = new Set([
+  "simp",
+  "simps",
+  "norm_cast",
+  "push_cast",
+  "squash",
+  "elim",
+  "move",
+  "ext",
+  "congr",
+  "gcongr",
+  "mono",
+  "positivity",
+  "norm_num",
+  "bound",
+  "continuity",
+  "measurability",
+  "fun_prop",
+  "aesop",
+  "grind",
+  "field_simps",
+  "refl",
+  "symm",
+  "trans",
+  "coe",
+  "elab_as_elim",
+  "induction_eliminator",
+  "cases_eliminator",
+  "default_instance",
+  "simproc",
+  "dsimproc",
+]);
+
+// The names in an attribute list: `simp, local norm_cast` gives simp, norm_cast.
+function attributeNames(list) {
+  const names = [];
+  let depth = 0,
+    from = 0;
+  const take = (to) => {
+    const name = /^\s*(?:(?:local|scoped)\s+)?([A-Za-z_][A-Za-z_0-9]*)/.exec(
+      list.slice(from, to),
+    );
+    if (name) names.push(name[1]);
+  };
+  for (let i = 0; i < list.length; i++) {
+    if ("([{".includes(list[i])) depth++;
+    else if (")]}".includes(list[i])) depth--;
+    else if (list[i] === "," && !depth) {
+      take(i);
+      from = i + 1;
+    }
+  }
+  take(list.length);
+  return names;
+}
+
+// The command that starts at an offset: its first keyword, after any doc
+// comment, attributes and modifiers, and the names of its attributes.
+export function commandHead(source, start) {
   let i = start;
+  const attributes = [];
   for (;;) {
     while (i < source.length && /\s/.test(source[i])) i++;
     if (source.startsWith("/-", i)) {
@@ -87,22 +151,27 @@ export function commandKeyword(source, start) {
     } else if (source.startsWith("--", i)) {
       while (i < source.length && source[i] !== "\n") i++;
     } else if (source.startsWith("@[", i)) {
+      const open = i + 2;
       let depth = 0;
       for (; i < source.length; i++) {
         if (source[i] === "[") depth++;
         else if (source[i] === "]" && !--depth) {
+          attributes.push(...attributeNames(source.slice(open, i)));
           i++;
           break;
         }
       }
     } else {
       const word = /^[A-Za-z_]+/.exec(source.slice(i, i + 40))?.[0];
-      if (!word) return null;
-      if (!modifiers.has(word)) return word;
+      if (!word) return { keyword: null, attributes };
+      if (!modifiers.has(word)) return { keyword: word, attributes };
       i += word.length;
     }
   }
 }
+
+export const commandKeyword = (source, start) =>
+  commandHead(source, start).keyword;
 
 // Offsets into a string of Lean positions: lines count from 1 and columns count
 // characters, not UTF-16 units, from 0.
@@ -232,6 +301,7 @@ export function readDump(text) {
       kind: c.k,
       range: c.r ?? null,
       lean: Boolean(c.m),
+      rfl: Boolean(c.d),
       uses: c.u.map((i) => names[i]),
     })),
   };
@@ -252,7 +322,7 @@ function declaredAs(name, ranges) {
 
 // Which constants and files the root needs. modules: the submission's modules in
 // build order, each { name, owner }; dumps: Map of module name to its dump.
-export function findAlive({ modules, dumps, root = ROOT }) {
+export function findAlive({ modules, dumps, source, root = ROOT }) {
   const consts = new Map(),
     aliases = new Map(),
     inModule = new Map(),
@@ -314,12 +384,39 @@ export function findAlive({ modules, dumps, root = ROOT }) {
         if (!alive.has(used)) queue.push(used);
     if (!queue.length) break;
   }
+  // Ambient declarations that only mention what is alive. One that mentions
+  // something dead cannot have been used by anything alive, since whatever it
+  // rewrote and whatever it rewrote to is in the proof.
+  const ambients = [...liveModules].flatMap((module) =>
+    ambientIn(
+      inModule.get(module),
+      source(modules.find((x) => x.name === module)),
+    ),
+  );
+  const needs = (name) => [
+    ...(consts.get(name)?.uses ?? []),
+    ...(named.get(name) ?? []),
+  ];
+  for (let grew = true; grew; ) {
+    grew = false;
+    for (const names of ambients) {
+      if (names.every((n) => alive.has(n))) continue;
+      if (
+        names.every((n) =>
+          needs(n).every((used) => alive.has(used) || names.includes(used)),
+        )
+      ) {
+        for (const n of names) alive.add(n);
+        grew = true;
+      }
+    }
+  }
   return { root: target, alive, liveModules, inModule };
 }
 
 // The declarations of one file as the groups withoutDead cuts by: each is the
-// position of a declaration, with whether anything declared there is alive.
-export function declarationGroups(constants, alive) {
+// position of a declaration and the constants declared there.
+function groupsOf(constants) {
   const ranges = new Map(
     constants.filter((c) => c.range).map((c) => [c.name, c.range]),
   );
@@ -328,16 +425,43 @@ export function declarationGroups(constants, alive) {
     const home = declaredAs(c.name, ranges);
     if (home === null) continue;
     const key = ranges.get(home).join(",");
-    const group = groups.get(key) ?? { range: ranges.get(home), alive: false };
-    group.alive ||= alive.has(c.name);
+    const group = groups.get(key) ?? {
+      range: ranges.get(home),
+      names: [],
+      home,
+    };
+    group.names.push(c.name);
     groups.set(key, group);
   }
   return [...groups.values()];
 }
 
+// The groups of a file with whether anything declared there is alive.
+export function declarationGroups(constants, alive) {
+  return groupsOf(constants).map(({ range, names }) => ({
+    range,
+    alive: names.some((name) => alive.has(name)),
+  }));
+}
+
+// The constants of a file that take part without being named: a lemma proved by
+// rfl or a definition, declared with an attribute such as simp.
+function ambientIn(constants, text) {
+  const at = offsets(text),
+    byName = new Map(constants.map((c) => [c.name, c]));
+  return groupsOf(constants)
+    .filter(({ range, home }) => {
+      const c = byName.get(home);
+      if (!c || !(c.rfl || c.kind === "def")) return false;
+      const { attributes } = commandHead(text, at(range[0], range[1]));
+      return attributes.some((x) => ambient.has(x));
+    })
+    .map(({ names }) => names);
+}
+
 // source(module) gives the text of a file.
 export function aliveCode({ modules, dumps, source, root = ROOT }) {
-  const found = findAlive({ modules, dumps, root });
+  const found = findAlive({ modules, dumps, source, root });
   const parts = [];
   let declarations = 0,
     removed = 0;

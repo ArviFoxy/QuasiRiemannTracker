@@ -146,6 +146,10 @@ certified for all its 2¹⁶ faces at once. The proof reaches 34989/40000 = 0.87
   The GL(2) analogue, uniform in the level, is open.
 - **The corner is triple-tight.** Escaping it needs smoothness of the Möbius profile across scales,
   hence control of zero clusters.
+- **The unmarked count is a lattice game** (`round9/README.md`, `lean-lab/ZeroDensityGame.lean`).
+  The extremal adversary is the two-term model `L ≈ 1 + bU^{−s₀(s−a)}`, `s₀ = 5/(15 − 6ν)`, whose
+  saturated lengths form the lattice `s₀ℕ`. It defeats every count that depends only on length.
+  Only the long moment at `3s₀` moves `ρ(ν)`, with sensitivity `4ν/(5 − 2ν)`.
 - **High side:** the triangle inequality over bad rows is intrinsic, since phases align by tiny
   height shifts.
 - **Low side:** the bias is the signal.

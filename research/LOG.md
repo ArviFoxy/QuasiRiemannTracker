@@ -1285,6 +1285,29 @@ A catalogue cross-check (21.9k records) found nothing that moves them. → `cap-
     Lambert structure is per class only.
   - Optimal within the method up to 0.9e-6: exact maximum per step, comparison principle along the
     chain, tangent faces, and θ* is flat in the count-face position at the end of the chain.
+- *Last checks on the face-family return (2026-10-25).*
+  - **`Λ_P ≥ 3` (receipt `source_lambda_low`) is not a lever.** With the receipt dropped, physical
+    faces of the family with `Λ_P` down to 2.90 give θ* = 8747249–8747251, i.e. at most 1e-7.
+  - **The count face's position is flat.** Moving `C` back along the family by 500, 2000, 6000 and
+    12000 grid steps gives θ* = 8747250, 8747251, 8747253, 8747256, so a final step below the
+    `22/23` guard (as the old node 58) cannot help. The old end faces are worse on the new return
+    (old C with new P: 8747264).
+  - **Multi-face physical capacity.** The physical face enters only through
+    `CN(d) = min(sP·d, (2y − (2 − B_P)d)/Λ_P)` at `d = ds, dk, h`, and only `new_top` (`d = h`)
+    binds, where `CN(h)/h` is the slot width at which the face reaches plain length `4ℓ/h`. The best
+    face there is pinned by `Λ_P ≥ 3`, worth 1e-7 (above), so per-shift face choice gains nothing.
+  - **An inverse-moment "source chain" fails at once.** Splitting rows by slot amplitude before
+    Poisson, the LOW part costs `max_LOW|Q_u|² · Σ_u|M_u|² ≈ Z^{m + qz}` against the averaged marked
+    bound `Z^m`. Marks cost through the allowed inverse length `r`, not through the moment, so a
+    pointwise split only loses.
+  - **Literature (Oct 2026).** Dunn, arXiv 2403.13151 (ANT 2025): a power-saving bilinear large
+    sieve whose kernel is a cubic metaplectic *cusp form* (circle method, Voronoi). P1 needs
+    quadratic twists of the cubic theta (Eisenstein) coefficients at the critical length, so it does
+    not apply. Baier, arXiv 2605.01635 and 2609.21195 (large sieve for square moduli): unrelated. No
+    new input for P1.
+  - PR #73's description still names `submissions/repeated-marks-20261024/` in "Local checks" and
+    describes the 59-face graph; a corrected description is in `faceless-chain/PR_BODY_DRAFT.md`
+    (the upstream repository is not writable from this session).
 
 ## Open directions (ranked, revised 2026-10-24, third pass; see `barriers/README.md`)
 

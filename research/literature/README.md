@@ -108,3 +108,12 @@ via Rankin–Selberg).
 **QRH follow-ups.** Sang 2610.15291 (0.8748867) and Liu 2610.12234 (0.874957) are far above the
 tracker record, and no newer follow-up was found.
 
+**Checked 2026-10-25 (no input for P1).**
+- Dunn, arXiv 2403.13151 (Algebra & Number Theory 19 (2025)): power-saving bound for sums of a fixed
+  cubic metaplectic cusp form's coefficients over primes, via a new bilinear large sieve with kernel
+  `ρ_f(·)` (Browning–Vishe circle method, Voronoi) and a linear form past level 2/3. P1 concerns
+  quadratic twists of the cubic theta (Eisenstein) coefficients at the critical length, uniformly in
+  the slot twist; the bilinear kernel there is a multiplicative factorization of `n`, not a family of
+  quadratic twists.
+- Baier, arXiv 2605.01635 (and 2603.00768, 2603.25814, 2609.21195): the large sieve for square
+  moduli; unrelated to P1.

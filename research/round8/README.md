@@ -86,6 +86,11 @@ is 7e-7. It would need two guards relaxed: `B_H ≥ 22/23`, and the density floo
 (`q = 0.4973` already at `s = 0.0435`). The floor is an analytic requirement (atom 3), so this is
 closed.
 
+**Return parameters re-checked on the new faces.** θ* = 8747250 for count-window caps
+`sC ∈ {13/250, 53/1000, 27/500, 549/10000}` and physical caps `sP ∈ {43/1000, 11/250, 9/200, 23/500}`;
+neither binds. The conductor top stays optimal at `h = 401/500` (0.800: 8747258, 0.801: 8747252,
+0.803: 8747252, 0.804: 8747258).
+
 ## 4. Literature (checked again)
 
 No new input. Dunn 2403.13151 (cusp-form kernel), Baier 2605.01635 / 2609.21195 (square moduli),

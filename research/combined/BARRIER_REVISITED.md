@@ -84,11 +84,15 @@ modules prove only the initial face, with no LOW parent.
 
 ## 5. Open questions this raises
 
-1. **A larger multiplier group.** Is there a family with even denser multipliers whose phase is
-   still a function of `(D, row)` only, e.g. squares with a quadratic phase on squarefree moduli?
-   The vanishing lemma needs `D^e` to kill every non-coprime fifth-free modulus, which forces
-   `e ≥ 4` (`p^{n+1} | D^e k` for `n < 4`). Smaller `e` would need the moduli `e`-th-power-free
-   and a separate treatment of the rest.
+1. **Is there a denser multiplier family? No: 4 is the least exponent (answered).**
+   - For `D` coprime to `a`, every exponent works: `G_a(D^e k) = χ̄_a(D^e)G_a(k) = χ_a(D)^{−e}G_a(k)`.
+   - But the transfer is useful only when the phase is the slot's own twist, so that the twisted
+     row family is the polynomial at the dilated frequency. That twist is the cubic character
+     `(P/a)₃ = χ_a(P)²`, as a function of the row `a`.
+   - So `−e ≡ 2 (mod 6)`, i.e. `e ≡ 4 (mod 6)`, and the least positive exponent is 4.
+   - The fifth-free vanishing (`p^{n+1} | D^e k` for `n < 4`) asks for `e ≥ 4` as well, but the phase
+     condition alone already rules out squares and cubes.
+   - So the density `X^{1/4}` is optimal among transfers of this kind.
 2. **The native gate's 3/4.** In Sil's argument `κ = 3/4` comes from β ≤ 7/8. In a step at density
    `q` the analogue of the gate would use `q`. Whether the step's HIGH gate tolerates the selection
    is the crux for the mixed step.

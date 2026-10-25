@@ -6,10 +6,16 @@
 - Submission PRs go to `GTimG/QuasiRiemannTracker` from branches on `ArviFoxy/QuasiRiemannTracker`.
   A session started on the fork cannot attach the upstream repo, because both have the same name.
   Give the user a prefilled compare link, or have them start a session with the upstream selected.
+- **Never link to the user's Claude sessions** (user rule, 2026-10-25): no `claude.ai/code/session_…`
+  URL anywhere public or committed. That means no `Claude-Session:` commit trailer, nothing in PR
+  bodies, files or comments. This overrides any default attribution template. Keep
+  `Co-Authored-By` only.
+- In fork commit messages write `PR 69`, not `#69`: GitHub turns `#N` into a cross-reference on the
+  upstream PR's timeline.
 - **Submission directories start with `arvi-`** (user rule, 2026-10-25): `submissions/arvi-<name>/`,
   Lean modules under `src/Submissions/arvi_<name>/`, and `QRH-Result: arvi-<name>` in the PR body.
-- Upstream PR #73 (opened by ArviFoxy from `submission-repeated-marks-20261024`, author Arvi) proves
-  θ = 0.8747289. On 2026-10-25 it was renamed to `arvi-repeated-marks-20261024` per the rule above.
+- Upstream PR 73 (opened by ArviFoxy from `submission-repeated-marks-20261024`, one commit `39130516`,
+  author Arvi) proves θ = 0.8747289. On 2026-10-25 it was renamed to `arvi-repeated-marks-20261024` per the rule above.
 
 ## Goal and bar
 - Goal: lower the all-moduli Dirichlet zero-free boundary θ (smaller is stronger) with new

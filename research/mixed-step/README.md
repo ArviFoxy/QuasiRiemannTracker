@@ -86,8 +86,11 @@ the physical receipt needs):
 | (0.9999, 2.0) | (0.9999, 3.0) | **0.8745804** |
 
 - **The floor is the return's own.** With perfect faces the return still fails just below
-  0.8745804. The cover breaks at `δ ≈ 0.44122`, `p → 1/2`: the count's own terms (atoms 1 and 4,
-  `../barriers/README.md`), with no face involved.
+  0.8745804. The cover breaks at `δ ≈ 0.44122`, `p → 1/2` on the `new_top` edge. There the
+  uncapped branch C has a positive return polynomial (0.002) but fails the FR8 admission
+  `Mn − mL·DJ` (−0.084), because `mL = (B − L·s₊)/2` grows with the face. The capped branch is
+  admitted, but its return polynomial is not positive there. So the floor is a cap/admission
+  trade-off inside the return (FR8 windows), not a face.
 - **What the source side can give.** At most −2.7e-5, of which P is worth about two thirds.
 - **The readings against the cap.**
   - Sil-LOW reaches the cap, which is why its θ* is flat in C.

@@ -150,6 +150,14 @@ certified for all its 2¹⁶ faces at once. The proof reaches 34989/40000 = 0.87
   The extremal adversary is the two-term model `L ≈ 1 + bU^{−s₀(s−a)}`, `s₀ = 5/(15 − 6ν)`, whose
   saturated lengths form the lattice `s₀ℕ`. It defeats every count that depends only on length.
   Only the long moment at `3s₀` moves `ρ(ν)`, with sensitivity `4ν/(5 − 2ν)`.
+- **The long moment from the L-function side** (`round10/README.md`).
+  - Sixth-power amplification is exactly the 11/12 strip applied to the excess length:
+    `(1 + 5t)/6 = 1 + (t − 1)(2·11/12 − 1)`.
+  - Every identity for `μ` contains the long prime sum, which has no mean value of its own.
+  - Poisson duality is exactly self-dual: the dual asymptotic is the original problem.
+  - The adversary is an L-function with a fraction `s₀` of its local zeros on `Re = a`. The
+    window's convexity allows `1/2`, so killing it needs a `U^{0.02}` window subconvexity or a
+    sixth moment with excess below `s₀δ`.
 - **High side:** the triangle inequality over bad rows is intrinsic, since phases align by tiny
   height shifts.
 - **Low side:** the bias is the signal.

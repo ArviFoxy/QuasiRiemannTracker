@@ -1641,3 +1641,27 @@ slot; `mixed-slots/`).
     amplifier charge.
   - Lean: `lean-lab/MixedStepLedger.lean` (payment algebra, thresholds `6q/(1+q)` vs `6q`, Sil's
     26/7 floor).
+- **Mixed step, exact model and the return's new regime** (`mixed-step/README.md` §10, 2026-10-25 late).
+  - **Start.** The continuum flow's jump from Sil's slope 3.72 to the stall line `L/B = 18/7` is
+    realized by a fan of faces through one point. Each fan face is a legal mixed step from the
+    previous one.
+  - **Exact checks.** `mixed_certs.py` mirrors the draft SourceValid3 in exact rationals. These pass
+    it at every sampled face:
+    - 46 fan steps (`q = 7499/10000`, `s0 = 16/1000`, caps growing to 0.075);
+    - the junction;
+    - an 8-piece fine family to `s = 0.062` (secant faces, `den3 = 2⁻¹⁵`).
+  - **The return now binds on its own physical window.** With the mixed faces the faces stop
+    binding at `s_P = 0.052`. The binding is the `new_top` capacity `s_P·h`.
+  - **`dMinus > 3/4` was over-assumed.** All 9 uses in our fork need only `dMinus > 1/2`. With that,
+    `s_P` rises until the P face binds again through `(B_P − 4ℓ/h)/L_P`, i.e. where the envelope
+    reaches `m₁ + m₂ = 2(1 − y/h) ≈ 0.843`.
+  - **Exact faces of the family** (P at `s = 0.057`, C at `s = 0.0595`), caps 0.075,
+    `s_P = s_C = 0.058`: **θ\* = 0.8742869**. That is −3.2e-4 against PR 76. It is conditional on
+    the mixed-step theorem (MStep, Lean pending).
+  - **Atlas at the new point** (`strip-mine/atlas2.py`): `B_P` −277 per +0.3%, `h` −167; `B_C`,
+    `L_C`, `s_C`, `s_P` 0.
+  - **Ruled out.**
+    - A fixed stronger HIGH parent (Sil's face or the natural face) instead of the previous face
+      makes the flow worse.
+    - The q floor `q ≥ 1/2` is (LD1) of Collet's restricted HIGH count (`r* ≥ 22/29 > 3/4` for the
+      inverse moment's domain). Relaxing it is new analytic input, not a refactor.

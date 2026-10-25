@@ -266,16 +266,17 @@ kernel job.
 | con-ron `--verified`, 4 jobs, from the file | killed (out of memory) at 731 s | **accepted, 134,933 declarations, 894 s, 8.5 GB peak** |
 | nanoda, 4 threads, from the file | killed at 471 s | killed at 301 s (13.0 GB) |
 | nanoda, export streamed on stdin, 4 threads | passed in 20 min 17 s | killed at 581 s (13.5 GB with the exporter) |
-| nanoda, 2 threads, streamed | — | (running) |
+| nanoda, 2 threads, streamed | — | killed at 675 s (13.5 GB) |
 
 - **Our certificates are cheap for nanoda.**
   - The heaviest packed HIGH certificate (`p2_high_0_12_pos`, 10,733 declarations with its
     dependencies) checks in 8 s at 438 MB.
   - All five pieces' certificates together (`piece{0..4}_certs`, 12,376 declarations: the 60 HIGH,
     120 sector and remaining scalar certificates) check in 39 s at 835 MB.
-- **The memory goes to the rest of the closure.** Mathlib, the baseline and Collet's large admission
-  declarations are checked several at a time. PR 73's streamed pass was presumably close to the
-  same limit.
+- **The memory goes to the rest of the closure.** With 2 threads instead of 4 nanoda still needs
+  more than about 13.5 GB, so the cost is the environment it holds, not parallel checking. PR 73's
+  streamed pass (closure 158,499 declarations) must have been close to the same limit. A full
+  nanoda run of the single-stage closure needs a machine with more than 15 GB.
 - **Admission is not at risk.** Maintainers verify offline with raised budgets, and every hosted
   run since PR 63 has timed out anyway.
 

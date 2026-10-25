@@ -109,12 +109,19 @@ the count is about `U^{2.22(1−σ)}` at `σ ≈ 0.727`.
 
 ## 6. The source chain
 
-A face `G(B, Λ, h)` is a certified plain fourth moment with slot cost `Λ`. Each step thresholds the
-slot outputs: LOW rows are deleted pointwise, HIGH rows are counted by the detector bank. Better
-counts give cheaper slots in the next face. In the continuum limit this is an ODE
-(`variational-ceiling/`, ceiling about 0.874724). Our improvement repeats slot filters `K` times in
-the HIGH count's inverse witness (foundations Lemma 8.1; `repeated-marks/`). That gives the Lean
-value 0.8747289.
+A face `G(B, Λ, h)` is a certified plain fourth moment with slot cost `Λ`, valid on the half-plane
+`m₁ + m₂ + Λz ≤ B`. Each step thresholds the slot outputs: LOW rows are deleted pointwise, HIGH
+rows are counted by the detector bank. Better counts give cheaper slots in the next face. Our
+improvement repeats slot filters `K` times in the HIGH count's inverse witness (foundations
+Lemma 8.1; `repeated-marks/`). That gives the Lean value 0.8747289.
+
+**The faces are tangent lines of one explicit curve** (`chain-ode/README.md`). The unproven region
+of (plain length, slot width) is convex; the faces are its supporting lines; in the limit they are
+the tangents `(B, Λ) = (E − sE′, −E′)` of the envelope `E(s)` (a Legendre transform). The gate is
+the ODE `E′ = −6q*E/(1 − 6q*s)` with the closed form
+`6q* = 5(√E − 2√s)²/(2 − E − 4√(Es))` for the binding class (`lean-lab/ChainSwitching.lean`).
+Each class flow is solved by Lambert W. Ceiling about 0.874724. Only the regular HIGH gate at
+`ν = q` binds, and half its value lies in the last 0.01 of slot width (`ν ≈ 0.51`, `p ≈ 0.2`).
 
 ## 7. Why it is stuck
 
@@ -129,3 +136,13 @@ value 0.8747289.
 - **High side:** the triangle inequality over bad rows is intrinsic, since phases align by tiny
   height shifts.
 - **Low side:** the bias is the signal.
+- **Why order 6.** Absorbing μ into one Gauss sum needs a quadratic subcharacter (Hasse–Davenport).
+  The leftover cubic Gauss sums must be explicit theta coefficients, which on `GL(2)` exist only
+  for orders 2 and 3 (Kazhdan–Patterson). The leftover twist `χ⁻³` must be quadratic for the sharp
+  quadratic sieve. Only `6 = 2·3` does all three. Order `n` would give the baseline `1 − 1/(2n)`.
+- **The common root of the atoms (P1).** The column branch (and the inverse moment past its
+  diagonal) is:
+  - a reciprocity-signed dual form, where positivity re-creates the `N` term;
+  - built from sextic Gauss sums after the second Poisson step, i.e. Kazhdan–Patterson again;
+  - Lindelöf on average for quadratic twists of `θ₃` in a family thinner than its critical length.
+  Each of these is open even in the `GL(2)` analogue.

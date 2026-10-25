@@ -7,3 +7,11 @@ K'=156 N'=7796  N'/K'=50.0   log N/log K = 1.720
   P+ in(1,24]: empty
   P+ in(24,600]: cols  2016 (25.9%)  blocks    92 (mean size 21.91) CB/diag= 0.860  blk/diag= 0.994  op/MP= 0.995  adv/diag=  2.497  wub/diag=   3.02 (frame   3.04, (1+sqrt(m/K))^2= 3.13)  LS/diag=  15.2
  column vector: random phase * A
+  all        : cols  7796 (100.0%)  blocks  3854 (mean size  2.02) CB/diag= 0.947  blk/diag= 1.000  op/MP= 1.565  adv/diag= 21.088  wub/diag=  36.98 (frame  36.98, (1+sqrt(m/K))^2=35.65)  LS/diag=  53.6
+  smooth     : cols  2016 (25.9%)  blocks    92 (mean size 21.91) CB/diag= 0.871  blk/diag= 1.001  op/MP= 1.044  adv/diag=  2.788  wub/diag=   3.15 (frame   3.14, (1+sqrt(m/K))^2= 3.13)  LS/diag=  15.2
+  hard core  : cols  5780 (74.1%)  blocks  3762 (mean size  1.54) CB/diag= 0.973  blk/diag= 0.999  op/MP= 1.247  adv/diag= 22.767  wub/diag=  36.10 (frame  36.12, (1+sqrt(m/K))^2=34.94)  LS/diag=  39.5
+  P+ in(1,24]: empty
+  P+ in(24,600]: cols  2016 (25.9%)  blocks    92 (mean size 21.91) CB/diag= 0.871  blk/diag= 1.001  op/MP= 1.044  adv/diag=  2.788  wub/diag=   3.15 (frame   3.14, (1+sqrt(m/K))^2= 3.13)  LS/diag=  15.2
+ column vector: g~ (no slots)
+  all        : cols  7796 (100.0%)  blocks  3854 (mean size  2.02) CB/diag= 1.032  blk/diag= 1.004  op/MP= 1.507  adv/diag= 24.564  wub/diag=  37.14 (frame  36.99, (1+sqrt(m/K))^2=35.65)  LS/diag=  53.7
+  smooth     : cols  2016 (25.9%)  blocks    92 (mean size 21.91) CB/diag= 1.056  blk/diag= 1.011  op/MP= 1.027  adv/diag=  2.624  wub/diag=   2.93 (frame   2.90, (1+sqrt(m/K))^2= 3.13)  LS/diag=  15.3

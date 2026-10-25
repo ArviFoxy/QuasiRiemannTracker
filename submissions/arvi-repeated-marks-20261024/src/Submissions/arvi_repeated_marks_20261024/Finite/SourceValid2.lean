@@ -36,9 +36,11 @@ def CellRatio (n low : Source) : Prop :=
 
 instance (n low : Source) : Decidable (CellRatio n low) := by unfold CellRatio; infer_instance
 
-/-- Validity of a node of the repeated-mark graph (`copies = 8`). -/
+/-- Validity of a step of the repeated-mark source chain (`copies = 8`). The HIGH gate enters through
+its positivity on the cell (`HighPos`); a finite node proves it from Bernstein trees
+(`highPos_of_valid`), a family of nodes from polynomial certificates (`Faceless`). -/
 def SourceValid2 (n low : Source) (high : Option Source) : Prop :=
-  SourceValidC n low high ∧ HighValid n low high 8 ∧ n.q < 3/4 ∧ CellRatio n low
+  SourceValidC n low high ∧ HighPos n low high 8 ∧ n.q < 3/4 ∧ CellRatio n low
 
 /-- The gates a sector or natural facet uses are unchanged. -/
 def KeptGate (high : Option Source) (j : Fin 9) : Prop := high = none ∨ 6 ≤ j.val

@@ -13,8 +13,6 @@ import Submissions.arvi_repeated_marks_20261024.FinalReturn.Rows.Admission08
 import Submissions.arvi_repeated_marks_20261024.FinalReturn.Rows.Admission09
 import Submissions.arvi_repeated_marks_20261024.FinalReturn.Rows.Admission10
 import Submissions.arvi_repeated_marks_20261024.FinalReturn.Rows.Admission11
-import Submissions.arvi_repeated_marks_20261024.FinalReturn.Rows.Admission12
-import Submissions.arvi_repeated_marks_20261024.FinalReturn.Rows.Admission13
 set_option autoImplicit false
 set_option maxHeartbeats 200000
 namespace QRH.RepeatedMarks.Return
@@ -124,31 +122,13 @@ def returnWindow08 : ReturnCountWindow where
 def returnWindow09 : ReturnCountWindow where
  branch := .C
  nonold := by decide
- deltaLo := (465/1024:ℝ)
- deltaHi := (1863/4096:ℝ)
- pLo := (511/1024:ℝ)
- deltaBounds := by norm_num
- pBounds := by norm_num
- certificate := admission09_all
-def returnWindow10 : ReturnCountWindow where
- branch := .C
- nonold := by decide
- deltaLo := (1863/4096:ℝ)
- deltaHi := (933/2048:ℝ)
- pLo := (511/1024:ℝ)
- deltaBounds := by norm_num
- pBounds := by norm_num
- certificate := admission10_all
-def returnWindow11 : ReturnCountWindow where
- branch := .C
- nonold := by decide
  deltaLo := (933/2048:ℝ)
  deltaHi := (117/256:ℝ)
  pLo := (255/512:ℝ)
  deltaBounds := by norm_num
  pBounds := by norm_num
- certificate := admission11_all
-def returnWindow12 : ReturnCountWindow where
+ certificate := admission09_all
+def returnWindow10 : ReturnCountWindow where
  branch := .C
  nonold := by decide
  deltaLo := (117/256:ℝ)
@@ -156,8 +136,8 @@ def returnWindow12 : ReturnCountWindow where
  pLo := (31/64:ℝ)
  deltaBounds := by norm_num
  pBounds := by norm_num
- certificate := admission12_all
-def returnWindow13 : ReturnCountWindow where
+ certificate := admission10_all
+def returnWindow11 : ReturnCountWindow where
  branch := .C
  nonold := by decide
  deltaLo := (15/32:ℝ)
@@ -165,8 +145,8 @@ def returnWindow13 : ReturnCountWindow where
  pLo := (15/32:ℝ)
  deltaBounds := by norm_num
  pBounds := by norm_num
- certificate := admission13_all
-def returnWindows : List ReturnCountWindow := [returnWindow01,returnWindow02,returnWindow03,returnWindow04,returnWindow05,returnWindow06,returnWindow07,returnWindow08,returnWindow09,returnWindow10,returnWindow11,returnWindow12,returnWindow13]
+ certificate := admission11_all
+def returnWindows : List ReturnCountWindow := [returnWindow01,returnWindow02,returnWindow03,returnWindow04,returnWindow05,returnWindow06,returnWindow07,returnWindow08,returnWindow09,returnWindow10,returnWindow11]
 def returnBranches : List Branch := returnWindows.map ReturnCountWindow.toBranch
 end
 end QRH.RepeatedMarks.Return

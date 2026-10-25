@@ -1,7 +1,8 @@
 /- Repeated marks: the endpoint from the source steps.
 Fork of Collet's Record1252270103Graph/FinalSources.lean and Graph/Endpoint.lean (Apache-2.0):
-the final count face is node 58 and the final physical face is node 31 of the repeated-mark graph;
-the seed step, the intermediate stage and the natural premise are Collet's, unchanged. -/
+the final count face is the last face `faceC` of the face family (Graph/Chain.lean) and the final
+physical face is its face `faceP`; the seed step, the intermediate stage and the natural premise are
+Collet's, unchanged. -/
 import Submissions.arvi_repeated_marks_20261024.Graph.Chain
 import Submissions.arvi_repeated_marks_20261024.FinalReturn.EndpointFromGlobalSources
 set_option autoImplicit false
@@ -11,17 +12,28 @@ noncomputable section
 open Record1252270103Finite OAI.SevenEighths OAI.SevenEighths.HeckeFamily
 open QRH.Record1252270103Graph QRH.RepeatedMarks.Finite QRH.Record12518109Existence
 
+lemma faceC_B : faceC.B = 2352790992103833166404605269/2459727770419200000000000000 := by
+  decide +kernel
+lemma faceC_L : faceC.L = 7129896015556425562159/2459727770419200000000 := by decide +kernel
+lemma faceP_B : faceP.B = 77434308592991667948113239156489/80600359581096345600000000000000 := by
+  decide +kernel
+lemma faceP_L : faceP.L = 7379189509582782990701/2459727770419200000000 := by decide +kernel
+lemma faceC_cap : faceC.cap = 549989/10000000 := by decide +kernel
+lemma faceP_cap : faceP.cap = 549989/10000000 := by decide +kernel
+
 lemma final_C_face :
-    Record1252270103Source.globalFace (node58.B:ℝ) (node58.L:ℝ) (node58.cap:ℝ)=
+    Record1252270103Source.globalFace (faceC.B:ℝ) (faceC.L:ℝ) (faceC.cap:ℝ)=
       QRH.RepeatedMarks.Return.countGlobal := by
-  norm_num [Record1252270103Source.globalFace,node58,QRH.RepeatedMarks.Return.countGlobal,
+  rw [faceC_B, faceC_L, faceC_cap]
+  norm_num [Record1252270103Source.globalFace,QRH.RepeatedMarks.Return.countGlobal,
     QRH.Record1252270103Return.globalFace,QRH.RepeatedMarks.Return.countCB,
     QRH.RepeatedMarks.Return.countCL]
 
 lemma final_P_face :
-    Record1252270103Source.globalFace (node52.B:ℝ) (node52.L:ℝ) (node52.cap:ℝ)=
+    Record1252270103Source.globalFace (faceP.B:ℝ) (faceP.L:ℝ) (faceP.cap:ℝ)=
       QRH.RepeatedMarks.Return.physicalGlobal := by
-  norm_num [Record1252270103Source.globalFace,node52,QRH.RepeatedMarks.Return.physicalGlobal,
+  rw [faceP_B, faceP_L, faceP_cap]
+  norm_num [Record1252270103Source.globalFace,QRH.RepeatedMarks.Return.physicalGlobal,
     QRH.Record1252270103Return.globalFace,QRH.RepeatedMarks.Return.physicalB,
     QRH.RepeatedMarks.Return.physicalLambda]
 

@@ -236,12 +236,22 @@ theorem high_gate_pos (n low h : Source) (copies : ℚ) (hq : n.q < 3/4)
     (high_endpoint_pos n low h copies _ Tl hq hl hν hp k)
     (high_endpoint_pos n low h copies _ Tr hq hr hν hp k)
 
+/-- The HIGH gate is positive on the whole cell (the semantic form of `HighValid`). -/
+def HighPos (n low : Source) (high : Option Source) (copies : ℚ) : Prop :=
+  ∀ h ∈ high, ∀ b ∈ Set.Icc (crossing n low:ℝ) (n.cap:ℝ), ∀ ν ∈ Set.Icc (n.q:ℝ) (3/4),
+    ∀ p ∈ Set.Icc (0:ℝ) (1/2), ∀ k, 0 < highGateReal n low h copies b ν p k
+
+theorem highPos_of_valid (n low : Source) (high : Option Source) (copies : ℚ) (hq : n.q < 3/4)
+    (hv : HighValid n low high copies) : HighPos n low high copies :=
+  fun h hh _ hb _ hν _ hp k => high_gate_pos n low h copies hq (hv h hh) hb hν hp k
+
 /-- A positive reserve for the HIGH gate with the repeated-mark gain, uniform in the width and
 the density. The amplitude class `p = 0` gives the facet `ν S`; every class is covered. -/
 theorem high_uniform_reserve (n low h : Source) (copies : ℚ) (hcopies : 0 ≤ copies)
     (hq0 : 1/2 ≤ n.q) (hq : n.q < 3/4) (hB0 : 22/23 ≤ (h.B:ℝ)) (hB1 : (h.B:ℝ) ≤ 1)
     (hL : 1 < (h.L:ℝ)) (hh0 : 0 ≤ (h.cap:ℝ)) (hh1 : (h.cap:ℝ) ≤ 1)
-    (hv : ∀ b ∈ [crossing n low, n.cap], ∃ T : Branch → Split, HighCertAt n low h copies b T) :
+    (hv : ∀ b ∈ Set.Icc (crossing n low:ℝ) (n.cap:ℝ), ∀ ν ∈ Set.Icc (n.q:ℝ) (3/4),
+      ∀ p ∈ Set.Icc (0:ℝ) (1/2), ∀ k, 0 < highGateReal n low h copies b ν p k) :
     ∃ reserve : ℝ, 0 < reserve ∧ ∀ b ∈ Set.Icc (crossing n low:ℝ) (n.cap:ℝ),
       ∀ ν ∈ Set.Icc (n.q:ℝ) (3/4),
       0 ≤ b - 2*(n.allowance:ℝ) → 0 ≤ sourceFReal n low b - (n.allowance:ℝ) →
@@ -254,7 +264,7 @@ theorem high_uniform_reserve (n low h : Source) (copies : ℚ) (hcopies : 0 ≤ 
   obtain ⟨δ, hδ, hall⟩ := QRH.Record1252270103StepScalar.compact_finite_margin D hD
     (fun k : Branch => fun x : ℝ × ℝ × ℝ => highGateReal n low h copies x.1 x.2.1 x.2.2 k)
     (fun k => (highGateReal_continuous n low h copies k).continuousOn)
-    (fun k x hx => high_gate_pos n low h copies hq hv hx.1 hx.2.1 hx.2.2 k)
+    (fun k x hx => hv x.1 hx.1 x.2.1 hx.2.1 x.2.2 hx.2.2 k)
   have hLpos : 0 < (h.L:ℝ) := by linarith
   refine ⟨δ/(180*(h.L:ℝ)), by positivity, ?_⟩
   intro b hb ν hν hS hF

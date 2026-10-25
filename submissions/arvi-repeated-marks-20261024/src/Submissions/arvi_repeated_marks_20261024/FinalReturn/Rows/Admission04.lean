@@ -6,9 +6,9 @@ set_option autoImplicit false
 set_option linter.unnecessarySeqFocus false
 namespace QRH.RepeatedMarks.Return
 noncomputable section
-def admission04_00_coefficients : Fin 1 → Fin 2 → ℝ := ![![(34483089485293/14483089485293:ℝ), (0:ℝ)]]
+def admission04_00_coefficients : Fin 1 → Fin 2 → ℝ := ![![(16968807097233225562159/7129896015556425562159:ℝ), (0:ℝ)]]
 theorem admission04_00_identity (δ p : ℝ) : admissionGuard .C δ p 0 =
- Record12518109.Bernstein.bsum 0 1 (52415447426465/28966178970586:ℝ) admission04_00_coefficients (57/128:ℝ) (231/512:ℝ) (63/128:ℝ) (1/2:ℝ) δ p := by
+ Record12518109.Bernstein.bsum 0 1 (25810568996105327810795/14259792031112851124318:ℝ) admission04_00_coefficients (57/128:ℝ) (231/512:ℝ) (63/128:ℝ) (1/2:ℝ) δ p := by
  norm_num [admissionGuard,lowerM,upperM,naturalM,derivativeD,derivativeA,derivativeC,derivativeU,derivativeJ,rowMargin,Ebase,countN,countJ,countT,RN,MN,DJ,V,D,A,C0,Z,U,oldD,oldC,branchB,branchL,branchCap,branchZ,isCap,c,h,theta,ell,x,y,kappa,ds,dk,dp,d0,physicalB,physicalLambda,countCB,countCL,naturalK,rowFee,numeratorCap,Record12518109.Bernstein.bsum,Record12518109.Bernstein.bterm,admission04_00_coefficients,Fin.sum_univ_succ] <;> ring
 theorem admission04_00_pos {δ p : ℝ} (hδ : δ ∈ Set.Icc (57/128:ℝ) (231/512:ℝ))
  (hp : p ∈ Set.Icc (63/128:ℝ) (1/2:ℝ)) : 0 < admissionGuard .C δ p 0 := by
@@ -16,9 +16,9 @@ theorem admission04_00_pos {δ p : ℝ} (hδ : δ ∈ Set.Icc (57/128:ℝ) (231/
  apply Record12518109.Bernstein.bsum_pos (by norm_num) _ hδ hp
  intro i j
  fin_cases i <;> fin_cases j <;> norm_num [admission04_00_coefficients]
-def admission04_01_coefficients : Fin 1 → Fin 2 → ℝ := ![![(20000000000000/14483089485293:ℝ), (0:ℝ)]]
+def admission04_01_coefficients : Fin 1 → Fin 2 → ℝ := ![![(9838911081676800000000/7129896015556425562159:ℝ), (0:ℝ)]]
 theorem admission04_01_identity (δ p : ℝ) : admissionGuard .C δ p 1 =
- Record12518109.Bernstein.bsum 0 1 (18966178970586/14483089485293:ℝ) admission04_01_coefficients (57/128:ℝ) (231/512:ℝ) (63/128:ℝ) (1/2:ℝ) δ p := by
+ Record12518109.Bernstein.bsum 0 1 (9340336490274451124318/7129896015556425562159:ℝ) admission04_01_coefficients (57/128:ℝ) (231/512:ℝ) (63/128:ℝ) (1/2:ℝ) δ p := by
  norm_num [admissionGuard,lowerM,upperM,naturalM,derivativeD,derivativeA,derivativeC,derivativeU,derivativeJ,rowMargin,Ebase,countN,countJ,countT,RN,MN,DJ,V,D,A,C0,Z,U,oldD,oldC,branchB,branchL,branchCap,branchZ,isCap,c,h,theta,ell,x,y,kappa,ds,dk,dp,d0,physicalB,physicalLambda,countCB,countCL,naturalK,rowFee,numeratorCap,Record12518109.Bernstein.bsum,Record12518109.Bernstein.bterm,admission04_01_coefficients,Fin.sum_univ_succ] <;> ring
 theorem admission04_01_pos {δ p : ℝ} (hδ : δ ∈ Set.Icc (57/128:ℝ) (231/512:ℝ))
  (hp : p ∈ Set.Icc (63/128:ℝ) (1/2:ℝ)) : 0 < admissionGuard .C δ p 1 := by
@@ -26,9 +26,9 @@ theorem admission04_01_pos {δ p : ℝ} (hδ : δ ∈ Set.Icc (57/128:ℝ) (231/
  apply Record12518109.Bernstein.bsum_pos (by norm_num) _ hδ hp
  intro i j
  fin_cases i <;> fin_cases j <;> norm_num [admission04_01_coefficients]
-def admission04_02_coefficients : Fin 1 → Fin 2 → ℝ := ![![(9560923431685/14483089485293:ℝ), (0:ℝ)]]
+def admission04_02_coefficients : Fin 1 → Fin 2 → ℝ := ![![(2352790992103833166404605269/3564948007778212781079500000:ℝ), (0:ℝ)]]
 theorem admission04_02_identity (δ p : ℝ) : admissionGuard .C δ p 2 =
- Record12518109.Bernstein.bsum 0 1 (19405255538901/28966178970586:ℝ) admission04_02_coefficients (57/128:ℝ) (231/512:ℝ) (63/128:ℝ) (1/2:ℝ) δ p := by
+ Record12518109.Bernstein.bsum 0 1 (4777105023452592395754394731/7129896015556425562159000000:ℝ) admission04_02_coefficients (57/128:ℝ) (231/512:ℝ) (63/128:ℝ) (1/2:ℝ) δ p := by
  norm_num [admissionGuard,lowerM,upperM,naturalM,derivativeD,derivativeA,derivativeC,derivativeU,derivativeJ,rowMargin,Ebase,countN,countJ,countT,RN,MN,DJ,V,D,A,C0,Z,U,oldD,oldC,branchB,branchL,branchCap,branchZ,isCap,c,h,theta,ell,x,y,kappa,ds,dk,dp,d0,physicalB,physicalLambda,countCB,countCL,naturalK,rowFee,numeratorCap,Record12518109.Bernstein.bsum,Record12518109.Bernstein.bterm,admission04_02_coefficients,Fin.sum_univ_succ] <;> ring
 theorem admission04_02_pos {δ p : ℝ} (hδ : δ ∈ Set.Icc (57/128:ℝ) (231/512:ℝ))
  (hp : p ∈ Set.Icc (63/128:ℝ) (1/2:ℝ)) : 0 < admissionGuard .C δ p 2 := by
@@ -36,10 +36,10 @@ theorem admission04_02_pos {δ p : ℝ} (hδ : δ ∈ Set.Icc (57/128:ℝ) (231/
  apply Record12518109.Bernstein.bsum_pos (by norm_num) _ hδ hp
  intro i j
  fin_cases i <;> fin_cases j <;> norm_num [admission04_02_coefficients]
-def admission04_03_coefficients : Fin 2 → Fin 3 → ℝ := ![![(7646520496601824768/130347805367637:ℝ), (10098988161316871680/130347805367637:ℝ), (274016407190560768/14483089485293:ℝ)],
-![(20948167412849536/527723908371:ℝ), (5160337350973835392/130347805367637:ℝ), (0:ℝ)]]
+def admission04_03_coefficients : Fin 2 → Fin 3 → ℝ := ![![(3764036785111486460862851584/64169064140007830059431:ℝ), (4971624272121518406003427840/64169064140007830059431:ℝ), (134924144687766541815619584/7129896015556425562159:ℝ)],
+![(2546687247765152004369882496/64169064140007830059431:ℝ), (2539868882385549981969882496/64169064140007830059431:ℝ), (0:ℝ)]]
 theorem admission04_03_identity (δ p : ℝ) : admissionGuard .C δ p 3 =
- Record12518109.Bernstein.bsum 1 2 (43911429665951053/44492050898820096:ℝ) admission04_03_coefficients (57/128:ℝ) (231/512:ℝ) (63/128:ℝ) (1/2:ℝ) δ p := by
+ Record12518109.Bernstein.bsum 1 2 (21623657188474022054089039/21903040559789339326952448:ℝ) admission04_03_coefficients (57/128:ℝ) (231/512:ℝ) (63/128:ℝ) (1/2:ℝ) δ p := by
  norm_num [admissionGuard,lowerM,upperM,naturalM,derivativeD,derivativeA,derivativeC,derivativeU,derivativeJ,rowMargin,Ebase,countN,countJ,countT,RN,MN,DJ,V,D,A,C0,Z,U,oldD,oldC,branchB,branchL,branchCap,branchZ,isCap,c,h,theta,ell,x,y,kappa,ds,dk,dp,d0,physicalB,physicalLambda,countCB,countCL,naturalK,rowFee,numeratorCap,Record12518109.Bernstein.bsum,Record12518109.Bernstein.bterm,admission04_03_coefficients,Fin.sum_univ_succ] <;> ring
 theorem admission04_03_pos {δ p : ℝ} (hδ : δ ∈ Set.Icc (57/128:ℝ) (231/512:ℝ))
  (hp : p ∈ Set.Icc (63/128:ℝ) (1/2:ℝ)) : 0 < admissionGuard .C δ p 3 := by
@@ -47,10 +47,10 @@ theorem admission04_03_pos {δ p : ℝ} (hδ : δ ∈ Set.Icc (57/128:ℝ) (231/
  apply Record12518109.Bernstein.bsum_pos (by norm_num) _ hδ hp
  intro i j
  fin_cases i <;> fin_cases j <;> norm_num [admission04_03_coefficients]
-def admission04_04_coefficients : Fin 2 → Fin 3 → ℝ := ![![(7453585510196756/762267867647:ℝ), (9728:ℝ), (0:ℝ)],
-![(222965447758626049/14483089485293:ℝ), (301713183341724800/14483089485293:ℝ), (79483926687338496/14483089485293:ℝ)]]
+def admission04_04_coefficients : Fin 2 → Fin 3 → ℝ := ![![(8714656583766586313747031500111/891237001944553195269875000:ℝ), (9728:ℝ), (0:ℝ)],
+![(54884314647115878777142707423889/3564948007778212781079500000:ℝ), (2320942872399553189885611051136/111404625243069149408734375:ℝ), (611469443001931826656562525568/111404625243069149408734375:ℝ)]]
 theorem admission04_04_identity (δ p : ℝ) : admissionGuard .C δ p 4 =
- Record12518109.Bernstein.bsum 1 2 (58215766616703/390281148235264:ℝ) admission04_04_coefficients (57/128:ℝ) (231/512:ℝ) (63/128:ℝ) (1/2:ℝ) δ p := by
+ Record12518109.Bernstein.bsum 1 2 (272294986336797766558000499667/1825253379982444943912704000000:ℝ) admission04_04_coefficients (57/128:ℝ) (231/512:ℝ) (63/128:ℝ) (1/2:ℝ) δ p := by
  norm_num [admissionGuard,lowerM,upperM,naturalM,derivativeD,derivativeA,derivativeC,derivativeU,derivativeJ,rowMargin,Ebase,countN,countJ,countT,RN,MN,DJ,V,D,A,C0,Z,U,oldD,oldC,branchB,branchL,branchCap,branchZ,isCap,c,h,theta,ell,x,y,kappa,ds,dk,dp,d0,physicalB,physicalLambda,countCB,countCL,naturalK,rowFee,numeratorCap,Record12518109.Bernstein.bsum,Record12518109.Bernstein.bterm,admission04_04_coefficients,Fin.sum_univ_succ] <;> ring
 theorem admission04_04_pos {δ p : ℝ} (hδ : δ ∈ Set.Icc (57/128:ℝ) (231/512:ℝ))
  (hp : p ∈ Set.Icc (63/128:ℝ) (1/2:ℝ)) : 0 < admissionGuard .C δ p 4 := by
@@ -58,10 +58,10 @@ theorem admission04_04_pos {δ p : ℝ} (hδ : δ ∈ Set.Icc (57/128:ℝ) (231/
  apply Record12518109.Bernstein.bsum_pos (by norm_num) _ hδ hp
  intro i j
  fin_cases i <;> fin_cases j <;> norm_num [admission04_04_coefficients]
-def admission04_05_coefficients : Fin 2 → Fin 3 → ℝ := ![![(21661180930179442268/2088907137301875:ℝ), (111934348802866934368/5431158556984875:ℝ), (92475391777662269952/9051930928308125:ℝ)],
-![(353797576411143221/27155792784924375:ℝ), (1012569646860665096/27155792784924375:ℝ), (0:ℝ)]]
+def admission04_05_coefficients : Fin 2 → Fin 3 → ℝ := ![![(27724329905719957672250848231699/2673711005833659585809625000:ℝ), (6888463791601024703908707701408/334213875729207448226203125:ℝ), (1138306064212445245402239619968/111404625243069149408734375:ℝ)],
+![(117646456256400009607486141261/10694844023334638343238500000:ℝ), (471445321714951547608687448/13368555029168297929048125:ℝ), (0:ℝ)]]
 theorem admission04_05_identity (δ p : ℝ) : admissionGuard .C δ p 5 =
- Record12518109.Bernstein.bsum 1 2 (14165150764306572149/148306836329400320000:ℝ) admission04_05_coefficients (57/128:ℝ) (231/512:ℝ) (63/128:ℝ) (1/2:ℝ) δ p := by
+ Record12518109.Bernstein.bsum 1 2 (697739383382337193686351765839/7301013519929779775650816000000:ℝ) admission04_05_coefficients (57/128:ℝ) (231/512:ℝ) (63/128:ℝ) (1/2:ℝ) δ p := by
  norm_num [admissionGuard,lowerM,upperM,naturalM,derivativeD,derivativeA,derivativeC,derivativeU,derivativeJ,rowMargin,Ebase,countN,countJ,countT,RN,MN,DJ,V,D,A,C0,Z,U,oldD,oldC,branchB,branchL,branchCap,branchZ,isCap,c,h,theta,ell,x,y,kappa,ds,dk,dp,d0,physicalB,physicalLambda,countCB,countCL,naturalK,rowFee,numeratorCap,Record12518109.Bernstein.bsum,Record12518109.Bernstein.bterm,admission04_05_coefficients,Fin.sum_univ_succ] <;> ring
 theorem admission04_05_pos {δ p : ℝ} (hδ : δ ∈ Set.Icc (57/128:ℝ) (231/512:ℝ))
  (hp : p ∈ Set.Icc (63/128:ℝ) (1/2:ℝ)) : 0 < admissionGuard .C δ p 5 := by
@@ -69,10 +69,10 @@ theorem admission04_05_pos {δ p : ℝ} (hδ : δ ∈ Set.Icc (57/128:ℝ) (231/
  apply Record12518109.Bernstein.bsum_pos (by norm_num) _ hδ hp
  intro i j
  fin_cases i <;> fin_cases j <;> norm_num [admission04_05_coefficients]
-def admission04_06_coefficients : Fin 2 → Fin 4 → ℝ := ![![(208300450464104591200622298229735936/69850040385988550335877517717:ℝ), (414381534232269350048554201540887040/69850040385988550335877517717:ℝ), (68695895989820994054430634437050368/23283346795329516778625839239:ℝ), (0:ℝ)],
-![(271782155886992600866094965798195072/69850040385988550335877517717:ℝ), (603084074376739378033562110939926400/69850040385988550335877517717:ℝ), (131022450255591958117269885658382336/23283346795329516778625839239:ℝ), (6862082353149485658958056870379520/7761115598443172259541946413:ℝ)]]
+def admission04_06_coefficients : Fin 2 → Fin 4 → ℝ := ![![(788879380844663849840541121969054624886365747863705609424/264503030080493466816931845894765443820669477703125:ℝ), (1569359225807539774931549153553734229511292040299077547216/264503030080493466816931845894765443820669477703125:ℝ), (780504825542535623751949751882863840226027092435371937792/264503030080493466816931845894765443820669477703125:ℝ), (0:ℝ)],
+![(1029322187034836950121271237420812829146003603694535214668/264503030080493466816931845894765443820669477703125:ℝ), (2284087421423917011805880442890468496947143112360228164172/264503030080493466816931845894765443820669477703125:ℝ), (1488707376432051912509250395127457979211729012280526162944/264503030080493466816931845894765443820669477703125:ℝ), (5198151839366100545549771330711341966643286746996293632/5877845112899854818154041019883676529348210615625:ℝ)]]
 theorem admission04_06_identity (δ p : ℝ) : admissionGuard .C δ p 6 =
- Record12518109.Bernstein.bsum 1 3 (2503491864292829286733021448365/11921073559208712590656429690368:ℝ) admission04_06_coefficients (57/128:ℝ) (231/512:ℝ) (63/128:ℝ) (1/2:ℝ) δ p := by
+ Record12518109.Bernstein.bsum 1 3 (60730339494909620094977011074348103408073899982145523/288907842989253664021907424209322468770523248179200000:ℝ) admission04_06_coefficients (57/128:ℝ) (231/512:ℝ) (63/128:ℝ) (1/2:ℝ) δ p := by
  norm_num [admissionGuard,lowerM,upperM,naturalM,derivativeD,derivativeA,derivativeC,derivativeU,derivativeJ,rowMargin,Ebase,countN,countJ,countT,RN,MN,DJ,V,D,A,C0,Z,U,oldD,oldC,branchB,branchL,branchCap,branchZ,isCap,c,h,theta,ell,x,y,kappa,ds,dk,dp,d0,physicalB,physicalLambda,countCB,countCL,naturalK,rowFee,numeratorCap,Record12518109.Bernstein.bsum,Record12518109.Bernstein.bterm,admission04_06_coefficients,Fin.sum_univ_succ] <;> ring
 theorem admission04_06_pos {δ p : ℝ} (hδ : δ ∈ Set.Icc (57/128:ℝ) (231/512:ℝ))
  (hp : p ∈ Set.Icc (63/128:ℝ) (1/2:ℝ)) : 0 < admissionGuard .C δ p 6 := by
@@ -80,10 +80,10 @@ theorem admission04_06_pos {δ p : ℝ} (hδ : δ ∈ Set.Icc (57/128:ℝ) (231/
  apply Record12518109.Bernstein.bsum_pos (by norm_num) _ hδ hp
  intro i j
  fin_cases i <;> fin_cases j <;> norm_num [admission04_06_coefficients]
-def admission04_07_coefficients : Fin 2 → Fin 3 → ℝ := ![![(27443943673706251743875021586844/629279643117013966989887547:ℝ), (119631005899640389177417743642112/1887838929351041900969662641:ℝ), (4166185580529189302863523696640/209759881039004655663295849:ℝ)],
-![(14719701558982663441798611479353/629279643117013966989887547:ℝ), (43965576542311232001825879428224/1887838929351041900969662641:ℝ), (0:ℝ)]]
+def admission04_07_coefficients : Fin 2 → Fin 3 → ℝ := ![![(831458725416560875717636306990058581017027097897463741/19063281447242772383202295199622734689777980375000:ℝ), (453094804707678106617761394310752859295766854128714208/7148730542716039643700860699858525508666742640625:ℝ), (3156474849522291102201390114923689848973222730781312/158860678727023103193352459996856122414816503125:ℝ)],
+![(1783383781336718448370379815489528014062557700064265763/76253125788971089532809180798490938759111921500000:ℝ), (166459872589168472576051172296968781351274809574460616/7148730542716039643700860699858525508666742640625:ℝ), (0:ℝ)]]
 theorem admission04_07_identity (δ p : ℝ) : admissionGuard .C δ p 7 =
- Record12518109.Bernstein.bsum 1 2 (199019444642792490297923861485/429588236367881534798429898752:ℝ) admission04_07_coefficients (57/128:ℝ) (231/512:ℝ) (63/128:ℝ) (1/2:ℝ) δ p := by
+ Record12518109.Bernstein.bsum 1 2 (4825132126743710617167229160052619638925212872314141/10411093441054186090879546818353962838577414348800000:ℝ) admission04_07_coefficients (57/128:ℝ) (231/512:ℝ) (63/128:ℝ) (1/2:ℝ) δ p := by
  norm_num [admissionGuard,lowerM,upperM,naturalM,derivativeD,derivativeA,derivativeC,derivativeU,derivativeJ,rowMargin,Ebase,countN,countJ,countT,RN,MN,DJ,V,D,A,C0,Z,U,oldD,oldC,branchB,branchL,branchCap,branchZ,isCap,c,h,theta,ell,x,y,kappa,ds,dk,dp,d0,physicalB,physicalLambda,countCB,countCL,naturalK,rowFee,numeratorCap,Record12518109.Bernstein.bsum,Record12518109.Bernstein.bterm,admission04_07_coefficients,Fin.sum_univ_succ] <;> ring
 theorem admission04_07_pos {δ p : ℝ} (hδ : δ ∈ Set.Icc (57/128:ℝ) (231/512:ℝ))
  (hp : p ∈ Set.Icc (63/128:ℝ) (1/2:ℝ)) : 0 < admissionGuard .C δ p 7 := by
@@ -91,10 +91,10 @@ theorem admission04_07_pos {δ p : ℝ} (hδ : δ ∈ Set.Icc (57/128:ℝ) (231/
  apply Record12518109.Bernstein.bsum_pos (by norm_num) _ hδ hp
  intro i j
  fin_cases i <;> fin_cases j <;> norm_num [admission04_07_coefficients]
-def admission04_08_coefficients : Fin 2 → Fin 4 → ℝ := ![![(0:ℝ), (3253179882618721691916617809442665861392725970619/36871854088887537128313723457031250000000000:ℝ), (65197756664143675534785603083098830232924648312693/368718540888875371283137234570312500000000000:ℝ), (10886339673558640129791959675991271278155379535501/122906180296291790427712411523437500000000000:ℝ)],
-![(84165037171492515293028077947577191655695039700427/163874907061722387236949882031250000000000000:ℝ), (215728521587095333194482930591324180075053244271089/134079469414136498648413539843750000000000000:ℝ), (618591610852881985466077016551620984064577071093717/368718540888875371283137234570312500000000000:ℝ), (71567493335573354953780566028063014811125767058061/122906180296291790427712411523437500000000000:ℝ)]]
+def admission04_08_coefficients : Fin 2 → Fin 4 → ℝ := ![![(0:ℝ), (44403974464057996117225872279800252781068519165215843297848647302397369047/488442528865626716098291012638418085286157123383931699200000000000000:ℝ), (8008280553595881353502087874304110061898823080798105664559797336875841858081/43959827597906404448846191137457627675754141104553852928000000000000000:ℝ), (4011095920175314910173935148117090898005767832139898426352774732165678643851/43959827597906404448846191137457627675754141104553852928000000000000000:ℝ)],
+![(3351772689874520556767766976700987765806682349142727068456967796613218665653/6512567051541689547977213501845574470482094978452422656000000000000000:ℝ), (31550281545133249185641271074175165535965941904191291749610277135212696956727/19537701154625068643931640505536723411446284935357267968000000000000000:ℝ), (74126130442534227763859346797018638797565998698377305833909600309718469701889/43959827597906404448846191137457627675754141104553852928000000000000000:ℝ), (25761624810302408445876644696311647920746150845242726013478251293720327542411/43959827597906404448846191137457627675754141104553852928000000000000000:ℝ)]]
 theorem admission04_08_identity (δ p : ℝ) : admissionGuard .C δ p 8 =
- Record12518109.Bernstein.bsum 1 3 (698046549475010582748609021312249443930909622387059/43989835404071069163359221632204800000000000000000000:ℝ) admission04_08_coefficients (57/128:ℝ) (231/512:ℝ) (63/128:ℝ) (1/2:ℝ) δ p := by
+ Record12518109.Bernstein.bsum 1 3 (27003797322712337287245327364356513759658539315827067285922034729057091628301/1748203906211168936821697183977273624565819705376186249968091136000000000000000:ℝ) admission04_08_coefficients (57/128:ℝ) (231/512:ℝ) (63/128:ℝ) (1/2:ℝ) δ p := by
  norm_num [admissionGuard,lowerM,upperM,naturalM,derivativeD,derivativeA,derivativeC,derivativeU,derivativeJ,rowMargin,Ebase,countN,countJ,countT,RN,MN,DJ,V,D,A,C0,Z,U,oldD,oldC,branchB,branchL,branchCap,branchZ,isCap,c,h,theta,ell,x,y,kappa,ds,dk,dp,d0,physicalB,physicalLambda,countCB,countCL,naturalK,rowFee,numeratorCap,Record12518109.Bernstein.bsum,Record12518109.Bernstein.bterm,admission04_08_coefficients,Fin.sum_univ_succ] <;> ring
 theorem admission04_08_pos {δ p : ℝ} (hδ : δ ∈ Set.Icc (57/128:ℝ) (231/512:ℝ))
  (hp : p ∈ Set.Icc (63/128:ℝ) (1/2:ℝ)) : 0 < admissionGuard .C δ p 8 := by
@@ -102,10 +102,10 @@ theorem admission04_08_pos {δ p : ℝ} (hδ : δ ∈ Set.Icc (57/128:ℝ) (231/
  apply Record12518109.Bernstein.bsum_pos (by norm_num) _ hδ hp
  intro i j
  fin_cases i <;> fin_cases j <;> norm_num [admission04_08_coefficients]
-def admission04_09_coefficients : Fin 2 → Fin 4 → ℝ := ![![(18522875727063573748408379647887068830442/18435927044443768564156861728515625:ℝ), (47789903248658227809057615424089826083766/18435927044443768564156861728515625:ℝ), (40050294660175245462722759165122910438144/18435927044443768564156861728515625:ℝ), (239633737948078459035572619063290730496/409687267654305968092374705078125:ℝ)],
-![(14702854332855439026557643641281494139243/36871854088887537128313723457031250:ℝ), (29333263708950947353489650554246094949829/36871854088887537128313723457031250:ℝ), (7314950315424249918747611034015845327168/18435927044443768564156861728515625:ℝ), (0:ℝ)]]
+def admission04_09_coefficients : Fin 2 → Fin 4 → ℝ := ![![(35928470252869792235411649438628863294412383200639308231159/35743652713580198218504303499292627543333713203125000:ℝ), (11587759675085353940530893625711247349055720178659818836654/4467956589197524777313037937411578442916714150390625:ℝ), (1079085856665223790507927754420561048064780730921401115904/496439621021947197479226437490175382546301572265625:ℝ), (58114063044370814807030162052654876474094567344040065024/99287924204389439495845287498035076509260314453125:ℝ)],
+![(57021637147327129998312462281374476670471978582419743512297/142974610854320792874017213997170510173334852812500000:ℝ), (7110246396698824812995432434102110293934330404122159187401/8935913178395049554626075874823156885833428300781250:ℝ), (197015023789777952497700399920544198442569753587974557888/496439621021947197479226437490175382546301572265625:ℝ), (0:ℝ)]]
 theorem admission04_09_identity (δ p : ℝ) : admissionGuard .C δ p 9 =
- Record12518109.Bernstein.bsum 1 3 (12676348345366502666552589243176960689/644382354551822302197644848128000000000:ℝ) admission04_09_coefficients (57/128:ℝ) (231/512:ℝ) (63/128:ℝ) (1/2:ℝ) δ p := by
+ Record12518109.Bernstein.bsum 1 3 (3094043686793916530726471669116746004643270773920889741/156166401615812791363193202275309442578661215232000000000:ℝ) admission04_09_coefficients (57/128:ℝ) (231/512:ℝ) (63/128:ℝ) (1/2:ℝ) δ p := by
  norm_num [admissionGuard,lowerM,upperM,naturalM,derivativeD,derivativeA,derivativeC,derivativeU,derivativeJ,rowMargin,Ebase,countN,countJ,countT,RN,MN,DJ,V,D,A,C0,Z,U,oldD,oldC,branchB,branchL,branchCap,branchZ,isCap,c,h,theta,ell,x,y,kappa,ds,dk,dp,d0,physicalB,physicalLambda,countCB,countCL,naturalK,rowFee,numeratorCap,Record12518109.Bernstein.bsum,Record12518109.Bernstein.bterm,admission04_09_coefficients,Fin.sum_univ_succ] <;> ring
 theorem admission04_09_pos {δ p : ℝ} (hδ : δ ∈ Set.Icc (57/128:ℝ) (231/512:ℝ))
  (hp : p ∈ Set.Icc (63/128:ℝ) (1/2:ℝ)) : 0 < admissionGuard .C δ p 9 := by
@@ -113,11 +113,11 @@ theorem admission04_09_pos {δ p : ℝ} (hδ : δ ∈ Set.Icc (57/128:ℝ) (231/
  apply Record12518109.Bernstein.bsum_pos (by norm_num) _ hδ hp
  intro i j
  fin_cases i <;> fin_cases j <;> norm_num [admission04_09_coefficients]
-def admission04_10_coefficients : Fin 3 → Fin 4 → ℝ := ![![(21230793414167735998017946624/424309262264443359375:ℝ), (277789296805654063639176192/2175944934689453125:ℝ), (134060314679515229355754625024/1272927786793330078125:ℝ), (35246646703210810120890392576/1272927786793330078125:ℝ)],
-![(4823229876038706421302537728/66996199304912109375:ℝ), (72938648804436158089311148544/424309262264443359375:ℝ), (54315821015540935061114080256/424309262264443359375:ℝ), (35774283271799752920157011968/1272927786793330078125:ℝ)],
-![(2491177027133513417480509504/115720707890302734375:ℝ), (1657261252706877397222006336/38573569296767578125:ℝ), (2480542303643368774185509504/115720707890302734375:ℝ), (0:ℝ)]]
+def admission04_10_coefficients : Fin 3 → Fin 4 → ℝ := ![![(31364042143492506883478723779899436736/626651016992263965424130859375:ℝ), (1778308193315182142938729868491827648/13925578155383643676091796875:ℝ), (7335184274367578757539086995718637568/69627890776918218380458984375:ℝ), (17357171558977378178271662659234930688/626651016992263965424130859375:ℝ)],
+![(45126352839571834951188489896927789216/626651016992263965424130859375:ℝ), (35916979101364535642689640840965467872/208883672330754655141376953125:ℝ), (26746944960181024873028545142111126528/208883672330754655141376953125:ℝ), (17616938644776806221341202800364765184/626651016992263965424130859375:ℝ)],
+![(1499275857424405779353140556799533708/69627890776918218380458984375:ℝ), (8976569901773293613304675634674259748/208883672330754655141376953125:ℝ), (4478626115433905714733253964275658624/208883672330754655141376953125:ℝ), (0:ℝ)]]
 theorem admission04_10_identity (δ p : ℝ) : admissionGuard .C δ p 10 =
- Record12518109.Bernstein.bsum 2 3 (4147476509624255171338961/862876138643783680000000000:ℝ) admission04_10_coefficients (57/128:ℝ) (231/512:ℝ) (63/128:ℝ) (1/2:ℝ) δ p := by
+ Record12518109.Bernstein.bsum 2 3 (22418795905394871620609238419275123/4672648652755059056416522240000000000:ℝ) admission04_10_coefficients (57/128:ℝ) (231/512:ℝ) (63/128:ℝ) (1/2:ℝ) δ p := by
  norm_num [admissionGuard,lowerM,upperM,naturalM,derivativeD,derivativeA,derivativeC,derivativeU,derivativeJ,rowMargin,Ebase,countN,countJ,countT,RN,MN,DJ,V,D,A,C0,Z,U,oldD,oldC,branchB,branchL,branchCap,branchZ,isCap,c,h,theta,ell,x,y,kappa,ds,dk,dp,d0,physicalB,physicalLambda,countCB,countCL,naturalK,rowFee,numeratorCap,Record12518109.Bernstein.bsum,Record12518109.Bernstein.bterm,admission04_10_coefficients,Fin.sum_univ_succ] <;> ring
 theorem admission04_10_pos {δ p : ℝ} (hδ : δ ∈ Set.Icc (57/128:ℝ) (231/512:ℝ))
  (hp : p ∈ Set.Icc (63/128:ℝ) (1/2:ℝ)) : 0 < admissionGuard .C δ p 10 := by
@@ -125,10 +125,10 @@ theorem admission04_10_pos {δ p : ℝ} (hδ : δ ∈ Set.Icc (57/128:ℝ) (231/
  apply Record12518109.Bernstein.bsum_pos (by norm_num) _ hδ hp
  intro i j
  fin_cases i <;> fin_cases j <;> norm_num [admission04_10_coefficients]
-def admission04_11_coefficients : Fin 2 → Fin 3 → ℝ := ![![(69076137507876143315174265131308/1887838929351041900969662641:ℝ), (100659227441019622040399936953856/1887838929351041900969662641:ℝ), (3530098434887797782153863524352/209759881039004655663295849:ℝ)],
-![(36710204982614855011112091506005/1887838929351041900969662641:ℝ), (36525490678706601580543912231040/1887838929351041900969662641:ℝ), (0:ℝ)]]
+def admission04_11_coefficients : Fin 2 → Fin 3 → ℝ := ![![(2093471900724271491260690456185374782856212397803111881/57189844341728317149606885598868204069333941125000:ℝ), (381345241269745411731506284444704131853415369953152848/7148730542716039643700860699858525508666742640625:ℝ), (13374693841617803886496503654689882625455936714781312/794303393635115515966762299984280612074082515625:ℝ)],
+![(4449888696373390107245758960569937731191814558876267031/228759377366913268598427542395472816277335764500000:ℝ), (138359688384267785899425123946563109080888459898185964/7148730542716039643700860699858525508666742640625:ℝ), (0:ℝ)]]
 theorem admission04_11_identity (δ p : ℝ) : admissionGuard .C δ p 11 =
- Record12518109.Bernstein.bsum 1 2 (489620823038060013563016581869/1288764709103644604395289696256:ℝ) admission04_11_coefficients (57/128:ℝ) (231/512:ℝ) (63/128:ℝ) (1/2:ℝ) δ p := by
+ Record12518109.Bernstein.bsum 1 2 (59383642878648580132542351911251256792180369922316183/156166401615812791363193202275309442578661215232000000:ℝ) admission04_11_coefficients (57/128:ℝ) (231/512:ℝ) (63/128:ℝ) (1/2:ℝ) δ p := by
  norm_num [admissionGuard,lowerM,upperM,naturalM,derivativeD,derivativeA,derivativeC,derivativeU,derivativeJ,rowMargin,Ebase,countN,countJ,countT,RN,MN,DJ,V,D,A,C0,Z,U,oldD,oldC,branchB,branchL,branchCap,branchZ,isCap,c,h,theta,ell,x,y,kappa,ds,dk,dp,d0,physicalB,physicalLambda,countCB,countCL,naturalK,rowFee,numeratorCap,Record12518109.Bernstein.bsum,Record12518109.Bernstein.bterm,admission04_11_coefficients,Fin.sum_univ_succ] <;> ring
 theorem admission04_11_pos {δ p : ℝ} (hδ : δ ∈ Set.Icc (57/128:ℝ) (231/512:ℝ))
  (hp : p ∈ Set.Icc (63/128:ℝ) (1/2:ℝ)) : 0 < admissionGuard .C δ p 11 := by
@@ -148,7 +148,7 @@ theorem admission04_12_pos {δ p : ℝ} (hδ : δ ∈ Set.Icc (57/128:ℝ) (231/
  fin_cases i <;> fin_cases j <;> norm_num [admission04_12_coefficients]
 def admission04_13_coefficients : Fin 1 → Fin 1 → ℝ := ![![(0:ℝ)]]
 theorem admission04_13_identity (δ p : ℝ) : admissionGuard .C δ p 13 =
- Record12518109.Bernstein.bsum 0 0 (525770610335894707/50000000000000000000:ℝ) admission04_13_coefficients (57/128:ℝ) (231/512:ℝ) (63/128:ℝ) (1/2:ℝ) δ p := by
+ Record12518109.Bernstein.bsum 0 0 (267590012974094731788830531/24597277704192000000000000000:ℝ) admission04_13_coefficients (57/128:ℝ) (231/512:ℝ) (63/128:ℝ) (1/2:ℝ) δ p := by
  norm_num [admissionGuard,lowerM,upperM,naturalM,derivativeD,derivativeA,derivativeC,derivativeU,derivativeJ,rowMargin,Ebase,countN,countJ,countT,RN,MN,DJ,V,D,A,C0,Z,U,oldD,oldC,branchB,branchL,branchCap,branchZ,isCap,c,h,theta,ell,x,y,kappa,ds,dk,dp,d0,physicalB,physicalLambda,countCB,countCL,naturalK,rowFee,numeratorCap,Record12518109.Bernstein.bsum,Record12518109.Bernstein.bterm,admission04_13_coefficients,Fin.sum_univ_succ] <;> ring
 theorem admission04_13_pos {δ p : ℝ} (hδ : δ ∈ Set.Icc (57/128:ℝ) (231/512:ℝ))
  (hp : p ∈ Set.Icc (63/128:ℝ) (1/2:ℝ)) : 0 < admissionGuard .C δ p 13 := by

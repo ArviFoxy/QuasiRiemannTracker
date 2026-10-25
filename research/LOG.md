@@ -1607,3 +1607,14 @@ slot; `mixed-slots/`).
   - **Consequences.** Sil's ledger `2 + 4φ`, under the native gate `κ(1 − φ) < φ`, beats `6κ` iff
     `κ > 1/√3`. The candidate for our chain is the source step (float −1.75e-5;
     `mixed-step/`, in progress).
+- **Upstream (2026-10-25, late).**
+  - PR 76 is our combined proof, 0.8746075.
+  - PR 75 (Runbo Li, 0.87469284) is the natural-cost bootstrap on Sil's theorem: 6.6e-7 over
+    PR 74, nothing to absorb (`upstream/PR75_NOTE.md`).
+  - The next bar is ≤ 0.8745975.
+  - Main lever: the mixed fourth/sixth-power source step (float −1.75e-5).
+  - Design constraint: Collet's step amplifies with a separate prime pool `(h, p) ↦ p⁶h`, which
+    avoids the slots. Swapping p⁶ for p⁴ there gives row-twisted copies, which is the orthogonal
+    case. Sil's gain comes from using the selected slots themselves as the amplifier: their twists
+    are what the transfer removes, and their D-family supplies the density. So a mixed step must
+    route selected slots into the amplifier.

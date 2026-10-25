@@ -30,10 +30,10 @@ def ok(th, P):
         return False
 
 def theta_star(P, guess=8746075, span=1200):
-    lo, hi = guess - span, min(guess + span, 8749999)   # the incumbent receipt needs theta < 7/8
+    lo, hi = guess - span, min(guess + span, 8747700)   # the incumbent receipt needs theta < theta_I = 0.8747759
     while not ok(hi, P):
-        if hi >= 8749999: return None
-        lo, hi = hi, min(hi + 4*span, 8749999)
+        if hi >= 8747700: return None
+        lo, hi = hi, min(hi + 4*span, 8747700)
     while ok(lo, P):
         hi, lo = lo, lo - 4*span
         if lo < 8700000: return lo

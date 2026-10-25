@@ -1,0 +1,74 @@
+kinds: {'inductive': 1601, 'def': 26980, 'thm': 126480, 'axiom': 3, 'quot': 4, 'opaque': 54}
+total bytes attributed 4315.1 MB, declarations 155122
+hailey_collet                                 decls   26605  MB    2335.9  ( 54.1%)
+openai_baseline                               decls   26706  MB     836.0  ( 19.4%)
+Mathlib                                       decls   88090  MB     803.8  ( 18.6%)
+arvi (ours)                                   decls    5289  MB     290.4  (  6.7%)
+Lean core                                     decls    7668  MB      37.2  (  0.9%)
+other:RellichKondrachov                       decls     191  MB       5.4  (  0.1%)
+PrimeNumberTheoremAnd                         decls     369  MB       5.3  (  0.1%)
+Batteries                                     decls     199  MB       1.0  (  0.0%)
+Candidate                                     decls       2  MB       0.0  (  0.0%)
+other:Aesop                                   decls       3  MB       0.0  (  0.0%)
+--- 60 largest declarations (bytes introduced) ---
+   88.01 MB  Record1252270103Bootstrap.PR67.OAI.SevenEighths.Cycle63InitialMass.actual_main_low_physical_bins._proof_2
+   83.07 MB  QRH.Record1252270103Source.Admission.SelectedLowSourceMissingBins.global_selected_low_positive_family_missing_bins
+   79.97 MB  QRH.Record1252270103Source.Admission.SelectedLowSourceReindex.global_selected_low_positive_family_injective
+   55.85 MB  QRH.Record1252270103Source.Admission.SelectedLowBufferedSource.global_selected_low_buffered_positive_family
+   52.29 MB  QRH.Record1252270103Source.Admission.SelectedRegularLowSource.global_selected_regular_low_buffered_positive_family
+   45.59 MB  Record1252270103Bootstrap.PR67.OAI.SevenEighths.Cycle63InitialMass.actual_geometry_error_exceptional_norm_full
+   38.46 MB  _private.Submissions.hailey_collet_1252270103.Record1252270103Bootstrap.PR67Source.Cycle63.Physical.InitialMass.GeometryAffineExceptionalPayment.0.Record1252270103Bootstrap.PR67.OAI.SevenEighths.Cycle63InitialMass.affine_main_exceptional_kernel
+   29.70 MB  Record1252270103Bootstrap.PR67.OAI.SevenEighths.Cycle63InitialMass.actual_affine_high_selected_small_height_shell
+   28.21 MB  QRH.Record1252270103Source.Admission.SelectedLowSource.global_selected_low_positive_family
+   24.01 MB  QRH.RepeatedMarks.Finite.highGateReal_affine
+   23.26 MB  Record1252270103Bootstrap.PR67.OAI.SevenEighths.Cycle63InitialMass.actual_geometry_main_exceptional_norm_payment._proof_8
+   21.28 MB  QRH.RepeatedMarks.bicubic_eval_bern
+   17.63 MB  Record1252270103Bootstrap.PR67.OAI.SevenEighths.Cycle63InitialMass.actual_geometry_main_exceptional_norm_full._proof_7
+   15.59 MB  Record1252270103Bootstrap.PR67.OAI.SevenEighths.Cycle63InitialMass.actual_geometry_main_all_height_coarse_family
+   15.32 MB  Record1252270103Bootstrap.PR67.OAI.SevenEighths.Cycle63InitialMass.actual_affine_low_selected_payment._proof_5
+   14.97 MB  QRH.Record1252270103Source.Admission.SelectedRegularLowSource.apply_actual_family
+   14.94 MB  Record1252270103Bootstrap.PR67.OAI.SevenEighths.Cycle63InitialMass.actual_geometry_literal_high_shell
+   13.91 MB  QRH.RepeatedMarks.Finite.gateG_bicubic
+   13.21 MB  Record1252270103Bootstrap.PR67.OAI.SevenEighths.Cycle63InitialMass.actual_selected_low_paid_columns
+   12.39 MB  Record1252270103Bootstrap.PR67.OAI.SevenEighths.Cycle63InitialMass.actual_affine_high_selected_small_height_of_fibers
+   11.89 MB  Record1252270103Bootstrap.PR67.OAI.SevenEighths.Cycle63InitialMass.actual_geometry_main_all_projector_coarse_family
+   11.59 MB  Record1252270103Bootstrap.PR67.OAI.SevenEighths.Cycle63InitialMass.actual_main_high_small_height_shell
+   10.76 MB  Record1252270103Bootstrap.PR67.OAI.SevenEighths.Cycle63InitialMass.actual_main_high_original_coarse_side_payment
+    8.88 MB  Record1252270103Bootstrap.PR67.OAI.SevenEighths.Cycle63InitialMass.actual_geometry_main_high_canonical_projectors
+    8.68 MB  OAI.SevenEighths.CenteredMomentFirstNestedSeededGaussianPower.nested_source_descent
+    8.51 MB  OAI.SevenEighths.CenteredMomentEnergyCanonicalErrorGaussian.actual_error_gaussian_from_bands
+    8.50 MB  Record1252270103Bootstrap.PR67.OAI.SevenEighths.Cycle63Moment.ValuationCone.certificates_nonnegative
+    8.34 MB  _private.Submissions.hailey_collet_1252270103.Record1252270103Source.Admission.SelectedRegularHighSourceNatural.0.QRH.Record1252270103Source.Admission.SelectedRegularHighSourceNatural.point_of_source
+    8.15 MB  Record1252270103Bootstrap.PR67.OAI.SevenEighths.Cycle63InitialMass.uniform_actual_geometry_error_ordinary_contraction
+    8.06 MB  QRH.Record1252270103Source.Admission.SelectedHighCofactorFamilyNatural.actual_selected_annular_cofactor_family_uniform_tau
+    7.91 MB  QRH.Record1252270103Source.InitialRegularToTruncated.balanced_of_regular
+    7.58 MB  _private.Submissions.arvi_repeated_marks_20261024.Fork.Record1252270103Source.Admission.SelectedRegularHighSourceSome.0.QRH.Record1252270103Source.Admission.SelectedRegularHighSourceSome.point_of_source
+    7.39 MB  QRH.Record1252270103Source.Admission.SelectedHighCofactorFamilySome.actual_selected_annular_cofactor_family_uniform_tau_rm
+    7.06 MB  Record1252270103Bootstrap.PR67.OAI.SevenEighths.Cycle63InitialMass.actual_geometry_marked_binned_shell
+    7.06 MB  QRH.Record1252270103Source.High.ModifiedSelectedPaidNatural.actual_selected_annular_cofactor_family_uniform_tau
+    7.02 MB  OAI.SevenEighths.CenteredMomentSecondFrozenUniformSubset.original_subsets_source_descent
+    6.90 MB  QRH.Record1252270103Source.High.BufferedSelectedPaidNatural.actual_buffered_selected_cofactor_family_uniform_tau
+    6.87 MB  QRH.Record1252270103Source.Admission.global_low_paid_positive_family
+    6.65 MB  Record1252270103Bootstrap.PR67.OAI.SevenEighths.Cycle63InitialMass.actual_geometry_error_exceptional_norm_closed
+    6.59 MB  QRH.Record1252270103Source.High.GlobalPhysical.actual_regular_normalized_newton_collection
+    6.54 MB  Record1252270103Bootstrap.PR67.OAI.SevenEighths.Cycle63InitialMass.actual_geometry_error_exceptional_norm_closed._proof_72
+    6.40 MB  QRH.Record1252270103Source.High.GlobalPhysical.global_low_erased_positive_family
+    6.39 MB  QRH.Record1252270103Source.High.ModifiedSelectedPaidSome.actual_selected_annular_cofactor_family_uniform_tau_rm
+    6.25 MB  Record1252270103Bootstrap.PR67.OAI.SevenEighths.Cycle63InitialMass.actual_geometry_literal_marked_high_shell
+    6.24 MB  QRH.Record1252270103Source.High.GlobalPhysical.uniform_selected_plain_newton
+    6.21 MB  Record1252270103Bootstrap.PR67.OAI.SevenEighths.Cycle63InitialMass.actual_geometry_literal_unmarked_high_shell
+    6.06 MB  QRH.Record1252270103Source.High.BufferedSelectedPaidSome.actual_buffered_selected_cofactor_family_uniform_tau_rm
+    5.77 MB  Record1252270103Bootstrap.PR67.OAI.SevenEighths.Cycle63InitialMass.actual_geometry_selected_high_columns
+    5.72 MB  OAI.SevenEighths.CenteredMomentEnergyCanonicalMainGaussian.actual_main_gaussian_from_bands
+    5.62 MB  QRH.Record1252270103Source.High.GlobalPhysical.regular_low_controls
+    5.58 MB  OAI.SevenEighths.CenteredMomentFirstNestedSeededGaussianPower.nested_seeded_power_descent
+    5.51 MB  QRH.Record1252270103Source.ExceptionalPrice.eventually_initial_main_joint
+    5.29 MB  QRH.Record1252270103Source.Admission.global_low_erased_collected_cells
+    5.17 MB  OAI.SevenEighths.CenteredMomentSecondFrozenSeededPowerDescent.original_subsets_seeded_power_descent
+    5.08 MB  Record1252270103Bootstrap.PR67.OAI.SevenEighths.Cycle63InitialMass.actual_affine_error_normalized_parent_family
+    4.94 MB  Record1252270103Bootstrap.PR67.OAI.SevenEighths.Cycle63InitialMass.actual_geometry_selected_low_full_columns._proof_5
+    4.88 MB  QRH.Record1252270103Source.High.ModifiedAllNaturalPositive.actual_modified_annular_cofactor_family_uniform_tau
+    4.77 MB  OAI.SevenEighths.CenteredMomentEnergyCanonicalAnnularPower.actual_original_subsets_annular_power
+    4.70 MB  QRH.Record1252270103Source.Contraction.SelectedMainExceptional.eventually_initial_family_uniform
+    4.70 MB  Record1252270103Bootstrap.PR67.OAI.SevenEighths.Cycle63InitialMass.actual_geometry_marked_paid_shell
+secs=290

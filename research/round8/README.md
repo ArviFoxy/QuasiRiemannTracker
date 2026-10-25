@@ -91,6 +91,14 @@ closed.
 neither binds. The conductor top stays optimal at `h = 401/500` (0.800: 8747258, 0.801: 8747252,
 0.803: 8747252, 0.804: 8747258).
 
+**The amplitude cap `p ≤ 1/2` is already a zero-free bound.** In the 7/8 paper §19.1, Lemma 19.1
+bounds every main slot by `|Q_i(u; z)| ≪ U^ε P_i^{a − 1/2 + O(e)}`. The proof bounds the
+logarithmic derivative on `Re s = a + 8e`, using the row's zero-free buffer to the right of the bin.
+The amplitude bins `g_i ≤ δ/2` and the mean class `x = q/δ ∈ [0, 1/2]` are normalized by exactly
+this bound, so `p = 1/2` means the slots saturate it. A single zero at `Re ρ = a` does that (residue
+of order one). Bootstrapping the zero-free region therefore cannot push the binding class below
+`1/2`; only a better count of such rows can.
+
 ## 4. Literature (checked again)
 
 No new input. Dunn 2403.13151 (cusp-form kernel), Baier 2605.01635 / 2609.21195 (square moduli),

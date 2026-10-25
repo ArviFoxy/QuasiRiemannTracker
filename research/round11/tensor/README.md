@@ -12,7 +12,7 @@ multilinear forms behind P1?
 
 In the `Z[ω]` model the theta phases behave like random phases in this sector. No available tool
 proves the needed cancellation, so the route does not reach the bar. One by-product looks worth
-pursuing: averaging over the slot height, §7.
+pursuing, averaging over the slot height. A formal-code study ruled it out (§7).
 
 Scripts: `four_cycle.py`, `four_point.py` (data cached in `data/`, logs `*.log`). They reuse
 `../../round7/signal-processing/{zw,build}.py`.
@@ -123,23 +123,29 @@ over the automorphic spectrum of the 3-fold cover:
 - the alternating 4-point term needs a 4-point (triple-product-type) spectral input that is not
   available, even for `GL(2)` quadratic-twist families.
 
-## 7. By-product: slot averaging plus the single-mark lemma (conditional, new)
+## 7. By-product checked and dropped: slot averaging plus the single-mark lemma
 
-- **The dismissal to revisit.** Round 9 (`../../round9/fresh_framing/README.md`, (A)) set aside
-  averaging over the slot height `τ`. Its reason: averaging "gives only the Frobenius norm, which
-  equals the N-term". That predates the single-mark lemma.
-- **What changes.** With `F_P ≪ N·K^{7/6}` at `N = K·N(P)`, the slot-diagonal part
-  `Σ_P|a(P)|²F_P` is below the N-term by `Z^{0.0053}`. That is `η ≈ 0.041`, against the `0.0076`
-  needed.
-- **The conditional route.** If the count can average the column branch over the slots' Mellin
-  height (Montgomery–Vaughan, with height range `T ≫ L`) or over random slot signs, the cross
-  terms `P ≠ P′` drop out. Use (a) would then pass with room.
-- **The conditions:**
-  1. the count's architecture must allow the average;
-  2. the single-mark lemma (Voronoi for twisted `θ₃` plus de Faveri's sextic sieve) must be
-     formalized.
-
-  Both are being scoped in `../tau_average_scope.md`.
+- **The idea.** Averaging the column branch over the slots' Mellin height (`T ≫ L`) or over random
+  slot signs would remove the cross terms `P ≠ P′`. The single-mark lemma (`η ≈ 0.041` on the
+  slot-diagonal part) would then be enough for use (a).
+- **Why it fails.** A scoping study of the formal code (`../tau_average_scope.md`, with file:line
+  evidence) shows the count cannot do this, for two independent reasons:
+  1. **Pointwise use.** The count applies the marked inverse moment pointwise in the slot height:
+     the batch's fixed point `z`, or each row's own height. Its gain `2qz` is the size of the slot
+     sums at that point, made coherent by the zero through the explicit formula.
+  2. **Averaging erases the gain.** Any average that removes `P ≠ P′` (Montgomery–Vaughan with
+     `T ≫ L`, or random signs) also forces every row's averaged slot energy down to `O(‖a‖²)`. That
+     erases the HIGH amplitude classes. Paying the window in Chebyshev instead gives the I-line
+     `1 − δr − 2qz + z`, which is worse than no marks: 0.6627 against 0.6040 at the binding.
+- **The averaged moment is trivial anyway.** It is diagonal from the unmarked inverse moment
+  alone. So round 9's dismissal stands, for this reason rather than "Frobenius = N-term".
+- **The range is not available either.** Slot heights are at most `Z^{2τ} ≤ L^{1.6·10⁻⁵}`.
+- **What the formal library has** (same study):
+  - a general Voronoi/reflection identity for `θ₃` twisted by sextic characters of a finite prime
+    family;
+  - the cubic and quadratic sieves and the hybrid norm, for general vectors;
+  - no sextic large sieve;
+  - the long line, for Möbius polynomials only.
 
 ## 8. Verdict
 
@@ -148,4 +154,5 @@ over the automorphic spectrum of the 3-fold cover:
 - No known tool proves it. Even its Cauchy–Schwarz form needs the Frobenius norm at
   Lindelöf-on-average.
 - Use (b) is out of reach of the trace method.
-- The slot-averaging by-product in §7 is the one concrete lead.
+- The slot-averaging by-product in §7 is ruled out: the count needs the slot sums pointwise at
+  each zero's height.

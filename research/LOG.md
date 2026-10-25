@@ -1560,7 +1560,18 @@ slot; `mixed-slots/`).
     theta-conjugated quadratic Gram, via `tr(BCBC) = tr(B²C²) − ½‖[B,C]‖_F²`.
   - **Numerics:** about 1000× below Cauchy–Schwarz, for theta as for random phases.
   - **Status:** no tool proves it. Use (b) would need `p ≈ 10⁴` moments.
-  - **By-product.** Averaging over slot heights or random slot signs would kill the slot cross
-    terms and leave the single-mark bound, enough for use (a) (`η ≈ 0.041 > 0.0076`). Round 9's
-    dismissal of `τ`-averaging predates the single-mark bound. Architecture and formalization
-    feasibility are being scoped (`round11/tau_average_scope.md`).
+  - **By-product, ruled out** (`round11/tau_average_scope.md`, a formal-code study with file:line
+    evidence).
+    - Averaging over slot heights or random signs would remove the slot cross terms.
+    - But the count uses the marked inverse moment pointwise at each zero's height. Its gain `2qz`
+      is the coherence of the slot sums at the zero.
+    - Any such average also caps every row's averaged slot energy at `O(‖a‖²)`, which erases the
+      HIGH classes. With the window paid in Chebyshev, the I-line is 0.6627 against 0.6040.
+    - The heights are at most `L^{1.6·10⁻⁵}` anyway.
+    - The formal library has a general Voronoi for twisted `θ₃` and the cubic and quadratic
+      sieves, but no sextic sieve.
+- **Bootstrap of the natural cost** (checked, negligible). A second stage at
+  `K = 6(2θ₁ − 1) = 4.496702` (from the single stage's `θ₁ = 0.8747252`) gives `θ* = 0.8747250`.
+  - That is only `2·10⁻⁷`, because `dθ*/dK ≈ 6·10⁻⁵`: the chain's end sits on the flow's
+    attractor, not at its start.
+  - A second stage would double the proof for that.

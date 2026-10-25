@@ -159,6 +159,6 @@ with slots is diagonal on `m₁ + m₂ + Λz ≤ B`.
 - **Equivalent form.** The missing statement is derandomized asymptotic freeness of two explicit
   operators under the diagonal unitary `diag(g̃)`.
 - **Numerics.** The theta phases behave like random phases there.
-- **By-product (§7 there).** Averaging the slot weights over their Mellin height would remove the
-  cross terms. Use (a) would then follow from the single-mark bound. The architecture and
-  formalization feasibility are being scoped (`tau_average_scope.md`).
+- **By-product (§7 there), ruled out.** Averaging the slot weights over their Mellin height would
+  remove the cross terms. But the count needs the slot sums pointwise at each zero, and averaging
+  erases the HIGH gain itself (`tau_average_scope.md`).

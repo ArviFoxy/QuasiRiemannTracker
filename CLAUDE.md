@@ -30,6 +30,14 @@
   module 30min to 1h; compile 1h08m, kernels 55min). PR 73 run 40172043577 failed this way.
   Step logs need a GitHub sign-in; the artifact `proof-verification-1-…` holds
   `run/phases.json`.
+- Profile of PR 73 (2026-10-25, `research/verification/PROFILE_PR73.md`).
+  - Export: 511 s against the hosted 600 s limit, 4.3 GB, peak RSS 12.3 GB; 157k constants
+    (#71: 176k).
+  - Export bytes: Collet 54%, OpenAI baseline 19%, Mathlib 19%, ours 7%. nanoda takes 20 min on
+    4 threads.
+  - Hosted runner: 1 kernel job and a 1 h judge. Every result since #63 was verified offline, so
+    no change on our side can make the hosted check pass.
+  - The fix is upstream incremental verification, or a Collet-free base.
 
 ## Goal and bar
 - Goal: lower the all-moduli Dirichlet zero-free boundary θ (smaller is stronger) with new

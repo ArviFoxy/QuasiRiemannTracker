@@ -23,7 +23,8 @@ faces are the tangent lines of the envelope:
 
   `B = E − sE′`, `Λ = −E′`, i.e. `B(Λ) = min_s (E(s) + Λs)` and `dB/dΛ = s`
 
-(`../chain-ode/README.md`). The source step at pivot `s` has two parts:
+(`../chain-ode/README.md`; Lean: `../lean-lab/ChainLegendre.lean`, `legendre` and
+`envelope_is_max_of_faces`). The source step at pivot `s` has two parts:
 - the LOW limit `Λ ≥ 6qB` (the LOW denominator `1 − 6qB/Λ` stays positive);
 - the HIGH threshold `q ≥ q*(s, E)`, the smallest density at which the HIGH count closes.
 

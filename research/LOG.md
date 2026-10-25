@@ -1323,6 +1323,18 @@ A catalogue cross-check (21.9k records) found nothing that moves them. → `cap-
     inequality, which Poisson returns to the original problem.
   - The `22/23` HIGH-parent guard enters Collet's root completion; relaxing it is worth well under
     1e-6.
+- *Upstream verification status (2026-10-25).*
+  - Every recent PR admission run (PRs #71, #72, #73 before the face family, and a manual run on
+    main) fails at about 3 h 5 min. That is the `timeout-minutes: 185` of the workflow step "Check
+    the canonical theorem with Comparator and all three kernels", not a rejection.
+  - Maintainers verify offline with raised budgets (`budget-only.patch`: 12 h overall, 8 h for the
+    kernels, 3600 s per module). PR #71 passed that way on 2026-10-24: candidate compile 67 min,
+    Comparator + Lean + nanoda + con-ron 54 min; registered on main as `eacad16c`.
+  - **Our certificates under an external kernel.** Pinned lean4export (`076e8e5`) and nanoda
+    (`998e0a8`) were built locally. nanoda checks the heaviest face-family certificate
+    `p2_high_0_12` together with its 2554 dependencies in 35 s with no errors (Lean compiles that
+    module in 96 s). A streamed nanoda check of the whole `Candidate.bound` /
+    `Candidate.bound_sharp` proof is running (`scratchpad/kernels/`).
 
 ## Open directions (ranked, revised 2026-10-24, third pass; see `barriers/README.md`)
 

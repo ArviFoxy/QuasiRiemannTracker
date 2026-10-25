@@ -44,7 +44,13 @@ def ok_child(par, s_c, L, cap=G.CAPMAX, nb=5, q=None):
     return True
 
 def min_L(par, s_c, Lhi, q=None, it=30):
-    if not ok_child(par, s_c, Lhi, q=q): return None
+    if not ok_child(par, s_c, Lhi, q=q):
+        # the weak cap can fail for small drops when the child's cap exceeds the parent's: scan down
+        for k in range(1, 60):
+            x = Lhi*(1 - 0.01*k)
+            if ok_child(par, s_c, x, q=q): Lhi = x; break
+        else:
+            return None
     lo, hi = 0.5, Lhi
     if ok_child(par, s_c, lo, q=q): return lo
     for _ in range(it):

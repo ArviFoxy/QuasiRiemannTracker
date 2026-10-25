@@ -1,0 +1,45 @@
+QRH-Result: arvi-repeated-marks-on-sil-face-20261025
+QRH-Bound: 349843/400000
+QRH-Decimal: 0.8746075
+
+Proves that every Dirichlet L-function L(s, χ), for every positive modulus, is nonzero for Re(s) > 349843/400000 = 0.8746075, excluding the principal pole.
+
+For comparison:
+- current verified bound: 0.87477290596 (PR #71);
+- open: PR #73 (ours, 0.8747289) and PR #74 (Sil, 0.8746935).
+
+The proof combines two existing developments. The fourth-power move is Sil's; this submission contributes the combination.
+
+1. **Sil's fourth-power source face** (`sil-fourth-power-20261025`, PR #74).
+   - **The face.** It is `GlobalSource (99999/100000) (93/25) (3/50)`: slot cost 3.72 per unit of slot width, against the natural 9/2.
+   - **Why it is vendored.** Sil's modules live under `Candidate/` and cannot be imported, so the import closure of his `actual_global_source` (421 of his 478 modules) is included under `FourthPower/`. It keeps his Apache-2.0 notices and namespaces.
+   - **The one change.** His statement assumes `theta < beta` for his target 1749387/2000000. The construction uses that only through `51/100 ≤ beta`. In eight files the hypothesis is stated as `51/100 ≤ beta`, and the two uses become `have hβ := hcontra`. No other proof changes; `research/combined/fork_sil.py` asserts this and shows the diff.
+2. **Our repeated-mark face family and final return** (`arvi-repeated-marks-20261024`, PR #73), in a single stage. The family is now started on Sil's face instead of Collet's natural face:
+   - **Tangency start.** The family starts where the continuum flow of the source step is tangent to the start face, at s = 0.0329365.
+     - Away from the tangency, the first step's LOW amplifier `(q·(L_S − L)(b − s₀)/L_S + fee)/(1 − 6q·B_S/L_S)` stays near `0.7(b − s₀)`, because the slope gap cancels between numerator and denominator. At the cap that is above its gate 1/75.
+     - At the tangency it is 0.0010.
+   - **Three pieces.** The family runs from 0.0329365 to 0.0472, where the HIGH density floor `q ≥ 1/2` ends it (L/B = 3). Each piece holds 2^16 faces, certified once per piece.
+   - **Final faces and return.**
+     - count face (0.96775, 2.91120), the last face;
+     - physical face (0.97187, 3.00000).
+     - The final return, with the physical face applied globally (Lemma D), is re-certified at 349843/400000: 42 row rectangles, 17 admission windows.
+     - At this θ, ℓ = 11/3 − 4θ = 0.16824, so the transport layer's coarse parameter bound is re-elaborated with ℓ < 0.1690. Only `4ℓ < h` and `ℓ ≤ 1` use it.
+   - **Single stage.** The natural cost is K = 9/2, whose cap 6(2β − 1) ≤ K is the baseline's β ≤ 7/8. No seed step, intermediate return or PR #67 bootstrap is needed.
+   - **Packed certificates.** The HIGH-gate and sector certificates are computed in packed integer arithmetic (Kronecker packing, with pack/unpack proved to be isomorphisms). The face-family kernel time drops to about 170 s.
+
+The analytic estimates are Sil's, Collet's and the baseline's, imported or vendored unchanged except for the hypothesis noted above.
+
+**Local checks.** _(to be filled in from the final verification run)_
+
+**Research notes.**
+- The combination, the three exact constraints found on the way, and why Sil's slope 93/25 = 2 + 4·(43/100) cannot be lowered below 26/7 in his argument: https://github.com/ArviFoxy/QuasiRiemannTracker/tree/ccr-48c53b87-r20g37/research/combined
+- The face family: https://github.com/ArviFoxy/QuasiRiemannTracker/tree/ccr-48c53b87-r20g37/research/faceless-chain
+
+**Credits.**
+- Sil, for the fourth-power transfer of Gauss sums and the source face this builds on.
+- Hailey Collet, for the finite ordinary source moments, the NF theorem and the return framework.
+- OpenAI, for the analytic framework and the 7/8 baseline.
+
+Research, Lean development and drafting were substantially AI-assisted with Anthropic's Claude (Claude Code).
+
+🤖 Generated with [Claude Code](https://claude.com/claude-code)

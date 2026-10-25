@@ -11,8 +11,8 @@ they are.
 
 usage: python3 fork_sil.py SIL_SRC OUT_DIR PKG
   SIL_SRC  the directory `submissions/sil-fourth-power-20261025/src/Candidate/FourthPower` of PR 74
-  OUT_DIR  the target directory, e.g. `.../Submissions/arvi_fourth_power_chain_20261025/FourthPower`
-  PKG      the module prefix of OUT_DIR, e.g. `Submissions.arvi_fourth_power_chain_20261025.FourthPower`
+  OUT_DIR  the target directory, e.g. `.../Submissions/arvi_repeated_marks_on_sil_face_20261025/FourthPower`
+  PKG      the module prefix of OUT_DIR, e.g. `Submissions.arvi_repeated_marks_on_sil_face_20261025.FourthPower`
 """
 import os, re, sys
 

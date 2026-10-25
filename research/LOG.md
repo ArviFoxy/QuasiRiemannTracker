@@ -1577,7 +1577,7 @@ slot; `mixed-slots/`).
   - A second stage would double the proof for that.
 - **Upstream PR 74 is the new bar** (Sil, 0.8746935; `upstream/PR74_ANALYSIS.md`). Target:
   ≤ 0.8746835.
-- **The combined proof** (`combined/README.md`, package `arvi-fourth-power-chain-20261025`).
+- **The combined proof** (`combined/README.md`, package `arvi-repeated-marks-on-sil-face-20261025`).
   - **Construction.** Our face family is started on Sil's fourth-power source face
     `GlobalSource (99999/100000) (93/25) (3/50)` instead of Collet's natural face. It runs
     through 3 pieces to the end, then into our final return.

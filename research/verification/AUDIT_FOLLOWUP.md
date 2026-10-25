@@ -337,3 +337,19 @@ unused declarations in the package.
 **Verification.** The candidate rebuilds from the changed modules (13628 jobs) in about 4 minutes
 wall on 4 cores. `Candidate.bound` still depends only on `propext`, `Classical.choice` and
 `Quot.sound`.
+
+## 11. Upstream admission: do not touch an open submission PR while it verifies (PR 76, 2026-10-25)
+
+- **The trigger.** `pr-admission.yml` runs on `opened`, `synchronize` and `edited`, with
+  `concurrency: cancel-in-progress` per PR. The run's identity includes the PR body
+  (`check-pr.mjs`).
+- **What any push or description edit does.**
+  - It cancels the verification in flight. The full hosted check is up to 330 minutes.
+  - The cancelled run's `admission` job still runs (`if: always()`). It finds no
+    `verification/attempt.json` for the head and fails with "Verification report is missing or
+    belongs to a different PR head, result ID or bound".
+  - Then the next run starts from scratch.
+- **On PR 76.** A follow-up push (pronoun fix, `47a53087`) and a description edit came after
+  opening, and each restarted the check.
+- **Rule.** Finish every change, the body included, before opening the PR. After that, leave the
+  branch and the description alone until admission completes.

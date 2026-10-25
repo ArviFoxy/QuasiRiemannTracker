@@ -1626,3 +1626,7 @@ slot; `mixed-slots/`).
     floor L/B = 3.
   - So the only way down is a higher intercept at that boundary: about 9e-6 per 1e-3 of
     intercept. The mixed step's float model raises it by 0.0019 (`mixedstep.py`: θ* ≈ 0.8745898).
+- **PR 76 admission restarts** (`verification/AUDIT_FOLLOWUP.md` §11). The workflow cancels in
+  flight on every push or edit, and the cancelled run reports "Verification report is missing…".
+  A push after opening (pronoun fix) and a description edit caused this. Rule: no pushes or edits
+  while admission runs.

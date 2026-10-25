@@ -21,7 +21,15 @@
   GitHub still describes the old graph; the paste-ready replacement is
   `research/faceless-chain/PR_BODY_DRAFT.md` (only the user can edit the upstream PR).
 - Upstream CI (`pr-admission.yml`) times out at about 3h06m for every recent PR (#71, #72, #73);
-  maintainers verify offline. Not a proof error.
+  maintainers verify offline. Not a proof error. Mechanism (checked 2026-10-25 in the upstream
+  `verifier/standard/replay.py`): one shared 10800 s deadline for compile + export + Comparator +
+  three kernels (per module 1800 s, kernel stage 3600 s), and the step timeout is 185 min, so the
+  job dies at about 3h05m with exit code 1 in "Check the canonical theorem with Comparator and all
+  three kernels". PR #71's receipt (upstream commit 54f1a913) records the same failure, followed by
+  an independent run by Tim Gehrunger (16 threads, 192 GiB; budgets 3h to 12h, judge 1h to 8h,
+  module 30min to 1h; compile 1h08m, kernels 55min). PR 73 run 40172043577 failed this way.
+  Step logs need a GitHub sign-in; the artifact `proof-verification-1-…` holds
+  `run/phases.json`.
 
 ## Goal and bar
 - Goal: lower the all-moduli Dirichlet zero-free boundary θ (smaller is stronger) with new

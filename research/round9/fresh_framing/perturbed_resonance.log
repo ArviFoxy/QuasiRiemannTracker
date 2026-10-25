@@ -1,0 +1,13 @@
+dip margin = max over (r*, t*) of [log_U|M_r| + tent(r)]  (must be <= 0)
+  d=  400 logU=    2000 j0=  4 eps=2.231e-01  dip margin=+0.00009  |M| at r*=0.007  at t*=0.000
+  d=  400 logU=   10000 j0=  4 eps=5.531e-04  dip margin=+0.00009  |M| at r*=0.007  at t*=0.000
+  d=  400 logU=  100000 j0=  4 eps=2.679e-33  dip margin=+0.02247  |M| at r*=0.007  at t*=0.000
+  d= 1600 logU=    2000 j0= 15 eps=2.231e-01  dip margin=+0.00006  |M| at r*=0.001  at t*=0.000
+  d= 1600 logU=   10000 j0= 15 eps=5.531e-04  dip margin=+0.00006  |M| at r*=0.001  at t*=0.000
+  d= 1600 logU=  100000 j0= 15 eps=2.679e-33  dip margin=+0.02249  |M| at r*=0.001  at t*=0.000
+  d= 1600 logU=  100000 j0= 15 eps=2.679e-33  dip margin=+0.02249  |M| at r*=0.001  at t*=0.000
+analytic: dip margin = -0.000296 (<= 0 means the perturbed row keeps the corner); perturbation decay 0.1870 per unit r vs tent slope 0.1137
+  same-face value D/Delta = 0.1137 at Lambda=2.0 (tent 0.1137)
+  same-face value D/Delta = 0.1364 at Lambda=2.5 (tent 0.1137)
+  same-face value D/Delta = 0.1489 at Lambda=2.9 (tent 0.1137)
+  same-face value D/Delta = 0.1515 at Lambda=3.0 (tent 0.1137)

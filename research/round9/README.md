@@ -45,6 +45,13 @@ Prop. 8.3 of the 7/8 paper gives every bad row, for every `t ∈ [1, 3/2]`, a sa
 - Only the long moment at `y = 3s₀ ∈ [1, 3/2]` matters. Lowering its exponent by `ε` lowers `ρ` by
   `ε·4ν/(5 − 2ν)`, which is 0.44ε at ν = 0.45 and 0.5ε at ν = 0.5 (`rho_sens`, proved; numerics
   in `lattice_game.py`).
+- **Any long witness will do, but only one kind has a moment.** The adversary's witnesses of
+  length `3s₀` are `M_{3s₀}`, `M_{2s₀}S_{s₀}` and `S_{s₀}³`. A bound below `(1 + 5y)/6` at
+  `y = 3s₀` for any of them would lower `ρ`. Only the Möbius block has a proven long moment
+  (amplification of the inverse moment).
+  - A plain sixth moment `Σ_u|S_{s₀}|⁶` is out of reach. It is not available even at total length
+    `≤ 1`, because a third plain factor costs `6κ` (`../lean-lab/DeletionRate.lean`).
+  - The mixed products have no moment at all past the diagonal.
 - **The long moment cannot be bootstrapped from zero counts.** A row whose zeros all lie left of
   `(1 + δ′)/2` has `|M_u(U^t)|² ≤ U^{tδ′}`. Summing `U^{ρ(δ′) + tδ′}` over bins gives 1.1667 at
   `t = 1.155` and 1.2273 at `t = 1.25`, worse than the amplified 1.1292 and 1.2083.

@@ -1630,3 +1630,14 @@ slot; `mixed-slots/`).
   flight on every push or edit, and the cancelled run reports "Verification report is missing…".
   A push after opening (pronoun fix) and a description edit caused this. Rule: no pushes or edits
   while admission runs.
+- **Mixed step priced; return ceiling found** (`mixed-step/README.md`).
+  - Calibration: the flow with the LOW exchange rate swapped reproduces PR 76 (0.8746073).
+  - Readings: the cautious one (Sil's ledger on the excess) gives 0.8745898 (−1.75e-5); a
+    transfer without a saving gives 0; the readings where the selected block saves energy are
+    much larger.
+  - The exact return with perfect source faces stops at 0.8745804, so any source-side lever is
+    capped at −2.7e-5.
+  - Sil-LOW (Sil's argument in the LOW branch at rate q) hits the cap but ignores the HIGH gate's
+    amplifier charge.
+  - Lean: `lean-lab/MixedStepLedger.lean` (payment algebra, thresholds `6q/(1+q)` vs `6q`, Sil's
+    26/7 floor).

@@ -84,6 +84,7 @@ The exact pipeline with every known refinement (Lemma F, fine pivots, density fl
 | a Möbius Type II estimate beyond the diagonal for sextic families, or any zero-density input stronger than the count itself | atom 2, long branch |
 | a plain fourth moment with slots that subtracts the Patterson bias instead of amplifying | atoms 2 and 3 on the plain side; slot cost 2 there would lower the count `R` from 0.6047 to about 0.5996, worth about `7·10⁻⁴` in θ |
 | a diagonal three-plain moment `Σ_u|S_m² S_z|² ≪ U^{1+ε}` for `2m + c_S z ≤ B` (one short squarefree-plain factor) with `c_S ≤ 1.85` | mixed prime/plain slots: break-even at `c_S ≈ 1.85`, −1e-5 at `c_S ≈ 1.8`, about −9e-5 at `c_S = 1` (`../mixed-slots/`); Lemma 18.1's induction gives only `c_S = 6κ → Λ`, because only two plains can be reflected |
+| a Möbius scale-profile interpolation: for all but `U^{R−7.5e-5}` bad rows, `|M_r(ρ)|` saturated at `r = 0.741` and `r = 1.155` implies `|M₁(ρ)|² ≥ U^{δ−2c}` | the I line at `r = 1` takes the corner: the milestone needs `c ≤ 0.0294`, only within about `4e-4` of the corner; lossless (`c → 0`) is worth about `−7.8e-3` (`../LOG.md`, round-5 detector agent). The rows that escape need clusters of about `0.004·log U` zeros, so counting them needs a multiplicity-sensitive zero count with a power saving |
 
 ## Additions after the second pass (2026-10-24, later)
 

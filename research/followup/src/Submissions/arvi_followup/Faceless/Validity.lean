@@ -1,4 +1,4 @@
-import Submissions.arvi_followup.Faceless.ScalarCert
+import Submissions.arvi_followup.Faceless.ScalarZ
 
 /-!
 # Validity of every step of a piece
@@ -37,7 +37,7 @@ structure Certs : Prop where
   field : ∀ i, ∃ l, pos1I (P.fieldP i) l = true
   scal : ∀ e j, ∃ l, pos1I (P.sgN (P.endP e) j) l = true
   weak : ∀ e, ∃ l, pos1I (P.weakN (P.endP e)) l = true
-  sec : ∀ e (j : Fin 3) i, ∃ l, pos1I (P.secB (P.endP e) (j.val + 6) i) l = true
+  sec : ∀ e (j : Fin 3) i, PosOn01 (P.secB (P.endP e) (j.val + 6) i)
   cell : ∀ e, ∃ l, pos1I (P.cellN (P.endP e)) l = true
   high : ∀ e k, HighCoeffPos (P.highU (P.endP e) k)
 
@@ -109,7 +109,7 @@ theorem Certs.valid (C : P.Certs) (y : ℚ) (hy0 : 0 ≤ y) (hy1 : y ≤ 1) :
       fin_cases i <;> norm_num [cubicBernstein, cubicCoeffs]
     · have hj6 : 6 ≤ j.val := by omega
       obtain ⟨j', hj'⟩ : ∃ j' : Fin 3, j'.val + 6 = j.val := ⟨⟨j.val - 6, by omega⟩, by simp; omega⟩
-      have hp := Certs.pos (C.sec e j' i) hy0 hy1
+      have hp := C.sec e j' i y hy0 hy1
       rw [eval_secB] at hp
       have hfun : (fun ν => densityGate2 (P.node y) (P.node (y - P.Dy)) (some (P.node (y - P.Dy)))
           (eval (P.endP e) y) ν j) =

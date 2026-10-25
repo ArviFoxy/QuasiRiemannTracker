@@ -43,6 +43,19 @@ def load_ck(path):
 
 
 CKDATA = load_ck(CK) if CK else None
+CS = os.environ.get('QRH_CS')                 # packed sector certificates from this extraction
+
+
+def load_cs(path):
+    """`tag|Δ|X|[c, …]` lines written by gen_certs.py."""
+    out = {}
+    for line in open(path):
+        tag, D, X, lit = line.rstrip('\n').split('|')
+        out[tag] = (int(D), int(X), [int(x) for x in lit.strip('[]').split(',') if x.strip()])
+    return out
+
+
+CSDATA = load_cs(CS) if CS else None
 
 
 def tree_depth(T):
@@ -168,7 +181,7 @@ TAIL = ["", f"end {NS}", ""]
 
 def gen_piece(fam, j, out):
     t0 = time.time()
-    L = [HEAD(["Faceless.Gen.Data"])]
+    L = [HEAD((["Faceless.ScalarZ"] if HIGHPOS else []) + ["Faceless.Gen.Data"])]
     names = {}
     for i, p in enumerate(fieldP(fam, j)):
         nm = f"p{j}_field_{i}"; names[('field', i)] = nm
@@ -184,7 +197,23 @@ def gen_piece(fam, j, out):
             ps = secB(fam, j, b, s3 + 6)
             for i in range(4):
                 nm = f"p{j}_sec_{e}_{s3}_{i}"; names[('sec', e, s3, i)] = nm
-                L.append(f"theorem {nm} : pos1I (piece{j}.secB (piece{j}.endP {e}) ({s3} + 6) {i}) {cov_lean(cover1(ps[i]))} = true := by decide +kernel")
+                sB = f"piece{j}.secB (piece{j}.endP {e}) ({s3} + 6) {i}"
+                if CS:
+                    # phase 1 (`Pk.decS`): the packed sector polynomial is `g` times the data;
+                    # phase 2: positivity of the data (the cover of `secB` serves its multiples)
+                    import math
+                    D, Xs, cS = CSDATA[nm]
+                    g = 0
+                    for x in cS:
+                        g = math.gcd(g, x)
+                    prim = [x // g for x in cS]
+                    cov = cov_lean(cover1(ps[i]))
+                    L += [f"def cS_{nm} : IPoly := [" + ", ".join(str(x) for x in prim) + "]",
+                          f"theorem {nm}_dec : Pk.decS {D} 1 piece{j} (piece{j}.endP {e}) ({s3} + 6) {i} {g} {Xs} cS_{nm} = true := by decide +kernel",
+                          f"theorem {nm}_pos1 : (!({cov} : List (ℕ × ℕ)).isEmpty && IPoly.posOn cS_{nm} 0 0 {cov}) = true := by decide +kernel",
+                          f"theorem {nm} : PosOn01 ({sB}) := Pk.secPos_of_decS _ _ _ _ _ _ _ _ _ _ {nm}_dec {nm}_pos1"]
+                else:
+                    L.append(f"theorem {nm} : pos1I ({sB}) {cov_lean(cover1(ps[i]))} = true := by decide +kernel")
         nm = f"p{j}_cell_{e}"; names[('cell', e)] = nm
         L.append(f"theorem {nm} : pos1I (piece{j}.cellN (piece{j}.endP {e})) {cov_lean(cover1(cellN(fam, j, b)))} = true := by decide +kernel")
     L += TAIL
@@ -283,7 +312,9 @@ def gen_piece(fam, j, out):
          "    exacts [" + ", ".join(f"⟨_, {names[('weak', e)]}⟩" for e in (0, 1)) + "]",
          "  sec e s i := by",
          "    fin_cases e <;> fin_cases s <;> fin_cases i",
-         "    exacts [" + ", ".join(f"⟨_, {names[('sec', e, s3, i)]}⟩" for e in (0, 1) for s3 in range(3) for i in range(4)) + "]",
+         "    exacts [" + ", ".join((names[('sec', e, s3, i)] if CS else f"posOn01_of_pos1I {names[('sec', e, s3, i)]}")
+                                if HIGHPOS else f"⟨_, {names[('sec', e, s3, i)]}⟩"
+                                for e in (0, 1) for s3 in range(3) for i in range(4)) + "]",
          "  cell e := by",
          "    fin_cases e",
          "    exacts [" + ", ".join(f"⟨_, {names[('cell', e)]}⟩" for e in (0, 1)) + "]",

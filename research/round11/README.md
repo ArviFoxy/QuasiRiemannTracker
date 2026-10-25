@@ -39,22 +39,36 @@ scripts `factor_split_mass.py` and `ls_constant_support.py` with their logs.
     dyadic family.
   - Given (A), 99% of the mass gains up to `U^{0.013}`. The rest, the `U^{0.172}`-rough core
     (about 1% of the mass), gains nothing. So the total saving is a constant, not a power.
-- **(A) looks true numerically.** The large-sieve constant of the actual dyadic family sits at
-  the random-matrix edge (0.93–1.00 of `(√R + √C)²`, at `U = 3000` and `8000`). A Gauss-bias
-  `(RC)^{2/3}` term would be 2.6–3.6× the edge.
-  - Heuristic check (done here): the twisted theta main terms come only from the cubic subfamily
-    `u = v²` (`v ~ U^{1/2}`). With `|c_v|² ≈ N(v)^{−1/3}`, they give `U^{1/3}N^{2/3}`, which is
-    below `max(U, N)`.
-  - So the generic bias terms come from small moduli, and dyadic rows avoid them.
+- **(A) looked true numerically, but it is false past `U^{4/5}` (correction, same day).**
+  - **The numerics.** The large-sieve constant of the actual dyadic family sits at the
+    random-matrix edge (0.93–1.00 of `(√R + √C)²`, at `U = 3000` and `8000`). The agent read this
+    as "no bias", because a `(RC)^{2/3}` term would be 2.6–3.6× the edge.
+  - **The counterexample.** The bias that survives on dyadic rows comes from the sixth-power dual
+    frequencies, not from small moduli.
+    - Take `b_u = conj g̃₆(1, u)` on `u ~ U` (one residue class mod 4, so that the reciprocity
+      signs are constant).
+    - Poisson in `n` writes the dual form's off-diagonal as `(N/U²)Σ_h |Σ_u b_u g₆(h, u)|²`.
+    - At `h = a⁶` the inner sum has no cancellation: `Σ_u √N(u) ≈ U^{3/2}`.
+    - There are about `(U²/N)^{1/6}` such `h`, so the large-sieve constant is at least
+      `N^{5/6}U^{1/3}`. That is de Faveri's `A^{1/3}B^{5/6}` term, and it exceeds `U` for
+      `N > U^{4/5}`.
+  - **Why the numerics missed it.** It is the same sixth-power-frequency mechanism as the probe's
+    signal channel `k = a⁶e₀`. At `U = 8000`, `N ≈ U` it is about `N·0.6·U^{1/6} ≈ 2.7N`. That is
+    within the constant of the edge `(√R + √C)² ≈ 4N`, so the numerics cannot separate it.
+  - So (A) for general coefficients fails at least on `(U^{4/5}, U]`. The `A^{5/6}B^{1/3}` term
+    (theta coefficients at the rows) probably makes it fail past `U^{1/2}`.
 - **The atom, localized.** At the binding point the rough core is round 10's adversary (three
   primes of size `U^{0.385}`). There the problem is equivalent to a sixth moment with no `μ`:
   `Σ_u |Σ_{p~P} ψ_u(p)p^{−s}|⁶ ≤ U^{1.129−η}(E|Q|²)³` with `P = U^{t/3}`.
 
-**What (A) would be worth elsewhere.** The source chain's faces certify that the plain fourth
-moment with slots is diagonal on `m₁ + m₂ + Λz ≤ B`.
+**What (A) would have been worth.** The source chain's faces certify that the plain fourth moment
+with slots is diagonal on `m₁ + m₂ + Λz ≤ B`.
 - (A) for general coefficients would give `B = 1`, `Λ = 1` directly: the product `S_{m₁}S_{m₂}Q_z`
   is a Dirichlet polynomial of length `U^{m₁+m₂+z} ≤ U`.
-- The chain's end face is `(B, Λ) ≈ (0.957, 2.90)`.
-- So (A) is the strongest single input found so far, far beyond the bar. It is a
-  Lindelöf-on-average large sieve for the dyadic sextic family. Heath-Brown's method does not give
-  it, because its recursion produces exactly the Gauss-sum vectors that carry the bias.
+- The chain's end face is `(B, Λ) ≈ (0.957, 2.90)`. In the return, `Λ_P = 1` would roughly
+  quadruple the numerator capacity `C`, worth about −2e-3 in θ.
+- The general version is false (above), so only the restricted version could hold:
+  - plain sums and slots, whose coefficients are far from the Gauss-sum vectors;
+  - the unconditional range is `N ≤ U^{1/2}`, which gives the useless face `(1/2, 1)`.
+- That restricted version is atom 1 again, since its dead zone is exactly where the slots break
+  the plain reflection.

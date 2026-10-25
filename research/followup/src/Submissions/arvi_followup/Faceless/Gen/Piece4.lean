@@ -34,7 +34,7 @@ theorem piece4_certs : piece4.Certs where
     exacts [⟨_, p4_weak_0⟩, ⟨_, p4_weak_1⟩]
   sec e s i := by
     fin_cases e <;> fin_cases s <;> fin_cases i
-    exacts [⟨_, p4_sec_0_0_0⟩, ⟨_, p4_sec_0_0_1⟩, ⟨_, p4_sec_0_0_2⟩, ⟨_, p4_sec_0_0_3⟩, ⟨_, p4_sec_0_1_0⟩, ⟨_, p4_sec_0_1_1⟩, ⟨_, p4_sec_0_1_2⟩, ⟨_, p4_sec_0_1_3⟩, ⟨_, p4_sec_0_2_0⟩, ⟨_, p4_sec_0_2_1⟩, ⟨_, p4_sec_0_2_2⟩, ⟨_, p4_sec_0_2_3⟩, ⟨_, p4_sec_1_0_0⟩, ⟨_, p4_sec_1_0_1⟩, ⟨_, p4_sec_1_0_2⟩, ⟨_, p4_sec_1_0_3⟩, ⟨_, p4_sec_1_1_0⟩, ⟨_, p4_sec_1_1_1⟩, ⟨_, p4_sec_1_1_2⟩, ⟨_, p4_sec_1_1_3⟩, ⟨_, p4_sec_1_2_0⟩, ⟨_, p4_sec_1_2_1⟩, ⟨_, p4_sec_1_2_2⟩, ⟨_, p4_sec_1_2_3⟩]
+    exacts [p4_sec_0_0_0, p4_sec_0_0_1, p4_sec_0_0_2, p4_sec_0_0_3, p4_sec_0_1_0, p4_sec_0_1_1, p4_sec_0_1_2, p4_sec_0_1_3, p4_sec_0_2_0, p4_sec_0_2_1, p4_sec_0_2_2, p4_sec_0_2_3, p4_sec_1_0_0, p4_sec_1_0_1, p4_sec_1_0_2, p4_sec_1_0_3, p4_sec_1_1_0, p4_sec_1_1_1, p4_sec_1_1_2, p4_sec_1_1_3, p4_sec_1_2_0, p4_sec_1_2_1, p4_sec_1_2_2, p4_sec_1_2_3]
   cell e := by
     fin_cases e
     exacts [⟨_, p4_cell_0⟩, ⟨_, p4_cell_1⟩]

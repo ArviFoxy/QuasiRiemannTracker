@@ -234,8 +234,33 @@ The generators: `faceless-chain/gen_certk.py` extracts `Δ`, `X` and `cK`. Then
 `QRH_CK=<its output> gen_all.py` emits the two-phase files. The proportionality of `cK` to the
 `certI` array is asserted, so PR 73's trees are reused unchanged.
 
-## 7. Status and next steps
+## 7. The sector certificates, packed the same way (done)
 
-- Kernel time of our part now: HIGH 107 s (was about 2120 s); Faceless scalar certificates about
-  480 s (next target, same technique); final-return rows 46 s.
-- Collet's remaining 241 s and the baseline's 501 s are outside our package.
+The scalar certificates of the follow-up took 290 s of kernel time. 257 s of that was the 120
+special-sector certificates (`Piece.secB`, about 2.1 s each, `Rat` arithmetic again).
+- **Mirror and check.** `Faceless/ScalarZ.lean` mirrors `secN` and `secB` on packed numbers
+  (`secNZ`, `secBZ`, with `rep_secBZ`). It checks the result against literal data
+  (`decS`, base and factor as data).
+- **Positivity on the data.** The existing `IPoly.posOn` runs on the literal, with the same cover.
+  A cover of `secB` serves its positive multiples, since `tm1` is homogeneous.
+- **The certificate field.** `Certs.sec` is now stated as positivity on `[0, 1]` (`PosOn01`),
+  like `Certs.high`.
+- **Data extraction.** `faceless-chain/gen_certs.py`; `gen_all.py` emits the sector files with
+  `QRH_CS`.
+
+| scalar certificates | before | after |
+|---|---|---|
+| sectors (120) | 256.5 s | 28.7 s (24.3 s phase 1, 4.4 s phase 2) |
+| scalar gates `sgN` (160) | 26.0 s | 26.0 s (not packed) |
+| field, weak, cell | 6.7 s | 6.0 s |
+| **total** | **289.5 s** | **60.7 s** |
+
+## 8. Status
+
+- **Our face-family certificates:** 168 s of kernel time in total, against about 2600 s in
+  PR 73. HIGH is 107 s, scalar 61 s.
+- **Final-return rows:** 46 s.
+- **Remaining kernel time, mostly outside our package:** Collet 241 s, baseline 501 s,
+  Mathlib 379 s.
+- **The follow-up candidate** rebuilds in about 200 s wall on 4 cores, and both theorems use
+  only the three standard axioms.

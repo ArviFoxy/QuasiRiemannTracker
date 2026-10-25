@@ -205,7 +205,37 @@ on `e`, the selected block's energy saving in the step's LOW branch: `e = 1` giv
 - **Open question.** Whether that resolution is real, or Collet's exceptional handling hides the
   same cost.
 
-## 7. What decides it (open)
+## 7. Adversarial review: CONFIRMED with e = 1, c = 6 (`ADVERSARIAL_REVIEW.md`)
+
+- **c = 4 is refuted.** The column term `−2d` sits in the RAW-scale coordinate `x2`, which is
+  also the scale handed to the parent (`modified_deficit_and_coordinate`). So the parent is called
+  at `Q′ = 1 − 6a − 6d − δ − ρ`.
+- **Second-transform coordinates of the residual:** `(x0 + 5d, x1, x2 − 6d, x3 − d)`, and RC3 is
+  −d. So the transfer prices exactly like a pool (saves 1, costs 6). Its gain is that the selected
+  slots leave the width passed to the parent: payment `a(1−6qβ) + d(1+q−6qβ) ≥ qX₀ + r`, descent
+  `Λ > 6qB/(1+q)`.
+- **Keep a pool `a ≥ r`.** With `f ≈ b` a pure transfer leaves no reserve for the scheduled
+  losses. Also required: (G11) at `F′`, i.e. `6Bd < (Λ−1)b` at the pivot.
+- **Other gates.** Per unit of `d`: zero frequency 4, centered 3, HIGH `5 − 6ρ − ν`; each is no
+  more than the pool's, so `continuum_mixed.py`'s convention is conservative.
+- **The residual is an admissible Collet instance.** Common coefficient
+  (`fixedCommonCoefficient`); twists `χ_n(f)²ξ` covered by ActualLow's quantifier over ray labels;
+  seeds, holes, fifth-freeness. Non-coprime `n, D` vanish on both sides.
+- **Red flag explained.**
+  - The natural induction would close at `Λ ≥ 18/7` but has a separate wall at `Λ = 3` (centered
+    comparison MF3.49, `q_κ = Λ − 1 > 2`). Collet's step has no such wall.
+  - Sil's 3.72 is a direct face: its terminal gates are first-order in `d = 0.43(S + d)`, but only
+    `O(d)` per step in an induction.
+- **Open: the analytic lemma.**
+  - The transfer at Collet's first MAIN layer, with a literal residual source.
+  - Collet's step run on that residual, with `x2 := 1 − 6a − 6d − δ − ρ`.
+  - Certificate gates with the O3 charges.
+
+**Value.** `cont_c6` is the relevant run (slopes 2.52 → 2.17). With the return's physical window
+`s_P = 0.052` (a generator parameter, capped by the receipt `d_s ≥ 3/4`) it certifies
+**θ* = 0.8744022**, about −2.05e-4 against PR 76.
+
+## 8. What decides it (open)
 
 The readings differ in one fact: whether the transfer saves energy (`e = 1`) or only moves the
 selected block from the modulus to the frequency (`e = 0`).
@@ -225,7 +255,7 @@ selected block from the modulus to the frequency (`e = 0`).
 - **Exact trace.** An agent is tracing Sil's exponent chain from the original energy to the final
   bound: `SIL_LEDGER_TRACE.md`.
 
-## 8. Status
+## 9. Status
 
 - Pricing done. The two principled candidates are worth −1.75e-5 (mixed step, cautious reading)
   and −2.7e-5 (Sil-LOW). The optimistic readings are larger but not yet scoreable.

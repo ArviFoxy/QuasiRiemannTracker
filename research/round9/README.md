@@ -102,3 +102,38 @@ Files: `lattice_game.py`, `lattice_game.log`, `../lean-lab/ZeroDensityGame.lean`
   - Not proved impossible. Logged as an open candidate.
 - Otherwise the agent confirms the atoms: P1 use (a) for the actual smooth prime vector
   (`η ≥ 0.0085`), and the long line (`λ ≥ 0.1676` at `t = 1.155`).
+
+## 3. Candidate (B) priced: the dual sixth-power restriction is a dilation of `X` (closed)
+
+The probe is `Σ_m F(m)W₀(q_m/Q)` with `F` periodic modulo `M = b*·s·c` and `Q = q_{b*}XY`
+(7/8 paper (6.1)). Poisson gives the dual frequencies `H`, with weights `F̂(H)Ŵ₀(HQ/M)` and range
+`H ≲ Z^h`, `h = 1 + ℓ − x`.
+
+**The restriction is an `X`-dilation.**
+- For `b` prime to `M`, the arithmetic factor is a product of sextic Gauss sums, so
+  `F̂(b⁶H) = F̂(H)`.
+- Hence `Σ_H F̂(b⁶H)Ŵ₀(b⁶HQ/M) = N(b)^{−6}·Σ_m F(m)W₀(q_m/(QN(b)⁶))`.
+- With the probe's `X^{−1/2}` normalization, keeping only the frequencies with `b⁶ | H` is the probe
+  at `X·N(b)⁶` with weight `N(b)^{−3}`.
+- Write `1_{a(H) ≥ A₀} = Σ_{b⁶ | H} f(b⁶)`, where `a(H)⁶` is the sixth-power part of `H`. The
+  Möbius transform `f` is supported on `N(b) ≥ A₀`, with `|f| ≤ d(b)`. So the restricted probe is
+  `Σ_{N(b) ≥ A₀} f(b⁶) N(b)^{−3} I_η(X·N(b)⁶, Y, Z)`, plus corrections for `b` not prime to the
+  moduli.
+
+**Signal.** Each term carries `N(b)^{−3}·(N(b)⁶)^{1/3} = N(b)^{−1}` times the signal, through the
+outside power `X^{1/3}Z^{s−5/6}Z^{ℓ/6}`. Then `Σ_b f(b⁶)/N(b) = 1`, which is the residue of the tail
+of `ζ(6z)`, so the signal is preserved, as the agent said.
+
+**Low side.**
+- The raw low bound is `Z^{C(θ_low)}` with `θ_low = 2/3 + (x + y)/4` and the outside power
+  `X^{1/3}`, so it grows like `X^{7/12}`.
+- The terms therefore weigh `N(b)^{−3 + 6·7/12} = N(b)^{+1/2}`. The sum is dominated by the
+  largest `b`, before any marked-energy wall is even met (`x + y + ℓ ≤ 1` is crossed at once,
+  since every term has `x′ ≥ x + ε′`).
+- Taking the base probe at `x − ε′` instead extends the dual range to `h + ε′`, and the restriction
+  then removes exactly that extension. The top is back at `h`.
+
+**Verdict.** Within this probe the top of the high side moves only with `x`, and `x` is already at
+its optimum. Restricting the dual sixth-power content is a reweighted `X`-dilation whose low side
+is worse. The high-side gain would need a probe whose low estimate does not grow with `X`. The
+marked-energy wall says that is P1 (use (b)). Closed.

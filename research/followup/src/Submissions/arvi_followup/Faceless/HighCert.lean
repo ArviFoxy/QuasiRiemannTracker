@@ -433,11 +433,194 @@ theorem eval_ib33 (c : Fin 4 → Fin 4 → IPoly) (ka : ℤ) (m : ℕ) (kb : ℤ
     rw [bern3_smul]; ring]
   rw [bern3_smul]; ring
 
-/-- Every Bernstein coefficient of the dyadic leaf box is positive on `y ∈ [0, 1]`. -/
+/-! ### Packed leaves
+
+A polynomial `q = A − B` (`A, B` natural coefficient lists) is carried as the four numbers
+`⟨A(X), B(X), A(1), B(1)⟩`. The Bernstein transform of a leaf is a linear combination with integer
+weights, so it acts on these numbers directly: one big-number operation per term instead of one
+per coefficient. The coefficients are read back as base-`X` digits, which is exact once
+`A(1), B(1) < X` (no carries). -/
+
+structure PP where
+  pos : ℕ
+  neg : ℕ
+  pos1 : ℕ
+  neg1 : ℕ
+
+namespace PP
+
+def add (r s : PP) : PP := ⟨r.pos + s.pos, r.neg + s.neg, r.pos1 + s.pos1, r.neg1 + s.neg1⟩
+
+def smul (w : ℤ) (r : PP) : PP :=
+  if 0 ≤ w then ⟨w.toNat * r.pos, w.toNat * r.neg, w.toNat * r.pos1, w.toNat * r.neg1⟩
+  else ⟨(-w).toNat * r.neg, (-w).toNat * r.pos, (-w).toNat * r.neg1, (-w).toNat * r.pos1⟩
+
+def pack (X : ℕ) (q : IPoly) : PP :=
+  ⟨NP.evalN (q.map Int.toNat) X, NP.evalN (q.map fun c => (-c).toNat) X,
+    NP.evalN (q.map Int.toNat) 1, NP.evalN (q.map fun c => (-c).toNat) 1⟩
+
+def unpack (X L : ℕ) (r : PP) : IPoly :=
+  List.zipWith (fun (a b : ℕ) => (a:ℤ) - (b:ℤ)) (NP.digits X L r.pos) (NP.digits X L r.neg)
+
+/-- `r` packs `q` at base `X`, with at most `L` coefficients. -/
+def Rep (X L : ℕ) (r : PP) (q : IPoly) : Prop :=
+  ∃ A B : List ℕ, A.length ≤ L ∧ B.length ≤ L ∧ r.pos = NP.evalN A X ∧ r.neg = NP.evalN B X ∧
+    r.pos1 = NP.evalN A 1 ∧ r.neg1 = NP.evalN B 1 ∧
+    ∀ y : ℚ, eval q y = NP.evalQ A y - NP.evalQ B y
+
+theorem rep_pack (X L : ℕ) (q : IPoly) (hq : q.length ≤ L) : Rep X L (pack X q) q :=
+  ⟨_, _, by simpa using hq, by simpa using hq, rfl, rfl, rfl, rfl, fun y => eval_eq_parts q y⟩
+
+theorem rep_add {X L : ℕ} {r s : PP} {q q' : IPoly} (hr : Rep X L r q) (hs : Rep X L s q') :
+    Rep X L (add r s) (IPoly.add q q') := by
+  obtain ⟨A, B, hA, hB, h1, h2, h3, h4, h5⟩ := hr
+  obtain ⟨A', B', hA', hB', h1', h2', h3', h4', h5'⟩ := hs
+  refine ⟨NP.addN A A', NP.addN B B', ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
+  · rw [NP.length_addN]; omega
+  · rw [NP.length_addN]; omega
+  · simp only [add, h1, h1', NP.evalN_addN]
+  · simp only [add, h2, h2', NP.evalN_addN]
+  · simp only [add, h3, h3', NP.evalN_addN]
+  · simp only [add, h4, h4', NP.evalN_addN]
+  · intro y; rw [IPoly.eval_add, h5, h5', NP.evalQ_addN, NP.evalQ_addN]; ring
+
+theorem rep_smul {X L : ℕ} {r : PP} {q : IPoly} (w : ℤ) (hr : Rep X L r q) :
+    Rep X L (smul w r) (IPoly.smul w q) := by
+  obtain ⟨A, B, hA, hB, h1, h2, h3, h4, h5⟩ := hr
+  by_cases hw : 0 ≤ w
+  · have hc : ((w.toNat : ℕ) : ℚ) = (w : ℚ) := by exact_mod_cast Int.toNat_of_nonneg hw
+    refine ⟨NP.smulN w.toNat A, NP.smulN w.toNat B, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
+    · rwa [NP.length_smulN]
+    · rwa [NP.length_smulN]
+    · simp only [smul, hw, ite_true, h1, NP.evalN_smulN]
+    · simp only [smul, hw, ite_true, h2, NP.evalN_smulN]
+    · simp only [smul, hw, ite_true, h3, NP.evalN_smulN]
+    · simp only [smul, hw, ite_true, h4, NP.evalN_smulN]
+    · intro y; rw [IPoly.eval_smul, h5, NP.evalQ_smulN, NP.evalQ_smulN, hc]; ring
+  · have hw' : 0 ≤ -w := by omega
+    have hc : (((-w).toNat : ℕ) : ℚ) = -(w : ℚ) := by
+      have := Int.toNat_of_nonneg hw'; push_cast at this ⊢; exact_mod_cast this
+    refine ⟨NP.smulN (-w).toNat B, NP.smulN (-w).toNat A, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
+    · rwa [NP.length_smulN]
+    · rwa [NP.length_smulN]
+    · simp only [smul, hw, ite_false, h2, NP.evalN_smulN]
+    · simp only [smul, hw, ite_false, h1, NP.evalN_smulN]
+    · simp only [smul, hw, ite_false, h4, NP.evalN_smulN]
+    · simp only [smul, hw, ite_false, h3, NP.evalN_smulN]
+    · intro y; rw [IPoly.eval_smul, h5, NP.evalQ_smulN, NP.evalQ_smulN, hc]; ring
+
+theorem length_digits (X n V : ℕ) : (NP.digits X n V).length = n := by
+  induction n generalizing V with
+  | zero => rfl
+  | succ n ih => simp [NP.digits, ih]
+
+theorem eval_unpack {X L : ℕ} {r : PP} {q : IPoly} (hr : Rep X L r q) (hp : r.pos1 < X)
+    (hn : r.neg1 < X) (y : ℚ) : eval (unpack X L r) y = eval q y := by
+  obtain ⟨A, B, hA, hB, h1, h2, h3, h4, h5⟩ := hr
+  have hX : 0 < X := lt_of_le_of_lt (Nat.zero_le _) hp
+  have hp' : NP.evalN A 1 < X := h3 ▸ hp
+  have hn' : NP.evalN B 1 < X := h4 ▸ hn
+  have hdA := NP.digits_evalN X hX A (fun c hc => lt_of_le_of_lt (NP.le_evalN_one A c hc) hp') L hA
+  have hdB := NP.digits_evalN X hX B (fun c hc => lt_of_le_of_lt (NP.le_evalN_one B c hc) hn') L hB
+  rw [unpack, eval_zipWith_sub _ _ (by rw [length_digits, length_digits]), h1, h2, h5,
+    list_eq_of_getD L (length_digits _ _ _) hA hdA y, list_eq_of_getD L (length_digits _ _ _) hB hdB y]
+
+end PP
+
+/-- `2^{3m} · shift3` on packed polynomials (as `ishift3A`). -/
+def pshift3A (c : Fin 4 → PP) (k A : ℤ) : Fin 4 → PP :=
+  ![PP.add (PP.add (PP.smul (A ^ 3) (c 0)) (PP.smul (A ^ 2 * k) (c 1)))
+      (PP.add (PP.smul (A * k ^ 2) (c 2)) (PP.smul (k ^ 3) (c 3))),
+    PP.add (PP.add (PP.smul (A ^ 2) (c 1)) (PP.smul (2 * A * k) (c 2))) (PP.smul (3 * k ^ 2) (c 3)),
+    PP.add (PP.smul A (c 2)) (PP.smul (3 * k) (c 3)),
+    c 3]
+
+/-- `3 · bern3` on packed polynomials (as `ibern3`). -/
+def pbern3 (e : Fin 4 → PP) : Fin 4 → PP :=
+  ![PP.smul 3 (e 0), PP.add (PP.smul 3 (e 0)) (e 1),
+    PP.add (PP.add (PP.smul 3 (e 0)) (PP.smul 2 (e 1))) (e 2),
+    PP.smul 3 (PP.add (PP.add (e 0) (e 1)) (PP.add (e 2) (e 3)))]
+
+def pb33 (c : Fin 4 → Fin 4 → PP) (ka : ℤ) (m : ℕ) (kb : ℤ) (n : ℕ) (I J : Fin 4) : PP :=
+  pbern3 (fun j => pbern3 (fun i => pshift3A (fun i' => pshift3A (c i') kb ((2 ^ n : ℕ) : ℤ) j)
+    ka ((2 ^ m : ℕ) : ℤ) i) I) J
+
+theorem rep_pshift3A {X L : ℕ} {c' : Fin 4 → PP} {c : Fin 4 → IPoly} (k A : ℤ)
+    (h : ∀ i, PP.Rep X L (c' i) (c i)) (i : Fin 4) :
+    PP.Rep X L (pshift3A c' k A i) (ishift3A c k A i) := by
+  fin_cases i
+  · exact PP.rep_add (PP.rep_add (PP.rep_smul _ (h 0)) (PP.rep_smul _ (h 1)))
+      (PP.rep_add (PP.rep_smul _ (h 2)) (PP.rep_smul _ (h 3)))
+  · exact PP.rep_add (PP.rep_add (PP.rep_smul _ (h 1)) (PP.rep_smul _ (h 2))) (PP.rep_smul _ (h 3))
+  · exact PP.rep_add (PP.rep_smul _ (h 2)) (PP.rep_smul _ (h 3))
+  · exact h 3
+
+theorem rep_pbern3 {X L : ℕ} {e' : Fin 4 → PP} {e : Fin 4 → IPoly}
+    (h : ∀ i, PP.Rep X L (e' i) (e i)) (i : Fin 4) : PP.Rep X L (pbern3 e' i) (ibern3 e i) := by
+  fin_cases i
+  · exact PP.rep_smul 3 (h 0)
+  · exact PP.rep_add (PP.rep_smul 3 (h 0)) (h 1)
+  · exact PP.rep_add (PP.rep_add (PP.rep_smul 3 (h 0)) (PP.rep_smul 2 (h 1))) (h 2)
+  · exact PP.rep_smul 3 (PP.rep_add (PP.rep_add (h 0) (h 1)) (PP.rep_add (h 2) (h 3)))
+
+theorem rep_pb33 {X L : ℕ} {c' : Fin 4 → Fin 4 → PP} {c : Fin 4 → Fin 4 → IPoly}
+    (h : ∀ i j, PP.Rep X L (c' i j) (c i j)) (ka : ℤ) (m : ℕ) (kb : ℤ) (n : ℕ) (I J : Fin 4) :
+    PP.Rep X L (pb33 c' ka m kb n I J) (ib33 c ka m kb n I J) :=
+  rep_pbern3 (fun j => rep_pbern3 (fun i => rep_pshift3A _ _
+    (fun i' => rep_pshift3A _ _ (fun j' => h i' j') j) i) I) J
+
+/-- The sum of the absolute values of the coefficients, over a coefficient array. -/
+def sumAbs16 (c : Fin 4 → Fin 4 → IPoly) : ℕ :=
+  (List.finRange 4).foldr (fun i acc => (List.finRange 4).foldr
+    (fun j acc' => (absSum (c i j)).toNat + acc') acc) 0
+
+/-- The largest length over a coefficient array. -/
+def maxLen16 (c : Fin 4 → Fin 4 → IPoly) : ℕ :=
+  (List.finRange 4).foldr (fun i acc => (List.finRange 4).foldr
+    (fun j acc' => max (c i j).length acc') acc) 0
+
+theorem le_foldr_max {α : Type*} (f : α → ℕ) (l : List α) (a : ℕ) {x : α} (hx : x ∈ l) :
+    f x ≤ l.foldr (fun z acc => max (f z) acc) a := by
+  induction l with
+  | nil => simp at hx
+  | cons z l ih =>
+    simp only [List.mem_cons] at hx
+    simp only [List.foldr_cons]
+    rcases hx with rfl | hx
+    · exact le_max_left _ _
+    · exact le_trans (ih hx) (le_max_right _ _)
+
+theorem le_foldr_max_init {α : Type*} (f : α → ℕ) (l : List α) (a : ℕ) :
+    a ≤ l.foldr (fun z acc => max (f z) acc) a := by
+  induction l with
+  | nil => simp
+  | cons z l ih => simp only [List.foldr_cons]; exact le_trans ih (le_max_right _ _)
+
+theorem length_le_maxLen16 (c : Fin 4 → Fin 4 → IPoly) (i j : Fin 4) :
+    (c i j).length ≤ maxLen16 c := by
+  unfold maxLen16
+  have key : ∀ l : List (Fin 4), i ∈ l → (c i j).length ≤
+      l.foldr (fun i acc => (List.finRange 4).foldr (fun j acc' => max (c i j).length acc') acc) 0 := by
+    intro l hl
+    induction l with
+    | nil => simp at hl
+    | cons z l ih =>
+      simp only [List.foldr_cons]
+      simp only [List.mem_cons] at hl
+      rcases hl with rfl | hl
+      · exact le_foldr_max (fun j => (c i j).length) _ _ (List.mem_finRange j)
+      · exact le_trans (ih hl) (le_foldr_max_init (fun j => (c z j).length) _ _)
+  exact key _ (List.mem_finRange i)
+
+/-- Every Bernstein coefficient of the dyadic leaf box is positive on `y ∈ [0, 1]`; the Bernstein
+transform runs on packed polynomials. -/
 def leafCheckI (c : Fin 4 → Fin 4 → IPoly) (ka m kb n : ℕ) (br : List (List (ℕ × ℕ))) : Bool :=
+  let X := (sumAbs16 c + 1) * 2 ^ (3 * (m + n) + 16)
+  let L := maxLen16 c
   (List.finRange 4).all fun I => (List.finRange 4).all fun J =>
+    let r := pb33 (fun i j => PP.pack X (c i j)) ka m kb n I J
     let l := br.getD (4 * I.val + J.val) []
-    !l.isEmpty && posOn (ib33 c ka m kb n I J) 0 0 l
+    decide (r.pos1 < X) && decide (r.neg1 < X) && !l.isEmpty && posOn (PP.unpack X L r) 0 0 l
 
 inductive UTreeI where
   | leaf : List (List (ℕ × ℕ)) → UTreeI
@@ -456,11 +639,14 @@ theorem leafCheckI_sound (c : Fin 4 → Fin 4 → IPoly) (ka m kb n : ℕ) (br :
     0 < bern33 (fun i j => eval (c i j) y) ((ka:ℚ) / 2 ^ m) (1 / 2 ^ m) ((kb:ℚ) / 2 ^ n)
       (1 / 2 ^ n) I J := by
   simp only [leafCheckI, List.all_eq_true, List.mem_finRange, true_implies, Bool.and_eq_true,
-    Bool.not_eq_true'] at hc
-  obtain ⟨hne, hpos⟩ := hc I J
+    Bool.not_eq_true', decide_eq_true_eq] at hc
+  obtain ⟨⟨⟨hp, hn⟩, hne⟩, hpos⟩ := hc I J
+  have hrep := rep_pb33 (X := (sumAbs16 c + 1) * 2 ^ (3 * (m + n) + 16)) (L := maxLen16 c)
+    (c' := fun i j => PP.pack ((sumAbs16 c + 1) * 2 ^ (3 * (m + n) + 16)) (c i j))
+    (fun i j => PP.rep_pack _ _ (c i j) (length_le_maxLen16 c i j)) ka m kb n I J
   have h := posOn_sound _ 0 0 _ hpos y (by simpa using hy0) hy1
     (by intro h; rw [h] at hne; simp at hne)
-  rw [eval_ib33] at h
+  rw [PP.eval_unpack hrep hp hn, eval_ib33] at h
   have hk : (0:ℚ) < 9 * ((2:ℚ) ^ m) ^ 3 * ((2:ℚ) ^ n) ^ 3 := by positivity
   exact pos_of_mul_pos_right h hk.le
 
@@ -548,6 +734,32 @@ theorem certI_sound (c : Fin 4 → Fin 4 → Poly) (T : IPoly.UTreeI) (hc : cert
     apply Finset.sum_congr rfl; intro j _; ring
   rw [this] at h
   exact pos_of_mul_pos_right h hD'.le
+
+/-- The bicubic in `(u, p)` with coefficients `c i j (y)` is positive on the certified box for every
+`y ∈ [0, 1]` (what every HIGH certificate proves). -/
+def HighCoeffPos (c : Fin 4 → Fin 4 → Poly) : Prop :=
+  ∀ y : ℚ, 0 ≤ y → y ≤ 1 → ∀ u p : ℝ, 0 ≤ u → u ≤ 1 → 0 ≤ p → p ≤ 1/2 →
+    0 < ∑ i : Fin 4, ∑ j : Fin 4, ((eval (c i j) y : ℚ) : ℝ) * u ^ (i:ℕ) * p ^ (j:ℕ)
+
+theorem certI_coeffPos (c : Fin 4 → Fin 4 → Poly) (T : IPoly.UTreeI) (hc : certI c T = true) :
+    HighCoeffPos c := fun y hy0 hy1 u p hu0 hu1 hp0 hp1 => certI_sound c T hc y hy0 hy1 u p hu0 hu1 hp0 hp1
+
+/-- `certI` with the integer coefficient array given as data `cL`: the array is compared with the
+computed one once, and every leaf check then runs on the data. -/
+def certL (c : Fin 4 → Fin 4 → Poly) (cL : Fin 4 → Fin 4 → IPoly) (T : IPoly.UTreeI) : Bool :=
+  let D := lcmDen16 c
+  decide (0 < D) && intOK16 c D &&
+    ((List.finRange 4).all fun i => (List.finRange 4).all fun j => decide (IPoly.ofPoly (c i j) D = cL i j)) &&
+    IPoly.uCheckI cL T 0 0 0 1
+
+theorem certI_of_certL (c : Fin 4 → Fin 4 → Poly) (cL : Fin 4 → Fin 4 → IPoly) (T : IPoly.UTreeI)
+    (h : certL c cL T = true) : certI c T = true := by
+  simp only [certL, certI, Bool.and_eq_true, decide_eq_true_eq, List.all_eq_true, List.mem_finRange,
+    true_implies] at h ⊢
+  obtain ⟨⟨⟨hD, hint⟩, heq⟩, hu⟩ := h
+  refine ⟨⟨hD, hint⟩, ?_⟩
+  have e : (fun i j => IPoly.ofPoly (c i j) (lcmDen16 c)) = cL := by funext i j; exact heq i j
+  rw [e]; exact hu
 
 namespace Piece
 variable (P : Piece)

@@ -24,6 +24,35 @@ NS = 'QRH.RepeatedMarks.Faceless'
 E, R, F = F2.FEES
 CAP = F2.CAPMAX
 K_N = Fr(os.environ.get('QRH_K', '11243277/2500000'))
+CERTL = bool(os.environ.get('QRH_CERTL'))   # emit HIGH certificates with literal integer data
+CK = os.environ.get('QRH_CK')                 # packed two-phase HIGH certificates from this extraction
+HIGHPOS = bool(CK or os.environ.get('QRH_HIGHPOS'))   # Certs.high stated as `HighCoeffPos`
+
+
+def load_ck(path):
+    """`tag|Δ|X|![![[c, …], …], …]` lines written by gen_certk.py: Δ, the packing base `X` and the
+    16 integer polynomials."""
+    import re
+    out = {}
+    for line in open(path):
+        tag, D, X, lit = line.rstrip('\n').split('|')
+        polys = [[int(x) for x in m.split(',') if x.strip()] for m in re.findall(r'\[([^\[\]!]*)\]', lit)]
+        assert len(polys) == 16, tag
+        out[tag] = (int(D), int(X), [polys[4 * a:4 * a + 4] for a in range(4)])
+    return out
+
+
+CKDATA = load_ck(CK) if CK else None
+
+
+def tree_depth(T):
+    return 0 if T[0] == 'leaf' else 1 + max(tree_depth(T[1]), tree_depth(T[2]))
+
+
+def tree_emax(T):
+    if T[0] == 'leaf':
+        return max((e for cov in T[1] for (_, e) in cov), default=0)
+    return max(tree_emax(T[1]), tree_emax(T[2]))
 
 
 def q(x):
@@ -175,9 +204,64 @@ def gen_piece(fam, j, out):
             nl, ni = GI.stats_I(T)
             tag = f"p{j}_high_{e}_{k[0]}{k[1]}"
             highs[(e, k)] = tag
-            body = [HEAD(["Faceless.Gen.Data"]), f"def tree_{tag} : IPoly.UTreeI :=", "  " + GI.tree_lean_I(T), "",
-                    f"theorem {tag} : certI (piece{j}.highU (piece{j}.endP {e}) ({k[0]}, {k[1]})) tree_{tag} = true := by",
-                    "  decide +kernel"] + TAIL
+            if CK:
+                # phase 1 (`Pk.decKg`): the packed coefficient computation, read back, is `g` times the
+                # data; phase 2: the tree runs on the data (`Pk.coeffPos_of_decKg`)
+                import math
+                D, Xd, cK = CKDATA[tag]
+                g = 0
+                for a in range(4):
+                    for bb in range(4):
+                        for x in cK[a][bb]:
+                            g = math.gcd(g, x)
+                prim = [[[x // g for x in cK[a][bb]] for bb in range(4)] for a in range(4)]
+                # the data is a positive multiple of the certI array, so the tree carries over
+                num, den = None, None
+                for a in range(4):
+                    for bb in range(4):
+                        assert len(prim[a][bb]) == len(c[a][bb]) or all(x == 0 for x in prim[a][bb][len(c[a][bb]):]), (tag, a, bb)
+                        for x, z in zip(prim[a][bb], c[a][bb]):
+                            if num is None and x != 0:
+                                num, den = z, x
+                            assert x * num == z * den, (tag, a, bb)
+                assert num * den > 0, tag
+                arr = "![" + ",\n  ".join("![" + ", ".join("[" + ", ".join(str(x) for x in prim[a][bb]) + "]"
+                                                        for bb in range(4)) + "]" for a in range(4)) + "]"
+                hU = f"piece{j}.highU (piece{j}.endP {e}) ({k[0]}, {k[1]})"
+                # packed tree check (`IPoly.checkZ`): one base `XZ` for the whole tree, large enough
+                # for every leaf's transform and every interval's base change (checked in Lean)
+                Lz = max(len(prim[a][bb]) for a in range(4) for bb in range(4))
+                sumAbs = sum(abs(x) for a in range(4) for bb in range(4) for x in prim[a][bb])
+                XZ = (sumAbs + 1) * 2 ** (3 * (tree_depth(T) + 1) + 16 + tree_emax(T) * Lz)
+                body = [HEAD(["Faceless.TreeZ", "Faceless.Gen.Data"]), f"def cK_{tag} : Fin 4 → Fin 4 → IPoly :=", "  " + arr, "",
+                        f"def tree_{tag} : IPoly.UTreeI :=", "  " + GI.tree_lean_I(T), "",
+                        f"theorem {tag}_dec : Pk.decKgX {D} 1 piece{j} (piece{j}.endP {e}) ({k[0]}, {k[1]}) {g} {Xd} cK_{tag} = true := by",
+                        "  decide +kernel", "",
+                        f"theorem {tag}_tree : IPoly.checkZ cK_{tag} {XZ} {Lz} tree_{tag} = true := by",
+                        "  decide +kernel", "",
+                        f"theorem {tag}_pos : HighCoeffPos ({hU}) :=",
+                        f"  Pk.coeffPos_of_decKgXZ _ _ _ _ _ _ _ _ _ _ _ {tag}_dec {tag}_tree"] + TAIL
+            elif CERTL:
+                # the integer coefficient array as data: checked once against the computed array,
+                # then every leaf check runs on the data (`certL`, `certI_of_certL`)
+                arr = "![" + ",\n  ".join("![" + ", ".join("[" + ", ".join(str(x) for x in c[a][bb]) + "]"
+                                                        for bb in range(4)) + "]" for a in range(4)) + "]"
+                body = [HEAD(["Faceless.Gen.Data"]), f"def cL_{tag} : Fin 4 → Fin 4 → IPoly :=", "  " + arr, "",
+                        f"def tree_{tag} : IPoly.UTreeI :=", "  " + GI.tree_lean_I(T), "",
+                        f"theorem {tag}_L : certL (piece{j}.highU (piece{j}.endP {e}) ({k[0]}, {k[1]})) cL_{tag} tree_{tag} = true := by",
+                        "  decide +kernel", "",
+                        f"theorem {tag} : certI (piece{j}.highU (piece{j}.endP {e}) ({k[0]}, {k[1]})) tree_{tag} = true :=",
+                        f"  certI_of_certL _ _ _ {tag}_L"] + TAIL
+                if HIGHPOS:
+                    body[-len(TAIL):-len(TAIL)] = ["", f"theorem {tag}_pos : HighCoeffPos (piece{j}.highU (piece{j}.endP {e}) ({k[0]}, {k[1]})) :=",
+                                                   f"  certI_coeffPos _ _ {tag}"]
+            else:
+                body = [HEAD(["Faceless.Gen.Data"]), f"def tree_{tag} : IPoly.UTreeI :=", "  " + GI.tree_lean_I(T), "",
+                        f"theorem {tag} : certI (piece{j}.highU (piece{j}.endP {e}) ({k[0]}, {k[1]})) tree_{tag} = true := by",
+                        "  decide +kernel"] + TAIL
+                if HIGHPOS:
+                    body[-len(TAIL):-len(TAIL)] = ["", f"theorem {tag}_pos : HighCoeffPos (piece{j}.highU (piece{j}.endP {e}) ({k[0]}, {k[1]})) :=",
+                                                   f"  certI_coeffPos _ _ {tag}"]
             open(os.path.join(out, f"High{j}_{e}_{k[0]}{k[1]}.lean"), 'w').write("\n".join(body))
             print(f"piece {j} high {e} {k}: leaves {nl} intervals {ni} ({time.time()-t0:.1f}s)", flush=True)
     # assembly
@@ -206,7 +290,8 @@ def gen_piece(fam, j, out):
          "  high e k := by",
          "    rcases k with ⟨i, jj⟩",
          "    fin_cases e <;> fin_cases i <;> fin_cases jj",
-         "    exacts [" + ", ".join(f"⟨_, {highs[(e, (i, jj))]}⟩" for e in (0, 1) for i in range(2) for jj in range(3)) + "]"] + TAIL
+         "    exacts [" + ", ".join((f"{highs[(e, (i, jj))]}_pos" if HIGHPOS else f"⟨_, {highs[(e, (i, jj))]}⟩")
+                                for e in (0, 1) for i in range(2) for jj in range(3)) + "]"] + TAIL
     open(os.path.join(out, f"Piece{j}.lean"), 'w').write("\n".join(A))
 
 

@@ -1,0 +1,5 @@
+[build] rows=2076 primeideals=6445 time 3.4s
+U=8000 rows R=2076
+y=0.850 N=2078: prime: C=258 Delta/edge=0.986 Delta/max(R,C)=1.804 bias/edge=1.74 | rough: C=370 Delta/edge=0.973 Delta/max(R,C)=1.967 bias/edge=2.00 | sqfree: C=589 Delta/edge=0.953 Delta/max(R,C)=2.239 bias/edge=2.34
+y=1.000 N=8000: prime: C=852 Delta/edge=0.997 Delta/max(R,C)=2.684 bias/edge=2.62 | rough: C=1422 Delta/edge=0.974 Delta/max(R,C)=3.255 bias/edge=2.97 | sqfree: C=2252 Delta/edge=0.953 Delta/max(R,C)=3.662 bias/edge=3.23
+y=1.155 N=32216: prime: C=2986 Delta/edge=0.997 Delta/max(R,C)=3.353 bias/edge=3.36 | rough: C=5723 Delta/edge=0.988 Delta/max(R,C)=2.537 bias/edge=3.54 | sqfree: C=9094 Delta/edge=0.960 Delta/max(R,C)=2.097 bias/edge=3.57

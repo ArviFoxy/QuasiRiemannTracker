@@ -41,6 +41,6 @@ theorem piece4_certs : piece4.Certs where
   high e k := by
     rcases k with ⟨i, jj⟩
     fin_cases e <;> fin_cases i <;> fin_cases jj
-    exacts [⟨_, p4_high_0_00⟩, ⟨_, p4_high_0_01⟩, ⟨_, p4_high_0_02⟩, ⟨_, p4_high_0_10⟩, ⟨_, p4_high_0_11⟩, ⟨_, p4_high_0_12⟩, ⟨_, p4_high_1_00⟩, ⟨_, p4_high_1_01⟩, ⟨_, p4_high_1_02⟩, ⟨_, p4_high_1_10⟩, ⟨_, p4_high_1_11⟩, ⟨_, p4_high_1_12⟩]
+    exacts [p4_high_0_00_pos, p4_high_0_01_pos, p4_high_0_02_pos, p4_high_0_10_pos, p4_high_0_11_pos, p4_high_0_12_pos, p4_high_1_00_pos, p4_high_1_01_pos, p4_high_1_02_pos, p4_high_1_10_pos, p4_high_1_11_pos, p4_high_1_12_pos]
 
 end QRH.RepeatedMarks.Faceless

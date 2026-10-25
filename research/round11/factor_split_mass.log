@@ -1,0 +1,28 @@
+t=1.155 delta*=0.749 amplification cost=0.12917 need=0.00026
+  fraction of mass with gain >= need : 0.9905
+  bad mass                         : 0.0095
+    of which largest prime >= U     : 0.0023
+    of which all primes < U         : 0.0072
+  median gain on good part          : 0.01118
+  max possible gain (x = t-1)       : 0.01307
+t=1.155 delta*=0.7 amplification cost=0.12917 need=0.00026
+  fraction of mass with gain >= need : 0.9941
+  bad mass                         : 0.0059
+    of which largest prime >= U     : 0.0016
+    of which all primes < U         : 0.0042
+  median gain on good part          : 0.01781
+  max possible gain (x = t-1)       : 0.02067
+t=1.155 delta*=0.6 amplification cost=0.12917 need=0.00026
+  fraction of mass with gain >= need : 0.9974
+  bad mass                         : 0.0026
+    of which largest prime >= U     : 0.0009
+    of which all primes < U         : 0.0017
+  median gain on good part          : 0.03191
+  max possible gain (x = t-1)       : 0.03617
+t=1.3 delta*=0.749 amplification cost=0.25000 need=0.00026
+  fraction of mass with gain >= need : 0.9950
+  bad mass                         : 0.0050
+    of which largest prime >= U     : 0.0022
+    of which all primes < U         : 0.0028
+  median gain on good part          : 0.02165
+  max possible gain (x = t-1)       : 0.02530

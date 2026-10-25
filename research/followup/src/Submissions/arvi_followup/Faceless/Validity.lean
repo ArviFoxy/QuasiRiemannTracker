@@ -39,7 +39,7 @@ structure Certs : Prop where
   weak : ∀ e, ∃ l, pos1I (P.weakN (P.endP e)) l = true
   sec : ∀ e (j : Fin 3) i, ∃ l, pos1I (P.secB (P.endP e) (j.val + 6) i) l = true
   cell : ∀ e, ∃ l, pos1I (P.cellN (P.endP e)) l = true
-  high : ∀ e k, ∃ T, certI (P.highU (P.endP e) k) T = true
+  high : ∀ e k, HighCoeffPos (P.highU (P.endP e) k)
 
 variable {P}
 
@@ -152,8 +152,8 @@ theorem Certs.valid (C : P.Certs) (y : ℚ) (hy0 : 0 ≤ y) (hy1 : y ≤ 1) :
       ∀ k, 0 < highGateReal (P.node y) (P.node (y - P.Dy)) (P.node (y - P.Dy)) 8
         ((eval (P.endP e) y : ℚ) : ℝ) ν p k := by
     intro e ν hν p hp k
-    obtain ⟨T, hT⟩ := C.high e k
-    exact P.high_pos_of_certI (P.endP e) k T hT y hy0 hy1 hB0p hL0p hq2 ν p hν hp
+    exact P.high_pos_of_U (P.endP e) k y
+      (fun u p hu0 hu1 hp0 hp1 => C.high e k y hy0 hy1 u p hu0 hu1 hp0 hp1) hB0p hL0p hq2 ν p hν hp
   refine ⟨?_, ?_, hq2, ?_⟩
   · -- SourceValidC
     refine ⟨hB, hB1.le, hL1, hcapF0, hcapF, hq1, hq2.le, hLd, ?_, ?_, ?_, ?_, ?_⟩

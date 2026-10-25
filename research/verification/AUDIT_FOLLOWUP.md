@@ -180,6 +180,62 @@ reproduce PR 73's files byte for byte: `Steps.lean` and all of `FinalReturn` wer
 - **What it did enable.** The structural cut depends on a property of the flow: the end faces do
   not depend on the seed.
 
-## 6. Status and next steps
+## 6. The HIGH certificates in packed integer arithmetic (done)
 
-(updated below as runs complete)
+Kernel time of the 60 HIGH certificates of the follow-up, re-checked one by one
+(`tools/KernelTime.lean`, single thread):
+
+| version | kernel s | heaviest certificate |
+|---|---|---|
+| PR 73 (`certI`: `Rat` polynomials, then the tree) | about 2120 | about 100 s |
+| packed coefficients, PR 73's tree check | 563 | 70 s |
+| packed coefficients and packed interval tests | **107** | 5.1 s |
+
+The whole follow-up candidate rebuilds in 142 s wall on 4 cores (the 60 HIGH files: 418 s of build
+time, at most 11 s each). Both `CandidateFollowup` theorems still depend only on `propext`,
+`Classical.choice` and `Quot.sound`.
+
+**Two phases.** Each certificate is now three theorems: `{tag}_dec` (phase 1, about 1 s),
+`{tag}_tree` (phase 2) and `{tag}_pos`, which combines them (`Pk.coeffPos_of_decKgXZ`).
+
+1. **Phase 1: the coefficients, packed** (`Faceless/Packed.lean`, `Faceless/TreeZ.lean`).
+   - Every polynomial of the HIGH formula is carried as
+     `⟨A(X), B(X), A(1), B(1), e, len, ok⟩`, which stands for `(A − B)/Δ^e`.
+     Here `A, B` are natural coefficient lists and `Δ` is a common denominator of the piece's data.
+   - A product is four big-number products. A sum aligns the powers of `Δ`. A rational constant
+     `c` is applied as the integer `c.num · Δ/c.den`.
+   - The formula is mirrored operation by operation (`valPZ`, `bicubicZ`, `cuZ`, `highUZ`). Each
+     mirror is proved to represent the `Rat` formula (`rep_highUZ`).
+   - The certificate checks that the packed result, read back as base-`X` digits, is `g` times
+     the literal data `cK` (`decKgX`). Both the base `X` and the common factor `g` are literals.
+2. **Phase 2: the tree, on the literal data** (`IPoly.checkZ`).
+   - The 16 inputs are packed once per tree, at one base `X` given as data.
+   - Each leaf's Bernstein transform acts on the packed numbers.
+   - **The interval test reads the packed number directly.** If `r` packs `A − B` at base `X`
+     and `k + 1 ≤ 2^e`, then `t ↦ 2^{e(L−1)} A((k + t)/2^e)` takes the value `2^{e(L−1)} A(X)` at
+     `Y = 2^e X − k`. So its coefficients are the base-`Y` digits of `2^{e(L−1)}·r.pos`. This is
+     exact once their sum `2^{e(L−1)} A((k+1)/2^e) ≤ 2^{e(L−1)}·r.pos1` is below `Y`.
+   - The test `tm1` then runs on these digits in natural numbers. No list of integers is built,
+     and nothing is re-packed.
+
+**What was slow before.** It was not the arithmetic. The kernel spent its time on list and `Int`
+operations around the arithmetic:
+- unpacking every leaf polynomial (degree 43, about 175 digits per coefficient);
+- re-scaling and re-packing that polynomial for every interval;
+- `|·|` from Mathlib's lattice instances;
+- recomputing the inputs' coefficient sums for every leaf.
+
+Profiles of the hardest tree (`p2_high_0_12`, 13 leaves, 299 intervals):
+- PR 73's tree check: 70 s;
+- base change without lists: 38 s;
+- with the inputs packed once per tree and the bound given as data: 6 s.
+
+The generators: `faceless-chain/gen_certk.py` extracts `Δ`, `X` and `cK`. Then
+`QRH_CK=<its output> gen_all.py` emits the two-phase files. The proportionality of `cK` to the
+`certI` array is asserted, so PR 73's trees are reused unchanged.
+
+## 7. Status and next steps
+
+- Kernel time of our part now: HIGH 107 s (was about 2120 s); Faceless scalar certificates about
+  480 s (next target, same technique); final-return rows 46 s.
+- Collet's remaining 241 s and the baseline's 501 s are outside our package.

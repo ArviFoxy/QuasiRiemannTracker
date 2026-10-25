@@ -29,6 +29,10 @@ What it changes is the verification cost (`../verification/AUDIT_FOLLOWUP.md`).
   - `Source/NFStep2.lean` (no bootstrap import);
   - generated `Faceless/Gen/*` and `FinalReturn/*`.
 
+- **HIGH certificates in packed integer arithmetic** (`Faceless/Packed.lean`, `Faceless/TreeZ.lean`):
+  each of the 60 is a coefficient check plus a tree check on literal data. The kernel time of all
+  60 is 107 s (PR 73: about 2120 s). Details: `../verification/AUDIT_FOLLOWUP.md` §6.
+
 ## Measured (local, 4 cores, 15 GB)
 
 | | PR 73 | follow-up |
@@ -58,7 +62,8 @@ environment. Their defaults reproduce PR 73 byte for byte.
 export QRH_K=9/2 QRH_SIG=0.0122820,0.01942,0.0252,0.0310,0.0367,0.0424122
 export QRH_PKG=Submissions.arvi_followup QRH_NATURAL=QRH.RepeatedMarks.natural92
 cd ../faceless-chain
-python3 gen_all.py OUT/Faceless/Gen && python3 gen_steps.py OUT/Faceless/Gen
+python3 gen_certk.py <lake project> ck.txt   # packed HIGH data (needs the built package)
+QRH_CK=ck.txt python3 gen_all.py OUT/Faceless/Gen && python3 gen_steps.py OUT/Faceless/Gen
 python3 theta_family2.py $QRH_SIG          # θ* = 8747252
 python3 exact_check.py $QRH_SIG && python3 exact_junctions.py $QRH_SIG
 cd ../repeated-marks          # faces92.json: faces C (y = 1 − Dy) and P (y = 41756 Dy) of piece 4

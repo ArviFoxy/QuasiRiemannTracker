@@ -133,7 +133,8 @@ the atoms move it.
 
 **The proof now uses this curve** (`faceless-chain/README.md`). The Lean source chain is one
 family of faces, the secant lines of a five-piece cubic envelope following the flow, each piece
-certified for all its 2¹⁶ faces at once. Lean value 34989/40000 = 0.874725.
+certified for all its 2¹⁶ faces at once. The proof reaches 34989/40000 = 0.874725
+(`Candidate.bound_sharp`); the declared statement stays 8747289/10^7.
 
 ## 7. Why it is stuck
 

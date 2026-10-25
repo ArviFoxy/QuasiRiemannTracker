@@ -9,8 +9,8 @@ the best upstream PR (smaller gains count only if they simplify or clarify the p
 | upstream PR #71 (recost of PR #69 graph) | 0.87477290596 | 4e-11 below #70; checked 2026-10-24 |
 | upstream PR #72 (Das, bootstrap + fine graph), best upstream PR | 0.874771265 | 1.64e-6 below #71; bar now 0.874761265 (checked 2026-10-25) |
 | this branch, Lean (`submissions/arvi-repeated-marks-20261024`, branch `submission-repeated-marks-20261024`; upstream PR #73, renamed with the `arvi-` prefix on 2026-10-25) | 0.8747289 | 4.24e-5 below PR #72 (commit `39130516`) |
-| this branch, Lean, face family (`faceless-chain/`, commit `0b0d6ad2` on the same branch, 2026-10-25) | 34989/40000 = 0.874725 | −3.9e-6: a simplification (no source graph), below the bar on its own |
-| next milestone (1e-5 below this branch) | ≤ 0.874715 (≤ 0.8747189 against the PR's previous value) | |
+| this branch, Lean, face family (`faceless-chain/`, commit `41ddc0dd` on the same branch, 2026-10-25) | 34989/40000 = 0.874725 (`Candidate.bound_sharp`) | −3.9e-6, a simplification (no source graph). `Candidate.bound` keeps the declared 8747289/10^7, so the open PR stays valid and the 3.9e-6 stays in reserve toward the next milestone |
+| next milestone (1e-5 below the declared value) | ≤ 0.8747189 | the face family already supplies 3.9e-6 of it |
 
 Conventions: `θ*` values are exact-return evaluations (rational certificates) unless marked "float".
 Each entry records the idea, the measured effect, and where the artifacts are. Negative results are
@@ -1270,7 +1270,9 @@ A catalogue cross-check (21.9k records) found nothing that moves them. → `cap-
   keeps the kernel in `Nat`). Four junction steps join the pieces. Return regenerated (34 rows,
   11 windows). Standard axioms; the canonical challenge wrapper and the upstream `npm run check`
   pass. −3.9e-6 against 0.8747289, 0.9e-6 above the continuum ceiling 0.8747241. Committed on the
-  PR branch as `0b0d6ad2`.
+  PR branch as `41ddc0dd`. `Candidate.bound` keeps the declared 8747289/10^7 (the PR's declaration
+  stays valid; claiming the sharper value would also move the next 1e-5 milestone down by 3.9e-6);
+  `Candidate.bound_sharp` states 34989/40000.
 - *Why the chain is the curve it is* (user question; `chain-structure/README.md`).
   - The binding threshold is an AM–GM optimum over amplitude classes: `D_p = pA_p + (1 − p)²E`,
     and `(a + 2b)²[(a − 2b)²D_p − (2 − a² − 4ab)A_p] = 4(bA_p − a(1 − a² − 2b²))²`

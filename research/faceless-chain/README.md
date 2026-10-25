@@ -1,9 +1,12 @@
 # The faceless source chain: one family of faces instead of a source graph (2026-10-25)
 
 The user asked to remove the finite source graph from the proof and replace it with the exact
-continuum flow, and to prove that step in Lean. This is done. The submission
-`arvi-repeated-marks-20261024` now proves the bound **34989/40000 = 0.874725** (before: 0.8747289,
-−3.9e-6). The 59 certified nodes `Finite/Node00–58` are gone. The structure behind the flow is in
+continuum flow, and to prove that step in Lean. This is done (submission branch commit
+`41ddc0dd`). The proof of `arvi-repeated-marks-20261024` now reaches **34989/40000 = 0.874725**
+(`Candidate.bound_sharp`; before: 0.8747289, −3.9e-6). The 59 certified nodes `Finite/Node00–58` are
+gone. `Candidate.bound` still states the declared 8747289/10^7: the open PR declares that value, the
+verifier builds its challenge from the declaration, and claiming the sharper value would also move
+the next 1e-5 milestone down by 3.9e-6. The structure behind the flow is in
 `../chain-structure/README.md`.
 
 ## The flow the family follows
@@ -64,8 +67,9 @@ Bernstein trees (`highPos_of_valid`); the family proves it from `certI`.
 
 Kernel cost: 78 certificate modules in 9m23s on 4 cores. The hardest HIGH tree takes 96 s, scalar
 files about 55 s, the steps 34 s. The full candidate build is 15707 jobs. `Candidate.bound` depends
-on `propext`, `Classical.choice`, `Quot.sound` only. The canonical challenge wrapper at
-`34989/40000` compiles, and the upstream `npm run check` passes (316 tests).
+on `propext`, `Classical.choice`, `Quot.sound` only, as does `Candidate.bound_sharp`. The canonical
+challenge wrapper compiles at the declared `8747289/10000000` and, with the sharp statement, at
+`34989/40000`. The upstream `npm run check` passes (316 tests).
 
 The final return was regenerated for the new faces:
 `../repeated-marks/gen_return_lean.py faces.json 8747250/10000000 401/500 0 1 OUT 13/250 9/200 global`

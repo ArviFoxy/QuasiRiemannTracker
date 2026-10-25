@@ -17,7 +17,7 @@ from math import comb
 import cert_return as CR
 
 NS = 'QRH.RepeatedMarks.Return'
-PKG = 'Submissions.repeated_marks_20261024'
+PKG = os.environ.get('QRH_PKG', 'Submissions.repeated_marks_20261024')
 HDR = '/- Repeated marks: generated final-return certificate (see research/repeated-marks/gen_return_lean.py).\nLayout and definitions follow Collet\'s final stage (Record1252270103Finite, Apache-2.0). -/\n'
 
 LEAN_BRANCH = {'old': '.old', 'C': '.C', 'Ccap': '.capC', 'C-7': '.weakC7', 'P': '.P', 'Pcap': '.capP'}
@@ -150,7 +150,7 @@ GUARD_SIMP = 'admissionGuard,lowerM,upperM,naturalM,derivativeD,derivativeA,deri
 def emit_constants(P):
     th, h, BP, LP, BC, LC = P['theta'], P['h'], P['BP'], P['LP'], P['BC'], P['LC']
     sP = P['sP']
-    K = Fr(11243277, 2500000)
+    K = CR.K_I
     c = 1 - th
     ell = 4 * c - Fr(1, 3)
     x = 1 + ell - h
@@ -383,7 +383,7 @@ def main():
     BP, LP, capP = Fr(nP['B']), Fr(nP['L']), Fr(nP['cap'])
     P = dict(theta=th, h=h, BP=BP, LP=LP, BC=BC, LC=LC, sP=sP)
     G = CR.geometry(th, h, BP, LP, sP)
-    rec = CR.receipt(G, BP, LP, capC, capP, sC, Fr(43, 1000), Fr(8747759, 10 ** 7))
+    rec = CR.receipt(G, BP, LP, capC, capP, sC, Fr(43, 1000), CR.THETA_I)
     if mode == 'global':
         rec = {k: v for k, v in rec.items() if k not in CR.GLOBAL_DROP}
     bad = {k: v for k, v in rec.items() if v <= 0}

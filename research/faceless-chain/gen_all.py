@@ -17,13 +17,13 @@ import cert_proto as CP
 import gen_faceless_I as GI
 import lean_certs as LC
 
-SIG = [0.0123480, 0.01942, 0.0252, 0.0310, 0.0367, 0.0424270]
+SIG = [float(x) for x in os.environ.get('QRH_SIG', '0.0123480,0.01942,0.0252,0.0310,0.0367,0.0424270').split(',')]
 M = 16
-PKG = 'Submissions.arvi_repeated_marks_20261024'
+PKG = os.environ.get('QRH_PKG', 'Submissions.arvi_repeated_marks_20261024')
 NS = 'QRH.RepeatedMarks.Faceless'
 E, R, F = F2.FEES
 CAP = F2.CAPMAX
-K_N = Fr(11243277, 2500000)
+K_N = Fr(os.environ.get('QRH_K', '11243277/2500000'))
 
 
 def q(x):

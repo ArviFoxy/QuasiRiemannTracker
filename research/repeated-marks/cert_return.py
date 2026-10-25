@@ -6,7 +6,7 @@ uses one count branch b with
    F_b = J_b (theta - r0 - E_base(d,C; delta,p)) - (3/4) d N_b  > 0   (tensor Bernstein, no splitting)
 and, for improved branches, all FR8 admission polynomials > 0 on the upward window
 [delta0,delta1] x [p0,1/2]."""
-import sys, json, itertools
+import sys, json, itertools, os
 from fractions import Fraction as Fr
 from math import comb
 
@@ -65,8 +65,9 @@ def bernstein_min(a, box):
 ETA = Fr(1, 10**7)
 M_MINUS, M_PLUS, S_MINUS = Fr(2, 5), Fr(11, 25), Fr(17, 500)
 R0 = Fr(1, 10**9)
-K_I = Fr(11243277, 2500000)
+K_I = Fr(os.environ.get('QRH_K', '11243277/2500000'))   # natural cost; QRH_K overrides
 M_H = (1 - K_I*Fr(17, 500))/2
+THETA_I = (1 + K_I/6)/2   # the beta cap implied by the natural cost (8747759/10^7 at the default K)
 V = sub(const(Fr(5, 6)), DEL)
 
 def branch_affine(B, L, capped=False, zs=None):
@@ -244,7 +245,7 @@ GLOBAL_DROP = ('small_width_shortening', 'short_plain_shortening', 'large_shift'
                'physical_plain_upper_lean_264_625', 'physical_width_lower', 'physical_width_upper',
                'physical_plain_lower', 'shift_bound_9_50')
 
-def run(theta, h, C, Pf, theta_I=Fr(8747759, 10**7), verbose=True, tf=Fr(1, 400), sP=Fr(1, 25),
+def run(theta, h, C, Pf, theta_I=THETA_I, verbose=True, tf=Fr(1, 400), sP=Fr(1, 25),
         sC=Fr(11, 250), sPp=Fr(43, 1000), mode='pr69'):
     (BC, LC, capC), (BP, LP, capP) = C, Pf
     G = geometry(theta, h, BP, LP, sP)

@@ -12,7 +12,7 @@ import os, re, sys
 
 SRC = '/home/user/QuasiRiemannTracker/submissions/hailey-collet-1252270103/src/Submissions/hailey_collet_1252270103'
 CPKG = 'Submissions.hailey_collet_1252270103'
-PKG = 'Submissions.repeated_marks_20261024'
+PKG = os.environ.get('QRH_PKG', 'Submissions.repeated_marks_20261024')
 NS_OLD, NS_NEW = 'QRH.Record1252270103Return', 'QRH.RepeatedMarks.Return'
 FORKED = ['Geometry', 'TransportInstances', 'Conductor', 'CountAdmission', 'CountMonotonicity', 'CountWindows',
           'CountDecode', 'CountWidth', 'FinalWindows', 'SourceInlet', 'WindowSources', 'FinalScheme',

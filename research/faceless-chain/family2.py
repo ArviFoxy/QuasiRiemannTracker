@@ -4,12 +4,13 @@ family.py (secant lines, q from the parent with exact LOW denominator).
 
 All polynomials are in y. s = sig_j + H_j y.
 """
+import os
 from fractions import Fraction as Fr
 import numpy as np
 import closed_flow as CF
 import polyq as P
 
-K = Fr(11243277, 2500000)
+K = Fr(os.environ.get('QRH_K', '11243277/2500000'))   # natural cost; QRH_K overrides
 CAPMAX = Fr(549989, 10000000)
 FEES = (Fr(1, 10**17), Fr(1, 10**12), Fr(1, 10**10))
 

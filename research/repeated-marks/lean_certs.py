@@ -12,9 +12,9 @@ import sys, json, os
 from fractions import Fraction as Fr
 
 ALLOW, LOWFEE, HIGHFEE = Fr(1, 10**12), Fr(1, 10**8), Fr(1, 10**7)
-NATURAL = dict(B=Fr(1), L=Fr(11243277, 2500000), cap=Fr(11, 200), q=Fr(0),
+KN = Fr(os.environ.get('QRH_K', '11243277/2500000'))   # natural cost; QRH_K overrides
+NATURAL = dict(B=Fr(1), L=KN, cap=Fr(11, 200), q=Fr(0),
                allowance=ALLOW, lowFee=LOWFEE, highFee=HIGHFEE)
-KN = Fr(11243277, 2500000)
 
 def crossing(n, low): return (low['B'] - n['B'])/(low['L'] - n['L'])
 def sourceDen(n, low): return 1 - 6*n['q']*low['B']/low['L']

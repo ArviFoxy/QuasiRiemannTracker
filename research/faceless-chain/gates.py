@@ -11,9 +11,11 @@ margin of every gate family at width b:
   high    : min over nu in [q, 3/4], p in [0, 1/2] and the six branches of
             gateG / (gateM (15 - 6 nu)) = 1 - base + facetVal - fee   (the uncleared HIGH margin).
 """
+import os
+from fractions import Fraction
 import numpy as np
 
-KN = 11243277/2500000
+KN = float(Fraction(os.environ.get('QRH_K', '11243277/2500000')))
 FINE = (1e-17, 1e-12, 1e-10)
 COLLET = (1e-12, 1e-8, 1e-7)
 CAPMAX = 549989/10000000

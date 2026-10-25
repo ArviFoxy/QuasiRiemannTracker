@@ -15,7 +15,7 @@ def node_at(fam, j, y):
     q = (1 - fam.den)*P.ev(L0, y)/(6*P.ev(B0, y))
     return dict(B=P.ev(B, y), L=P.ev(L, y), cap=F2.CAPMAX, q=q, allowance=F2.FEES[0], lowFee=F2.FEES[1], highFee=F2.FEES[2])
 
-NATURAL = dict(B=Fr(1), L=Fr(11243277, 2500000), cap=Fr(11, 200), q=Fr(0), allowance=Fr(1, 10**12),
+NATURAL = dict(B=Fr(1), L=F2.K, cap=Fr(11, 200), q=Fr(0), allowance=Fr(1, 10**12),
                lowFee=Fr(1, 10**8), highFee=Fr(1, 10**7))
 
 def trees_lean(trees, b):
@@ -28,11 +28,13 @@ if __name__ == "__main__":
     out = sys.argv[1]
     fam, _ = F2.build2(SIG, m=M)
     Dy = fam.Dy
-    steps = [("step0", "piece0.node 0", "natural", node_at(fam, 0, Fr(0)), NATURAL)]
+    natname = os.environ.get('QRH_NATURAL', 'natural')   # Lean name of the natural node
+    steps = [("step0", "piece0.node 0", natname, node_at(fam, 0, Fr(0)), NATURAL)]
     for j in range(1, len(fam.H)):
         par = node_at(fam, j - 1, 1 - Dy)
         steps.append((f"junction{j}", f"piece{j}.node 0", f"piece{j-1}.node (1 - piece{j-1}.Dy)", node_at(fam, j, Fr(0)), par))
-    L = [HEAD(["Faceless.Gen.Data"]), "open Record1252270103Finite QRH.RepeatedMarks.Finite", ""]
+    deps = ["Faceless.Gen.Data"] + ([] if natname == 'natural' else ["Graph.NaturalCap"])
+    L = [HEAD(deps), "open Record1252270103Finite QRH.RepeatedMarks.Finite", ""]
     for name, nt, pt, n, par in steps:
         ok, msgs, trees = LC.check_node(n, par, par, Fr(8))
         assert ok, (name, msgs)

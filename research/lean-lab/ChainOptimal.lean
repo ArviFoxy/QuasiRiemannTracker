@@ -19,6 +19,9 @@ with `A_p = (3 − p)E + 4ps − 2` and `D_p = (1 + p)E + 4p²s − 2p` (`ChainF
   `p* = (a² + ab − 1)/(b(a − 2b))` (`E = a²`, `s = b²`): its rate dominates every class rate,
   by the sum-of-squares bound of `ChainAMGM.lean` and `rate_mono`. So the maximal envelope is the
   closed-form flow `E′ = −Q*E/(1 − Q*s)`, `Q* = 5(√E − 2√s)²/(2 − E − 4√(Es))`.
+* `half_binding`: in the early regime, `s(8 − 7E − 4s) ≥ 4(1 − E)²` and `2s(2 − E) ≥ 4(1 − E)²`, the
+  boundary class `p = 1/2` is binding (`A_{1/2}D_p − A_pD_{1/2} = (1/2 − p)·h(p)` with `h` linear).
+  The regimes switch on the curve `s(8 − 7E − 4s) = 4(1 − E)²` (`s ≈ 0.0194` on the chain).
 Status: proved.
 -/
 import Mathlib
@@ -253,5 +256,53 @@ theorem closed_form_binding (a b : ℝ) (ha : 0 < a) (hb : 0 < b)
     rw [hQs]; exact Q_le_Qstar p a b hab gp.2.1 hW
   unfold φ
   exact rate_mono hle le_rfl (Q_nonneg gp) gp.2.2.2.1 gp.2.2.2.2.1 gs.2.2.1
+
+/-! ## The early regime: the boundary class `p = 1/2` binds -/
+
+/-- `A_{1/2}D_p − A_pD_{1/2} = (1/2 − p)·h(p)` with `h` linear in `p`. -/
+theorem half_compare (p s E : ℝ) :
+    numA (1 / 2) s E * denD p s E - numA p s E * denD (1 / 2) s E
+      = (1 / 2 - p) * ((-10 * E * s - 8 * s ^ 2 + 8 * s) * p
+          + (2 * s * (2 - E) - 4 * (1 - E) ^ 2)) := by
+  unfold numA denD; ring
+
+/-- **Early regime.** If `h(0) = 2s(2 − E) − 4(1 − E)² ≥ 0` and
+`h(1/2) = s(8 − 7E − 4s) − 4(1 − E)² ≥ 0` (the latter is the sign of `∂_p Q_p` at `p = 1/2`), every
+class threshold is at most that of the boundary class `p = 1/2`. The switch between the regimes is
+the curve `s(8 − 7E − 4s) = 4(1 − E)²`. -/
+theorem Q_le_half {p s E : ℝ} (hp : p ∈ Icc (0 : ℝ) (1 / 2)) (hDp : 0 < denD p s E)
+    (hDh : 0 < denD (1 / 2) s E)
+    (h0 : 0 ≤ 2 * s * (2 - E) - 4 * (1 - E) ^ 2)
+    (hh : 0 ≤ s * (8 - 7 * E - 4 * s) - 4 * (1 - E) ^ 2) :
+    Q p s E ≤ Q (1 / 2) s E := by
+  unfold Q
+  rw [div_le_div_iff₀ hDp hDh]
+  have hc := half_compare p s E
+  -- `h` is linear in `p`, so it is a convex combination of `h(0)` and `h(1/2)` on `[0, 1/2]`
+  have hlin : (-10 * E * s - 8 * s ^ 2 + 8 * s) * p + (2 * s * (2 - E) - 4 * (1 - E) ^ 2)
+      = (1 - 2 * p) * (2 * s * (2 - E) - 4 * (1 - E) ^ 2)
+        + 2 * p * (s * (8 - 7 * E - 4 * s) - 4 * (1 - E) ^ 2) := by ring
+  have hpos : 0 ≤ (-10 * E * s - 8 * s ^ 2 + 8 * s) * p + (2 * s * (2 - E) - 4 * (1 - E) ^ 2) := by
+    rw [hlin]
+    have h1 : 0 ≤ 1 - 2 * p := by linarith [hp.2]
+    have h2 : 0 ≤ 2 * p := by linarith [hp.1]
+    exact add_nonneg (mul_nonneg h1 h0) (mul_nonneg h2 hh)
+  have h3 : 0 ≤ 1 / 2 - p := by linarith [hp.2]
+  have := mul_nonneg h3 hpos
+  nlinarith
+
+/-- In the early regime the boundary class is a binding class: its rate dominates every class rate. -/
+theorem half_binding {s E : ℝ}
+    (hgood : ∀ p ∈ Icc (0 : ℝ) (1 / 2), Good p s E)
+    (h0 : 0 ≤ 2 * s * (2 - E) - 4 * (1 - E) ^ 2)
+    (hh : 0 ≤ s * (8 - 7 * E - 4 * s) - 4 * (1 - E) ^ 2) :
+    ∀ p ∈ Icc (0 : ℝ) (1 / 2), φ p s E ≤ φ (1 / 2) s E := by
+  intro p hp
+  have hhalf : (1 / 2 : ℝ) ∈ Icc (0 : ℝ) (1 / 2) := ⟨by norm_num, le_rfl⟩
+  have gp := hgood p hp
+  have gh := hgood (1 / 2) hhalf
+  have hle := Q_le_half hp gp.2.1 gh.2.1 h0 hh
+  unfold φ
+  exact rate_mono hle le_rfl (Q_nonneg gp) gp.2.2.2.1 gp.2.2.2.2.1 gh.2.2.1
 
 end ChainOptimal

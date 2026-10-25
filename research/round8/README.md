@@ -21,8 +21,13 @@ missing amount must come from an analytic input. The cheapest is the column bran
 
 The hypotheses (`A_p, D_p > 0`, `1 − Q_ps > 0`, `4ps < 2` for all `p ∈ [0, 1/2]`) hold along the
 whole chain with margins `A ≥ 0.169`, `D ≥ 0.293`, `1 − Qs ≥ 0.871`. `p*` is interior from
-`s ≈ 0.0194` on (0.63 at `s = 0.0123`, 0.49 at `0.0199`, 0.21 at `0.0424`). This is the formal answer
-to "is the curve fully optimal": yes, within the method's gates.
+`s ≈ 0.0194` on (0.63 at `s = 0.0123`, 0.49 at `0.0199`, 0.21 at `0.0424`). The early regime is covered too
+(`half_binding`): `A_{1/2}D_p − A_pD_{1/2} = (1/2 − p)·h(p)` with `h` linear in `p`,
+`h(0) = 2s(2 − E) − 4(1 − E)²` and `h(1/2) = s(8 − 7E − 4s) − 4(1 − E)²` (the sign of `∂_pQ` at
+`p = 1/2`). So the boundary class binds exactly while `s(8 − 7E − 4s) ≥ 4(1 − E)²`, and that curve is
+where the switching flow changes regime (`early_regime.py`; on the chain `h(1/2)` changes sign
+between `s = 0.0194` and `0.0199`). This is the formal answer to "is the curve fully optimal": yes,
+within the method's gates, in both regimes.
 
 ## 2. P1, re-derived
 

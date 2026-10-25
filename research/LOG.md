@@ -1445,3 +1445,15 @@ slot; `mixed-slots/`).
 - The amplitude cap `p ≤ 1/2` is the paper's own zero-free bound (Lemma 19.1), so no
   zero-free-region bootstrap lowers the binding class (`round8/README.md` §3).
 - Upstream: no PRs after #73. The bar is unchanged (milestone ≤ 0.8747189, 6.1e-6 still needed).
+- **Fresh-framing agent** (`round9/fresh_framing/README.md`):
+  - Repaired round 7's resonance model with a fine lattice. The dip and `p = 1/2` co-occur, and a
+    perturbation covers the return's numerator length `n₀ = 0.418` with a dip margin of −3e-4. So
+    no per-row argument can move θ.
+  - New candidate (B): restrict the probe's dual frequencies `H = u·a⁶` to large sixth-power part.
+    Priced here (`round9/README.md` §3): the restriction is a reweighted dilation `X → X·N(b)⁶`.
+    Every term crosses the marked-energy wall, and the low side does not pay for it. Closed;
+    it reduces to P1 use (b).
+- **Numerics** (`round9/numerics/`): on the actual sextic family (2076 rows at `U = 8000`), the
+  long Möbius moment stays within 0.89–0.99 of its diagonal up to `D = U^{1.4}`, where
+  amplification allows a factor 20. Atom 2 is a limitation of the method. A proof needs twisted
+  Möbius correlations, of Chowla type.

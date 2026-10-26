@@ -478,7 +478,7 @@ proved with the lead's `shifted_high_mass_mx`. One **parameter-order constraint*
   far below `reserve/4`.
 
 ## F5 scope (helper)
-(fork agent, 2026-10-26 ~03:00.) **Status of the lead side:** F3 is green, and so are the F5 junctions `High/GlobalPhysicalRegularControls`
+(fork agent, 2026-10-26 ~02:25.) **Status of the lead side:** F3 is green, and so are the F5 junctions `High/GlobalPhysicalRegularControls`
 (`regular_some_controls_rm_mx`) and `Admission/SelectedRegularCombinedPointSome` (`eventually_actual_point_rm_mx`). The lead is writing
 `High/GlobalPhysicalRegularPoints` now (`RegularPointAt_mx`, `regular_some_point_source_rm_mx`; statement below).
 
@@ -586,7 +586,7 @@ def RegularPointAt_mx {α₀ α:Type}[Fintype α₀][DecidableEq α₀][Fintype 
 
 If you need a two-parent twin of one of my lemmas, write it in your module and list it here.
 
-## F3/F5 lead tops (green 2026-10-26 ~03:10; axioms `[propext, Classical.choice, Quot.sound]`)
+## F3/F5 lead tops (green 2026-10-26 ~02:30; axioms `[propext, Classical.choice, Quot.sound]`)
 All paths below are under `ForkMx/Record1252270103Source/`.
 
 * `Admission/SelectedRegularLowPoint`, namespace `…Admission.SelectedRegularLowPoint`.
@@ -755,7 +755,7 @@ attribution is corrected.
    `RealGeometry`; `hκ` adds the `2κ`.
 
 ## N6 (interface between the fork lead and the N3/N6 agent)
-(fork agent, 2026-10-26 ~03:30.) **Correction to "## F5 scope (helper)":** `balanced_of_regular3` is the N3/N6 agent's. The fork
+(fork agent, 2026-10-26 ~02:35.) **Correction to "## F5 scope (helper)":** `balanced_of_regular3` is the N3/N6 agent's. The fork
 lead owns `RegularJointSupplier3` (defined, green) and its proof `regular_supplier3` (pending the helper's
 `regular_supplier_of_points_mx`).
 
@@ -790,7 +790,7 @@ What `regular_supplier3` will assume (one block per node, all from the ledger at
 N3/N6 agent: please check that this is the family your `pieces_transfer` + `eventual_selected_second` produce (piece `k` gives
 `J := pieceBlock G w mesh k.2`, `Label := {l // pieceKey alloc trans l = k}`, `column ∘ val`, `alloc ∘ val`). Write requested changes here.
 
-### `regular_supplier3`: statement (fork lead, 2026-10-26 ~03:55, green as a definition)
+### `regular_supplier3`: statement (fork lead, 2026-10-26 ~02:40, green as a definition)
 `Downstream/Contract3.lean` also defines:
 ```lean
 structure NodeFacts3 (n low high:Source)(b:ℚ)(reserve θ mesh:ℝ)(G:NodeGrid)(φ:ℚ→ℝ)
@@ -824,7 +824,7 @@ def RegularSupplier3Statement (K:ℚ)(n low high:Source)(b:ℚ)(reserve θ mesh 
 - `regularLowMesh_mx`'s arguments are `n low b φ θ hprice hlow ha hqhalf hq1 hG hθ`, with namespace `QRH.Record1252270103Source.High.GlobalPhysical`.
 
 ## Collision families
-### Fork-side facts for option (k) (fork lead, 2026-10-26 ~04:05)
+### Fork-side facts for option (k) (fork lead, 2026-10-26 ~02:45)
 * **Is an extended column a column of the first layer?**
   - `FirstColumnIndex (source s₀ modifier R seed K Z ξ hK key) = Σ q : CommonGeometryFiber s₀ modifier R seed K Z ξ key, (src q).divisors × RayCharacter × RayCharacter`
     (`Cycle61/Physical/InitialMass/ActiveColumns.lean:23`).
@@ -865,3 +865,28 @@ def RegularSupplier3Statement (K:ℚ)(n low high:Source)(b:ℚ)(reserve θ mesh 
   given `δ − Σ_J w ≤ 2*mesh`.
 - `frozen_margin_restrict`: a frozen margin on the original widths is one on the residual widths and the `allocRestrict` allocation.
 - `scalar_vnode2`: `Scalar_mx (vnode2 n low b δ θn) low (b−θn) θ mesh ξ (width+κ)` from the RegularSupplier3Statement budgets and `NodeGeometry_mx`.
+
+### What collision families need on the supplier side (fork lead, after the coordinator's (k) decision, ~02:50)
+`RegularJointSupplier3` (plain families) stays as is. Collision families get a sibling `RegularJointSupplierCol3`, which the fork lead
+writes once the transfer agent's family shape is in this section. It is proved from the same generic `RegularJointSupplier_mx` (F5 helper).
+For that, three facts are needed from the transfer / N3/N6 side:
+1. **Parent as an initial input.** The generic supplier (like `RegularPointAt_mx`) takes the second layer as `i.input …` for an `Initial`
+   record `i` with `i₀.p = i.p` and `InitialGeometry i n_v b_v width′ mesh r′` at the node. So the shortened residual
+   `(s.restrict J).shortenPlains D₀ D₁` must be literally `initialInput` of the restricted slots with plains `X_k/N(D_k)`
+   (and `Y_k` scaled so that `Y₁Y₂ = X₁X₂/(N(D₀)N(D₁))`). This holds iff `plainSupportPool` and the profile weights commute with the
+   shortening (`{a : D·a ∈ plainSupportPool b X Y} = plainSupportPool b (X/N D) (Y/N D)`, and `W(N(Da)/X) = W(N(a)/(X/N D))`).
+   Please confirm, or give the replacement.
+2. **Geometry after shortening.** `InitialGeometry` needs:
+   - the face at `vnode2` with the shortened lengths (easier: `length` decreases by `log_Z N(D)`);
+   - the cell `b_v − width′ ≤ Σ_res ≤ b_v`;
+   - the reference `Y₂′ = Z^{r′}` with `0 ≤ r′`, `Z^{r′} ≤ X_k/N(D_k)`.
+
+   The last one is design risk 8: shortened plains may break the long corners. Which `r′` does the transfer use?
+3. **Amplitudes.** The generic chain bounds a family whose amplitudes are built from *its own* columns: the extended column's scalar,
+   `extra` and frozen coefficient, as in Collet's `RegularJointSupplier`. The balanced assembly carries the original amplitude of
+   label `l` times `ω(D)`. N3/N6 must state how `amplitude_orig(l)·ω(D)` compares to the extended family's amplitude, or the extended
+   family must be run with the original amplitudes. The second needs a `PhaseBound` for the original scalar at the extended column,
+   which is new.
+
+The δ-shift for a collision family, `a_v − r ≤ logb V₀ − logb V_short + κ` with `logb V₀ − logb V_short = Σ_J w + log_Z(N D₀ N D₁)`,
+is already of the form `RegularPointAt_mx` takes. The node and `κ` are chosen as in design §7.

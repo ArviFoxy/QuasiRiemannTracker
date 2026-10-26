@@ -239,10 +239,10 @@ Collet `Source`s, and no real-field `RNode` twin is needed.
 2. *Pool cell width.* `RegularLowAt` quantifies the pool inside the family statement with `ell` fixed before `Z`. So in `RegularLowAt_mx` the pool width `poolAmp` is quantified with the pool, and `ellPool` is a fixed parameter (`= poolAmp/2` at the call). Making `ellPool` depend on the quantified `poolAmp` does not typecheck against `hpaid`.
 3. *Mathlib notation `≤i`* (`InitialSeg`): `0≤i₀.w j` misparses as `0 ≤i ₀.w j`. Write `0≤ i₀.w j` with a space.
 4. *Heartbeats.* `SelectedRegularLowSource` needs `set_option maxHeartbeats 1000000 in` for the whnf unification of the anchor literal. Elsewhere the default 200000 suffices.
-5. *License headers.* Each fork module starts with Collet's copyright line verbatim (`fork/fix_headers.py`). After the header pass the F1/F2 modules were rebuilt (2026-10-26 ~03:40): green.
+5. *License headers.* Each fork module starts with Collet's copyright line verbatim (`fork/fix_headers.py`). After the header pass the F1/F2 modules were rebuilt (2026-10-26 ~02:35): green.
 6. *κ absorption.* Every LOW and HIGH bound gets `Z^κ`. At the point level it multiplies Collet's paid budget (`regular_point_budgets_paid` is reused unchanged), giving `Z^(κ − reserve/2)`. So no budget twin was needed.
 
-**Open design gaps (escalated 2026-10-26 ~03:35, found by the N3/N6 agent and checked against the fork).**
+**Open design gaps (escalated 2026-10-26 ~02:35, found by the N3/N6 agent and checked against the fork).**
 - (S) seed suppliers: with (S) the non-transferable live width is not small. Without (S), labels `(l, L′)` carry child seeds `L′ ∣ (column l).2.1.val`. In the fork this is a mechanical generalization: Collet's `ColumnData` uses the seed only through `childSeed_sf`. It makes `Family_mx`'s child seed a per-label field.
 - (Col) collision families: common ideal `C·D_f` and a character twisted by `χ(δ_f³)`, whose conductor grows with `N(D_f)`. Two things exclude them:
   - `Family_mx` (Collet's `Family`/`ColumnData`) forces the stage label and character to be the first-layer column's;

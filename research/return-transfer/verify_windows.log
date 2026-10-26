@@ -1,0 +1,10 @@
+theta=8741364: 38 rectangles, 198 improved-branch sample points checked
+  min 1-r*                                      1.832e-01  OK
+  min 1.2499-t*                                 1.210e-02  OK
+  min R - P_true(m), m>=m*                      0.000e+00  OK
+  min face width at m* - branch width           0.000e+00  OK
+  min m*                                        3.680e-01  OK
+  min old J                                     7.542e-01  OK
+  min r*-23/37                                  4.684e-02  OK
+  min return J(theta-r0-E)-3dN/4                6.601e-07  OK
+  min t*-1                                      4.813e-02  OK

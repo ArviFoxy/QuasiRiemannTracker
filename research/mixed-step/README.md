@@ -323,3 +323,14 @@ caps up to 0.08.
 - **Faces:** `B_P` −277, `h` −167, `L_P` +35; `B_C`, `L_C`, `s_C`, `s_P` 0.
 
 **h fine scan.** `h = 0.8044` gives θ\* = 0.8742701; 0.803 → 0.8742757; 0.806 → 0.8742972.
+
+## 12. Natural cost in the gates: K = 9/2, not Collet's 4.4973 (2026-10-26)
+
+Our tree's step gates (`scalarGate92`, and now `SourceValid3`) use the natural cost `K = 9/2` from
+the 7/8 baseline, through `Lref = 49/100 − K·b`. The Python mirrors read `QRH_K`, which defaults to
+Collet's `11243277/2500000`. The first exact Lean test of a fan step (`Fan/Test.lean`) caught it:
+- the gate `5/6 + 0.499·Lref − T − 9(r+δ) − f` fails at the cap for fan step 1 under `K = 9/2`;
+- all other gates and the HIGH trees passed in the kernel.
+
+So the fan, the flow and the family are regenerated with `QRH_K=9/2`, the setting of
+`combined/sil_face.env`. Rule: export `QRH_K=9/2` for every mixed-step run.

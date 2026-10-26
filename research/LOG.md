@@ -1780,3 +1780,6 @@ slot; `mixed-slots/`).
   Fallback (b): LOW supply uniform in the twist conductor with loss N(D)^c, c < 1 (collision families have room ≈ w_C
   vs a deficit ≈ (1+q−6qβ)w_C ≈ 0.01 w_C for not transferring C). Seeds (S): approved mechanical generalization
   (per-label child seed in Family_mx), scheduled after the F5 bridge.
+- **Package up to the endpoint (02:55):** package_mixed.py refreshed the dev copies (closure 295 = 134 dev + 161 return),
+  build ALL-OK (22 recompiled). Packaged `beta_of_step3 : NFStep3 → β ≤ theta`, theta = 437037/500000, axioms clean.
+  The submission now depends only on `nf_step3 : NFStep3`.

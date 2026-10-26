@@ -16,7 +16,8 @@ The metadata and PR body state these. Each must be true of the final package.
 - [x] Return: θ = 437037/500000 (0.874074), θ* = 0.8740728, h = 403/500, Lemma W windows, 33 rows, 14 windows;
       161 modules ALL-OK, axioms clean (return agent, 2026-10-26).
 - [x] Piece 7 with the cap ramp `3/40 + y/100` (`Certs3c`) built; `mixed_chain_sources` axioms clean.
-- [ ] Fan: 46 steps. Family: 8 pieces, 2^16 grid steps each. Junctions: 8. All built.
+- [x] Fan: 46 steps. Family: 8 pieces, 2^16 grid steps each (piece 7 with the cap ramp). Junctions: 8. All built;
+      packaged closure up to `Graph/Endpoint3` ALL-OK, `beta_of_step3 : NFStep3 → β ≤ 437037/500000` axioms clean.
 
 **Packaging**
 - [ ] Package `Submissions.arvi_mixed_step_20261026` contains only our modules. The dependency

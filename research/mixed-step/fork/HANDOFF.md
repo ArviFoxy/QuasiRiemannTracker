@@ -1126,3 +1126,32 @@ replace it. `regular_supplier3` (Supplier3At) gives (b) for plain families.
    terms of the same sum; this needs 4 and 5.
 
 These are open mathematics/formalization questions, not routine plumbing. Do not claim `nf_step3` before they are settled.
+
+## Phase 1 of FINISH_PLAN (2026-10-26, late): the full transfer at label level is proved
+All in `Residual/`, standard axioms only.
+- `CollisionFamilies.lean`: `collision_energy_families` — the collision part of a source is at most
+  `C (max 1 2H)^ε Σ_(Q,σ) Σ_x [D supported] |w(x)|² N(D) famEnergy(x, 2H/N(D))`.
+- `CollisionTransfer.lean`:
+  - `tc_mark_elim`, `famEnergy_elim`: inside a family the marks `A_k D_k` and the coprimality `R·D` are redundant —
+    on columns sharing a prime with `D` the twist `idealRowHom (δ³)` vanishes (`idealRowHom_zero_of_dvd`); on the
+    others the coefficients agree (D squarefree, `D ⊥ A₁A₂` from `A₁A₂ ∣ R`, and no small prime in `D`; with a
+    small prime the family vanishes). So `famEnergy ≤ famEnergyT` (plain marks, character `twistChar τ (δ³)`).
+  - `fam_transfer`, `collision_transfer`: the seed-supplier no-collision transfer of the remaining block `J \ Q`
+    inside each family; radius hypotheses only for active assignments.
+- `CollisionParent.lean`: `collParent s J D₀ D₁ = (s.restrict J).shortenPlains D₀ D₁`; `collAlloc_mem` (the
+  allocation `restPart J B` of the parent exists once a family tuple survives); `collChild_match` (slot match of the
+  family residual with `child (collParent …) C R ⟨restPart J B, _⟩`); `collResidual_eq` (energy identity, zero when
+  the allocation does not exist); `collEnergy_rescale`.
+- `CollisionLabel.lean`: `transfer_full_label` — for any label,
+  `E ≤ K Π_J(hi M²)(max 1 H')^ε Σ_ξ Σ_{L'∈seeds} E_plain(L') + K (max 1 2H)^ε Σ_{D} collWeight(D)·(max 1 Hc(D))^ε
+  Σ_ξ Σ_{L'∈seedsD D} collE(D, L', ξ)`, with `collE` the energy of the child of `collParent` at
+  `T/(Π_J P · N(D₀)N(D₁))` (= `volume P_D` for `T = volume s`) and character `childCharacter (twistChar τ δ³) ξ`.
+  No (S), no (Col).
+- `CollisionColumn.lean` (`transfer_full_column`): the same at a column character, with `Z^(Aε)` bookkeeping.
+
+Next (Phase 1, piece level): `piece_label_transfer_full` (node 0: no collision patterns; positive node: radius
+`Hc(D) = firstMainRadius(volume s / (Π_J P·N(D)), 3(amp+δ))`, active assignments have `N(D) ≤ 2^|Q| Π_Q P`), then
+the sum over pieces. For Phase 5 the weights need a label-uniform bound: `collWeight_l(D)` is a sum over
+`(patterns (liveBlock B J)).sigma (selBox child ·)`, which is definitionally the sum over `J.subtype (· ∈ L)` with
+`L = liveIndices (alloc l)` and the slot data of `s`; labels of a piece share `L`, so the bound
+`collWeight_l(D) ≤ Wα(s, L, J, D)` (slot amplitudes instead of selected weights) is label-independent.

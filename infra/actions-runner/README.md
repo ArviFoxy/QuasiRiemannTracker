@@ -27,7 +27,7 @@ setup and operation require no host sudo when Docker and `/dev/kvm` are accessib
   Leave at least 82 GiB free in Docker storage before starting a job.
 - The guest has no direct route to the host, LAN, or Internet. Its only network
   forwarding reaches an HTTPS proxy allowing required GitHub, Ubuntu, npm, Node,
-  and Azure hosts. The proxy rejects private and host public addresses.
+  Mathlib cache, and Azure hosts. The proxy rejects private and host public addresses.
 - A separate registration container creates an ephemeral runner identity. The
   guest receives only that identity, never registration tokens or host credentials.
 - After one job the guest shuts down; Docker removes its anonymous disk volume.

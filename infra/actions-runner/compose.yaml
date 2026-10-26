@@ -1,6 +1,6 @@
 services:
   runner:
-    image: qrh-proof-runner:2.338.0
+    image: qrh-proof-runner:2.338.2
     build:
       context: .
     platform: linux/amd64

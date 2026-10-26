@@ -15,7 +15,7 @@ class DestinationPolicyTests(unittest.TestCase):
             "release-assets.githubusercontent.com", "raw.githubusercontent.com",
             "pipelines.actions.githubusercontent.com",
             "productionresultssa0.blob.core.windows.net",
-            "registry.npmjs.org", "nodejs.org", "cdn.playwright.dev",
+            "registry.npmjs.org", "cache.mathlib.org", "nodejs.org", "cdn.playwright.dev",
             "download.prss.microsoft.com", "playwright.download.prss.microsoft.com",
         ):
             with self.subTest(host=host):
@@ -27,6 +27,7 @@ class DestinationPolicyTests(unittest.TestCase):
             "[::1]:443", "2130706433:443", "github.com:80", "github.com:0443",
             "github.com", "github.com.:443", "github.com@evil.test:443",
             "evil.test@github.com:443", "github.com.evil.test:443",
+            "evil.cache.mathlib.org:443", "cache.mathlib.org.evil.test:443",
             "evil-actions.githubusercontent.com:443", "actions.githubusercontent.com.evil.test:443",
             "evilblob.core.windows.net:443", "github.com/path:443",
             "github.com%00.evil.test:443", "github.com\\evil:443",

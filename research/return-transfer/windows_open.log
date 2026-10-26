@@ -4,3 +4,6 @@ m_-=0, aff s_+=cap, cap z in {29/500, cap}, crossover join: theta* = 8741364
 (d) m_-=0 + crossover, Collet s_+ (j=0 only): theta* = 8742681
 (d2) m_-=0 + crossover, s_+ windows, capped C only at s_C: theta* = 8742681
 (d3) m_-=0 + crossover, capped at cap only, affine at Collet s_+: theta* = 8741541
+W + extra capped (cw-0.0005, cw-0.002): theta* = 8741364
+W + weak j in {0,4,8}: theta* = 8741364
+W + affine also at sC: theta* = 8741364

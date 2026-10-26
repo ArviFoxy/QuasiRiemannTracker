@@ -91,7 +91,7 @@ def theta(spec, lev):
     conf = SW.conf(P)
     if capC is not None:
         cw = Fr(capC) - Fr(1, 10**4)
-        conf['C'] = dict(aff=[cw], cap=[P['sC'], cw])
+        conf['C'] = dict(aff=[cw], cap=[P['sC'], cw, cw - Fr(5, 10**4), cw - Fr(2, 10**3), Fr(3, 40) - Fr(1, 10**4)])
     W.CONF = conf
     return B.theta_star(P, lo=8680000)
 

@@ -1,16 +1,16 @@
-"""Assemble the mixed-step submission as ONE self-contained Lean package
-`Submissions.arvi_mixed_step_20261026` (new submission, not an update of PR 76).
+"""Assemble the mixed-step submission as the Lean package `Submissions.arvi_mixed_step_20261026`
+(a new submission, built on top of PR 76).
 
 Sources (in the Lake project LAKE):
   * the development tree   Submissions/arvi_mixed_step                    (prefix renamed)
   * the final return       Submissions/arvi_mixed_step_20261026           (already at the target prefix)
-  * PR 76's package        Submissions/arvi_repeated_marks_on_sil_face_20261025 (vendored, prefix renamed;
-                           its own chain/return are not in the import closure and are not copied)
-Collet's tree and the baseline (both merged upstream) are dependencies, imported unchanged.
+Dependencies, imported unchanged (not copied): PR 76's package
+`Submissions.arvi_repeated_marks_on_sil_face_20261025`, Collet's tree and the baseline.
 
-The import closure of the ROOT modules is computed over the three trees; every module in it is copied
-to TARGET/<same relative path>, with `import` lines rewritten to the target prefix. Two different source
-modules mapping to the same target path is an error.
+The import closure of the ROOT modules is computed over our two trees; every module in it is copied to
+TARGET/<same relative path>, with `import` lines rewritten to the target prefix. Two different source
+modules mapping to the same target path is an error. The script also checks that no imported PR 76
+module brings in PR 76's own return (`ReturnD`, `FinalReturn`), whose namespaces the new return reuses.
 
 usage: python3 package_mixed.py LAKE TARGET_DIR ROOT_MODULE...   (roots given with any of the 3 prefixes)
 """
@@ -20,7 +20,7 @@ DEV = 'Submissions.arvi_mixed_step'
 RET = 'Submissions.arvi_mixed_step_20261026'
 PR76 = 'Submissions.arvi_repeated_marks_on_sil_face_20261025'
 TARGET = RET
-TREES = [RET, DEV, PR76]          # RET first: 'arvi_mixed_step_20261026' also starts with DEV's text
+TREES = [RET, DEV]               # RET first: 'arvi_mixed_step_20261026' also starts with DEV's text
 IMPORT = re.compile(r'^import\s+(\S+)', re.M)
 
 
@@ -73,6 +73,19 @@ def main():
         dest[tm] = m
     counts = collections.Counter(tree_of(m) for m in mods)
     print("closure:", len(mods), dict(counts))
+    deps = sorted({imp for m in mods for imp in IMPORT.findall(open(src_path(lake, m)).read())
+                   if imp.startswith(PR76 + '.')})
+    print("PR 76 modules imported directly:", len(deps))
+    seen, todo = set(), list(deps)
+    while todo:
+        m = todo.pop()
+        if m in seen or not m.startswith(PR76 + '.'):
+            continue
+        seen.add(m)
+        if rel(m, PR76).split('.')[0] in ('ReturnD', 'FinalReturn'):
+            raise SystemExit(f"PR 76's return is in the closure via {m}: namespace clash with the new return")
+        todo += IMPORT.findall(open(src_path(lake, m)).read())
+    print("PR 76 closure:", len(seen), "modules (dependency, not copied; no PR 76 return)")
     for tm, m in sorted(dest.items()):
         text = open(src_path(lake, m)).read()
         text = IMPORT.sub(lambda mo: 'import ' + target_mod(mo.group(1)), text)

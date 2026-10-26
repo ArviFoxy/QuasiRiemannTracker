@@ -48,7 +48,7 @@ print(f"  E = {f(tot):.7f}  vs theta - r0 = {f(G['theta'] - CR.R0):.7f}")
 # dual weights of the three lines at the crossing (p = 1/2: I' = -delta/2, P' = -2 delta, L' = 5/6 - delta)
 Ip, Pp, Lp = -dl*(1 - p), -2*dl, Fr(5, 6) - dl
 den = 1 - Lp/Ip - Lp/Pp
-wI, wP, wL = (Lp/Ip)/(-den)*(-1), (Lp/Pp)/(-den)*(-1), 1/den
+wI, wP, wL = -(Lp/Ip)/den, -(Lp/Pp)/den, 1/den
 print(f"dual weights: inverse {f(wI):.3f}, plain {f(wP):.3f}, long {f(wL):.3f} (sum {f(wI+wP+wL):.3f})")
 # sensitivities via the envelope theorem: dtheta = dG/(4 * (1/2 + q + 2q/L_P) + 1)
 Gth = 4*(Fr(1, 2) + q + 2*q/P['LP']) + 1

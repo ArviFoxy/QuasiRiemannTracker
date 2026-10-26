@@ -10,7 +10,7 @@ binding (min over delta of F/J, capped branch z* = 0.074900): delta* = 0.4311, F
   E term -delta p C/2 (numerator slots)   -0.004876
   E term (3d/4) R (Hoelder count)          0.376899
   E = 0.8741360  vs theta - r0 = 0.8741364
-dual weights: inverse -0.560, plain -0.140, long 0.300 (sum -0.400)
-dtheta*/dR = 0.1291, dtheta*/dE = 0.2141, dtheta*/dC = -0.0231, dtheta*/dz*_count = 0.0078
+dual weights: inverse 0.560, plain 0.140, long 0.300 (sum 1.000)
+dtheta*/dR = 0.1291, dtheta*/dE = 0.2141, dtheta*/dC = -0.0231, dtheta*/dz*_count = -0.0078
 Hoelder check: n0 = 0.4230, z_A = C/d = 0.05624; adversary level |N|^4 = U^0.3510 <= pointwise U^(2 delta n0) = U^0.3647: consistent -> (4/3,4) is attained
 numerator exponents (U units): Levy 0.71248, pointwise 0.71590, Cauchy-Schwarz with face at (n0,0) 0.79620

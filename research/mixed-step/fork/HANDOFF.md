@@ -1076,3 +1076,15 @@ Residual seeds `L′ ∣ (column l).2.1.val` of the transfer without (S) are han
   has child seed `seed l` and the **original** amplitude. All plain statements (F5 bridge 46–50, `RegularPointAt_mx`) apply to it unchanged.
 * `RegularJointSupplier3`'s per-label `seed` is thus proved from the plain `RegularJointSupplier_mx` at `col′`; its injectivity hypothesis
   `(firstLabel, seed)` is exactly the plain injectivity of `col′`.
+
+## F5 bridge tops (coordinator, 2026-10-26 ~11:00; all green, axioms `[propext, Classical.choice, Quot.sound]`)
+Under `ForkMx/Record1252270103Source/` (namespace `…High.GlobalPhysical` unless noted). `NodeGeometry_mx n low bcell` replaces `ParentGood n` and the
+amplitude facts (`0 < sourceAReal n low bcell ≤ 1`, `B ≤ 1`, `1 < L`, `cap < 1` are its fields).
+* `Contraction/SelectedMainExceptionalIdentity`: `regularMainFamily_mx F P W₁ W₂ Wfirst H0 radius ell poolAmp`, `regularMainFamily_joint_norm_mx` (the `rfl` bridge to the phase sum).
+* `High/GlobalPhysicalRegularCanonicalSmall`: `regular_canonical_small_mx` (`∃ Cs, ∀ᶠ Z, … RegularPointAt_mx … → … → modifiedSecondNormalizedSum … ≤ Cs·G·control²·(1+|ht|+height)^degree·(mellinPairHeight t u)^degree·Z^(κ−reserve/4)`),
+  hypotheses: `FixedBudget`, `NodeGeometry_mx`, `B₀ ≤ 1, 1 ≤ lam₀, cap₀ ≤ 1`, `0 < poolAmp ≤ 1`, depth facts `2/(poolAmp/2) ≤ depth`, `depth·poolAmp < 5`, `κ`-shift and per-label frozen margins.
+* `High/GlobalPhysicalRegularNorm`: `regular_ratio_bins_mx`, `regular_joint_of_bounded_normalized_mx`.
+* `High/GlobalPhysicalRegularCanonicalNorm`: `regular_canonical_joint_mx` — `∃ C, ∀ᶠ Z, … 0 ≤ κ → shift → margin → ‖Σ_q phase_mx F Wa (fun _=>P) (fun _=>poolAmp) H0 radius (poolAmp/2) (regularFamilyKeep_mx F) q · block‖ ≤ C·G·control²·(1+|ht|+height)^degree·Z^(κ−reserve/8)`.
+* `Admission/SelectedRegularSeedColumn` (namespace `QRH.MixedStep.SeedColumn`): `divisors_dvd`, `seedColumn`, `seedColumn_live`.
+The former module 51 (`RegularJointSupplier_mx`) is folded into `Downstream/Supplier3At` (`regular_supplier3_at`, task B): the contract is proved directly from
+`regular_canonical_joint_mx`, `regular_point_supplier_rm_mx` and the node lemmas of `Downstream/Supplier3`.

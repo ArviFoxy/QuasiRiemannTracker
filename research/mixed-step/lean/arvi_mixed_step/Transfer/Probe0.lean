@@ -1,0 +1,36 @@
+import Submissions.hailey_collet_1252270103.Record1252270103Source.High.GlobalPhysicalAllocationMain
+import Submissions.arvi_repeated_marks_on_sil_face_20261025.FourthPower.MixedSupplierKernel
+import Submissions.arvi_repeated_marks_on_sil_face_20261025.FourthPower.PositiveFamily
+import Submissions.arvi_repeated_marks_on_sil_face_20261025.FourthPower.MixedSupplierPositive
+set_option autoImplicit false
+open OAI OAI.SevenEighths
+#check @QRH.Record1252270103Source.High.CoupledFirst.coefficient
+#check @QRH.Record1252270103Source.High.CoupledFirst.tupleCoefficient
+#check @OAI.SevenEighths.Record1252270103Source.Collision.markedSourceModifier
+#check @OAI.SevenEighths.Record1252270103Source.Collision.markedProduct
+#check @OAI.SevenEighths.Record1252270103Source.sourceModifier
+#check @OAI.SevenEighths.Record1252270103Source.coupledFactor
+#check @OAI.SevenEighths.CenteredMomentSourceMass.finiteColumns
+#check @OAI.SevenEighths.CenteredMomentSourceMass.finiteColumnCoefficient
+#check @OAI.SevenEighths.CenteredMomentCommonRadialData.Input.pools
+#check @OAI.SevenEighths.CenteredMomentSourceProfileMass.profileCoefficient
+#check @OAI.SevenEighths.CenteredMomentHeckeExpansion.rowWeight
+#check @OAI.SevenEighths.CenteredMomentSecondHeightFamily.fixedBadMask
+#check @OAI.SevenEighths.CenteredMomentChildRows.childCharacter
+#check @OAI.SevenEighths.CenteredMomentSourceRow.sourceGenerator
+#check @OAI.SevenEighths.CenteredMomentSourceRow.supportedColumns
+#check @OAI.SevenEighths.CenteredMomentLiveDomain.primaryGaussRow
+#check @OAI.SevenEighths.CenteredMomentLiveDomain.source_gaussPolynomial
+#check @Candidate.FourthPower.MixedRestrictedDictionary.finite_column_sum
+#check @Candidate.FourthPower.MixedSupplierReconstruction.supported_gauss_sum
+#check @Candidate.FourthPower.MixedSelectedCommon.masked_product_rays
+#check @Candidate.FourthPower.GaussTransfer.normalized_fourth_power
+#check @OAI.SevenEighths.CenteredMomentSecondChildProfile.child_ideal_primary
+#check @HeckeFamily.idealCoeff
+#check @OAI.SevenEighths.CenteredMomentFirstColumns.firstPhaseTable_mass
+#check @Candidate.FourthPower.MixedSupplierPositive.first_ray_sq
+#check @Candidate.FourthPower.MixedSupplierPositive.prime_product_gauss_norm
+#check @OAI.SevenEighths.CenteredMomentFirstAmplificationChoice.dyadic_energy_le_sum
+#check @OAI.SevenEighths.CenteredMomentFirstAmplificationChoice.dyadRows
+#check @OAI.IdealDivisorBound.ideal_divisor_small_power
+#check @OAI.ProbeSelectedPrimeSums.finite_ideal_count

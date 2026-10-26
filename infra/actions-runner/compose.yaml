@@ -50,5 +50,5 @@ services:
 
 networks:
   runner-internal:
-    name: qrh-runner-internal
+    name: qrh-runner-internal-${QRH_RUNNER_SLOT:?Select a runner slot with manage.py}
     external: true

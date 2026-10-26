@@ -17,15 +17,29 @@ import time
 import uuid
 
 ROOT = Path(__file__).resolve().parent
-STATE = Path.home() / ".local/share/qrh-actions-runner"
-SERVICE = "qrh-actions-runner.service"
-CONTAINER = "qrh-actions-runner-job"
-PROXY = "qrh-runner-proxy"
-NETWORK = "qrh-runner-internal"
-EGRESS = "qrh-runner-egress"
+STATE_ROOT = Path.home() / ".local/share/qrh-actions-runner"
+SLOTS = (1, 2, 3)
+SERVICE = "qrh-actions-runner@.service"
 REPOSITORY = "GTimG/QuasiRiemannTracker"
-COMPOSE = ["docker", "compose", "-p", "qrh-runner", "-f", str(ROOT / "compose.yaml")]
 STOPPING = False
+
+
+def configure_slot(slot):
+    global SLOT, STATE, CONTAINER, REGISTER, PROXY, NETWORK, EGRESS, COMPOSE
+    if slot not in SLOTS:
+        raise ValueError("Runner slot must be 1, 2 or 3")
+    SLOT = slot
+    STATE = STATE_ROOT / f"slot-{slot}"
+    CONTAINER = f"qrh-actions-runner-job-{slot}"
+    REGISTER = f"qrh-runner-register-{slot}"
+    PROXY = f"qrh-runner-proxy-{slot}"
+    NETWORK = f"qrh-runner-internal-{slot}"
+    EGRESS = f"qrh-runner-egress-{slot}"
+    COMPOSE = ["docker", "compose", "-p", f"qrh-runner-{slot}", "-f", str(ROOT / "compose.yaml")]
+    os.environ["QRH_RUNNER_SLOT"] = str(slot)
+
+
+configure_slot(1)
 
 
 def run(args, **kwargs):
@@ -37,6 +51,8 @@ def docker_json(*args):
 
 
 def private_state():
+    STATE_ROOT.mkdir(mode=0o700, parents=True, exist_ok=True)
+    STATE_ROOT.chmod(0o700)
     STATE.mkdir(mode=0o700, parents=True, exist_ok=True)
     STATE.chmod(0o700)
 
@@ -83,7 +99,7 @@ def ensure_proxy():
             "--env", "PROXY_DENY_CIDRS=" + ",".join(host_addresses),
             "qrh-runner-proxy:local",
         ], stdout=subprocess.DEVNULL)
-        run(["docker", "network", "connect", "--alias", PROXY, NETWORK, PROXY])
+        run(["docker", "network", "connect", "--alias", "qrh-runner-proxy", NETWORK, PROXY])
     info = docker_json("container", "inspect", PROXY)[0]
     config = info["HostConfig"]
     if (config["Privileged"] or not config["ReadonlyRootfs"] or info["Mounts"]
@@ -105,7 +121,7 @@ def registration_token():
     ], capture_output=True, text=True)
     if result.returncode == 0 and result.stdout.strip():
         return result.stdout.strip()
-    path = STATE / "registration-token"
+    path = STATE_ROOT / "registration-token"
     if path.exists():
         return path.read_text().strip()
     raise RuntimeError("Runner registration requires an admin gh login or a fresh registration token; run manage.py token")
@@ -133,13 +149,13 @@ def register():
     token = registration_token()
     try:
         result = subprocess.run([
-            *COMPOSE, "run", "--rm", "--no-deps", "-T", "--name", "qrh-runner-register",
+            *COMPOSE, "run", "--rm", "--no-deps", "-T", "--name", REGISTER,
             "-e", "ACTIONS_RUNNER_PRINT_LOG_TO_STDOUT=0",
-            "-e", f"QRH_RUNNER_NAME=qrh-docker-{uuid.uuid4().hex[:12]}", "runner", "--register",
+            "-e", f"QRH_RUNNER_NAME=qrh-docker-{SLOT}-{uuid.uuid4().hex[:12]}", "runner", "--register",
         ], input=(token + "\n").encode(), stdout=subprocess.PIPE, timeout=120)
     finally:
         del token
-        subprocess.run(["docker", "rm", "--force", "qrh-runner-register"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        subprocess.run(["docker", "rm", "--force", REGISTER], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     if result.returncode:
         raise RuntimeError("Ephemeral runner registration failed; refresh the registration token or admin gh login")
     identity = validate_identity(result.stdout)
@@ -193,16 +209,18 @@ def serve():
 def install_service():
     unit = Path.home() / ".config/systemd/user" / SERVICE
     unit.parent.mkdir(parents=True, exist_ok=True)
+    legacy = unit.with_name("qrh-actions-runner.service")
+    if legacy.exists():
+        run(["systemctl", "--user", "disable", "--now", legacy.name])
     unit.write_text(f"""[Unit]
-Description=Isolated ephemeral GitHub Actions runner (Docker)
+Description=Isolated ephemeral GitHub Actions runner (Docker slot %i)
 After=network-online.target
 
 [Service]
 Type=simple
 WorkingDirectory={ROOT}
-ExecStart=/usr/bin/python3 {ROOT / 'manage.py'} serve
-ExecStopPost=-/usr/bin/env docker rm --force {CONTAINER}
-ExecStopPost=-/usr/bin/env docker rm --force qrh-runner-register
+ExecStart=/usr/bin/python3 {ROOT / 'manage.py'} serve --slot %i
+ExecStopPost=-/usr/bin/env docker rm --force qrh-actions-runner-job-%i qrh-runner-register-%i
 Environment=PATH=/usr/local/bin:/usr/bin:/bin:/snap/bin
 UMask=0077
 LogRateLimitIntervalSec=30s
@@ -214,14 +232,19 @@ TimeoutStopSec=45
 WantedBy=default.target
 """)
     run(["systemctl", "--user", "daemon-reload"])
-    run(["systemctl", "--user", "enable", SERVICE])
+    run(["systemctl", "--user", "enable", *[f"qrh-actions-runner@{slot}.service" for slot in SLOTS]])
     print(f"Installed {unit}; use manage.py start after registration.")
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("command", choices=["build", "token", "register", "install-service", "start", "stop", "status", "serve"])
-    command = parser.parse_args().command
+    parser.add_argument("--slot", type=int, choices=SLOTS, help="select one slot; start/stop/status default to all three")
+    arguments = parser.parse_args()
+    command = arguments.command
+    if command in ("serve", "register") and arguments.slot is None:
+        parser.error(f"{command} requires --slot")
+    configure_slot(arguments.slot or 1)
     private_state()
     if command == "build":
         run([*COMPOSE, "build", "runner"])
@@ -230,7 +253,7 @@ def main():
         token = getpass.getpass("GitHub runner registration token: ") if sys.stdin.isatty() else sys.stdin.readline().strip()
         if not token or len(token) > 1024 or any(character.isspace() for character in token):
             raise RuntimeError("Invalid registration token")
-        private_write(STATE / "registration-token", token.encode())
+        private_write(STATE_ROOT / "registration-token", token.encode())
         print("Registration token stored privately on the host; it is never passed to jobs.")
     elif command == "register":
         with open(STATE / "supervisor.lock", "w") as lock:
@@ -244,7 +267,9 @@ def main():
     elif command == "serve":
         serve()
     else:
-        run(["systemctl", "--user", command, SERVICE, *( ["--no-pager"] if command == "status" else [])])
+        slots = (arguments.slot,) if arguments.slot else SLOTS
+        units = [f"qrh-actions-runner@{slot}.service" for slot in slots]
+        run(["systemctl", "--user", command, *units, *(["--no-pager"] if command == "status" else [])])
 
 
 if __name__ == "__main__":

@@ -118,10 +118,11 @@ class IdentityLifecycleTests(unittest.TestCase):
     def setUp(self):
         self.temporary = tempfile.TemporaryDirectory()
         self.addCleanup(self.temporary.cleanup)
-        self.state = Path(self.temporary.name)
+        root = Path(self.temporary.name)
+        self.state = root / "slot-1"
         self.registered = []
         self.started = []
-        for target, value in (("STATE", self.state), ("STOPPING", False)):
+        for target, value in (("STATE_ROOT", root), ("STATE", self.state), ("STOPPING", False)):
             patcher = patch.object(manage, target, value)
             patcher.start()
             self.addCleanup(patcher.stop)
@@ -242,10 +243,13 @@ class RegistrationIsolationTests(unittest.TestCase):
     def setUp(self):
         temporary = tempfile.TemporaryDirectory()
         self.addCleanup(temporary.cleanup)
-        self.state = Path(temporary.name)
-        patcher = patch.object(manage, "STATE", self.state)
-        patcher.start()
-        self.addCleanup(patcher.stop)
+        root = Path(temporary.name)
+        self.state = root / "slot-1"
+        self.state.mkdir()
+        for target, value in (("STATE_ROOT", root), ("STATE", self.state)):
+            patcher = patch.object(manage, target, value)
+            patcher.start()
+            self.addCleanup(patcher.stop)
         patcher = patch.object(manage, "registration_token", return_value="registration-token-test-secret")
         patcher.start()
         self.addCleanup(patcher.stop)
@@ -295,8 +299,99 @@ class RegistrationIsolationTests(unittest.TestCase):
         with patch.object(manage.subprocess, "run", side_effect=execute):
             with self.assertRaises(subprocess.TimeoutExpired):
                 manage.register()
-        self.assertIn(["docker", "rm", "--force", "qrh-runner-register"], cleanup)
+        self.assertIn(["docker", "rm", "--force", manage.REGISTER], cleanup)
         self.assertFalse((self.state / "pending-identity.tar").exists())
+
+
+class SlotIsolationTests(unittest.TestCase):
+    def setUp(self):
+        temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(temporary.cleanup)
+        self.root = Path(temporary.name)
+        self.enterContext(patch.multiple(manage, **{
+            name: getattr(manage, name) for name in
+            ("SLOT", "STATE", "CONTAINER", "REGISTER", "PROXY", "NETWORK", "EGRESS", "COMPOSE", "STOPPING")
+        }))
+        self.enterContext(patch.object(manage, "STATE_ROOT", self.root))
+        self.enterContext(patch.dict(manage.os.environ))
+
+    def test_slots_have_separate_resources_and_private_identity_storage(self):
+        configurations = []
+        for slot in manage.SLOTS:
+            manage.configure_slot(slot)
+            manage.private_state()
+            configurations.append((manage.STATE, manage.CONTAINER, manage.REGISTER,
+                                   manage.PROXY, manage.NETWORK, manage.EGRESS, manage.COMPOSE[3]))
+            self.assertEqual(manage.os.environ["QRH_RUNNER_SLOT"], str(slot))
+            self.assertEqual(manage.STATE.stat().st_mode & 0o777, 0o700)
+        self.assertEqual(self.root.stat().st_mode & 0o777, 0o700)
+        for resources in zip(*configurations):
+            self.assertEqual(len(set(resources)), 3)
+
+    def test_all_slots_read_the_shared_token_without_using_slot_local_tokens(self):
+        manage.private_write(self.root / "registration-token", b"shared-host-token")
+        with patch.object(manage.subprocess, "run", return_value=subprocess.CompletedProcess([], 1, stdout="")):
+            for slot in manage.SLOTS:
+                manage.configure_slot(slot)
+                manage.private_state()
+                manage.private_write(manage.STATE / "registration-token", b"wrong-slot-token")
+                self.assertEqual(manage.registration_token(), "shared-host-token")
+
+    def test_stopping_one_slot_preserves_other_slots_and_pending_identities(self):
+        pending = []
+        for slot in manage.SLOTS:
+            manage.configure_slot(slot)
+            manage.private_state()
+            path = manage.STATE / "pending-identity.tar"
+            manage.private_write(path, identity_archive())
+            pending.append(path)
+        manage.configure_slot(2)
+        with patch.object(manage.subprocess, "run") as execute:
+            manage.stop_job()
+        self.assertEqual(execute.call_args.args[0], ["docker", "stop", "--time", "20", "qrh-actions-runner-job-2"])
+        self.assertEqual(execute.call_count, 1)
+        self.assertTrue(all(path.exists() for path in pending))
+
+    def test_invalid_slot_and_implicit_serve_are_rejected_before_host_actions(self):
+        before = manage.STATE, manage.CONTAINER, manage.os.environ.get("QRH_RUNNER_SLOT")
+        for slot in (0, 4, -1, "2", None):
+            with self.subTest(slot=slot), self.assertRaises(ValueError):
+                manage.configure_slot(slot)
+        self.assertEqual(before, (manage.STATE, manage.CONTAINER, manage.os.environ.get("QRH_RUNNER_SLOT")))
+        for arguments in (["serve"], ["register"], ["start", "--slot", "4"]):
+            with patch.object(manage.sys, "argv", ["manage.py", *arguments]):
+                with patch.object(manage.sys, "stderr", io.StringIO()), patch.object(manage, "private_state") as state:
+                    with patch.object(manage, "run") as execute, self.assertRaises(SystemExit):
+                        manage.main()
+                    state.assert_not_called()
+                    execute.assert_not_called()
+
+    def test_start_stop_status_target_all_slots_or_only_the_selected_slot(self):
+        for command in ("start", "stop", "status"):
+            for selected in (None, 2):
+                arguments = [command] + (["--slot", str(selected)] if selected else [])
+                with self.subTest(command=command, slot=selected), patch.object(manage.sys, "argv", ["manage.py", *arguments]):
+                    with patch.object(manage, "run") as execute:
+                        manage.main()
+                slots = (selected,) if selected else manage.SLOTS
+                expected = ["systemctl", "--user", command, *[f"qrh-actions-runner@{slot}.service" for slot in slots]]
+                if command == "status":
+                    expected.append("--no-pager")
+                self.assertEqual(execute.call_args.args[0], expected)
+
+    def test_install_stops_singleton_before_enabling_three_template_instances(self):
+        units = self.root / ".config/systemd/user"
+        units.mkdir(parents=True)
+        (units / "qrh-actions-runner.service").write_text("legacy service")
+        with patch.object(manage.Path, "home", return_value=self.root), patch.object(manage, "run") as execute:
+            manage.install_service()
+        commands = [call.args[0] for call in execute.call_args_list]
+        disable = ["systemctl", "--user", "disable", "--now", "qrh-actions-runner.service"]
+        enable = ["systemctl", "--user", "enable", *[f"qrh-actions-runner@{slot}.service" for slot in manage.SLOTS]]
+        self.assertLess(commands.index(disable), commands.index(enable))
+        unit = (units / manage.SERVICE).read_text()
+        self.assertIn("serve --slot %i", unit)
+        self.assertIn("qrh-actions-runner-job-%i qrh-runner-register-%i", unit)
 
 
 if __name__ == "__main__":

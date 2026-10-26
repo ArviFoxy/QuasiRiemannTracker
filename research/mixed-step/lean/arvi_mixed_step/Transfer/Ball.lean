@@ -78,7 +78,7 @@ theorem ball_energy_nonneg {α : Type*} (S : Finset α) (a : α → O)
     (ha : ∀ i, Supported (Ideal.span {a i})) (c : α → ℂ) (H : ℝ) (hH : 0 < H) :
     0 ≤ (gaussEnergy S a ha c ballProfile H).re :=
   (gaussEnergy_hasSum_re S a ha c ballProfile H hH).nonneg
-    (fun z => mul_nonneg (sq_nonneg _) (ballProfile_nonneg _))
+    (fun _ => mul_nonneg (sq_nonneg _) (ballProfile_nonneg _))
 
 /-- For a nonempty selected block the selected Gauss sum vanishes at frequency 0. -/
 theorem selScalar_zero {ι : Type*} [Fintype ι] [DecidableEq ι] (s : Input ι) (J : Finset ι)

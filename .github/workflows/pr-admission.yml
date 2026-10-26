@@ -22,6 +22,8 @@ concurrency:
   cancel-in-progress: true
 jobs:
   prepare:
+    if: github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+    # Jobs with write permissions stay separate from the Docker test runner.
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     permissions:
@@ -66,6 +68,7 @@ jobs:
   verify:
     needs: prepare
     if: needs.prepare.outputs.verify == 'true'
+    # The proof sandbox needs AppArmor setup and delegated cgroups.
     runs-on: ubuntu-24.04
     strategy:
       fail-fast: false

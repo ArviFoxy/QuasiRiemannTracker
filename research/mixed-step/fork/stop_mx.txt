@@ -1,0 +1,6 @@
+clean	QRH.Record1252270103Source.Admission.SelectedHighCofactorFamily.Selection
+clean	QRH.Record1252270103Source.Admission.SelectedSecondPhase.FirstStage
+clean	OAI.SevenEighths.CenteredMomentAmplificationChildInput.child
+clean	QRH.Record1252270103Source.High.GlobalPhysical.correctedChildGaussEnergy
+clean	QRH.Record1252270103Source.InitialRegularToTruncated.eventual_selected_second
+clean	QRH.Record1252270103Source.Low.SelectedExceptionalNormalized.CorrectedFamilyData

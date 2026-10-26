@@ -1,0 +1,19 @@
+theta* = 8742701
+--- at theta*:
+smallest receipts: [('principal_z', 9.07e-05), ('conductor_kink_before_top', 0.0007519), ('floor', 0.001256), ('incumbent', 0.0014598), ('prime_supply', 0.0108233)]
+geometry: {'theta': 0.87427, 'h': 0.8044, 'ell': 0.169586, 'x': 0.365186, 'y': 0.465227, 'kap': 0.74854, 'sP': 0.058, 'd0': 0.005, 'dplus': 0.8044, 'ds': 0.738168, 'dk': 0.803648}
+edge old_small d=0.00500 C=0.001113: 1 rects, min ret 8.542e-02 at old box [(0.0, 0.75), (0.0, 0.5)], branches {'old': 1}
+edge old_peak d=0.46523 C=0.103586: 1 rects, min ret 5.768e-02 at old box [(0.0, 0.75), (0.0, 0.5)], branches {'old': 1}
+edge old_switch d=0.73817 C=0.042814: 2 rects, min ret 1.195e-02 at old box [(0.375, 0.75), (0.0, 0.5)], branches {'old': 2}
+edge new_switch d=0.73817 C=0.042814: 2 rects, min ret 1.195e-02 at old box [(0.375, 0.75), (0.0, 0.5)], branches {'old': 2}
+edge new_kink d=0.80365 C=0.046612: 16 rects, min ret 8.900e-05 at old box [(0.375, 0.3867), (0.4844, 0.5)], branches {'old': 12, 'Ccap': 4}
+edge new_top d=0.80440 C=0.046247: 100 rects, min ret 2.197e-07 at Pcap box [(0.3748, 0.3749), (0.4996, 0.4997)], branches {'old': 26, 'Pcap': 37, 'Ccap': 37}
+--- at theta* - 1:
+smallest receipts: [('principal_z', 9.07e-05), ('conductor_kink_before_top', 0.0007532), ('floor', 0.0012557), ('incumbent', 0.00146), ('prime_supply', 0.0108238)]
+geometry: {'theta': 0.87427, 'h': 0.8044, 'ell': 0.169587, 'x': 0.365187, 'y': 0.465227, 'kap': 0.74854, 'sP': 0.058, 'd0': 0.005, 'dplus': 0.8044, 'ds': 0.738167, 'dk': 0.803647}
+edge old_small d=0.00500 C=0.001113: 1 rects, min ret 8.542e-02 at old box [(0.0, 0.75), (0.0, 0.5)], branches {'old': 1}
+edge old_peak d=0.46523 C=0.103585: 1 rects, min ret 5.768e-02 at old box [(0.0, 0.75), (0.0, 0.5)], branches {'old': 1}
+edge old_switch d=0.73817 C=0.042814: 2 rects, min ret 1.195e-02 at old box [(0.375, 0.75), (0.0, 0.5)], branches {'old': 2}
+edge new_switch d=0.73817 C=0.042814: 2 rects, min ret 1.195e-02 at old box [(0.375, 0.75), (0.0, 0.5)], branches {'old': 2}
+edge new_kink d=0.80365 C=0.046612: 16 rects, min ret 8.923e-05 at old box [(0.375, 0.3867), (0.4844, 0.5)], branches {'old': 12, 'Ccap': 4}
+edge new_top d=0.80440 C=0.046246: FAIL cover failed at box [(0.37467384338378906, 0.3746795654296875), (0.4999961853027344, 0.5)]

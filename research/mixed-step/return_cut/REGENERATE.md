@@ -117,6 +117,52 @@ reports that the declared `theta` fails, set `QRH_THETA` at or above the reporte
 the new `ell`, `y`, `h` stay inside `QRH_RELAXED`; `FinalReturn/TransportInstances.lean` proves
 `BoundsR` for the concrete values, so the build checks it).
 
-## 5. Results
+## 5. Results (2026-10-26)
 
-(filled in below)
+**Builds** (Lean 4.34.1, `build.py`, 2 Lean processes, the machine shared with other agents: load
+average ≈ 8.7 on 4 cores during the second build).
+
+| run | faces | modules compiled | wall | sum of module times | status |
+|---|---|---|---|---|---|
+| 1 (from scratch) | `faces_exact.json` | 172 (119 `ReturnD`, 53 `FinalReturn`) | 1318 s | 2528 s | ALL-OK |
+| 2 (incremental) | `faces_k92.json` | 53 (`FinalReturn`; `ReturnD` unchanged) | 713 s + 36 s | 1285 s + 36 s | ALL-OK |
+| 3 (`run_all.sh`, rerun) | `faces_k92.json` | 0 (0 files rewritten) | 34 s in all | — | ALL-OK |
+
+Run 2 stopped once after 50 modules with "blocked" and no failure: `build.py` did not rescan when a
+batch of ready modules was entirely up to date. Fixed (`build.py` now rescans); the rerun compiled
+the last 3 modules. A check of all 172 oleans (each newer than its source and than its package
+dependencies' oleans; no external olean rebuilt after the first build started) found no
+inconsistency. The oleans take 282 MB.
+
+**No proof needed repair.** Every proof compiled unchanged, including the transport proofs that use
+the `BoundsR` bounds numerically (`GenericFeedback` `5·dp/288 ≤ 1/50`, `FinalFixedHigh`
+`h + rowPadding ≤ 7/8 − 1/100`, `TransportGeometry.four_ell_lt_h`, `PrincipalRemainderBounds`,
+`FloorExponent`, `NonfloorTransport`), the uses of `dMinus_lower` (now `1/2 < dMinus`; 7 occurrences
+in 5 modules), the concrete `dMinus_lower` proof of `FinalSchedule`, and `finalBounds : BoundsR` at
+the new values.
+
+**Axioms** (`AxiomsCheck.lean`, against the final build):
+
+```
+'QRH.RepeatedMarks.Return.Final.beta_of_global_sources' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QRH.RepeatedMarks.Return.beta_of_two_global_sources' depends on axioms: [propext, Classical.choice, Quot.sound]
+'interface_beta' depends on axioms: [propext, Classical.choice, Quot.sound]
+```
+
+Every `#print axioms` of the package's modules (logs of both builds) prints the same three axioms.
+`AxiomsCheck.lean` also checks the constants in the kernel (`theta = 34971/40000`, `h`, `naturalK`,
+`numeratorCap`, `GenericArithmetic.cap`, `countGlobal`, `physicalGlobal`, `countWindow`, `branchCap`,
+and the four face rationals, by `rfl`) and prints the relaxed field and bounds.
+
+**Interface for the source side** (`interface_beta` in `AxiomsCheck.lean`, as PR 76's
+`Graph/Endpoint.lean`): two `Record1252270103Finite.Source` values `fC`, `fP` with
+
+- `fC.B = 4553636084322336971646479/4724464025600000000000000`, `fC.L = 4954148591857540990249/2362232012800000000000`, `fC.cap = 3/40`;
+- `fP.B = 74757332803822334159435159927/77405618595430400000000000000`, `fP.L = 5033014753577776399373/2362232012800000000000`, `fP.cap = 3/40`;
+
+(`q` and the fees are free) and `51/100 ≤ β → QRH.Record1252270103Graph.P fC ∧ QRH.Record1252270103Graph.P fP`
+give `β ≤ QRH.RepeatedMarks.Return.theta`. Here `Graph.P s = GlobalSource s.B s.L s.cap =
+UniformUnitFaceSource (globalFace s.B s.L s.cap)`, which is `countGlobal` and `physicalGlobal` up to the
+casts ℚ → ℝ. The natural cost `2β − 1 ≤ naturalK/6 = 3/4` comes from the baseline's `β ≤ 7/8`
+(`natural_cap_return`, from PR 76's `QRH.RepeatedMarks.beta_le_seven_eighths` in `Graph.NaturalCap`),
+the same `K = 9/2` the source chain uses.

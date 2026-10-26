@@ -67,7 +67,8 @@ with ThreadPoolExecutor(max_workers=JOBS) as pool:
                 continue
             running[pool.submit(build, m)] = m
         if not running:
-            if pending:
+            # up-to-date modules were only marked done: rescan unless nothing pending is ready
+            if pending and not any(set(mods[m]) <= done for m in pending):
                 print(f'blocked by failures: {len(pending)} modules')
                 break
             continue

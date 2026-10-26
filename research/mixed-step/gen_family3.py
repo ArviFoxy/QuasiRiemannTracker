@@ -534,7 +534,7 @@ def gen_chain(fam, fan, out, iP=35747):
     for k in range(1, nfan + 1):
         good = "QRH.RepeatedMarks.start_good" if k == 1 else f"(parent_good_of_high3 fan{k}_valid)"
         L.append(f"  have f{k} := step _ _ _ hβ hk fan{k}_valid fan{k}_x {good} "
-                 f"(by unfold QRH.Record1252270103Graph.NFAccounting; decide) f{k-1} f{k-1}")
+                 f"(by unfold QRH.Record1252270103Graph.NFAccounting; decide +kernel) f{k-1} f{k-1}")
     prev = f"f{nfan}"
     for j in range(npc):
         L.append(f"  have j{j} := step _ _ _ hβ hk junction{j}_valid junction{j}_x (parent_good_of_high3 junction{j}_valid) "

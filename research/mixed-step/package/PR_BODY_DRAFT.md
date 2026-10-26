@@ -5,8 +5,7 @@ QRH-Decimal: 0.874275
 Proves that every Dirichlet L-function L(s, χ), for every positive modulus, is nonzero for Re(s) > 34971/40000 = 0.874275, excluding the principal pole.
 
 For comparison:
-- current verified bound: 0.8746935 (PR #74, Sil);
-- open: PR #76 (ours, 0.8746075). This submission builds on it.
+- current verified bound: 0.8746075 (PR #76, ours). This submission builds on it and imports its package unchanged.
 
 The gain, −3.3e-4 against PR #76, comes from one new theorem: a **mixed source step**. It puts Sil's fourth-power transfer inside Collet's pool step.
 
@@ -29,7 +28,7 @@ Collet's main-layer machinery is reused unchanged on the residual.
 
 ## The source chain
 
-1. **Start.** Sil's fourth-power face `GlobalSource (99999/100000) (93/25) (3/50)`, through PR #76's `Graph/Start.lean`, at s = 0.016.
+1. **Start.** Sil's fourth-power face `GlobalSource (99999/100000) (93/25) (3/50)`, imported from PR #76 (`Graph/Start.lean`), at s = 0.016.
 2. **Fan.** 46 mixed steps (`Fan/Steps.lean`) take the slope from 3.72 to 2.5220. They are faces through one point on Sil's line and reach the stall line `L/B = 6q/(1+q)`, q = 0.7499.
 3. **Face family.** A fine face family follows the stall line as q decreases: 8 polynomial pieces, each with 2^16 grid steps and uniform certificates (`Family/`). The threshold `q = (1 − den)L₀/(6B₀ − L₀)` makes the mixed denominator exactly `2⁻¹⁵` at every step. The selected width `δ = Nd/Dd` makes every gate times `Dd` a polynomial in the grid variable.
 4. **Final faces.** count face (0.9638418, 2.0972320) and physical face (0.9657869, 2.1306183), both with cap 3/40.

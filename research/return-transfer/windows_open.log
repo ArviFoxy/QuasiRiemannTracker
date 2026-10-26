@@ -7,3 +7,4 @@ m_-=0, aff s_+=cap, cap z in {29/500, cap}, crossover join: theta* = 8741364
 W + extra capped (cw-0.0005, cw-0.002): theta* = 8741364
 W + weak j in {0,4,8}: theta* = 8741364
 W + affine also at sC: theta* = 8741364
+minimal-diff Lemma W (Collet candidates, s_+=749/10000 both faces, m_-=0, crossover): 8741364

@@ -25,7 +25,7 @@ The metadata and PR body state these. Each must be true of the final package.
       parses (it parses now).
 - [ ] Canonical wrapper (`verifier/challenge.mjs`) at 34971/40000 compiles against `Candidate.bound`.
 - [ ] Full build with the pinned toolchain; export size and time measured, within the hosted budget.
-- [ ] The branch stacks on PR 76's submission branch; all changed files are under
+- [ ] The branch is based on upstream main (PR 76 is merged, and its sources are byte-identical to the local copy); all changed files are under
       `submissions/arvi-mixed-step-20261026/`.
 - [ ] Commits authored by Arvi <arvi.pub@gmail.com> with the Claude co-author line; no session links
       anywhere.

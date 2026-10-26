@@ -23,46 +23,6 @@ done
 printf '%s\n' "$PATH" > /runner/.path
 : > /runner/.env
 
-if [[ "${1:-}" == "--self-test" ]]; then
-  python3 - <<'PY'
-import glob
-import json
-import os
-from pathlib import Path
-import subprocess
-
-status = dict(line.split(":", 1) for line in Path("/proc/self/status").read_text().splitlines())
-root_mount = next(line.split() for line in Path("/proc/mounts").read_text().splitlines() if line.split()[1] == "/")
-cpu_quota, cpu_period = Path("/sys/fs/cgroup/cpu.max").read_text().split()
-checks = {
-    "unprivileged_uid": os.getuid() == 10001,
-    "read_only_root": "ro" in root_mount[3].split(","),
-    "no_capabilities": all(int(status[key].strip(), 16) == 0 for key in ("CapInh", "CapPrm", "CapEff", "CapBnd", "CapAmb")),
-    "no_new_privileges": status["NoNewPrivs"].strip() == "1",
-    "seccomp_enabled": status["Seccomp"].strip() == "2",
-    "apparmor_enabled": Path("/proc/self/attr/current").read_text().startswith("docker-default (enforce)"),
-    "no_docker_socket": not any(Path(path).exists() for path in ("/var/run/docker.sock", "/run/docker.sock")),
-    "private_cgroup_namespace": Path("/proc/self/cgroup").read_text().strip() == "0::/",
-    "bounded_cpu": cpu_quota != "max" and int(cpu_quota) <= 4 * int(cpu_period),
-    "bounded_memory": int(Path("/sys/fs/cgroup/memory.max").read_text()) <= 8 * 1024**3,
-    "swap_disabled": Path("/sys/fs/cgroup/memory.swap.max").read_text().strip() == "0",
-    "bounded_processes": int(Path("/sys/fs/cgroup/pids.max").read_text()) <= 512,
-    "node_available": subprocess.check_output(["node", "--version"], text=True).strip() == "v22.22.1",
-    "runner_executable": subprocess.check_output(["/runner/bin/Runner.Listener", "--version"], text=True,
-        env={**os.environ, "ACTIONS_RUNNER_PRINT_LOG_TO_STDOUT": "0"}).strip() == "2.338.0",
-}
-browser_paths = glob.glob("/opt/playwright/chromium-*/chrome-linux/chrome") + glob.glob("/opt/playwright/chromium-*/chrome-linux64/chrome")
-checks["chromium_installed"] = len(browser_paths) == 1
-if browser_paths:
-    browser = subprocess.run([browser_paths[0], "--headless", "--no-sandbox", "--disable-gpu", "--dump-dom", "data:text/html,<p>runner-browser-ok</p>"], capture_output=True, text=True, timeout=30)
-    checks["chromium_runs"] = browser.returncode == 0 and "runner-browser-ok" in browser.stdout
-print(json.dumps(checks, indent=2))
-if not all(checks.values()):
-    raise SystemExit("Runner isolation self-test failed")
-PY
-  exit 0
-fi
-
 if [[ "${1:-}" == "--register" && "$#" == 1 ]]; then
   # A separate, job-free container consumes this short-lived token. Its only
   # stdout is the new ephemeral runner identity for the trusted host launcher.
@@ -91,7 +51,7 @@ if [[ "${1:-}" == "--register" && "$#" == 1 ]]; then
 fi
 
 if [[ "$#" != 0 ]]; then
-  echo "Usage: runner-entrypoint [--self-test|--register]" >&2
+  echo "Usage: runner-entrypoint [--register]" >&2
   exit 1
 fi
 

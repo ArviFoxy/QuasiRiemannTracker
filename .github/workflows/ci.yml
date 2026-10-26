@@ -32,7 +32,7 @@ jobs:
           QRH_DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
       - name: Configure GitHub Pages
         id: pages
-        if: github.event_name != 'pull_request' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+        if: github.event_name != 'pull_request'
         uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6
       - run: npm run check
         env:
@@ -50,16 +50,14 @@ jobs:
           name: browser-evidence
           path: test-results/
       - name: Upload website
-        if: success() && github.event_name != 'pull_request' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+        if: success() && github.event_name != 'pull_request'
         uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5
         with:
           path: dist/
   deploy:
     needs: test
     if: github.event_name != 'pull_request' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
-    # Issue publishing credentials only to a separate GitHub-hosted VM.
     runs-on: ubuntu-24.04
-    timeout-minutes: 10
     permissions:
       pages: write
       id-token: write

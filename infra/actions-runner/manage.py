@@ -220,15 +220,12 @@ WantedBy=default.target
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("command", choices=["build", "check", "token", "register", "install-service", "start", "stop", "status", "serve"])
+    parser.add_argument("command", choices=["build", "token", "register", "install-service", "start", "stop", "status", "serve"])
     command = parser.parse_args().command
     private_state()
     if command == "build":
         run([*COMPOSE, "build", "runner"])
         run(["docker", "build", "-t", "qrh-runner-proxy:local", "-f", str(ROOT / "Proxy.Dockerfile"), str(ROOT)])
-    elif command == "check":
-        ensure_proxy()
-        run([*COMPOSE, "run", "--rm", "--no-deps", "-T", "runner", "--self-test"])
     elif command == "token":
         token = getpass.getpass("GitHub runner registration token: ") if sys.stdin.isatty() else sys.stdin.readline().strip()
         if not token or len(token) > 1024 or any(character.isspace() for character in token):

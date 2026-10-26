@@ -1,0 +1,4 @@
+baseline windows {} 8742701
+baseline windows {'dC': Fraction(1, 1000)} 8742490
+baseline windows {'dC': Fraction(1, 200)} 8741649
+baseline windows {'dE': Fraction(-1, 1000)} 8740597

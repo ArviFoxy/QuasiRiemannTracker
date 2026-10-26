@@ -106,3 +106,14 @@ if __name__ == '__main__':
             else:
                 spec.append(kv)
         print(a, theta(','.join(spec), lev), flush=True)
+
+# ---------- old-branch count shift (candidate 2: a better old count) ----------
+# 'dRold': R_old -> R_old - dRold  (N_old -> N_old - dRold * J_old)
+_old_cur = CR.branch_old
+def branch_old_shift(kappa):
+    br = _old_cur(kappa)
+    s = LEV.get('dRold')
+    if s:
+        br = dict(br); br['N'] = sub(br['N'], smul(s, br['J']))
+    return br
+CR.branch_old = branch_old_shift

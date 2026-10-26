@@ -1695,3 +1695,16 @@ slot; `mixed-slots/`).
   - **New trap found by the design agent.** For `reflected = false` the first-layer scalar has slope +1
     in A, so evaluating it at the virtual parent undercounts by `Z^{2δ}`. The scalar must stay at
     the original A.
+- **HIGH count at p = 1/2: no-go, and where the value is** (`new-high/REPORT.md`, 2026-10-26).
+  - **Closed form.** The binding HIGH branch is a triple point. Its floor is
+    `q_min = κ(t_cut − 1)/(t_cut − T)`, and with the mixed LOW pin the chain is an ODE that matches the
+    full-gate flow to 2e-5.
+  - **No-go theorem.** With the present inputs no argument improves the saturated count. The LOW
+    route reaches exactly `ρ < (1+q)/(6β)`.
+  - **Priced open inputs:**
+    - slot cost c < 2 in Theorem 7.3: c = 1.8 gives θ* = 0.8739327;
+    - long slope κ < 5/6: κ = 0.80 gives 0.8740643.
+    Both are worth 10–50× more in the return's count than in the faces.
+  - **Lead to check.** The probe reports that MF3.38's descent counts the slot width twice (in
+    `D₀ = r + z` and as the child's burden `z₀`). Compare this with the re-reflection argument above,
+    which concluded that slot cost 2 is intrinsic.

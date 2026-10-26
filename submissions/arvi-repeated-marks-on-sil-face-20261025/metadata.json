@@ -10,7 +10,6 @@
   "license": "Apache-2.0; inherited notices and dependency licenses retained.",
   "builds_on": [
     "sil-fourth-power-20261025",
-    "arvi-single-stage-20261025",
     "arvi-repeated-marks-20261024",
     "hailey-collet-1252270103",
     "openai-baseline"

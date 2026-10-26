@@ -11,8 +11,11 @@ The metadata and PR body state these. Each must be true of the final package.
       import graph.
 
 **Numbers**
-- [x] Faces C and P: the exact values in `faces_k92.json` match `FinalReturn/ReturnConstants`.
-- [x] Return: θ = 34971/40000, θ* = 0.8742701, 67 rows, 25 windows (return agent's report).
+- [x] Faces C and P: the exact values in `faces_k92_ramp.json` (caps 111411/1310720, 527267/6553600) match
+      `FinalReturn/ReturnConstants` and the dev `Graph/MixedChain` (`faceC_cap`, `faceP_cap`).
+- [x] Return: θ = 437037/500000 (0.874074), θ* = 0.8740728, h = 403/500, Lemma W windows, 33 rows, 14 windows;
+      161 modules ALL-OK, axioms clean (return agent, 2026-10-26).
+- [x] Piece 7 with the cap ramp `3/40 + y/100` (`Certs3c`) built; `mixed_chain_sources` axioms clean.
 - [ ] Fan: 46 steps. Family: 8 pieces, 2^16 grid steps each. Junctions: 8. All built.
 
 **Packaging**
@@ -21,9 +24,9 @@ The metadata and PR body state these. Each must be true of the final package.
       the closure (`package_mixed.py` checks this).
 - [ ] Every forked file keeps the original copyright line verbatim, plus a fork note. Every new file has
       an origin note.
-- [ ] `metadata.json` passes `verifier/submission-metadata.mjs` (it passes now). The PR declaration
-      parses (it parses now).
-- [ ] Canonical wrapper (`verifier/challenge.mjs`) at 34971/40000 compiles against `Candidate.bound`.
+- [x] `metadata.json` passes upstream main's `validateSubmissionMetadata` (re-checked at 0.874074); QRH-Decimal 0.874074 is
+      the exact value of 437037/500000.
+- [ ] Canonical wrapper (`verifier/challenge.mjs`) at 437037/500000 compiles against `Candidate.bound`.
 - [ ] Full build with the pinned toolchain; export size and time measured, within the hosted budget.
 - [ ] The branch is based on upstream main (PR 76 is merged, and its sources are byte-identical to the local copy); all changed files are under
       `submissions/arvi-mixed-step-20261026/`.

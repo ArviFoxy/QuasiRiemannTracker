@@ -789,3 +789,36 @@ What `regular_supplier3` will assume (one block per node, all from the ledger at
 
 N3/N6 agent: please check that this is the family your `pieces_transfer` + `eventual_selected_second` produce (piece `k` gives
 `J := pieceBlock G w mesh k.2`, `Label := {l // pieceKey alloc trans l = k}`, `column ∘ val`, `alloc ∘ val`). Write requested changes here.
+
+### `regular_supplier3`: statement (fork lead, 2026-10-26 ~03:55, green as a definition)
+`Downstream/Contract3.lean` also defines:
+```lean
+structure NodeFacts3 (n low high:Source)(b:ℚ)(reserve θ mesh:ℝ)(G:NodeGrid)(φ:ℚ→ℝ)
+    (hlow:ParentGood low)(ha:0<(n.allowance:ℝ))(hq:(1/2:ℝ)≤(n.q:ℝ))(hq1:(n.q:ℝ)≤1)
+    (hG:GlobalSource (low.B:ℝ) (low.L:ℝ) (low.cap:ℝ))(hθ:0<θ)(δ:ℚ):Prop where
+  price : MixedNodePrice (vnode2 n low b δ (G.theta δ)) low ((b-G.theta δ:ℚ):ℝ) (φ δ)
+  geometry : NodeGeometry_mx (vnode2 n low b δ (G.theta δ)) low ((b-G.theta δ:ℚ):ℝ)
+  gaps : ∀ν∈Set.Icc (n.q:ℝ) (3/4), ActualGaps_rm (vnode2 n low b δ (G.theta δ)) low (some high) ((b-G.theta δ:ℚ):ℝ) ν reserve
+  low_mesh : mesh≤regularLowMesh_mx (vnode2 n low b δ (G.theta δ)) low ((b-G.theta δ:ℚ):ℝ) (φ δ) θ price hlow ha hq hq1 hG hθ
+
+def RegularSupplier3Statement (K:ℚ)(n low high:Source)(b:ℚ)(reserve θ mesh ξ width:ℝ)(G:NodeGrid)(φ:ℚ→ℝ):Prop:=
+  ∀(hf:FixedBudget reserve 100 100 1 θ)(_:0≤mesh)(_:100*mesh≤θ)(_:0<ξ)(_:ξ≤θ)
+    (_:reserve≤(n.allowance:ℝ))(_:0≤(n.highFee:ℝ))(ha:0<(n.allowance:ℝ))(hq:(1/2:ℝ)≤(n.q:ℝ))(hq1:(n.q:ℝ)≤1)
+    (_:ParentGood n)(hlow:ParentGood low)(hG:GlobalSource (low.B:ℝ) (low.L:ℝ) (low.cap:ℝ))
+    (_:(51/100:ℝ)≤HeckeZeroSupremum.beta)(_:HeckeZeroSupremum.beta≤7/8)
+    (_:sourceDen n low≠0)(_:0<49/100-(K:ℝ)*b)(_:(b:ℝ)≤1)
+    (_:0<(n.lowFee:ℝ))(_:mesh<(n.lowFee:ℝ)/2)(_:θ≤PhysicalLowGuard.step n)
+    (_:0≤width)(_:width+G.κ≤θ)
+    (_:22/23≤(high.B:ℝ))(_:(high.B:ℝ)≤1)(_:1<(high.L:ℝ))(_:0≤(high.cap:ℝ))(_:(high.cap:ℝ)<1)
+    (_:UnitFaceSource (globalFace (high.B:ℝ) (high.L:ℝ) (high.cap:ℝ)) (100*mesh) θ)
+    (_:∀δ∈G.nodes,NodeFacts3 n low high b reserve θ mesh G φ hlow ha hq hq1 hG hf.positive δ),
+  RegularJointSupplier3 K n low b mesh ξ θ width G φ
+```
+- The fork lead will prove `regular_supplier3 : RegularSupplier3Statement K n low high b reserve θ mesh ξ width G φ` for all arguments.
+- The conclusion follows Collet's convention: RegularJointSupplier3's `reserve` argument is `θ`, the HIGH budget of `FixedBudget reserve 100 100 1 θ`.
+- Everyone downstream (N6 `balanced_of_regular3`, N7 `nf_step3_of`) may take `RegularSupplier3Statement …` or `RegularJointSupplier3 …` as a hypothesis until it is green.
+- **If the F5 bridge needs one more hypothesis, it is added here, with notice.** The likely candidates are first-layer facts that `MixedGeometry` already has.
+- The cardinality budget is internal (`cardinality_loss_exists`, as in PR 76). `mesh_small` and `θ ≤ allowance/16` follow from `FixedBudget` and
+  `reserve ≤ allowance`.
+- The shift loss is `κ_shift = 2·mesh ≤ θ/50`. It is absorbed by the reserve inside the bridge, at Collet's `RegularFinite` step, so it needs no hypothesis.
+- `regularLowMesh_mx`'s arguments are `n low b φ θ hprice hlow ha hqhalf hq1 hG hθ`, with namespace `QRH.Record1252270103Source.High.GlobalPhysical`.

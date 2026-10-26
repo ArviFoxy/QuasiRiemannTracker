@@ -1,168 +1,197 @@
 # The final return of the mixed-step proof: regeneration and build
 
-The final return half of the new proof, built and checked now: the source half (the mixed source
-step) is formalized separately, and the return only consumes its two faces as hypotheses.
+The final return half of the new proof: the source half (the mixed source step) is formalized
+separately, and the return only consumes its two faces as hypotheses. Current design: **(b)**,
+Lemma W count windows and the face caps of piece 7's cap ramp, **θ = 437037/500000 = 0.874074**.
 
-- **Package.** `Submissions.arvi_mixed_step_20261026` in the Lake project `/home/user/lean-env/qrh`,
-  directories `ReturnD/` (119 modules: Collet's transport layer and generic physical return, forked)
-  and `FinalReturn/` (53 modules: final-stage constants, rows, windows, endpoint). Everything else is
-  imported unchanged: Collet's and the baseline's trees, and `Graph.NaturalCap` of PR 76's package
-  (`β ≤ 7/8`). PR 76's package, Collet's and the baseline's trees are not modified.
+- **Package.** `Submissions.arvi_mixed_step_20261026` in the Lake project `/home/user/lean-env/qrh`.
+  The return is `ReturnD/` (119 modules: Collet's transport layer and generic physical return,
+  forked) and `FinalReturn/` (42 modules: constants, formulas, count windows, rows, endpoint). Other
+  agents keep further modules in the same directory (`Graph/`, `Family/`, `Fan/`, `Finite/`); these
+  scripts never touch them. Imported unchanged: Collet's and the baseline's trees, and
+  `Graph.NaturalCap` of PR 76's package (`β ≤ 7/8`).
 - **Top theorem.** `QRH.RepeatedMarks.Return.Final.beta_of_global_sources`
   (`FinalReturn/EndpointFromSources.lean`):
   `UniformUnitFaceSource countGlobal → UniformUnitFaceSource physicalGlobal →
-   2·β − 1 ≤ naturalK/6 → β ≤ theta`, with `theta = 34971/40000`. The single-stage corollary
+   2·β − 1 ≤ naturalK/6 → β ≤ theta`. Its single-stage corollary
   `QRH.RepeatedMarks.Return.beta_of_two_global_sources` (`FinalReturn/EndpointFromGlobalSources.lean`)
   discharges the natural cost by the baseline's `β ≤ 7/8`, as PR 76 does.
-- **Interface for the source half.** `countGlobal = globalFace countCB countCL (3/40)` and
-  `physicalGlobal = globalFace physicalB physicalLambda (3/40)`, with `globalFace B Λ cap = ⟨B,Λ,0,B,0,cap⟩`
-  (Collet's `SourceInlet`) and the exact faces `C`, `P` of `../faces_k92.json` (the faces the Lean
-  source chain delivers, `Family/Gen/Data3.lean`, `mpiece7`). The first build used the earlier
-  `../faces_exact.json` (Python family, wrong `K`); see §5.
+- **Interface for the source side.** `countGlobal = globalFace countCB countCL capC` and
+  `physicalGlobal = globalFace physicalB physicalLambda capP`, with `globalFace B Λ cap = ⟨B,Λ,0,B,0,cap⟩`
+  and the exact faces of `../faces_k92_ramp.json`. Equivalently (`interface_beta` in
+  `AxiomsCheck.lean`), two `Record1252270103Finite.Source` values `fC`, `fP` with these exact `B`,
+  `L`, `cap` (`q` and the fees are free) and
+  `51/100 ≤ β → QRH.Record1252270103Graph.P fC ∧ QRH.Record1252270103Graph.P fP` give `β ≤ theta`:
 
-## 1. Design (all exact; `return_cut.env`)
+  | face | `B` | `L` | `cap` |
+  |---|---|---|---|
+  | C (`mpiece7` at `1 − Dy`) | `4553636084322336971646479/4724464025600000000000000` (0.9638418) | `4954148591857540990249/2362232012800000000000` (2.0972320) | `111411/1310720` (0.0849998) |
+  | P (`mpiece7` at `35747·Dy`) | `74757332803822334159435159927/77405618595430400000000000000` (0.9657869) | `5033014753577776399373/2362232012800000000000` (2.1306183) | `527267/6553600` (0.0804546) |
+
+  The caps are those of the ramp `cap(y) = 3/40 + y/100` (`Dy = 1/65536`), which the dev tree's
+  `Graph/MixedChain.lean` (`faceC_cap`, `faceP_cap`) delivers.
+
+## 1. Design (b) (exact; `return_cut.env`)
 
 | parameter | value | where it lands |
 |---|---|---|
-| `theta` | `34971/40000` = 0.874275 (exact θ* = 0.8742701, `theta_star.py`) | `ReturnConstants.c = 5029/40000` |
-| `h` | `2011/2500` = 0.8044 | `ReturnConstants.h` |
-| count face C (`../faces_k92.json`, Lean family `mpiece7`, node3 at `1 − Dy`, `s` ≈ 0.0595) | `B = 4553636084322336971646479/4724464025600000000000000` (0.9638418), `L = 4954148591857540990249/2362232012800000000000` (2.0972320) | `countCB`, `countCL` |
-| physical face P (`../faces_k92.json`, `mpiece7`, node3 at `35747·Dy`, `s` ≈ 0.0570) | `B = 74757332803822334159435159927/77405618595430400000000000000` (0.9657869), `L = 5033014753577776399373/2362232012800000000000` (2.1306183) | `physicalB`, `physicalLambda` |
-| face caps | `3/40` (both) | `SourceInlet.countGlobal`, `physicalGlobal` |
-| count window `SC` | `29/500` | `SourceInlet.countWindow`, `ReturnFormulas.branchCap` |
-| physical numerator cap `SP` | `29/500` | `ReturnConstants.numeratorCap`, `ReturnD/Schedule.cap`, the restriction in `EndpointFromSources` |
-| natural cost `K` | `9/2` | `ReturnConstants.naturalK` |
-| switch bound (Relaxation 1) | `dMinus_lower : 1/2 < dMinus` (`QRH_DMINUS=1/2`); `ds = 13958000/18907431` = 0.73823 | `ReturnD/Schedule.lean` |
-| transport bounds (Relaxation 2) | `h < 806/1000`, `y < 467/1000`, `ell < 1700/10000` (`QRH_RELAXED`); the values are `h` = 0.8044, `y` = 0.46527, `ell` = 0.16957, and the lower ends `793/1000 < h`, `458/1000 < y`, `1672/10000 < ell`, `874/1000 < theta` hold | `ReturnD/TransportGeometry.lean` (`Geometry.BoundsR`), `ReturnD/Transport/FinalFixedHigh.lean` |
-| receipts | Lemma D mode (`QRH_MODE=lemmaD`): Collet's window receipts and `λ_P > 3` are not checked; the schedule needs `2 ≤ λ_P ≤ 9/2` | `gen_return_lean.py` |
+| `theta` | `437037/500000` = 0.874074; exact θ* = 0.8740728 (margin 1.2e-6) | `ReturnConstants.c = 62963/500000` |
+| `h` | `403/500` = 0.806 | `ReturnConstants.h` |
+| faces C, P | the table above (`QRH_FACES = ../faces_k92_ramp.json`) | `countCB`, `countCL`, `physicalB`, `physicalLambda`; caps in `SourceInlet.countGlobal`, `physicalGlobal` |
+| count windows (Lemma W) | `QRH_WINDOWS=lemmaW`; window caps = face caps | `ReturnFormulas` (`crossM`, `crossW`, `lowerM`, `upperM`, guards, `branchCap`), `CountWidth`, `CountDecode`, `FinalWindows` |
+| `SC` (Collet's count window `countWindow`) | `29/500`, no longer binding | `SourceInlet.countWindow` |
+| `SP` (physical numerator cap) | `29/500` | `numeratorCap`, `ReturnD/Schedule.cap`, `EndpointFromSources` |
+| natural cost `K` | `9/2` | `naturalK` |
+| switch bound | `dMinus_lower : 1/2 < dMinus` (`QRH_DMINUS=1/2`); `ds` = 0.73830 | `ReturnD/Schedule.lean` |
+| transport bounds | `h < 807/1000`, `y < 467/1000`, `ell < 1710/10000` (`QRH_RELAXED`); here `h` = 0.806, `y` = 0.465259, `ell` = 0.170371; the lower ends `874/1000 < theta` (slack 7.4e-5), `793/1000 < h`, `458/1000 < y`, `1672/10000 < ell` hold | `ReturnD/TransportGeometry.lean`, `ReturnD/Transport/FinalFixedHigh.lean` |
+| receipts | Lemma D mode (`QRH_MODE=lemmaD`) | `gen_return_lean.py` |
 
-The certificate has 67 rows and 25 admission windows (PR 76: 42 and 17). Smallest kept receipts:
-`principal_z` 9.1e-5, `conductor_kink_before_top` 6.8e-4 (`dk` = 0.8037158 < `dp` = 0.8044),
-`floor` 1.27e-3, `incumbent` 1.45e-3. Exact θ* with exactly the Lean branch set (`theta_star.py`):
-**0.8742701** for both face files (0.8742700 fails the cover of the `newTop` edge), so the declared
-`theta = 0.874275` has a margin of 4.9e-6.
+The certificate has 33 rows (6 edge modules; branches old 16, C-7 7, C 6, Ccap 3, Pcap 1) and 14
+admission windows. Smallest slacks at the declared θ: `theta > 874/1000`
+7.4e-5, `principal_z` 9.3e-5, `floor` 1.1e-4.
 
-## 2. Changes to the generators (default behavior unchanged)
+**Fallback (a)** (`return_cut_a.env`): Lemma W with the caps 3/40 (`../faces_k92.json`),
+`theta = 874137/1000000` (exact θ* = 0.8741351 at h = 803/1000), 34 rows, 16 windows. It uses the
+same `ReturnD` as (b), so switching rebuilds `FinalReturn` only:
+`QRH_ENV=$PWD/return_cut_a.env ./run_all.sh WORKDIR`.
 
-- `../../repeated-marks/cert_return.py`: `DMINUS = QRH_DMINUS` (default `3/4`); the receipt
-  `dMinus_lower_3_4` checks `ds − DMINUS`.
-- `../../repeated-marks/gen_return_lean.py`: a mode `lemmaD` (as `cert_return.run(mode='lemmaD')`):
-  the `global` drops, and `source_lambda_low` (`λ_P > 3`, needed only by PR 69's FR21) is not checked.
-  `pr69` and `global` are unchanged.
-- `../../repeated-marks/fork_transport.py`: with `QRH_DMINUS` set, the schedule field
-  `dMinus_lower:3/4<dMinus` becomes `dMinus_lower:QRH_DMINUS<dMinus` (with a doc comment). All uses of
-  the field need only `1/2 < dMinus` (`GenericFeedback` `d ≥ 0`, `PhysicalDirect/Geometry` `d > 0`,
-  `Active` `1/2 < d`, `SelectedBin` `0 < d`, `1/2 ≤ d`, `SourceSelection` `1/200 ≤ dm`, `1/2 ≤ d`).
-  The concrete proof in `FinalReturn/FinalSchedule.lean` (`dsimp …; norm_num`) is generic in the
-  field's statement and proves `1/2 < ds` unchanged.
-- `single_stage.py` (here): PR 76's hand edits of the two endpoint modules, made reproducible
-  (the two-stage theorems of `EndpointFromSources` removed; `EndpointFromGlobalSources` replaced by
-  the single-stage endpoint).
-- The physical-face restriction in `EndpointFromSources` already follows `SP`
-  (`fork_return.lemma_d` writes `⟨physicalB,physicalLambda,0,1/2,0,SP⟩`): it is now `29/500`.
+## 2. Lemma W (spec: `../../return-transfer/REPORT.md` §2)
 
-**Checks of the pipeline.**
-- With PR 76's parameters (`../../combined/sil_face.env`, PR 76's faces) the modified generators
-  give byte-identical output to the unmodified ones (no `QRH_DMINUS`, modes `global`).
-- The whole pipeline (`gen_return_lean` → `fork_return` → `fork_transport` → prefix rename →
-  `single_stage.py`) reproduces all 164 return modules of PR 76's package byte for byte.
+Collet's count certificate carries three conservative windows: the lower plain window `m_- = 2/5`,
+the width window `s_+` below the face cap, and the natural-tail join at the fixed `m_H`. Lemma W
+opens them to the faces' proved domain. The plain line joins the natural one at the crossover
+`m_X = (K·B − Λ)/(2(K − Λ))`, where the face width `(B − 2m)/Λ` equals the natural width
+`(1 − 2m)/K = w_X`, so there is no jump.
 
-## 3. Commands
+**Lean feasibility (checked by building).** Collet's `count_from_piecewise_moments` and
+`count_fiber_at_window` take an `AdmittedWindow`, whose fields need only `0 ≤ mLo`,
+`2/5 ≤ mHi < 1/2`, `cap ≤ sourceCap`, `cap ≤ 7/37`, the plain crossing, the natural tail at `mHi`,
+and positive widths on `[mLo, mHi]`, with the moment on `broadFace B Λ sourceCap`. The windows are a
+plain list, so `mHi` can differ per window. Our instance (`FinalWindows`) now has
+`mLo = lowerM − 1e-7 ≥ 0`, `mHi = crossM b ∈ [2/5, 1/2)` (`cross_join_bounds`, by `norm_num` per
+branch), and `sourceCap = branchCap` = the face cap (`Restricts` allows equality).
+
+**What changed (generated, behind `QRH_WINDOWS=lemmaW`):**
+- `ReturnFormulas`:
+  - `crossM b`, `crossW b = (1 − 2·crossM b)/K`;
+  - `lowerM`: `2/5 + η` becomes `η`;
+  - `upperM`: `min(1/2 − η, crossM b − η)`, and for capped branches also `(B − Λz*)/2 − η` (no 11/25, no `s_-`);
+  - guard 10, the N-tail: at `crossM b` with width `crossW b`;
+  - guard 12: `1/2 − crossM b − η`; guard 13: `crossW b − η`;
+  - guard 14 (capped): `(z* − η)·DJ`;
+  - `branchCap` = the window caps.
+- `CountWidth`:
+  - `lowerM_buffer` is `η ≤ lowerM`;
+  - `cross_join_bounds` and `cross_width` (the identity `(B − 2·crossM)/Λ = crossW`, by `norm_num` per branch) replace `natural_join_bounds`;
+  - `admitted_widths` runs up to `crossM b`, from guard 13 and `cross_width`.
+- `CountDecode`: `admitted_natural_tail` at `crossM b`, from guard 10 and `(1 − 2·crossM)/(6·(K/6)) = crossW`.
+- `FinalWindows`: `mHi := crossM w.branch`.
+- Regenerated as before: `ReturnConstants`, `CountWindows`, `FinalEdgeCertificates`, `Rows`.
+
+All of it compiled on the first build; no proof needed repair.
+
+## 3. Exact θ* (`theta_star.py`: exactly the Lean branch set, Lemma W, the transport bounds)
+
+| setting | caps C, P | best h | θ* | binding at θ* − 1e-7 |
+|---|---|---|---|---|
+| Collet windows | 3/40, 3/40 | 2011/2500 | 0.8742701 | `newTop` cover |
+| (a) Lemma W | 3/40, 3/40 | 0.803 (0.8741352 at 0.8025, 0.8741356 at 0.8044) | **0.8741351** | `newTop`, δ ≈ 0.433, p = 1/2: the capped count branches at the face cap (`Ccap`/`Pcap`, return margin ≈ 0); the uncapped ones fail their window (face width at m* > cap) |
+| (a) with the report's windows (cap − 1e-4) | 749/10000 | 0.8025–0.803 | 0.8741359 | as above |
+| **(b)** ramp `y/100` | 0.0849998, 0.0804546 | 0.806 (end of [0.796, 0.806]) | **0.8740728** | `newTop`, δ ≈ 0.443, p = 1/2: the uncapped count branch C (the face line `B_C`, `Λ_C`; return margin ≈ 0); the capped branches fail their upper window (face width at m* = 0.0821 < z*) |
+| (c) ramp `y/50` | 0.0949997, 0.0859091 | 0.806 | 0.8740728 | as (b) |
+| (d) ramp `3y/200` | 0.0899998, 0.0831818 | 0.806 | 0.8740728 | as (b) |
+
+- θ\*(h) falls with h for (b)–(d) up to h ≈ 0.8062 (0.8740725). Beyond that the `floor` receipt
+  (`BoundsR.floor_margin`) binds: at h = 0.8065, θ* = 0.8740919.
+- The transport bound `458/1000 < y` binds only for h ≤ 0.7985.
+- The C cap stops binding above about 0.0821 (the face width at the binding crossing), so every
+  ramp from (b) on gives the same θ*.
+
+## 4. Changes to the generators (defaults unchanged)
+
+- `../../repeated-marks/cert_return.py`:
+  - `QRH_DMINUS` (default 3/4) sets the receipt `dMinus_lower_3_4` (`ds − DMINUS`).
+  - `QRH_WINDOWS` (`collet` by default, or `lemmaW`); `crossover(B, L)` and `admission_polys_W`.
+- `../../repeated-marks/gen_return_lean.py`:
+  - mode `lemmaD` (also drops `source_lambda_low`);
+  - with `QRH_WINDOWS=lemmaW`: `LEMMA_W_EDITS` on the formulas, `window_caps` (`QRH_WCAP`, default the face caps), and `lemma_w_branches`, which asserts `K > Λ`, `2/5 ≤ m_X < 1/2` and `w_X > η` for the five improved branches.
+- `../../repeated-marks/fork_return.py`: with `QRH_WINDOWS=lemmaW`, `LEMMA_W` patches `CountWidth`, `CountDecode` and `FinalWindows`. Each patch is asserted to apply once.
+- `../../repeated-marks/fork_transport.py`:
+  - `QRH_DMINUS` relaxes `dMinus_lower`;
+  - `QRH_RELAXED` sets the `BoundsR` bounds (now `807/1000, 467/1000, 1710/10000`: the lower θ pushes `ell` above 0.17).
+- `single_stage.py` (here): PR 76's hand edits of the two endpoint modules.
+
+**Checks.**
+- With PR 76's parameters and no flags, the generators give byte-identical output to the originals (rechecked after the Lemma W changes).
+- The pipeline reproduces all 164 return modules of PR 76 byte for byte.
+
+## 5. Commands
 
 ```sh
 cd /home/user/QuasiRiemannTracker/research/mixed-step/return_cut
-./run_all.sh WORKDIR          # all of the below; WORKDIR is a new scratch directory
+./run_all.sh WORKDIR                                   # design (b); WORKDIR a new scratch directory
+QRH_ENV=$PWD/return_cut_a.env ./run_all.sh WORKDIR2    # fallback (a)
 ```
 
-Step by step (what `run_all.sh` runs):
+`run_all.sh` runs these steps, with the env file sourced:
 
 ```sh
-source return_cut.env
-python3 theta_star.py         # exact θ* with exactly the Lean branch set; the declared θ must pass
-./regenerate.sh WORKDIR       # generators, assembly, installation into the Lake project
-python3 build.py 2 LOGDIR     # every module, dependency order, at most 2 Lean processes
-cd /home/user/lean-env/qrh
-PATH=/home/user/lean-env/lean-4.34.1-linux/bin:$PATH \
+python3 theta_star.py              # exact θ*; also --h H1,H2,... for an h scan, --anchor A
+./regenerate.sh WORKDIR            # generators, assembly, installation of ReturnD/ and FinalReturn/
+python3 build.py 2 LOGDIR          # the 161 return modules, dependency order, at most 2 Lean processes
+python3 axioms_check.py > AxiomsCheck.lean
+cd /home/user/lean-env/qrh && PATH=/home/user/lean-env/lean-4.34.1-linux/bin:$PATH \
   lake env lean /home/user/QuasiRiemannTracker/research/mixed-step/return_cut/AxiomsCheck.lean
 ```
 
 `regenerate.sh` runs, from `research/repeated-marks/`:
 
 ```sh
-# W/faces.json = the faces of $QRH_FACES as the list [C, P] (theta_star.face_list)
+# W/faces.json = $QRH_FACES as the list [C, P]; CAPC, CAPP = its caps
 python3 gen_return_lean.py W/faces.json $QRH_THETA $QRH_H 0 1 W/RET $QRH_SC $QRH_SP lemmaD
-python3 fork_return.py W/RET W/OUT $QRH_CAP $QRH_CAP $QRH_SC $QRH_SP transport
-python3 fork_transport.py W/RD $QRH_SP         # reads QRH_RELAXED and QRH_DMINUS
-# assemble W/PKG: ReturnD from W/RD; FinalReturn from W/OUT plus ReturnConstants, ReturnFormulas,
-# ReturnFacts and Rows/ from W/RET; rename Submissions.repeated_marks_20261024 -> $QRH_PKG
+python3 fork_return.py W/RET W/OUT $CAPC $CAPP $QRH_SC $QRH_SP transport
+python3 fork_transport.py W/RD $QRH_SP           # QRH_RELAXED, QRH_DMINUS
+# assemble W/PKG (ReturnD from W/RD; FinalReturn from W/OUT plus ReturnConstants, ReturnFormulas,
+# ReturnFacts, Rows from W/RET; Submissions.repeated_marks_20261024 -> $QRH_PKG)
 python3 single_stage.py W/PKG/FinalReturn $QRH_PKG $QRH_PR76
-# install: only files whose content changes are rewritten; stale .lean files are removed
+# install: only changed files are rewritten; stale .lean files of ReturnD/, FinalReturn/ are removed
 ```
 
-`build.py` compiles each module with
-`lake env lean -o .lake/build/lib/lean/<module path>.olean -i <…>.ilean <module>.lean` from the Lake
-project, in dependency order, rebuilding a module when its olean is missing or older than its source
-or a package dependency's olean. It never touches other packages' oleans.
+## 6. Results (2026-10-26)
 
-## 4. Rerunning on new faces
-
-Point `QRH_FACES` (`return_cut.env`) at the new file, a dict `{"C": …, "P": …}` like
-`faces_k92.json` or a list `[C, P]` like `faces_exact.json`, each face with exact `B`, `L`, `cap`
-strings, and run `./run_all.sh WORKDIR`. `ReturnD/` does not depend on the faces or on `theta` (it
-is generic in `Geometry.Parameters`, `BoundsR` and `PhysicalSchedule`; only `SP`, `QRH_RELAXED` and
-`QRH_DMINUS` enter it), so only `FinalReturn/` is rebuilt: from `faces_exact.json` to
-`faces_k92.json`, 28 files changed (`ReturnConstants`, the 25 admission windows, the rows of the
-`newKink` and `newTop` edges) and the 53 `FinalReturn` modules were recompiled. If `theta_star.py`
-reports that the declared `theta` fails, set `QRH_THETA` at or above the reported θ* (and check that
-the new `ell`, `y`, `h` stay inside `QRH_RELAXED`; `FinalReturn/TransportInstances.lean` proves
-`BoundsR` for the concrete values, so the build checks it).
-
-## 5. Results (2026-10-26)
-
-**Builds** (Lean 4.34.1, `build.py`, 2 Lean processes, the machine shared with other agents: load
-average ≈ 8.7 on 4 cores during the second build).
-
-| run | faces | modules compiled | wall | sum of module times | status |
+| build | design | modules compiled | wall | sum of module times | status |
 |---|---|---|---|---|---|
-| 1 (from scratch) | `faces_exact.json` | 172 (119 `ReturnD`, 53 `FinalReturn`) | 1318 s | 2528 s | ALL-OK |
-| 2 (incremental) | `faces_k92.json` | 53 (`FinalReturn`; `ReturnD` unchanged) | 713 s + 36 s | 1285 s + 36 s | ALL-OK |
-| 3 (`run_all.sh`, rerun) | `faces_k92.json` | 0 (0 files rewritten) | 34 s in all | — | ALL-OK |
+| 1 | Collet windows, θ = 34971/40000, `faces_exact.json` | 172 | 1318 s | 2528 s | ALL-OK |
+| 2 | Collet windows, θ = 34971/40000, `faces_k92.json` | 53 | 749 s | 1321 s | ALL-OK |
+| 3 | **(b)**: Lemma W, θ = 437037/500000, `faces_k92_ramp.json` | 161 (119 `ReturnD`, 42 `FinalReturn`) | 923 s | 1738 s | ALL-OK |
 
-Run 2 stopped once after 50 modules with "blocked" and no failure: `build.py` did not rescan when a
-batch of ready modules was entirely up to date. Fixed (`build.py` now rescans); the rerun compiled
-the last 3 modules. A check of all 172 oleans (each newer than its source and than its package
-dependencies' oleans; no external olean rebuilt after the first build started) found no
-inconsistency. The oleans take 282 MB.
+- `ReturnD` was rebuilt in build 3 because `TransportGeometry` changed (`h < 807/1000`, `ell < 1710/10000`).
+- All return oleans are consistent: each is newer than its source and than its dependencies' oleans.
+- The `#print axioms` of all modules print only the three standard axioms. No `sorry`.
 
-**No proof needed repair.** Every proof compiled unchanged, including the transport proofs that use
-the `BoundsR` bounds numerically (`GenericFeedback` `5·dp/288 ≤ 1/50`, `FinalFixedHigh`
-`h + rowPadding ≤ 7/8 − 1/100`, `TransportGeometry.four_ell_lt_h`, `PrincipalRemainderBounds`,
-`FloorExponent`, `NonfloorTransport`), the uses of `dMinus_lower` (now `1/2 < dMinus`; 7 occurrences
-in 5 modules), the concrete `dMinus_lower` proof of `FinalSchedule`, and `finalBounds : BoundsR` at
-the new values.
-
-**Axioms** (`AxiomsCheck.lean`, against the final build):
+**Axioms** (`AxiomsCheck.lean`, final build):
 
 ```
 'QRH.RepeatedMarks.Return.Final.beta_of_global_sources' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QRH.RepeatedMarks.Return.beta_of_two_global_sources' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QRH.RepeatedMarks.Return.ReturnCountWindow.toAdmitted' depends on axioms: [propext, Classical.choice, Quot.sound]
 'interface_beta' depends on axioms: [propext, Classical.choice, Quot.sound]
 ```
 
-Every `#print axioms` of the package's modules (logs of both builds) prints the same three axioms.
-`AxiomsCheck.lean` also checks the constants in the kernel (`theta = 34971/40000`, `h`, `naturalK`,
-`numeratorCap`, `GenericArithmetic.cap`, `countGlobal`, `physicalGlobal`, `countWindow`, `branchCap`,
-and the four face rationals, by `rfl`) and prints the relaxed field and bounds.
+`AxiomsCheck.lean` also checks, in the kernel, `c`, `theta = 437037/500000`, `h`, `naturalK`,
+`numeratorCap`, `GenericArithmetic.cap`, `countGlobal`, `physicalGlobal`, `countWindow`, `branchCap`
+and the four face rationals.
 
-**Interface for the source side** (`interface_beta` in `AxiomsCheck.lean`, as PR 76's
-`Graph/Endpoint.lean`): two `Record1252270103Finite.Source` values `fC`, `fP` with
+**The dev tree's endpoint.** `Submissions/arvi_mixed_step/Graph/Endpoint3.lean` (dev `MixedChain`
+with the ramp caps) elaborates against this `FinalReturn` with no errors. A scratch copy with
+`#print axioms` gives `QRH.MixedStep.Graph.beta_of_step3 : NFStep3 → β ≤ QRH.RepeatedMarks.Return.theta`
+with `[propext, Classical.choice, Quot.sound]`. (Checked with `lake env lean` without `-o`; nothing
+in the dev tree was written.)
 
-- `fC.B = 4553636084322336971646479/4724464025600000000000000`, `fC.L = 4954148591857540990249/2362232012800000000000`, `fC.cap = 3/40`;
-- `fP.B = 74757332803822334159435159927/77405618595430400000000000000`, `fP.L = 5033014753577776399373/2362232012800000000000`, `fP.cap = 3/40`;
+**Stale copies.** In this package, `Graph/MixedChain.lean` (01:45, caps 3/40) and its
+`Graph/Endpoint3` are older copies:
+- Endpoint3 fails against the new return (`faceC_cap = 3/40 ≠ 111411/1310720`);
+- their oleans (01:57) were built against the previous return.
 
-(`q` and the fees are free) and `51/100 ≤ β → QRH.Record1252270103Graph.P fC ∧ QRH.Record1252270103Graph.P fP`
-give `β ≤ QRH.RepeatedMarks.Return.theta`. Here `Graph.P s = GlobalSource s.B s.L s.cap =
-UniformUnitFaceSource (globalFace s.B s.L s.cap)`, which is `countGlobal` and `physicalGlobal` up to the
-casts ℚ → ℝ. The natural cost `2β − 1 ≤ naturalK/6 = 3/4` comes from the baseline's `β ≤ 7/8`
-(`natural_cap_return`, from PR 76's `QRH.RepeatedMarks.beta_le_seven_eighths` in `Graph.NaturalCap`),
-the same `K = 9/2` the source chain uses.
+Refresh them from the dev tree and rebuild before any manual check (`lake env lean` trusts imported
+oleans). A `lake build` rebuilds them anyway, since these manual builds leave no trace files.

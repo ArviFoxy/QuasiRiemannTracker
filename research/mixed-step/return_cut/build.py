@@ -1,4 +1,6 @@
-"""Build every module of the package $QRH_PKG (return_cut.env) module by module, in dependency order.
+"""Build the return modules of the package $QRH_PKG (return_cut.env) module by module, in dependency order:
+the subtrees ReturnD/ and FinalReturn/ (QRH_BUILD_DIRS, space-separated, overrides them; other agents keep
+further modules in the same package directory, which this script leaves alone).
 
 Each module is compiled with `lake env lean -o <olean> -i <ilean> <file>` from the Lake project
 (Lean 4.34.1 on PATH); oleans go to .lake/build/lib/lean/<package path>. Imports from outside the
@@ -26,7 +28,8 @@ def olean(m): return os.path.join(WS, '.lake/build/lib/lean', m.replace('.', '/'
 
 root = os.path.join(WS, PKG.replace('.', '/'))
 mods = {}
-for d, _, fs in os.walk(root):
+for d, _, fs in (w for sub in os.environ.get('QRH_BUILD_DIRS', 'ReturnD FinalReturn').split()
+                 for w in os.walk(os.path.join(root, sub))):
     for f in fs:
         if f.endswith('.lean'):
             m = os.path.relpath(os.path.join(d, f), WS)[:-5].replace('/', '.')

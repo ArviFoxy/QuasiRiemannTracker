@@ -1,13 +1,13 @@
 QRH-Result: arvi-mixed-step-20261026
-QRH-Bound: 34971/40000
-QRH-Decimal: 0.874275
+QRH-Bound: 437037/500000
+QRH-Decimal: 0.874074
 
-Proves that every Dirichlet L-function L(s, χ), for every positive modulus, is nonzero for Re(s) > 34971/40000 = 0.874275, excluding the principal pole.
+Proves that every Dirichlet L-function L(s, χ), for every positive modulus, is nonzero for Re(s) > 437037/500000 = 0.874074, excluding the principal pole.
 
 For comparison:
 - current verified bound: 0.8746075 (PR #76, ours). This submission builds on it and imports its package unchanged.
 
-The gain, −3.3e-4 against PR #76, comes from one new theorem: a **mixed source step**. It puts Sil's fourth-power transfer inside Collet's pool step.
+The gain, −5.3e-4 against PR #76, comes mainly from one new theorem, a **mixed source step**, which puts Sil's fourth-power transfer inside Collet's pool step. Two smaller additions are needed to collect it: a face family whose cap grows along its last piece, and **Lemma W** in the final return, which opens the return's count windows to the faces' proved domain.
 
 ## The new theorem: the mixed source step
 
@@ -31,14 +31,16 @@ Collet's main-layer machinery is reused unchanged on the residual.
 1. **Start.** Sil's fourth-power face `GlobalSource (99999/100000) (93/25) (3/50)`, imported from PR #76 (`Graph/Start.lean`), at s = 0.016.
 2. **Fan.** 46 mixed steps (`Fan/Steps.lean`) take the slope from 3.72 to 2.5220. They are faces through one point on Sil's line and reach the stall line `L/B = 6q/(1+q)`, q = 0.7499.
 3. **Face family.** A fine face family follows the stall line as q decreases: 8 polynomial pieces, each with 2^16 grid steps and uniform certificates (`Family/`). The threshold `q = (1 − den)L₀/(6B₀ − L₀)` makes the mixed denominator exactly `2⁻¹⁵` at every step. The selected width `δ = Nd/Dd` makes every gate times `Dd` a polynomial in the grid variable.
-4. **Final faces.** count face (0.9638418, 2.0972320) and physical face (0.9657869, 2.1306183), both with cap 3/40.
+4. **Cap ramp.** On the last piece the face cap grows as `cp(y) = 3/40 + y/100` (`Family/Validity3c.lean`: the step certificate with the parent's cap `cp(y − Dy)`; 5 cap guards).
+5. **Final faces.** count face (0.9638418, 2.0972320), cap 111411/1310720 ≈ 0.0850; physical face (0.9657869, 2.1306183), cap 527267/6553600 ≈ 0.0805.
 
 ## The final return
 
 Collet's return, forked as in PR #76, at the new faces:
 - **Switch bound.** The receipt is `dMinus > 3/4`; all of its uses need only `dMinus > 1/2`, so it is stated as that.
-- **Windows.** physical numerator cap and count window 29/500; `h = 2011/2500`.
-- **Result.** It closes at 34971/40000 (exact θ* = 0.8742701): 67 row rectangles, 25 admission windows.
+- **Lemma W (count windows).** Collet's count certificate uses three conservative windows: the lower plain window `m₋ = 2/5`, the width window `s₊ < cap`, and a fixed natural-tail join at `m_H`. Lemma W opens them to the faces' proved domain and joins the natural tail at the crossover `m_X = (K·B − Λ)/(2(K − Λ))`, where the face width equals the natural width `(1 − 2m)/K`. The plain envelope is then continuous and decreasing, so every plain witness at `m ≥ m*` is counted at the branch's rate. It is an instance of Collet's generic count theorems (`count_from_piecewise_moments`, per-window `mHi`); no new analytic input.
+- **Transport.** h = 403/500, with the transport bounds relaxed to `h < 807/1000`, `ell < 1710/10000` (all proofs unchanged).
+- **Result.** It closes at 437037/500000 (exact θ* = 0.8740728): 33 row rectangles, 14 admission windows.
 
 ## Local checks
 

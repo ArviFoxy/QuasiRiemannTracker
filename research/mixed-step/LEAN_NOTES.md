@@ -176,3 +176,76 @@ Collet `Source`s, and no real-field `RNode` twin is needed.
 **Gotchas.**
 - Never `congr 1` two large gaussEnergy terms. Instead use `generalize child … = s'`, then `apply congrArg Complex.re`, then `source_gauss_energy_pool_decEq`.
 - A character change inside `child` is cheap: `unfold; dsimp only; exact congrArg Complex.re (key _ _)` elaborates, because the children differ only in `η`.
+
+## Fork (L4/L5)
+
+**Where.**
+- `lean-env/qrh/Submissions/arvi_mixed_step/ForkMx/Record1252270103Source/<same relative path as Collet>.lean`: forks of Collet's or PR 76's modules. Declarations sit in the original namespace with suffix `_mx`; PR 76's `_rm` declarations become `_rm_mx`.
+- `Submissions/arvi_mixed_step/Downstream/`: new glue (`Shift`, `Node`, `Contract3`; the N3/N6 agent's `Grid`, `Pieces`, `Families`, …; F6's `MainRestrict`, `MainGates`).
+- Each fork module starts with Collet's copyright line verbatim, followed by the fork note.
+- Build: `mk_mixed.sh <path>` per module, in import order.
+- No `sorry`, `axiom`, `native_decide` or `admit`. Every top theorem gives `[propext, Classical.choice, Quot.sound]`.
+- Signatures: `research/mixed-step/fork/HANDOFF.md`, which is the authoritative record of the exact statements.
+
+**Phase 0** (`research/mixed-step/fork/ForkAnalysisMx.lean`, one environment load). The stop set (`Selection`, `FirstStage`, `child`, `correctedChildGaussEnergy`, `eventual_selected_second`, `CorrectedFamilyData`) is untainted (`stop_mx.txt`). There are 65 fork modules (`closure_mx.tsv`).
+
+**Statement taint under-counts the fork.**
+- Lemmas whose statement takes one `s` in both roles also need twins. These are the *two-parent* twins (first-layer objects at `s₀`, selection at `s`): `actual_selected_paid_weight_mx`, `eventual_modified_high_coefficient_mx`, `eventual_modified_normalized_cofactor_mx`, `eventually_low_scalar_mx`, `eventually_selected_frequency_mx`, `selected_common_norm_caps_mx`, …
+- Lemmas where `s` plays only first-layer roles but shares its slot type with the second-layer data need *type-split* twins: first layer `s : Input α₀`, slots/datum over `α`, proofs verbatim. These are the LOW chain `RetainedLow*`, `GlobalPhysicalLow*` and the HIGH chain (helper).
+- `typesplit.py` generates them.
+
+**Modules of the fork lead (F1/F2/F3/F5; all build).** Line counts are in parentheses.
+- F1/F2:
+  - `Admission/SelectedRegularSourceData` (176): `Anchor_mx`, `Family_mx`, `Selected_mx`;
+  - `High/GlobalPhysicalSelectedMass` (72);
+  - `Admission/SelectedHighPaidComparison` (161): `PhaseBound_mx`, `uniform_selected_paid_sum_mx`;
+  - `Admission/SelectedRegularAbsoluteData` (227): `amplitude_mx`, …;
+  - `High/GlobalPhysicalRegularPhase` (76);
+  - `Admission/SelectedHighCoordinatesScalar` (44);
+  - `Admission/SelectedHighCofactorCoordinates` (46);
+  - `Admission/SelectedLowPaidWeight` (222): `uniform_selected_paid_weight_mx`, the δ-shift;
+  - `Downstream/Shift` (89): `shifted_high_mass_mx`;
+  - `Downstream/Node` (35): `NodeGeometry_mx`.
+- F3 (LOW spine):
+  - `Admission/RetainedLowCofactorDictionary` (44), `RetainedLowPositive` (233), `RetainedLowCollected` (243);
+  - `High/GlobalPhysicalLowCollectedErasure` (222), `GlobalPhysicalLowGlobalSource` (167);
+  - `Admission/RetainedLowErasedCollected` (269), `RetainedLowPaid` (210);
+  - `Admission/SelectedLowPaid` (144): `actual_selected_low_price_mx`;
+  - `Admission/SelectedLowSource` (409), `SelectedLowSourceReindex` (342), `SelectedLowSourceMissingBins` (340), `SelectedLowBufferedSource` (318);
+  - `Admission/SelectedRegularLowSourceData` (471), `SelectedRegularLowSource` (285);
+  - `Core/PhysicalLowGuard` (55);
+  - `High/GlobalPhysicalRegularLowParameters` (57), `GlobalPhysicalRegularLowAt` (274): `RegularLowAt_mx`, `regular_low_controls_mx`;
+  - `Admission/SelectedRegularLowPointData` (213), `SelectedRegularLowPoint` (213): `eventually_initial_low_point_mx`.
+- F5 junctions:
+  - `High/GlobalPhysicalRegularControls` (94): `regular_some_controls_rm_mx`;
+  - `Admission/SelectedRegularCombinedPointSome` (232): `eventually_actual_point_rm_mx`;
+  - `High/GlobalPhysicalRegularPoints` (164): `RegularPointAt_mx`, `regular_some_point_source_rm_mx`.
+- N6 interface: `Downstream/Contract3` (129): `RegularJointSupplier3`.
+- The F4 helper's 25 HIGH modules and its F5 bridge modules are listed in HANDOFF ("## F4 twins", "## F4 tops for F5", "## F5 helper tops").
+
+**What the forked statements take as hypotheses (for the ledger and the transfer).**
+- The node price `QRH.MixedStep.Ledger.MixedNodePrice n low bcell φ` replaces Collet's `modified_node_price`/`RealGeometry`.
+- The frozen-width margin per selected row: `φ ≤ Σ i.w − Σ_{i ∈ liveIndices (G.sel u).B₁} i.w`. In `RegularJointSupplier3` it is per label, on the original widths: `φ δ ≤ Σ w − Σ_{live (alloc l)} w`.
+- `NodeGeometry_mx n low b`: the fields lowL_pos, a_pos, a_small, a_allowance, parent_budget_room of `RealGeometryLow`, plus `n.B ≤ 1`, `1 < n.L`, `n.cap < 1`. They are bundled in `Scalar_mx` with the loss, mesh and width facts.
+- The δ-shift `hshift : sourceAReal n low bcell − poolAmp ≤ logb Z (volume s₀) − logb Z (volume s) + κ`. LOW and HIGH both pay `Z^κ`, and the point bound is `Z^(κ − reserve/2)`.
+- The actual pool `FixedCellPoolData P Z poolAmp (poolAmp/2) …`, with `0 < poolAmp`; for the transfer, `poolAmp = r = n.lowFee`.
+- First layer: `i₀.p = i.p` and the face hypotheses of `eventually_initial_caps` for `i₀` (`globalFace B₀ lam₀ cap₀`, `1 ≤ Y₂ ≤ X₁, X₂`, `0 ≤ w`). They give `sourceRadius s₀ ≤ Z^2`.
+- Second layer: `InitialGeometry i n bcell width mesh r` at the virtual node, i.e. `vnode2 n₀ low b δ θ` at width `b − θ`.
+- PR 76's HIGH gate data at the node (`ActualGaps_rm`, `hparent`), passed through the F4 tops.
+- `TransferContract` is not used by F1–F5. It enters at N6 (the N3/N6 agent's `pieces_transfer`).
+
+**Dead ends and pitfalls.**
+1. *Off-by-mesh at `vnode`* (reported 2026-10-26 ~00:40). The residual's `InitialGeometry` at `vnode n low b δ` fails by O(mesh) when the transfer window is `δ_act ∈ [δ − 2mesh, δ − η_Z]`. The ledger answered with `vnode2 n low b δ θ` (budget/width shift `θ ≤ δ_act`). The residual cell width becomes `width + κ`, which with the HIGH `hwidthlo` needs `width + κ ≤ θ_fb` (F4 helper).
+2. *Pool cell width.* `RegularLowAt` quantifies the pool inside the family statement with `ell` fixed before `Z`. So in `RegularLowAt_mx` the pool width `poolAmp` is quantified with the pool, and `ellPool` is a fixed parameter (`= poolAmp/2` at the call). Making `ellPool` depend on the quantified `poolAmp` does not typecheck against `hpaid`.
+3. *Mathlib notation `≤i`* (`InitialSeg`): `0≤i₀.w j` misparses as `0 ≤i ₀.w j`. Write `0≤ i₀.w j` with a space.
+4. *Heartbeats.* `SelectedRegularLowSource` needs `set_option maxHeartbeats 1000000 in` for the whnf unification of the anchor literal. Elsewhere the default 200000 suffices.
+5. *License headers.* Each fork module starts with Collet's copyright line verbatim (`fork/fix_headers.py`). After the header pass the F1/F2 modules were rebuilt (2026-10-26 ~03:40): green.
+6. *κ absorption.* Every LOW and HIGH bound gets `Z^κ`. At the point level it multiplies Collet's paid budget (`regular_point_budgets_paid` is reused unchanged), giving `Z^(κ − reserve/2)`. So no budget twin was needed.
+
+**Open design gaps (escalated 2026-10-26 ~03:35, found by the N3/N6 agent and checked against the fork).**
+- (S) seed suppliers: with (S) the non-transferable live width is not small. Without (S), labels `(l, L′)` carry child seeds `L′ ∣ (column l).2.1.val`. In the fork this is a mechanical generalization: Collet's `ColumnData` uses the seed only through `childSeed_sf`. It makes `Family_mx`'s child seed a per-label field.
+- (Col) collision families: common ideal `C·D_f` and a character twisted by `χ(δ_f³)`, whose conductor grows with `N(D_f)`. Two things exclude them:
+  - `Family_mx` (Collet's `Family`/`ColumnData`) forces the stage label and character to be the first-layer column's;
+  - Collet's LOW erasure pins `input.η = columnCharacter (column l)` and `R = R₀·columnIdeal (column l)` (`S/High/GlobalPhysicalLowCollectedErasure.lean:69-72`). The LOW supply is for one ray modulus fixed before `Z`.
+
+  This needs a design decision (avoid collisions in the block selection, a LOW twin for twisted dictionaries, or a separate bound).

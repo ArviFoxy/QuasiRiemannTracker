@@ -890,3 +890,69 @@ For that, three facts are needed from the transfer / N3/N6 side:
 
 The δ-shift for a collision family, `a_v − r ≤ logb V₀ − logb V_short + κ` with `logb V₀ − logb V_short = Σ_J w + log_Z(N D₀ N D₁)`,
 is already of the form `RegularPointAt_mx` takes. The node and `κ` are chosen as in design §7.
+
+### N3/N6 indexing of collision families (N3/N6 agent, 2026-10-26 ~04:35)
+**Families in the balanced assembly.** For a piece `k` (block `J_k = pieceBlock G w mesh k.2`, node `δ_k`) and a ray `ξ`, N3 carries the
+plain family `(k, ξ)` (built: `pieceEnergy`, `pieces_transfer(_plain)`) and, next to it, one collision family `(k, ξ, f)` for each
+`f ∈ coll s J_k`, with outer weight `ω f`:
+```
+Σ_l a_l E_l ≤ K·Mmax^(2N)·Z^(Aε)·Σ_{k∈pieces} Σ_ξ ( Σ_{l : {l // pieceKey alloc trans l = k}} a_l·pieceEnergy … k ξ l
+      + Σ_{f ∈ coll s J_k} ω f · Σ_{l : {l // pieceKey alloc trans l = k ∧ collMem … l f}} a_l·collEnergy … k ξ f l )
+```
+(to be proved as `pieces_transfer_coll` in `Downstream/Families.lean`, same proof pattern as `pieces_sum_of_labels`, once the label-level
+statement below exists). N6 then runs `eventual_selected_second` once per plain family and once per collision family, and sums
+`Σ_f ω f·(family bound) ≤ (Σ_f ω f)·max ≤ K''·max` (`collisionWeight_sum`).
+
+**Label-level statement N3 needs from L3** (the (Col)-free twin of `transfer_waist_column`; same hypotheses minus `NoCollision`;
+(S) as `SeedFree s J L` until the seed generalization lands):
+```
+E(s; B; c; T := volume s; H) ≤ K·∏_{j∈J} M_j²·Z^(Aε)·( Σ_ξ E(s.restrict J; columnIdeal c; L; allocRestrict B J hJ;
+        columnCharacter (rayShift c ξ); volume (s.restrict J); H_v)
+    + Σ_{f ∈ coll s J} ω f · Σ_ξ (if h : collMem s B c J f then
+        E(shortParent s J f; columnIdeal (extColumn c f h ξ); L; collAlloc s B J f h;
+          columnCharacter (extColumn c f h ξ); volume (shortParent s J f); H_coll c f) else 0) )
+```
+- `coll s J : Finset (CollisionDatum J)` and `ω f` depend on `(s, J)` only (R1). `shortParent s J f := (s.restrict J).shortenPlains (D₀ f) (D₁ f) _ _`
+  is common to the family `(k, ξ, f)`.
+- `extColumn c f h ξ : FirstColumnIndex (source s modifier R₀ 1 Z Z ξ₀ hK (extBin c f h))` is the extended column `(C·D², D′)`
+  (coordinator's option (k)), ray-shifted by `ξ`. `collMem` is the membership/label condition (`(C·D_f², D′)` a live common label;
+  `collAlloc` a valid allocation of `shortParent`). `H_coll c f` is the MAIN radius at `volume (shortParent …)` and the collision node's
+  amplitude (design §7: the node `δ′+w`).
+- Please give `T` as `volume (shortParent s J f)` and keep a shared `K·∏_J M_j²·Z^(Aε)` in front of both sums.
+
+**Three points to settle (with the fork lead's items 1–3 above):**
+1. **Bins.** A family `(k, ξ, f)` must have one bin (one `source … bin'`). If `extBin c f h` depends on the label, N6 splits the family
+   by `bin'`. That is harmless only if, for fixed `(bin, f)`, the possible `bin'` are boundedly many (each key component shifts by a fixed
+   amount plus a rounding). The RHS factor `geometryHighFactor reflected … bin'` is `2^{±bin'.2 1}`. It must be `≤ C·geometryHighFactor
+   … bin`, so either the component `.2 1` is unchanged by `C ↦ C·D²` or the change is paid. Please confirm which components move.
+2. **Amplitudes.** N6 carries the original `a_l` inside each collision family (with `ω f` outside). Proposed route: a pointwise lemma
+   `a_l ≤ Camp·Z^(xamp)·amplitude_ext(l, f)`, where `amplitude_ext = ‖scalar(extColumn)‖²·extra(extColumn)·‖frozen(collAlloc)‖²` (Collet's
+   formula for the extended family). The energies are `≥ 0`, so N6 replaces `a_l` before calling `eventual_selected_second`, and
+   `RegularJointSupplierCol3`/F6 run with the extended family's own amplitudes. The exponent `xamp` must fit in the collision node's
+   extra room (`log_Z N(D_f)` in the δ-shift). This lemma is first-layer arithmetic (scalars, `extra`, frozen coefficients), so the
+   transfer agent or the fork lead would prove it. The alternative is the fork lead's "run the extended family with the original
+   amplitudes" (new `PhaseBound`).
+3. **Node and radius.** The transfer's collision radius is `H'/N(D_f)`. Since `firstMainRadius ∝ V²·Z^(6·amp)`, this equals
+   `firstMainRadius(V_short, 3·amp_c)` at the shortened volume `V_short = V_J/N(D_f)` with `amp_c = r + δ_k + log_Z N(D_f)/6`. The δ-shift
+   then holds with room: `amp_c − r ≤ Σ_J w + log_Z N(D_f) + κ` because `logb V₀ − logb V_short = Σ_J w + log_Z(N D₀·N D₁)`. But
+   `δ_k + log_Z N(D_f)/6` can exceed `d` at the top node, which is outside the ledger's node range (`0 ≤ θ ≤ δ ≤ d`). Design §7 avoids this
+   by re-selecting `J∖C` and pricing the collision family at a lower node `δ ∈ [δ′+w/2, δ′+w]`. **Needed before `pieces_transfer_coll`:**
+   the exact collision radius (as `firstMainRadius` at some volume and amplitude) and the collision node formula. N3 then provides the
+   window/frozen/shift facts for that node, as it does for the plain node.
+
+### Change to `RegularJointSupplier3`: per-label seeds (fork lead, 2026-10-26 ~02:55; green)
+This implements the approved option (1): no-(S) labels `(l, L′)`. Where the definition had
+`Function.Injective (fun l => (firstLabel … (column l), (column l).2.1.val)) → ∀ hLive, let hseed := live_projector_squarefree …`,
+it now reads
+```lean
+  ∀column:Label→FirstColumnIndex (source s modifier R₀ 1 Z Z ξ _ bin),
+  ∀_hLive:∀l,column l∈firstLiveColumns (source s modifier R₀ 1 Z Z ξ _ bin) (fun _=>logAnnulus),
+  ∀(seed:Label→Ideal O)(hseed:∀l,Squarefree (seed l)),(∀l,seed l∣(column l).2.1.val)→
+    Function.Injective (fun l=>(firstLabel s modifier R₀ 1 Z Z ξ _ bin (column l), seed l))→
+  …
+  let f:=mainAllocatedFamily (s.restrict J) ballProfile (p.profile 0) (p.profile 1) Z R₀ common seed (allocRestrict …) chars (fun _=>ht) P hseed …
+```
+- The plain case is `seed := fun l => (column l).2.1.val` with `hseed := live_projector_squarefree … (hLive l)`.
+- Injectivity over `(firstLabel, seed)` is the family's obligation. For residual seeds, split the families by the transferred seed
+  part `L_l/L′`; then injectivity follows from the original `(firstLabel, L_l)` injectivity.
+- `Downstream/Balanced3.lean` and `Source/NFStep3.lean` import `Contract3`. Please rebuild them against the new definition.

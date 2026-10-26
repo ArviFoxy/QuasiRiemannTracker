@@ -249,3 +249,10 @@ Collet `Source`s, and no real-field `RNode` twin is needed.
   - Collet's LOW erasure pins `input.η = columnCharacter (column l)` and `R = R₀·columnIdeal (column l)` (`S/High/GlobalPhysicalLowCollectedErasure.lean:69-72`). The LOW supply is for one ray modulus fixed before `Z`.
 
   This needs a design decision (avoid collisions in the block selection, a LOW twin for twisted dictionaries, or a separate bound).
+
+**Seed refactor (approved; scheduled after the F5 bridge).**
+- `Family_mx` gets a field `childSeed : Label → Ideal O` (default `(column l).2.1.val`), with `data l : ColumnData … (childSeed l) …`.
+- `RegularJointSupplier3` already takes per-label seeds: `seed ∣ (column l).2.1.val`, squarefree, `(firstLabel, seed)` injective.
+- The one mathematical change is in Collet's `selected_family_absolute`. `SecondAbsoluteEnvelope.eventually_selected_first_card` needs injectivity of `(firstLabel, column divisor)`, which fails for labels `(l, L′)` sharing a column. Two routes:
+  - (i) split families by `D = L_l/L′`, so the column injectivity holds per family. This costs more families in N6.
+  - (ii) a divisor-count card lemma, at a cost of `#divisors ≤ 2^(4/c)` when the seed primes have norm `≥ Z^c`, or `Z^ε` in general.

@@ -1,3 +1,22 @@
+# The mixed source step (research directory of `arvi-mixed-step-20261026`)
+
+**Status (2026-10-26).** Target bound 437037/500000 = 0.874074 (PR 76: 0.8746075).
+- **Theorem.** The mixed source step: Collet's pool step plus Sil's fourth-power transfer of a block of the input's own
+  live slots at the first MAIN layer. LOW payment `a(1 − 6qβ) + δ(1 + q − 6qβ) ≥ qX₀ + r`; descends while
+  `Λ₀ > 6qB₀/(1 + q)`. Exact model: `MIXED_STEP_LEMMA.md`; adversarial review: `ADVERSARIAL_REVIEW.md`
+  (c = 6 confirmed, c = 4 refuted).
+- **Lean layout** (`lean/arvi_mixed_step/`, packaged as `Submissions.arvi_mixed_step_20261026`):
+  - certificates and chain: `Fan/` (46 steps), `Family/` (8 pieces × 2^16 grid steps; piece 7 with the cap ramp
+    `3/40 + y/100`, `Validity3c.lean`), `Graph/{Chain3,Chain3c,MixedChain,Endpoint3}`;
+  - the step: `Transfer/`, `Residual/`, `Collision/` (transfer at Collet's first MAIN layer, ray shifts, supplier
+    and collision splits), `Ledger/` (virtual nodes, frozen-width price, MixedGeometry), `ForkMx/` (Collet's
+    LOW/HIGH/MAIN waist forked with two parents and two amplitudes), `Downstream/` (contracts), `Source/NFStep3`.
+  - the return: `../repeated-marks/` generators with Lemma W (`return_cut/REGENERATE.md`).
+- **Design and coordination:** `L45_DESIGN.md`, `LEDGER_INTERFACE.md`, `fork/HANDOFF.md` (exact statements of every
+  agent's tops), `LEAN_NOTES.md`; research log `../LOG.md`.
+
+The pricing study below (2026-10-25) is the origin of the design.
+
 # A mixed fourth/sixth-power source step: pricing and structure (2026-10-25)
 
 **Question.** Our face family descends with slope `Λ = 6q*·B`, where `q*` is the HIGH threshold

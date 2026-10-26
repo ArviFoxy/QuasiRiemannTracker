@@ -79,5 +79,68 @@ def main():
                   f'theta*={t/1e7:.7f} at h={float(h)}  [{why(fc, t, h, sC0, sP0)}]', flush=True)
 
 
+
+def failing_box(G, d, C, cands, box=((Fr(0), Fr(3, 4)), (Fr(0), Fr(1, 2))), depth=0):
+    """the first box of the cover search that no candidate covers (None if the edge is covered)."""
+    CR = T.CR
+    (d0, d1), (p0, p1) = box
+    for name, br, meta in cands:
+        if CR.bernstein_min(CR.return_poly(br, G, d, C), box) <= 0:
+            continue
+        if meta is not None and not CR.admitted(name, br, meta, ((d0, d1), (p0, Fr(1, 2))))[0]:
+            continue
+        return None
+    if depth >= 34:
+        return box
+    if (d1 - d0)/Fr(3, 4) >= (p1 - p0)/Fr(1, 2):
+        mid = (d0 + d1)/2
+        parts = [((d0, mid), (p0, p1)), ((mid, d1), (p0, p1))]
+    else:
+        mid = (p0 + p1)/2
+        parts = [((d0, d1), (p0, mid)), ((d0, d1), (mid, p1))]
+    for b in parts:
+        r = failing_box(G, d, C, cands, b, depth + 1)
+        if r:
+            return r
+    return None
+
+
+def diagnose(fc, th, h, extra=()):
+    """print, at the first uncovered box, every candidate's return margin and its two lowest guards."""
+    CR, GR = T.CR, T.GR
+    (BC, LC, capC), (BP, LP, capP) = fc
+    G = CR.geometry(th, h, BP, LP, Fr(29, 500))
+    _, _, edges = GR.emit_constants(dict(theta=th, h=h, BP=BP, LP=LP, BC=BC, LC=LC, sP=Fr(29, 500)))
+    fdict = {'C': (BC, LC, capC), 'P': (BP, LP, capP)}
+    cands = [cd for cd in CR.candidates(fdict, G['kap']) if cd[0] in GR.ALLOWED]
+    for name, B_, L_, w_ in extra:
+        cands += [cd for cd in CR.candidates({name: (B_, L_, w_)}, G['kap']) if cd[0] in (name, name + 'cap')]
+    CR.ADM_CACHE.clear()
+    ev = lambda poly, dl, p: sum(c*dl**i*p**j for (i, j), c in poly.items())
+    for nm, d, C in edges:
+        bx = failing_box(G, d, C, cands)
+        if not bx:
+            continue
+        dl, p = (bx[0][0] + bx[0][1])/2, bx[1][1]
+        print(f'  edge {nm} (d={float(d):.5f}, capacity C={float(C):.6f}) uncovered at delta={float(dl):.5f}, p={float(p):.5f}')
+        for name, br, meta in cands:
+            line = f'    {name:6s} return {float(ev(CR.return_poly(br, G, d, C), dl, p)): .3e}'
+            if meta is not None:
+                B_, L_, s_, capped = meta
+                polys, scal = CR.admission_polys(br, B_, L_, s_, capped)
+                low = sorted((float(ev(q, dl, p)), k) for k, q in polys.items())[:2]
+                line += f'  lowest guards {[(k, f"{v:.2e}") for v, k in low]}'
+            print(line)
+        CR.ADM_CACHE.clear()
+        return
+
+
 if __name__ == '__main__':
-    main()
+    if sys.argv[1:2] == ['diag']:
+        # diag sC sP theta_1e7 h : the uncovered box just below theta, for flow faces at sC, sP
+        sC_, sP_, th_, h_ = sys.argv[2:6]
+        fc = ((*flow_face(Fr(sC_)), Fr(17, 200)), (*flow_face(Fr(sP_)), ramp_cap(Fr(sP_))))
+        print(f'C at {sC_}, P at {sP_}, theta {th_}/1e7, h {h_}')
+        diagnose(fc, Fr(int(th_), 10**7), Fr(h_))
+    else:
+        main()

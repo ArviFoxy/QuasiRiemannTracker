@@ -585,3 +585,30 @@ def RegularPointAt_mx {α₀ α:Type}[Fintype α₀][DecidableEq α₀][Fintype 
 - my F1–F3 modules.
 
 If you need a two-parent twin of one of my lemmas, write it in your module and list it here.
+
+## F3/F5 lead tops (green 2026-10-26 ~03:10; axioms `[propext, Classical.choice, Quot.sound]`)
+All paths below are under `ForkMx/Record1252270103Source/`.
+
+* `Admission/SelectedRegularLowPoint`, namespace `…Admission.SelectedRegularLowPoint`.
+  `eventually_initial_low_point_mx (n low)(b φ θloss mesh ξ width εslot τsource poolAmp)(sc : Scalar_mx n low b θloss mesh ξ width)
+  (hpoolAmp : 0<poolAmp){α₀ α}[Fintype α₀][DecidableEq α₀][Fintype α](N)(hN₀)(hN)(rayM)[NeZero rayM](H)(hH)(W hW hsW)(ηanchor η₀)(Q hQM)(R₀ hR₀)
+  (Cslot Cpref JL SL CL)`. Its conclusion is
+  `∀ᶠZ, 1<Z ∧ ∀hZ, RegularLowAt_mx … n low b φ (poolAmp/2) θloss mesh εslot τsource N … Z → ∀ i₀ i r, InitialGeometry i n b width mesh r →
+  i₀.p = i.p → ∀ seed Am₁ Am₂ Dm Km Fm hs bin reflected second, let a := Initial.anchor_mx i₀ i …; ∀ F : Family_mx a Label, (∀l, F.amp l =
+  sourceAReal n low b) → sourceRadius F.s₀ ≤ Z^2 → …`, with:
+  - the pool at `poolAmp`;
+  - `sh : Shared_mx G …`;
+  - `∀κ, hshift → (∀u:rows, φ ≤ ∑ i.w - ∑_{liveIndices (G.sel u).B₁} i.w) → ∀corner`;
+  - the bound `… ≤ CL*(i.p.control SL)^2*…*Z^(lowExponent n θloss εslot N+κ)`.
+* `High/GlobalPhysicalRegularControls`: `regular_some_controls_rm_mx`. It takes the section variables of the F4 tops plus
+  `(bcell φ)(hprice : MixedNodePrice n low bcell φ)(hlow)(ha)(hqhalf)(hq1)(hG)(hLowMesh : mesh ≤ regularLowMesh_mx n low bcell φ θ hprice hlow ha hqhalf hq1 hG hf.positive)(hN : card α ≤ N)(Q hQM hQ hQt hQ72)`
+  and `high … hparent`. It gives `∃bound hb J, ∃SH CH Cslot Cpref JL SL CL, … ∀ᶠZ, 2≤Z ∧ RegularLowAt_mx … (poolAmp/2) … ∧ SourceAt_rm_mx … poolAmp …`.
+* `Admission/SelectedRegularCombinedPointSome`: `eventually_actual_point_rm_mx (hN₀)(hN)(high …)(hparent)(hgaps)`.
+  - Section variables: PR 76's, with `sc : Scalar_mx n low bcell θ mesh ξ width`, `φ`, `poolAmp`/`hpoolAmp`, and
+    `B₀ lam₀ cap₀`/`hB₀ hlam₀ hcap₀` (the first-layer face).
+  - Conclusion: `∃Cpoint>0, ∀ᶠZ, 1<Z ∧ ∀hZ, RegularLowAt_mx … → SourceAt_rm_mx … → (RegularPointAt_mx body)`.
+  - The first-layer cap `sourceRadius F.s₀ ≤ Z^2` comes from Collet's `eventually_initial_caps` on `i₀`, and is fed to both the LOW
+    and the HIGH side. LOW and HIGH both pay `Z^κ`, so the bound is `Cpoint*…*Z^(κ-(reserve/2))`.
+* `High/GlobalPhysicalRegularPoints`: `RegularPointAt_mx` (statement in "## F5 scope (helper)") and
+  `regular_some_point_source_rm_mx (hN₀ : card α₀ ≤ N)(hN : card α ≤ N)(high …)(hparent)(hgaps)`. The latter gives
+  `∃degree controls, (0,0)∈controls ∧ ∃C τsource, 0<C ∧ 0<τsource ∧ ∀ᶠZ, 1<Z ∧ RegularPointAt_mx … bcell φ reserve θ mesh ξ width τsource poolAmp B₀ lam₀ cap₀ N degree controls C Z`.

@@ -1742,3 +1742,9 @@ slot; `mixed-slots/`).
   `T_d ≤ H + z` (column branch of the reflected energy, hybrid norm = Frobenius bound).
   `F_c − M_c − Q' − z₀ = m − r − 2z + 2G`. Slot cost 2 is intrinsic to the method; improving it needs the
   operator-norm (not Frobenius) bound of `atom1/README.md` §4. No cheap lever here.
+- **Cap ramp built (02:25).** Piece 7 with cap 3/40 + y/100: 14 certificate modules (Scalar7, 12 HIGH, Piece7) ALL-OK
+  in 114 s wall; `mpiece7_certs : mpiece7.Certs3c mcap7`; regenerated Graph/MixedChain (faces C, P via `node3c`,
+  junction 7 via `node3c_zero`); `mixed_chain_sources` axioms `[propext, Classical.choice, Quot.sound]`.
+  Endpoint3 now waits on the return package rebuilt with the ramped caps (return agent).
+  Source side also supports a steeper ramp (end 0.095: exact sample checks ok; 0.105 fails gate 11); priced by the
+  return agent before choosing.

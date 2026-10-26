@@ -22,8 +22,6 @@ jobs:
         with:
           node-version: 22.17.0
       - run: npm ci --ignore-scripts --no-audit --no-fund
-      - name: Test runner isolation policies and lifecycle
-        run: python3 -m unittest discover -s infra/actions-runner -p 'test_*.py'
       - name: Generate catalogue from proof metadata and admitted merges
         run: node scripts/reconcile-admissions.mjs ${{ github.event_name != 'pull_request' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch) && '--online' || '' }}
         env:

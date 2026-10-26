@@ -264,3 +264,83 @@ and `hshift`. Please record each final top signature here when it compiles.
 
 ## Requests / notes from the helper
 (append below)
+
+## F4 twins
+(F4 helper, 2026-10-26 ~02:05. All green with `mk_mixed.sh`, axioms `[propext, Classical.choice, Quot.sound]`.
+Paths under `ForkMx/Record1252270103Source/`. Convention as above; `Av`/`V` are free reals where Collet
+reads `volume s` of the first-layer input.)
+
+### Keys / State / GeometryCaps (for F3/F5 and HighSourceSome)
+Namespace `QRH.Record1252270103Source.Admission.SelectedRegularSourceData` (State, Keys) and
+`…Admission.SelectedRegularGeometryCaps` (Caps). Same binders/conclusions as Collet's, over
+`a:Anchor_mx α₀ α Z`, `F:Family_mx a Label`, `G:Selected_mx F Row rows second`, with the first-layer
+hypotheses on `F.s₀`:
+```lean
+-- Admission/SelectedRegularSourceDataState
+theorem eventual_selected_retained_data_mx (R₀:Ideal O)(hR₀:R₀≠0)(ηanchor:Character)
+    (b err ηR ηchar ηwidth:ℝ)(N:ℕ)(hb:0<b)(herr:0<err)(hηR:0<ηR)(hηchar:0<ηchar)(hηwidth:0<ηwidth):
+    ∀ᶠZ:ℝ in atTop,1<Z ∧ ∀{α₀ α Label Row:Type}[Fintype α₀][Fintype α][Fintype Label]
+      (a:Anchor_mx α₀ α Z)(F:Family_mx a Label)(rows:Finset Row)(second:Bool)(G:Selected_mx F Row rows second)
+      (errv annular Afirst Asecond Brow Bradius Binactive Bmask bΦ Mcap ampN:ℝ)
+      (w:α→ℝ)(wmin:ℝ)(Tslots:Finset α)(P S A:Finset (Ideal O))(depth:ℕ),
+      F.R=R₀→F.s₀.η=ηanchor→F.ξ≤err→sourceRadius F.s₀≤Z^Afirst→
+      (∀u,sourceRadius (F.input (G.row u).val.1.1)≤Z^Asecond)→
+      (∀u,F.Tsec (G.row u).val.1.1=firstMainFourierScale F.reflected (Z^F.D) (volume F.s) Z F.ξ
+        (3*F.amp (G.row u).val.1.1) F.reserve b N (F.first (G.row u).val.1))→
+      … -- the rest verbatim Collet (Brow, Bradius, Binactive, Bmask, Mcap, bΦ, L cap, pools, m, Q, M H hH η₀ e T q, β)
+      ∃st hfixed keep select, ∀u, G.extra S A u≠0 ∧ (st u).character=G.τ u ∧ … ∧
+        KeyCaps (G.key u) Z (coarseExponent Afirst Asecond Brow) (G.x err errv annular w wmin Tslots u 1) ∧
+        rawFrequencyNorm (nonzeroJointSourceRow (G.key u))≤Z^(G.x err errv annular w wmin Tslots u 2)
+-- Admission/SelectedRegularSourceDataKeys
+theorem eventual_selected_keys_mx (b err:ℝ)(N:ℕ)(hb:0<b)(herr:0<err): -- Collet's, over the _mx structures,
+    -- with sourceRadius F.s₀≤Z^Afirst and the MAIN scale at volume F.s
+-- Admission/SelectedRegularGeometryCaps
+theorem eventual_selected_radius_mx (N:ℕ)            -- Tsec at volume F.s; label of F.s₀
+theorem selected_inactive_norm_mx (F) (rows) (second) (G) (hsource:∀u,sourceRadius (F.input (G.row u).val.1.1)≤Z^(2:ℝ))
+theorem selected_radial_cap_mx (F rows second G) (n low b A₁ A₂ D K Fmark)
+    (hmodifier:F.modifier₀=markedSourceModifier A₁ A₂ D K Fmark) (err errv annular w wmin T)
+    (hD:F.D=1)(hamp:∀u,F.amp (G.row u).val.1.1=sourceAReal n low b)(hF:sourceFReal n low b≤1)
+    (hrho:0≤frequencyLoss Z 32 F.ξ+F.reserve-err) : ∀u,G.x err errv annular w wmin T u 2≤1
+theorem eventual_selected_geometry_caps_mx (N:ℕ):
+    ∀ᶠZ:ℝ in atTop,1<Z ∧ ∀{α₀ α Label Row:Type}[Fintype α₀][Fintype α][Fintype Label]
+      (a:Anchor_mx α₀ α Z)(F:Family_mx a Label)(rows:Finset Row)(second:Bool)(G:Selected_mx F Row rows second)
+      (n low:Source)(b:ℝ)(A₁ A₂ D K:Ideal O)(Fmark:Ideal O→ℂ)(err errv annular:ℝ)(w:α→ℝ)(wmin:ℝ)(T:Finset α),
+      F.modifier₀=markedSourceModifier A₁ A₂ D K Fmark→F.D=1→0≤F.ξ→F.ξ≤1→0≤F.reserve→
+      (∀u,F.amp (G.row u).val.1.1=sourceAReal n low b)→0≤sourceAReal n low b→sourceFReal n low b≤1→
+      0≤frequencyLoss Z 32 F.ξ+F.reserve-err→(∀u,sourceRadius (F.input (G.row u).val.1.1)≤Z^(2:ℝ))→
+      (∀u,F.Tsec (G.row u).val.1.1=firstMainFourierScale F.reflected (Z^F.D) (volume F.s) Z F.ξ
+        (3*F.amp (G.row u).val.1.1) F.reserve 2 N (F.first (G.row u).val.1))→
+      ∀u,(G.datum u).radius≤Z^(4:ℝ) ∧ ((∏p∈(G.datum u).inactive,p.val).absNorm:ℝ)≤Z^(2:ℝ) ∧
+        G.x err errv annular w wmin T u 2≤2
+```
+`modified_cofactor_coordinate_cap` (Collet) already takes a free volume `A` and is reused unchanged.
+
+### Supporting two-parent twins (untainted single-`s` lemmas)
+| module | declaration | change |
+|---|---|---|
+| Admission/FirstFamilyGeometry | `FirstFamily.eventual_literal_high_frequency_mx` | first label from `s₀ : Input α₀`, datum over `α`, free volume `V` (`0<V`) in the radius hypothesis and coordinates; binder order `… (hfirst) (V ampExponent reserveShift εvolume : ℝ), 0<V → ξ≤εfreq → …` |
+| Admission/SelectedSecondKeyCaps | `SelectedSecondKeyCaps.eventual_regular_key_caps_mx` | `original : Input α₀`, blocks over `α`, `… (hz₀₂) (V:ℝ) (hV:0<V)`, Tsec and coordinates at `V` |
+| Admission/RetainedGeometryWidth | `RetainedGeometry.main_scale_upper_mx` | `(s₀ modifier₀ …) (j) (V a reserve b : ℝ) (N) (hV : 0<V) …`: `firstMainFourierScale reflected K V Z ξ (3*a) reserve b N (firstLabel s₀ …) ≤ b^(2*N)*K` |
+| Coefficient/NonregularRawFamily | `NonregularRawFamily.actual_modified_nonregular_raw_family_mx` | type split (first layer `s₀ : Input α₀`, slots over `α`) |
+
+### HIGH spine, lower chain (type split; shift at BalancedCofactor)
+| module | declaration | change |
+|---|---|---|
+| High/GlobalPhysicalRegularRawPositive | `ModifiedRegularPositive.actual_modified_regular_raw_family_uniform_tau_rm_mx` | type split |
+| High/GlobalPhysicalAllRawPositive | `ModifiedAllPositive.actual_modified_all_raw_family_uniform_tau_rm_mx` | type split |
+| High/GlobalPhysicalAllCofactorPositive | `ModifiedAllPositive.actual_modified_all_cofactor_family_uniform_tau_rm_mx` | type split |
+| High/GlobalPhysicalSelectedCofactor | `ModifiedAllPositive.actual_modified_selected_cofactor_family_uniform_tau_rm_mx` | type split |
+| High/GlobalPhysicalBalancedCofactor | `ModifiedAllPositive.actual_modified_balanced_cofactor_family_uniform_tau_rm_mx` | shift: `∀(Av:ℝ),|Av|≤B→loMass≤s₀.lower→…→∀(amp poolAmp:κ→ℝ)(shiftLoss:ℝ),(∀l∈labels,amp l-poolAmp l≤Real.logb Z (volume s₀.toData)-Av+shiftLoss)→…`, side at `Av`, `card α₀≤N→card α≤N`, mass `Z^(amp l-poolAmp l)*balancedFirstHighMass … s₀ …`, exponent `+B*εmass+shiftLoss` |
+| HighScalar/ModifiedPayment | `HighScalar.modified_retained_high_exponent_rm_mx` | type split (`s₀ : Input ι₀`, `d2 : SecondInputDatum ι`) |
+| HighScalar/NonregularModified | `HighScalar.nonregular_modified_retained_high_exponent_rm_mx` | type split |
+| High/GlobalPhysicalSectorPayment | `GlobalPhysical.modified_selected_sector_singleton_payment_rm_mx` | type split |
+| High/GlobalPhysicalAnnularCofactor | `ModifiedAllPositive.actual_modified_annular_cofactor_family_uniform_tau_rm_mx` | free `Av` (coordinates, side, `hA : Av≤D*(T+b)`), `(… annular shiftLoss : ℝ)(amp poolAmp live forced : κ→ℝ)`, `hshift` after `hamp` |
+| Admission/SelectedHighCofactorFamilySome | `SelectedHighCofactorFamilySome.FamilyStatement_rm_mx`, `…actual_selected_annular_cofactor_family_uniform_tau_rm_mx` | two parents: `(s₀ : Input α₀)(s : Input α)(Amark…)`, `Selection s …`, `(upper bcell reserveGeom err reserveScalar δwidth shiftLoss : ℝ)(amp poolAmp : κ→ℝ)`, `|logb Z (volume s)|≤B→loMass≤s₀.lower→loMass≤s.lower→`, `hshift : ∀l∈labels,amp l-poolAmp l≤logb Z (volume s₀)-logb Z (volume s)+shiftLoss` right after `hamp`, `card α₀≤N→card α≤N`, second-layer `s.upper s.lower s.P s.X₁…`, mass shifted, `+shiftLoss` |
+| High/GlobalPhysicalPaidSome | `ModifiedSelectedPaidSome.FamilyStatement_rm_mx`, `…actual_selected_annular_cofactor_family_uniform_tau_rm_mx` | as above + pool block at `poolAmp`, `PhaseBound_mx s₀ modifier₀ s … (mainExtra s₀ … (poolAmp l) ell)` |
+| High/GlobalPhysicalBufferedPaidSome | `BufferedSelectedPaidSome.FamilyStatement_rm_mx`, `…actual_buffered_selected_cofactor_family_uniform_tau_rm_mx` | as PaidSome, bins verbatim |
+
+Next (F4): `selected_common_caps_mx` (Admission/SelectedRegularHighSource), HighSourceSome
+(`ModifierAt_rm_mx`, `SourceAt_rm_mx`, `ActualAt_rm_mx`, `FamilyStatement_rm_mx`,
+`actual_selected_regular_high_source_uniform_tau_rm_mx`), PointSomeGeometry (`actual_coordinate_box_mx`,
+`SharedState_mx`), HighPointSome (`SourceAt_rm_mx`, `actual_point_rm_mx`), RegularHighParameters
+(`regular_some_source_rm_mx`). Signatures will be added here when green.

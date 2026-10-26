@@ -25,7 +25,6 @@ def ev(poly, d, p):
 def main():
     th = int(sys.argv[1]) if len(sys.argv) > 1 else 8741364
     spec = sys.argv[2] if len(sys.argv) > 2 else ''
-    _, P = SW.theta(spec + (',' if spec else '') + 'h=2011/2500') if False else (None, None)
     kv = dict(x.split('=') for x in spec.split(',') if x)
     W.JOIN = kv.pop('join', 'crossover')
     CR.M_MINUS = Fr(kv.pop('mminus', '0'))

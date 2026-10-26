@@ -70,7 +70,7 @@ def split_intro(p):
 def fork_module(rel, names, header_note, imports, edit):
     src = open(f'{CROOT}/{rel}.lean').read()
     first = src.split('\n', 1)[0]
-    starts = [src.index('theorem ' + n) for n in names]
+    starts = [re.search(r'^(theorem|def|abbrev|lemma) ' + re.escape(n) + r'\b', src, re.M).start() for n in names]
     i = min(starts)
     ns = re.findall(r'^namespace (\S+)', src[:i], re.M)
     endm = re.search(r'\nend\s*\nend ' + re.escape(ns[-1]), src)

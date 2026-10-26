@@ -51,9 +51,9 @@ So C = 256²·128^N·max(1,C_δ)^N.
   - Fix: restate with a `[DecidableEq κ]` binder (PoolRows), then transport with `congr; exact Subsingleton.elim _ _` (`coefficient_eq_box`) or with Collet's `source_gauss_dyadic_pool_decEq`.
 - In this Mathlib, `Finset.prod_le_prod` is the ordered-monoid version; use `Finset.prod_le_prod₀`. `dif_pos` and `if_pos` are deprecated; use `simp only [h, ↓reduceIte]`.
 
-**Open.**
-- (Col) is assumed (collision columns, L3).
-- (S') is assumed. Sil's suppliers, i.e. selected primes that divide the seed in nonzero tuples, are not ported.
+**Open.** Updated under "Transfer-side (L2+)" below:
+- (Col) is removed by `transfer_waist_split`, which leaves an explicit collision energy for L3.
+- (S) is removed by the supplier versions, which use residual seeds `L/gcd(L, D_u)`.
 - Converting slot widths into `∏_J hi_j P_j ≤ W` is left to the ledger (L1, L5).
 
 ## Ledger (N4/N5/N7)
@@ -136,3 +136,43 @@ Collet `Source`s, and no real-field `RNode` twin is needed.
 - Choose the grid: nodes `{k·g < d} ∪ {d}`, `θ = max 0 (δ − κ)`, `mesh ≤ κ/2`, `δw + g + κ ≤ ε ≤ 6e`.
 - The first-level frozen width bound `f ≥ (b−θ) − ε` at non-top nodes is the fork's (from
   `b − δw ≤ Σw` and transferable width `< δ_{k+1}`).
+
+## Transfer-side (L2+)
+
+**Where.** `arvi_mixed_step/Transfer/` (now 20 modules, adding Ball, Supplier{Factor,Identity,Main,Pool,Ball}, NoCollision, NoCollisionBall) and `arvi_mixed_step/Residual/` (Restrict, BallMatch, Contract, RayShift, Waist, SupplierWaist, CollisionSplit, CollisionWeight, Shorten). Namespaces: `QRH.MixedStep.Transfer` and `QRH.MixedStep.Residual`; `Input.restrict` and `Input.shortenPlains` live in `OAI.SevenEighths.CenteredMomentCommonRadialData`. Each module builds with `mk_mixed.sh` in 6–11 s, and every top theorem prints `[propext, Classical.choice, Quot.sound]`. Origin notes are in the file headers: Positive, Bounds, Rays, Main, Ball and SupplierMain adapt Sil's code; PoolRows, Allocation and Contract adapt Collet's.
+
+**Contract (design §4), proved.** All take `card α ≤ N`, `(∀ Q ∈ P, Prime Q)`, `PoolAvoids P s`, `B : actualAllocations s.pools C` and `hJ : J ⊆ liveIndices B.val`.
+- `transfer_waist`. Hypotheses: `SeedFree s J L`, `0 ≤ hi` on J, `0 < H, H'`, `2·H·(∏_J hi_j P_j)⁴ ≤ H'`, no collision on child tuples. Conclusion: `correctedChildGaussEnergy s 1 1 1 1 C R L 1 P B τ t T H ≤ K·∏_J hi_j M_j²·(max 1 H')^ε·Σ_ξ correctedChildGaussEnergy (s.restrict J) 1 1 1 1 C R L 1 P (allocRestrict s C B J hJ) (childCharacter τ ξ) t (T/∏_J P) H'`.
+- `transfer_waist_design`: the design's radius `2·16^|J|·H·(∏_J P)⁴ ≤ H'`, with `0 ≤ hi ≤ 2` on J. The factor becomes `K·∏_J M_j²`.
+- `transfer_waist_column`: τ is `columnCharacter r … c`, and the right side is read at `columnCharacter r … (rayShift r c ξ)`. With `1 ≤ Z`, `0 ≤ A` and `H' ≤ Z^A`, the factor is `Z^(A·ε)`.
+- `transfer_waist_supplier` and `transfer_waist_supplier_column`: no (S); `Squarefree L` instead. The conclusion is `∃ seeds` with `L' ∣ L` for each seed, and the right side is `Σ_ξ Σ_{L'∈seeds}` (seed L').
+- `transfer_waist_split`: no (Col). The bound is `K·…·Σ_ξ … + 2·collisionEnergy s C R L P B J τ t T H`.
+
+**Deviations from the design text.**
+- `K·Z^ε` under `∀ᶠ Z` cannot be proved as written, because the divisor bound pays `N(r)^ε` on frequencies up to H'. The theorems therefore give `(max 1 H')^ε`, or `Z^(A ε)` once `H' ≤ Z^A`.
+- The slot factor `∏_J hi_j M_j²` stays explicit, since M_j is input data.
+- NoCollision is stated on child tuples (`NoCollision s C R L B J τ t`). `transfer_waist_split` removes it.
+
+**N1.** `Input.restrict` is `residualInput`, a structure literal. `childRestrict_match` gives `residualInput (child s C R B τ t) (liveBlock B J) ≅ child (s.restrict J) C R (allocRestrict …) τ' t` along `childRestrictEquiv`, with every field rfl. `energy_transport` (via `SlotMatch`) moves the energies.
+
+**N2.** `rayShift r c ξ = ⟨c.1, c.2.1, if r then c.2.2.1 else c.2.2.1*ξ, if r then c.2.2.2*ξ⁻¹ else c.2.2.2⟩`.
+- `rayShift_energy`: the energy at `childCharacter (columnCharacter r … c) ξ` equals the energy at `columnCharacter r … (rayShift r c ξ)`, for every s, B and seed. The proof goes through `FixedPair.left_height`/`right_height`, `child_ideal_primary` and `corrected_energy_congr`; no characters are equated.
+- These are rfl: `firstLabel`, `columnIdeal`, `balancedColumnScalar`, `firstColumnRows`, and live-column membership.
+
+**Suppliers (risk 1).** Nothing is frozen. Supplier primes are transferred with the rest, and the residual seed of an assignment u is `L/gcd(L, D_u)` (`residualSeed`). The labelled pushforward carries this seed, so the constant is unchanged and no `d(L)` is paid. Each residual seed L' ∣ L is its own family.
+
+**L3.**
+- The split is exact, by the mask `[∏_J v_j ⊥ v₀v₁]`. The no-collision part factorizes without (Col) (`tuple_factor_nocol`), so it satisfies (T) with the full residual (`collet_main_selected_transfer_ball_nocol`).
+- Weight check (`collisionWeight_sum`): with `ω_C(D) = Σ_{u: D_u=D} |selWeight u|²/∏_C P`, we get `Σ_D ω_C(D) ≤ 128^|C|·∏_C hi M²`. The design's `Σω ≤ K Z^ε` is therefore correct, and holds even without the `Z^ε`.
+  - This needs the (C,D) residual to be normalized by its own volume `V/(N(D)∏_C P)` (`volume_shortenPlains`). The collision factor `N(D)` then cancels against the shortened plains.
+  - The plan's `W_C·𝓜_res` is the crude bound obtained by Cauchy–Schwarz over all D.
+- `collision_family_energy_div`: Cauchy–Schwarz over the colliding primes costs `max_H d(H)` rather than `#T`, because the collision polynomials vanish off `p·O`. `divisor_assignments_card` is the same count for assignments.
+- `Input.shortenPlains`: plains become `residualPool D_k`, and `X_k, Y_k` become `X_k/N(D_k), Y_k/N(D_k)`. Also proved: `volume_shortenPlains`, `rectangle_shorten`, and `restrict_shortenPlains` (rfl).
+- Open:
+  - the source identity for a fixed (C, side, D): collision tuples ↔ shortenPlains tuples, plus a multi-prime collision Gauss factor by CRT (Collision/ has a single prime only);
+  - absorbing the twist `φ_D(m)` into the character, with conductor ×N(D)^{O(1)};
+  - then transferring `J∖C`.
+
+**Gotchas.**
+- Never `congr 1` two large gaussEnergy terms. Instead use `generalize child … = s'`, then `apply congrArg Complex.re`, then `source_gauss_energy_pool_decEq`.
+- A character change inside `child` is cheap: `unfold; dsimp only; exact congrArg Complex.re (key _ _)` elaborates, because the children differ only in `η`.

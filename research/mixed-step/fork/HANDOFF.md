@@ -344,3 +344,41 @@ Next (F4): `selected_common_caps_mx` (Admission/SelectedRegularHighSource), High
 `actual_selected_regular_high_source_uniform_tau_rm_mx`), PointSomeGeometry (`actual_coordinate_box_mx`,
 `SharedState_mx`), HighPointSome (`SourceAt_rm_mx`, `actual_point_rm_mx`), RegularHighParameters
 (`regular_some_source_rm_mx`). Signatures will be added here when green.
+
+## F3 (LOW spine, fork agent)
+(2026-10-26 ~02:30; all green with `mk_mixed.sh`, axioms `[propext, Classical.choice, Quot.sound]`.)
+
+Type-split twins (first layer `s : Input α₀`, second-layer slots/datum over `α`; proofs verbatim):
+`RetainedLow.actual_key_support_mx` (Admission/RetainedLowCofactorDictionary),
+`actual_fixed_seed_low_positive_family_mx` (Admission/RetainedLowPositive),
+`actual_fixed_seed_low_collected_family_mx` (Admission/RetainedLowCollected),
+`GlobalPhysical.actual_low_erased_positive_family_mx` (High/GlobalPhysicalLowCollectedErasure),
+`GlobalPhysical.global_low_erased_positive_family_mx` (High/GlobalPhysicalLowGlobalSource),
+`global_low_erased_collected_cells_mx` (Admission/RetainedLowErasedCollected),
+`global_low_paid_positive_family_mx` (Admission/RetainedLowPaid).
+
+Two-parent twins (statement shape as Collet's with: `∀(reflected second){α₀}[Fintype α₀][DecidableEq α₀](s₀ : Input α₀)(s : Input α)…`,
+`s₀.η = ηanchor`, first-layer objects at `s₀`, the selection/slots/plains/coordinates/side at `s`, the first-layer caps
+`s₀.W₁ = p.profile 0 → s₀.W₂ = p.profile 1 → card α₀ ≤ N → 1 ≤ s₀.lower → sourceRadius s₀ ≤ Z^Bmass →` right after
+`sourceRadius s ≤ Z^Bmass →`, the pool `∀(P)(poolAmp poolMesh BD Bsource)(depth)(H0 mainRadius), FixedCellPoolData P Z poolAmp ell …`
+(`mainExtra` at `s₀`, ball factor `(mainRadius l+6*poolAmp)/ell`), and before the phase hypothesis
+`∀κ, sourceAReal n low bcell-poolAmp ≤ logb Z (volume s₀)-logb Z (volume s)+κ → (∀l, φ ≤ (∑i,w i)-∑i∈liveIndices (sel l).B₁.val,w i) →`;
+`+κ` in the exponent; `(hprice : QRH.MixedStep.Ledger.MixedNodePrice n low bcell φ)(hlow : ParentGood low)` replace
+`(Kgraph)(hg : RealGeometry …)(hn : ParentGood n)(hlow)`):
+- `SelectedLowPaid.actual_selected_low_price_mx` (Admission/SelectedLowPaid) — extra `(hφ : φ ≤ (∑i,w i)-∑i∈liveIndices sel.B₁.val,w i)`;
+- `SelectedLowSource.global_selected_low_positive_family_mx`, `…Reindex.global_selected_low_positive_family_injective_mx`,
+  `…MissingBins.global_selected_low_positive_family_missing_bins_mx`, `SelectedLowBufferedSource.global_selected_low_buffered_positive_family_mx`;
+- `SelectedRegularLowSource.selected_nonfixed_mx`, `…apply_actual_family_mx` (Admission/SelectedRegularLowSourceData) and
+  `…global_selected_regular_low_buffered_positive_family_mx` (Admission/SelectedRegularLowSource): conclusion over
+  `Anchor_mx α₀ α Z := {s₀, modifier₀ := markedSourceModifier …, s, …, zero₁₀, zero₂₀, zero₁, zero₂, …}`, `Family_mx`, `Selected_mx`,
+  binders `(hz₁₀ : s₀.W₁ 0=0)(hz₂₀ : s₀.W₂ 0=0)(hz₁ : s.W₁ 0=0)(hz₂ : s.W₂ 0=0)`;
+- `PhysicalLowGuard.guard_slack_of_geometry_mx`, `eventually_geometry_guard_mx` (Core/PhysicalLowGuard): `NodeGeometry_mx n low b`;
+- `GlobalPhysical.regularLowMesh_mx n low b φ θ hprice hlow ha hqhalf hq1 hG hθ`, `regular_low_mesh_positive_mx`,
+  `regular_low_slot_supply_mx` (High/GlobalPhysicalRegularLowParameters);
+- `GlobalPhysical.RegularLowAt_mx rayModulus Hray hH n low bcell φ ellPool θloss mesh εslot τsource N Mslot W ηanchor η₀ Q hQray Cslot Cpref JL SL CL Z`
+  and `regular_low_controls_mx (n low)(bcell φ ellPool θloss)(hprice)(hlow)(hellPool : 0<ellPool)(ha)(hqhalf)(hq1)(hG)(hθ) … (hmesh : mesh ≤ regularLowMesh_mx …) …`
+  (High/GlobalPhysicalRegularLowAt). In `RegularLowAt_mx` the pool width `poolAmp` is quantified with the pool and the pool's
+  `ell` is the fixed parameter `ellPool` (`ellPool = poolAmp/2` at the call site).
+
+Next (F3): `Admission/SelectedRegularLowPointData` (`Initial.anchor_mx`, `eventually_low_scalar_mx`, `Scalar_mx`, `Shared_mx`, `radial_mx`,
+`eventually_selected_frequency_mx`, `selected_common_norm_caps_mx`), `Admission/SelectedRegularLowPoint` (`eventually_initial_low_point_mx`).

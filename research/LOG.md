@@ -1708,3 +1708,18 @@ slot; `mixed-slots/`).
   - **Lead to check.** The probe reports that MF3.38's descent counts the slot width twice (in
     `D₀ = r + z` and as the child's burden `z₀`). Compare this with the re-reflection argument above,
     which concluded that slot cost 2 is intrinsic.
+- **Lemma W: open count windows in the return** (`return-transfer/REPORT.md`, 2026-10-26).
+  - **What it is.** The certificate's conservative count windows are the lower plain window
+    `m_- = 2/5`, the width window `s_+ < cap`, and the natural-tail join at `m_H`. Lemma W opens them to
+    the faces' proved domain and joins the natural tail at the crossover `m_X`, where the face width
+    equals the natural width.
+  - **Value.** θ\* 0.8742701 → **0.8741364** (−1.34e-4), with no new analytic input. Collet's generic count
+    theorems already allow it. Cost: about 150 Lean lines in FinalReturn, plus regenerated
+    certificates.
+  - **Why it pays now.** It is a companion to the mixed step: there is no gain on the PR 76 faces. With
+    flat faces (Λ ≈ 2.1), `m*` drops below 2/5.
+  - **Negative results.**
+    - No transfer inside the return: the high side applies no row Poisson, so there is no Gauss sum
+      for the transfer to act on, and its moments are faces that already contain the transfer.
+    - Levy's Hölder step is optimal given its inputs.
+  - **Next source-side lever.** The count face's cap, at ≈ 0.085: up to −6e-5.

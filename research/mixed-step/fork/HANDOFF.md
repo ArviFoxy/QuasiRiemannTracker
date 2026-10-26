@@ -1088,3 +1088,44 @@ amplitude facts (`0 < sourceAReal n low bcell ≤ 1`, `B ≤ 1`, `1 < L`, `cap <
 * `Admission/SelectedRegularSeedColumn` (namespace `QRH.MixedStep.SeedColumn`): `divisors_dvd`, `seedColumn`, `seedColumn_live`.
 The former module 51 (`RegularJointSupplier_mx`) is folded into `Downstream/Supplier3At` (`regular_supplier3_at`, task B): the contract is proved directly from
 `regular_canonical_joint_mx`, `regular_point_supplier_rm_mx` and the node lemmas of `Downstream/Supplier3`.
+
+## Status after `balanced_of_regular3` (coordinator, 2026-10-26 ~13:00)
+`Downstream/Balanced3.lean` is complete (no `sorry`, standard axioms): `balanced_of_regular3` pays the first MAIN
+selection piece by piece from `PlainTransfer` (Families.lean) and `RegularJointSupplier3` (Contract3.lean), with Collet's
+`eventual_selected_second`, the F6 twins (`eventually_initial_main_joint_saved_mx`,
+`eventual_initial_remainder_sums_one_mx`) and `selected_four_payment` at `e := 2e`. Helpers in that file:
+`PieceLabels`, `piece_fourier_child` (Collet's `actual_first_fourier_child` for a child of another parent),
+`control_payment_mx`, `mixed_control_payment_mx`. The only things between here and `nf_step3 : NFStep3` are
+(a) `PlainTransfer` (it cannot hold: collision patterns and residual seeds), (b) `RegularJointSupplier3` for the families that
+replace it. `regular_supplier3` (Supplier3At) gives (b) for plain families.
+
+### What the collision families still need (findings of this stretch; none of this is built)
+1. **Numbers (from `fan_16_1000_cap0.075.json`, K = 9/2).** The transfer width is small, `d(b) <= ~0.0075` for all fan steps and
+   `b <= 0.085`, while the reference exponent `r = 49/100 - K b >= 0.1075`. The *centered gate*
+   `T + b + 9 Amix + fee < 5/6 + 0.499 (49/100 - K b)` is **tight**: its slack at `b = cap` is ~1e-5 or less for the first ~25
+   steps (0.00000 to 5 digits), rising to ~0.008 at step 46. So a collision family cannot afford to lower the reference
+   `Lref` unless its virtual amplitude `Amix_c` is below the top `Amix` by at least ~0.055 times the loss. Design §7's lower
+   collision node (`delta_c ~ x - w/2`) provides exactly that room; a grid node strictly above the plain one does not.
+2. **Plain pools are norm balls** (`plainSupportPool b X Y = idealBall (bX) U idealBall (bY)`), so
+   `shortenPlains` of an `initialInput` is `initialInput` of the data `X/N(D), Y/N(D)` (HANDOFF item 1: yes), and a padded
+   pool (other `Y`) gives the same energies because the profile weights vanish outside `[X/4, 9X/4]`. With padding one can
+   take the second-layer reference `Z^(r - l)` for any `l >= log_Z N(D)`, without matching `Y2/N(D1)`.
+   The generic canonical joint (`regular_canonical_joint_mx`) takes any second-layer `Initial` record `i` with
+   `InitialGeometry i n b width mesh r` for an *arbitrary* `r`, and `globalFace_downward` handles the shortened lengths.
+3. **Bins.** Keys are `floor (log_2 (norm))` of five ideals of the label (`geometryIndex`), not `Z`-scaled, so the key of an
+   extended label `(C D^2, D')` moves with `N(D)` and `geometryHighFactor` changes by `N(D)^O(1)`. This factor is not in the
+   ledger and has to be absorbed by a matching term (the amplitude comparison). Unresolved.
+4. **Amplitude comparison** `a_l <= C Z^{e} amplitude_ext(l, f)` is first-layer arithmetic with `scalar`, `outside`,
+   `balancedLeft`, `outsideExponent`, `extra`, the frozen coefficient. It must hold up to `Z^{O(e)}` (no slack: the gates bind).
+   Not started; needs `outside` of the extended label (`FirstBlockSource.outside = scalar C D hC E K A0 B0`).
+5. **Existence of the extended first-layer column.** A first-layer label is a pair `(commonPart I J, commonPart J I)` of tuple
+   columns (`commonLabels`), with equal prime support; `(C D^2, D')` is a label only if the partner has the primes of `D`.
+   Unresolved, together with `firstLiveColumns` membership.
+6. **Induction on the face is not available**: the moment of the collision piece has the Z-dependent character
+   `eta * chi_{delta^3}`, and `UnitFaceSource` quantifies `eta` before its constants.
+7. In the child picture, the collision family at `(l, B, Q, sigma, u)` is the child energy of the *same* parent `s` with common
+   ideal `C D^2` and allocation `B'` (slots `Q` frozen at `u`, marked plain parts multiplied by `D_k`). Its transfer would be the
+   plain transfer of `(l', B')`, which suggests folding collisions into `PlainTransfer` with a larger constant if `(l', B')` were
+   terms of the same sum; this needs 4 and 5.
+
+These are open mathematics/formalization questions, not routine plumbing. Do not claim `nf_step3` before they are settled.

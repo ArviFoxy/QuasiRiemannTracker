@@ -107,6 +107,20 @@ All of it compiled on the first build; no proof needed repair.
 - The C cap stops binding above about 0.0821 (the face width at the binding crossing), so every
   ramp from (b) on gives the same θ*.
 
+**Face positions (pricing only, `price_faces.py`, `price_grid.py`; flow faces from `../flow_k92.json`,
+B = E + L·s).**
+- At the binding point (`newTop`, δ ≈ 0.443, p = 1/2), the count value of the affine branch falls
+  monotonically along the flow: R = 0.613384 at s = 0.030, 0.612933 at 0.0595, 0.612898 at 0.062.
+  So no extra count face inside the family (pieces 5–7, or the fan) can help: one extra face at any
+  of 10 positions s ∈ [0.030, 0.059] leaves θ* unchanged.
+- Moving C beyond the family end helps: θ* = 0.8740680 with C at s = 0.062 (h = 0.8062) and
+  0.8740679 at h = 0.80625, against 0.8740725 for (b) at the same h. This needs a C cap ≥ 0.086
+  (with 0.085 the C cap binds again, 0.8740704).
+- P is best where it is (s ≈ 0.056–0.057). An extra count face beyond the family equals moving C,
+  and 2 or 4 such faces give nothing more.
+- `theta_star.certifiable` now resets `cert_return.ADM_CACHE` when the faces change: it caches
+  admissions by branch name, which only matters when faces vary inside one process.
+
 ## 4. Changes to the generators (defaults unchanged)
 
 - `../../repeated-marks/cert_return.py`:

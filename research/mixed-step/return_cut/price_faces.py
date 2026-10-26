@@ -16,6 +16,9 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import theta_star as T
 
 FLOW = json.load(open('/home/user/QuasiRiemannTracker/research/mixed-step/flow_k92.json'))
+if os.environ.get('QRH_FLOW_EXT'):    # rows continuing the flow past its last s (same format)
+    _last = max(r['s'] for r in FLOW)
+    FLOW = FLOW + [r for r in json.load(open(os.environ['QRH_FLOW_EXT'])) if r['s'] > _last + 1e-12]
 S7 = Fr(57, 1000) - (Fr(595, 10000) - Fr(57, 1000)) * Fr(35747, 65536) / (1 - Fr(35747, 65536))
 
 

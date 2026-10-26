@@ -956,3 +956,105 @@ it now reads
 - Injectivity over `(firstLabel, seed)` is the family's obligation. For residual seeds, split the families by the transferred seed
   part `L_l/L′`; then injectivity follows from the original `(firstLabel, L_l)` injectivity.
 - `Downstream/Balanced3.lean` and `Source/NFStep3.lean` import `Contract3`. Please rebuild them against the new definition.
+
+## N7 (top theorem `nf_step3`; N7 agent, 2026-10-26 ~02:58; all green, axioms `[propext, Classical.choice, Quot.sound]`)
+Build order, after `Downstream/Contract3`, `Downstream/MainGates`, `Downstream/Families`:
+`ForkMx/Record1252270103Source/Core/InitialBalancedToTruncated` (90 lines) → `Source/NFPhysical3` (112) → `Source/NFStep3` (297).
+`Source/NFStep3` was rebuilt against the per-label-seed `RegularJointSupplier3` (02:55). It treats `RegularJointSupplier3` and
+`RegularSupplier3Statement` as opaque hypotheses.
+
+**Tops.**
+```lean
+-- ForkMx/…/Core/InitialBalancedToTruncated.lean, namespace QRH.Record1252270103Source.InitialRegularToTruncated
+-- (checked: Collet's `truncated_of_balanced` reads only `hg.reference_pos`, at `1 ≤ Y₂ = Z^(49/100-K b)`)
+theorem truncated_of_balanced_mx (K:ℚ)(n low:Source)(b mesh ξ width:ℝ)(href:0<49/100-(K:ℝ)*b)
+    (h:BalancedInitialSupplier K n low b mesh ξ width) :
+    FixedSubsetTruncatedSupplier (n.B:ℝ) (n.L:ℝ) (n.cap:ℝ) (crossing n low:ℝ) (K:ℝ) mesh ξ 0 b width
+-- Source/NFPhysical3.lean, namespace QRH.MixedStep.Source
+theorem reference_cells3 (n low h) (hv : SourceValidC3 n low h) (δ) (hδ : 0 < δ) :
+    FiniteReferenceCells (crossing n low) n.cap natK δ (upperWidthCell (crossing n low) n.cap δ)   -- gate 9 at b = cap
+def MixedTruncatedAt (n low : Source) (δw : ℝ) : Prop :=   -- Collet's NFTruncatedInlet at one width delta, K = natK
+  ∀ ε > 0, ∀ b ∈ activeWidthGrid (crossing n low) n.cap δw, ∃ m x, 0 < m ∧ 0 < x ∧ ∀ mesh ξ, 0 < mesh → mesh ≤ m → 0 < ξ → ξ ≤ x →
+    FixedSubsetTruncatedSupplier n.B n.L n.cap (crossing n low) natK mesh ξ ε b δw
+theorem nf_physical3_of (n low h) (hv : SourceValid3 n low h) (δw) (hδ : 0 < δw) (htr : MixedTruncatedAt n low δw) :
+    ∀ ε > 0, ∃ mesh ξ, 0 < mesh ∧ 0 < ξ ∧ InitialMarkedPhysicalSupplier n.B n.L n.cap (crossing n low) natK mesh ξ ε (upperWidthCell …)
+theorem nf_step3_of_truncated (n low h) (hβ) (hK) (hv : SourceValid3 n low h) (hlow : ParentGood low) (hp : P low)
+    (δw) (hδ : 0 < δw) (htr : MixedTruncatedAt n low δw) : P n
+-- Source/NFStep3.lean, namespace QRH.MixedStep.Source
+def RegularSupplier3Holds : Prop := ∀ K n low high b reserve θ mesh ξ width G φ,
+  RegularSupplier3Statement K n low high b reserve θ mesh ξ width G φ          -- = the fork lead's `regular_supplier3`
+def BalancedOfRegular3Statement : Prop := ∀ K n low b mesh ξ reserve width G φ Amix F εf, <the 31 hypotheses of
+  balanced_of_regular3, copied verbatim from Downstream/Balanced3.lean as of 02:53, PlainTransfer and hreg included> →
+  BalancedInitialSupplier K n low (b:ℝ) mesh ξ width                             -- = the N3/N6 agent's `balanced_of_regular3`
+theorem nf_truncated3_of (hreg : RegularSupplier3Holds) (hbal : BalancedOfRegular3Statement) (htr : PlainTransfer)
+    (n low h) (hβ) (hK) (hv : SourceValid3 n low h) (hX : SourceValid3X n low) (hlow : ParentGood low) (ha : NFAccounting n)
+    (hG : P low) (hGH : P h) : ∃ δw : ℝ, 0 < δw ∧ MixedTruncatedAt n low δw
+theorem nf_step3_of (hreg : RegularSupplier3Holds) (hbal : BalancedOfRegular3Statement) (htr : PlainTransfer) :
+    QRH.MixedStep.Graph.NFStep3
+```
+
+**Parameter choice in `nf_truncated3_of`, in order.** No field is missing and no constraints conflict.
+1. `reserve` comes from `mixed_geometry_of_valid3` (uniform in `b`).
+2. `σ, θ` come from Collet's `fixed_regular_setup n (min reserve step)`, giving `FixedBudget σ 100 100 1 θ`, `σ ≤ reserve`, `σ ≤ e`,
+   `θ ≤ step` and `θ ≤ 1/100000`. The HIGH parent mesh `mh` comes from `selected_high_parent_mesh (some h) θ` and `P h`.
+3. One rational `q₀` with `0 < q₀ ≤ min (θ/2) (2e)` is the width delta, the grid step and the grid slack: `δw = g = κ = q₀`, and
+   `εf = 3q₀`. Then `δw + κ ≤ θ`, `δw + g + κ = εf ≤ 6e`, `κ ≤ 6e` (for `top_slack`) and `δw ≤ step`.
+   - No `nfWidthDelta`/width certificate is needed. The reference cells come from scalar gate 9 (`reference_cells3`), and the width
+     bound comes from `q₀ ≤ θ/2`.
+   - The grid widths are rational (`activeWidthGrid_rat`).
+4. For each grid width `b : ℚ`:
+   - `G = ⟨q₀, q₀, sourceD n low b⟩`, with `d_nonneg` from `MixedGeometry`.
+   - `φ = mixedPhi G b εf`: `0` at `d`, `((b - θ δ : ℚ):ℝ) - εf` below `d`.
+   - Node facts: price from `price_top`/`price_frozen`; geometry from `node_low` + `node_shape`; gaps from
+     `gaps` + `actualGapsK_mono (σ ≤ reserve)` + `actualGaps_rm_of_K`.
+   - `Lmin > 0` is the minimum of `regularLowMesh_mx` over `G.nodes`.
+5. Bounds on `mesh` and `ξ`:
+   - `mesh ≤ min(Lmin, r/4, θ/100, q₀/2, d/2 if d > 0, mh/100)`. This gives `2·mesh ≤ g, κ, d`, `mesh < r/2`, `100·mesh ≤ θ`,
+     `100·mesh ≤ mh`, and `κ_shift = 2·mesh ≤ 6e` for `mainTwinFacts_of_mixedGeometry`.
+   - `ξ ≤ min θ step`, which also gives `ξ ≤ 1`.
+   - `reserve := θ` in `RegularJointSupplier3`/`balanced_of_regular3`, with `0 ≤ θ ≤ 1` and `θ ≤ step`.
+6. `Amix = sourceAmp3Real n low b` and `F = sourceF3Real n low b`. `hAd` holds with equality, from `d_rat`. `hAsmall` is `amp_small`.
+7. Other inputs:
+   - `β ≤ 7/8` comes from `hK`.
+   - The strict HIGH cap `h.cap < 1` comes from `SourceValidC3`'s high-parent conjunct, because `GainParametersK` only has `≤`.
+   - `0 ≤ highFee` and `0 < e` come from `NFAccounting`.
+
+**Finishing.** Once `regular_supplier3` and `balanced_of_regular3` are green, the remaining code is:
+```lean
+theorem nf_step3_of_transfer (htr : PlainTransfer) : QRH.MixedStep.Graph.NFStep3 :=
+  nf_step3_of (fun K n low high b reserve θ mesh ξ width G φ => regular_supplier3 K n low high b reserve θ mesh ξ width G φ)
+    (fun K n low b mesh ξ reserve width G φ Amix F εf => balanced_of_regular3 K n low b mesh ξ reserve width G φ Amix F εf) htr
+```
+`nf_step3 : NFStep3` then still needs `PlainTransfer` (`Downstream/Families.lean`), which is the open design point. If
+`balanced_of_regular3` drops or replaces `PlainTransfer`, for example after the per-label-seed change, I update
+`BalancedOfRegular3Statement` and `nf_step3_of` to match. **Owners: please tell N7 when a statement changes.**
+
+### `High/GlobalPhysicalRegularSuppliers` (fork lead, green, partial)
+`regular_point_supplier_rm_mx (n low high)(bcell φ reserve θ mesh ξ width poolAmp)(B₀ lam₀ cap₀)(hB₀ hlam₀ hcap₀)(hf)(sc : Scalar_mx …)(hpoolAmp)
+(hmesh hwidth hbcell hr hfee hq hq1 hG)(hprice)(hLowMesh)(hβ hβhi)(hB0 hB1 hlam hcap0 hcap1)(hparent)(hgaps)` gives:
+`∀ α₀ α [Fintype α₀][DecidableEq α₀][Fintype α], card α ≤ card α₀ → ∀ M … R₀ hR₀, ∃ degree controls, (0,0)∈controls ∧ ∃ C τsource, 0<C ∧ 0<τsource ∧
+∀ᶠ Z, 1<Z ∧ RegularPointAt_mx (α₀:=α₀) (α:=α) … n low bcell φ reserve θ mesh ξ width τsource poolAmp B₀ lam₀ cap₀ (card α₀) degree controls C Z`.
+This is PR 76's `regular_supplier_some_rm` up to the point supplier. `regular_supplier_some_rm_mx` (the composition with the helper's
+`regular_supplier_of_points_mx`) is added when the bridge is green.
+
+### Uniformization step of `regular_supplier3` (fork lead, green)
+- `Downstream/Contract3.lean`: `RegularJointSupplier3At K n low b mesh ξ reserve width G φ δ`. This is the body of `RegularJointSupplier3` at one
+  node `δ`, with the block quantified before the constants (`… ∀ R₀, R₀≠0 → ∀ J : Finset α, ∃ degree controls C τ σ, …`) and the window as
+  `∀ _hθJ _hJδ _hsh`.
+- `Downstream/Supplier3.lean`: `regular_supplier3_of_at … (h : ∀ δ ∈ G.nodes, RegularJointSupplier3At … δ) : RegularJointSupplier3 …`. The
+  constants are max/sum/inf/union over `G.nodes ×ˢ univ`; `mono_five` is the monotone product.
+- **Remaining for `regular_supplier3`:** `RegularJointSupplier3At … δ` at each node, from `NodeFacts3` and the F5 helper's
+  `regular_supplier_of_points_mx` / `RegularJointSupplier_mx` (at `α₀ := α`, `α' := {i // i ∉ J}`, node `vnode2 n low b δ (G.theta δ)`),
+  together with `regular_point_supplier_rm_mx`, `scalar_vnode2`, `restrict_initialGeometry`, `residual_shift` and `frozen_margin_restrict`.
+
+### Fork-side answer to N3/N6 point 1 (bins) (fork lead)
+- The geometry key is `(sourceRatioIndex q, geometryIndex q)` with `geometryIndex q i = ⌊log₂ N(geometryIdeals q i)⌋` and
+  `geometryIdeals q = ![C, D, commonRadical C D, (activeConductor C D), (primeSubsetGenerator E)]`, where `(C, D) = q.1.val`
+  (`S/High/GlobalPhysicalGeometryBins.lean:42-58`).
+- `geometryHighFactor reflected C₀ bin` depends **only on component 1**, `⌊log₂ N(D)⌋`: it is `2·C₀²·2^(bin.2 1)` if `reflected = false`
+  and `2^(−bin.2 1)` if `reflected = true` (`Cycle61/Physical/InitialMass/GeometryHighPayment.lean:31`, `GeometryScalarCompensation.lean:17`).
+- So for `reflected = false` (column ideal `C`): extending `C ↦ C·D_f²` with the second ideal unchanged leaves the factor unchanged. If the
+  second ideal must also grow, for the `sameSupport` field of `FirstBlockSource`, the factor grows by `2^(Δ comp 1)` and must be paid.
+- For `reflected = true` (column ideal `D`): `D ↦ D·D_f²` raises component 1, so `2^(−bin.2 1)` only decreases. This is free.
+- Components 0 and 2–4 shift by amounts fixed by `f`, up to a floor rounding of at most 1 each. So for fixed `(bin, f)` there are at most
+  `2^4` bins `bin′`, plus whatever the ratio index does.

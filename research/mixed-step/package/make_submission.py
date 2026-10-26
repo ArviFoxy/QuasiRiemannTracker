@@ -43,6 +43,16 @@ def main():
             raise SystemExit(f'missing module {m}')
         mods.append(m)
         todo += IMPORT.findall(open(p).read())
+    bad = []
+    forbidden = re.compile(r'\bsorry\b|\badmit\b|^\s*axiom\s|native_decide|^\s*#exit', re.M)
+    for m in mods:
+        text = open(os.path.join(lake, m.replace('.', '/') + '.lean')).read()
+        text = re.sub(r'/-.*?-/', '', text, flags=re.S)          # drop comments before the scan
+        text = re.sub(r'--[^\n]*', '', text)
+        if forbidden.search(text):
+            bad.append(m)
+    if bad:
+        raise SystemExit(f'forbidden constructs (sorry/admit/axiom/native_decide/#exit) in: {bad[:10]}')
     src = os.path.join(dest, 'src')
     if os.path.exists(src):
         shutil.rmtree(src)

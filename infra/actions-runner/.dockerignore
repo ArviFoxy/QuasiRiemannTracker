@@ -1,7 +1,0 @@
-*
-!Dockerfile
-!Proxy.Dockerfile
-!entrypoint.sh
-!proxy.py
-!vm.py
-!guest.sh

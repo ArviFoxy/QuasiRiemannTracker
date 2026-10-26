@@ -1,16 +1,20 @@
-/- Mixed source step, L2 transfer: chaining the transfer into Collet's pool.
+/- Copyright (c) 2026 Hailey Collet. Apache-2.0.
+Adapted from Collet's tree: `column_no_prime_square` from `source_column_no_prime_square`
+(Record1252270103Source/Coefficient/AmplifierSupport.lean), `corrected_source_rows_main`
+from `corrected_source_dyadic_main` (Coefficient/SourceAmplifier.lean),
+`corrected_coefficient_generic` from `actual_marked_corrected_coefficient`
+(High/GlobalPhysicalCorrection.lean) and `actual_marked_corrected_rows` from
+`actual_marked_main_ideal_coefficient` (High/GlobalPhysicalCorrectedMain.lean).
+Changes: a finite set of nonzero rows replaces the dyadic weight; any `Input`,
+column set and column multiplier `Γ`; the ambient decidable-equality instance on
+the slot type.
 
-`actual_marked_corrected_rows` is the finite-row version of Collet's
-`actual_marked_main_ideal_coefficient` (rows 3–5 of the MAIN chain): for any
-`Input`, the energy of the marked source polynomial over a finite set of
-nonzero rows of norm `≤ Z^M` is bounded by the pool-corrected ball energy at
-radius `Z^(M+6L)`. The pool premises `hsq`, `hsmall` are discharged from the
-source structure exactly as in Collet's `corrected_source_dyadic_main`.
-
-`collet_main_selected_transfer_pool` composes it with the transfer: the
-original first-MAIN dyadic energy is bounded by the corrected energies of the
-residual sources (normalized by `√(T/∏_J P)`) at radius `Z^(M'+6L)`, where
-`Z^M · W⁴ ≤ Z^M'`. -/
+Mixed source step, L2 transfer: Collet's pool chain on finitely many rows.
+`actual_marked_corrected_rows` (rows 3-5 of the MAIN chain): for any `Input`, the
+energy of the marked source polynomial over a finite set of nonzero rows of norm
+`≤ Z^M` is bounded by the pool-corrected ball energy at radius `Z^(M+6L)`. The pool
+premises are discharged from the source structure as in Collet's
+`corrected_source_dyadic_main`. -/
 import Submissions.arvi_mixed_step.Transfer.Rays
 import Submissions.hailey_collet_1252270103.Record1252270103Source.High.GlobalPhysicalCorrectedMain
 

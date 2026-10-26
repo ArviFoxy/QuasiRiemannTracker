@@ -97,6 +97,8 @@ structure MixedGeometry (Kgraph : ℚ) (n low h : Source) (b : ℚ) (reserve : �
   node_F : ∀ δ θ : ℚ, sourceFReal (vnode2 n low b δ θ) low ((b-θ:ℚ):ℝ) = 1-6*(n.lowFee:ℝ)-6*(δ:ℝ)
   node_low : ∀ δ θ : ℚ, 0≤θ → θ≤δ → δ≤sourceD n low b →
     RealGeometryLow (vnode2 n low b δ θ) low ((b-θ:ℚ):ℝ)
+  node_shape : ∀ δ θ : ℚ, 0≤θ →
+    (vnode2 n low b δ θ).B ≤ 1 ∧ 1 < (vnode2 n low b δ θ).L ∧ (vnode2 n low b δ θ).cap < 1
   price_frozen : ∀ δ θ : ℚ, 0≤θ → θ≤δ → δ≤sourceD n low b → ∀ ε : ℝ, 0≤ε → ε≤6*(n.allowance:ℝ) →
     MixedNodePrice (vnode2 n low b δ θ) low ((b-θ:ℚ):ℝ) (((b-θ:ℚ):ℝ)-ε)
   price_top : ∀ θ : ℚ, 0≤θ → θ≤sourceD n low b →
@@ -186,6 +188,7 @@ theorem mixed_geometry_of_valid3 (n low h : Source) (hv : SourceValid3 n low h)
       node_F := fun δ θ => vnode2R_F n low b δ θ hden
       node_low := fun δ θ hθ0 hθ hδ =>
         realGeometryLow_vnode2 n low h hC hlow hden he.le hb hθ0 hθ hδ
+      node_shape := fun δ θ hθ0 => vnode2_shape n low h hC hθ0
       price_frozen := fun δ θ hθ0 hθ hδ ε hε0 hε =>
         mixed_node_price_frozen n low h hC hlow hden he.le hb hθ0 hθ hδ hε0 hε
       price_top := fun θ hθ0 hθ hslack =>

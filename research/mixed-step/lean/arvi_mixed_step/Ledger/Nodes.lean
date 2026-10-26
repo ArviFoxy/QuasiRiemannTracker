@@ -345,6 +345,16 @@ theorem realGeometryLow_vnode (n low h : Source) (hv : SourceValidC3 n low h)
     RealGeometryLow (vnode n low b δ) low ((b - δ : ℚ) : ℝ) :=
   realGeometryLow_vnode2 n low h hv hlow hden he hb hδ0 le_rfl hδ
 
+/-- The shape facts of a node that Collet's LOW spine reads off `ParentGood` (`0 < B` is not
+claimed: `0 < n.B - n.L·θ` is not implied by the gates). -/
+theorem vnode2_shape (n low h : Source) (hv : SourceValidC3 n low h) {b δ θ : ℚ} (hθ0 : 0 ≤ θ) :
+    (vnode2 n low b δ θ).B ≤ 1 ∧ 1 < (vnode2 n low b δ θ).L ∧ (vnode2 n low b δ θ).cap < 1 := by
+  obtain ⟨_, hB1, hL, _, hc1, _⟩ := hv
+  simp only [vnode2_B, vnode2_L, vnode2_cap]
+  refine ⟨?_, hL, hc1⟩
+  have : 0 ≤ n.L*θ := mul_nonneg (by linarith) hθ0
+  linarith
+
 /-- The amplifier at every node is at least the pool `r`, so `mesh < r/2` gives `mesh < a_v/2`. -/
 theorem vnode2_amp_ge (n low : Source) (b δ θ : ℚ) (hden : sourceDen n low ≠ 0) (hδ0 : 0 ≤ δ) :
     (n.lowFee:ℝ) ≤ sourceAReal (vnode2 n low b δ θ) low ((b - θ : ℚ) : ℝ) := by

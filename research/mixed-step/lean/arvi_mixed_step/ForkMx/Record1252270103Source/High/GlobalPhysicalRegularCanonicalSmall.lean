@@ -77,6 +77,7 @@ theorem regular_canonical_small_mx {α₀ α:Type}[Fintype α₀][DecidableEq α
     (hg:QRH.MixedStep.Downstream.NodeGeometry_mx n low bcell)
     (hB₀:B₀≤1)(hlam₀:1≤lam₀)(hcap₀:cap₀≤1)
     (hpoolAmp:0<poolAmp)(hpoolAmp1:poolAmp≤1)
+    (ampv:ℝ)(hampv:ampv=sourceAReal n low bcell)
     (hξ:0<ξ)(hξ1:ξ ≤ 1)(hθ:0 ≤ θ)(hθ1:θ ≤ 1)
     (hpoint:0<Cpoint)(hτ:0<τsource):
     ∃Cs:ℝ,0<Cs ∧ ∀ᶠZ:ℝ in atTop,1<Z ∧
@@ -102,18 +103,19 @@ theorem regular_canonical_small_mx {α₀ α:Type}[Fintype α₀][DecidableEq α
       a.R a.s.ν a.s.W a.s.P≠0)→
     FixedCellPoolData P Z poolAmp (poolAmp/2) mesh θ 10 4 depth→
     2/(poolAmp/2) ≤ depth→(depth:ℝ)*poolAmp < 5→
-    let F:=allocatedRegularFamily_mx a column hLive alloc P (sourceAReal n low bcell) ht N χ₀
+    let F:=allocatedRegularFamily_mx a column hLive alloc P ampv ht N χ₀
     let H0:=fun l=>(CoupledFirst.geometryFirstSource a.s₀ a.modifier₀ a.R a.seed (Z^a.D) Z a.ξ a.hK a.bin (column l).1).H0
     let radius:=fun l=>ExceptionalPrice.literalFirstRadius reflected Z (volume a.s₀) Z ξ θ (a.label (column l))
     ∀(Wa:𝓢(ℝ,ℂ))(height:ℝ),0 ≤ height→(∀j,|i.freq j| ≤ height)→
     1+|ht|+height ≤ Z^(τsource/4)→
-    ∀κ:ℝ,sourceAReal n low bcell-poolAmp ≤ Real.logb Z (volume a.s₀)-Real.logb Z (volume a.s)+κ→
+    ∀κ:ℝ,ampv-poolAmp ≤ Real.logb Z (volume a.s₀)-Real.logb Z (volume a.s)+κ→
       (∀l,φ ≤ (∑j,i.w j)-∑j∈liveIndices (F.stage l).B.val,i.w j)→
     ∀(second:Bool)(t u:ℝ),mellinPairHeight t u ≤ Z^(τsource/4)→
     modifiedSecondNormalizedSum second F.datum (fun q=>F.childModifier q.1)
       (regularFamilyWeight_mx F Wa (fun _=>P) (fun _=>poolAmp) H0 radius (poolAmp/2)) t u ≤
       Cs*geometryHighFactor reflected (geometrySupportConstant N 1 (1/4) (1/4)) bin*
         (i.p.control controls)^2*(1+|ht|+height)^degree*(mellinPairHeight t u)^degree*Z^(κ-(reserve/4)):=by
+  subst hampv
   have hnB:(n.B:ℝ) ≤ 1:=by exact_mod_cast hg.B_le_one
   have hnL:1 ≤ (n.L:ℝ):=by exact_mod_cast hg.L_gt_one.le
   have hncap:(n.cap:ℝ) ≤ 1:=by exact_mod_cast hg.cap_lt_one.le

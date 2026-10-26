@@ -76,6 +76,7 @@ theorem regular_canonical_joint_mx {α₀ α:Type}[Fintype α₀][DecidableEq α
     (hg:QRH.MixedStep.Downstream.NodeGeometry_mx n low bcell)
     (hB₀:B₀≤1)(hlam₀:1≤lam₀)(hcap₀:cap₀≤1)
     (hpoolAmp:0<poolAmp)(hpoolAmp1:poolAmp≤1)
+    (ampv:ℝ)(hampv:ampv=sourceAReal n low bcell)
     (hξ:0<ξ)(hξ1:ξ ≤ 1)(hθ:0 ≤ θ)(hθ1:θ ≤ 1)
     (hpoint:0<Cpoint)(hτ:0<τsource):
     ∃Cs:ℝ,0<Cs ∧ ∀ᶠZ:ℝ in atTop,1<Z ∧
@@ -101,18 +102,19 @@ theorem regular_canonical_joint_mx {α₀ α:Type}[Fintype α₀][DecidableEq α
       a.R a.s.ν a.s.W a.s.P≠0)→
     FixedCellPoolData P Z poolAmp (poolAmp/2) mesh θ 10 4 depth→
     2/(poolAmp/2) ≤ depth→(depth:ℝ)*poolAmp < 5→
-    let F:=allocatedRegularFamily_mx a column hLive alloc P (sourceAReal n low bcell) ht N χ₀
+    let F:=allocatedRegularFamily_mx a column hLive alloc P ampv ht N χ₀
     let H0:=fun l=>(CoupledFirst.geometryFirstSource a.s₀ a.modifier₀ a.R a.seed (Z^a.D) Z a.ξ a.hK a.bin (column l).1).H0
     let radius:=fun l=>ExceptionalPrice.literalFirstRadius reflected Z (volume a.s₀) Z ξ θ (a.label (column l))
     ∀(Wa:𝓢(ℝ,ℂ))(height:ℝ),0 ≤ height→(∀j,|i.freq j| ≤ height)→
     1+|ht|+height ≤ Z^(τsource/4)→
-    ∀κ:ℝ,0 ≤ κ→sourceAReal n low bcell-poolAmp ≤ Real.logb Z (volume a.s₀)-Real.logb Z (volume a.s)+κ→
+    ∀κ:ℝ,0 ≤ κ→ampv-poolAmp ≤ Real.logb Z (volume a.s₀)-Real.logb Z (volume a.s)+κ→
       (∀l,φ ≤ (∑j,i.w j)-∑j∈liveIndices (F.stage l).B.val,i.w j)→
     ‖∑q:F.Complete,SelectedRegularAbsolute.phase_mx F Wa (fun _=>P) (fun _=>poolAmp) H0 radius
       (poolAmp/2) (regularFamilyKeep_mx F) q*
       (modifiedDatumBlock (F.datum q) (F.childModifier q.1)).value ballProfile‖ ≤
       Cs*geometryHighFactor reflected (geometrySupportConstant N 1 (1/4) (1/4)) bin*
         (i.p.control controls)^2*(1+|ht|+height)^degree*Z^(κ-(reserve/8)):=by
+  subst hampv
   have hnB:(n.B:ℝ) ≤ 1:=by exact_mod_cast hg.B_le_one
   have hnL:1 ≤ (n.L:ℝ):=by exact_mod_cast hg.L_gt_one.le
   have hncap:(n.cap:ℝ) ≤ 1:=by exact_mod_cast hg.cap_lt_one.le
@@ -121,7 +123,7 @@ theorem regular_canonical_joint_mx {α₀ α:Type}[Fintype α₀][DecidableEq α
   let amp:=sourceAReal n low bcell
   obtain ⟨Cs,hCs,es⟩:=regular_canonical_small_mx (α₀:=α₀) (α:=α) M H hH W hW hWs ηanchor η₀ R₀ hR₀ Q
     n low bcell φ reserve θ mesh ξ width τsource poolAmp B₀ lam₀ cap₀ Cpoint N depth degree controls hf hg
-    hB₀ hlam₀ hcap₀ hpoolAmp hpoolAmp1 hξ hξ1 hθ hθ1 hpoint hτ
+    hB₀ hlam₀ hcap₀ hpoolAmp hpoolAmp1 (sourceAReal n low bcell) rfl hξ hξ1 hθ hθ1 hpoint hτ
   obtain ⟨Ca,hCa,ea⟩:=eventually_canonical_absolute_mx N B₀ lam₀ cap₀ (n.B:ℝ) (n.L:ℝ) (n.cap:ℝ) ξ amp poolAmp θ
     hB₀ hlam₀ hcap₀ hnB hnL hncap hξ hξ1 hamp.le hamp1 hpoolAmp hpoolAmp1 hθ hθ1 W hW hWs
   obtain ⟨C,hC,en⟩:=regular_joint_of_bounded_normalized_mx (τsource/4) 75 reserve Cs Ca N degree

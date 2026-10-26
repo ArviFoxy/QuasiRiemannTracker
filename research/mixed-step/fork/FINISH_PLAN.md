@@ -128,6 +128,25 @@ statement fixed by Phase 0a: parent `P_D`, `u₀ = δ³`, reference `r − w`, t
   `PR_BODY_DRAFT.md`.
 - Commits by Arvi <arvi.pub@gmail.com> with the Claude co-author line, no session links. Open the PR on Arvi's OK.
 
+## Phase 0 results (2026-10-26)
+- **0a done** (`COLLISION_PRICING.md`). At the plain node, the zero, complement and tail terms of a collision family are
+  bounded by the plain family's for the same labels, times `ω(D)·N(D)^(−c)`. For the complement,
+  `price_D ≤ ω(D)·N(D)^(−1.002)·price`. No new gate.
+  - So Phase 4 is a short "domination twin": the family bound at `P_D`, then the pointwise comparison, then the
+    plain price lemma.
+  - Near the corner `x₁ ≈ r`, a side-0 collision can break `Z^r' ≤ X₁'`. Relabeling (swap the plains, swap X and Y)
+    fixes it: energies are equal and the face only sees `m₁ + m₂`.
+- **0b done.** In the closure of `regular_supplier3`, `u₀ = 1` appears only on the LOW side:
+  - 15 fork modules: `Admission/RetainedLow{Collected,ErasedCollected,Paid,Positive}`,
+    `Admission/SelectedLow{Source,BufferedSource,SourceMissingBins,SourceReindex}`,
+    `Admission/SelectedRegular{LowSourceData,SourceData}`, `High/GlobalPhysicalLow{CollectedErasure,GlobalSource}`,
+    `High/GlobalPhysicalRegularNormalized`, `Low/SelectedRegularFibers{Geometry,Selection}`;
+  - 4 unforked Collet modules to fork: `Admission/FirstFamilyDictionary`, `Admission/FirstFamilyMask` (`rawKey`),
+    `Admission/RetainedLowCofactor`, `Admission/SelectedRegularLowPointData`.
+
+  The HIGH spine never fixes `u₀`: its parent pins are unused (`_hparent`). The Cycle61 layer
+  (`actual_joint_retained_dictionary_mask`, `jointSourceRow`, `effectiveRow`) is already generic in `u₀`.
+
 ## Risks
 | risk | sign | response |
 |------|------|----------|

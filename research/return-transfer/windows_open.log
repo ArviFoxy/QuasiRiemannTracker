@@ -1,2 +1,6 @@
 m_-=0, aff s_+=cap, cap z in {29/500, cap}: theta* = 8742619
 m_-=0, aff s_+=cap, cap z in {29/500, cap}, crossover join: theta* = 8741364
+(c) s_+=cap only: theta* = 8742701
+(d) m_-=0 + crossover, Collet s_+ (j=0 only): theta* = 8742681
+(d2) m_-=0 + crossover, s_+ windows, capped C only at s_C: theta* = 8742681
+(d3) m_-=0 + crossover, capped at cap only, affine at Collet s_+: theta* = 8741541

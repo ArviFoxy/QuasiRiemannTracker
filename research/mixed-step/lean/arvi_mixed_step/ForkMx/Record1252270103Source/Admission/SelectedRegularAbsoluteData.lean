@@ -1,7 +1,6 @@
-/- Copyright (c) 2026 Hailey Collet. Apache-2.0.
-Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.
+/- Copyright (c) 2026 Hailey Collet, ArviFoxy. Apache-2.0.
 Mixed step (L4/L5, F1): fork of Record1252270103Source.Admission.SelectedRegularAbsoluteData
-(Hailey Collet, Apache-2.0; inherited notices retained).
+(Hailey Collet).
 
 The family amplitude with two parents and two amplitudes (`L45_DESIGN.md` §0, F1):
 `‖scalar(s₀, logb Z (volume s₀))‖² · mainExtra s₀ C (P l) (H0 l) (radius l) (poolAmp l) ell ·

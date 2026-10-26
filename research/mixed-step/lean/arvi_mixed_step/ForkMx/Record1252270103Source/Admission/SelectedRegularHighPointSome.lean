@@ -1,12 +1,11 @@
-/- Copyright (c) 2026 Hailey Collet. Apache-2.0.
+/- Copyright (c) 2026 Hailey Collet, ArviFoxy. Apache-2.0.
 The fixed pre-slot loss and post-cardinality buffer instantiate the actual
 HIGH source with one consistent set of numerical geometry budgets. -/
-/- Repeated marks: fork of Record1252270103Source.Admission.SelectedRegularHighPointSome (Hailey Collet, Apache-2.0; inherited notices retained).
+/- Repeated marks: fork of Record1252270103Source.Admission.SelectedRegularHighPointSome (Hailey Collet).
 Only the declarations whose statement depends on the HIGH gain, the uniform detector
 cutoff or the source validity are restated, renamed `*_rm`. -/
-/- Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.
-Mixed step (L4/L5, F4): fork of Fork.Record1252270103Source.Admission.SelectedRegularHighPointSome
-(PR 76 fork of Hailey Collet's module, Apache-2.0); changes: two parents and two amplitudes.
+/- Mixed step (L4/L5, F4): fork of Fork.Record1252270103Source.Admission.SelectedRegularHighPointSome
+(PR 76 fork of Hailey Collet's module); changes: two parents and two amplitudes.
 * `SourceAt_rm_mx`: `ActualAt_rm_mx` with the pool cell width `ell = poolAmp/2` (the section variable
   `amp` of PR 76 is the pool amplitude, renamed `poolAmp`).
 * `actual_point_rm_mx`: `F : Family_mx a Label`, `G : Selected_mx F …` with canonical records for both

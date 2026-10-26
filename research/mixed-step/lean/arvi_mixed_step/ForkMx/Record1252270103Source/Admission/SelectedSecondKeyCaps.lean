@@ -1,9 +1,8 @@
-/- Copyright (c) 2026 Hailey Collet. Apache-2.0.
+/- Copyright (c) 2026 Hailey Collet, ArviFoxy. Apache-2.0.
 Actual retained signed-key support caps. The original modified columns,
 complete-block filter and single-reference-ray kept rows are retained. -/
-/- Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.
-Mixed step (L4/L5, F4): fork of Record1252270103Source.Admission.SelectedSecondKeyCaps
-(Hailey Collet, Apache-2.0); changes: two parents. In `eventual_regular_key_caps` the original
+/- Mixed step (L4/L5, F4): fork of Record1252270103Source.Admission.SelectedSecondKeyCaps
+(Hailey Collet); changes: two parents. In `eventual_regular_key_caps` the original
 (first-layer) input `original : Input α₀` gives the columns, labels and the first caps; the second
 blocks (`slots`, `s`) live on the second-layer slot type `α`; the volume of the MAIN Fourier scale
 and of the coordinates is a free positive real `V` (the second-layer volume downstream). The proof

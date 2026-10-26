@@ -1,7 +1,6 @@
-/- Copyright (c) 2026 Hailey Collet. Apache-2.0.
-Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.
+/- Copyright (c) 2026 Hailey Collet, ArviFoxy. Apache-2.0.
 Mixed step (L4/L5, F6): fork of Record1252270103Source.Core.ExceptionalFirstSum
-(Hailey Collet, Apache-2.0; inherited notices retained). Original note: the genuine first common
+(Hailey Collet). Original note: the genuine first common
 geometry and centered gate pay the entire selected first-label/projector sum, using the original
 modified coefficient.
 

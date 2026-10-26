@@ -1,7 +1,6 @@
-/- Copyright (c) 2026 Hailey Collet. Apache-2.0.
-Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.
+/- Copyright (c) 2026 Hailey Collet, ArviFoxy. Apache-2.0.
 Mixed step (L4/L5, F1): fork of Record1252270103Source.High.GlobalPhysicalRegularPhase
-(Hailey Collet, Apache-2.0; inherited notices retained).
+(Hailey Collet).
 
 The regular family supplies `PhaseBound_mx` (two parents) with the residual normalization: the
 phases are `amplitude_mx / volume s` with `s` the second-layer parent, and the MAIN radius is the

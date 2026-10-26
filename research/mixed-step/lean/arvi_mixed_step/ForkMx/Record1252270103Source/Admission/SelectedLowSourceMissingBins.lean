@@ -1,5 +1,4 @@
-/- Copyright (c) 2026 Hailey Collet. Apache-2.0.
-Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.
+/- Copyright (c) 2026 Hailey Collet, ArviFoxy. Apache-2.0.
 Mixed step (L4/L5, F3): fork of Record1252270103Source.Admission.SelectedLowSourceMissingBins; changes:
 two parents, two amplitudes, node price as a hypothesis (as in SelectedLowSource_mx). -/
 import Submissions.hailey_collet_1252270103.Record1252270103Source.Admission.SelectedLowSourceMissingBins

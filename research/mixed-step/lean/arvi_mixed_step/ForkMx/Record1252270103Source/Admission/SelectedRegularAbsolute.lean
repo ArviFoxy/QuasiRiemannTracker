@@ -1,9 +1,8 @@
-/- Copyright (c) 2026 Hailey Collet. Apache-2.0.
+/- Copyright (c) 2026 Hailey Collet, ArviFoxy. Apache-2.0.
 The actual selected first family has an all-height second absolute envelope.
 The cardinality and weighted-volume estimates are derived from its witnesses. -/
-/- Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.
-Mixed step (L4/L5, F5): fork of Record1252270103Source.Admission.SelectedRegularAbsolute
-(Hailey Collet, Apache-2.0); changes: two parents and two amplitudes. The family is `Family_mx` over
+/- Mixed step (L4/L5, F5): fork of Record1252270103Source.Admission.SelectedRegularAbsolute
+(Hailey Collet); changes: two parents and two amplitudes. The family is `Family_mx` over
 `Anchor_mx`, the weight is the lead's `effectivePhase_mx … poolAmp …` (ball factor `radius+6·poolAmp`).
 Hypotheses split by layer: the first layer `F.s₀` carries `card α₀ ≤ N`, `1 ≤ F.s₀.lower`, its profiles,
 `sourceRadius F.s₀ ≤ Z^B` and `|logb Z (volume F.s₀)| ≤ B` (scalar, first-column count, allocation count);

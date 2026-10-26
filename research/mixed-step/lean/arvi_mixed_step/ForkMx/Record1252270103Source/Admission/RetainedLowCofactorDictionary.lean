@@ -1,5 +1,4 @@
-/- Copyright (c) 2026 Hailey Collet. Apache-2.0.
-Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.
+/- Copyright (c) 2026 Hailey Collet, ArviFoxy. Apache-2.0.
 Mixed step (L4/L5, F3): fork of Record1252270103Source.Admission.RetainedLowCofactorDictionary;
 changes: type split (the first layer `s : Input ι` is typed apart from the second-layer datum type
 `α`; proof verbatim). -/

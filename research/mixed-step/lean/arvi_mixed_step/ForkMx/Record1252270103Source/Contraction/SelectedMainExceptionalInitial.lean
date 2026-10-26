@@ -1,7 +1,6 @@
-/- Copyright (c) 2026 Hailey Collet. Apache-2.0.
-Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.
+/- Copyright (c) 2026 Hailey Collet, ArviFoxy. Apache-2.0.
 Mixed step (L4/L5, F6): fork of Record1252270103Source.Contraction.SelectedMainExceptionalInitial
-(Hailey Collet, Apache-2.0; inherited notices retained). Original notes: adapted for the actual MAIN
+(Hailey Collet). Original notes: adapted for the actual MAIN
 frozen-one constructor from the retained LOW cap/aggregate chain; inherited upstream notices remain
 required; actual canonical initial and modified first-label exceptional caps.
 

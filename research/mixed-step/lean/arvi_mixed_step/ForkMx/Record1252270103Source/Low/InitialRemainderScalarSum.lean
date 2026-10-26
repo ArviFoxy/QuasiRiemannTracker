@@ -1,7 +1,6 @@
-/- Copyright (c) 2026 Hailey Collet. Apache-2.0.
-Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.
+/- Copyright (c) 2026 Hailey Collet, ArviFoxy. Apache-2.0.
 Mixed step (L4/L5, F6): fork of Record1252270103Source.Low.InitialRemainderScalarSum
-(Hailey Collet, Apache-2.0; inherited notices retained). Original note: actual selected first-column
+(Hailey Collet). Original note: actual selected first-column
 remainder sums after pool, allocation and label counting; the only outstanding admissions are
 geometric and numerical.
 

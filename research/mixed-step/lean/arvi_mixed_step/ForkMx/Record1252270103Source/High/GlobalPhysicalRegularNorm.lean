@@ -1,9 +1,8 @@
-/- Copyright (c) 2026 Hailey Collet. Apache-2.0.
+/- Copyright (c) 2026 Hailey Collet, ArviFoxy. Apache-2.0.
 The complete regular family is integrated jointly. Its coarse absolute
 budget controls the unrestricted Mellin tail; only actual ratio bins are paid. -/
-/- Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.
-Mixed step (L4/L5, F5): fork of Record1252270103Source.High.GlobalPhysicalRegularNorm
-(Hailey Collet, Apache-2.0); changes: two parents and two amplitudes. The families are `Family_mx` over
+/- Mixed step (L4/L5, F5): fork of Record1252270103Source.High.GlobalPhysicalRegularNorm
+(Hailey Collet); changes: two parents and two amplitudes. The families are `Family_mx` over
 `Anchor_mx α₀ α Z`; the weight and the phase are `regularFamilyWeight_mx`/`phase_mx` (the pool width is
 `poolAmp : Label → ℝ`). The geometry-balance cap is applied to the first layer, so the parent cap is
 `sourceRadius F.s₀ ≤ Z^2` (Collet's `F.s`); the per-label caps `sourceRadius (F.input l) ≤ Z^2` are the

@@ -53,21 +53,18 @@ def main():
             bad.append(m)
     if bad:
         raise SystemExit(f'forbidden constructs (sorry/admit/axiom/native_decide/#exit) in: {bad[:10]}')
-    # attribution gate (Apache-2.0 §4): a derived file (third-party copyright line, or a ForkMx fork) keeps the
-    # original notice first and carries our own modification notice (fork/add_mod_line.py)
-    unattributed = []
+    # header policy (fork/headers.py): no "Modifications Copyright" line anywhere, and a third-party copyright line
+    # only on modified copies (ForkMx, and the return forks inherited from PR 76), never on a module we wrote
+    copies = ('.ForkMx.', '.ReturnD.', '.FinalReturn.')
+    stamped = []
     for m in mods:
-        lines = open(os.path.join(lake, m.replace('.', '/') + '.lean')).read().split('\n')
-        head = []
-        for l in lines:
-            if l.startswith('import '):
-                break
-            head.append(l)
-        derived = bool(head) and head[0].startswith('/- Copyright (c) 2026') or '.ForkMx.' in m
-        if derived and not any('Modifications Copyright (c) 2026 ArviFoxy' in l for l in head):
-            unattributed.append(m)
-    if unattributed:
-        raise SystemExit(f'derived files without our modification notice (run fork/add_mod_line.py): {unattributed[:10]}')
+        text = open(os.path.join(lake, m.replace('.', '/') + '.lean')).read()
+        head = text.split('\nimport ', 1)[0]
+        third = re.search(r'Copyright \(c\) 2026 (?!ArviFoxy)', head) is not None
+        if 'Modifications Copyright' in head or (third and not any(c in m for c in copies)):
+            stamped.append(m)
+    if stamped:
+        raise SystemExit(f'header policy broken (run fork/headers.py on the development tree): {stamped[:10]}')
     src = os.path.join(dest, 'src')
     if os.path.exists(src):
         shutil.rmtree(src)

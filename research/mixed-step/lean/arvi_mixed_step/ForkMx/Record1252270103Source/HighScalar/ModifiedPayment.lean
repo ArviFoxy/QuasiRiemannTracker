@@ -1,11 +1,10 @@
-/- Copyright (c) 2026 Hailey Collet. Apache-2.0.
+/- Copyright (c) 2026 Hailey Collet, ArviFoxy. Apache-2.0.
 Literal regular HIGH payment for the actual marked modified source. -/
-/- Repeated marks: fork of Record1252270103Source.HighScalar.ModifiedPayment (Hailey Collet, Apache-2.0; inherited notices retained).
+/- Repeated marks: fork of Record1252270103Source.HighScalar.ModifiedPayment (Hailey Collet).
 Only the declarations whose statement depends on the HIGH gain, the uniform detector
 cutoff or the source validity are restated, renamed `*_rm`. -/
-/- Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.
-Mixed step (L4/L5, F4): fork of Fork.Record1252270103Source.HighScalar.ModifiedPayment
-(PR 76 fork of Hailey Collet's module, Apache-2.0); changes: two parents (type split). The first
+/- Mixed step (L4/L5, F4): fork of Fork.Record1252270103Source.HighScalar.ModifiedPayment
+(PR 76 fork of Hailey Collet's module); changes: two parents (type split). The first
 label, its column and the geometry exponents are read from `s₀ : Input ι₀`; the second datum `d2`
 lives on the second-layer slot type `ι`. The proof is PR 76's, verbatim up to the renaming. -/
 import Submissions.arvi_repeated_marks_on_sil_face_20261025.Fork.Record1252270103Source.HighScalar.ModifiedPayment

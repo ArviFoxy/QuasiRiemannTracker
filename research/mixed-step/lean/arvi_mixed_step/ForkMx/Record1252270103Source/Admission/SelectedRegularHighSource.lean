@@ -1,8 +1,7 @@
-/- Copyright (c) 2026 Hailey Collet. Apache-2.0.
+/- Copyright (c) 2026 Hailey Collet, ArviFoxy. Apache-2.0.
 Shared actual selected HIGH geometry; no analytic estimate is assumed. -/
-/- Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.
-Mixed step (L4/L5, F4): fork of Record1252270103Source.Admission.SelectedRegularHighSource
-(Hailey Collet, Apache-2.0); changes: two parents. `selected_common_caps` over
+/- Mixed step (L4/L5, F4): fork of Record1252270103Source.Admission.SelectedRegularHighSource
+(Hailey Collet); changes: two parents. `selected_common_caps` over
 `Anchor_mx`/`Family_mx`/`Selected_mx`: the first common ideal is capped through the first layer
 (`sourceRadius F.s₀`, `F.zero₁₀`, `F.zero₂₀`), the second through the children of the second-layer
 parent. `eventualPredicate` and `key_caps_mono` are reused from Collet. -/

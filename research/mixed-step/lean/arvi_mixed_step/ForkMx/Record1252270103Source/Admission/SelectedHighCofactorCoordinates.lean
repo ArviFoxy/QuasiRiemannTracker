@@ -1,8 +1,6 @@
-/- Copyright (c) 2026 Hailey Collet. Apache-2.0.
-Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.
+/- Copyright (c) 2026 Hailey Collet, ArviFoxy. Apache-2.0.
 Mixed step (L4/L5, F1, two-parent twin): fork of
-Record1252270103Source.Admission.SelectedHighCofactorCoordinates (Hailey Collet, Apache-2.0;
-inherited notices retained).
+Record1252270103Source.Admission.SelectedHighCofactorCoordinates (Hailey Collet).
 
 `eventual_modified_normalized_cofactor` with the first label from the first layer `s₀` and the
 first allocation, the raw coefficient and the coordinates (at `logb Z (volume s)`, the virtual

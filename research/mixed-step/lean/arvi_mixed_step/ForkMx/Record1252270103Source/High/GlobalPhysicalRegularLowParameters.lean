@@ -1,5 +1,4 @@
-/- Copyright (c) 2026 Hailey Collet. Apache-2.0.
-Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.
+/- Copyright (c) 2026 Hailey Collet, ArviFoxy. Apache-2.0.
 Mixed step (L4/L5, F3): fork of Record1252270103Source.High.GlobalPhysicalRegularLowParameters;
 changes: the LOW mesh and the slot supply are taken from the two-parent family
 `global_selected_regular_low_buffered_positive_family_mx`, under the node price

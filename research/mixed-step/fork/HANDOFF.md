@@ -14,20 +14,17 @@ start compiling now. All files below compile with `mk_mixed.sh` and have standar
 - **Names.** `<name>_mx` in the namespace of the original; a PR 76 declaration `<name>_rm` becomes
   `<name>_rm_mx`. Local instances get a fresh name (e.g. `…DecEq_mx`) to avoid clashes with the original
   module's anonymous instances.
-- **License header (Apache-2.0 §4).** A ForkMx module starts with the source file's copyright line
-  verbatim, then the fork note:
+- **Headers.** Our own modules (everything outside `ForkMx/`) carry no copyright line and no license
+  boilerplate; a plain sentence "adapted from X" in the docstring is enough. A `ForkMx/` module is a modified
+  copy of somebody's file and keeps one line that lists the holders, no separate "Modifications" line:
   ```
-  /- Copyright (c) 2026 Hailey Collet. Apache-2.0.
-  Mixed step (L4/L5): fork of Record1252270103Source.<path>; changes: two parents, two amplitudes. … -/
+  /- Copyright (c) 2026 Hailey Collet, ArviFoxy. Apache-2.0.
+  <original description> -/
+  /- Mixed step (L4/L5): fork of Record1252270103Source.<path>; changes: two parents, two amplitudes. … -/
   ```
-  (For a PR 76 `_rm` source, Collet's copyright line is the one inside PR 76's file; keep it verbatim
-  first.) `research/mixed-step/fork/fix_headers.py ForkMx_root` checks/fixes this.
-  **Our own notice.** The fork note is preceded by `Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.`
-  (same comment, directly before the line `Mixed step …`; in a file that keeps the original's comment
-  separate, the note comment starts with it). The same applies to every non-fork file that keeps a
-  third-party copyright line (`Transfer/*`, `Downstream/{Balanced3,Contract3}`, `Source/NFStep3`, …).
-  `fork/add_mod_line.py DEVROOT` inserts it (idempotent; keeps source mtimes) and `package/make_submission.py`
-  refuses a package with a derived file that lacks it. New files carry no copyright line (as in PR 76).
+  Never put a third-party copyright line on a module we wrote, and never add one when writing a new module.
+  `fork/headers.py DEVROOT` applies this (idempotent, keeps mtimes); `package/make_submission.py` refuses a
+  package that breaks it.
 - **Two parents.** First layer = the original input `s₀ : Input α₀` with modifier `modifier₀`
   (columns `geometryFirstSource s₀ modifier₀ …`, `firstLabel`, `columnCharacter`, `columnIdeal`,
   `dictionaryRay`, `rawKey`, `balancedColumnScalar`, `coordinateBlock`, `balancedFirstHighMass`,
@@ -622,7 +619,7 @@ All paths below are under `ForkMx/Record1252270103Source/`.
 ## F6 twins
 (F6 agent, 2026-10-26. All green with `mk_mixed.sh` in the order below; `#print axioms` on every declaration:
 `[propext, Classical.choice, Quot.sound]`. Paths under `ForkMx/Record1252270103Source/` unless marked `Downstream/`.
-Headers: Collet's copyright line first (checked).)
+Headers as in Conventions.)
 
 **Conventions used.** First layer = the canonical initial input `s₀ := initialInput … θ w v …` (columns, labels, `C`, seeds,
 `τ`, scalar at `logb Z (volume s₀)`, `H0`/pool radius, the MAIN-prefactor allocation card `actualAllocations s₀.pools C`).

@@ -1,7 +1,6 @@
-/- Copyright (c) 2026 Hailey Collet. Apache-2.0.
-Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.
+/- Copyright (c) 2026 Hailey Collet, ArviFoxy. Apache-2.0.
 Mixed step (L4/L5, F1): fork of Record1252270103Source.High.GlobalPhysicalSelectedMass
-(Hailey Collet, Apache-2.0; inherited notices retained).
+(Hailey Collet).
 
 `actual_selected_paid_weight` with two parents: the balanced first mass (scalar at the original
 volume `A₀ = logb Z (volume s₀)`, first common ideal) is read from the first layer `s₀`, the

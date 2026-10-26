@@ -1,9 +1,8 @@
-/- Copyright (c) 2026 Hailey Collet. Apache-2.0.
+/- Copyright (c) 2026 Hailey Collet, ArviFoxy. Apache-2.0.
 Actual kept selected rows, with one fixed anchor and the literal Newton puncture,
 supply the natural state, buffered zero bin and original signed-key gates. -/
-/- Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.
-Mixed step (L4/L5, F4): fork of Record1252270103Source.Admission.SelectedRegularSourceDataState
-(Hailey Collet, Apache-2.0); changes: two parents. Over `Anchor_mx`/`Family_mx`/`Selected_mx`:
+/- Mixed step (L4/L5, F4): fork of Record1252270103Source.Admission.SelectedRegularSourceDataState
+(Hailey Collet); changes: two parents. Over `Anchor_mx`/`Family_mx`/`Selected_mx`:
 the anchor character `F.s₀.η`, the first caps (`sourceRadius F.s₀`, `F.zero₁₀`, `F.zero₂₀`) and the
 first character cap are read from the first layer; the stages, children, data, retained states and
 the MAIN Fourier scale (at `volume F.s`) from the second-layer parent. The proof is Collet's, with

@@ -1,9 +1,8 @@
-/- Copyright (c) 2026 Hailey Collet. Apache-2.0.
+/- Copyright (c) 2026 Hailey Collet, ArviFoxy. Apache-2.0.
 Exact constructor alignment of the actual MAIN frozen-one family and the
 regular complete family. No correction estimate or analytic norm is assumed. -/
-/- Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.
-Mixed step (L4/L5, F5): fork of Record1252270103Source.Contraction.SelectedMainExceptionalIdentity
-(Hailey Collet, Apache-2.0); changes: two parents. `regularMainFamily_mx` is Collet's family over the
+/- Mixed step (L4/L5, F5): fork of Record1252270103Source.Contraction.SelectedMainExceptionalIdentity
+(Hailey Collet); changes: two parents. `regularMainFamily_mx` is Collet's family over the
 second-layer parent `F.s` of a `Family_mx` with the two-parent amplitude `amplitude_mx` (scalar at the
 first layer, `mainExtra` at the first layer with the actual pool width `poolAmp l`, frozen coefficient of
 the second layer). The two `rfl` bridges are Collet's, with `phase_mx`/`regularFamilyKeep_mx`. -/

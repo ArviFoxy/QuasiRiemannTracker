@@ -1,6 +1,4 @@
-/- Copyright (c) 2026 Sil. Apache-2.0.
-Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.
-Adapted from Sil's FourthPower (PR 74, vendored in PR 76): `ray_family_energy`
+/- Adapted from Sil's FourthPower (PR 74, vendored in PR 76): `ray_family_energy`
 follows `fourth_family_sq` (MixedSupplierPositive.lean: `first_ray_sq`, then
 Cauchy-Schwarz over the selected assignments); `pushforward_bound` follows the
 fibre count of `weighted_pushforward` and `selected_fiber_card` follows `fiber_card`

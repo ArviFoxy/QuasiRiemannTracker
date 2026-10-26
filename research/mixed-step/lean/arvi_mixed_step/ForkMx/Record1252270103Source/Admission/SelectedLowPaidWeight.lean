@@ -1,7 +1,6 @@
-/- Copyright (c) 2026 Hailey Collet. Apache-2.0.
-Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.
+/- Copyright (c) 2026 Hailey Collet, ArviFoxy. Apache-2.0.
 Mixed step (L4/L5, F2): fork of Record1252270103Source.Admission.SelectedLowPaidWeight
-(Hailey Collet, Apache-2.0; inherited notices retained).
+(Hailey Collet).
 
 The δ-shift conversion of the LOW branch (`L45_DESIGN.md` §1, F2).
 * `eventual_selected_paid_weight_mx`: two parents. The first mass is bounded at the first layer

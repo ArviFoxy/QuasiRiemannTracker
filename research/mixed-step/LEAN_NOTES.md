@@ -182,7 +182,7 @@ Collet `Source`s, and no real-field `RNode` twin is needed.
 **Where.**
 - `lean-env/qrh/Submissions/arvi_mixed_step/ForkMx/Record1252270103Source/<same relative path as Collet>.lean`: forks of Collet's or PR 76's modules. Declarations sit in the original namespace with suffix `_mx`; PR 76's `_rm` declarations become `_rm_mx`.
 - `Submissions/arvi_mixed_step/Downstream/`: new glue (`Shift`, `Node`, `Contract3`; the N3/N6 agent's `Grid`, `Pieces`, `Families`, …; F6's `MainRestrict`, `MainGates`).
-- Each fork module starts with Collet's copyright line verbatim, followed by the fork note.
+- Headers: a fork module has one copyright line listing the holders (`Hailey Collet, ArviFoxy`), then the fork note; our own modules have none (`fork/headers.py`).
 - Build: `mk_mixed.sh <path>` per module, in import order.
 - No `sorry`, `axiom`, `native_decide` or `admit`. Every top theorem gives `[propext, Classical.choice, Quot.sound]`.
 - Signatures: `research/mixed-step/fork/HANDOFF.md`, which is the authoritative record of the exact statements.
@@ -239,7 +239,7 @@ Collet `Source`s, and no real-field `RNode` twin is needed.
 2. *Pool cell width.* `RegularLowAt` quantifies the pool inside the family statement with `ell` fixed before `Z`. So in `RegularLowAt_mx` the pool width `poolAmp` is quantified with the pool, and `ellPool` is a fixed parameter (`= poolAmp/2` at the call). Making `ellPool` depend on the quantified `poolAmp` does not typecheck against `hpaid`.
 3. *Mathlib notation `≤i`* (`InitialSeg`): `0≤i₀.w j` misparses as `0 ≤i ₀.w j`. Write `0≤ i₀.w j` with a space.
 4. *Heartbeats.* `SelectedRegularLowSource` needs `set_option maxHeartbeats 1000000 in` for the whnf unification of the anchor literal. Elsewhere the default 200000 suffices.
-5. *License headers.* Each fork module starts with Collet's copyright line verbatim (`fork/fix_headers.py`). After the header pass the F1/F2 modules were rebuilt (2026-10-26 ~02:35): green.
+5. *Headers.* One copyright line listing the holders in a fork module, none in our own modules (`fork/headers.py`). The F1/F2 modules were rebuilt after the first header pass (2026-10-26 ~02:35): green.
 6. *κ absorption.* Every LOW and HIGH bound gets `Z^κ`. At the point level it multiplies Collet's paid budget (`regular_point_budgets_paid` is reused unchanged), giving `Z^(κ − reserve/2)`. So no budget twin was needed.
 
 **Open design gaps (escalated 2026-10-26 ~02:35, found by the N3/N6 agent and checked against the fork).**

@@ -1,9 +1,7 @@
-/- Copyright (c) 2026 Hailey Collet. Apache-2.0.
-Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.
-Mixed step (N7): the physical layer and the source step from the truncated layer, for a mixed
+/- Mixed step (N7): the physical layer and the source step from the truncated layer, for a mixed
 step. Fork of Collet's `nf_physical_of_truncated` (Core/InitialTruncatedCallbacks.lean) and of the
 final part of `nf_step_of_physical` (Low/HeightAnchorCallbacks.lean), through PR 76's `nf_physical2`
-and `nf_step2` (`Source/NFStep2.lean`), Apache-2.0; inherited notices retained.
+and `nf_step2` (`Source/NFStep2.lean`).
 
 Changes: the step certificate is `SourceValid3` (no Collet `SourceValid`, no PR 76 `SourceValidC`),
 so the width grid is not `nfWidthDelta_rm`. Any width delta `δw > 0` works here: the reference

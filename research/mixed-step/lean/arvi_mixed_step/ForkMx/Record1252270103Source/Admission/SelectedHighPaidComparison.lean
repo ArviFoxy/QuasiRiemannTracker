@@ -1,7 +1,6 @@
-/- Copyright (c) 2026 Hailey Collet. Apache-2.0.
-Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.
+/- Copyright (c) 2026 Hailey Collet, ArviFoxy. Apache-2.0.
 Mixed step (L4/L5, F1/F2): fork of Record1252270103Source.Admission.SelectedHighPaidComparison
-(Hailey Collet, Apache-2.0; inherited notices retained).
+(Hailey Collet).
 
 * `PhaseBound_mx`: Collet's `PhaseBound` with two parents. The balanced column scalar is read
   from the first layer `s₀` at the original volume `logb Z (volume s₀)` (never at the virtual

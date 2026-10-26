@@ -30,8 +30,8 @@ Everything is built except one theorem, `QRH.MixedStep.Graph.NFStep3` (Graph/Cha
   `QRH_PKG=Submissions.arvi_mixed_step python3 research/mixed-step/build/build_roots.py JOBS LOGDIR ROOT…`.
 - Only edit your own files. Do not touch Collet's tree, the baseline, PR 76's package, or other agents' files; if you need a
   change there, write the request in HANDOFF.md under your section and tell the coordinator.
-- Forks keep Collet's copyright line verbatim first, then the PR 76 note (if any), then the fork note
-  (HANDOFF "## Conventions"; `fork/fix_headers.py`).
+- Headers: a fork keeps one copyright line that lists the holders, then the PR 76 note (if any), then the fork note;
+  our own modules carry no copyright line (HANDOFF "## Conventions"; `fork/headers.py`).
 - Do not commit; the coordinator commits. Record tops (exact statements) in HANDOFF.md under your own section.
 - No claims of success without a compile: report only what `mk_mixed.sh` accepted.
 - If something is mathematically false or a hypothesis cannot be discharged, STOP and report the precise obstruction

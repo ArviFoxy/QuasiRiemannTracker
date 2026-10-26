@@ -1,9 +1,8 @@
-/- Copyright (c) 2026 Hailey Collet. Apache-2.0.
+/- Copyright (c) 2026 Hailey Collet, ArviFoxy. Apache-2.0.
 The same-key source family is used at the literal common second Mellin
 height. Empty families vanish before any nonempty source invocation. -/
-/- Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.
-Mixed step (L4/L5, F5): fork of Record1252270103Source.High.GlobalPhysicalRegularCofactorBridge
-(Hailey Collet, Apache-2.0); changes: `Family_mx`/`Selected_mx` over `Anchor_mx` (two parents), with the
+/- Mixed step (L4/L5, F5): fork of Record1252270103Source.High.GlobalPhysicalRegularCofactorBridge
+(Hailey Collet); changes: `Family_mx`/`Selected_mx` over `Anchor_mx` (two parents), with the
 centered family `regularSelectedCentered_mx` of this fork (F4). Statement and proof are Collet's, retyped. -/
 import Submissions.hailey_collet_1252270103.Record1252270103Source.High.GlobalPhysicalRegularCofactorBridge
 import Submissions.arvi_mixed_step.ForkMx.Record1252270103Source.High.GlobalPhysicalRegularCofactor

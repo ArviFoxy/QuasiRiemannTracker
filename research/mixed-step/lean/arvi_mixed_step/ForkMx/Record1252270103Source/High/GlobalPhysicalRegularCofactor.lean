@@ -1,9 +1,8 @@
-/- Copyright (c) 2026 Hailey Collet. Apache-2.0.
+/- Copyright (c) 2026 Hailey Collet, ArviFoxy. Apache-2.0.
 The literal outputs of the two source branches share one selected original
 family, one buffered partition and one common profile/height budget. -/
-/- Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.
-Mixed step (L4/L5, F4): fork of Record1252270103Source.High.GlobalPhysicalRegularCofactor
-(Hailey Collet, Apache-2.0); changes: the selected family is `Selected_mx` over `Family_mx` over
+/- Mixed step (L4/L5, F4): fork of Record1252270103Source.High.GlobalPhysicalRegularCofactor
+(Hailey Collet); changes: the selected family is `Selected_mx` over `Family_mx` over
 `Anchor_mx` (lead, F1). Everything in this module reads the second-layer parent `F.s` (slots, pools,
 profiles, final inputs) and the selections, so the statements and proofs are Collet's, retyped. -/
 import Submissions.hailey_collet_1252270103.Record1252270103Source.High.GlobalPhysicalRegularCofactor

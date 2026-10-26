@@ -1,7 +1,6 @@
-/- Copyright (c) 2026 Hailey Collet. Apache-2.0. -/
-/- Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.
-Mixed step (L4/L5, F5): fork of Record1252270103Source.Low.SelectedRegularFibersSelection
-(Hailey Collet, Apache-2.0); changes: the family is `Family_mx` over `Anchor_mx` (two parents). The first
+/- Copyright (c) 2026 Hailey Collet, ArviFoxy. Apache-2.0. -/
+/- Mixed step (L4/L5, F5): fork of Record1252270103Source.Low.SelectedRegularFibersSelection
+(Hailey Collet); changes: the family is `Family_mx` over `Anchor_mx` (two parents). The first
 key is stated as injectivity of `(a.label (F.column l), F.childSeed l)` (Collet's columnKey, seed-generic
 form); it and the parent cap `sourceRadius F.s₀ ≤ Z^Bfirst` read the first layer; the child caps
 `sourceRadius (F.input l)` read the second-layer children. -/

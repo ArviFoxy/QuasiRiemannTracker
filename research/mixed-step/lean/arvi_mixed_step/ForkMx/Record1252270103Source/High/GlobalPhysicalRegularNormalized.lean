@@ -1,9 +1,8 @@
-/- Copyright (c) 2026 Hailey Collet. Apache-2.0.
+/- Copyright (c) 2026 Hailey Collet, ArviFoxy. Apache-2.0.
 The actual kept complete family feeds the fixed-L normalized Newton reduction.
 The one joint cofactor inlet is stated on its literal selected original rows. -/
-/- Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.
-Mixed step (L4/L5, F5): fork of Record1252270103Source.High.GlobalPhysicalRegularNormalized
-(Hailey Collet, Apache-2.0); changes: two parents (`Family_mx`/`Selected_mx` over `Anchor_mx`: `s₀` first
+/- Mixed step (L4/L5, F5): fork of Record1252270103Source.High.GlobalPhysicalRegularNormalized
+(Hailey Collet); changes: two parents (`Family_mx`/`Selected_mx` over `Anchor_mx`: `s₀` first
 layer, `s` second layer). The signed key reads the first layer (`F.s₀.η`, `rawKey … F.s₀ F.modifier₀ …`);
 allocations, children, slots, pools and profiles read the second layer `F.s`. The proof is Collet's:
 `normalized_selected_newton_collection_rows` takes the input `F.s` and the labels `F.first` independently. -/

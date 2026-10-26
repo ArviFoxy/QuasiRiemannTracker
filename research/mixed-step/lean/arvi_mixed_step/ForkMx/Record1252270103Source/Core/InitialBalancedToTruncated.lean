@@ -1,7 +1,6 @@
-/- Copyright (c) 2026 Hailey Collet. Apache-2.0.
-Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.
+/- Copyright (c) 2026 Hailey Collet, ArviFoxy. Apache-2.0.
 Mixed step (N7): fork of Record1252270103Source.Core.InitialBalancedToTruncated
-(Hailey Collet, Apache-2.0; inherited notices retained).
+(Hailey Collet).
 
 `truncated_of_balanced` takes `hg : RealGeometry K n low b` but reads only `hg.reference_pos`
 (`0 < 49/100 - K·b`, for `1 ≤ Y₂ = Z^(49/100-K b)`; Collet's line 60). The mixed step has no

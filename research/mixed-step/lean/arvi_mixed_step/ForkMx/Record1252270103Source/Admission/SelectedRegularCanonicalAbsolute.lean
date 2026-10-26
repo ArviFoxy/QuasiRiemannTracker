@@ -1,8 +1,7 @@
-/- Copyright (c) 2026 Hailey Collet. Apache-2.0.
+/- Copyright (c) 2026 Hailey Collet, ArviFoxy. Apache-2.0.
 Canonical initial data specialize the actual allocated-family absolute envelope. -/
-/- Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.
-Mixed step (L4/L5, F5): fork of Record1252270103Source.Admission.SelectedRegularCanonicalAbsolute
-(Hailey Collet, Apache-2.0); changes: two parents and two amplitudes.
+/- Mixed step (L4/L5, F5): fork of Record1252270103Source.Admission.SelectedRegularCanonicalAbsolute
+(Hailey Collet); changes: two parents and two amplitudes.
 - The anchor is `Initial.anchor_mx i₀ i`. The first layer `i₀` carries the face hypotheses of
   `eventually_initial_caps` on `globalFace B₀ lam₀ cap₀`; the second layer `i` carries them on
   `globalFace B lam cap`; `i₀.p = i.p`.

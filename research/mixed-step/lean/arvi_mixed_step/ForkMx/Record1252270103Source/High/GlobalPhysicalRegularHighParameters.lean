@@ -1,12 +1,11 @@
-/- Copyright (c) 2026 Hailey Collet. Apache-2.0.
+/- Copyright (c) 2026 Hailey Collet, ArviFoxy. Apache-2.0.
 The fixed pre-slot loss and post-cardinality buffer instantiate the actual
 HIGH source with one consistent set of numerical geometry budgets. -/
-/- Repeated marks: fork of Record1252270103Source.High.GlobalPhysicalRegularHighParameters (Hailey Collet, Apache-2.0; inherited notices retained).
+/- Repeated marks: fork of Record1252270103Source.High.GlobalPhysicalRegularHighParameters (Hailey Collet).
 Only the declarations whose statement depends on the HIGH gain, the uniform detector
 cutoff or the source validity are restated, renamed `*_rm`. -/
-/- Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.
-Mixed step (L4/L5, F4): fork of Fork.Record1252270103Source.High.GlobalPhysicalRegularHighParameters
-(PR 76 fork of Hailey Collet's module, Apache-2.0); changes: two parents (`α₀` first layer, `α` second
+/- Mixed step (L4/L5, F4): fork of Fork.Record1252270103Source.High.GlobalPhysicalRegularHighParameters
+(PR 76 fork of Hailey Collet's module); changes: two parents (`α₀` first layer, `α` second
 layer) and the pool amplitude: the section variable `amp` of PR 76 only enters as the pool cell width
 `ell = amp/2`, so it is renamed `poolAmp`. `regular_some_source_rm_mx` specializes
 `actual_selected_regular_high_source_uniform_tau_rm_mx` exactly as PR 76 does. -/

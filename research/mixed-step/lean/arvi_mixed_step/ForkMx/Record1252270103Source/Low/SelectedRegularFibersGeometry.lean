@@ -1,8 +1,7 @@
-/- Copyright (c) 2026 Hailey Collet. Apache-2.0.
+/- Copyright (c) 2026 Hailey Collet, ArviFoxy. Apache-2.0.
 Original modified joint-row support for the actual selected regular family. -/
-/- Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.
-Mixed step (L4/L5, F5): fork of Record1252270103Source.Low.SelectedRegularFibersGeometry
-(Hailey Collet, Apache-2.0); changes: the family is `Family_mx` over `Anchor_mx` (two parents). The
+/- Mixed step (L4/L5, F5): fork of Record1252270103Source.Low.SelectedRegularFibersGeometry
+(Hailey Collet); changes: the family is `Family_mx` over `Anchor_mx` (two parents). The
 first labels, their units, supports and caps read the first layer (`F.s₀`, `F.modifier₀`, `F.zero₁₀`,
 `F.zero₂₀`, `sourceRadius F.s₀`); the joint blocks and rows read the second-layer family as in Collet. -/
 import Submissions.hailey_collet_1252270103.Record1252270103Source.Low.SelectedRegularFibersGeometry

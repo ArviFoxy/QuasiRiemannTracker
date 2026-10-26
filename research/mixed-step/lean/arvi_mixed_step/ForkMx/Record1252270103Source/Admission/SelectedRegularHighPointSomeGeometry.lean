@@ -1,8 +1,7 @@
-/- Copyright (c) 2026 Hailey Collet. Apache-2.0.
+/- Copyright (c) 2026 Hailey Collet, ArviFoxy. Apache-2.0.
 Coarse actual coordinate and canonical volume gates for the fixed HIGH caller. -/
-/- Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.
-Mixed step (L4/L5, F4): fork of Record1252270103Source.Admission.SelectedRegularHighPointSomeGeometry
-(Hailey Collet, Apache-2.0); changes: two parents. `actual_coordinate_box_mx` and `SharedState_mx` over
+/- Mixed step (L4/L5, F4): fork of Record1252270103Source.Admission.SelectedRegularHighPointSomeGeometry
+(Hailey Collet); changes: two parents. `actual_coordinate_box_mx` and `SharedState_mx` over
 `Anchor_mx`/`Family_mx`/`Selected_mx`: the first label and its caps are read from the first layer
 (`sourceRadius F.s₀`, `F.zero₁₀`, `F.zero₂₀`), the selection's coordinate box from the second-layer parent
 (`|logb Z (volume F.s)| ≤ 1`). `Canonical.source_volume` and `pointBudget` are generic in the input and

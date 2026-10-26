@@ -1,8 +1,7 @@
-/- Copyright (c) 2026 Hailey Collet. Apache-2.0.
+/- Copyright (c) 2026 Hailey Collet, ArviFoxy. Apache-2.0.
 Genuine earlier LOW and HIGH sources control the same full centered family. -/
-/- Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.
-Mixed step (L4/L5, F5): fork of Record1252270103Source.High.GlobalPhysicalRegularCanonicalSmall
-(Hailey Collet, Apache-2.0); changes: two parents, two amplitudes, the δ-shift. `regular_canonical_small_mx`
+/- Mixed step (L4/L5, F5): fork of Record1252270103Source.High.GlobalPhysicalRegularCanonicalSmall
+(Hailey Collet); changes: two parents, two amplitudes, the δ-shift. `regular_canonical_small_mx`
 applies `regular_small_normalized_mx` to the family `allocatedRegularFamily_mx` of the anchor
 `Initial.anchor_mx i₀ i`. The first layer `i₀` carries the face hypotheses of `eventually_initial_caps` on
 `globalFace B₀ lam₀ cap₀`, the second layer `i` the `InitialGeometry` at the node `n`. The first geometry

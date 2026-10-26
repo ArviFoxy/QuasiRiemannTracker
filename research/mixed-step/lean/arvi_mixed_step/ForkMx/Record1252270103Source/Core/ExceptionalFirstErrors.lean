@@ -1,7 +1,6 @@
-/- Copyright (c) 2026 Hailey Collet. Apache-2.0.
-Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.
+/- Copyright (c) 2026 Hailey Collet, ArviFoxy. Apache-2.0.
 Mixed step (L4/L5, F6): fork of Record1252270103Source.Core.ExceptionalFirstErrors
-(Hailey Collet, Apache-2.0; inherited notices retained). Original note: the pre-cardinality node
+(Hailey Collet). Original note: the pre-cardinality node
 step pays the exceptional centered scalar's errors; only thresholds for fixed profile/cardinality
 constants may depend on N.
 

@@ -1,7 +1,6 @@
-/- Copyright (c) 2026 Hailey Collet. Apache-2.0.
-Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.
+/- Copyright (c) 2026 Hailey Collet, ArviFoxy. Apache-2.0.
 Mixed step (L4/L5, F5): fork of Fork.Record1252270103Source.High.GlobalPhysicalRegularSuppliers
-(PR 76 fork of Hailey Collet's module, Apache-2.0); changes: two parents, two amplitudes, node price
+(PR 76 fork of Hailey Collet's module); changes: two parents, two amplitudes, node price
 as a hypothesis.
 `regular_point_supplier_rm_mx`: PR 76's `regular_supplier_some_rm` up to the point supplier. For
 every first-layer type `α₀` and second-layer type `α` with `card α ≤ card α₀`, and every ambient

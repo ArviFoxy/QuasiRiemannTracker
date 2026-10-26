@@ -1,7 +1,6 @@
-/- Copyright (c) 2026 Hailey Collet. Apache-2.0.
-Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.
+/- Copyright (c) 2026 Hailey Collet, ArviFoxy. Apache-2.0.
 Mixed step (L4/L5, F6): fork of Record1252270103Source.Low.SelectedExceptionalInitialCapsAudit
-(Hailey Collet, Apache-2.0; inherited notices retained). Original note: actual canonical initial and
+(Hailey Collet). Original note: actual canonical initial and
 modified first-label exceptional caps.
 
 `modified_main_frequency_cap` with the label of the first layer `s₀` and a free second-layer volume

@@ -1,9 +1,8 @@
-/- Copyright (c) 2026 Hailey Collet. Apache-2.0.
+/- Copyright (c) 2026 Hailey Collet, ArviFoxy. Apache-2.0.
 The actual selected row fibers and the full residual ideal pool preserve
 one quarter of the source reserve. -/
-/- Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.
-Mixed step (L4/L5, F5): fork of Record1252270103Source.High.GlobalPhysicalRegularFinite
-(Hailey Collet, Apache-2.0); changes: the family is `Family_mx` over `Anchor_mx` (two parents). Collet's
+/- Mixed step (L4/L5, F5): fork of Record1252270103Source.High.GlobalPhysicalRegularFinite
+(Hailey Collet); changes: the family is `Family_mx` over `Anchor_mx` (two parents). Collet's
 single cap `sourceRadius F.s ≤ Z^2` splits (and the first key is the seed-generic `(a.label (F.column l), F.childSeed l)`): the first layer `sourceRadius F.s₀ ≤ Z^2` gives the column-key
 selection and the first common caps, the second layer `sourceRadius F.s ≤ Z^2` gives the child caps. -/
 import Submissions.hailey_collet_1252270103.Record1252270103Source.High.GlobalPhysicalRegularFinite

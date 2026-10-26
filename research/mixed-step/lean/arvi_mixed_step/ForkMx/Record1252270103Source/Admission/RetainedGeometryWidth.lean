@@ -1,8 +1,7 @@
-/- Copyright (c) 2026 Hailey Collet. Apache-2.0.
+/- Copyright (c) 2026 Hailey Collet, ArviFoxy. Apache-2.0.
 Actual retained MAIN width, reusing the generic Cycle61 row conductor budget. -/
-/- Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.
-Mixed step (L4/L5, F4): fork of Record1252270103Source.Admission.RetainedGeometryWidth
-(Hailey Collet, Apache-2.0); changes: two parents. `main_scale_upper` with the first label read from
+/- Mixed step (L4/L5, F4): fork of Record1252270103Source.Admission.RetainedGeometryWidth
+(Hailey Collet); changes: two parents. `main_scale_upper` with the first label read from
 the first layer `s₀` and a free positive volume `V` (the second-layer volume `volume s` downstream).
 The proof is Collet's: `main_fourier_scale_upper` takes the volume as a free positive real. -/
 import Submissions.hailey_collet_1252270103.Record1252270103Source.Admission.RetainedGeometryWidth

@@ -1,7 +1,6 @@
-/- Copyright (c) 2026 Hailey Collet. Apache-2.0.
-Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.
+/- Copyright (c) 2026 Hailey Collet, ArviFoxy. Apache-2.0.
 Mixed step (L4/L5, F6): fork of Record1252270103Source.Core.InitialRegularToTruncatedMainExceptional
-(Hailey Collet, Apache-2.0; inherited notices retained). Original notes: the first radial profile and
+(Hailey Collet). Original notes: the first radial profile and
 the second ball profile are independent; the actual MAIN correction is evaluated at the child column
 (frozen factor one); the literal initial complementary family, with its first frozen coefficients,
 is paid by the checked second radical sum and the original first MAIN scalar; all constants precede

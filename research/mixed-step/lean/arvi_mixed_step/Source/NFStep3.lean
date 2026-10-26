@@ -1,9 +1,6 @@
-/- Copyright (c) 2026 Hailey Collet. Apache-2.0.
-Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.
-Mixed step (N7): the NF source step of the mixed chain, `NFStep3`. Fork of Collet's `nf_truncated`
+/- Mixed step (N7): the NF source step of the mixed chain, `NFStep3`. Fork of Collet's `nf_truncated`
 (Core/InitialRegularCallbacks.lean) and `regular_meshes_from_sources`
-(High/GlobalPhysicalRegularMesh.lean), through PR 76's `nf_truncated2` (`Source/NFStep2.lean`),
-Apache-2.0; inherited notices retained.
+(High/GlobalPhysicalRegularMesh.lean), through PR 76's `nf_truncated2` (`Source/NFStep2.lean`).
 
 Changes, for a mixed step (`SourceValid3`, two parents, node grid):
 * The reserve and the first layer come from `mixed_geometry_of_valid3` (`MixedGeometry`; no

@@ -1,6 +1,4 @@
-/- Copyright (c) 2026 Hailey Collet. Apache-2.0.
-Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.
-Mixed step (L4/L5, N6 interface): adapted from the statement of Collet's `RegularJointSupplier`
+/- Mixed step (L4/L5, N6 interface): adapted from the statement of Collet's `RegularJointSupplier`
 (Record1252270103Source/Core/InitialRegularToTruncatedContract.lean:50); changes: the family is
 the residual family of a piece (design §2, §4).
 

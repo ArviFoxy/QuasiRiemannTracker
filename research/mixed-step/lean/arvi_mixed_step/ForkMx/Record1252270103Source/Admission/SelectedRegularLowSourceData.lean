@@ -1,5 +1,4 @@
-/- Copyright (c) 2026 Hailey Collet. Apache-2.0.
-Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.
+/- Copyright (c) 2026 Hailey Collet, ArviFoxy. Apache-2.0.
 Mixed step (L4/L5, F3): fork of Record1252270103Source.Admission.SelectedRegularLowSourceData;
 changes: two parents, two amplitudes (as in SelectedLowSource_mx). The conclusion is stated for
 `Anchor_mx`/`Family_mx`/`Selected_mx` built from the first layer `s₀` and the second-layer parent `s`. -/

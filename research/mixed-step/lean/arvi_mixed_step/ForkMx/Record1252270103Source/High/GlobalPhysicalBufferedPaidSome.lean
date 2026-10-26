@@ -1,9 +1,8 @@
-/- Repeated marks: fork of Record1252270103Source.High.GlobalPhysicalBufferedPaidSome (Hailey Collet, Apache-2.0; inherited notices retained).
+/- Repeated marks: fork of Record1252270103Source.High.GlobalPhysicalBufferedPaidSome (Hailey Collet).
 Only the declarations whose statement depends on the HIGH gain, the uniform detector
 cutoff or the source validity are restated, renamed `*_rm`. -/
-/- Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.
-Mixed step (L4/L5, F4): fork of Fork.Record1252270103Source.High.GlobalPhysicalBufferedPaidSome
-(PR 76 fork of Hailey Collet's module, Apache-2.0); changes: two parents and two amplitudes, as in
+/- Mixed step (L4/L5, F4): fork of Fork.Record1252270103Source.High.GlobalPhysicalBufferedPaidSome
+(PR 76 fork of Hailey Collet's module); changes: two parents and two amplitudes, as in
 the paid-family twin `ModifiedSelectedPaidSome.actual_selected_annular_cofactor_family_uniform_tau_rm_mx`:
 first layer `s₀ : Input α₀`, second layer `s : Input α`, pool at `poolAmp`, `hshift`, `+shiftLoss`.
 The bin split is PR 76's, verbatim. -/

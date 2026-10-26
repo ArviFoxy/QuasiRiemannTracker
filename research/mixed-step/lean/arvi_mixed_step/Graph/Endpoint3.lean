@@ -1,7 +1,7 @@
 /- The mixed-step proof: the endpoint from the mixed source step.
 
 Fork of PR 76's `Graph/Endpoint.lean` (itself a fork of Collet's Record1252270103Graph/FinalSources
-and Graph/Endpoint, Apache-2.0). The chain starts at Sil's fourth-power source face, runs through the
+and Graph/Endpoint). The chain starts at Sil's fourth-power source face, runs through the
 fan and the mixed face family (`Graph/MixedChain.lean`), and ends at the count face `faceC` and the
 physical face `faceP`. The final return is `Submissions.arvi_mixed_step_20261026` (single stage,
 `dMinus > 1/2`, `θ = 34971/40000`). -/

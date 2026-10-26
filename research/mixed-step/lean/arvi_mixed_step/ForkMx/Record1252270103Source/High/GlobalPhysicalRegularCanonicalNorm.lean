@@ -1,8 +1,7 @@
-/- Copyright (c) 2026 Hailey Collet. Apache-2.0.
+/- Copyright (c) 2026 Hailey Collet, ArviFoxy. Apache-2.0.
 Genuine earlier LOW and HIGH sources control the same full centered family. -/
-/- Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.
-Mixed step (L4/L5, F5): fork of Record1252270103Source.High.GlobalPhysicalRegularCanonicalNorm
-(Hailey Collet, Apache-2.0); changes: two parents, two amplitudes, the δ-shift. `regular_canonical_joint_mx`
+/- Mixed step (L4/L5, F5): fork of Record1252270103Source.High.GlobalPhysicalRegularCanonicalNorm
+(Hailey Collet); changes: two parents, two amplitudes, the δ-shift. `regular_canonical_joint_mx`
 integrates the family `allocatedRegularFamily_mx` of the anchor `Initial.anchor_mx i₀ i`: the small-height
 premise is `regular_canonical_small_mx` (with the shift `κ`), the absolute budget is
 `eventually_canonical_absolute_mx`, the constants and the integration degree precede the family

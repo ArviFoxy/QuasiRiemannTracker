@@ -1,9 +1,8 @@
-/- Copyright (c) 2026 Hailey Collet. Apache-2.0.
+/- Copyright (c) 2026 Hailey Collet, ArviFoxy. Apache-2.0.
 The actual complete family retains one common Mellin height and the full
 original marked-pool avoidance required by both source branches. -/
-/- Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.
-Mixed step (L4/L5, F5): fork of Record1252270103Source.High.GlobalPhysicalRegularDictionary
-(Hailey Collet, Apache-2.0); changes: the family is `Family_mx` over `Anchor_mx` (two parents). Only the
+/- Mixed step (L4/L5, F5): fork of Record1252270103Source.High.GlobalPhysicalRegularDictionary
+(Hailey Collet); changes: the family is `Family_mx` over `Anchor_mx` (two parents). Only the
 two family-level height lemmas are restated; `regular_original_newton_avoidance` and
 `regular_selected_plain_upper` are generic and reused verbatim. -/
 import Submissions.hailey_collet_1252270103.Record1252270103Source.High.GlobalPhysicalRegularDictionary

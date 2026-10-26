@@ -1,8 +1,7 @@
-/- Copyright (c) 2026 Hailey Collet. Apache-2.0.
+/- Copyright (c) 2026 Hailey Collet, ArviFoxy. Apache-2.0.
 Genuine earlier LOW and HIGH sources control the same full centered family. -/
-/- Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.
-Mixed step (L4/L5, F5): fork of Record1252270103Source.High.GlobalPhysicalRegularSmall
-(Hailey Collet, Apache-2.0); changes: two parents, two amplitudes, the δ-shift. The point source is the
+/- Mixed step (L4/L5, F5): fork of Record1252270103Source.High.GlobalPhysicalRegularSmall
+(Hailey Collet); changes: two parents, two amplitudes, the δ-shift. The point source is the
 lead's `RegularPointAt_mx` (first layer `i₀` with the face hypotheses on `globalFace B₀ lam₀ cap₀`, second
 layer `i` with `InitialGeometry` at the node); the pool, its depth and the ball factor sit at `poolAmp`,
 `F.amp = sourceAReal n low bcell`. `∀ κ, hshift → (frozen margins per label) →` precede the Mellin

@@ -1,7 +1,5 @@
-/- Copyright (c) 2026 Hailey Collet. Apache-2.0.
-Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.
-Mixed step (L4/L5, N6): adapted from Record1252270103Source.Core.InitialRegularToTruncatedBalanced
-(Collet's `balanced_of_regular`, Apache-2.0); changes: the first MAIN selection is transferred to the
+/- Mixed step (L4/L5, N6): adapted from Record1252270103Source.Core.InitialRegularToTruncatedBalanced
+(Collet's `balanced_of_regular`); changes: the first MAIN selection is transferred to the
 residual families of its pieces (N3, `pieces_transfer_plain`), each family is paid by Collet's
 `eventual_selected_second` with the residual regular inlet `RegularJointSupplier3`, the F6 MAIN
 twins `eventually_initial_main_joint_saved_mx` (complement) and

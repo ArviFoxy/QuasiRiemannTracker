@@ -1,6 +1,4 @@
-/- Copyright (c) 2026 Hailey Collet. Apache-2.0.
-Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.
-Adapted from Collet's `actual_marked_allocation_main`
+/- Adapted from Collet's `actual_marked_allocation_main`
 (Record1252270103Source/High/GlobalPhysicalAllocationMain.lean): the allocation split,
 the per-allocation step and the decidable-instance transport are kept. Change: the
 per-child pool bound is replaced by the selected transfer

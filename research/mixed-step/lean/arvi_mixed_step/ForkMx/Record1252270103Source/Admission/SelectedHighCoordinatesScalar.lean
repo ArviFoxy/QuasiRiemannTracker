@@ -1,8 +1,6 @@
-/- Copyright (c) 2026 Hailey Collet. Apache-2.0.
-Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.
+/- Copyright (c) 2026 Hailey Collet, ArviFoxy. Apache-2.0.
 Mixed step (L4/L5, F1, two-parent twin): fork of
-Record1252270103Source.Admission.SelectedHighCoordinatesScalar (Hailey Collet, Apache-2.0;
-inherited notices retained).
+Record1252270103Source.Admission.SelectedHighCoordinatesScalar (Hailey Collet).
 
 `eventual_modified_high_coefficient` uses its first column only through the support facts of its
 label (`FirstFamily.label_supported`). With two parents the label comes from the first layer `s₀`

@@ -1,5 +1,4 @@
-/- Copyright (c) 2026 Hailey Collet. Apache-2.0.
-Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.
+/- Copyright (c) 2026 Hailey Collet, ArviFoxy. Apache-2.0.
 Mixed step (L4/L5, F3): fork of Record1252270103Source.Admission.SelectedLowSource; changes: two
 parents, two amplitudes, node price as a hypothesis.
 * first layer `s₀` (columns, labels, keys, rays, scalar at `logb Z (volume s₀)`, `mainExtra` at

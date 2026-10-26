@@ -1,5 +1,4 @@
-/- Copyright (c) 2026 Hailey Collet. Apache-2.0.
-Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.
+/- Copyright (c) 2026 Hailey Collet, ArviFoxy. Apache-2.0.
 Mixed step (L4/L5, F3): fork of Record1252270103Source.Admission.SelectedRegularLowPointData;
 changes: two parents (`Initial.anchor_mx` from a first-layer initial datum `i₀` and a second-layer
 initial datum `i`), node facts `NodeGeometry_mx` in place of `RealGeometry`/`ParentGood n`

@@ -1,9 +1,8 @@
-/- Copyright (c) 2026 Hailey Collet. Apache-2.0.
+/- Copyright (c) 2026 Hailey Collet, ArviFoxy. Apache-2.0.
 The columns and allocations returned by the first MAIN selection construct
 one literal regular second family, with a common first Mellin height. -/
-/- Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.
-Mixed step (L4/L5, F5): fork of Record1252270103Source.High.GlobalPhysicalRegularFamily
-(Hailey Collet, Apache-2.0); changes: `allocatedRegularFamily_mx` builds a `Family_mx` over `Anchor_mx`
+/- Mixed step (L4/L5, F5): fork of Record1252270103Source.High.GlobalPhysicalRegularFamily
+(Hailey Collet); changes: `allocatedRegularFamily_mx` builds a `Family_mx` over `Anchor_mx`
 (two parents). The columns `a.Column`, their live gates, ideals, characters and seeds read the first layer
 `a.s₀`/`a.modifier₀`; the allocations run over the second-layer pools `a.s.pools`, and the MAIN Fourier
 scale is read at the second-layer volume `volume a.s` with the node amplitude `amp`. -/

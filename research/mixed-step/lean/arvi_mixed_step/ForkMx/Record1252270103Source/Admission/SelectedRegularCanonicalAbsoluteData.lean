@@ -1,7 +1,6 @@
-/- Copyright (c) 2026 Hailey Collet. Apache-2.0. -/
-/- Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.
-Mixed step (L4/L5, F5): fork of Record1252270103Source.Admission.SelectedRegularCanonicalAbsoluteData
-(Hailey Collet, Apache-2.0); changes: two parents and two amplitudes, as in this fork's
+/- Copyright (c) 2026 Hailey Collet, ArviFoxy. Apache-2.0. -/
+/- Mixed step (L4/L5, F5): fork of Record1252270103Source.Admission.SelectedRegularCanonicalAbsoluteData
+(Hailey Collet); changes: two parents and two amplitudes, as in this fork's
 `selected_family_absolute_mx` (first-layer hypotheses on `F.s₀`, second-layer ones on `F.s`, the weight at
 `poolAmp`). `allocated_frequency_mx` reads the first label on `a.s₀` and the MAIN Fourier scale at the
 second-layer volume `volume a.s` (`main_scale_upper_mx`). `budget_true` is reused verbatim. -/

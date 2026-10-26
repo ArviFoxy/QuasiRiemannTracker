@@ -1,8 +1,7 @@
-/- Copyright (c) 2026 Hailey Collet. Apache-2.0.
+/- Copyright (c) 2026 Hailey Collet, ArviFoxy. Apache-2.0.
 Actual modified retained geometry discharges the three remaining coarse caps. -/
-/- Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.
-Mixed step (L4/L5, F4): fork of Record1252270103Source.Admission.SelectedRegularGeometryCaps
-(Hailey Collet, Apache-2.0); changes: two parents. Over `Anchor_mx`/`Family_mx`/`Selected_mx`:
+/- Mixed step (L4/L5, F4): fork of Record1252270103Source.Admission.SelectedRegularGeometryCaps
+(Hailey Collet); changes: two parents. Over `Anchor_mx`/`Family_mx`/`Selected_mx`:
 the first label, its column and the marked modifier are read from the first layer `F.s₀`,
 `F.modifier₀`; the MAIN Fourier scale (at `volume F.s`, via `main_scale_upper_mx`), the children,
 the data and the coordinates (at `logb Z (volume F.s)`) from the second-layer parent.

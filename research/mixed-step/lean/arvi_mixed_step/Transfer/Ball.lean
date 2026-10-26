@@ -1,6 +1,4 @@
-/- Copyright (c) 2026 Sil. Apache-2.0.
-Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.
-`ball_row_norm` adapts Sil's `frequency_norm_bound` (FourthPower/PositiveFamily.lean,
+/- `ball_row_norm` adapts Sil's `frequency_norm_bound` (FourthPower/PositiveFamily.lean,
 PR 74, vendored in PR 76) to the ball radius and the slot window `∏_J hi·P`. The rest
 is new in this submission and uses Sil's, Collet's and the baseline's lemmas by import.
 

@@ -84,7 +84,7 @@ def qemu_command():
     return [
         "qemu-system-x86_64", "-no-user-config", "-nodefaults", "-no-reboot",
         "-machine", "q35,usb=off,vmport=off", "-accel", "kvm",
-        "-cpu", "host,vmx=off,svm=off", "-smp", "12", "-m", "49152",
+        "-cpu", "host,vmx=off,svm=off", "-smp", "6", "-m", "24576",
         "-display", "none", "-monitor", "none", "-serial", "stdio",
         "-boot", "order=c,strict=on",
         "-drive", f"file={VM / 'guest.qcow2'},if=none,id=os,format=qcow2,cache=none,discard=unmap",

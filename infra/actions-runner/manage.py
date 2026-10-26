@@ -2,6 +2,7 @@
 """Host-side supervisor. GitHub jobs never receive this host's Docker access."""
 
 import argparse
+from contextlib import contextmanager
 import fcntl
 import getpass
 import io
@@ -18,10 +19,14 @@ import uuid
 
 ROOT = Path(__file__).resolve().parent
 STATE_ROOT = Path.home() / ".local/share/qrh-actions-runner"
-STATE = STATE_ROOT / "proof"
-SERVICE = "qrh-proof-runner.service"
-CONTAINER = "qrh-proof-job"
-REGISTER = "qrh-proof-register"
+SLOTS = (1, 2)
+SERVICE = "qrh-proof-runner@.service"
+SERVICES = tuple(f"qrh-proof-runner@{slot}.service" for slot in SLOTS)
+SLOT = 1
+STATE = STATE_ROOT / "proof" / "slot-1"
+CONTAINER = "qrh-proof-job-1"
+REGISTER = "qrh-proof-register-1"
+VM_LIFETIME_SECONDS = 16 * 60 * 60
 PROXY = "qrh-proof-proxy"
 NETWORK = "qrh-proof-internal"
 EGRESS = "qrh-proof-egress"
@@ -38,11 +43,36 @@ def docker_json(*args):
     return json.loads(run(["docker", *args], capture_output=True, text=True).stdout)
 
 
+def select_slot(slot):
+    global SLOT, STATE, CONTAINER, REGISTER
+    if type(slot) is not int or slot not in SLOTS:
+        raise ValueError("Runner slot must be 1 or 2")
+    SLOT = slot
+    STATE = STATE_ROOT / "proof" / f"slot-{slot}"
+    CONTAINER = f"qrh-proof-job-{slot}"
+    REGISTER = f"qrh-proof-register-{slot}"
+
+
 def private_state():
-    STATE_ROOT.mkdir(mode=0o700, parents=True, exist_ok=True)
-    STATE_ROOT.chmod(0o700)
-    STATE.mkdir(mode=0o700, parents=True, exist_ok=True)
-    STATE.chmod(0o700)
+    for path in (STATE_ROOT, STATE_ROOT / "proof", STATE):
+        path.mkdir(mode=0o700, parents=True, exist_ok=True)
+        path.chmod(0o700)
+
+
+@contextmanager
+def file_lock(path, operation):
+    with open(path, "w") as lock:
+        fcntl.flock(lock, operation)
+        yield
+
+
+@contextmanager
+def slot_lock():
+    # Shared capacity allows both slots, but excludes smoke tests and the old
+    # single supervisor/local proof batch, which take this lock exclusively.
+    with file_lock(STATE_ROOT / "proof" / "supervisor.lock", fcntl.LOCK_SH | fcntl.LOCK_NB):
+        with file_lock(STATE / "supervisor.lock", fcntl.LOCK_EX | fcntl.LOCK_NB):
+            yield
 
 
 def private_write(path, data):
@@ -68,6 +98,13 @@ def ensure_network(name, internal):
 
 
 def ensure_proxy():
+    # Both supervisors may start together; only one may create/connect the
+    # shared networks and proxy container at a time.
+    with file_lock(STATE_ROOT / "proof" / "proxy.lock", fcntl.LOCK_EX):
+        _ensure_proxy()
+
+
+def _ensure_proxy():
     ensure_network(NETWORK, True)
     ensure_network(EGRESS, False)
     existing = subprocess.run(["docker", "container", "inspect", PROXY], capture_output=True, text=True)
@@ -139,7 +176,7 @@ def register():
         result = subprocess.run([
             *COMPOSE, "run", "--rm", "--no-deps", "-T", "--name", REGISTER,
             "-e", "ACTIONS_RUNNER_PRINT_LOG_TO_STDOUT=0",
-            "-e", f"QRH_RUNNER_NAME=qrh-proof-{uuid.uuid4().hex[:12]}", "runner", "--register",
+            "-e", f"QRH_RUNNER_NAME=qrh-proof-{SLOT}-{uuid.uuid4().hex[:12]}", "registration", "--register",
         ], input=(token + "\n").encode(), stdout=subprocess.PIPE, timeout=120)
     finally:
         del token
@@ -159,8 +196,7 @@ def stop_job(*_args):
 
 def serve():
     private_state()
-    with open(STATE / "supervisor.lock", "w") as lock:
-        fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+    with slot_lock():
         ensure_proxy()
         signal.signal(signal.SIGTERM, stop_job)
         signal.signal(signal.SIGINT, stop_job)
@@ -181,7 +217,7 @@ def serve():
             try:
                 result = subprocess.run([
                     *COMPOSE, "run", "--rm", "--no-deps", "-T", "--name", CONTAINER, "runner",
-                ], input=identity, timeout=36000)
+                ], input=identity, timeout=VM_LIFETIME_SECONDS)
             except subprocess.TimeoutExpired:
                 result = None
                 print("Proof VM lifetime limit reached; replacing its identity and disk.", flush=True)
@@ -197,19 +233,20 @@ def serve():
 def install_service():
     unit = Path.home() / ".config/systemd/user" / SERVICE
     unit.parent.mkdir(parents=True, exist_ok=True)
-    for legacy in ("qrh-actions-runner.service", *[f"qrh-actions-runner@{slot}.service" for slot in (1, 2, 3)]):
+    for legacy in ("qrh-proof-runner.service", "qrh-actions-runner.service",
+                   *[f"qrh-actions-runner@{slot}.service" for slot in (1, 2, 3)]):
         if unit.with_name(legacy).exists() or ("@" in legacy and unit.with_name("qrh-actions-runner@.service").exists()):
             run(["systemctl", "--user", "disable", "--now", legacy])
     kvm_gid = os.stat("/dev/kvm").st_gid
     unit.write_text(f"""[Unit]
-Description=Ephemeral QRH admission proof VM (Docker/KVM)
+Description=Ephemeral QRH admission proof VM slot %i (Docker/KVM)
 After=network-online.target
 
 [Service]
 Type=simple
 WorkingDirectory={ROOT}
-ExecStart=/usr/bin/python3 {ROOT / 'manage.py'} serve
-ExecStopPost=-/usr/bin/env docker rm --force --volumes {CONTAINER} {REGISTER}
+ExecStart=/usr/bin/python3 {ROOT / 'manage.py'} serve --slot %i
+ExecStopPost=-/usr/bin/env docker rm --force --volumes qrh-proof-job-%i qrh-proof-register-%i
 Environment=PATH=/usr/local/bin:/usr/bin:/bin:/snap/bin
 Environment=QRH_KVM_GID={kvm_gid}
 UMask=0077
@@ -222,22 +259,27 @@ TimeoutStopSec=45
 WantedBy=default.target
 """)
     run(["systemctl", "--user", "daemon-reload"])
-    run(["systemctl", "--user", "enable", SERVICE])
-    print(f"Installed {unit}; use manage.py start after registration.")
+    run(["systemctl", "--user", "enable", *SERVICES])
+    print(f"Installed {unit}; use manage.py start to provision both slots.")
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("command", choices=["build", "smoke", "token", "register", "install-service", "start", "stop", "status", "serve"])
-    command = parser.parse_args().command
+    parser.add_argument("--slot", type=int, choices=SLOTS,
+                        help="select one slot; start/stop/status otherwise address both")
+    args = parser.parse_args()
+    command = args.command
+    if args.slot is not None and command not in ("register", "serve", "start", "stop", "status"):
+        parser.error("--slot is only valid for register, serve, start, stop, and status")
+    select_slot(args.slot or 1)
     private_state()
     os.environ["QRH_KVM_GID"] = str(os.stat("/dev/kvm").st_gid)
     if command == "build":
         run([*COMPOSE, "build", "runner"])
         run(["docker", "build", "-t", "qrh-runner-proxy:local", "-f", str(ROOT / "Proxy.Dockerfile"), str(ROOT)])
     elif command == "smoke":
-        with open(STATE / "supervisor.lock", "w") as lock:
-            fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        with file_lock(STATE_ROOT / "proof" / "supervisor.lock", fcntl.LOCK_EX | fcntl.LOCK_NB):
             ensure_proxy()
             try:
                 run([*COMPOSE, "run", "--rm", "--no-deps", "-T", "--name", "qrh-proof-smoke", "runner", "--smoke"], timeout=1800)
@@ -250,8 +292,7 @@ def main():
         private_write(STATE_ROOT / "registration-token", token.encode())
         print("Registration token stored privately on the host; it is never passed to jobs.")
     elif command == "register":
-        with open(STATE / "supervisor.lock", "w") as lock:
-            fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        with slot_lock():
             if (STATE / "pending-identity.tar").exists():
                 raise RuntimeError("An unused identity already exists; start the service to consume it")
             ensure_proxy()
@@ -261,7 +302,8 @@ def main():
     elif command == "serve":
         serve()
     else:
-        run(["systemctl", "--user", command, SERVICE, *( ["--no-pager"] if command == "status" else [])])
+        services = (f"qrh-proof-runner@{args.slot}.service",) if args.slot else SERVICES
+        run(["systemctl", "--user", command, *services, *(["--no-pager"] if command == "status" else [])])
 
 
 if __name__ == "__main__":

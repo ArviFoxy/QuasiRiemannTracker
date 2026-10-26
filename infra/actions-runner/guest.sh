@@ -80,7 +80,7 @@ if [[ "${1:-}" == --smoke ]]; then
 set -euo pipefail
 test "$(id -u)" = 10001
 test "$(node --version)" = v22.22.1
-test "$(nproc)" = 12
+test "$(nproc)" = 6
 test -e /sys/fs/cgroup/cgroup.controllers
 test "$(cat /sys/module/apparmor/parameters/enabled)" = Y
 sudo -n true

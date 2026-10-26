@@ -9,9 +9,9 @@ test("replay keeps the hosted deadline by default and bounds explicit budgets", 
       String.raw`
 from verifier.worker_resources import replay_budget_seconds
 assert replay_budget_seconds({}) == 10800
-for value in ['1', '10800', '21600']:
+for value in ['1', '10800', '21600', '43200']:
     assert replay_budget_seconds({'QRH_REPLAY_BUDGET_SECONDS': value}) == int(value)
-for value in ['', '0', '-1', '21601', '999999', '1.5', 'inf', '1e4', ' 3600', '3600\n', '١']:
+for value in ['', '0', '-1', '43201', '999999', '1.5', 'inf', '1e4', ' 3600', '3600\n', '١']:
     try:
         replay_budget_seconds({'QRH_REPLAY_BUDGET_SECONDS': value})
     except ValueError as error:
@@ -66,17 +66,17 @@ work = Path({str(output/'run')!r})
 work.mkdir(exist_ok=True)
 (work/'result.json').write_text(json.dumps(report))
 ''')
-    for budget in [None, '21600', '21601']:
+    for budget in [None, '43200', '43201']:
         environment = {**os.environ, 'GITHUB_TOKEN': 'test-credential',
                        'UNRELATED_SECRET': 'test-credential',
-                       'QRH_WORKER_THREADS': '12', 'QRH_KERNEL_JOBS': '1'}
+                       'QRH_WORKER_THREADS': '6', 'QRH_KERNEL_JOBS': '1'}
         environment.pop('QRH_REPLAY_BUDGET_SECONDS', None)
         if budget is not None:
             environment['QRH_REPLAY_BUDGET_SECONDS'] = budget
         result = subprocess.run(['python3', str(actions/'run.py')],
                                 env=environment, capture_output=True, text=True)
         attempt = json.loads((output/'attempt.json').read_text())
-        if budget == '21601':
+        if budget == '43201':
             assert result.returncode != 0
             assert attempt['status'] == 'checking-failed', attempt
             assert 'QRH_REPLAY_BUDGET_SECONDS' in attempt['reason'], attempt
@@ -85,7 +85,7 @@ work.mkdir(exist_ok=True)
             assert result.returncode == 0, result.stderr
             assert attempt['status'] == 'accepted', attempt
             assert attempt['report'] == {'budget_seconds': int(budget or '10800'),
-                                         'threads': '12', 'kernels': '1'}, attempt
+                                         'threads': '6', 'kernels': '1'}, attempt
 `,
     ],
     { stdio: "pipe" },

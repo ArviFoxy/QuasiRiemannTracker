@@ -1,5 +1,6 @@
 """Credential-boundary and lifecycle tests without Docker or GitHub access."""
 
+import fcntl
 import io
 import json
 from pathlib import Path
@@ -176,7 +177,7 @@ class IdentityLifecycleTests(unittest.TestCase):
         self.temporary = tempfile.TemporaryDirectory()
         self.addCleanup(self.temporary.cleanup)
         root = Path(self.temporary.name)
-        self.state = root / "proof"
+        self.state = root / "proof" / "slot-1"
         self.registered = []
         self.started = []
         for target, value in (("STATE_ROOT", root), ("STATE", self.state), ("STOPPING", False)):
@@ -256,7 +257,7 @@ class IdentityLifecycleTests(unittest.TestCase):
             if self.record_launch(args, **kwargs):
                 events.append("launch")
                 if len(self.started) == 1:
-                    raise subprocess.TimeoutExpired(args, 36000)
+                    raise subprocess.TimeoutExpired(args, manage.VM_LIFETIME_SECONDS)
                 manage.STOPPING = True
             elif args == ["docker", "rm", "--force", "--volumes", manage.CONTAINER]:
                 events.append("remove")
@@ -301,8 +302,8 @@ class RegistrationIsolationTests(unittest.TestCase):
         temporary = tempfile.TemporaryDirectory()
         self.addCleanup(temporary.cleanup)
         root = Path(temporary.name)
-        self.state = root / "proof"
-        self.state.mkdir()
+        self.state = root / "proof" / "slot-1"
+        self.state.mkdir(parents=True)
         for target, value in (("STATE_ROOT", root), ("STATE", self.state)):
             patcher = patch.object(manage, target, value)
             patcher.start()
@@ -324,7 +325,7 @@ class RegistrationIsolationTests(unittest.TestCase):
         registration = [(args, kwargs) for args, kwargs in calls if args[:len(manage.COMPOSE)] == manage.COMPOSE]
         self.assertEqual(len(registration), 1)
         args, options = registration[0]
-        self.assertEqual(args[-1], "--register")
+        self.assertEqual(args[-2:], ["registration", "--register"])
         self.assertNotIn("registration-token-test-secret", str(args))
         self.assertNotIn("registration-token-test-secret", str(options.get("env", {})))
         self.assertEqual(options["input"], b"registration-token-test-secret\n")
@@ -366,7 +367,7 @@ class ProofServiceTests(unittest.TestCase):
             home = Path(temporary)
             units = home / ".config/systemd/user"
             units.mkdir(parents=True)
-            for name in ("qrh-actions-runner.service", "qrh-actions-runner@.service"):
+            for name in ("qrh-proof-runner.service", "qrh-actions-runner.service", "qrh-actions-runner@.service"):
                 (units / name).write_text("legacy service")
             real_stat = manage.os.stat
             device_stat = real_stat(__file__)
@@ -375,18 +376,20 @@ class ProofServiceTests(unittest.TestCase):
                                   device_stat if path == "/dev/kvm" else real_stat(path, *args, **kwargs)):
                     manage.install_service()
             commands = [call.args[0] for call in execute.call_args_list]
-            enable = ["systemctl", "--user", "enable", "qrh-proof-runner.service"]
-            for legacy in ("qrh-actions-runner.service", *[f"qrh-actions-runner@{slot}.service" for slot in (1, 2, 3)]):
+            enable = ["systemctl", "--user", "enable", "qrh-proof-runner@1.service", "qrh-proof-runner@2.service"]
+            for legacy in ("qrh-proof-runner.service", "qrh-actions-runner.service",
+                           *[f"qrh-actions-runner@{slot}.service" for slot in (1, 2, 3)]):
                 disable = ["systemctl", "--user", "disable", "--now", legacy]
                 self.assertLess(commands.index(disable), commands.index(enable))
             unit = (units / manage.SERVICE).read_text()
             self.assertIn(f"QRH_KVM_GID={device_stat.st_gid}", unit)
-            self.assertIn("docker rm --force --volumes qrh-proof-job qrh-proof-register", unit)
+            self.assertIn("serve --slot %i", unit)
+            self.assertIn("docker rm --force --volumes qrh-proof-job-%i qrh-proof-register-%i", unit)
 
     def test_registration_token_is_shared_but_old_pending_identities_are_not_used(self):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
-            proof = root / "proof"
+            proof = root / "proof" / "slot-1"
             with patch.multiple(manage, STATE_ROOT=root, STATE=proof):
                 manage.private_state()
                 manage.private_write(root / "registration-token", b"fresh-host-token")
@@ -395,6 +398,155 @@ class ProofServiceTests(unittest.TestCase):
                     self.assertEqual(manage.registration_token(), "fresh-host-token")
                 self.assertFalse((proof / "pending-identity.tar").exists())
                 self.assertEqual(proof.stat().st_mode & 0o777, 0o700)
+
+
+class SlotIsolationTests(unittest.TestCase):
+    def setUp(self):
+        temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(temporary.cleanup)
+        self.root = Path(temporary.name)
+        for target in ("STATE_ROOT", "STATE", "SLOT", "CONTAINER", "REGISTER"):
+            patcher = patch.object(manage, target, getattr(manage, target))
+            patcher.start()
+            self.addCleanup(patcher.stop)
+        manage.STATE_ROOT = self.root
+        manage.select_slot(1)
+        manage.private_state()
+
+    def test_slots_can_run_together_but_not_twice_in_the_same_slot(self):
+        with manage.slot_lock():
+            manage.select_slot(2)
+            manage.private_state()
+            with manage.slot_lock():
+                with self.assertRaises(BlockingIOError):
+                    with manage.slot_lock():
+                        self.fail("duplicate slot acquired its lock")
+                manage.select_slot(1)
+                with self.assertRaises(BlockingIOError):
+                    with manage.slot_lock():
+                        self.fail("duplicate first slot acquired its lock")
+        with manage.slot_lock():
+            pass
+
+    def test_smoke_and_legacy_single_runner_exclude_both_slots(self):
+        capacity = self.root / "proof" / "supervisor.lock"
+        for slot in manage.SLOTS:
+            manage.select_slot(slot)
+            manage.private_state()
+            with self.subTest(slot=slot):
+                with manage.slot_lock():
+                    with self.assertRaises(BlockingIOError):
+                        with manage.file_lock(capacity, fcntl.LOCK_EX | fcntl.LOCK_NB):
+                            self.fail("smoke ran alongside an active slot")
+                with manage.file_lock(capacity, fcntl.LOCK_EX | fcntl.LOCK_NB):
+                    with self.assertRaises(BlockingIOError):
+                        with manage.slot_lock():
+                            self.fail("slot ran during smoke or legacy verification")
+
+    def test_registration_and_pending_identities_are_independent(self):
+        old = self.root / "proof" / "pending-identity.tar"
+        old.write_bytes(b"unused old single-service identity")
+        calls = []
+        paths = []
+        identities = []
+
+        def execute(args, **kwargs):
+            calls.append(args)
+            return subprocess.CompletedProcess(args, 0, stdout=identities[-1])
+
+        with patch.object(manage, "registration_token", return_value="test-host-secret"):
+            with patch.object(manage.subprocess, "run", side_effect=execute):
+                for slot in manage.SLOTS:
+                    manage.select_slot(slot)
+                    manage.private_state()
+                    identities.append(identity_archive({
+                        "agentId": slot, "ephemeral": True, "disableUpdate": True,
+                        "gitHubUrl": "https://github.com/GTimG/QuasiRiemannTracker",
+                    }))
+                    manage.register()
+                    paths.append(manage.STATE / "pending-identity.tar")
+        self.assertNotEqual(*paths)
+        self.assertEqual([path.read_bytes() for path in paths], identities)
+        self.assertEqual(old.read_bytes(), b"unused old single-service identity")
+        registrations = [args for args in calls if args[:len(manage.COMPOSE)] == manage.COMPOSE]
+        for slot, args in zip(manage.SLOTS, registrations):
+            self.assertEqual(args[args.index("--name") + 1], f"qrh-proof-register-{slot}")
+            name = next(arg for arg in args if arg.startswith("QRH_RUNNER_NAME="))
+            self.assertRegex(name, rf"^QRH_RUNNER_NAME=qrh-proof-{slot}-[0-9a-f]{{12}}$")
+
+    def test_slot_two_consumes_only_its_identity_and_stops_only_its_container(self):
+        first_pending = manage.STATE / "pending-identity.tar"
+        first_identity = identity_archive()
+        manage.private_write(first_pending, first_identity)
+        manage.select_slot(2)
+        manage.private_state()
+        second_pending = manage.STATE / "pending-identity.tar"
+        second_identity = identity_archive({
+            "agentId": 2, "ephemeral": True, "disableUpdate": True,
+            "gitHubUrl": "https://github.com/GTimG/QuasiRiemannTracker",
+        })
+        manage.private_write(second_pending, second_identity)
+        calls = []
+
+        def execute(args, **kwargs):
+            calls.append(args)
+            if args[:len(manage.COMPOSE)] == manage.COMPOSE:
+                self.assertEqual(args[args.index("--name") + 1], "qrh-proof-job-2")
+                self.assertEqual(kwargs["input"], second_identity)
+                self.assertFalse(second_pending.exists())
+                manage.stop_job()
+            return subprocess.CompletedProcess(args, 0)
+
+        with patch.object(manage, "STOPPING", False), patch.object(manage, "ensure_proxy"):
+            with patch.object(manage.signal, "signal"), patch.object(manage, "register") as register:
+                with patch.object(manage.subprocess, "run", side_effect=execute):
+                    manage.serve()
+                register.assert_not_called()
+        self.assertEqual(first_pending.read_bytes(), first_identity)
+        self.assertFalse(second_pending.exists())
+        self.assertIn(["docker", "stop", "--time", "20", "qrh-proof-job-2"], calls)
+        self.assertFalse(any("qrh-proof-job-1" in args for args in calls))
+
+    def test_proxy_creation_holds_shared_proxy_lock(self):
+        def assert_locked():
+            with self.assertRaises(BlockingIOError):
+                with manage.file_lock(self.root / "proof" / "proxy.lock", fcntl.LOCK_EX | fcntl.LOCK_NB):
+                    self.fail("proxy could be created concurrently")
+        with patch.object(manage, "_ensure_proxy", side_effect=assert_locked) as create:
+            manage.ensure_proxy()
+            create.assert_called_once_with()
+
+    def test_control_commands_address_both_slots_or_the_explicit_slot(self):
+        real_stat = manage.os.stat
+        device_stat = real_stat(__file__)
+        for command in ("start", "stop", "status"):
+            for slot in (None, 1, 2):
+                argv = ["manage.py", command] + ([] if slot is None else ["--slot", str(slot)])
+                with self.subTest(command=command, slot=slot):
+                    with patch.object(manage.sys, "argv", argv), patch.object(manage, "run") as execute:
+                        with patch.object(manage.os, "stat", side_effect=lambda path, *args, **kwargs:
+                                          device_stat if path == "/dev/kvm" else real_stat(path, *args, **kwargs)):
+                            manage.main()
+                    services = manage.SERVICES if slot is None else (f"qrh-proof-runner@{slot}.service",)
+                    expected = ["systemctl", "--user", command, *services]
+                    if command == "status":
+                        expected.append("--no-pager")
+                    execute.assert_called_once_with(expected)
+
+    def test_invalid_slots_and_slots_on_global_commands_are_rejected(self):
+        for slot in (0, 3, -1, "1", True):
+            with self.subTest(slot=slot):
+                with self.assertRaises(ValueError):
+                    manage.select_slot(slot)
+        for arguments in (["serve", "--slot", "3"], ["register", "--slot", "0"],
+                          ["smoke", "--slot", "1"], ["install-service", "--slot", "2"]):
+            with self.subTest(arguments=arguments):
+                with patch.object(manage.sys, "argv", ["manage.py", *arguments]):
+                    with patch.object(manage.sys, "stderr", io.StringIO()), patch.object(manage, "private_state") as create:
+                        with self.assertRaises(SystemExit) as raised:
+                            manage.main()
+                        self.assertEqual(raised.exception.code, 2)
+                        create.assert_not_called()
 
 
 if __name__ == "__main__":

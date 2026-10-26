@@ -1,5 +1,5 @@
 services:
-  runner:
+  runner: &runner
     image: qrh-proof-runner:2.338.2
     build:
       context: .
@@ -18,9 +18,9 @@ services:
       - apparmor:docker-default
     # The immutable entrypoint sets no_new_privs after the AppArmor transition.
     # Docker-level NNP breaks snap Docker's transition (LP#1908448).
-    cpus: 12
-    mem_limit: 52g
-    memswap_limit: 52g
+    cpus: 6
+    mem_limit: 26g
+    memswap_limit: 26g
     pids_limit: 512
     shm_size: 128m
     ulimits:
@@ -59,6 +59,27 @@ services:
         max-file: "3"
     networks:
       - runner-internal
+
+  registration:
+    <<: *runner
+    # .NET reserves a large sparse memfd for W^X code mappings. Keep that
+    # separate from the proof VM's backing-file limit and writable disk.
+    devices: []
+    group_add: []
+    volumes: []
+    cpus: 1
+    mem_limit: 1g
+    memswap_limit: 1g
+    pids_limit: 128
+    shm_size: 16m
+    ulimits:
+      nofile:
+        soft: 4096
+        hard: 4096
+      core: 0
+      fsize:
+        soft: -1
+        hard: -1
 
 networks:
   runner-internal:

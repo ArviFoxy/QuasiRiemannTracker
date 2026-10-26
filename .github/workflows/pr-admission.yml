@@ -72,12 +72,12 @@ jobs:
       matrix:
         result: ${{ fromJSON(needs.prepare.outputs.matrix) }}
     # Leave time for setup, replay, and artifact upload before finalization.
-    timeout-minutes: 510
+    timeout-minutes: 870
     permissions:
       contents: read
     env:
-      QRH_REPLAY_BUDGET_SECONDS: "21600"
-      QRH_WORKER_THREADS: "12"
+      QRH_REPLAY_BUDGET_SECONDS: "43200"
+      QRH_WORKER_THREADS: "6"
       QRH_KERNEL_JOBS: "1"
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683

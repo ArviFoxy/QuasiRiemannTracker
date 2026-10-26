@@ -9,8 +9,8 @@ def replay_budget_seconds(environ=None):
     environ = os.environ if environ is None else environ
     value = environ.get('QRH_REPLAY_BUDGET_SECONDS', '10800')
     if (not value.isascii() or not value.isdecimal()
-            or not 1 <= int(value) <= 21600):
-        raise ValueError('QRH_REPLAY_BUDGET_SECONDS must be an integer from 1 to 21600')
+            or not 1 <= int(value) <= 43200):
+        raise ValueError('QRH_REPLAY_BUDGET_SECONDS must be an integer from 1 to 43200')
     return int(value)
 
 

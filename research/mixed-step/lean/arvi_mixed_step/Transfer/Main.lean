@@ -77,13 +77,16 @@ theorem row_norm_bound {ι : Type*} [Fintype ι] [DecidableEq ι] (s : Input ι)
     _ = Z ^ M * W ^ 4 := by ring
 
 /-- **Fourth-power transfer at Collet's first MAIN layer** (statement (T) of
-the mixed source step), with a general whole-column multiplier `F`. -/
-theorem collet_main_selected_transfer (ε : ℝ) (hε : 0 < ε) (N : ℕ) :
+the mixed source step), with a general whole-column multiplier `F` and the
+tuple-level seed condition (S'). -/
+theorem collet_main_selected_transfer_gen (ε : ℝ) (hε : 0 < ε) (N : ℕ) :
     ∃ C : ℝ, 0 < C ∧ ∀ {ι : Type u} [Fintype ι] [DecidableEq ι], Fintype.card ι ≤ N →
     ∀ (s : Input ι) (J : Finset ι) (A₁ A₂ Dc K R L : Ideal O) (F : Ideal O → ℂ)
       (τ : HeckeFamily.Character) (t T : ℝ) (n : ℤ) (Z M W : ℝ),
       dyadicScale n ≤ Z ^ M → (∏ j ∈ J, s.hi j * s.P j) ≤ W →
-      (∀ j ∈ J, ∀ p ∈ s.slots j, ¬p ∣ L) →
+      (∀ v ∈ Fintype.piFinset s.pools,
+        CoupledFirst.tupleCoefficient s (markedSourceModifier A₁ A₂ Dc K F) R L v ≠ 0 →
+          IsCoprime L (∏ j ∈ J, v (Sum.inl j))) →
       (∀ v ∈ Fintype.piFinset s.pools,
         F (Dc * finiteTupleProduct v) = F (Dc * finiteTupleProduct (restPart J v))) →
       (∀ v ∈ Fintype.piFinset s.pools,
@@ -209,5 +212,84 @@ theorem collet_main_selected_transfer (ε : ℝ) (hε : 0 < ε) (N : ℕ) :
     rw [hrows0]
     simp only [Finset.sum_empty, Finset.sum_const_zero, mul_zero, le_refl]
 
+/-- **Fourth-power transfer at Collet's first MAIN layer** under the pool-level
+(S): no selected slot prime divides the seed `L`. -/
+theorem collet_main_selected_transfer (ε : ℝ) (hε : 0 < ε) (N : ℕ) :
+    ∃ C : ℝ, 0 < C ∧ ∀ {ι : Type u} [Fintype ι] [DecidableEq ι], Fintype.card ι ≤ N →
+    ∀ (s : Input ι) (J : Finset ι) (A₁ A₂ Dc K R L : Ideal O) (F : Ideal O → ℂ)
+      (τ : HeckeFamily.Character) (t T : ℝ) (n : ℤ) (Z M W : ℝ),
+      dyadicScale n ≤ Z ^ M → (∏ j ∈ J, s.hi j * s.P j) ≤ W →
+      (∀ j ∈ J, ∀ p ∈ s.slots j, ¬p ∣ L) →
+      (∀ v ∈ Fintype.piFinset s.pools,
+        F (Dc * finiteTupleProduct v) = F (Dc * finiteTupleProduct (restPart J v))) →
+      (∀ v ∈ Fintype.piFinset s.pools,
+        CoupledFirst.tupleCoefficient s (markedSourceModifier A₁ A₂ Dc K F) R L v ≠ 0 →
+          IsCoprime (∏ j ∈ J, v (Sum.inl j)) (v (Sum.inr 0) * v (Sum.inr 1))) →
+      ∃ rows : Finset O, (∀ r ∈ rows, r ≠ 0 ∧ normValue r ≤ Z ^ M * W ^ 4) ∧
+        (∑' h : O, dyadicWeight n (normValue h) *
+          ‖gaussPolynomial Finset.univ
+            (sourceGenerator (finiteColumns (Fintype.piFinset s.pools)))
+            (sourceGenerator_supported (finiteColumns (Fintype.piFinset s.pools)))
+            (fun I : supportedColumns (finiteColumns (Fintype.piFinset s.pools)) =>
+              CoupledFirst.coefficient s (markedSourceModifier A₁ A₂ Dc K F) R L I *
+                ((Real.sqrt T : ℂ)⁻¹ * rowWeight τ fixedBadMask 1 1 t I)) h‖ ^ 2) ≤
+        C * (∏ j ∈ J, s.hi j * s.M j ^ 2) * (Z ^ M * W ^ 4) ^ ε *
+          ∑ ξ : RayCharacter, ∑ r ∈ rows,
+            ‖gaussPolynomial Finset.univ
+              (sourceGenerator (finiteColumns (Fintype.piFinset (residualInput s J).pools)))
+              (sourceGenerator_supported
+                (finiteColumns (Fintype.piFinset (residualInput s J).pools)))
+              (fun I : supportedColumns
+                  (finiteColumns (Fintype.piFinset (residualInput s J).pools)) =>
+                CoupledFirst.coefficient (residualInput s J)
+                    (markedSourceModifier A₁ A₂ Dc K F) R L I *
+                  ((Real.sqrt (T / ∏ j ∈ J, s.P j) : ℂ)⁻¹ *
+                    rowWeight (childCharacter τ ξ) fixedBadMask 1 1 t I)) r‖ ^ 2 := by
+  obtain ⟨C, hC, h⟩ := collet_main_selected_transfer_gen.{u} ε hε N
+  refine ⟨C, hC, ?_⟩
+  intro ι _ _ hcard s J A₁ A₂ Dc K R L F τ t T n Z M W hdyad hW hS hF hCol
+  exact h hcard s J A₁ A₂ Dc K R L F τ t T n Z M W hdyad hW
+    (fun v hv _ => seed_free_of_slots s J L hS v hv) hF hCol
+
+/-- The first-MAIN-layer form (`F = 1`): only (S) and (Col) are assumed. -/
+theorem collet_main_selected_transfer_one (ε : ℝ) (hε : 0 < ε) (N : ℕ) :
+    ∃ C : ℝ, 0 < C ∧ ∀ {ι : Type u} [Fintype ι] [DecidableEq ι], Fintype.card ι ≤ N →
+    ∀ (s : Input ι) (J : Finset ι) (A₁ A₂ Dc K R L : Ideal O)
+      (τ : HeckeFamily.Character) (t T : ℝ) (n : ℤ) (Z M W : ℝ),
+      dyadicScale n ≤ Z ^ M → (∏ j ∈ J, s.hi j * s.P j) ≤ W →
+      (∀ j ∈ J, ∀ p ∈ s.slots j, ¬p ∣ L) →
+      (∀ v ∈ Fintype.piFinset s.pools,
+        CoupledFirst.tupleCoefficient s (markedSourceModifier A₁ A₂ Dc K (fun _ => 1)) R L v ≠ 0 →
+          IsCoprime (∏ j ∈ J, v (Sum.inl j)) (v (Sum.inr 0) * v (Sum.inr 1))) →
+      ∃ rows : Finset O, (∀ r ∈ rows, r ≠ 0 ∧ normValue r ≤ Z ^ M * W ^ 4) ∧
+        (∑' h : O, dyadicWeight n (normValue h) *
+          ‖gaussPolynomial Finset.univ
+            (sourceGenerator (finiteColumns (Fintype.piFinset s.pools)))
+            (sourceGenerator_supported (finiteColumns (Fintype.piFinset s.pools)))
+            (fun I : supportedColumns (finiteColumns (Fintype.piFinset s.pools)) =>
+              CoupledFirst.coefficient s (markedSourceModifier A₁ A₂ Dc K (fun _ => 1)) R L I *
+                ((Real.sqrt T : ℂ)⁻¹ * rowWeight τ fixedBadMask 1 1 t I)) h‖ ^ 2) ≤
+        C * (∏ j ∈ J, s.hi j * s.M j ^ 2) * (Z ^ M * W ^ 4) ^ ε *
+          ∑ ξ : RayCharacter, ∑ r ∈ rows,
+            ‖gaussPolynomial Finset.univ
+              (sourceGenerator (finiteColumns (Fintype.piFinset (residualInput s J).pools)))
+              (sourceGenerator_supported
+                (finiteColumns (Fintype.piFinset (residualInput s J).pools)))
+              (fun I : supportedColumns
+                  (finiteColumns (Fintype.piFinset (residualInput s J).pools)) =>
+                CoupledFirst.coefficient (residualInput s J)
+                    (markedSourceModifier A₁ A₂ Dc K (fun _ => 1)) R L I *
+                  ((Real.sqrt (T / ∏ j ∈ J, s.P j) : ℂ)⁻¹ *
+                    rowWeight (childCharacter τ ξ) fixedBadMask 1 1 t I)) r‖ ^ 2 := by
+  obtain ⟨C, hC, h⟩ := collet_main_selected_transfer.{u} ε hε N
+  refine ⟨C, hC, ?_⟩
+  intro ι _ _ hcard s J A₁ A₂ Dc K R L τ t T n Z M W hdyad hW hS hCol
+  exact h hcard s J A₁ A₂ Dc K R L (fun _ => 1) τ t T n Z M W hdyad hW hS
+    (fun _ _ => rfl) hCol
+
 end
 end QRH.MixedStep.Transfer
+
+#print axioms QRH.MixedStep.Transfer.collet_main_selected_transfer_gen
+#print axioms QRH.MixedStep.Transfer.collet_main_selected_transfer
+#print axioms QRH.MixedStep.Transfer.collet_main_selected_transfer_one

@@ -83,21 +83,10 @@ def SourceValidC3 (n low h : Source) : Prop :=
 instance (n low h : Source) : Decidable (SourceValidC3 n low h) := by
   unfold SourceValidC3; infer_instance
 
-/-- Positivity of the mixed HIGH gate on the cell (stated over the reals through the bicubic
-interpolation, as `HighPos`). -/
-def HighPos3 (n low h : Source) (copies : ℚ) : Prop :=
-  ∀ b ∈ [crossing n low, n.cap], ∀ ν ∈ Set.Icc (n.q:ℝ) (3/4), ∀ p ∈ Set.Icc (0:ℝ) (1/2), ∀ k,
-    0 < ∑ i : Fin 4, ∑ j : Fin 4,
-      ((bicubic (fun x y => highGate3 n low h copies b x y k) i j : ℚ) : ℝ) * ν^(i:ℕ) * p^(j:ℕ)
-
 /-- The cell condition at both endpoints, at the mixed scale. -/
 def CellRatio3 (n low : Source) : Prop :=
   ∀ b ∈ [crossing n low, n.cap], 2*(b - 2*n.allowance) ≤ sourceF3 n low b - n.allowance
 
 instance (n low : Source) : Decidable (CellRatio3 n low) := by unfold CellRatio3; infer_instance
-
-/-- Validity of a mixed step with HIGH parent `h` (`copies = 8`). -/
-def SourceValid3 (n low h : Source) : Prop :=
-  SourceValidC3 n low h ∧ HighPos3 n low h 8 ∧ CellRatio3 n low
 
 end QRH.MixedStep.Finite

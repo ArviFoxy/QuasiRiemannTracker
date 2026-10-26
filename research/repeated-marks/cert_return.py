@@ -66,6 +66,9 @@ ETA = Fr(1, 10**7)
 M_MINUS, M_PLUS, S_MINUS = Fr(2, 5), Fr(11, 25), Fr(17, 500)
 R0 = Fr(1, 10**9)
 from chain_params import K as K_I, THETA_I   # natural cost and its incumbent bound (one source)
+# lower bound of the physical schedule's switch dMinus = ds (field `dMinus_lower` of ReturnD/Schedule.lean):
+# Collet's 3/4 by default; QRH_DMINUS=1/2 is the relaxed field (fork_transport.py reads the same flag)
+DMINUS = Fr(os.environ.get('QRH_DMINUS', '3/4'))
 M_H = (1 - K_I*Fr(17, 500))/2
 V = sub(const(Fr(5, 6)), DEL)
 
@@ -214,7 +217,7 @@ def receipt(G, BP, LP, capC, capP, sC, sP_, theta_I, tf=Fr(1, 400)):
         'physical_plain_upper': M_PLUS - ETA - (n0(dplus) + tf),
         'physical_plain_upper_lean_264_625': Fr(264, 625) - (n0(dplus) + tf),
         'shift_bound_9_50': Fr(9, 50) - (2*y/ds - 1) + Fr(1, 10**30),
-        'dMinus_lower_3_4': ds - Fr(3, 4),
+        'dMinus_lower_3_4': ds - DMINUS,   # ds - 3/4 unless QRH_DMINUS is set
         'physical_width_lower': zd(dplus, tf) - S_MINUS - ETA,
         'physical_width_upper': Fr(43, 1000) - ETA - zd(ds, 0),
         'small_width_shortening': 1 - 2*nmax - Fr(9, 2)*Fr(17, 500) - ETA,

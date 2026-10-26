@@ -149,11 +149,24 @@ theorem nonzero_coprime (s : Input ι) (J : Finset ι) (A₁ A₂ Dc K R L : Ide
   rw [finiteTupleProduct_split w]
   exact IsCoprime.mul_right (isCoprime_of_isRelPrime hrel) hCol
 
-/-- The factorization with the coprimality mask made explicit: valid for every
-pair of parts, under (S), the `F`-invariance and (Col). -/
-theorem tuple_factor_masked (s : Input ι) (J : Finset ι) (A₁ A₂ Dc K R L : Ideal O)
+/-- A nonzero tuple coefficient carries its seed. -/
+theorem tuple_seed_dvd {κ : Type*} [Fintype κ] (s : Input κ) (modifier : Tuple κ → ℂ)
+    (R L : Ideal O) (w : Tuple κ) (hne : CoupledFirst.tupleCoefficient s modifier R L w ≠ 0) :
+    L ∣ finiteTupleProduct w := by
+  have hp := CoupledFirst.tuple_nonzero s modifier R L w hne
+  by_contra hn
+  apply hp
+  simp only [profileCoefficient, hn, ↓reduceIte, mul_zero]
+
+/-- The factorization with the coprimality mask made explicit, valid for every
+pair of parts, under the tuple-level seed condition (S'): on nonzero original
+tuples the seed is coprime to the selected product. (S') follows from the
+pool-level (S) (`seed_coprime`); it also holds when the seed primes are
+excluded from the selected slots by the projectors. -/
+theorem tuple_factor_masked_gen (s : Input ι) (J : Finset ι) (A₁ A₂ Dc K R L : Ideal O)
     (F : Ideal O → ℂ) (u : J → Ideal O) (w : Tuple {i // i ∉ J})
-    (hL : IsCoprime L (selProduct J u))
+    (hL : CoupledFirst.tupleCoefficient s (markedSourceModifier A₁ A₂ Dc K F) R L
+      (joinTuple J u w) ≠ 0 → IsCoprime L (selProduct J u))
     (hF : F (Dc * finiteTupleProduct (joinTuple J u w)) = F (Dc * finiteTupleProduct w))
     (hCol : CoupledFirst.tupleCoefficient s (markedSourceModifier A₁ A₂ Dc K F) R L
       (joinTuple J u w) ≠ 0 → IsCoprime (selProduct J u) (w (Sum.inr 0) * w (Sum.inr 1))) :
@@ -164,10 +177,43 @@ theorem tuple_factor_masked (s : Input ι) (J : Finset ι) (A₁ A₂ Dc K R L :
         (if IsCoprime (selProduct J u) (finiteTupleProduct w) then 1 else 0) := by
   by_cases hc : IsCoprime (selProduct J u) (finiteTupleProduct w)
   · simp only [hc, ↓reduceIte, mul_one]
-    exact tuple_factor s J A₁ A₂ Dc K R L F u w hL hF hc
+    by_cases hLD : IsCoprime L (selProduct J u)
+    · exact tuple_factor s J A₁ A₂ Dc K R L F u w hLD hF hc
+    · have h0 : CoupledFirst.tupleCoefficient s (markedSourceModifier A₁ A₂ Dc K F) R L
+          (joinTuple J u w) = 0 := by
+        by_contra hne
+        exact hLD (hL hne)
+      have h1 : CoupledFirst.tupleCoefficient (residualInput s J)
+          (markedSourceModifier A₁ A₂ Dc K F) R L w = 0 := by
+        by_contra hne
+        exact hLD (hc.of_isCoprime_of_dvd_right (tuple_seed_dvd _ _ _ _ w hne)).symm
+      rw [h0, h1, mul_zero]
   · simp only [hc, ↓reduceIte, mul_zero]
     by_contra hne
     exact hc (nonzero_coprime s J A₁ A₂ Dc K R L F u w hne (hCol hne))
+
+/-- The factorization under the pool-level (S) for this assignment. -/
+theorem tuple_factor_masked (s : Input ι) (J : Finset ι) (A₁ A₂ Dc K R L : Ideal O)
+    (F : Ideal O → ℂ) (u : J → Ideal O) (w : Tuple {i // i ∉ J})
+    (hL : IsCoprime L (selProduct J u))
+    (hF : F (Dc * finiteTupleProduct (joinTuple J u w)) = F (Dc * finiteTupleProduct w))
+    (hCol : CoupledFirst.tupleCoefficient s (markedSourceModifier A₁ A₂ Dc K F) R L
+      (joinTuple J u w) ≠ 0 → IsCoprime (selProduct J u) (w (Sum.inr 0) * w (Sum.inr 1))) :
+    CoupledFirst.tupleCoefficient s (markedSourceModifier A₁ A₂ Dc K F) R L (joinTuple J u w) =
+      selWeight s J K R u *
+        CoupledFirst.tupleCoefficient (residualInput s J)
+          (markedSourceModifier A₁ A₂ Dc K F) R L w *
+        (if IsCoprime (selProduct J u) (finiteTupleProduct w) then 1 else 0) :=
+  tuple_factor_masked_gen s J A₁ A₂ Dc K R L F u w (fun _ => hL) hF hCol
+
+/-- The pool-level (S) implies the tuple-level (S'). -/
+theorem seed_free_of_slots (s : Input ι) (J : Finset ι) (L : Ideal O)
+    (hS : ∀ j ∈ J, ∀ p ∈ s.slots j, ¬p ∣ L) (v : Tuple ι)
+    (hv : v ∈ Fintype.piFinset s.pools) : IsCoprime L (∏ j ∈ J, v (Sum.inl j)) := by
+  apply IsCoprime.prod_right
+  intro j hj
+  have hmem : v (Sum.inl j) ∈ s.slots j := Fintype.mem_piFinset.mp hv (Sum.inl j)
+  exact (coprime_of_prime_not_dvd (s.prime j _ hmem) (hS j hj _ hmem)).symm
 
 /-- Residual columns with a nonzero residual coefficient are fifth-power free. -/
 theorem residual_power_free (s : Input ι) (J : Finset ι) (A₁ A₂ Dc K R L : Ideal O)

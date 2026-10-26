@@ -97,7 +97,7 @@ if __name__ == '__main__':
         capx = float(sys.argv[4]) if len(sys.argv) > 4 else 0.07
         s_end = float(sys.argv[5]) if len(sys.argv) > 5 else 0.062
         ds = float(sys.argv[6]) if len(sys.argv) > 6 else 5e-4
-        fan = json.load(open(os.path.join(HERE, 'fan_16_1000.json')))
+        fan = json.load(open(os.path.join(HERE, os.environ.get('FANJSON', 'fan_k92_cap0.075.json'))))
         last = fan[-1]
         s0 = 0.016; L0 = float(Fr(last['L'])); E0 = float(Fr(last['B'])) - L0*s0
         run_flow(out, mh, capx, s_end, ds, s0, E0, L0)
@@ -105,11 +105,11 @@ if __name__ == '__main__':
         rows = json.load(open(sys.argv[2]))
         sig_f = [float(x) for x in sys.argv[3].split(',')]
         cap = Fr(sys.argv[4]) if len(sys.argv) > 4 else Fr(7, 100)
-        fan = json.load(open(os.path.join(HERE, 'fan_16_1000.json')))
+        fan = json.load(open(os.path.join(HERE, os.environ.get('FANJSON', 'fan_k92_cap0.075.json'))))
         last = fan[-1]
         s0 = Fr(16, 1000)
         E0 = Fr(last['B']) - Fr(last['L'])*s0
         assert abs(float(s0) - sig_f[0]) < 1e-12
-        fam = build(rows, sig_f, E0, cap)
+        fam = build(rows, sig_f, E0, cap, L0exact=Fr(last['L']) if os.environ.get('L0EXACT', '1') == '1' else None)
         bad = check(fam)
         print('ALL OK' if bad == 0 else f'{bad} failures')

@@ -99,7 +99,9 @@ theorem residual_tuple_form (s : Input ι) (J : Finset ι) (A₁ A₂ Dc K R L :
 /-- One term of the original tuple sum, split by the selected part. -/
 theorem term_identity (s : Input ι) (J : Finset ι) (A₁ A₂ Dc K R L : Ideal O)
     (F : Ideal O → ℂ) (τ : HeckeFamily.Character) (t T : ℝ) (u : J → Ideal O)
-    (w : Tuple {i // i ∉ J}) (hL : IsCoprime L (selProduct J u))
+    (w : Tuple {i // i ∉ J})
+    (hL : CoupledFirst.tupleCoefficient s (markedSourceModifier A₁ A₂ Dc K F) R L
+      (joinTuple J u w) ≠ 0 → IsCoprime L (selProduct J u))
     (hF : F (Dc * finiteTupleProduct (joinTuple J u w)) = F (Dc * finiteTupleProduct w))
     (hCol : CoupledFirst.tupleCoefficient s (markedSourceModifier A₁ A₂ Dc K F) R L
       (joinTuple J u w) ≠ 0 → IsCoprime (selProduct J u) (w (Sum.inr 0) * w (Sum.inr 1)))
@@ -121,7 +123,7 @@ theorem term_identity (s : Input ι) (J : Finset ι) (A₁ A₂ Dc K R L : Ideal
   by_cases hz : tc' = 0
   · have hz0 : CoupledFirst.tupleCoefficient s (markedSourceModifier A₁ A₂ Dc K F) R L
         (joinTuple J u w) = 0 := by
-      rw [tuple_factor_masked s J A₁ A₂ Dc K R L F u w hL hF hCol, ← htc', hz]
+      rw [tuple_factor_masked_gen s J A₁ A₂ Dc K R L F u w hL hF hCol, ← htc', hz]
       ring
     rw [hz0, hz]
     simp only [zero_mul, mul_zero, Finset.sum_const_zero]
@@ -129,7 +131,7 @@ theorem term_identity (s : Input ι) (J : Finset ι) (A₁ A₂ Dc K R L : Ideal
         SexticSieve.PowerFree 5 (finiteTupleProduct w) :=
       fun _ => residual_power_free s J A₁ A₂ Dc K R L F w hz
     have hrow := row_rays_fourth (selProduct J u) (finiteTupleProduct w) hfree k
-    rw [tuple_factor_masked s J A₁ A₂ Dc K R L F u w hL hF hCol, finiteTupleProduct_join,
+    rw [tuple_factor_masked_gen s J A₁ A₂ Dc K R L F u w hL hF hCol, finiteTupleProduct_join,
       map_mul, sqrt_split T _ hWP, ← htc']
     have hmask : (if IsCoprime (selProduct J u) (finiteTupleProduct w) then (1:ℂ) else 0) *
         primaryGaussRow (selProduct J u * finiteTupleProduct w) k =
@@ -153,11 +155,14 @@ theorem term_identity (s : Input ι) (J : Finset ι) (A₁ A₂ Dc K R L : Ideal
         unfold selScalar
         ring
 
-/-- **The transfer identity (T)** at Collet's first MAIN layer, under (S), the
-`F`-invariance and (Col). -/
+/-- **The transfer identity (T)** at Collet's first MAIN layer, under the
+tuple-level seed condition (S'), the `F`-invariance and (Col). The pool-level
+(S) implies (S') by `seed_free_of_slots`. -/
 theorem transfer_identity (s : Input ι) (J : Finset ι) (A₁ A₂ Dc K R L : Ideal O)
     (F : Ideal O → ℂ) (τ : HeckeFamily.Character) (t T : ℝ)
-    (hS : ∀ j ∈ J, ∀ p ∈ s.slots j, ¬p ∣ L)
+    (hS : ∀ v ∈ Fintype.piFinset s.pools,
+      CoupledFirst.tupleCoefficient s (markedSourceModifier A₁ A₂ Dc K F) R L v ≠ 0 →
+        IsCoprime L (∏ j ∈ J, v (Sum.inl j)))
     (hF : ∀ v ∈ Fintype.piFinset s.pools,
       F (Dc * finiteTupleProduct v) = F (Dc * finiteTupleProduct (restPart J v)))
     (hCol : ∀ v ∈ Fintype.piFinset s.pools,
@@ -193,7 +198,10 @@ theorem transfer_identity (s : Input ι) (J : Finset ι) (A₁ A₂ Dc K R L : I
       by_cases h : i ∈ J
       · rw [joinTuple_inl_mem J _ _ i h]; exact hu' ⟨i, h⟩
       · rw [joinTuple_inl_not_mem J _ _ i h]; exact hw'.1 ⟨i, h⟩
-    apply term_identity s J A₁ A₂ Dc K R L F τ t T u w (seed_coprime s J L hS u hu)
+    apply term_identity s J A₁ A₂ Dc K R L F τ t T u w
+    · intro hne
+      have h := hS _ hv hne
+      rwa [sel_prod_join] at h
     · have h := hF _ hv
       rwa [restPart_join] at h
     · intro hne

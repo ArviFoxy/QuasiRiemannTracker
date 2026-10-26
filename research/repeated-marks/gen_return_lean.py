@@ -10,6 +10,9 @@ SC is the constant-width cap of the count face C (default 11/250, Collet's value
 proved up to its own cap, so any SC below it is admissible. SP is the numerator cap of the
 physical face (default 1/25, Collet's value). With `global`, the physical face is applied through
 its global source theorem (Lemma D) and the window receipts of Collet's schedule are not checked.
+With `lemmaD`, as `global`, and the receipt `source_lambda_low` (lambda_P > 3, PR 69's FR21) is not
+checked either: the forked schedule (ReturnD/Schedule.lean) needs only 2 <= lambda_P <= 9/2.
+The receipt `dMinus_lower_3_4` checks ds > 3/4, or ds > QRH_DMINUS when that is set (cert_return.py).
 """
 import sys, json, os
 from fractions import Fraction as Fr
@@ -386,6 +389,8 @@ def main():
     rec = CR.receipt(G, BP, LP, capC, capP, sC, Fr(43, 1000), CR.THETA_I)
     if mode == 'global':
         rec = {k: v for k, v in rec.items() if k not in CR.GLOBAL_DROP}
+    if mode == 'lemmaD':   # as cert_return.run(mode='lemmaD'): the forked schedule needs only 2 <= lambda_P <= 9/2
+        rec = {k: v for k, v in rec.items() if k not in CR.GLOBAL_DROP + ('source_lambda_low',)}
     bad = {k: v for k, v in rec.items() if v <= 0}
     assert not bad, bad
     faces = {'C': (BC, LC, sC), 'P': (BP, LP, Fr(43, 1000))}

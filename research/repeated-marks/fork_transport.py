@@ -19,6 +19,8 @@ Mechanical rules:
   * `#print axioms` lines are dropped.
 
 usage: python3 fork_transport.py OUTROOT SP
+(environment: QRH_RELAXED='h,y,ell' upper bounds of BoundsR; QRH_DMINUS, e.g. 1/2, relaxes the
+schedule field `dMinus_lower : 3/4 < dMinus`; both default to the previous output)
 """
 import os, re, sys, collections
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -46,6 +48,11 @@ EXCLUDE = {'Record1252270103Return.FinalSchedule', 'Record1252270103Return.Final
 # the relaxed bounds (upper ends of h, y, ell): the default is PR 73's, where theta = 8747289/10^7 at
 # h = 401/500 has ell = 0.16775, y = 0.46650; QRH_RELAXED='h,y,ell' overrides it
 RELAXED = dict(zip(('h', 'y', 'ell'), os.environ.get('QRH_RELAXED', '803/1000,467/1000,1678/10000').split(',')))
+# the lower bound of the physical schedule's switch (field `dMinus_lower` of Schedule.lean): Collet's
+# `3/4<dMinus` unless QRH_DMINUS is set (e.g. 1/2; every use of the field needs only 1/2<dMinus:
+# GenericFeedback, PhysicalDirect/Geometry, Active, SelectedBin, SourceSelection). cert_return.py
+# reads the same flag for its receipt `dMinus_lower_3_4`.
+DMINUS = os.environ.get('QRH_DMINUS')
 TRANSPORT_GEOMETRY_PATCH = (
     '''namespace QRH.Record1252270103Return.Geometry
 noncomputable section
@@ -215,6 +222,11 @@ def relax_literals(rel, body):
 def main():
     out, sp = sys.argv[1], sys.argv[2]
     patches = FP.patches(sp)
+    if DMINUS is not None:
+        patches['Schedule'] = patches.get('Schedule', []) + [(
+            ' dMinus_lower:3/4<dMinus\n',
+            f' /-- Relaxed from Collet\'s `3/4<dMinus`: every use needs only `1/2<dMinus`. -/\n'
+            f' dMinus_lower:{DMINUS}<dMinus\n')]
     ctx = build_context()
     fork, texts, only_forked = ctx['fork'], ctx['texts'], ctx['only_forked']
     for m in fork:

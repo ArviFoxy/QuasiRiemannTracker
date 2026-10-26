@@ -486,9 +486,11 @@ theorem collision_energy_families (ε : ℝ) (hε : 0 < ε) (N : ℕ) :
               ((Real.sqrt T : ℂ)⁻¹ * rowWeight τ fixedBadMask 1 1 t I)) ballProfile H).re ≤
         C * (max 1 (2 * H)) ^ ε *
           ∑ p ∈ patterns J, ∑ x ∈ (selBox s p.1).attach,
-            ‖selWeight s p.1 K R x.1‖ ^ 2 * (Ideal.absNorm (selProduct p.1 x.1) : ℝ) *
-              famEnergy s J p.1 p.2 x A₁ A₂ Dc K R L F τ t T
-                (2 * H / (Ideal.absNorm (selProduct p.1 x.1) : ℝ)) := by
+            if Supported (selProduct p.1 x.1) then
+              ‖selWeight s p.1 K R x.1‖ ^ 2 * (Ideal.absNorm (selProduct p.1 x.1) : ℝ) *
+                famEnergy s J p.1 p.2 x A₁ A₂ Dc K R L F τ t T
+                  (2 * H / (Ideal.absNorm (selProduct p.1 x.1) : ℝ))
+            else 0 := by
   obtain ⟨Cf, hCf, hfib⟩ := fiber_power_bound ε hε N
   refine ⟨4 ^ N * Cf, by positivity, ?_⟩
   intro κ _ _ hcard s J A₁ A₂ Dc K R L F τ t T H hH hLsq hF
@@ -635,18 +637,28 @@ theorem collision_energy_families (ε : ℝ) (hε : 0 < ε) (N : ℕ) :
         congr 1
         exact Finset.inter_eq_right.mpr (Finset.filter_subset _ _)
     _ ≤ 4 ^ N * Cf * (max 1 (2 * H)) ^ ε * ∑ p ∈ patterns J, ∑ x ∈ (selBox s p.1).attach,
-          ‖selWeight s p.1 K R x.1‖ ^ 2 * (Ideal.absNorm (selProduct p.1 x.1) : ℝ) *
-            famEnergy s J p.1 p.2 x A₁ A₂ Dc K R L F τ t T
-              (2 * H / (Ideal.absNorm (selProduct p.1 x.1) : ℝ)) := by
+          if Supported (selProduct p.1 x.1) then
+            ‖selWeight s p.1 K R x.1‖ ^ 2 * (Ideal.absNorm (selProduct p.1 x.1) : ℝ) *
+              famEnergy s J p.1 p.2 x A₁ A₂ Dc K R L F τ t T
+                (2 * H / (Ideal.absNorm (selProduct p.1 x.1) : ℝ))
+          else 0 := by
         apply mul_le_mul_of_nonneg_left _ (by positivity)
         apply Finset.sum_le_sum
         intro p _
         apply Finset.sum_le_sum
         intro x _
-        simp only [hg]
-        rw [← Finset.mul_sum]
-        exact mul_le_mul_of_nonneg_left
-          (fam_rows_bound s J p.1 p.2 x A₁ A₂ Dc K R L F τ t T H hH) (by positivity)
+        by_cases hs : Supported (selProduct p.1 x.1)
+        · rw [if_pos hs]
+          simp only [hg]
+          rw [← Finset.mul_sum]
+          exact mul_le_mul_of_nonneg_left
+            (fam_rows_bound s J p.1 p.2 x A₁ A₂ Dc K R L F τ t T H hH) (by positivity)
+        · rw [if_neg hs]
+          have hZe : Z p x = ∅ := by
+            apply Finset.filter_false_of_mem
+            intro z _ h
+            exact hs h.1
+          rw [hZe, Finset.sum_empty]
 
 end
 end QRH.MixedStep.Collision

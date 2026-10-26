@@ -612,3 +612,180 @@ All paths below are under `ForkMx/Record1252270103Source/`.
 * `High/GlobalPhysicalRegularPoints`: `RegularPointAt_mx` (statement in "## F5 scope (helper)") and
   `regular_some_point_source_rm_mx (hN₀ : card α₀ ≤ N)(hN : card α ≤ N)(high …)(hparent)(hgaps)`. The latter gives
   `∃degree controls, (0,0)∈controls ∧ ∃C τsource, 0<C ∧ 0<τsource ∧ ∀ᶠZ, 1<Z ∧ RegularPointAt_mx … bcell φ reserve θ mesh ξ width τsource poolAmp B₀ lam₀ cap₀ N degree controls C Z`.
+
+## F6 twins
+(F6 agent, 2026-10-26. All green with `mk_mixed.sh` in the order below; `#print axioms` on every declaration:
+`[propext, Classical.choice, Quot.sound]`. Paths under `ForkMx/Record1252270103Source/` unless marked `Downstream/`.
+Headers: Collet's copyright line first (checked).)
+
+**Conventions used.** First layer = the canonical initial input `s₀ := initialInput … θ w v …` (columns, labels, `C`, seeds,
+`τ`, scalar at `logb Z (volume s₀)`, `H0`/pool radius, the MAIN-prefactor allocation card `actualAllocations s₀.pools C`).
+Second layer = the transfer residual `s := s₀.restrict J` (`Input.restrict`, N1), which is *definitionally* the initial input of
+the restricted slot data (`Downstream/MainRestrict.restrict_initialInput`, `rfl`): allocations, frozen coefficients,
+children, `volume s`, `Hmain`/`Tsec` at `(volume s, 3*amp)`. Pool `P = primePool … (Z^a)` at the actual width `a`
+(`hell : ell < a`); radius amplitude `amp` with `a ≤ amp ≤ Amix`; δ-shift `amp - a ≤ Σ_{j∈J} w j + κ`
+(= `logb Z (volume s₀) - logb Z (volume s) + κ`, `Downstream/MainRestrict.logb_volume_restrict`).
+The smoke test (scratch) checks that the complement family of `eventual_selected_second` at `s := s₀.restrict J`,
+`W := ballProfile`, `t := fun _ => ht` is `rfl`-equal to the twin's family.
+
+### Tops for N6
+```lean
+-- Core/InitialRegularToTruncatedMainExceptionalSaving, namespace QRH.Record1252270103Source.ExceptionalPrice
+theorem eventually_initial_main_joint_saved_mx {α:Type}[Fintype α][DecidableEq α]
+    (N)(hN:card α≤N)(K:ℚ)(n:Source)(b Amix a κ:ℝ)
+    (hgate:sourceTReal n b+b+9*Amix+(n.highFee:ℝ)<5/6+(499/1000)*(49/100-(K:ℝ)*b))
+    (hκ:(n.allowance:ℝ)+2*κ≤2*Amix-a)
+    (hB:(n.B:ℝ)≤1)(hL:1≤(n.L:ℝ))(hcap:(n.cap:ℝ)≤1)(rayM)[NeZero rayM](H)(hH)(Wslot hW hsW)(η η₀)(R₀ hR)(Sbad hbad)
+    (ell mesh poolLoss ξ reserve width radiusMax)(depth)(hmesh:0≤mesh)(hgap:mesh<ell)(hell:ell<a)(hloss)(hξ)(hξ1)
+    (hreserve)(hdepth)(hradius)(he:0<e)(hξstep)(hrstep)(hwstep)(W Wsecond)(decay)(ε εL δ epsMass epsCount epsCard)(hε…hεa)
+    (hsmall:epsCard+poolLoss+ξ/12≤step n)(hfee:0≤fee)(hpayment:2*epsCount+epsMass+δ+4*εL+2*ε≤3*Amix):
+    ∀Q,Q≠0→Q≠⊤→Q≤span{72}→∃degree S Ctotal,0<Ctotal ∧ ∀ᶠZ in atTop,1<Z ∧ ∀hZ:1<Z,∀{Label}[Fintype Label],
+    ∀θ w v t p X₁ X₂ Y₁ Y₂ hX₁ hX₂ hY₁ hY₂ hprod,(∀i,0≤w i)→(∀i,w i≤mesh)→
+    (globalFace n.B n.L n.cap).Admissible (length Z X₁) (length Z X₂) (∑i,w i) 1→
+    b-e-width≤∑i,w i→∑i,w i≤b→1≤Y₂→Y₂≤X₁→Y₂≤X₂→Y₂=Z^(49/100-K*b)→
+    let s₀:=initialInput … θ w v t p … ; let modifier:=markedSourceModifier 1 1 1 1 (fun _=>1)
+    ∀(Jset:Finset α)(amp:ℝ),a≤amp→amp≤Amix→amp-a≤(∑j∈Jset,w j)+κ→
+    let s:=s₀.restrict Jset
+    ∀reflected bin (column:Label→FirstColumnIndex (source s₀ modifier R₀ 1 Z Z ξ _ bin)),Injective (label,seed)→
+    ∀hLive,(∀l,N(seed l)≤Z^4)→ let hseed C scalar(at s₀) ; let P:=primePool rayM H Sbad (1/2) 1 (Z^a)
+    ∀(alloc:∀l,actualAllocations s.pools (C l))(ht H0 radius:Label→ℝ)(height)(χ₀),0≤height→(∀l,‖ht l‖≤height)→
+      (∀l,0<H0 l)→(∀l,0≤radius l+6*a)→(∀l,radius l+6*a≤radiusMax)→
+    let extra l:=|bands (H0 l)|*|actualAllocations s₀.pools (C l)|^2/|P|*((radius l+6*a)/ell)
+    let amplitude l:=‖scalar l‖^2*extra l*‖frozenCoefficient (alloc l).val (C l) R₀ s.ν s.W s.P‖^2
+    let τ l:=columnCharacter reflected s₀ … (column l); Kmain/Tsec at (volume s, 3*amp)
+    let f:=mainAllocatedFamily s Wsecond (p.profile 0) (p.profile 1) Z R₀ C seed alloc τ ht P hseed _ _ Kmain Tsec
+      (fun _=>volume s) amplitude ξ _ χ₀ (fixedBadMask*idealGenerator R₀)
+    ‖∑q,f.phase Q q*(f.block Q q).value Wsecond‖≤Ctotal*(p.control S)^2*(1+height)^degree*G*Z^(-Amix)
+-- unsaved form: Core/InitialRegularToTruncatedMainExceptional.eventually_initial_main_joint_mx, same binders without
+--   hfee/hpayment, target Z^(-fee-4*Amix+2*epsCount+epsMass+δ+4*εL+2*ε). Constants uniform in Jset (finite max inside).
+
+-- Core/InitialRegularToTruncatedRemainderOne, namespace QRH.Record1252270103Source.InitialRegularToTruncated
+theorem eventual_initial_remainder_sums_one_mx (rayM)[NeZero rayM](H)(hH)(Wslot)(hW)(hsW)
+    (N)(ell epsMass epsZero epsCount)(hell)(hmass)(hzero)(hcount):
+    ∃Czero Ctail,0<Czero ∧ 0<Ctail ∧ ∀ᶠZ,1<Z ∧ ∀{ι}[Fintype ι][DecidableEq ι](hZ:0<Z)(η η₀ R₀ θ w v ht p X₁ X₂ Y₁ Y₂ …),
+    let s₀:=initialInput … θ w v ht p …
+    ∀(n low:Source)(b width Amix F a κ:ℝ),
+      sourceTReal n b+b+4*e<low.B*F→0≤F→F+6*Amix≤1→0≤e→0≤n.L→low.B≤1→width≤step n→
+      (globalFace n.B n.L n.cap).Admissible …→b-e-width≤∑w→∑w≤b→card ι≤N→0≤a→0≤κ→κ≤Amix-a→
+    ∀(Jset:Finset ι)(amp:ℝ),a≤amp→amp≤Amix→amp-a≤(∑j∈Jset,w j)+κ→
+    let s:=s₀.restrict Jset; let allowance:=e; let Cann:=initialCann N
+    ∀modifier R W ξ reserve loss saving (hK:0<Z),freq+reserve+2*epsMass+loss+epsZero≤2*e→
+    ∀P mesh BD Bsource depth,FixedCellPoolData P Z a ell mesh loss BD Bsource depth→
+    ∀reflected bin J column (s₀'s, at radius Z),inj→live→(N(seed)≤Z^4)→
+    let C:=geometryColumnIdeal … s₀; Hmain j:=firstMainRadius reflected Z (volume s) Z ξ (3*amp) reserve (label j)
+    let radius j:=literalFirstRadius reflected Z (volume s₀) Z ξ reserve (label j); H0, scalar at s₀
+    (∀j,0≤radius j+6*a)→(∀j,radius j+6*a≤32)→∀(alloc:∀j,actualAllocations s.pools (C j))(τ t),(∀j,frozen≠0)→
+    let amplitude j:=‖scalar j‖^2*(|bands (H0 j)|*|actualAllocations s₀.pools (C j)|^2/|P|*((radius j+6*a)/ell))*‖frozen(alloc j, s)‖^2
+    (∀j,sourceRadius (child s (C j) R (alloc j) (τ j) (t j))≤(Cann/N(C j))*volume s) ∧
+    (∑j amplitude j*plainControl(child s …)^2*Hmain j*(Cann/N(C j))^(1+epsZero)*(volume s)^epsZero/N(seed j)
+       ≤ Czero*(…)^2*G*Z^(-a-e+2*epsCount)) ∧
+    (∑j amplitude j*plainControl(child s …)^2*Hmain j*(volume (child s …)/volume s)*Z^(-saving)/N(seed j)
+       ≤ Ctail*(…)^2*G*Z^(-a-e-saving+2*epsCount))
+-- Z^1 form: Low/InitialRemainderScalarSumNode.eventual_initial_remainder_sums_mx (namespace …Low.InitialRemainder).
+```
+
+**Node facts from the ledger** (`Downstream/MainGates.lean`, namespace `QRH.MixedStep.Downstream`):
+`structure MainTwinFacts (K n low b a Amix F κ)` = `centered` (hgate), `room`, `F_nonneg`, `F_amp`, `lowB_le`, `a_pos`, `a_le`,
+`kappa_nonneg`, `kappa_le` (κ ≤ Amix-a), `kappa_room` (e+2κ ≤ 2Amix-a);
+`mainTwinFacts_of_mixedGeometry (hg : MixedGeometry Kgraph n low h b reserve) (hv : SourceValidC3 n low h)
+ (hX : SourceValid3X n low) (κ) (hκ0 : 0≤κ) (hκ : κ≤6*e) : MainTwinFacts Kgraph n low b r (sourceAmp3Real n low b) (sourceF3Real n low b) κ`
+(uses `mixed_d_ge_fee : r ≤ sourceDReal n low b` past the crossing, from `6qβ > 1`). So N6 takes `a := n.lowFee`,
+`Amix := sourceAmp3Real n low b`, `F := sourceF3Real n low b`, `κ := 2·mesh` (≤ κ_ledger ≤ 6e).
+
+### Module list (lines)
+| module | declarations | kind |
+|---|---|---|
+| Coefficient/CorrectedExceptionalFirstPrice (49) | `scalar_left_shift_mx`, `node_centered_payment_mx` | tainted (closure 38) |
+| Core/ExceptionalFirstScalar (93) | `firstScalarCost_mx`, `actual_first_scalar_cost_mx` | tainted (39) |
+| Core/ExceptionalFirstErrors (46) | `node_centered_error_guard_mx`, `eventually_centered_error_guard_mx` (bound `≤ e`) | tainted (44) |
+| Core/ExceptionalFirstSum (130) | `firstRadialFactor_mx`, `…_nonneg`, `firstRadialFactor_shift_mx`, `selected_first_radical_sum_mx` | tainted (40) |
+| Core/ExceptionalFrozenSum (145) | `selected_frozen_first_sum_mx` | tainted (41) |
+| Core/ExceptionalFrozenOne (115) | `selected_frozen_first_sum_one_mx` | tainted (42) |
+| Low/SelectedExceptionalInitialCapsAudit (64) | `modified_main_frequency_cap_mx` (free `V`) | twin (untainted) |
+| Contraction/SelectedMainExceptionalInitial (114) | `eventually_initial_first_family_polynomialCaps_mx` | twin (untainted) |
+| Contraction/SelectedMainExceptionalRadical (109) | `eventually_initial_family_radical_mx` | twin (untainted) |
+| Contraction/SelectedMainExceptionalAggregate (238) | `eventually_initial_family_aggregate_mx`, `eventually_initial_family_uniform_mx` | twin (untainted) |
+| Core/InitialRegularToTruncatedMainExceptional (313) | `profile_control_le_mx`, `eventually_initial_main_joint_mx` | tainted (61) |
+| Core/InitialRegularToTruncatedMainExceptionalSaving (142) | `eventually_initial_main_joint_saved_mx` | tainted (62) |
+| Core/InitialMainRemainderGap (80) | `node_amplification_gap_mx`, `initial_main_amplification_gap_mx` | tainted (43) |
+| Coefficient/MarkedMainRemainderScalar (65) | `actual_main_radius_exponent_mx` (free `V`) | twin (untainted) |
+| Low/InitialRemainderScalar (118) | `actual_log_radius_payment_mx`, `remainder_power_payment_mx`, `actual_remainder_admissions_mx` | twin (untainted) |
+| Coefficient/MarkedMainRemainderCost (90) | `selected_allocation_remainder_bounds_mx` (card from `s₀`) | twin (untainted) |
+| Coefficient/MarkedMainRemainderSum (146) | `zeroAllocationFactor_mx`, `tailAllocationFactor_mx`, `selected_remainder_sums_mx` | twin (untainted) |
+| Low/InitialRemainderScalarSum (151) | `eventual_actual_remainder_sums_mx` | twin (untainted) |
+| Low/InitialRemainderScalarSumNode (170) | `eventual_initial_remainder_sums_mx` | tainted (63) |
+| Core/InitialRegularToTruncatedRemainderOne (155) | `eventual_initial_remainder_sums_one_mx` | tainted (64) |
+| Downstream/MainRestrict (109) | `restrict_width_sum`, `restrict_width_le`, `restrict_admissible`, `logb_volume_restrict`, `restrict_initialInput`, `initial_restrict_logb` | glue |
+| Downstream/MainGates (112) | `MainTwinFacts`, `mixed_d_ge_fee`, `mainTwinFacts_of_mixedGeometry` | glue |
+
+Build order: CorrectedExceptionalFirstPrice → ExceptionalFirstScalar → ExceptionalFirstErrors → ExceptionalFirstSum →
+ExceptionalFrozenSum → ExceptionalFrozenOne → Low/SelectedExceptionalInitialCapsAudit → Contraction/…Initial → …Radical →
+…Aggregate → Downstream/MainRestrict → Core/…MainExceptional → …MainExceptionalSaving; Core/InitialMainRemainderGap →
+Coefficient/MarkedMainRemainderScalar → Low/InitialRemainderScalar → Coefficient/MarkedMainRemainderCost → …Sum →
+Low/InitialRemainderScalarSum → …SumNode → Core/…RemainderOne; Downstream/MainGates (needs Ledger/Geometry).
+Closure module 65 (`balanced_of_regular`) is N6, not F6.
+
+## F6 issues
+(F6 agent, 2026-10-26.) **No mathematical failure.** Both bookings of the design are confirmed exactly; one gate
+attribution is corrected.
+1. **Complement (`+3δ`), confirmed.** Against Collet's exponent at `(A₀, a)` the mixed per-label exponent is larger by
+   exactly `3(amp-a) + 2κ` (`node_centered_payment_mx`: `left(A₀) = left(Av)+(A₀-Av)`, `2Av-A₀+5amp-a ≤ A₀+4a+3(amp-a)+2κ`).
+   `centered_twin` (`T+9Amix+fee < 5/6+0.499·Lref`) pays it at the target `-fee-4·Amix` (stronger than Collet's
+   `-fee-4a`) iff `errors + 2κ ≤ 2·Amix - a` (`errors = L·width+5(freq+reserve)/6+loss ≤ e`). Saved target `Z^(-Amix)`.
+2. **Zero term (`+4δ`), confirmed; the gate is the parent budget, not `zero_twin`.** The residual MAIN radius costs exactly
+   `4(amp-a)+2κ`, so the gap needed is `A₀+6a+4(amp-a)+2κ+3e ≤ 1`. Collet's own zero term never uses `first_tail`
+   (`T+5a+fee<1`; `grep` finds no use): it uses `parent_budget_room` (`T+4e < B₀(1-6a)`, `node_amplification_gap`). The mixed
+   one uses `MixedGeometry.parent_budget_room` at `F' = 1-6r-6d` (`T+4e < B₀F'`, `B₀ ≤ 1` ⟹ `A₀+6Amix+3e ≤ 1`) and
+   `4(amp-a)+2κ ≤ 6(Amix-a)`. `zero_twin` (`T+5Amix+fee<1`) is **unused** by F6 and does not by itself imply the gap
+   (`6a+4d+2κ+3e+L·width` vs `5a+5d+fee`: needs `d ≥ a+2κ+4e-fee`). The ledger may keep or drop it.
+3. **κ constraint (for N6).** Both tops need `0 ≤ κ ≤ Amix - a` (= `d`) and `e+2κ ≤ 2Amix-a`. With the ledger's grid
+   (`κ = 2·mesh ≤ κ_ledger ≤ 6e`, and the F4 constraint `κ ≲ θ < e/256`) both hold, because `d ≥ r > 20e`
+   (`mixed_d_ge_fee`, from `SourceValid3X`: `6qβ > 1` makes `d·den3 = qX₀+6qβr ≥ den3·r`). At a node with `J = ∅`, `κ = 0`.
+4. **Uniformity in `J`.** The complement constants depend on the residual slot type `{i // i ∉ J}` (Collet's
+   `exceptional_complete_family_radical` indexes constants by live sets of the family's slot type). The top takes the finite
+   max over `J : Finset α` inside (degree = sup, controls = biUnion, constant = sum), so N6 may pick `J` after `Z`. The remainder
+   constants are uniform over all slot types already.
+5. **What N6 must match.** (a) The complement family's amplitude is `‖scalar(column l)‖²·extra(s₀ card, a)·‖frozen(alloc l, s)‖²`
+   with `alloc l : actualAllocations (s₀.restrict J).pools (C l)`; N6 rewrites the first-selection amplitude by
+   `frozenCoefficient_restrict` (N1) and, for ray shifts, applies the top with `column := rayShift ∘ column₀` (labels, seeds,
+   scalar invariant, N2), so that `τ l = columnCharacter (column l)`. (b) The remainder amplitude uses
+   `radius = literalFirstRadius … (volume s₀)` and `H0` of `s₀` (first selection), the zero/tail sums are exactly
+   `eventual_selected_second`'s at `T := volume s`, `H := Hmain` (as in Collet's `balanced_of_regular`).
+6. **Error guard.** `eventually_centered_error_guard_mx` bounds the errors by `e` (not by `sourceAReal`), so it needs no
+   `RealGeometry`; `hκ` adds the `2κ`.
+
+## N6 (interface between the fork lead and the N3/N6 agent)
+(fork agent, 2026-10-26 ~03:30.) **Correction to "## F5 scope (helper)":** `balanced_of_regular3` is the N3/N6 agent's. The fork
+lead owns `RegularJointSupplier3` (defined, green) and its proof `regular_supplier3` (pending the helper's
+`regular_supplier_of_points_mx`).
+
+`Downstream/Contract3.lean` (namespace `QRH.MixedStep.Downstream`) defines
+`RegularJointSupplier3 (K:ℚ)(n low:Source)(b:ℚ)(mesh ξ reserve width:ℝ)(G:NodeGrid)(φ:ℚ→ℝ) : Prop`. It is Collet's
+`RegularJointSupplier` (same quantifier prefix, raw data, face, cell, `Y₂ = Z^(49/100-K b)` and first-layer `s`), with three changes:
+* pool `P := primePool rayM H fixedBadPrimes (1/2) 1 (Z^r)` with `r := (n.lowFee:ℝ)` (the actual pool width `a = r`);
+* after `let P`: `∀ δ ∈ G.nodes, ∀ J : Finset α, (G.theta δ:ℝ) ≤ Σ_J w → Σ_J w ≤ δ → δ - Σ_J w ≤ 2*mesh →`. These are the
+  `PieceFacts` fields `theta_le_act`, `act_le_node` and `shift`;
+* labels/columns/`hLive` as Collet's, then `∀ alloc (hJ : ∀ l, J ⊆ liveIndices (alloc l).val), (frozen ≠ 0) →
+  (∀ l, φ δ ≤ Σ w - Σ_{liveIndices (alloc l)} w) → ∀ (ray : RayCharacter) (χ₀), …`, where `f` is
+  `mainAllocatedFamily (s.restrict J) ballProfile (p.profile 0) (p.profile 1) Z R₀ common (seeds) (fun l => allocRestrict s (common l) (alloc l) J (hJ l))
+  (fun l => columnCharacter reflected s modifier R₀ 1 Z Z ξ _ bin (rayShift reflected (column l) ray)) (fun _ => ht) P hseed _ _ Hv Tsecv
+  (fun _ => volume (s.restrict J)) amplitude ξ _ χ₀ (fixedBadMask*idealGenerator R₀)`, with:
+  - `Hv l = firstMainRadius reflected Z (volume (s.restrict J)) Z ξ (3*(r+δ)) reserve (labels l)` (N3's `pieceEnergy` radius with `amp := r`);
+  - `Tsecv` likewise, with `N = card α`;
+  - `amplitude` the ORIGINAL one (scalar at `logb Z (volume s)`, `extra` over `s.pools` with ball factor `(radius l+6r)/(r/2)`,
+    frozen coefficient of `s` and `alloc l`).
+
+  The conclusion is `regularJointNorm f (internalQ Q η₀) ≤ C*(p.control controls)^2*geometryHighFactor …*(1+|ht|+height)^degree*Z^(-σ)`,
+  with `degree controls C τ σ` uniform over nodes, blocks and rays.
+
+What `regular_supplier3` will assume (one block per node, all from the ledger at `vnode2 n low b δ (G.theta δ)` with width `b - θ`):
+- `MixedNodePrice (vnode2 …) low (b-θ) (φ δ)`, i.e. `mixed_node_price_frozen` or `…_top`;
+- `NodeGeometry_mx (vnode2 …) low (b-θ)`, i.e. `nodeGeometry_of_real ∘ realGeometryLow_vnode2`;
+- `ActualGaps_rm (vnode2 …) low (some h) (b-θ) ν reserve` for `ν ∈ [q, 3/4]`;
+- `mesh ≤ regularLowMesh_mx (vnode2 …) …` at every node, so `mesh` is the minimum over `G.nodes`;
+- `sourceDen n low ≠ 0`, for `sourceAReal (vnode2 …) low (b-θ) = r + δ`;
+- the grid arithmetic `width + G.κ ≤ θ_fb`. The residual cell width is `width + κ`, and the F4 note gives `hwidthlo`;
+- `κ_shift = 2*mesh ≤ reserve/4`.
+
+N3/N6 agent: please check that this is the family your `pieces_transfer` + `eventual_selected_second` produce (piece `k` gives
+`J := pieceBlock G w mesh k.2`, `Label := {l // pieceKey alloc trans l = k}`, `column ∘ val`, `alloc ∘ val`). Write requested changes here.

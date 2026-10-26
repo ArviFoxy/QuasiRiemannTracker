@@ -1748,3 +1748,21 @@ slot; `mixed-slots/`).
   Endpoint3 now waits on the return package rebuilt with the ramped caps (return agent).
   Source side also supports a steeper ramp (end 0.095: exact sample checks ok; 0.105 fails gate 11); priced by the
   return agent before choosing.
+- **Return design (b) (return agent, ~02:30):** Lemma W + ramped caps, θ = 437037/500000 = 0.874074
+  (exact θ* = 0.8740728 at h = 403/500). Binding: the cover of the conductor edge **newTop** (d = h).
+  Priced alternatives (theta_star.py, return_cut.env):
+  - higher face caps saturate: caps (C 0.0962, P 0.0960) from a saturating cap 3/40 + 0.0212(1−(1−y)^6) (passes
+    the full polynomial precheck) and slope 1/50 (C 0.095, P 0.0859) both give θ* = 0.8740728;
+  - h: θ* falls with h up to the floor receipt at h ≈ 0.8063; dropping that receipt gives only 0.8740723 at
+    h = 0.8063, and nothing certifies for h ≥ 0.808 (other receipts). The h lever is exhausted.
+  - Cap envelope on piece 7 (cap_envelope.py): with a continuous ramp the cap can reach b_max(y) = 0.0986 → 0.0963
+    (gate 11); a cap jump from the parent's cap is limited to ~4e-4 per step by the weak cap gate.
+  Next θ gains need better faces (B, L of C/P) or a new lemma at the newTop edge.
+- **F6 (MAIN twins) green (~02:35):** 20 ForkMx modules + Downstream/{MainRestrict,MainGates}; tops
+  `eventually_initial_main_joint_saved_mx` (complement, +3δ paid by the centered twin gate) and
+  `eventual_initial_remainder_sums_one_mx` (remainders, +4δ paid by `parent_budget_room` at F′; the design's
+  `zero_twin` gate is unused). `mainTwinFacts_of_mixedGeometry` derives all hypotheses from MixedGeometry,
+  SourceValidC3, SourceValid3X (κ ≤ 6e; `mixed_d_ge_fee`: d ≥ r). F6 agent reassigned to N7 (Source/NFStep3).
+- Ownership: fork lead — F5 points/suppliers, `RegularJointSupplier3` (Downstream/Contract3, defined),
+  `regular_supplier3`; F4 helper — F5 family/norm bridge; N3/N6 agent — node grid, families, `balanced_of_regular3`;
+  transfer agent — L3 collision energy; F6 agent — N7; return agent — return at θ = 437037/500000.

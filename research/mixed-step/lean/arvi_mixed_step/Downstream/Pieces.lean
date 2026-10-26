@@ -116,6 +116,28 @@ theorem residual_frozen_width (s : Input α) (C : Ideal O) (B : actualAllocation
   · intro i _
     rfl
 
+/-- **The frozen coefficient is unchanged by the restriction** (the block is live, so the frozen
+slots are the same). -/
+theorem frozenCoefficient_restrict (s : Input α) (C R : Ideal O) (B : actualAllocations s.pools C)
+    (J : Finset α) (hJ : J ⊆ liveIndices B.val) :
+    frozenCoefficient (allocRestrict s C B J hJ).val C R (s.restrict J).ν (s.restrict J).W
+        (s.restrict J).P = frozenCoefficient B.val C R s.ν s.W s.P := by
+  unfold frozenCoefficient
+  congr 1
+  refine Finset.prod_bij' (fun i _ => i.val)
+    (fun i hi => ⟨i, fun hiJ => (Finset.mem_filter.mp hi).2 ((mem_liveIndices B i).mp (hJ hiJ))⟩)
+    ?_ ?_ ?_ ?_ ?_
+  · intro i hi
+    exact Finset.mem_filter.mpr ⟨Finset.mem_univ _, (Finset.mem_filter.mp hi).2⟩
+  · intro i hi
+    exact Finset.mem_filter.mpr ⟨Finset.mem_univ _, (Finset.mem_filter.mp hi).2⟩
+  · intro i _
+    rfl
+  · intro i _
+    rfl
+  · intro i _
+    rfl
+
 /-- The block's product of scales, when `s.P = Z^w`. -/
 theorem prod_P_eq (s : Input α) (w : α → ℝ) {Z : ℝ} (hZ : 0 < Z) (hP : ∀ i, s.P i = Z ^ w i)
     (J : Finset α) : ∏ j ∈ J, s.P j = Z ^ ∑ j ∈ J, w j := by
@@ -178,6 +200,33 @@ theorem firstMainRadius_restrict (reflected : Bool) (K V Z ξ a δ reserve W : �
   rw [hW2, ← Real.rpow_add hZ0, ← Real.rpow_add hZ0]
   apply Real.rpow_le_rpow_of_exponent_le hZ.le
   have h := nominalLog_div l.1.1 l.1.2
+    (Ideal.span {primeSubsetGenerator (fun p : CenteredMomentCanonicalFirst.CommonIndex l.1.1 l.1.2 =>
+      p.val) l.2.val}) K V Z W hZ hW
+  linarith
+
+theorem nominalLog_div_le (I J E : Ideal O) (K X Z W : ℝ) (hZ : 1 < Z) (hW : 1 ≤ W) :
+    nominalLog I J E K (X / W) Z ≤ nominalLog I J E K X Z := by
+  unfold nominalLog
+  rw [firstNominalScale_div]
+  have hW0 : W ≠ 0 := by linarith
+  have hlog : 0 ≤ Real.logb Z W := Real.logb_nonneg hZ hW
+  by_cases hx : firstNominalScale I J E K X = 0
+  · rw [hx, zero_div]
+  · rw [Real.logb_div hx (pow_ne_zero 2 hW0), Real.logb_pow]
+    push_cast
+    linarith
+
+/-- **The residual radius from above**: `firstMainRadius(V/W, 3(a+δ)) ≤ firstMainRadius(V, 3a)·Z^{6δ}`
+for `W ≥ 1` (so a cap `H ≤ Z^A₀` on the original radius gives `H' ≤ Z^{A₀+6δ}`). -/
+theorem firstMainRadius_restrict_le (reflected : Bool) (K V Z ξ a δ reserve W : ℝ)
+    (l : FirstSourceLabel) (hZ : 1 < Z) (hW : 1 ≤ W) :
+    firstMainRadius reflected K (V / W) Z ξ (3 * (a + δ)) reserve l ≤
+      firstMainRadius reflected K V Z ξ (3 * a) reserve l * Z ^ (6 * δ) := by
+  have hZ0 : 0 < Z := by linarith
+  unfold firstMainRadius mainCommonRadius
+  rw [← Real.rpow_add hZ0]
+  apply Real.rpow_le_rpow_of_exponent_le hZ.le
+  have h := nominalLog_div_le l.1.1 l.1.2
     (Ideal.span {primeSubsetGenerator (fun p : CenteredMomentCanonicalFirst.CommonIndex l.1.1 l.1.2 =>
       p.val) l.2.val}) K V Z W hZ hW
   linarith
@@ -436,8 +485,10 @@ end QRH.MixedStep.Downstream
 #print axioms QRH.MixedStep.Downstream.sum_pieces
 #print axioms QRH.MixedStep.Downstream.card_pieces_le
 #print axioms QRH.MixedStep.Downstream.residual_frozen_width
+#print axioms QRH.MixedStep.Downstream.frozenCoefficient_restrict
 #print axioms QRH.MixedStep.Downstream.restrict_logb_volume
 #print axioms QRH.MixedStep.Downstream.piece_radius
+#print axioms QRH.MixedStep.Downstream.firstMainRadius_restrict_le
 #print axioms QRH.MixedStep.Downstream.restrict_empty_energy
 #print axioms QRH.MixedStep.Downstream.piece_width
 #print axioms QRH.MixedStep.Downstream.piece_budget

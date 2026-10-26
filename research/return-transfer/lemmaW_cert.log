@@ -31,3 +31,4 @@ edge old_peak: 1 rectangles, min return coeff 5.703e-02, min admission coeff Non
 edge old_switch: 1 rectangles, min return coeff 2.186e-04, min admission coeff None
 edge new_switch: 1 rectangles, min return coeff 2.186e-04, min admission coeff None
 edge new_kink: 6 rectangles, min return coeff 2.812e-04, min admission coeff 0.00469336584273042
+FAIL cover failed at box [(0.4334907531738281, 0.43349647521972656), (0.4999961853027344, 0.5)]

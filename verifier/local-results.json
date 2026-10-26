@@ -224,5 +224,28 @@
       "policy_sha256": "b8bf491d68ed3d0c2d1cb5053ca5ae460e3d7897657d4d34206327db111f05c7",
       "runtime_sha256": "84d4031d20445163a6afa22a3559c8f4a95bdbf0158a8e143ef9cb7c78cf4e24"
     }
+  },
+  {
+    "schema_version": 1,
+    "result_id": "arvi-repeated-marks-on-sil-face-20261025",
+    "theta_exact": "349843/400000",
+    "verified_at": "2026-10-26T01:21:30.330565+00:00",
+    "source_repository": "GTimG/QuasiRiemannTracker",
+    "source_commit": "2fd55e03fd33d0f181cdd74ab1bd0a87b949f53a",
+    "kernels": [
+      "Lean default",
+      "nanoda",
+      "con-ron"
+    ],
+    "report_url": "https://github.com/GTimG/QuasiRiemannTracker/blob/0d4719757b4156ace59ea929fef10fed8f9eef91/verifier/standard/receipts/pr76-2fd55e03-20261026/result.json",
+    "report_sha256": "2214a2c2c2597b4697e1633673ca423045c6e6402d0b782a2380fb92b264feba",
+    "repository": "GTimG/QuasiRiemannTracker",
+    "number": 76,
+    "head_sha": "2fd55e03fd33d0f181cdd74ab1bd0a87b949f53a",
+    "reuse": {
+      "schema_version": 1,
+      "policy_sha256": "b8bf491d68ed3d0c2d1cb5053ca5ae460e3d7897657d4d34206327db111f05c7",
+      "runtime_sha256": "92fb0f0f52900a5c53899305b26110d257171629bb4695709a182ed97299d5ad"
+    }
   }
 ]

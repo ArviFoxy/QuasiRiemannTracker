@@ -8,8 +8,10 @@ commit and gives the proof worker read-only repository permissions.
 One admission job runs at a time with 12 CPUs and 48 GiB RAM. Compilation uses
 12 workers; the three independent kernels run sequentially so each can use the
 larger memory allocation. Admission replay has a bounded six-hour budget; the
-other verifier entry points retain their three-hour default. Individual module
-and kernel deadlines and sandbox resource limits still apply.
+other verifier entry points retain their three-hour default. The serial kernel
+phase can use up to three hours, combining the one-hour allowance for each of the
+three checkers, and is capped by the remaining replay budget. Individual module
+deadlines and sandbox resource limits still apply.
 
 ## Isolation
 

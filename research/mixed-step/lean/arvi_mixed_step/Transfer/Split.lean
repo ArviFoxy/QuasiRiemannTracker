@@ -6,6 +6,7 @@ import Submissions.hailey_collet_1252270103.Record1252270103Source.Collision.Pro
 
 set_option autoImplicit false
 set_option maxHeartbeats 400000
+set_option linter.unusedSectionVars false
 
 namespace QRH.MixedStep.Transfer
 noncomputable section
@@ -108,11 +109,11 @@ def selBox (s : Input ι) (J : Finset ι) : Finset (J → Ideal O) :=
 
 theorem joinTuple_inl_mem (J : Finset ι) (u : J → Ideal O) (w : Tuple {i // i ∉ J})
     (j : ι) (h : j ∈ J) : joinTuple J u w (Sum.inl j) = u ⟨j, h⟩ := by
-  simp only [joinTuple, Sum.elim_inl, dif_pos h]
+  simp only [joinTuple, Sum.elim_inl, h, dite_true]
 
 theorem joinTuple_inl_not_mem (J : Finset ι) (u : J → Ideal O) (w : Tuple {i // i ∉ J})
     (i : ι) (h : i ∉ J) : joinTuple J u w (Sum.inl i) = w (Sum.inl ⟨i, h⟩) := by
-  simp only [joinTuple, Sum.elim_inl, dif_neg h]
+  simp only [joinTuple, Sum.elim_inl, h, dite_false]
 
 theorem selPart_join (J : Finset ι) (u : J → Ideal O) (w : Tuple {i // i ∉ J}) :
     selPart J (joinTuple J u w) = u := by

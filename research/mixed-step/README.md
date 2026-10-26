@@ -304,3 +304,22 @@ of `ReturnD/Schedule.lean`. All 9 of its uses in our fork need only `dMinus > 1/
 The next limit is the second branch, `s_P ≤ (B_P − (2 − 2y/h))/L_P ≈ 0.0565–0.0575` along the mixed
 flow. That is where the faces matter again, through `(B − 0.843)/L`. The continuum gates allow face
 caps up to 0.08.
+
+## 11. What binds the mixed flow, and the atlas at the new design point (2026-10-26)
+
+**Binding gates.**
+- **HIGH branch 5** (`dI = 1 − p`, `bI = pF`, `eP = L_H − 2p`, `hP = 2p·B_H·F`) at `p = 1/2`,
+  `ν = q`, width `b = s` (the crossing). Margin about 1e-4 along the whole flow.
+- **The weak cap** at `b = cap = 0.075`, margin about 2e-5. So 0.075 is about the largest uniform cap.
+- **The K-copy count is not binding.** `K = 8, 16, 64` give identical slopes.
+- **The HIGH parent: self beats fixed.** A fixed stronger HIGH parent (Sil's face, the natural face)
+  instead of the previous face is worse.
+
+**Return atlas at the new point** (`../strip-mine/atlas2.py`, ε = 3e-3, units 1e-7).
+- **Count branches.** The old count branch's `(1 − δ)` in `N_old = (1 − δ)J + δCV/2`: +4128. The affine
+  branch's `(1 − δ)`: +1356.
+- **Return polynomial constants:** `1/2` +3367, `3/4·d·N` +2445, `δ/2` +1526, `y/2` +1403,
+  `13h/75` ±840.
+- **Faces:** `B_P` −277, `h` −167, `L_P` +35; `B_C`, `L_C`, `s_C`, `s_P` 0.
+
+**h fine scan.** `h = 0.8044` gives θ\* = 0.8742701; 0.803 → 0.8742757; 0.806 → 0.8742972.

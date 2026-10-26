@@ -30,12 +30,24 @@ Compared with Collet's step (NFStep2):
 
 0. **Original MAIN norm** `𝓜` at radius μ. The radius is fixed by the first transform of the
    whole input, with the selected block still in its columns.
-1. **Transfer.** Select a live block J of width `d ≤ b − f` by width (greedy with mesh,
-   `GlobalSlotSelection`). Split each column `u = f·D·n`. The CRT, the ray split and the
-   fourth-power identity (`MixedSupplierKernel.fixed_supplier_row_fourth`,
-   `GaussTransfer.normalized_fourth_power`) give
-   `V^{−1/2}Σ_u b𝔤(u,h) = Σ_{χ,ξ} π_{χξ} Σ_D [W^{−1/2} c(D) χ(fD) 𝔤(fD,h)]·G_ξ(D⁴h)`.
-   Non-coprime `n, D` vanish on both sides.
+1. **Transfer.** Select a live block J of width `δ ≤ b − f` by width. The slots have width
+   `≤ mesh` (`FixedSubsetTruncatedSupplier`), so the greedy block reaches `δ ≤ Σ_J w ≤ δ + mesh`.
+   Split each tuple's column as `u = f·D·n` (D the selected product). Then split the tuples by
+   their **collision pattern** `C ⊆ J`, the set of selected slots whose prime divides the ordinary
+   pair. Collet's projectors allow valuation 2, so these columns occur (`FORMAL_MAP_SIL.md` §2).
+   - **Pattern `C = ∅`** (Lean: L2, `Transfer/`). The CRT, the ray split and the fourth-power
+     identity (`MixedSupplierKernel.fixed_supplier_row_fourth`,
+     `GaussTransfer.normalized_fourth_power`) give
+     `V^{−1/2}Σ_u b𝔤(u,h) = Σ_{χ,ξ} π_{χξ} Σ_D [W^{−1/2} c(D) χ(fD) 𝔤(fD,h)]·G_ξ(D⁴h)`.
+   - **Pattern `C ≠ ∅`** (Lean: `Collision/`, proved).
+     - The column is `D_C²·m`, and `𝔤(D_C²m, h) = 0` off `D_C·O`.
+     - On `D_C·O`, `𝔤(D_C²m, D_C h′) = φ(m)·g_C(h′)·𝔤(m, h′)`, where:
+       - the prime factor `g_C` is common to all columns and has norm `≤ √N(D_C)`;
+       - `φ` is a unimodular column phase.
+     - Cauchy–Schwarz over the `D_C` values then gives `𝓜_coll ≤ W_C·𝓜_res,C(μ − w_C)`. The residual
+       has `C` removed, its plains replaced by `residualPool D_C`, and twists absorbed into the
+       weights and the character.
+     - Ledger: RC3 −w_C (e = 1) and scale −3w_C. The live slots `J∖C` are then transferred as above.
 2. **Cauchy–Schwarz** over `(χ, ξ, D)`: the count `#D ≈ W` is cancelled by the renormalization
    `V → V_res = V/W`.
 3. **Pushforward** `(D, h) ↦ D⁴h` with bounded fibres (`PositiveFamily.weighted_pushforward`):
@@ -80,7 +92,15 @@ With `t = B − Λ(b − e)`, `T = t + b`, `a = r`,
 is O(1e-12)). From Sil's face at s = 0.016 it gives faces with slope 2.52 → 2.17. With the Lemma D
 return at `s_P = 0.052`, `s_C = 0.054`, θ* = 0.8744022.
 
-## 4. Open items for the formal proof
+## 4. Booking of the saving (settled; `FORMALIZATION_PLAN.md` §1a)
+
+The residual is bounded in its own normalization (`V_res = V/W`, side `labelSide(A−δ)`). The
+original target keeps the first-layer scalar at volume A. Since `labelSide` has slope 1 in A, the
+residual bound is `Z^{RC3 + labelSide(A) − δ}`, a saving of δ. Formally, Collet's generic lemmas
+are used at the virtual pair `(A − δ, a + δ)`, width `b − δ`, scale `F − 6δ`
+(`lean/arvi_mixed_step/Ledger/Virtual.lean`, proved).
+
+## 5. Open items for the formal proof
 - (T) at Collet's columns: an adapter from Sil's supplier records to Collet's
   `finiteColumnCoefficient … sourceModifier … β · Γ`.
 - Collet's downstream on the residual source (generic in ι?) with the coordinate shifts.

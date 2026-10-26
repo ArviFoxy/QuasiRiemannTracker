@@ -328,7 +328,8 @@ theorem collision_transfer (ε : ℝ) (hε : 0 < ε) (N : ℕ) :
           (collInput s p.1 p.2 x.1 (collH s p.1 p.2 x 0) (collH s p.1 p.2 x 1)).pools,
           F (Dc * finiteTupleProduct v) =
             F (Dc * finiteTupleProduct (restPart (restBlock J p.1) v))) →
-      (∀ p ∈ patterns J, ∀ x : {u // u ∈ selBox s p.1}, 0 < H' p x ∧
+      (∀ p ∈ patterns J, ∀ x : {u // u ∈ selBox s p.1}, Supported (selProduct p.1 x.1) →
+        selWeight s p.1 K R x.1 ≠ 0 → 0 < H' p x ∧
         2 * (2 * H / (Ideal.absNorm (selProduct p.1 x.1) : ℝ)) *
           (∏ j ∈ restBlock J p.1, s.hi j.val * s.P j.val) ^ 4 ≤ H' p x) →
       ∃ seeds : (p : Σ Q : Finset κ, Q → Fin 2) → {u // u ∈ selBox s p.1} → Finset (Ideal O),
@@ -367,7 +368,8 @@ theorem collision_transfer (ε : ℝ) (hε : 0 < ε) (N : ℕ) :
       have hN : (0 : ℝ) < Ideal.absNorm (selProduct p.1 x.1) := by
         exact_mod_cast Nat.pos_of_ne_zero (Ideal.absNorm_eq_zero_iff.not.mpr hD0)
       obtain ⟨S, hS, hb⟩ := hfam hcard s J p.1 p.2 x A₁ A₂ Dc K R L F τ t T _ (H' p x)
-        (by positivity) (hH' p hpJ x).1 hLsq hhi hD hw hA₁ hA₂ hAR (hFf p hpJ x) (hH' p hpJ x).2
+        (by positivity) (hH' p hpJ x hD hw).1 hLsq hhi hD hw hA₁ hA₂ hAR (hFf p hpJ x)
+        (hH' p hpJ x hD hw).2
       exact ⟨S, hS, fun _ _ _ => hb⟩
     · refine ⟨∅, fun L' h => absurd h (Finset.notMem_empty L'), ?_⟩
       intro hpJ hD hw

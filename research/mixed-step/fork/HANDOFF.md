@@ -1064,3 +1064,15 @@ This is PR 76's `regular_supplier_some_rm` up to the point supplier. `regular_su
 - For `reflected = true` (column ideal `D`): `D ↦ D·D_f²` raises component 1, so `2^(−bin.2 1)` only decreases. This is free.
 - Components 0 and 2–4 shift by amounts fixed by `f`, up to a floor rounding of at most 1 each. So for fixed `(bin, f)` there are at most
   `2^4` bins `bin′`, plus whatever the ratio index does.
+
+## Seeds without changing `Family_mx` (coordinator, 2026-10-26 ~10:55)
+The "approved option (1)" (a per-label child seed field in `Family_mx`) is **not needed** and was reverted after a trial.
+Residual seeds `L′ ∣ (column l).2.1.val` of the transfer without (S) are handled on the consumer side by *columns*:
+* `QRH.MixedStep.SeedColumn.seedColumn j L′ h` (`ForkMx/…/Admission/SelectedRegularSeedColumn.lean`, green) is the column with the label
+  and the rays of `j` and the residual divisor `L′`. It exists because `FirstBlockSource.divisors` is `divisorPool … = ⋃ idealDivisors` (closed
+  under divisors, `divisors_dvd`); it is live iff `j` is live and `L′` is squarefree (`seedColumn_live`).
+* `firstLabel`, `columnIdeal`, `columnCharacter`, `H0`, `balancedColumnScalar`, `extra` and the frozen coefficient depend only on the label
+  `j.1` and the rays, not on the divisor. So the plain family `allocatedRegularFamily_mx a col′ …` on `col′ l := seedColumn (rayShift … (column l) ray) (seed l) _`
+  has child seed `seed l` and the **original** amplitude. All plain statements (F5 bridge 46–50, `RegularPointAt_mx`) apply to it unchanged.
+* `RegularJointSupplier3`'s per-label `seed` is thus proved from the plain `RegularJointSupplier_mx` at `col′`; its injectivity hypothesis
+  `(firstLabel, seed)` is exactly the plain injectivity of `col′`.

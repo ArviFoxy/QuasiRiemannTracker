@@ -89,7 +89,8 @@ PATH=/home/user/lean-env/lean-4.34.1-linux/bin:$PATH \
 `regenerate.sh` runs, from `research/repeated-marks/`:
 
 ```sh
-python3 gen_return_lean.py $QRH_FACES $QRH_THETA $QRH_H 0 1 W/RET $QRH_SC $QRH_SP lemmaD
+# W/faces.json = the faces of $QRH_FACES as the list [C, P] (theta_star.face_list)
+python3 gen_return_lean.py W/faces.json $QRH_THETA $QRH_H 0 1 W/RET $QRH_SC $QRH_SP lemmaD
 python3 fork_return.py W/RET W/OUT $QRH_CAP $QRH_CAP $QRH_SC $QRH_SP transport
 python3 fork_transport.py W/RD $QRH_SP         # reads QRH_RELAXED and QRH_DMINUS
 # assemble W/PKG: ReturnD from W/RD; FinalReturn from W/OUT plus ReturnConstants, ReturnFormulas,
@@ -105,11 +106,16 @@ or a package dependency's olean. It never touches other packages' oleans.
 
 ## 4. Rerunning on new faces
 
-Replace `../faces_exact.json` (or point `QRH_FACES` elsewhere) and run `./run_all.sh WORKDIR`.
-`ReturnD/` does not depend on the faces or on `theta` (it is generic in `Geometry.Parameters`,
-`BoundsR` and `PhysicalSchedule`), so only `FinalReturn/` is rebuilt. If `theta_star.py` reports that
-the declared `theta` fails, set `QRH_THETA` at or above the reported θ* (and check that the new
-`ell`, `y`, `h` stay inside `QRH_RELAXED`).
+Point `QRH_FACES` (`return_cut.env`) at the new file, a dict `{"C": …, "P": …}` like
+`faces_k92.json` or a list `[C, P]` like `faces_exact.json`, each face with exact `B`, `L`, `cap`
+strings, and run `./run_all.sh WORKDIR`. `ReturnD/` does not depend on the faces or on `theta` (it
+is generic in `Geometry.Parameters`, `BoundsR` and `PhysicalSchedule`; only `SP`, `QRH_RELAXED` and
+`QRH_DMINUS` enter it), so only `FinalReturn/` is rebuilt: from `faces_exact.json` to
+`faces_k92.json`, 28 files changed (`ReturnConstants`, the 25 admission windows, the rows of the
+`newKink` and `newTop` edges) and the 53 `FinalReturn` modules were recompiled. If `theta_star.py`
+reports that the declared `theta` fails, set `QRH_THETA` at or above the reported θ* (and check that
+the new `ell`, `y`, `h` stay inside `QRH_RELAXED`; `FinalReturn/TransportInstances.lean` proves
+`BoundsR` for the concrete values, so the build checks it).
 
 ## 5. Results
 

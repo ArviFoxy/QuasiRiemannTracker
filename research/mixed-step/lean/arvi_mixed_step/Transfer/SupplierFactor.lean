@@ -51,9 +51,10 @@ def residualSeed (J : Finset ι) (L : Ideal O) (u : J → Ideal O) : Ideal O :=
 
 theorem residualSeed_spec (J : Finset ι) (L : Ideal O) (u : J → Ideal O)
     (h : supplied J L u ∣ L) : L = supplied J L u * residualSeed J L u := by
+  have hc := Classical.choose_spec h
   unfold residualSeed
-  rw [dif_pos h]
-  exact Classical.choose_spec h
+  simp only [h, ↓reduceDIte]
+  exact hc
 
 theorem supplied_dvd_sel (J : Finset ι) (L : Ideal O) (u : J → Ideal O) :
     supplied J L u ∣ selProduct J u :=
@@ -73,8 +74,8 @@ theorem supplied_dvd_seed (s : Input ι) (J : Finset ι) (L : Ideal O) (u : J �
 
 theorem residualSeed_dvd (s : Input ι) (J : Finset ι) (L : Ideal O) (u : J → Ideal O)
     (hu : u ∈ selBox s J) (hinj : Function.Injective u) : residualSeed J L u ∣ L := by
-  rw [residualSeed_spec J L u (supplied_dvd_seed s J L u hu hinj)] at *
-  exact dvd_mul_left _ _
+  exact Dvd.intro_left (supplied J L u)
+    (residualSeed_spec J L u (supplied_dvd_seed s J L u hu hinj)).symm
 
 theorem residualSeed_coprime (s : Input ι) (J : Finset ι) (L : Ideal O) (hL : Squarefree L)
     (u : J → Ideal O) (hu : u ∈ selBox s J) (hinj : Function.Injective u) :

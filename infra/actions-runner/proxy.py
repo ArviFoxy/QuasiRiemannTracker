@@ -40,6 +40,8 @@ EXACT_HOSTS = frozenset(
         "github-registry-files.githubusercontent.com",
         "release-assets.githubusercontent.com",
         "registry.npmjs.org",
+        "archive.ubuntu.com",
+        "security.ubuntu.com",
         "nodejs.org",
         "cdn.playwright.dev",
         "download.prss.microsoft.com",

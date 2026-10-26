@@ -10,6 +10,7 @@ import unittest
 from unittest.mock import patch
 
 import manage
+import vm
 
 
 def identity_archive(settings=None, *, entries=None, bom=False):
@@ -114,12 +115,68 @@ class IdentityBoundaryTests(unittest.TestCase):
             manage.validate_identity(b"x" * (1024 * 1024 + 1))
 
 
+class VMIdentityBoundaryTests(unittest.TestCase):
+    def test_vm_keeps_credentials_and_forces_work_into_guest_workspace(self):
+        settings = {"ephemeral": True, "disableUpdate": True,
+                    "gitHubUrl": vm.REPOSITORY, "workFolder": "/etc"}
+        for bom in (False, True):
+            with self.subTest(bom=bom):
+                files = vm.read_identity(io.BytesIO(identity_archive(settings, bom=bom)))
+                self.assertEqual(set(files), {".runner", ".credentials", ".credentials_rsaparams"})
+                self.assertEqual(json.loads(files[".runner"])["workFolder"], "_work")
+                self.assertEqual(files[".credentials"], b'{"test": "credential"}')
+                self.assertEqual(files[".credentials_rsaparams"], b'{"test": "key"}')
+
+    def test_vm_independently_rejects_reusable_or_wrong_repository_identity(self):
+        settings = {"ephemeral": True, "disableUpdate": True, "gitHubUrl": vm.REPOSITORY}
+        for field in ("ephemeral", "disableUpdate"):
+            for value in (False, None, "true", 1):
+                with self.subTest(field=field, value=value):
+                    with self.assertRaises(ValueError):
+                        vm.read_identity(io.BytesIO(identity_archive({**settings, field: value})))
+        for repository in ("https://github.com/attacker/repo", vm.REPOSITORY + "/../other",
+                           vm.REPOSITORY + "?repository=other", ""):
+            with self.subTest(repository=repository):
+                with self.assertRaises(ValueError):
+                    vm.read_identity(io.BytesIO(identity_archive({**settings, "gitHubUrl": repository})))
+
+    def test_vm_rejects_archive_path_link_duplicate_and_extra_entries(self):
+        settings = {"ephemeral": True, "disableUpdate": True, "gitHubUrl": vm.REPOSITORY}
+        good = [(".runner", json.dumps(settings).encode(), tarfile.REGTYPE),
+                (".credentials", b"{}", tarfile.REGTYPE),
+                (".credentials_rsaparams", b"{}", tarfile.REGTYPE)]
+        attacks = [good[:2], good + [(".env", b"injected", tarfile.REGTYPE)], good + [good[-1]]]
+        attacks += [good[:2] + [(name, b"{}", tarfile.REGTYPE)]
+                    for name in ("../.credentials_rsaparams", "/.credentials_rsaparams")]
+        attacks += [good[:2] + [(".credentials_rsaparams", b"", kind)]
+                    for kind in (tarfile.SYMTYPE, tarfile.LNKTYPE, tarfile.DIRTYPE,
+                                 tarfile.CHRTYPE, tarfile.BLKTYPE, tarfile.FIFOTYPE)]
+        for entries in attacks:
+            with self.subTest(entries=[(name, kind) for name, _content, kind in entries]):
+                with self.assertRaises(ValueError):
+                    vm.read_identity(io.BytesIO(identity_archive(entries=entries)))
+
+    def test_vm_rejects_empty_or_oversized_identity_payloads(self):
+        settings = {"ephemeral": True, "disableUpdate": True, "gitHubUrl": vm.REPOSITORY}
+        for content in (b"", b"x" * 262145):
+            with self.subTest(size=len(content)):
+                archive = identity_archive(entries=[
+                    (".runner", json.dumps(settings).encode(), tarfile.REGTYPE),
+                    (".credentials", b"{}", tarfile.REGTYPE),
+                    (".credentials_rsaparams", content, tarfile.REGTYPE),
+                ])
+                with self.assertRaises(ValueError):
+                    vm.read_identity(io.BytesIO(archive))
+        with self.assertRaises(ValueError):
+            vm.read_identity(io.BytesIO(b"x" * (1024 * 1024 + 1)))
+
+
 class IdentityLifecycleTests(unittest.TestCase):
     def setUp(self):
         self.temporary = tempfile.TemporaryDirectory()
         self.addCleanup(self.temporary.cleanup)
         root = Path(self.temporary.name)
-        self.state = root / "slot-1"
+        self.state = root / "proof"
         self.registered = []
         self.started = []
         for target, value in (("STATE_ROOT", root), ("STATE", self.state), ("STOPPING", False)):
@@ -199,9 +256,9 @@ class IdentityLifecycleTests(unittest.TestCase):
             if self.record_launch(args, **kwargs):
                 events.append("launch")
                 if len(self.started) == 1:
-                    raise subprocess.TimeoutExpired(args, 7200)
+                    raise subprocess.TimeoutExpired(args, 36000)
                 manage.STOPPING = True
-            elif args == ["docker", "rm", "--force", manage.CONTAINER]:
+            elif args == ["docker", "rm", "--force", "--volumes", manage.CONTAINER]:
                 events.append("remove")
             return subprocess.CompletedProcess(args, 0)
 
@@ -244,7 +301,7 @@ class RegistrationIsolationTests(unittest.TestCase):
         temporary = tempfile.TemporaryDirectory()
         self.addCleanup(temporary.cleanup)
         root = Path(temporary.name)
-        self.state = root / "slot-1"
+        self.state = root / "proof"
         self.state.mkdir()
         for target, value in (("STATE_ROOT", root), ("STATE", self.state)):
             patcher = patch.object(manage, target, value)
@@ -299,99 +356,45 @@ class RegistrationIsolationTests(unittest.TestCase):
         with patch.object(manage.subprocess, "run", side_effect=execute):
             with self.assertRaises(subprocess.TimeoutExpired):
                 manage.register()
-        self.assertIn(["docker", "rm", "--force", manage.REGISTER], cleanup)
+        self.assertIn(["docker", "rm", "--force", "--volumes", manage.REGISTER], cleanup)
         self.assertFalse((self.state / "pending-identity.tar").exists())
 
 
-class SlotIsolationTests(unittest.TestCase):
-    def setUp(self):
-        temporary = tempfile.TemporaryDirectory()
-        self.addCleanup(temporary.cleanup)
-        self.root = Path(temporary.name)
-        self.enterContext(patch.multiple(manage, **{
-            name: getattr(manage, name) for name in
-            ("SLOT", "STATE", "CONTAINER", "REGISTER", "PROXY", "NETWORK", "EGRESS", "COMPOSE", "STOPPING")
-        }))
-        self.enterContext(patch.object(manage, "STATE_ROOT", self.root))
-        self.enterContext(patch.dict(manage.os.environ))
+class ProofServiceTests(unittest.TestCase):
+    def test_install_retires_website_slots_before_enabling_proof_worker(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            home = Path(temporary)
+            units = home / ".config/systemd/user"
+            units.mkdir(parents=True)
+            for name in ("qrh-actions-runner.service", "qrh-actions-runner@.service"):
+                (units / name).write_text("legacy service")
+            real_stat = manage.os.stat
+            device_stat = real_stat(__file__)
+            with patch.object(manage.Path, "home", return_value=home), patch.object(manage, "run") as execute:
+                with patch.object(manage.os, "stat", side_effect=lambda path, *args, **kwargs:
+                                  device_stat if path == "/dev/kvm" else real_stat(path, *args, **kwargs)):
+                    manage.install_service()
+            commands = [call.args[0] for call in execute.call_args_list]
+            enable = ["systemctl", "--user", "enable", "qrh-proof-runner.service"]
+            for legacy in ("qrh-actions-runner.service", *[f"qrh-actions-runner@{slot}.service" for slot in (1, 2, 3)]):
+                disable = ["systemctl", "--user", "disable", "--now", legacy]
+                self.assertLess(commands.index(disable), commands.index(enable))
+            unit = (units / manage.SERVICE).read_text()
+            self.assertIn(f"QRH_KVM_GID={device_stat.st_gid}", unit)
+            self.assertIn("docker rm --force --volumes qrh-proof-job qrh-proof-register", unit)
 
-    def test_slots_have_separate_resources_and_private_identity_storage(self):
-        configurations = []
-        for slot in manage.SLOTS:
-            manage.configure_slot(slot)
-            manage.private_state()
-            configurations.append((manage.STATE, manage.CONTAINER, manage.REGISTER,
-                                   manage.PROXY, manage.NETWORK, manage.EGRESS, manage.COMPOSE[3]))
-            self.assertEqual(manage.os.environ["QRH_RUNNER_SLOT"], str(slot))
-            self.assertEqual(manage.STATE.stat().st_mode & 0o777, 0o700)
-        self.assertEqual(self.root.stat().st_mode & 0o777, 0o700)
-        for resources in zip(*configurations):
-            self.assertEqual(len(set(resources)), 3)
-
-    def test_all_slots_read_the_shared_token_without_using_slot_local_tokens(self):
-        manage.private_write(self.root / "registration-token", b"shared-host-token")
-        with patch.object(manage.subprocess, "run", return_value=subprocess.CompletedProcess([], 1, stdout="")):
-            for slot in manage.SLOTS:
-                manage.configure_slot(slot)
+    def test_registration_token_is_shared_but_old_pending_identities_are_not_used(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            proof = root / "proof"
+            with patch.multiple(manage, STATE_ROOT=root, STATE=proof):
                 manage.private_state()
-                manage.private_write(manage.STATE / "registration-token", b"wrong-slot-token")
-                self.assertEqual(manage.registration_token(), "shared-host-token")
-
-    def test_stopping_one_slot_preserves_other_slots_and_pending_identities(self):
-        pending = []
-        for slot in manage.SLOTS:
-            manage.configure_slot(slot)
-            manage.private_state()
-            path = manage.STATE / "pending-identity.tar"
-            manage.private_write(path, identity_archive())
-            pending.append(path)
-        manage.configure_slot(2)
-        with patch.object(manage.subprocess, "run") as execute:
-            manage.stop_job()
-        self.assertEqual(execute.call_args.args[0], ["docker", "stop", "--time", "20", "qrh-actions-runner-job-2"])
-        self.assertEqual(execute.call_count, 1)
-        self.assertTrue(all(path.exists() for path in pending))
-
-    def test_invalid_slot_and_implicit_serve_are_rejected_before_host_actions(self):
-        before = manage.STATE, manage.CONTAINER, manage.os.environ.get("QRH_RUNNER_SLOT")
-        for slot in (0, 4, -1, "2", None):
-            with self.subTest(slot=slot), self.assertRaises(ValueError):
-                manage.configure_slot(slot)
-        self.assertEqual(before, (manage.STATE, manage.CONTAINER, manage.os.environ.get("QRH_RUNNER_SLOT")))
-        for arguments in (["serve"], ["register"], ["start", "--slot", "4"]):
-            with patch.object(manage.sys, "argv", ["manage.py", *arguments]):
-                with patch.object(manage.sys, "stderr", io.StringIO()), patch.object(manage, "private_state") as state:
-                    with patch.object(manage, "run") as execute, self.assertRaises(SystemExit):
-                        manage.main()
-                    state.assert_not_called()
-                    execute.assert_not_called()
-
-    def test_start_stop_status_target_all_slots_or_only_the_selected_slot(self):
-        for command in ("start", "stop", "status"):
-            for selected in (None, 2):
-                arguments = [command] + (["--slot", str(selected)] if selected else [])
-                with self.subTest(command=command, slot=selected), patch.object(manage.sys, "argv", ["manage.py", *arguments]):
-                    with patch.object(manage, "run") as execute:
-                        manage.main()
-                slots = (selected,) if selected else manage.SLOTS
-                expected = ["systemctl", "--user", command, *[f"qrh-actions-runner@{slot}.service" for slot in slots]]
-                if command == "status":
-                    expected.append("--no-pager")
-                self.assertEqual(execute.call_args.args[0], expected)
-
-    def test_install_stops_singleton_before_enabling_three_template_instances(self):
-        units = self.root / ".config/systemd/user"
-        units.mkdir(parents=True)
-        (units / "qrh-actions-runner.service").write_text("legacy service")
-        with patch.object(manage.Path, "home", return_value=self.root), patch.object(manage, "run") as execute:
-            manage.install_service()
-        commands = [call.args[0] for call in execute.call_args_list]
-        disable = ["systemctl", "--user", "disable", "--now", "qrh-actions-runner.service"]
-        enable = ["systemctl", "--user", "enable", *[f"qrh-actions-runner@{slot}.service" for slot in manage.SLOTS]]
-        self.assertLess(commands.index(disable), commands.index(enable))
-        unit = (units / manage.SERVICE).read_text()
-        self.assertIn("serve --slot %i", unit)
-        self.assertIn("qrh-actions-runner-job-%i qrh-runner-register-%i", unit)
+                manage.private_write(root / "registration-token", b"fresh-host-token")
+                manage.private_write(root / "pending-identity.tar", b"old-website-identity")
+                with patch.object(manage.subprocess, "run", return_value=subprocess.CompletedProcess([], 1, stdout="")):
+                    self.assertEqual(manage.registration_token(), "fresh-host-token")
+                self.assertFalse((proof / "pending-identity.tar").exists())
+                self.assertEqual(proof.stat().st_mode & 0o777, 0o700)
 
 
 if __name__ == "__main__":

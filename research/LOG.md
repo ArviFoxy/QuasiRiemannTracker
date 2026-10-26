@@ -1766,3 +1766,17 @@ slot; `mixed-slots/`).
 - Ownership: fork lead — F5 points/suppliers, `RegularJointSupplier3` (Downstream/Contract3, defined),
   `regular_supplier3`; F4 helper — F5 family/norm bridge; N3/N6 agent — node grid, families, `balanced_of_regular3`;
   transfer agent — L3 collision energy; F6 agent — N7; return agent — return at θ = 437037/500000.
+- **Collision families (critical path, ~02:45).** Fork lead + N3/N6: the (Col)-free transfer outputs collision families
+  with common ideal C·D, a twist `χ(δ³)` of growing conductor, radius H′/N(D), T = V/N(D); the fork's `Family_mx` and
+  Collet's LOW erasure pin the character to `columnCharacter (column l)` and `R = R₀·columnIdeal`, and `RegularLowAt` is
+  for one ray modulus fixed before Z. (a) "(Col)-avoiding selection" is impossible: the initial plains are
+  `plainSupportPool` (all ideals in norm windows) and `ordinarySmallHole` only removes primes of norm ≤ 15, so any slot
+  prime divides a plain for a ~Z^{-w} fraction of tuples. Candidate (k): read collision families as first-layer families
+  over the extended column. Heuristic check: `columnCharacter` = rowWeight·leftCoefficient(e, r, ρ)·ray with
+  `leftCoefficient e r ρ a = ((e·r)/a)₆·∏(a/P)₆^{net}`, net(c, d) = (c + 5d) mod 6; Collet-style `coll_row_twist` gives
+  the twist `(π_D³/M)₆`; for the extended column C·D² the primes of D are active with net 2 and the column character
+  changes by `(π_D/a)₆·(a/π_D)₆² ≈ (a/π_D)₆³` (sextic reciprocity, up to units) — matching the twist. With C·D it would not.
+  To verify: energy equality on supported ideals (as rayShift_energy) and (C·D², D′) ∈ commonLabels / firstLiveColumns.
+  Fallback (b): LOW supply uniform in the twist conductor with loss N(D)^c, c < 1 (collision families have room ≈ w_C
+  vs a deficit ≈ (1+q−6qβ)w_C ≈ 0.01 w_C for not transferring C). Seeds (S): approved mechanical generalization
+  (per-label child seed in Family_mx), scheduled after the F5 bridge.

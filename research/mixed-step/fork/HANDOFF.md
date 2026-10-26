@@ -822,3 +822,35 @@ def RegularSupplier3Statement (K:ℚ)(n low high:Source)(b:ℚ)(reserve θ mesh 
   `reserve ≤ allowance`.
 - The shift loss is `κ_shift = 2·mesh ≤ θ/50`. It is absorbed by the reserve inside the bridge, at Collet's `RegularFinite` step, so it needs no hypothesis.
 - `regularLowMesh_mx`'s arguments are `n low b φ θ hprice hlow ha hqhalf hq1 hG hθ`, with namespace `QRH.Record1252270103Source.High.GlobalPhysical`.
+
+## Collision families
+### Fork-side facts for option (k) (fork lead, 2026-10-26 ~04:05)
+* **Is an extended column a column of the first layer?**
+  - `FirstColumnIndex (source s₀ modifier R seed K Z ξ hK key) = Σ q : CommonGeometryFiber s₀ modifier R seed K Z ξ key, (src q).divisors × RayCharacter × RayCharacter`
+    (`Cycle61/Physical/InitialMass/ActiveColumns.lean:23`).
+  - The label `q` is a `SourceCoordinate` of `s₀`. Its pair `(C, D) := q.1.val` lies in `commonLabels` of
+    `activeSource (finiteColumns (piFinset s₀.pools)) (coefficient s₀ modifier R seed)`, and its geometry key is `key`
+    (`S/High/CoupledFirstLabels.lean:99-107`, `S/High/GlobalPhysicalGeometryBins.lean:70`).
+  - So an extended column with common ideal `C·D_f` exists iff `(C·D_f, D′)` is a common label of the first layer's active
+    source. Its key will in general be another bin, since the key records the norms of `C` and `D`.
+  - This is harmless: a collision family then sits on an anchor with that bin (`Anchor_mx.bin`), and every family has its own anchor.
+  - It must also be in `firstLiveColumns … logAnnulus` (`hLive`) for that source.
+* **How does `columnCharacter` depend on the column ideal?**
+  - `columnCharacter reflected … j = (fixedPair s₀.η src.C src.D src.hC src.inactive j.2.2.1 j.2.2.2⁻¹).left/right`
+    (`S/Admission/FirstFamilyLabels.lean:32-42`).
+  - `fixedPair` is a `Classical.choice`, so characters are never equal by computation.
+  - Its specification fixes only the height coefficients on supported ideals (`OB/FirstPhysicalSourceFixedFamily.lean`, `left_height`/`right_height`):
+    `heightCoeff left t I = rowWeight η fixedBadMask 1 1 t I · leftCoefficient (primeSubsetGenerator E) (activeConductor C D) (finiteSexticRow (activePrime C D) _ (activeExponent C D)) (primary I) · rayCharacter ξ₁ (primary I)`.
+  - So `C` enters only through the inactive set `E`, `activeConductor C D` and the sextic row of the active primes with their net exponents.
+* **Consequence.**
+  - The LOW pin `input.η = columnCharacter (column l)` holds by construction if the collision family's character is defined as
+    `columnCharacter (extended column)`.
+  - What then has to be proved is an *energy equality* between the transfer's twisted output and the corrected child energy with
+    that character, on supported ideals. This is the same pattern as N2's `rayShift_energy` via `FixedPair.left_height`.
+  - That works if the twist `χ(δ_f³)` is the sextic-row factor of the primes of `D_f` with the right net exponents.
+  - The second pin, `R = R₀·columnIdeal (column l)`, then holds with the extended column ideal.
+  - Plains are shortened by `D_f` (`Input.shortenPlains`). This changes the second-layer parent per family: anchor `s := (s.restrict J).shortenPlains …`.
+    The δ-shift becomes `logb Z (volume s₀) − logb Z (volume s_short)`, which includes `log N(D_f)`.
+* **Seeds (approved option (1)).** The per-label child seed in `Family_mx` will be done after the F5 bridge is green, as one coordinated
+  recompile of `ForkMx/` (F4 helper, N3/N6 agent notified). The F6 complement top (`InitialRegularToTruncatedMainExceptional(_mx)`)
+  assumes seed = column divisor and must be generalized by its owner (now N7).

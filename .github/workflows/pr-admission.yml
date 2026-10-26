@@ -66,19 +66,15 @@ jobs:
   verify:
     needs: prepare
     if: needs.prepare.outputs.verify == 'true'
-    runs-on: [self-hosted, Linux, X64, qrh-proof]
+    runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
       matrix:
         result: ${{ fromJSON(needs.prepare.outputs.matrix) }}
     # Leave time for setup, replay, and artifact upload before finalization.
-    timeout-minutes: 510
+    timeout-minutes: 330
     permissions:
       contents: read
-    env:
-      QRH_REPLAY_BUDGET_SECONDS: "21600"
-      QRH_WORKER_THREADS: "12"
-      QRH_KERNEL_JOBS: "1"
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -86,7 +82,7 @@ jobs:
           persist-credentials: false
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
-          node-version: 22.22.1
+          node-version: 22.17.0
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
           name: verification-context-${{ github.run_attempt }}
@@ -140,7 +136,7 @@ jobs:
       - name: Check the canonical theorem with Comparator and all three kernels
         id: check
         if: steps.setup.outcome == 'success'
-        # Replay enforces its own deadline, leaving time to upload diagnostics.
+        timeout-minutes: 185
         run: python3 verifier/actions/run.py
       - name: Record worker completion
         if: always()

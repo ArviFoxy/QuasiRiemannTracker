@@ -1,4 +1,11 @@
-/- Mixed source step, L2 transfer: the per-column fourth-power identity and the
+/- Copyright (c) 2026 Sil. Apache-2.0.
+`row_rays_fourth` is adapted from Sil's `fixed_product_rays`
+(FourthPower/MixedSupplierKernel.lean, PR 74, vendored in PR 76). Changes: no fixed
+supplier `f`; stated for ideals through `primaryGaussRow` (unsupported columns
+included) and followed by Sil's `normalized_fourth_power` column by column. The rest
+is new in this submission.
+
+Mixed source step, L2 transfer: the per-column fourth-power identity and the
 column/tuple dictionary for Collet's source polynomials.
 
 `row_rays_fourth` is the exact CRT + ray + fourth-power identity for one

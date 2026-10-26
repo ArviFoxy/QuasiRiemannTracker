@@ -1,4 +1,9 @@
-/- Mixed source step, L2 transfer: the fourth-power transfer inequality at
+/- Copyright (c) 2026 Sil. Apache-2.0.
+`row_norm_bound` adapts Sil's `frequency_norm_bound` (FourthPower/PositiveFamily.lean,
+PR 74, vendored in PR 76) to the slot window `∏_J hi·P`. The rest is new in this
+submission and uses Sil's, Collet's and the baseline's lemmas by import.
+
+Mixed source step, L2 transfer: the fourth-power transfer inequality at
 Collet's first MAIN layer.
 
 The dyadic energy of Collet's child source (coefficient normalized by `√T`)

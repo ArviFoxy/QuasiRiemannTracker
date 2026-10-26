@@ -1,4 +1,10 @@
-/- Mixed source step: the transfer in the waist form consumed by L4/L5
+/- Copyright (c) 2026 Hailey Collet. Apache-2.0.
+The decidable-instance transports `hL` and `hR` follow the proof of Collet's
+`actual_marked_allocation_main` (Record1252270103Source/High/GlobalPhysicalAllocationMain.lean:
+`generalize` the child, then `source_gauss_energy_pool_decEq`). The rest is new in
+this submission.
+
+Mixed source step: the transfer in the waist form consumed by L4/L5
 (`TransferContract`, design §4).
 
 For an actual allocation `B` and a block `J` of its live slots,
@@ -13,8 +19,7 @@ the slots), `SeedFree s J L` (no selected prime divides the seed), no collision
 in the child, `0 ≤ hi` on `J`, and the radius condition
 `2·H·(∏_J hi_j P_j)⁴ ≤ H'`. The residual carries `T/∏_J P` and the only
 slot factor is the bounded `∏ hi·M²`: no `∏ P` appears twice. -/
-import Submissions.arvi_mixed_step.Transfer.Ball
-import Submissions.arvi_mixed_step.Residual.Restrict
+import Submissions.arvi_mixed_step.Residual.BallMatch
 import Submissions.hailey_collet_1252270103.Record1252270103Source.High.GlobalPhysicalAllocationMain
 
 set_option autoImplicit false
@@ -104,7 +109,7 @@ theorem transfer_waist (ε : ℝ) (hε : 0 < ε) (N : ℕ) :
         K * (∏ j ∈ J, s.hi j * s.M j ^ 2) * (max 1 H') ^ ε *
           ∑ ξ : RayCharacter, correctedChildGaussEnergy (s.restrict J) 1 1 1 1 C R L (fun _ => 1) P
             (allocRestrict s C B J hJ) (childCharacter τ ξ) t (T / ∏ j ∈ J, s.P j) H' := by
-  obtain ⟨Cb, hCb, hball⟩ := collet_main_selected_transfer_ball.{u} ε hε N
+  obtain ⟨Cb, hCb, hball⟩ := collet_main_selected_transfer_ball_match.{u} ε hε N
   refine ⟨Cb, hCb, ?_⟩
   intro α _ _ hcard s C R L P hp hPA B J hJ hSF hhi τ t T H H' hH hH' hrad hCol
   have hcard' : Fintype.card (liveIndices B.val) ≤ N := by
@@ -148,9 +153,11 @@ theorem transfer_waist (ε : ℝ) (hε : 0 < ε) (N : ℕ) :
     unfold CoupledFirst.tupleCoefficient at hne ⊢
     exact mul_ne_zero (modifier_ne_one _ _ _ _ _ v (left_ne_zero_of_mul hne))
       (right_ne_zero_of_mul hne)
-  have hb := hball hcard' (child s C R B τ t) (liveBlock B J) (1 * B.val (Sum.inr 0))
-    (1 * B.val (Sum.inr 1)) 1 (1 * markedProduct B.val) (R * C) L (poolCorr P C) τ t T H H'
-    hH hH' hrad' hhi' hS' hF' hCol'
+  have hb := hball hcard' (child s C R B τ t) (liveBlock B J) (childRestrictEquiv s C B J hJ)
+    (fun ξ => child (s.restrict J) C R (allocRestrict s C B J hJ) (childCharacter τ ξ) t)
+    (fun ξ => childRestrict_match s C R B J hJ τ (childCharacter τ ξ) t t)
+    (1 * B.val (Sum.inr 0)) (1 * B.val (Sum.inr 1)) 1 (1 * markedProduct B.val) (R * C) L
+    (poolCorr P C) τ t T H H' hH hH' hrad' hhi' hS' hF' hCol'
   -- left side: Collet's decidable-equality instance
   have hL : correctedChildGaussEnergy s 1 1 1 1 C R L (fun _ => 1) P B τ t T H =
       (gaussEnergy Finset.univ
@@ -170,16 +177,19 @@ theorem transfer_waist (ε : ℝ) (hε : 0 < ε) (N : ℕ) :
         (markedSourceModifier (1 * B.val (Sum.inr 0)) (1 * B.val (Sum.inr 1)) 1
           (1 * markedProduct B.val) (poolCorr P C)) (R * C) L I *
         ((Real.sqrt T : ℂ)⁻¹ * rowWeight τ fixedBadMask 1 1 t I)) ballProfile H
-  -- right side: transport to the child of the restricted parent
+  -- right side: the child of the restricted parent, with Collet's instance
+  have hPJ : ∏ j ∈ liveBlock B J, (child s C R B τ t).P j = ∏ j ∈ J, s.P j :=
+    prod_liveBlock B J hJ s.P
   have hR : ∀ ξ : RayCharacter,
       (gaussEnergy Finset.univ
-        (sourceGenerator (finiteColumns
-          (Fintype.piFinset (residualInput (child s C R B τ t) (liveBlock B J)).pools)))
-        (sourceGenerator_supported (finiteColumns
-          (Fintype.piFinset (residualInput (child s C R B τ t) (liveBlock B J)).pools)))
-        (fun I : supportedColumns (finiteColumns
-            (Fintype.piFinset (residualInput (child s C R B τ t) (liveBlock B J)).pools)) =>
-          CoupledFirst.coefficient (residualInput (child s C R B τ t) (liveBlock B J))
+        (sourceGenerator (finiteColumns (Fintype.piFinset
+          (child (s.restrict J) C R (allocRestrict s C B J hJ) (childCharacter τ ξ) t).pools)))
+        (sourceGenerator_supported (finiteColumns (Fintype.piFinset
+          (child (s.restrict J) C R (allocRestrict s C B J hJ) (childCharacter τ ξ) t).pools)))
+        (fun I : supportedColumns (finiteColumns (Fintype.piFinset
+            (child (s.restrict J) C R (allocRestrict s C B J hJ) (childCharacter τ ξ) t).pools)) =>
+          CoupledFirst.coefficient
+            (child (s.restrict J) C R (allocRestrict s C B J hJ) (childCharacter τ ξ) t)
             (markedSourceModifier (1 * B.val (Sum.inr 0)) (1 * B.val (Sum.inr 1)) 1
               (1 * markedProduct B.val) (poolCorr P C)) (R * C) L I *
             ((Real.sqrt (T / ∏ j ∈ liveBlock B J, (child s C R B τ t).P j) : ℂ)⁻¹ *
@@ -187,11 +197,7 @@ theorem transfer_waist (ε : ℝ) (hε : 0 < ε) (N : ℕ) :
       correctedChildGaussEnergy (s.restrict J) 1 1 1 1 C R L (fun _ => 1) P
         (allocRestrict s C B J hJ) (childCharacter τ ξ) t (T / ∏ j ∈ J, s.P j) H' := by
     intro ξ
-    have hPJ : ∏ j ∈ liveBlock B J, (child s C R B τ t).P j = ∏ j ∈ J, s.P j :=
-      prod_liveBlock B J hJ s.P
     rw [hPJ]
-    refine Eq.trans (congrArg Complex.re (restrictChild_energy s C R B J hJ τ (childCharacter τ ξ)
-      t t _ _ _ _ _ _ _ _ _ _)) ?_
     unfold correctedChildGaussEnergy
     dsimp only
     rw [allocRestrict_marked s C B J hJ]
@@ -210,8 +216,8 @@ theorem transfer_waist (ε : ℝ) (hε : 0 < ε) (N : ℕ) :
   rw [hL]
   refine hb.trans (le_of_eq ?_)
   rw [hHM]
-  congr 1
-  exact Finset.sum_congr rfl (fun ξ _ => hR ξ)
+  exact congrArg (fun x => Cb * (∏ j ∈ J, s.hi j * s.M j ^ 2) * (max 1 H') ^ ε * x)
+    (Finset.sum_congr rfl (fun ξ _ => hR ξ))
 
 end
 end QRH.MixedStep.Residual

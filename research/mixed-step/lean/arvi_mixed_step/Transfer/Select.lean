@@ -1,4 +1,6 @@
-/- Mixed source step, L2 transfer: choosing the selected block under (S).
+/- Mixed source step, L2 transfer: new in this submission; uses Sil's `upward_subset` by import.
+
+Choosing the selected block under (S).
 
 Step 8 of the plan: the block `J` is chosen greedily (Sil's `upward_subset`)
 among the slots allowed by (S), i.e. slots none of whose primes divides the

@@ -1,4 +1,13 @@
-/- Mixed source step, L2 transfer: the positive chain after the identity (T).
+/- Copyright (c) 2026 Sil. Apache-2.0.
+Adapted from Sil's FourthPower (PR 74, vendored in PR 76): `ray_family_energy`
+follows `fourth_family_sq` (MixedSupplierPositive.lean: `first_ray_sq`, then
+Cauchy-Schwarz over the selected assignments); `pushforward_bound` follows the
+fibre count of `weighted_pushforward` and `selected_fiber_card` follows `fiber_card`
+(PositiveFamily.lean). Changes: stated for an abstract ray-family identity with a
+uniform scalar bound `A₀` (no grouping by `D`); the fibre bound is a hypothesis;
+`selected_fiber_card` counts fibres of `(u,k) ↦ d(u)⁴k` over tuples of slot primes.
+
+Mixed source step, L2 transfer: the positive chain after the identity (T).
 
 Given an exact ray-family identity
   G(k) = Σ_{χ,ξ} π_{χξ} Σ_{u ∈ U} α(u,χ,k) · G'_ξ(d(u)⁴ k),

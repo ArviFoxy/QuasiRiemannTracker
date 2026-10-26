@@ -1,4 +1,5 @@
-/- Mixed step (L4/L5, F1): fork of Record1252270103Source.High.GlobalPhysicalSelectedMass
+/- Copyright (c) 2026 Hailey Collet. Apache-2.0.
+Mixed step (L4/L5, F1): fork of Record1252270103Source.High.GlobalPhysicalSelectedMass
 (Hailey Collet, Apache-2.0; inherited notices retained).
 
 `actual_selected_paid_weight` with two parents: the balanced first mass (scalar at the original

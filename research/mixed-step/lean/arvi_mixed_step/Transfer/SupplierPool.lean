@@ -1,4 +1,6 @@
-/- Mixed source step, L2 transfer: the supplier form chained into Collet's pool.
+/- Mixed source step, L2 transfer: new in this submission; uses Collet's pool chain (through PoolRows.lean) by import.
+
+The supplier form chained into Collet's pool.
 
 Without (S): the original first-MAIN dyadic energy is bounded by the
 pool-corrected ball energies of the residual sources, one for each residual

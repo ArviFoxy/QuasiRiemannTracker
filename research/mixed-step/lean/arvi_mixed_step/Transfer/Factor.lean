@@ -1,4 +1,6 @@
-/- Mixed source step, L2 transfer: exact factorization of Collet's tuple
+/- Mixed source step, L2 transfer: new in this submission; uses Collet's lemmas and Sil's `PowerFree` by import.
+
+Exact factorization of Collet's tuple
 coefficient along the selected block `J`.
 
 Under (S) (no selected prime divides the seed `L`), the invariance of the

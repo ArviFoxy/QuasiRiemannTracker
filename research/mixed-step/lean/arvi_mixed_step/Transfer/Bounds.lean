@@ -1,4 +1,15 @@
-/- Mixed source step, L2 transfer: the concrete bounds feeding the positive chain.
+/- Copyright (c) 2026 Sil. Apache-2.0.
+Adapted from Sil's FourthPower (PR 74, vendored in PR 76),
+MixedSupplierPositive.lean: `selScalar_norm_le` follows `selected_scalar_norm`;
+`activeSel`, `activeSel_card`, `activeSel_mass` follow `activeSelected`,
+`active_selected_annular_card`, `normalized_selected_card`; `selWeight_norm_le`
+follows `selected_weight_norm`; `fiber_power_bound` follows `selected_fiber_subpower`.
+Changes: Collet's `Input` slot data replace Sil's `Data`; the scalar bound carries
+the residual renormalization `(√∏_J P)⁻¹`; the count uses the slot support window
+`hi·P` (constant 128); the fibre bound uses the divisor count of the output
+frequency, uniformly in `m ≤ N`.
+
+Mixed source step, L2 transfer: the concrete bounds feeding the positive chain.
 
 * `selScalar_norm_le`: every selected scalar is at most `(√∏_J P)⁻¹ · ∏_J M`.
 * `activeSel_mass`: the active selected count times the square of that bound is

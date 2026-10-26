@@ -46,9 +46,9 @@ local notation "O" => HeckeFamily.O
 /-- Collet's `raw_low_three_branches` without the weak cap, keeping the frozen terms. -/
 theorem raw_low_three_branches_f (a g q B lam h F t b c delta f B12 D : ℝ)
     (hq : 0 ≤ q) (hB : B ≤ 1) (hlam : 1 < lam)
-    (hc : 0 ≤ c) (hdelta : 0 ≤ delta) (hdc : delta ≤ c)
-    (hB12 : 0 ≤ B12) (hdB : delta ≤ B12) (hD : 0 ≤ D) (hf : 0 ≤ f)
-    (hh : 0 ≤ h) (hqh : q*h ≤ 1)
+    (_hc : 0 ≤ c) (hdelta : 0 ≤ delta) (hdc : delta ≤ c)
+    (hB12 : 0 ≤ B12) (hdB : delta ≤ B12) (hD : 0 ≤ D) (_hf : 0 ≤ f)
+    (_hh : 0 ≤ h) (hqh : q*h ≤ 1)
     (hgap : g = a-q*(b+(t-B*F)/lam)) :
     -a-B12-D + q*max 0 (max
       (b-f-(B*(F-delta)-(t-c+f))/lam)
@@ -119,7 +119,7 @@ theorem actual_erasure_three_branch_payment_f
       (b-f-(B*(F-delta)-(t-c+f))/lam)+(B*rho+loss)/lam := by ring
   have e₂ : b-f-h*(F-delta-rho) = (b-f-h*(F-delta))+h*rho := by ring
   rw [e₁, e₂] at herased
-  have hm := mul_le_mul_of_nonneg_left (herased.trans (add_le_add_right hp mesh)) hq
+  have hm := mul_le_mul_of_nonneg_left (herased.trans (add_le_add hp (le_refl mesh))) hq
   nlinarith only [ha, hm]
 
 /-- Collet's `actual_low_coordinate_payment` (High/GlobalPhysicalLowPayment.lean) without the weak
@@ -328,9 +328,15 @@ theorem mixed_node_price_frozen_of (n low : Source) (b ε : ℝ) (hg : RealGeome
     have hcf : 0≤(n.q:ℝ)*((low.cap:ℝ)*F) := mul_nonneg hq0 (mul_nonneg hh0 hF0)
     nlinarith [mul_le_mul_of_nonneg_left hφ hq0]
   have hmin : a-6*(n.allowance:ℝ)≤frozenGain n low b width f := by
-    simp only [frozenGain]
-    rw [mul_min_of_nonneg _ _ hq0, ← add_min]
-    exact le_min h1 h2
+    show a-6*(n.allowance:ℝ)≤(a-(n.q:ℝ)*(b+(P-(low.B:ℝ)*F)/(low.L:ℝ)))+
+      (n.q:ℝ)*min ((1-1/(low.L:ℝ))*f) (f-(((low.B:ℝ)*F-P)/(low.L:ℝ)-(low.cap:ℝ)*F))
+    rw [mul_min_of_nonneg _ _ hq0]
+    have hm := le_min
+      (show a-6*(n.allowance:ℝ)-(a-(n.q:ℝ)*(b+(P-(low.B:ℝ)*F)/(low.L:ℝ)))≤
+        (n.q:ℝ)*((1-1/(low.L:ℝ))*f) by linarith)
+      (show a-6*(n.allowance:ℝ)-(a-(n.q:ℝ)*(b+(P-(low.B:ℝ)*F)/(low.L:ℝ)))≤
+        (n.q:ℝ)*(f-(((low.B:ℝ)*F-P)/(low.L:ℝ)-(low.cap:ℝ)*F)) by linarith)
+    linarith
   have ha := hg.a_allowance
   apply le_min <;> linarith
 
@@ -339,8 +345,7 @@ virtual node), any frozen width `f ≥ 0` pays: Collet's argument with the froze
 theorem mixed_node_price_top_of (n low : Source) (b : ℝ) (hg : RealGeometryLow n low b)
     (hlow : ParentGood low) (hL : 0≤(n.L:ℝ)) (he : 0≤(n.allowance:ℝ))
     (hq0 : 0≤(n.q:ℝ)) (hq1 : (n.q:ℝ)≤1)
-    (hfee : ((n.q:ℝ)*(low.B:ℝ)/(low.L:ℝ)+(n.q:ℝ)*(low.cap:ℝ)+4)*(n.allowance:ℝ)+
-      10*(n.allowance:ℝ)<(n.lowFee:ℝ))
+    (hfee : 14*(n.allowance:ℝ)≤(n.lowFee:ℝ))
     (hweak : ((low.B:ℝ)*sourceFReal n low b-sourceTReal n b)/(low.L:ℝ)≤
       (low.cap:ℝ)*sourceFReal n low b) :
     MixedNodePrice n low b 0 := by
@@ -375,14 +380,55 @@ theorem mixed_node_price_top_of (n low : Source) (b : ℝ) (hg : RealGeometryLow
       have : 1/(low.L:ℝ)≤1 := (div_le_one hLpos).mpr hlam.le
       linarith
     · linarith
-  have hp : 0≤((n.q:ℝ)*(low.B:ℝ)/(low.L:ℝ)+(n.q:ℝ)*(low.cap:ℝ))*(n.allowance:ℝ) :=
-    mul_nonneg (add_nonneg (div_nonneg (mul_nonneg hq0 hB0) hLpos.le) (mul_nonneg hq0 hh0)) he
   have hfg : (27/2:ℝ)*(n.allowance:ℝ)≤frozenGain n low b width f := by
     simp only [frozenGain]
     rw [hgain]
     nlinarith [mul_nonneg hq0 hfz]
   have ha := hg.a_allowance
   apply le_min <;> linarith
+
+/-! ## The prices at the virtual nodes -/
+
+/-- **Frozen price at every node** `0 ≤ θ ≤ δ ≤ d`: frozen width at least `(b - θ) - ε`. -/
+theorem mixed_node_price_frozen (n low h : Source) (hv : SourceValidC3 n low h)
+    (hlow : ParentGood low) (hden : sourceDen n low ≠ 0) (he : 0≤(n.allowance:ℝ))
+    {b δ θ : ℚ} (hb : (b:ℝ)∈Set.Icc (crossing n low:ℝ) (n.cap:ℝ))
+    (hθ0 : 0≤θ) (hθ : θ≤δ) (hδ : δ≤sourceD n low b)
+    {ε : ℝ} (hε0 : 0≤ε) (hε : ε≤6*(n.allowance:ℝ)) :
+    MixedNodePrice (vnode2 n low b δ θ) low ((b-θ:ℚ):ℝ) (((b-θ:ℚ):ℝ)-ε) := by
+  have S := shape3_of n low h hv
+  exact mixed_node_price_frozen_of (vnode2 n low b δ θ) low ((b-θ:ℚ):ℝ) ε
+    (realGeometryLow_vnode2 n low h hv hlow hden he hb hθ0 hθ hδ) hlow
+    (by simp only [vnode2_L]; linarith [S.L_gt]) he (by simp only [vnode2_q]; linarith [S.q_half])
+    (by simp only [vnode2_q]; linarith [S.q_lt]) hε0 hε
+
+/-- **Top price** at `δ = d` with budget shift `θ`, `q(d - θ) ≤ 6e`: any frozen width. -/
+theorem mixed_node_price_top (n low h : Source) (hv : SourceValidC3 n low h)
+    (hlow : ParentGood low) (hden : sourceDen n low ≠ 0) (he : 0≤(n.allowance:ℝ))
+    {b θ : ℚ} (hb : (b:ℝ)∈Set.Icc (crossing n low:ℝ) (n.cap:ℝ))
+    (hθ0 : 0≤θ) (hθ : θ≤sourceD n low b)
+    (hslack : (n.q:ℝ)*((sourceD n low b:ℝ)-θ)≤6*(n.allowance:ℝ)) :
+    MixedNodePrice (vnode2 n low b (sourceD n low b) θ) low ((b-θ:ℚ):ℝ) 0 := by
+  have S := shape3_of n low h hv
+  have hg := realGeometryLow_vnode2 n low h hv hlow hden he hb hθ0 hθ le_rfl
+  have hall := scalar3_full_width n low h hv hb
+  have g0 := hall.1 0
+  have g8 := hall.1 8
+  simp only [scalarGate3Real] at g0 g8
+  norm_num at g0 g8
+  have hweak := hall.2
+  obtain ⟨hT, _, hF⟩ := vnode2_real n low b (sourceD n low b) θ hden
+  have hdR : ((sourceD n low b:ℚ):ℝ) = sourceDReal n low (b:ℝ) := (sourceDReal_rat n low b).symm
+  apply mixed_node_price_top_of _ low _ hg hlow (by simp only [vnode2_L]; linarith [S.L_gt]) he
+    (by simp only [vnode2_q]; linarith [S.q_half]) (by simp only [vnode2_q]; linarith [S.q_lt])
+  · simp only [vnode2_allowance, vnode2_lowFee]
+    rw [vfee2_top n low b θ (ne_of_gt g0)]
+    push_cast
+    have g8' : 20*(n.allowance:ℝ)<(n.lowFee:ℝ) := by exact_mod_cast g8
+    linarith
+  · rw [hT, hF, hdR, sub_self, mul_zero, add_zero]
+    simp only [weakCap3Real] at hweak
+    linarith
 
 /-! ## The design's fee margin `φ_k` and the pool-only gate (§1d) -/
 
@@ -466,11 +512,12 @@ theorem mixed_node_price_phi (n low h : Source) (hv : SourceValidC3 n low h) (hl
   have g7 := (scalar3_full_width n low h hv hb).1 7
   simp only [scalarGate3Real] at g7
   norm_num at g7
-  apply mixed_price_of_gain _ low _ _ hlow he hq0.le hq1 hg.qcap_room.le
+  apply mixed_price_of_gain (vnode n low b δ) low ((b-δ:ℚ):ℝ) (phiK n low b δ) hlow he hq0.le hq1
+    hg.qcap_room.le
   intro width f hw0 hw hf hφ
   have hLpos : 0<(low.L:ℝ) := hg.lowL_pos
   have hc := width_charge (vnode n low b δ) low width he hL hq0.le hq1 hlam.le hw
-  simp only [vnode_q, vnode_L] at hc
+  simp only [vnode_q, vnode_L, vnode_allowance] at hc
   have hgain : sourceAReal (vnode n low b δ) low ((b-δ:ℚ):ℝ)-(n.q:ℝ)*
       (((b-δ:ℚ):ℝ)+(plainBudget (vnode n low b δ) ((b-δ:ℚ):ℝ) width-
         (low.B:ℝ)*sourceFReal (vnode n low b δ) low ((b-δ:ℚ):ℝ))/(low.L:ℝ))=
@@ -494,6 +541,9 @@ theorem mixed_node_price_phi (n low h : Source) (hv : SourceValidC3 n low h) (hl
     have : 1/(low.L:ℝ)≤1 := (div_le_one hLpos).mpr hlam.le
     linarith
   have hspec := phiK_spec n low b δ hq0 hlam hφ
+  have hspec' : (n.lowFee:ℝ)≤(vfee n low b δ:ℝ)+(n.q:ℝ)*((1-1/(low.L:ℝ))*f) := by
+    have e : (n.q:ℝ)*(1-1/(low.L:ℝ))*f=(n.q:ℝ)*((1-1/(low.L:ℝ))*f) := by ring
+    linarith
   -- the affine frozen term is the smaller one
   have hmin : (n.q:ℝ)*((1-1/(low.L:ℝ))*f)≤(n.q:ℝ)*min ((1-1/(low.L:ℝ))*f)
       (f-(((low.B:ℝ)*sourceFReal (vnode n low b δ) low ((b-δ:ℚ):ℝ)-
@@ -525,5 +575,7 @@ end QRH.MixedStep.Ledger
 #print axioms QRH.MixedStep.Ledger.modified_low_coordinate_payment_f
 #print axioms QRH.MixedStep.Ledger.mixed_node_price_frozen_of
 #print axioms QRH.MixedStep.Ledger.mixed_node_price_top_of
+#print axioms QRH.MixedStep.Ledger.mixed_node_price_frozen
+#print axioms QRH.MixedStep.Ledger.mixed_node_price_top
 #print axioms QRH.MixedStep.Ledger.pool_only_gate
 #print axioms QRH.MixedStep.Ledger.mixed_node_price_phi

@@ -1,4 +1,11 @@
-/- Mixed source step, L2 transfer: the transfer at Collet's MAIN waist.
+/- Copyright (c) 2026 Hailey Collet. Apache-2.0.
+Adapted from Collet's `actual_marked_allocation_main`
+(Record1252270103Source/High/GlobalPhysicalAllocationMain.lean): the allocation split,
+the per-allocation step and the decidable-instance transport are kept. Change: the
+per-child pool bound is replaced by the selected transfer
+`collet_main_selected_transfer_pool`.
+
+Mixed source step, L2 transfer: the transfer at Collet's MAIN waist.
 
 `allocation_selected_transfer_pool` is the mixed twin of Collet's
 `actual_marked_allocation_main` (S/High/GlobalPhysicalAllocationMain.lean):

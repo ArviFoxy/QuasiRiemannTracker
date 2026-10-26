@@ -1,4 +1,6 @@
-/- Mixed source step, L2 transfer: removing the seed hypothesis (S) by
+/- Mixed source step, L2 transfer: new in this submission; uses Collet's definitions by import.
+
+Removing the seed hypothesis (S) by
 supplier splitting.
 
 When selected primes supply part of the (squarefree) seed `L`, the residual

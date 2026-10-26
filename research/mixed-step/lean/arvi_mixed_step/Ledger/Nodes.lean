@@ -30,9 +30,28 @@ open Record1252270103Finite QRH.MixedStep.Finite QRH.Record1252270103Graph
 def vfee (n low : Source) (b δ : ℚ) : ℚ :=
   n.lowFee*(1 - 6*n.q*(low.B/low.L)) + δ*sourceDen3 n low - n.q*sourceX0 n low b
 
-/-- The virtual node at transferred width `δ` (evaluated at the width `b - δ`). -/
-def vnode (n low : Source) (b δ : ℚ) : Source :=
-  ⟨n.B - n.L*δ, n.L, n.cap, n.q, n.allowance, vfee n low b δ, n.highFee⟩
+/-- The fee of the two-parameter node: amplifier shift `δ`, budget/width shift `θ`. -/
+def vfee2 (n low : Source) (b δ θ : ℚ) : ℚ := vfee n low b δ - n.q*(δ - θ)
+
+/-- The two-parameter virtual node: plain budget and width shifted by `θ` (evaluated at the width
+`b - θ`), amplifier shifted by `δ`. The residual of a transfer of actual width `δ_act ∈ [θ, δ]` sits
+inside its face: `m₁ + m₂ + L·Σ_res ≤ B - L·θ` and `Σ_res ≤ b - θ`. -/
+def vnode2 (n low : Source) (b δ θ : ℚ) : Source :=
+  ⟨n.B - n.L*θ, n.L, n.cap, n.q, n.allowance, vfee2 n low b δ θ, n.highFee⟩
+
+/-- The one-parameter virtual node (`θ = δ`), evaluated at the width `b - δ`. -/
+def vnode (n low : Source) (b δ : ℚ) : Source := vnode2 n low b δ δ
+
+@[simp] lemma vnode2_B (n low : Source) (b δ θ : ℚ) : (vnode2 n low b δ θ).B = n.B - n.L*θ := rfl
+@[simp] lemma vnode2_L (n low : Source) (b δ θ : ℚ) : (vnode2 n low b δ θ).L = n.L := rfl
+@[simp] lemma vnode2_cap (n low : Source) (b δ θ : ℚ) : (vnode2 n low b δ θ).cap = n.cap := rfl
+@[simp] lemma vnode2_q (n low : Source) (b δ θ : ℚ) : (vnode2 n low b δ θ).q = n.q := rfl
+@[simp] lemma vnode2_allowance (n low : Source) (b δ θ : ℚ) :
+    (vnode2 n low b δ θ).allowance = n.allowance := rfl
+@[simp] lemma vnode2_lowFee (n low : Source) (b δ θ : ℚ) :
+    (vnode2 n low b δ θ).lowFee = vfee2 n low b δ θ := rfl
+@[simp] lemma vnode2_highFee (n low : Source) (b δ θ : ℚ) :
+    (vnode2 n low b δ θ).highFee = n.highFee := rfl
 
 @[simp] lemma vnode_B (n low : Source) (b δ : ℚ) : (vnode n low b δ).B = n.B - n.L*δ := rfl
 @[simp] lemma vnode_L (n low : Source) (b δ : ℚ) : (vnode n low b δ).L = n.L := rfl
@@ -41,38 +60,51 @@ def vnode (n low : Source) (b δ : ℚ) : Source :=
 @[simp] lemma vnode_allowance (n low : Source) (b δ : ℚ) :
     (vnode n low b δ).allowance = n.allowance := rfl
 @[simp] lemma vnode_lowFee (n low : Source) (b δ : ℚ) :
-    (vnode n low b δ).lowFee = vfee n low b δ := rfl
+    (vnode n low b δ).lowFee = vfee n low b δ := by
+  simp [vnode, vfee2]
 @[simp] lemma vnode_highFee (n low : Source) (b δ : ℚ) :
     (vnode n low b δ).highFee = n.highFee := rfl
 
-theorem vnode_den (n low : Source) (b δ : ℚ) : sourceDen (vnode n low b δ) low = sourceDen n low :=
-  rfl
+theorem vnode2_den (n low : Source) (b δ θ : ℚ) :
+    sourceDen (vnode2 n low b δ θ) low = sourceDen n low := rfl
 
-/-- The plain budget is unchanged. -/
-theorem vnode_T (n low : Source) (b δ : ℚ) : sourceT (vnode n low b δ) (b - δ) = sourceT n b := by
-  simp only [sourceT, vnode]; ring
+/-- The plain budget is unchanged: the budget and the width move together. -/
+theorem vnode2_T (n low : Source) (b δ θ : ℚ) :
+    sourceT (vnode2 n low b δ θ) (b - θ) = sourceT n b := by
+  simp only [sourceT, vnode2]; ring
 
-/-- Collet's amplifier at the node is the pool plus the transfer. -/
-theorem vnode_A (n low : Source) (b δ : ℚ) (hden : sourceDen n low ≠ 0) :
-    sourceA (vnode n low b δ) low (b - δ) = n.lowFee + δ := by
-  have hT := vnode_T n low b δ
-  simp only [sourceA, vnode_den] at hT ⊢
+/-- Collet's amplifier at the node is the pool plus the transfer `δ`. -/
+theorem vnode2_A (n low : Source) (b δ θ : ℚ) (hden : sourceDen n low ≠ 0) :
+    sourceA (vnode2 n low b δ θ) low (b - θ) = n.lowFee + δ := by
+  have hT := vnode2_T n low b δ θ
+  simp only [sourceA, vnode2_den] at hT ⊢
   rw [div_eq_iff hden, hT]
-  simp only [vnode, vfee, sourceDen3, sourceX0, sourceDen]
+  simp only [vnode2, vfee2, vfee, sourceDen3, sourceX0, sourceDen]
   ring
 
-theorem vnode_F (n low : Source) (b δ : ℚ) (hden : sourceDen n low ≠ 0) :
-    sourceF (vnode n low b δ) low (b - δ) = 1 - 6*n.lowFee - 6*δ := by
-  rw [sourceF, vnode_A n low b δ hden]; ring
+theorem vnode2_F (n low : Source) (b δ θ : ℚ) (hden : sourceDen n low ≠ 0) :
+    sourceF (vnode2 n low b δ θ) low (b - θ) = 1 - 6*n.lowFee - 6*δ := by
+  rw [sourceF, vnode2_A n low b δ θ hden]; ring
 
-/-- At the top node `δ = d` the virtual fee is the actual fee. -/
+theorem vnode_T (n low : Source) (b δ : ℚ) : sourceT (vnode n low b δ) (b - δ) = sourceT n b :=
+  vnode2_T n low b δ δ
+
+theorem vnode_A (n low : Source) (b δ : ℚ) (hden : sourceDen n low ≠ 0) :
+    sourceA (vnode n low b δ) low (b - δ) = n.lowFee + δ :=
+  vnode2_A n low b δ δ hden
+
+theorem vnode_F (n low : Source) (b δ : ℚ) (hden : sourceDen n low ≠ 0) :
+    sourceF (vnode n low b δ) low (b - δ) = 1 - 6*n.lowFee - 6*δ :=
+  vnode2_F n low b δ δ hden
+
+/-- At the top node `δ = d` the one-parameter fee is the actual fee. -/
 theorem vfee_top (n low : Source) (b : ℚ) (hden3 : sourceDen3 n low ≠ 0) :
     vfee n low b (sourceD n low b) = n.lowFee := by
   simp only [vfee, sourceD]
   rw [div_mul_cancel₀ _ hden3]
   ring
 
-/-- The virtual fee falls short of the actual fee by `(d - δ)·den3`. -/
+/-- The one-parameter fee falls short of the actual fee by `(d - δ)·den3`. -/
 theorem vfee_sub (n low : Source) (b δ : ℚ) (hden3 : sourceDen3 n low ≠ 0) :
     vfee n low b δ - n.lowFee = (δ - sourceD n low b)*sourceDen3 n low := by
   have h := vfee_top n low b hden3
@@ -80,21 +112,37 @@ theorem vfee_sub (n low : Source) (b δ : ℚ) (hden3 : sourceDen3 n low ≠ 0) 
       (δ - sourceD n low b)*sourceDen3 n low := by simp only [vfee]; ring
   rw [h] at e; exact e
 
+/-- At the top node the two-parameter fee is the actual fee minus `q(d - θ)`. -/
+theorem vfee2_top (n low : Source) (b θ : ℚ) (hden3 : sourceDen3 n low ≠ 0) :
+    vfee2 n low b (sourceD n low b) θ = n.lowFee - n.q*(sourceD n low b - θ) := by
+  rw [vfee2, vfee_top n low b hden3]
+
 noncomputable section
 
 /-! ## Real forms at the node width -/
 
+theorem vnode2R_T (n low : Source) (b δ θ : ℚ) :
+    sourceTReal (vnode2 n low b δ θ) ((b - θ : ℚ) : ℝ) = sourceTReal n (b:ℝ) := by
+  rw [sourceTReal_rat, sourceTReal_rat, vnode2_T]
+
+theorem vnode2R_A (n low : Source) (b δ θ : ℚ) (hden : sourceDen n low ≠ 0) :
+    sourceAReal (vnode2 n low b δ θ) low ((b - θ : ℚ) : ℝ) = (n.lowFee:ℝ) + (δ:ℝ) := by
+  rw [sourceAReal_rat, vnode2_A n low b δ θ hden]; push_cast; ring
+
+theorem vnode2R_F (n low : Source) (b δ θ : ℚ) (hden : sourceDen n low ≠ 0) :
+    sourceFReal (vnode2 n low b δ θ) low ((b - θ : ℚ) : ℝ) = 1 - 6*(n.lowFee:ℝ) - 6*(δ:ℝ) := by
+  rw [sourceFReal_rat, vnode2_F n low b δ θ hden]; push_cast; ring
+
 theorem vnodeR_T (n low : Source) (b δ : ℚ) :
-    sourceTReal (vnode n low b δ) ((b - δ : ℚ) : ℝ) = sourceTReal n (b:ℝ) := by
-  rw [sourceTReal_rat, sourceTReal_rat, vnode_T]
+    sourceTReal (vnode n low b δ) ((b - δ : ℚ) : ℝ) = sourceTReal n (b:ℝ) := vnode2R_T n low b δ δ
 
 theorem vnodeR_A (n low : Source) (b δ : ℚ) (hden : sourceDen n low ≠ 0) :
-    sourceAReal (vnode n low b δ) low ((b - δ : ℚ) : ℝ) = (n.lowFee:ℝ) + (δ:ℝ) := by
-  rw [sourceAReal_rat, vnode_A n low b δ hden]; push_cast; ring
+    sourceAReal (vnode n low b δ) low ((b - δ : ℚ) : ℝ) = (n.lowFee:ℝ) + (δ:ℝ) :=
+  vnode2R_A n low b δ δ hden
 
 theorem vnodeR_F (n low : Source) (b δ : ℚ) (hden : sourceDen n low ≠ 0) :
-    sourceFReal (vnode n low b δ) low ((b - δ : ℚ) : ℝ) = 1 - 6*(n.lowFee:ℝ) - 6*(δ:ℝ) := by
-  rw [sourceFReal_rat, vnode_F n low b δ hden]; push_cast; ring
+    sourceFReal (vnode n low b δ) low ((b - δ : ℚ) : ℝ) = 1 - 6*(n.lowFee:ℝ) - 6*(δ:ℝ) :=
+  vnode2R_F n low b δ δ hden
 
 theorem sourceDReal_eq (n low : Source) (b : ℚ) : sourceDReal n low (b:ℝ) = (sourceD n low b:ℝ) :=
   sourceDReal_rat n low b
@@ -246,21 +294,22 @@ structure RealGeometryLow (n low : Source) (b : ℝ) : Prop where
   a_allowance : 20*(n.allowance:ℝ)<sourceAReal n low b
   fee_identity : sourceAReal n low b-(n.q:ℝ)*(b+(sourceTReal n b-(low.B:ℝ)*sourceFReal n low b)/(low.L:ℝ))=(n.lowFee:ℝ)
 
-/-- The node quantities in terms of the actual width: `t`, `T - δ`, `r + δ`, `F' + 6(d - δ)`. -/
-theorem vnode_real (n low : Source) (b δ : ℚ) (hden : sourceDen n low ≠ 0) :
-    sourceTReal (vnode n low b δ) ((b - δ : ℚ) : ℝ) = sourceTReal n (b:ℝ) ∧
-    sourceAReal (vnode n low b δ) low ((b - δ : ℚ) : ℝ) = (n.lowFee:ℝ) + δ ∧
-    sourceFReal (vnode n low b δ) low ((b - δ : ℚ) : ℝ) =
+/-- The node quantities in terms of the actual width: `t`, `r + δ`, `F' + 6(d - δ)`. -/
+theorem vnode2_real (n low : Source) (b δ θ : ℚ) (hden : sourceDen n low ≠ 0) :
+    sourceTReal (vnode2 n low b δ θ) ((b - θ : ℚ) : ℝ) = sourceTReal n (b:ℝ) ∧
+    sourceAReal (vnode2 n low b δ θ) low ((b - θ : ℚ) : ℝ) = (n.lowFee:ℝ) + δ ∧
+    sourceFReal (vnode2 n low b δ θ) low ((b - θ : ℚ) : ℝ) =
       sourceF3Real n low (b:ℝ) + 6*(sourceDReal n low (b:ℝ) - δ) := by
-  refine ⟨vnodeR_T n low b δ, vnodeR_A n low b δ hden, ?_⟩
-  rw [vnodeR_F n low b δ hden]; simp only [sourceF3Real]; ring
+  refine ⟨vnode2R_T n low b δ θ, vnode2R_A n low b δ θ hden, ?_⟩
+  rw [vnode2R_F n low b δ θ hden]; simp only [sourceF3Real]; ring
 
-theorem realGeometryLow_vnode (n low h : Source) (hv : SourceValidC3 n low h)
+/-- **The low geometry at every two-parameter node** `0 ≤ θ ≤ δ ≤ d`. -/
+theorem realGeometryLow_vnode2 (n low h : Source) (hv : SourceValidC3 n low h)
     (hlow : ParentGood low) (hden : sourceDen n low ≠ 0) (he : 0 ≤ (n.allowance:ℝ))
-    {b δ : ℚ} (hb : (b:ℝ) ∈ Set.Icc (crossing n low:ℝ) (n.cap:ℝ))
-    (hδ0 : 0 ≤ δ) (hδ : δ ≤ sourceD n low b) :
-    RealGeometryLow (vnode n low b δ) low ((b - δ : ℚ) : ℝ) := by
-  obtain ⟨hT, hA, hF⟩ := vnode_real n low b δ hden
+    {b δ θ : ℚ} (hb : (b:ℝ) ∈ Set.Icc (crossing n low:ℝ) (n.cap:ℝ))
+    (hθ0 : 0 ≤ θ) (hθ : θ ≤ δ) (hδ : δ ≤ sourceD n low b) :
+    RealGeometryLow (vnode2 n low b δ θ) low ((b - θ : ℚ) : ℝ) := by
+  obtain ⟨hT, hA, hF⟩ := vnode2_real n low b δ θ hden
   have hL0 : 0 < (low.L:ℝ) := by
     have h1 : (1:ℝ) < low.L := by exact_mod_cast hlow.2.2.1
     linarith
@@ -270,27 +319,36 @@ theorem realGeometryLow_vnode (n low h : Source) (hv : SourceValidC3 n low h)
   have g6 := hg 6; have g8 := hg 8; have g16 := hg 16
   simp only [scalarGate3Real] at g1 g2 g3 g4 g5 g6 g8 g16
   norm_num at g1 g2 g3 g4 g5 g6 g8 g16
-  have hδ0' : (0:ℝ) ≤ δ := by exact_mod_cast hδ0
+  have hθ0' : (0:ℝ) ≤ θ := by exact_mod_cast hθ0
+  have hθ' : (θ:ℝ) ≤ δ := by exact_mod_cast hθ
+  have hδ0' : (0:ℝ) ≤ δ := le_trans hθ0' hθ'
   have hδ' : (δ:ℝ) ≤ sourceDReal n low (b:ℝ) := by rw [sourceDReal_rat]; exact_mod_cast hδ
-  have hbδ : ((b - δ : ℚ) : ℝ) = (b:ℝ) - δ := by push_cast; ring
+  have hbθ : ((b - θ : ℚ) : ℝ) = (b:ℝ) - θ := by push_cast; ring
   have hFd : sourceF3Real n low (b:ℝ) = 1 - 6*(n.lowFee:ℝ) - 6*sourceDReal n low (b:ℝ) := rfl
   refine ⟨hL0, by exact_mod_cast hden, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
-  · rw [hbδ]; simp only [vnode_allowance]; linarith
+  · rw [hbθ]; simp only [vnode2_allowance]; linarith
   · rw [hA]; linarith
   · rw [hA]; linarith
-  · rw [hT, hF, hbδ]; simp only [vnode_allowance]; linarith
-  · rw [hT, hF, hbδ]; simp only [vnode_allowance]
+  · rw [hT, hF, hbθ]; simp only [vnode2_allowance]; linarith
+  · rw [hT, hF, hbθ]; simp only [vnode2_allowance]
     have hm : 0 ≤ (low.B:ℝ)*(sourceDReal n low (b:ℝ) - δ) := mul_nonneg hB0 (by linarith)
     nlinarith
-  · simp only [vnode_q]; linarith
-  · rw [hA]; simp only [vnode_allowance]; linarith
-  · exact QRH.Record1252270103StepScalar.fee_identity (vnode n low b δ) low _ hL0.ne'
+  · simp only [vnode2_q]; linarith
+  · rw [hA]; simp only [vnode2_allowance]; linarith
+  · exact QRH.Record1252270103StepScalar.fee_identity (vnode2 n low b δ θ) low _ hL0.ne'
       (by exact_mod_cast hden)
 
+theorem realGeometryLow_vnode (n low h : Source) (hv : SourceValidC3 n low h)
+    (hlow : ParentGood low) (hden : sourceDen n low ≠ 0) (he : 0 ≤ (n.allowance:ℝ))
+    {b δ : ℚ} (hb : (b:ℝ) ∈ Set.Icc (crossing n low:ℝ) (n.cap:ℝ))
+    (hδ0 : 0 ≤ δ) (hδ : δ ≤ sourceD n low b) :
+    RealGeometryLow (vnode n low b δ) low ((b - δ : ℚ) : ℝ) :=
+  realGeometryLow_vnode2 n low h hv hlow hden he hb hδ0 le_rfl hδ
+
 /-- The amplifier at every node is at least the pool `r`, so `mesh < r/2` gives `mesh < a_v/2`. -/
-theorem vnode_amp_ge (n low : Source) (b δ : ℚ) (hden : sourceDen n low ≠ 0) (hδ0 : 0 ≤ δ) :
-    (n.lowFee:ℝ) ≤ sourceAReal (vnode n low b δ) low ((b - δ : ℚ) : ℝ) := by
-  rw [vnodeR_A n low b δ hden]
+theorem vnode2_amp_ge (n low : Source) (b δ θ : ℚ) (hden : sourceDen n low ≠ 0) (hδ0 : 0 ≤ δ) :
+    (n.lowFee:ℝ) ≤ sourceAReal (vnode2 n low b δ θ) low ((b - θ : ℚ) : ℝ) := by
+  rw [vnode2R_A n low b δ θ hden]
   have : (0:ℝ) ≤ δ := by exact_mod_cast hδ0
   linarith
 
@@ -298,4 +356,4 @@ end
 end QRH.MixedStep.Ledger
 #print axioms QRH.MixedStep.Ledger.vnode_A
 #print axioms QRH.MixedStep.Ledger.vfee_top
-#print axioms QRH.MixedStep.Ledger.realGeometryLow_vnode
+#print axioms QRH.MixedStep.Ledger.realGeometryLow_vnode2

@@ -1,4 +1,6 @@
-/- Mixed source step, L2 transfer: the residual input and the tuple split.
+/- Mixed source step, L2 transfer: new in this submission; uses Collet's and the baseline's definitions by import.
+
+The residual input and the tuple split.
 The selected block `J` of marked slots is removed from Collet's `Input`; the
 original tuple box is the product of the selected box and the residual box. -/
 import Submissions.hailey_collet_1252270103.Record1252270103Source.High.CoupledFirstData

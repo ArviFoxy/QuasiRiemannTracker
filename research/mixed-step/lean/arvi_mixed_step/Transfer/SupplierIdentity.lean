@@ -1,4 +1,6 @@
-/- Mixed source step, L2 transfer: the identity (T) without (S).
+/- Mixed source step, L2 transfer: new in this submission; uses Sil's ray table and Collet's definitions by import.
+
+The identity (T) without (S).
 
 With a squarefree seed `L`, the residual polynomial of each selected
 assignment `u` carries the residual seed `residualSeed J L u = L/gcd(L,D_u)`:

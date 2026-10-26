@@ -1,4 +1,6 @@
-/- Mixed source step, L2 transfer: small interface facts about the residual input.
+/- Mixed source step, L2 transfer: new in this submission; uses Collet's and the baseline's definitions by import.
+
+Small interface facts about the residual input.
 
 * `residualInputAt s J η t`: the residual input carrying the Hecke character
   `η` (e.g. `childCharacter τ ξ`) and height `t`, as consumed by Collet's

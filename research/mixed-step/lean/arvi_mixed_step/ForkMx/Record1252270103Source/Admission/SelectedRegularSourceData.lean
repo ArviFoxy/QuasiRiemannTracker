@@ -1,4 +1,5 @@
-/- Mixed step (L4/L5, F1): fork of Record1252270103Source.Admission.SelectedRegularSourceData
+/- Copyright (c) 2026 Hailey Collet. Apache-2.0.
+Mixed step (L4/L5, F1): fork of Record1252270103Source.Admission.SelectedRegularSourceData
 (Hailey Collet, Apache-2.0; inherited notices retained).
 
 Two parents. The first layer (the columns of the first MAIN transform, their labels, characters,

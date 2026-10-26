@@ -1,4 +1,7 @@
-/- Mixed source step, N1: the restricted input and allocation, and the
+/- Mixed source step, N1: new in this submission; uses Collet's and the baseline's
+definitions by import.
+
+The restricted input and allocation, and the
 identification of the restricted child with the child of the restricted parent.
 
 * `Input.restrict s J` (= `QRH.MixedStep.Transfer.residualInput s J`, a

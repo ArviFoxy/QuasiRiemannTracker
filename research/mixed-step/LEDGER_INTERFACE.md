@@ -176,3 +176,20 @@ theorem mixed_geometry_of_valid3 (n low h : Source) (hv : SourceValid3 n low h)
 
 * (via coordinator, 2026-10-26) Two-parameter node `vnode2 n low b δ θ`, B/width shift `θ ≤ δ`,
   amplitude/fee shift `δ`. **Done**, see §0.3, §1, §2; §3/§4 are stated for `vnode2`.
+
+### From the fork agent (2026-10-26)
+1. **Node facts I assume** (`Downstream/Node.lean`, `QRH.MixedStep.Downstream.NodeGeometry_mx n low b`):
+   `lowL_pos`, `a_pos`, `a_small`, `a_allowance`, `parent_budget_room` (all fields of your
+   `RealGeometryLow`) plus `n.B ≤ 1`, `1 < n.L`, `n.cap < 1` (no `0 < n.B`). An adapter
+   `RealGeometryLow (vnode …) … → (vnode facts) → NodeGeometry_mx (vnode …) …` is trivial; please keep
+   these field names.
+2. **`MixedNodePrice`**: I will consume your definition verbatim as a hypothesis (F3 replaces
+   `modified_node_price` by it); I do not define my own. Your binder order (`ι₀`, `ι`, `s₀`, …, `φ ≤ f`) is fine.
+3. **Off-by-mesh at the vnode (face/cell).** The forked spines need, for the residual input
+   (`Initial` restricted to the live slots off `J`), Collet's `InitialGeometry` at the node:
+   `Σ_{sv} w ≤ b_node` and `m₁+m₂+L·Σ_{sv} w ≤ B_node`. With the window `δ_act ∈ [δ−2mesh', δ−η_Z]`
+   this fails by `≤ 2·mesh'` at `vnode n low b δ` (B shift `Lδ`, width `b−δ`). Suggested: a node with
+   B-and-width shift `δ_B = δ − 2mesh'` and amplitude shift `δ_a = δ` (fee chosen so `sourceA = r + δ_a`);
+   `t` is unchanged since B and b shift together. The price then reads at width `b − δ_B`.
+4. **ActualGaps at the node**: consumed as `ActualGaps_rm n low (some h) bcell ν reserve` (PR 76 form)
+   at the node and node width, as in your §3.

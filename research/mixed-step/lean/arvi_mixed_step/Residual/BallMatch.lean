@@ -1,4 +1,6 @@
-/- Mixed source step: the ball-energy transfer with the residual given by any
+/- Mixed source step: new in this submission; uses Collet's definitions by import.
+
+The ball-energy transfer with the residual given by any
 input whose slot data match the residual along an equivalence (so that the
 residual can be taken to be the child of the restricted parent). -/
 import Submissions.arvi_mixed_step.Transfer.Ball
@@ -59,14 +61,11 @@ theorem collet_main_selected_transfer_ball_match (ε : ℝ) (hε : 0 < ε) (N : 
   refine ⟨C, hC, ?_⟩
   intro ι _ _ hcard s J κ' _ _ e s₂ hm A₁ A₂ Dc K R L F τ t T H H' hH hH' hrad hhi hS hF hCol
   refine (hball hcard s J A₁ A₂ Dc K R L F τ t T H H' hH hH' hrad hhi hS hF hCol).trans
-    (le_of_eq ?_)
-  congr 1
-  apply Finset.sum_congr rfl
-  intro ξ _
-  apply congrArg Complex.re
-  exact energy_transport e (hm ξ) A₁ A₂ Dc K F R L
-    (fun I => (Real.sqrt (T / ∏ j ∈ J, s.P j) : ℂ)⁻¹ *
-      rowWeight (childCharacter τ ξ) fixedBadMask 1 1 t I) ballProfile H'
+    (le_of_eq (congrArg (fun x => C * (∏ j ∈ J, s.hi j * s.M j ^ 2) * (max 1 H') ^ ε * x)
+      (Finset.sum_congr rfl (fun ξ _ => congrArg Complex.re
+        (energy_transport e (hm ξ) A₁ A₂ Dc K F R L
+          (fun I => (Real.sqrt (T / ∏ j ∈ J, s.P j) : ℂ)⁻¹ *
+            rowWeight (childCharacter τ ξ) fixedBadMask 1 1 t I) ballProfile H')))))
 
 end
 end QRH.MixedStep.Residual

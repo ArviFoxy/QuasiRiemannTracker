@@ -1,4 +1,6 @@
-/- Mixed source step, L2 transfer: the exact fourth-power transfer identity (T)
+/- Mixed source step, L2 transfer: new in this submission; uses Sil's ray table (through Rays.lean) and Collet's definitions by import.
+
+The exact fourth-power transfer identity (T)
 at Collet's first MAIN layer.
 
   G(k) = Σ_{χ,ξ} π_{χξ} Σ_{u ∈ selBox} α_χ(u,k) · G'_ξ(d(u)⁴ k)

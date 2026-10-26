@@ -55,3 +55,84 @@ So C = 256²·128^N·max(1,C_δ)^N.
 - (Col) is assumed (collision columns, L3).
 - (S') is assumed. Sil's suppliers, i.e. selected primes that divide the seed in nonzero tuples, are not ported.
 - Converting slot widths into `∏_J hi_j P_j ≤ W` is left to the ledger (L1, L5).
+
+## Ledger (N4/N5/N7)
+
+**Where.** `lean-env/qrh/Submissions/arvi_mixed_step/Ledger/`, namespace `QRH.MixedStep.Ledger`:
+`Nodes.lean` (369 lines) → `FrozenPrice.lean` (581) and `Gaps.lean` (365) → `Geometry.lean` (236).
+Each builds with `mk_mixed.sh Ledger/<Name>` in about 25 s. No `sorry`/`axiom`/`native_decide`;
+`#print axioms` on every top theorem gives `[propext, Classical.choice, Quot.sound]`.
+Interface with exact statements: `research/mixed-step/LEDGER_INTERFACE.md` (v3).
+
+**Decision: rational nodes.** The width grid is made rational at zero cost: every use of the width
+delta (`0<δ`, `δ≤1`, `|loss|δ≤e`, `2|loss|δ≤margin`, `FiniteReferenceCells`) is monotone in it, so a
+rational `δq ∈ (0, δ]` works (`exists_rat_width_delta`); the grid points `min cap (cross + i·δq)` are
+then rational (`activeWidthGrid_rat`). So `b : ℚ`, the node fee is rational, nodes are genuine
+Collet `Source`s, and no real-field `RNode` twin is needed.
+
+**Proved (top level).**
+- Nodes: `vnode2 n low b δ θ = ⟨B − Lθ, L, cap, q, e, vfee2, fee⟩` at width `b − θ`, with
+  `vfee2 = r(1−6qβ) + δ·den3 − qX₀ − q(δ−θ)`; `vnode := vnode2 · · · δ δ`. `vnode2_T` (`t` unchanged),
+  `vnode2_A` (`sourceA = r + δ`, needs `sourceDen ≠ 0`), `vnode2_F`, real forms `vnode2R_*`,
+  `vfee_top` (`vfee(d) = r`), `vfee2_top`, `vfee_sub`.
+- `realGeometryLow_vnode2`: `RealGeometryLow` (Collet's `RealGeometry` minus `denominator_pos`,
+  `low_fee_room`, `weak_cap` and the first-layer fields, plus `denominator_ne`) at every rational
+  `0 ≤ θ ≤ δ ≤ d`, from `SourceValidC3`. The node quantities are affine in `δ`, and the
+  `SourceValid3` gates are their values at `δ = d` with the right slope sign
+  (e.g. `B₀F_v − T_v − 4e = gate5 + 6B₀(d−δ) + θ`).
+- `sourceDReal_nonneg`: `d ≥ 0` on the cell (`X₀ ≥ Le/Λ₀` past the crossing).
+- `raw_low_three_branches_f`, `actual_erasure_three_branch_payment_f`, `actual_low_coordinate_payment_f`,
+  `modified_low_coordinate_payment_f` (two parents: label over `s₀ : Input ι₀`, second pair any
+  supported `(C, D)`): Collet's LOW payment without the weak cap, keeping both frozen terms; RHS
+  `−min a (g + q·min((1−1/λ)f, f − ((BF−t)/λ − hF))) + …`.
+- `MixedNodePrice n low b φ` (Collet's `ModifiedNodePrice` with two parents and `φ ≤ f`);
+  `mixed_price_of_gain` (price from `13.5e ≤ min(a, frozenGain)`); `mixed_node_price_frozen`
+  (every node, `φ = (b−θ) − ε`, `0 ≤ ε ≤ 6e`: the frozen gain is `≥ a − qε` in both cap branches,
+  using only `parent_budget_room`, `a_small`, `a_allowance`); `mixed_node_price_top` (`δ = d`,
+  `φ = 0`, needs `q(d−θ) ≤ 6e`: fee `r − q(d−θ) ≥ 14e` from gate 8, weak cap from `weakCap3`).
+- `phiK`, `phiK_spec` (the design's fee margin restores the fee in the affine branch),
+  `pool_only_gate` (§1d, from gate 5 and `d ≥ 0`, for `f ≥ b − s`, `s(Λ₀−1) ≤ 4e`),
+  `mixed_node_price_phi` (design's price, with the node weak cap as an explicit hypothesis).
+- `gainK_mono_S`, `gainK_mono`; `high3_uniform_reserve` (mixed twin of `high_uniform_reserve`);
+  `density3_uniform_margin` (the three sectors of `SourceValidC3`, via Bernstein at the two endpoints
+  and affinity in `b`); `node_base_le` (`physicalBase ν (r+δ) (T−θ) ≤ physicalBase ν (r+d) T`, using
+  `5 − 6ρ ≥ 0` for `ν ≥ 1/2`, `rho_le`); `node_family_ge` (family gaps exceed the certified ones by
+  `θ + (d−δ)(5−6ρ+3ν)`, `θ + 4(d−δ)`, `θ + (d−δ)(5−6ρ+3ν)`); `mixed_uniform_reserve`
+  (`ActualGapsK (vnode2 …) low h (b−θ) ν reserve`, one reserve for all `b`, nodes, `ν`) and
+  `mixed_uniform_reserve_rm` (`ActualGaps_rm` form). The monotonicity in `T` and `δ` is proved.
+- `MixedGeometry`, `mixed_geometry_of_valid3` (from `SourceValid3`, `SourceValid3X`, `ParentGood low`,
+  `0 < e`), `main_twins_of_valid3`.
+
+**Disproved / dead ends.**
+- *The design's frozen margin `φ_k` alone does not pay.* With `f ≥ φ_k` the affine LOW branch pays,
+  but the upper-cap branch needs Collet's weak cap at the node scale `F = 1 − 6r − 6δ`. `weakCap3`
+  checks only `F = F'` and the weak cap is decreasing in `F` when `β > cap₀` (always on the chain).
+  Counterexample (`research/mixed-step` data, fan step 1, `b = cap = 3/40`): weak cap at `F = 1 − 6r`
+  is `−8.0015e−3` (at `F'`: `+4.17e−3`); with `f = φ_0 = 9.57e−3` the upper-branch gain is
+  `−4.07e−3 < 13.5e`. The upper branch needs `f ≳ 0.015`. Fix used: price non-top nodes under
+  `f ≥ (b−θ) − ε`, which the grid supplies anyway (live width at a non-top node `< g + 2mesh`);
+  then neither the weak cap nor the fee identity is used. Chain minimum of the weak cap at
+  `F = 1−6r`: `−8.0e−3` (fan 1); at `F'`: `+3.5e−4` (piece 6).
+- *`sourceDen ≠ 0` is not implied by `SourceValid3`.* All its gates are polynomial in `qβ`;
+  `den3 = den + q > 0` is the only related one. Without it `sourceAReal (vnode …) = (…)/0 = 0`.
+  Added by the coordinator as `SourceValid3X := 0 < 6qB₀ − Λ₀` (chain: `den ≤ −0.2095` on the fan;
+  `den = 2⁻¹⁵ − q` on family pieces).
+- *`ParentGood (vnode …)`* needs `0 < n.B − n.L·θ`; not implied by the gates (needs a lower bound on
+  `t`; chain minimum of `B − L·d` is `0.961`). Not needed: Collet's LOW spine reads only `1 < n.L`
+  from `ParentGood n` (`hn.2.2.1`); the fork's `NodeGeometry_mx` takes `B ≤ 1`, `1 < L`, `cap < 1`
+  (`vnode2_shape`).
+- *Uniform `δ_k = k·g` top node* (`δ_K ∈ [d+g, d+2g)`) would need margins for every gate at
+  `δ > d`; using the top node `δ = d` exactly (rational, since `b` is) avoids all margins.
+
+**Gotchas.**
+- `simp only [..., hbθ]` with `hbθ : ((b−θ:ℚ):ℝ) = b − θ` rewrites inside `sourceTReal (vnode2 …) ↑(b−θ)`
+  before the node identities can fire; state the identities also at `(b:ℝ) − θ`.
+- `norm_num` on a gate `0 < (sourceDen3 n low:ℝ)` returns the ℚ statement; recast with `exact_mod_cast`.
+- In this Mathlib, `add_le_add_right h a : a + b ≤ a + c`; use `add_le_add h le_rfl`.
+- linarith treats `q*(1-1/L)*f` and `q*((1-1/L)*f)` as different atoms; supply the `ring` equation.
+- `pgrep -f "<file>"` in a wait loop matches the loop's own shell; don't use it.
+
+**Open (for the fork / N3).**
+- Choose the grid: nodes `{k·g < d} ∪ {d}`, `θ = max 0 (δ − κ)`, `mesh ≤ κ/2`, `δw + g + κ ≤ ε ≤ 6e`.
+- The first-level frozen width bound `f ≥ (b−θ) − ε` at non-top nodes is the fork's (from
+  `b − δw ≤ Σw` and transferable width `< δ_{k+1}`).

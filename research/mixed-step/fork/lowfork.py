@@ -17,6 +17,11 @@ class Patch:
         if c != cnt:
             raise SystemExit(f'patch applies {c} times (expected {cnt}):\n{a[:160]}')
         self.d = self.d.replace(a, b)
+    def R1(self, a, b):
+        """Replace the first occurrence only (the statement precedes the proof)."""
+        if a not in self.d:
+            raise SystemExit(f'patch does not apply:\n{a[:160]}')
+        self.d = self.d.replace(a, b, 1)
     def Ropt(self, a, b):
         self.d = self.d.replace(a, b)
     def sub(self, pat, rep, flags=0):
@@ -52,7 +57,7 @@ def split_statement(p, name):
     p.R('''    (∀l,omega l≤''', '''    ∀κ:ℝ,sourceAReal n low bcell-poolAmp≤Real.logb Z (volume s₀)-Real.logb Z (volume s)+κ →
     (∀l,φ≤(∑i,w i)-∑i∈liveIndices (sel l).B₁.val,w i) →
     (∀l,omega l≤''')
-    p.R('Z^(-8*(n.allowance:ℝ)+εpref+poolLoss+Bmass*εmass+', 'Z^(-8*(n.allowance:ℝ)+εpref+poolLoss+κ+Bmass*εmass+')
+    p.R1('Z^(-8*(n.allowance:ℝ)+εpref+poolLoss+Bmass*εmass+', 'Z^(-8*(n.allowance:ℝ)+εpref+poolLoss+κ+Bmass*εmass+')
 
 def split_intro(p):
     """Common edits of the main `intro` of a wrapper's proof."""

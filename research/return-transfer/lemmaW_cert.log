@@ -1,0 +1,33 @@
+--- minimal-diff Lemma W, h=2011/2500, theta=8741364
+receipt min: principal_z 9.066666666666667e-05 bad: {}
+edge old_small: 1 rectangles, min return coeff 8.496e-02, min admission coeff None
+edge old_peak: 1 rectangles, min return coeff 5.729e-02, min admission coeff None
+edge old_switch: 2 rectangles, min return coeff 1.179e-02, min admission coeff None
+edge new_switch: 2 rectangles, min return coeff 1.179e-02, min admission coeff None
+edge new_kink: 12 rectangles, min return coeff 1.949e-04, min admission coeff 6.255823061936615e-05
+edge new_top: 28 rectangles, min return coeff 3.416e-07, min admission coeff 6.255823061936615e-05
+rectangles 46 receipt failures {}
+--- minimal-diff Lemma W, h=2011/2500, theta=8741363
+receipt min: principal_z 9.066666666666667e-05 bad: {}
+edge old_small: 1 rectangles, min return coeff 8.496e-02, min admission coeff None
+edge old_peak: 1 rectangles, min return coeff 5.729e-02, min admission coeff None
+edge old_switch: 2 rectangles, min return coeff 1.179e-02, min admission coeff None
+edge new_switch: 2 rectangles, min return coeff 1.179e-02, min admission coeff None
+edge new_kink: 12 rectangles, min return coeff 1.950e-04, min admission coeff 6.255823061936615e-05
+FAIL cover failed at box [(0.43061256408691406, 0.4306182861328125), (0.4999961853027344, 0.5)]
+--- minimal-diff Lemma W, h=803/1000, theta=8741359
+receipt min: principal_z 8.833333333333333e-05 bad: {}
+edge old_small: 1 rectangles, min return coeff 8.461e-02, min admission coeff None
+edge old_peak: 1 rectangles, min return coeff 5.703e-02, min admission coeff None
+edge old_switch: 1 rectangles, min return coeff 2.186e-04, min admission coeff None
+edge new_switch: 1 rectangles, min return coeff 2.186e-04, min admission coeff None
+edge new_kink: 6 rectangles, min return coeff 2.811e-04, min admission coeff 0.00469336584273042
+edge new_top: 30 rectangles, min return coeff 2.483e-07, min admission coeff 6.255823061936615e-05
+rectangles 40 receipt failures {}
+--- minimal-diff Lemma W, h=803/1000, theta=8741358
+receipt min: principal_z 8.833333333333333e-05 bad: {}
+edge old_small: 1 rectangles, min return coeff 8.461e-02, min admission coeff None
+edge old_peak: 1 rectangles, min return coeff 5.703e-02, min admission coeff None
+edge old_switch: 1 rectangles, min return coeff 2.186e-04, min admission coeff None
+edge new_switch: 1 rectangles, min return coeff 2.186e-04, min admission coeff None
+edge new_kink: 6 rectangles, min return coeff 2.812e-04, min admission coeff 0.00469336584273042

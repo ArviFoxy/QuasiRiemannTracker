@@ -6,7 +6,8 @@ Apache-2.0. This development overlay reuses pinned Cycle61 definitions. -/
 /- Repeated marks: fork of Record1252270103Source.High.GlobalPhysicalAnnularCofactor (Hailey Collet, Apache-2.0; inherited notices retained).
 Only the declarations whose statement depends on the HIGH gain, the uniform detector
 cutoff or the source validity are restated, renamed `*_rm`. -/
-/- Mixed step (L4/L5, F4): fork of Fork.Record1252270103Source.High.GlobalPhysicalAnnularCofactor
+/- Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.
+Mixed step (L4/L5, F4): fork of Fork.Record1252270103Source.High.GlobalPhysicalAnnularCofactor
 (PR 76 fork of Hailey Collet's module, Apache-2.0); changes: two parents and the δ-shift.
 * The first layer (columns, labels, keys, the balanced first mass and its hypotheses) is read from
   `s₀ : Input α₀` with the marked modifier over `α₀`; the datum, slots, `T` and `w σ v θ` live on the

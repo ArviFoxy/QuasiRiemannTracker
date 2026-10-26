@@ -23,8 +23,10 @@ The metadata and PR body state these. Each must be true of the final package.
 - [ ] Package `Submissions.arvi_mixed_step_20261026` contains only our modules. The dependency
       `arvi-repeated-marks-on-sil-face-20261025` is imported unchanged, and no PR 76 return module is in
       the closure (`package_mixed.py` checks this).
-- [ ] Every forked file keeps the original copyright line verbatim, plus a fork note. Every new file has
-      an origin note.
+- [x] Every forked or adapted file keeps the original copyright line verbatim, followed by
+      `Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.` and the fork note (`fork/add_mod_line.py`; 102 files in the
+      development tree; `package/make_submission.py` refuses a package that has a derived file without it). Every new
+      file has an origin note and, as in PR 76, no copyright line of its own (authorship: `metadata.json`).
 - [x] `metadata.json` passes upstream main's `validateSubmissionMetadata` (re-checked at 0.874074); QRH-Decimal 0.874074 is
       the exact value of 437037/500000.
 - [ ] Canonical wrapper (`verifier/challenge.mjs`) at 437037/500000 compiles against `Candidate.bound`.

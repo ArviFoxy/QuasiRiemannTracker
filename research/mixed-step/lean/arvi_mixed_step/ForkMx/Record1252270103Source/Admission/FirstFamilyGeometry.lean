@@ -1,6 +1,7 @@
 /- Copyright (c) 2026 Hailey Collet. Apache-2.0.
 First-label geometry is read from the actual modified common-label fiber. -/
-/- Mixed step (L4/L5, F4): fork of Record1252270103Source.Admission.FirstFamilyGeometry
+/- Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.
+Mixed step (L4/L5, F4): fork of Record1252270103Source.Admission.FirstFamilyGeometry
 (Hailey Collet, Apache-2.0); changes: two parents. In `eventual_literal_high_frequency` the first
 label, its column and the fixed parent unit are read from the first layer `s₀ : Input α₀`, the
 second datum lives on the second-layer slot type `α`, and the volume of the MAIN Fourier scale and

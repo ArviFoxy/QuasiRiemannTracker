@@ -1,6 +1,7 @@
 /- Copyright (c) 2026 Hailey Collet. Apache-2.0.
 The same concrete selected rows receive the actual signed-key and frequency caps. -/
-/- Mixed step (L4/L5, F4): fork of Record1252270103Source.Admission.SelectedRegularSourceDataKeys
+/- Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.
+Mixed step (L4/L5, F4): fork of Record1252270103Source.Admission.SelectedRegularSourceDataKeys
 (Hailey Collet, Apache-2.0); changes: two parents. Over `Anchor_mx`/`Family_mx`/`Selected_mx` the
 first caps come from the first layer (`sourceRadius F.s₀`, `F.zero₁₀`, `F.zero₂₀`), the second caps
 from the children of the second-layer parent, and the MAIN Fourier scale, the frequency radius and

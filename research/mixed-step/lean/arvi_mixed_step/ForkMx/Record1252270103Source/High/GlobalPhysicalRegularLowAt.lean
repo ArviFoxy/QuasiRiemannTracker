@@ -1,4 +1,5 @@
 /- Copyright (c) 2026 Hailey Collet. Apache-2.0.
+Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.
 Mixed step (L4/L5, F3): fork of Record1252270103Source.High.GlobalPhysicalRegularLowAt; changes:
 two parents, two amplitudes, node price as a hypothesis.
 `RegularLowAt_mx … n low bcell φ ellPool θloss …`: the anchor is `Anchor_mx` (first layer `s₀`,

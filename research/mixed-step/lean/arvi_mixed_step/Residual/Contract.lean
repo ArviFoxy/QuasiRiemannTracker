@@ -1,4 +1,5 @@
 /- Copyright (c) 2026 Hailey Collet. Apache-2.0.
+Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.
 The decidable-instance transports `hL` and `hR` follow the proof of Collet's
 `actual_marked_allocation_main` (Record1252270103Source/High/GlobalPhysicalAllocationMain.lean:
 `generalize` the child, then `source_gauss_energy_pool_decEq`). The rest is new in

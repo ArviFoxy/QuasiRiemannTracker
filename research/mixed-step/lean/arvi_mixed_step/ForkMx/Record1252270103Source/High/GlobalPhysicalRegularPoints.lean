@@ -1,6 +1,7 @@
 /- Copyright (c) 2026 Hailey Collet. Apache-2.0.
 Genuine earlier LOW and HIGH sources control the same full centered family. -/
-/- Mixed step (L4/L5, F5): fork of Fork.Record1252270103Source.High.GlobalPhysicalRegularPoints
+/- Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.
+Mixed step (L4/L5, F5): fork of Fork.Record1252270103Source.High.GlobalPhysicalRegularPoints
 (PR 76 fork of Hailey Collet's module, Apache-2.0); changes: two parents, two amplitudes, node price
 as a hypothesis.
 `RegularPointAt_mx … n low bcell φ reserve θ mesh ξ width τsource poolAmp B₀ lam₀ cap₀ N degree controls C Z`:

@@ -1,4 +1,5 @@
 /- Copyright (c) 2026 Hailey Collet. Apache-2.0.
+Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.
 Mixed step (L4/L5, F6): fork of Record1252270103Source.Coefficient.MarkedMainRemainderSum
 (Hailey Collet, Apache-2.0; inherited notices retained). Original note: selected marked MAIN
 remainder sums, with literal allocation factors and actual modified first-label counting; the new

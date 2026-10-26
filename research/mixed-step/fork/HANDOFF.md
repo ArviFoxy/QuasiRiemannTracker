@@ -22,6 +22,12 @@ start compiling now. All files below compile with `mk_mixed.sh` and have standar
   ```
   (For a PR 76 `_rm` source, Collet's copyright line is the one inside PR 76's file; keep it verbatim
   first.) `research/mixed-step/fork/fix_headers.py ForkMx_root` checks/fixes this.
+  **Our own notice.** The fork note is preceded by `Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.`
+  (same comment, directly before the line `Mixed step …`; in a file that keeps the original's comment
+  separate, the note comment starts with it). The same applies to every non-fork file that keeps a
+  third-party copyright line (`Transfer/*`, `Downstream/{Balanced3,Contract3}`, `Source/NFStep3`, …).
+  `fork/add_mod_line.py DEVROOT` inserts it (idempotent; keeps source mtimes) and `package/make_submission.py`
+  refuses a package with a derived file that lacks it. New files carry no copyright line (as in PR 76).
 - **Two parents.** First layer = the original input `s₀ : Input α₀` with modifier `modifier₀`
   (columns `geometryFirstSource s₀ modifier₀ …`, `firstLabel`, `columnCharacter`, `columnIdeal`,
   `dictionaryRay`, `rawKey`, `balancedColumnScalar`, `coordinateBlock`, `balancedFirstHighMass`,

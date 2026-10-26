@@ -1,7 +1,8 @@
 /- Copyright (c) 2026 Hailey Collet. Apache-2.0.
 The actual LOW corners and HIGH bins use the same retained states and selector.
 The one point constant precedes every moving canonical input and row family. -/
-/- Mixed step (L4/L5, F5): fork of Fork.Record1252270103Source.Admission.SelectedRegularCombinedPointSome
+/- Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.
+Mixed step (L4/L5, F5): fork of Fork.Record1252270103Source.Admission.SelectedRegularCombinedPointSome
 (PR 76 fork of Hailey Collet's module, Apache-2.0); changes: two parents, two amplitudes, node price
 as a hypothesis.
 `eventually_actual_point_rm_mx`: the anchor is `Initial.anchor_mx i₀ i` (first layer `i₀`, second

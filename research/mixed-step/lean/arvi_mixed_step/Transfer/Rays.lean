@@ -1,4 +1,5 @@
 /- Copyright (c) 2026 Sil. Apache-2.0.
+Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.
 `row_rays_fourth` is adapted from Sil's `fixed_product_rays`
 (FourthPower/MixedSupplierKernel.lean, PR 74, vendored in PR 76). Changes: no fixed
 supplier `f`; stated for ideals through `primaryGaussRow` (unsupported columns

@@ -1,4 +1,5 @@
 /- Copyright (c) 2026 Hailey Collet. Apache-2.0.
+Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.
 Mixed step (L4/L5, F6): fork of Record1252270103Source.Coefficient.MarkedMainRemainderCost
 (Hailey Collet, Apache-2.0; inherited notices retained). Original note: the actual selected MAIN
 zero and tail costs pay both allocation cards, the frozen coefficient and the child's original

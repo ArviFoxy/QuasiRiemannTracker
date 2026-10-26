@@ -1,4 +1,5 @@
 /- Copyright (c) 2026 Hailey Collet. Apache-2.0.
+Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.
 Mixed step (L4/L5, F6): fork of Record1252270103Source.Core.InitialMainRemainderGap
 (Hailey Collet, Apache-2.0; inherited notices retained). Original note: the actual downward affine
 source budget pays the six MAIN enlargement powers before any slot count; positive raw scales below

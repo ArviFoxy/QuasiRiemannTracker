@@ -4,7 +4,8 @@ HIGH source with one consistent set of numerical geometry budgets. -/
 /- Repeated marks: fork of Record1252270103Source.Admission.SelectedRegularHighPointSome (Hailey Collet, Apache-2.0; inherited notices retained).
 Only the declarations whose statement depends on the HIGH gain, the uniform detector
 cutoff or the source validity are restated, renamed `*_rm`. -/
-/- Mixed step (L4/L5, F4): fork of Fork.Record1252270103Source.Admission.SelectedRegularHighPointSome
+/- Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.
+Mixed step (L4/L5, F4): fork of Fork.Record1252270103Source.Admission.SelectedRegularHighPointSome
 (PR 76 fork of Hailey Collet's module, Apache-2.0); changes: two parents and two amplitudes.
 * `SourceAt_rm_mx`: `ActualAt_rm_mx` with the pool cell width `ell = poolAmp/2` (the section variable
   `amp` of PR 76 is the pool amplitude, renamed `poolAmp`).

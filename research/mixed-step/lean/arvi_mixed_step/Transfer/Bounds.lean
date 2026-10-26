@@ -1,4 +1,5 @@
 /- Copyright (c) 2026 Sil. Apache-2.0.
+Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.
 Adapted from Sil's FourthPower (PR 74, vendored in PR 76),
 MixedSupplierPositive.lean: `selScalar_norm_le` follows `selected_scalar_norm`;
 `activeSel`, `activeSel_card`, `activeSel_mass` follow `activeSelected`,

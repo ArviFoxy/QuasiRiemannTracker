@@ -1,4 +1,5 @@
 /- Copyright (c) 2026 Hailey Collet. Apache-2.0.
+Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.
 Adapted from Collet's tree: `column_no_prime_square` from `source_column_no_prime_square`
 (Record1252270103Source/Coefficient/AmplifierSupport.lean), `corrected_source_rows_main`
 from `corrected_source_dyadic_main` (Coefficient/SourceAmplifier.lean),

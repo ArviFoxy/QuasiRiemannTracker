@@ -4,7 +4,8 @@ family, retaining the additional Newton puncture and original marked slots.
 The dictionary and geometric counting interfaces derive from Zhongpai Gao,
 accepted PR63, source 52419a826d4a8465cdeb56aaa2d471c489221d1d,
 and the OpenAI/math and Hailey Collet developments, Apache-2.0. -/
-/- Mixed step (L4/L5, F4): fork of Record1252270103Source.Coefficient.NonregularRawFamily
+/- Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.
+Mixed step (L4/L5, F4): fork of Record1252270103Source.Coefficient.NonregularRawFamily
 (Hailey Collet, Apache-2.0); changes: two parents (type split). The first layer (columns,
 labels, dictionary rays, keys) is read from `s₀ : Input α₀` with `modifier₀`; the datum, the
 slots and `w σ v θ` live on the second-layer slot type `α`. The proof is Collet's, verbatim up

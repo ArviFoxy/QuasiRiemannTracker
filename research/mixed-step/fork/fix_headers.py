@@ -9,6 +9,7 @@ into
   Mixed step (L4/L5, ...): fork of ... -/
 and leaves files that already start with the copyright line alone.
 usage: python3 fix_headers.py FORKMX_ROOT
+Then run add_mod_line.py on the development root (our own `Modifications Copyright` notice, Apache-2.0 §4).
 """
 import os, sys
 CROOT = '/home/user/lean-env/qrh/Submissions/hailey_collet_1252270103'

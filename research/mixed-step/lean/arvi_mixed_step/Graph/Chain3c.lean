@@ -1,4 +1,4 @@
-/- The mixed source chain: pieces with a variable cap.
+/- Mixed source step: new in this submission. The mixed source chain: pieces with a variable cap.
 
 As `piece_sources3` / `piece_last3` (`Graph/Chain3.lean`), for a piece whose face at `y` has cap
 `cp(y)` (`Family/Validity3c.lean`). A piece whose cap starts at `capM` starts at the same face as the

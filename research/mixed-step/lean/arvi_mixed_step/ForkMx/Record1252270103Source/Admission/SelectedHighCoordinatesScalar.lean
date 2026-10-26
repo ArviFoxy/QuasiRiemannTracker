@@ -1,4 +1,5 @@
 /- Copyright (c) 2026 Hailey Collet. Apache-2.0.
+Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.
 Mixed step (L4/L5, F1, two-parent twin): fork of
 Record1252270103Source.Admission.SelectedHighCoordinatesScalar (Hailey Collet, Apache-2.0;
 inherited notices retained).

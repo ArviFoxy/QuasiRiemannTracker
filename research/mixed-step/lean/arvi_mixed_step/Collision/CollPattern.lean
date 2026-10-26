@@ -66,7 +66,7 @@ theorem patMask_eq (J Q : Finset κ) (hQJ : Q ⊆ J) (σ : Q → Fin 2) (v : Tup
       by_cases h0 : v (Sum.inl j.val) ∣ v (Sum.inr 0)
       · simp only [h0, ↓reduceIte]
         by_contra hne
-        have hs1 : σ j = 1 := (fin2_ne_zero_iff _).mp (fun h => hne h.symm)
+        have hs1 : σ j = 1 := (fin2_ne_zero_iff _).mp hne
         rw [hs1] at hj
         have hpj := hp j.val (hQJ j.property)
         exact hpj.not_isUnit (hsq _ (mul_dvd_mul h0 hj))
@@ -84,8 +84,12 @@ theorem patMask_eq (J Q : Finset κ) (hQJ : Q ⊆ J) (σ : Q → Fin 2) (v : Tup
     · intro hj
       refine ⟨hQJ hj, ?_⟩
       have h := h1 ⟨j, hj⟩
-      fin_cases (σ ⟨j, hj⟩) <;> simp_all <;>
-        first | exact h.trans (dvd_mul_right _ _) | exact h.trans (dvd_mul_left _ _)
+      have hc : ∀ x : Fin 2, x = 0 ∨ x = 1 := by decide
+      rcases hc (σ ⟨j, hj⟩) with h0 | h0
+      · rw [h0] at h
+        exact h.trans (dvd_mul_right _ _)
+      · rw [h0] at h
+        exact h.trans (dvd_mul_left _ _)
     · rintro ⟨hjJ, hdvd⟩
       by_contra hjQ
       have hmem : j ∈ J \ Q := Finset.mem_sdiff.mpr ⟨hjJ, hjQ⟩
@@ -152,7 +156,9 @@ theorem colPart_patterns (J : Finset κ) (β : Tuple κ → ℂ) (v : Tuple κ)
   congr 1
   have hiff : IsCoprime (∏ j ∈ J, v (Sum.inl j)) (v (Sum.inr 0) * v (Sum.inr 1)) ↔
       ¬(collSet J v).Nonempty := by
-    rw [Finset.not_nonempty_iff_eq_empty, Finset.filter_eq_empty_iff]
+    rw [Finset.not_nonempty_iff_eq_empty]
+    unfold collSet
+    rw [Finset.filter_eq_empty_iff]
     constructor
     · intro h j hj hd
       exact not_coprime_of_dvd (hp j hj) hd
@@ -188,7 +194,7 @@ theorem marked_coprime (v : Tuple κ) (hsq : Squarefree (markedProduct v)) (i j 
       ← Finset.mul_prod_erase (Finset.univ.erase i) (fun k => v (Sum.inl k))
         (Finset.mem_erase.mpr ⟨Ne.symm hij, Finset.mem_univ j⟩), ← mul_assoc]
     exact dvd_mul_right _ _
-  exact isCoprime_of_isRelPrime (squarefree_mul_iff.mp (hsq.of_dvd h)).1
+  exact isCoprime_of_isRelPrime (squarefree_mul_iff.mp (Squarefree.squarefree_of_dvd h hsq)).1
 
 /-- The proof that the side products of a selected assignment are nonzero. -/
 theorem collH (s : Input κ) (Q : Finset κ) (σ : Q → Fin 2) (x : {u // u ∈ selBox s Q})
@@ -218,14 +224,15 @@ theorem pattern_sum (s : Input κ) (J Q : Finset κ) (σ : Q → Fin 2) (A₁ A�
     obtain ⟨_, ha⟩ := Finset.mem_sigma.mp hp
     exact collTuple_mem s Q σ p.1.1 _ _ p.1.2 p.2 ha
   · intro p hp _ q hq _ hpq
-    have hx : p.1 = q.1 := Subtype.ext (by
+    have hx : p.1.1 = q.1.1 := by
       have h1 := collTuple_sel Q σ p.1.1 p.2
       have h2 := collTuple_sel Q σ q.1.1 q.2
-      simp only at hpq
-      rw [← h1, ← h2, hpq])
+      rw [← h1, ← h2]
+      exact congrArg (selPart Q) hpq
     obtain ⟨⟨x, hxm⟩, a⟩ := p
     obtain ⟨⟨y, hym⟩, b⟩ := q
-    simp only at hx hpq
+    change x = y at hx
+    change collTuple Q σ x a = collTuple Q σ y b at hpq
     subst hx
     have hab : a = b := by
       funext z
@@ -239,7 +246,8 @@ theorem pattern_sum (s : Input κ) (J Q : Finset κ) (σ : Q → Fin 2) (A₁ A�
         have h := congrFun hpq (Sum.inr k)
         rw [collTuple_inr, collTuple_inr] at h
         exact mul_left_cancel₀ (collH s Q σ ⟨x, hxm⟩ k) h
-    rw [hab]
+    subst hab
+    rfl
   · intro v hv hne
     have htc : CoupledFirst.tupleCoefficient s (markedSourceModifier A₁ A₂ Dc K F) R L v ≠ 0 :=
       left_ne_zero_of_mul (left_ne_zero_of_mul hne)
@@ -372,7 +380,7 @@ theorem coll_factor_mask (s : Input κ) (J Q : Finset κ) (σ : Q → Fin 2) (u 
         IsCoprime (∏ j ∈ restBlock J Q, a (Sum.inl j)) (a (Sum.inr 0) * a (Sum.inr 1)) := by
       rw [IsCoprime.mul_right_iff]
       exact ⟨fun h => h.2, fun h => ⟨hmD, h⟩⟩
-    simp only [hfirst, true_and, hiff]
+    simp only [hfirst, implies_true, true_and, hiff]
   rw [hmask]
   ring
 

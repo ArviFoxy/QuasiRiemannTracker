@@ -4,7 +4,8 @@ normalization lost under complete-prime extraction and singleton deletion. -/
 /- Repeated marks: fork of Record1252270103Source.High.GlobalPhysicalSectorPayment (Hailey Collet, Apache-2.0; inherited notices retained).
 Only the declarations whose statement depends on the HIGH gain, the uniform detector
 cutoff or the source validity are restated, renamed `*_rm`. -/
-/- Mixed step (L4/L5, F4): fork of Fork.Record1252270103Source.High.GlobalPhysicalSectorPayment
+/- Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.
+Mixed step (L4/L5, F4): fork of Fork.Record1252270103Source.High.GlobalPhysicalSectorPayment
 (PR 76 fork of Hailey Collet's module, Apache-2.0); changes: two parents (type split). The first
 label, its column and the geometry exponents are read from `s₀ : Input ι₀`; the second datum `d2`
 lives on the second-layer slot type `ι`. The proof is PR 76's, verbatim up to the renaming.

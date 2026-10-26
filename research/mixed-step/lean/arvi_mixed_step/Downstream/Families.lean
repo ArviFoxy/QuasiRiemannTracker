@@ -197,6 +197,130 @@ def pieceEnergy {ι₀ : Type} [Fintype ι₀] [DecidableEq ι₀] (reflected : 
 
 end Assembly
 
+/-- **The assembly of the pieces**, from any bound of each label by the residual of its piece
+(`hlab`, in the form of `piece_label_transfer`'s conclusion at `J = pieceBlock G w mesh (trans l)`). -/
+theorem pieces_sum_of_labels {α : Type} [Fintype α] [DecidableEq α] (N : ℕ)
+    (hcard : Fintype.card α ≤ N) (s : Input α) (w : α → ℝ) (Z mesh Mmax K A ε : ℝ) (hZ : 1 < Z)
+    (hM1 : 1 ≤ Mmax) (hM : ∀ i, s.M i ≤ Mmax) (hK : 0 ≤ K) (G : NodeGrid)
+    {Label : Type} [Fintype Label] (C L : Label → Ideal O)
+    (alloc : ∀ l, actualAllocations s.pools (C l)) (trans : Label → Finset α)
+    (htrans : ∀ l, trans l ⊆ liveIndices (alloc l).val)
+    {ι₀ : Type} [Fintype ι₀] [DecidableEq ι₀] (reflected : Bool) (s₀ : Input ι₀)
+    (modifier : Tuple ι₀ → ℂ) (R₀ seed : Ideal O) (K₀ Z₀ ξ₀ : ℝ) (hK₀ : 0 < K₀)
+    (key : ℤ × (Fin 5 → ℤ))
+    (column : Label → FirstColumnIndex (source s₀ modifier R₀ seed K₀ Z₀ ξ₀ hK₀ key))
+    (R : Ideal O) (P : Finset (Ideal O)) (amplitude : Label → ℝ) (ha : ∀ l, 0 ≤ amplitude l)
+    (t amp reserve : ℝ)
+    (hlab : ∀ l, correctedChildGaussEnergy s 1 1 1 1 (C l) R (L l) (fun _ => 1) P (alloc l)
+        (columnCharacter reflected s₀ modifier R₀ seed K₀ Z₀ ξ₀ hK₀ key (column l)) t (volume s)
+        (firstMainRadius reflected K₀ (volume s) Z ξ₀ (3 * amp) reserve
+          (firstLabel s₀ modifier R₀ seed K₀ Z₀ ξ₀ hK₀ key (column l))) ≤
+      K * (∏ j ∈ pieceBlock G w mesh (trans l), s.M j ^ 2) * Z ^ (A * ε) *
+        ∑ ξ : RayCharacter,
+          correctedChildGaussEnergy (s.restrict (pieceBlock G w mesh (trans l))) 1 1 1 1 (C l) R
+            (L l) (fun _ => 1) P
+            (allocRestrict s (C l) (alloc l) (pieceBlock G w mesh (trans l))
+              ((pieceBlock_subset G w mesh _).trans (htrans l)))
+            (columnCharacter reflected s₀ modifier R₀ seed K₀ Z₀ ξ₀ hK₀ key
+              (rayShift reflected (column l) ξ)) t
+            (volume (s.restrict (pieceBlock G w mesh (trans l))))
+            (firstMainRadius reflected K₀ (volume (s.restrict (pieceBlock G w mesh (trans l)))) Z ξ₀
+              (3 * (amp + pieceNode G w (trans l))) reserve
+              (firstLabel s₀ modifier R₀ seed K₀ Z₀ ξ₀ hK₀ key (column l)))) :
+    ∑ l, amplitude l * correctedChildGaussEnergy s 1 1 1 1 (C l) R (L l) (fun _ => 1) P (alloc l)
+        (columnCharacter reflected s₀ modifier R₀ seed K₀ Z₀ ξ₀ hK₀ key (column l)) t (volume s)
+        (firstMainRadius reflected K₀ (volume s) Z ξ₀ (3 * amp) reserve
+          (firstLabel s₀ modifier R₀ seed K₀ Z₀ ξ₀ hK₀ key (column l))) ≤
+      K * Mmax ^ (2 * N) * Z ^ (A * ε) *
+        ∑ k ∈ Finset.univ.image (pieceKey alloc trans), ∑ ξ : RayCharacter,
+          ∑ l : {l // pieceKey alloc trans l = k}, amplitude l.val *
+            pieceEnergy s C alloc trans htrans G w mesh reflected s₀ modifier R₀ seed K₀ Z₀ ξ₀ hK₀
+              key column L R P t Z amp reserve k ξ l := by
+  have hZ0 : 0 < Z := by linarith
+  rw [sum_pieces (pieceKey alloc trans), Finset.mul_sum]
+  apply Finset.sum_le_sum
+  intro k _
+  rw [Finset.sum_comm, Finset.mul_sum]
+  apply Finset.sum_le_sum
+  intro l _
+  obtain ⟨l, rfl⟩ := l
+  have hJ : pieceBlock G w mesh (trans l) ⊆ liveIndices (alloc l).val :=
+    (pieceBlock_subset G w mesh _).trans (htrans l)
+  have hpE : ∀ ξ : RayCharacter,
+      pieceEnergy s C alloc trans htrans G w mesh reflected s₀ modifier R₀ seed K₀ Z₀ ξ₀ hK₀ key
+        column L R P t Z amp reserve (pieceKey alloc trans l) ξ ⟨l, rfl⟩ =
+      correctedChildGaussEnergy (s.restrict (pieceBlock G w mesh (trans l))) 1 1 1 1 (C l) R (L l)
+        (fun _ => 1) P (allocRestrict s (C l) (alloc l) (pieceBlock G w mesh (trans l)) hJ)
+        (columnCharacter reflected s₀ modifier R₀ seed K₀ Z₀ ξ₀ hK₀ key
+          (rayShift reflected (column l) ξ)) t
+        (volume (s.restrict (pieceBlock G w mesh (trans l))))
+        (firstMainRadius reflected K₀ (volume (s.restrict (pieceBlock G w mesh (trans l)))) Z ξ₀
+          (3 * (amp + pieceNode G w (trans l))) reserve
+          (firstLabel s₀ modifier R₀ seed K₀ Z₀ ξ₀ hK₀ key (column l))) := fun ξ => rfl
+  simp only [hpE]
+  have hJN : (pieceBlock G w mesh (trans l)).card ≤ N :=
+    (Finset.card_le_univ _).trans hcard
+  have hMM := prod_M_sq_le s (pieceBlock G w mesh (trans l)) N hJN Mmax hM1 hM
+  have hsum : 0 ≤ ∑ ξ : RayCharacter,
+      correctedChildGaussEnergy (s.restrict (pieceBlock G w mesh (trans l))) 1 1 1 1 (C l) R (L l)
+        (fun _ => 1) P (allocRestrict s (C l) (alloc l) (pieceBlock G w mesh (trans l)) hJ)
+        (columnCharacter reflected s₀ modifier R₀ seed K₀ Z₀ ξ₀ hK₀ key
+          (rayShift reflected (column l) ξ)) t
+        (volume (s.restrict (pieceBlock G w mesh (trans l))))
+        (firstMainRadius reflected K₀ (volume (s.restrict (pieceBlock G w mesh (trans l)))) Z ξ₀
+          (3 * (amp + pieceNode G w (trans l))) reserve
+          (firstLabel s₀ modifier R₀ seed K₀ Z₀ ξ₀ hK₀ key (column l))) :=
+    Finset.sum_nonneg (fun ξ _ => corrected_energy_nonneg _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+      (first_main_radius_pos _ _ _ _ _ _ _ hZ0 _))
+  have hZA : 0 ≤ Z ^ (A * ε) := Real.rpow_nonneg hZ0.le _
+  calc amplitude l * correctedChildGaussEnergy s 1 1 1 1 (C l) R (L l) (fun _ => 1) P (alloc l)
+        (columnCharacter reflected s₀ modifier R₀ seed K₀ Z₀ ξ₀ hK₀ key (column l)) t (volume s)
+        (firstMainRadius reflected K₀ (volume s) Z ξ₀ (3 * amp) reserve
+          (firstLabel s₀ modifier R₀ seed K₀ Z₀ ξ₀ hK₀ key (column l)))
+      ≤ amplitude l * (K * (∏ j ∈ pieceBlock G w mesh (trans l), s.M j ^ 2) * Z ^ (A * ε) *
+          ∑ ξ : RayCharacter,
+            correctedChildGaussEnergy (s.restrict (pieceBlock G w mesh (trans l))) 1 1 1 1 (C l) R
+              (L l) (fun _ => 1) P (allocRestrict s (C l) (alloc l) (pieceBlock G w mesh (trans l)) hJ)
+              (columnCharacter reflected s₀ modifier R₀ seed K₀ Z₀ ξ₀ hK₀ key
+                (rayShift reflected (column l) ξ)) t
+              (volume (s.restrict (pieceBlock G w mesh (trans l))))
+              (firstMainRadius reflected K₀ (volume (s.restrict (pieceBlock G w mesh (trans l)))) Z ξ₀
+                (3 * (amp + pieceNode G w (trans l))) reserve
+                (firstLabel s₀ modifier R₀ seed K₀ Z₀ ξ₀ hK₀ key (column l)))) :=
+        mul_le_mul_of_nonneg_left (hlab l) (ha l)
+    _ ≤ amplitude l * (K * Mmax ^ (2 * N) * Z ^ (A * ε) *
+          ∑ ξ : RayCharacter,
+            correctedChildGaussEnergy (s.restrict (pieceBlock G w mesh (trans l))) 1 1 1 1 (C l) R
+              (L l) (fun _ => 1) P (allocRestrict s (C l) (alloc l) (pieceBlock G w mesh (trans l)) hJ)
+              (columnCharacter reflected s₀ modifier R₀ seed K₀ Z₀ ξ₀ hK₀ key
+                (rayShift reflected (column l) ξ)) t
+              (volume (s.restrict (pieceBlock G w mesh (trans l))))
+              (firstMainRadius reflected K₀ (volume (s.restrict (pieceBlock G w mesh (trans l)))) Z ξ₀
+                (3 * (amp + pieceNode G w (trans l))) reserve
+                (firstLabel s₀ modifier R₀ seed K₀ Z₀ ξ₀ hK₀ key (column l)))) := by
+        apply mul_le_mul_of_nonneg_left _ (ha l)
+        apply mul_le_mul_of_nonneg_right _ hsum
+        apply mul_le_mul_of_nonneg_right _ hZA
+        exact mul_le_mul_of_nonneg_left hMM hK
+    _ = _ := by
+        rw [Finset.mul_sum, Finset.mul_sum, Finset.mul_sum]
+        apply Finset.sum_congr rfl
+        intro ξ _
+        ring
+
+/-- The window of a piece in the form of the label transfer. -/
+theorem piece_window {α : Type*} [Fintype α] (G : NodeGrid) (w : α → ℝ) {mesh : ℝ} (T : Finset α)
+    (hm : 0 ≤ mesh) (hw : ∀ i, 0 ≤ w i) (hwm : ∀ i, w i ≤ mesh) (hg : 2 * mesh ≤ G.g)
+    (hκ : 2 * mesh ≤ G.κ) (hd : 0 < G.d → 2 * mesh ≤ G.d) :
+    ((pieceNode G w T : ℝ) = 0 ∧ pieceBlock G w mesh T = ∅) ∨
+      (0 < (pieceNode G w T : ℝ) ∧
+        ∑ j ∈ pieceBlock G w mesh T, w j ≤ (pieceNode G w T : ℝ) - mesh) := by
+  rcases (pieceFacts G w T hm hw hwm hg hκ hd).zero_or_window with ⟨h0, hJ0⟩ | ⟨hpos, hact⟩
+  · left
+    exact ⟨by rw [h0]; simp, hJ0⟩
+  · right
+    exact ⟨by exact_mod_cast hpos, hact⟩
+
 /-- **N3: the first MAIN sum is bounded by the families of its pieces.** For every piece
 `k = (live, trans)` (at most `4^N`) and ray `ξ`, the family is the input of Collet's
 `eventual_selected_second` (see `pieceEnergy`). -/
@@ -235,92 +359,91 @@ theorem pieces_transfer (ε : ℝ) (hε : 0 < ε) (N : ℕ) :
   intro α _ _ hcard s w Z mesh Mmax hZ hP hhi hM1 hM hm hw hwm hmesh G hg hκ hd Label _ C L alloc
     trans htrans hseed ι₀ _ _ reflected s₀ modifier R₀ seed K₀ Z₀ ξ₀ hK key column R P hp hPA
     amplitude ha t amp reserve A hA hHA hNC
-  have hZ0 : 0 < Z := by linarith
-  rw [sum_pieces (pieceKey alloc trans), Finset.mul_sum]
-  apply Finset.sum_le_sum
-  intro k _
-  rw [Finset.sum_comm, Finset.mul_sum]
-  apply Finset.sum_le_sum
-  intro l _
-  obtain ⟨l, rfl⟩ := l
-  -- the piece facts and the transfer of the label
-  have hF := pieceFacts G w (trans l) hm hw hwm hg hκ hd
-  have hJ : pieceBlock G w mesh (trans l) ⊆ liveIndices (alloc l).val :=
-    (pieceBlock_subset G w mesh _).trans (htrans l)
-  have hSF : SeedFree s (pieceBlock G w mesh (trans l)) (L l) :=
-    fun j hj => hseed l j (pieceBlock_subset G w mesh _ hj)
-  have hwin : ((pieceNode G w (trans l) : ℝ) = 0 ∧ pieceBlock G w mesh (trans l) = ∅) ∨
-      (0 < (pieceNode G w (trans l) : ℝ) ∧
-        ∑ j ∈ pieceBlock G w mesh (trans l), w j ≤ (pieceNode G w (trans l) : ℝ) - mesh) := by
-    rcases hF.zero_or_window with ⟨h0, hJ0⟩ | ⟨hpos, hact⟩
-    · left
-      exact ⟨by rw [h0]; simp, hJ0⟩
-    · right
-      exact ⟨by exact_mod_cast hpos, hact⟩
-  have hE := hlab hcard s (C l) R (L l) P hp hPA (alloc l) (pieceBlock G w mesh (trans l)) hJ hSF
-    (fun j _ => hhi j) w Z mesh hZ hP hw hmesh (pieceNode G w (trans l)) hwin reflected s₀ modifier
-    R₀ seed K₀ Z₀ ξ₀ hK key (column l) t amp reserve A hA (hHA l) (hNC l)
-  have hpE : ∀ ξ : RayCharacter,
-      pieceEnergy s C alloc trans htrans G w mesh reflected s₀ modifier R₀ seed K₀ Z₀ ξ₀ hK key
-        column L R P t Z amp reserve (pieceKey alloc trans l) ξ ⟨l, rfl⟩ =
-      correctedChildGaussEnergy (s.restrict (pieceBlock G w mesh (trans l))) 1 1 1 1 (C l) R (L l)
-        (fun _ => 1) P (allocRestrict s (C l) (alloc l) (pieceBlock G w mesh (trans l)) hJ)
-        (columnCharacter reflected s₀ modifier R₀ seed K₀ Z₀ ξ₀ hK key
-          (rayShift reflected (column l) ξ)) t
-        (volume (s.restrict (pieceBlock G w mesh (trans l))))
-        (firstMainRadius reflected K₀ (volume (s.restrict (pieceBlock G w mesh (trans l)))) Z ξ₀
-          (3 * (amp + pieceNode G w (trans l))) reserve
-          (firstLabel s₀ modifier R₀ seed K₀ Z₀ ξ₀ hK key (column l))) := fun ξ => rfl
-  simp only [hpE]
-  have hJN : (pieceBlock G w mesh (trans l)).card ≤ N :=
-    (Finset.card_le_univ _).trans hcard
-  have hMM := prod_M_sq_le s (pieceBlock G w mesh (trans l)) N hJN Mmax hM1 hM
-  have hsum : 0 ≤ ∑ ξ : RayCharacter,
-      correctedChildGaussEnergy (s.restrict (pieceBlock G w mesh (trans l))) 1 1 1 1 (C l) R (L l)
-        (fun _ => 1) P (allocRestrict s (C l) (alloc l) (pieceBlock G w mesh (trans l)) hJ)
-        (columnCharacter reflected s₀ modifier R₀ seed K₀ Z₀ ξ₀ hK key
-          (rayShift reflected (column l) ξ)) t
-        (volume (s.restrict (pieceBlock G w mesh (trans l))))
-        (firstMainRadius reflected K₀ (volume (s.restrict (pieceBlock G w mesh (trans l)))) Z ξ₀
-          (3 * (amp + pieceNode G w (trans l))) reserve
-          (firstLabel s₀ modifier R₀ seed K₀ Z₀ ξ₀ hK key (column l))) :=
-    Finset.sum_nonneg (fun ξ _ => corrected_energy_nonneg _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
-      (first_main_radius_pos _ _ _ _ _ _ _ hZ0 _))
-  have hZA : 0 ≤ Z ^ (A * ε) := Real.rpow_nonneg hZ0.le _
-  calc amplitude l * correctedChildGaussEnergy s 1 1 1 1 (C l) R (L l) (fun _ => 1) P (alloc l)
-        (columnCharacter reflected s₀ modifier R₀ seed K₀ Z₀ ξ₀ hK key (column l)) t (volume s)
-        (firstMainRadius reflected K₀ (volume s) Z ξ₀ (3 * amp) reserve
-          (firstLabel s₀ modifier R₀ seed K₀ Z₀ ξ₀ hK key (column l)))
-      ≤ amplitude l * (K * (∏ j ∈ pieceBlock G w mesh (trans l), s.M j ^ 2) * Z ^ (A * ε) *
-          ∑ ξ : RayCharacter,
-            correctedChildGaussEnergy (s.restrict (pieceBlock G w mesh (trans l))) 1 1 1 1 (C l) R
-              (L l) (fun _ => 1) P (allocRestrict s (C l) (alloc l) (pieceBlock G w mesh (trans l)) hJ)
-              (columnCharacter reflected s₀ modifier R₀ seed K₀ Z₀ ξ₀ hK key
-                (rayShift reflected (column l) ξ)) t
-              (volume (s.restrict (pieceBlock G w mesh (trans l))))
-              (firstMainRadius reflected K₀ (volume (s.restrict (pieceBlock G w mesh (trans l)))) Z ξ₀
-                (3 * (amp + pieceNode G w (trans l))) reserve
-                (firstLabel s₀ modifier R₀ seed K₀ Z₀ ξ₀ hK key (column l)))) :=
-        mul_le_mul_of_nonneg_left hE (ha l)
-    _ ≤ amplitude l * (K * Mmax ^ (2 * N) * Z ^ (A * ε) *
-          ∑ ξ : RayCharacter,
-            correctedChildGaussEnergy (s.restrict (pieceBlock G w mesh (trans l))) 1 1 1 1 (C l) R
-              (L l) (fun _ => 1) P (allocRestrict s (C l) (alloc l) (pieceBlock G w mesh (trans l)) hJ)
-              (columnCharacter reflected s₀ modifier R₀ seed K₀ Z₀ ξ₀ hK key
-                (rayShift reflected (column l) ξ)) t
-              (volume (s.restrict (pieceBlock G w mesh (trans l))))
-              (firstMainRadius reflected K₀ (volume (s.restrict (pieceBlock G w mesh (trans l)))) Z ξ₀
-                (3 * (amp + pieceNode G w (trans l))) reserve
-                (firstLabel s₀ modifier R₀ seed K₀ Z₀ ξ₀ hK key (column l)))) := by
-        apply mul_le_mul_of_nonneg_left _ (ha l)
-        apply mul_le_mul_of_nonneg_right _ hsum
-        apply mul_le_mul_of_nonneg_right _ hZA
-        exact mul_le_mul_of_nonneg_left hMM (by linarith)
-    _ = _ := by
-        rw [Finset.mul_sum, Finset.mul_sum, Finset.mul_sum]
-        apply Finset.sum_congr rfl
-        intro ξ _
-        ring
+  apply pieces_sum_of_labels N hcard s w Z mesh Mmax K A ε hZ hM1 hM (by linarith) G C L alloc trans
+    htrans reflected s₀ modifier R₀ seed K₀ Z₀ ξ₀ hK key column R P amplitude ha t amp reserve
+  intro l
+  exact hlab hcard s (C l) R (L l) P hp hPA (alloc l) (pieceBlock G w mesh (trans l))
+    ((pieceBlock_subset G w mesh _).trans (htrans l))
+    (fun j hj => hseed l j (pieceBlock_subset G w mesh _ hj)) (fun j _ => hhi j) w Z mesh hZ hP hw
+    hmesh (pieceNode G w (trans l)) (piece_window G w (trans l) hm hw hwm hg hκ hd) reflected s₀
+    modifier R₀ seed K₀ Z₀ ξ₀ hK key (column l) t amp reserve A hA (hHA l) (hNC l)
+
+/-! ### The plain-family transfer contract -/
+
+/-- **The plain-family transfer contract**: every label transfers to the plain families of its
+pieces (seed unchanged, no collision families), with no (S)/(Col) premises. Under (S) and (Col)
+this is `piece_label_transfer` (proved). Without them the transfer has more families (residual
+seeds `L′ ∣ L`: `piece_label_transfer_supplier`; collision families: L3), which this contract does
+not cover; it is the hypothesis of `balanced_of_regular3` until those families are paid. -/
+def PlainTransfer : Prop :=
+  ∀ ε : ℝ, 0 < ε → ∀ N : ℕ, ∃ K : ℝ, 1 ≤ K ∧ ∀ {α : Type} [Fintype α] [DecidableEq α],
+    Fintype.card α ≤ N →
+    ∀ (s : Input α) (C R L : Ideal O) (P : Finset (Ideal O)), (∀ Q ∈ P, Prime Q) →
+      PoolAvoids P s →
+    ∀ (B : actualAllocations s.pools C) (J : Finset α) (hJ : J ⊆ liveIndices B.val),
+      (∀ j ∈ J, 0 ≤ s.hi j ∧ s.hi j ≤ 2) →
+    ∀ (w : α → ℝ) (Z mesh : ℝ), 1 < Z → (∀ i, s.P i = Z ^ w i) → (∀ i, 0 ≤ w i) →
+      Real.logb Z (2 * 16 ^ N) ≤ 6 * mesh →
+    ∀ (δ : ℝ), (δ = 0 ∧ J = ∅) ∨ (0 < δ ∧ ∑ j ∈ J, w j ≤ δ - mesh) →
+    ∀ {ι₀ : Type} [Fintype ι₀] [DecidableEq ι₀] (reflected : Bool) (s₀ : Input ι₀)
+      (modifier : Tuple ι₀ → ℂ) (R₀ seed : Ideal O) (K₀ Z₀ ξ₀ : ℝ) (hK : 0 < K₀)
+      (key : ℤ × (Fin 5 → ℤ)) (c : FirstColumnIndex (source s₀ modifier R₀ seed K₀ Z₀ ξ₀ hK key))
+      (t amp reserve A : ℝ), 0 ≤ A →
+      firstMainRadius reflected K₀ (volume (s.restrict J)) Z ξ₀ (3 * (amp + δ)) reserve
+        (firstLabel s₀ modifier R₀ seed K₀ Z₀ ξ₀ hK key c) ≤ Z ^ A →
+      correctedChildGaussEnergy s 1 1 1 1 C R L (fun _ => 1) P B
+          (columnCharacter reflected s₀ modifier R₀ seed K₀ Z₀ ξ₀ hK key c) t (volume s)
+          (firstMainRadius reflected K₀ (volume s) Z ξ₀ (3 * amp) reserve
+            (firstLabel s₀ modifier R₀ seed K₀ Z₀ ξ₀ hK key c)) ≤
+        K * (∏ j ∈ J, s.M j ^ 2) * Z ^ (A * ε) *
+          ∑ ξ : RayCharacter, correctedChildGaussEnergy (s.restrict J) 1 1 1 1 C R L (fun _ => 1) P
+            (allocRestrict s C B J hJ)
+            (columnCharacter reflected s₀ modifier R₀ seed K₀ Z₀ ξ₀ hK key (rayShift reflected c ξ))
+            t (volume (s.restrict J))
+            (firstMainRadius reflected K₀ (volume (s.restrict J)) Z ξ₀ (3 * (amp + δ)) reserve
+              (firstLabel s₀ modifier R₀ seed K₀ Z₀ ξ₀ hK key c))
+
+/-- `pieces_transfer` from the plain-family contract (no (S)/(Col) hypotheses). -/
+theorem pieces_transfer_plain (htr : PlainTransfer) (ε : ℝ) (hε : 0 < ε) (N : ℕ) :
+    ∃ K : ℝ, 1 ≤ K ∧ ∀ {α : Type} [Fintype α] [DecidableEq α], Fintype.card α ≤ N →
+    ∀ (s : Input α) (w : α → ℝ) (Z mesh Mmax : ℝ), 1 < Z → (∀ i, s.P i = Z ^ w i) →
+      (∀ i, 0 ≤ s.hi i ∧ s.hi i ≤ 2) → 1 ≤ Mmax → (∀ i, s.M i ≤ Mmax) → 0 ≤ mesh →
+      (∀ i, 0 ≤ w i) → (∀ i, w i ≤ mesh) → Real.logb Z (2 * 16 ^ N) ≤ 6 * mesh →
+    ∀ (G : NodeGrid), 2 * mesh ≤ G.g → 2 * mesh ≤ G.κ → (0 < G.d → 2 * mesh ≤ G.d) →
+    ∀ {Label : Type} [Fintype Label] (C L : Label → Ideal O)
+      (alloc : ∀ l, actualAllocations s.pools (C l)) (trans : Label → Finset α)
+      (htrans : ∀ l, trans l ⊆ liveIndices (alloc l).val),
+    ∀ {ι₀ : Type} [Fintype ι₀] [DecidableEq ι₀] (reflected : Bool) (s₀ : Input ι₀)
+      (modifier : Tuple ι₀ → ℂ) (R₀ seed : Ideal O) (K₀ Z₀ ξ₀ : ℝ) (hK : 0 < K₀)
+      (key : ℤ × (Fin 5 → ℤ))
+      (column : Label → FirstColumnIndex (source s₀ modifier R₀ seed K₀ Z₀ ξ₀ hK key))
+      (R : Ideal O) (P : Finset (Ideal O)), (∀ Q ∈ P, Prime Q) → PoolAvoids P s →
+    ∀ (amplitude : Label → ℝ), (∀ l, 0 ≤ amplitude l) →
+    ∀ (t amp reserve A : ℝ), 0 ≤ A →
+      (∀ l, firstMainRadius reflected K₀ (volume (s.restrict (pieceBlock G w mesh (trans l)))) Z ξ₀
+        (3 * (amp + pieceNode G w (trans l))) reserve
+        (firstLabel s₀ modifier R₀ seed K₀ Z₀ ξ₀ hK key (column l)) ≤ Z ^ A) →
+      ∑ l, amplitude l * correctedChildGaussEnergy s 1 1 1 1 (C l) R (L l) (fun _ => 1) P (alloc l)
+          (columnCharacter reflected s₀ modifier R₀ seed K₀ Z₀ ξ₀ hK key (column l)) t (volume s)
+          (firstMainRadius reflected K₀ (volume s) Z ξ₀ (3 * amp) reserve
+            (firstLabel s₀ modifier R₀ seed K₀ Z₀ ξ₀ hK key (column l))) ≤
+        K * Mmax ^ (2 * N) * Z ^ (A * ε) *
+          ∑ k ∈ Finset.univ.image (pieceKey alloc trans), ∑ ξ : RayCharacter,
+            ∑ l : {l // pieceKey alloc trans l = k}, amplitude l.val *
+              pieceEnergy s C alloc trans htrans G w mesh reflected s₀ modifier R₀ seed K₀ Z₀ ξ₀ hK
+                key column L R P t Z amp reserve k ξ l := by
+  obtain ⟨K, hK1, hlab⟩ := htr ε hε N
+  refine ⟨K, hK1, ?_⟩
+  intro α _ _ hcard s w Z mesh Mmax hZ hP hhi hM1 hM hm hw hwm hmesh G hg hκ hd Label _ C L alloc
+    trans htrans ι₀ _ _ reflected s₀ modifier R₀ seed K₀ Z₀ ξ₀ hK key column R P hp hPA
+    amplitude ha t amp reserve A hA hHA
+  apply pieces_sum_of_labels N hcard s w Z mesh Mmax K A ε hZ hM1 hM (by linarith) G C L alloc trans
+    htrans reflected s₀ modifier R₀ seed K₀ Z₀ ξ₀ hK key column R P amplitude ha t amp reserve
+  intro l
+  exact hlab hcard s (C l) R (L l) P hp hPA (alloc l) (pieceBlock G w mesh (trans l))
+    ((pieceBlock_subset G w mesh _).trans (htrans l)) (fun j _ => hhi j) w Z mesh hZ hP hw
+    hmesh (pieceNode G w (trans l)) (piece_window G w (trans l) hm hw hwm hg hκ hd) reflected s₀
+    modifier R₀ seed K₀ Z₀ ξ₀ hK key (column l) t amp reserve A hA (hHA l)
 
 /-! ### Without the seed condition (S): residual seeds -/
 
@@ -590,5 +713,7 @@ end QRH.MixedStep.Downstream
 
 #print axioms QRH.MixedStep.Downstream.piece_label_transfer
 #print axioms QRH.MixedStep.Downstream.pieces_transfer
+#print axioms QRH.MixedStep.Downstream.pieces_sum_of_labels
+#print axioms QRH.MixedStep.Downstream.pieces_transfer_plain
 #print axioms QRH.MixedStep.Downstream.piece_label_transfer_supplier
 #print axioms QRH.MixedStep.Downstream.pieces_transfer_supplier

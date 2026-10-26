@@ -6,7 +6,8 @@ Apache-2.0. This development overlay reuses pinned Cycle61 definitions. -/
 /- Repeated marks: fork of Record1252270103Source.Admission.SelectedHighCofactorFamilySome (Hailey Collet, Apache-2.0; inherited notices retained).
 Only the declarations whose statement depends on the HIGH gain, the uniform detector
 cutoff or the source validity are restated, renamed `*_rm`. -/
-/- Mixed step (L4/L5, F4): fork of Fork.Record1252270103Source.Admission.SelectedHighCofactorFamilySome
+/- Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.
+Mixed step (L4/L5, F4): fork of Fork.Record1252270103Source.Admission.SelectedHighCofactorFamilySome
 (PR 76 fork of Hailey Collet's module, Apache-2.0); changes: two parents and two amplitudes.
 * First layer `s₀ : Input α₀` (marked modifier over `α₀`): columns, labels, keys, the balanced first
   mass and its hypotheses (`s₀.W₁ 0 = 0`, `sourceRadius s₀`, `loMass ≤ s₀.lower`, `ap`-support).

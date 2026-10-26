@@ -6,7 +6,8 @@ Apache-2.0. This development overlay reuses pinned Cycle61 definitions. -/
 /- Repeated marks: fork of Record1252270103Source.High.GlobalPhysicalRegularRawPositive (Hailey Collet, Apache-2.0; inherited notices retained).
 Only the declarations whose statement depends on the HIGH gain, the uniform detector
 cutoff or the source validity are restated, renamed `*_rm`. -/
-/- Mixed step (L4/L5, F4): fork of Fork.Record1252270103Source.High.GlobalPhysicalRegularRawPositive
+/- Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.
+Mixed step (L4/L5, F4): fork of Fork.Record1252270103Source.High.GlobalPhysicalRegularRawPositive
 (PR 76 fork of Hailey Collet's module, Apache-2.0); changes: two parents. The first layer
 (columns, labels, characters, dictionary rays, keys) is read from `s₀ : Input α₀` with its modifier
 `modifier₀`; the second-layer data (datum, slots, `w σ v θ`) live on the slot type `α` of the

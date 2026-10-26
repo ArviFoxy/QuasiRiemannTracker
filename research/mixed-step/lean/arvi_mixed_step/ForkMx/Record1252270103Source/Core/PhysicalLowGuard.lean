@@ -1,4 +1,5 @@
 /- Copyright (c) 2026 Hailey Collet. Apache-2.0.
+Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.
 Mixed step (L4/L5, F3): fork of Record1252270103Source.Core.PhysicalLowGuard; changes: the node
 facts `NodeGeometry_mx` (the ledger's `RealGeometryLow` at a virtual node) replace `RealGeometry`;
 only `parent_budget_room` is used, as in Collet's proof. -/

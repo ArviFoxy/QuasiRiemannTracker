@@ -1,4 +1,5 @@
 /- Copyright (c) 2026 Hailey Collet. Apache-2.0.
+Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.
 Mixed step (L4/L5, F3): fork of Record1252270103Source.Admission.SelectedRegularLowPoint; changes:
 two parents, two amplitudes, node price as a hypothesis.
 `eventually_initial_low_point_mx`: the anchor is `Initial.anchor_mx i₀ i` (first layer from the

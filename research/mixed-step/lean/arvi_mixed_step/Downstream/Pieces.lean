@@ -470,6 +470,67 @@ theorem piece_frozen_residual_live (G : NodeGrid) (w : α → ℝ) (mesh : ℝ) 
   have h := piece_frozen_residual G w mesh s B (liveIndices B.val) le_rfl hJ hw hlo hε hlow
   simpa using h
 
+/-- **The frozen margin in first-layer form** (`RegularJointSupplier3`'s
+`φ δ ≤ Σ w − Σ_{live (alloc l)} w`), for a piece whose transferable slots are all its live slots,
+at a non-top node, with `φ δ = (b − θ) − ε`. -/
+theorem piece_frozen_first (G : NodeGrid) (w : α → ℝ) {s : Input α} {C : Ideal O}
+    (B : actualAllocations s.pools C) (hw : ∀ i, 0 ≤ w i) {b width ε : ℝ}
+    (hlo : b - width ≤ ∑ i, w i) (hε : width + G.g + G.κ ≤ ε)
+    (hlow : pieceNode G w (liveIndices B.val) ≠ G.d) :
+    b - G.theta (pieceNode G w (liveIndices B.val)) - ε ≤
+      (∑ i, w i) - ∑ i ∈ liveIndices B.val, w i := by
+  have h := piece_frozen_obligation G w (liveIndices B.val) hw
+    (f := (∑ i, w i) - ∑ i ∈ liveIndices B.val, w i) (X := 0) (b := b) (δw := width) (ε := ε)
+    hlow (by linarith) hε
+  linarith
+
+/-- The frozen width is nonnegative. -/
+theorem frozen_first_nonneg (w : α → ℝ) (hw : ∀ i, 0 ≤ w i) (T : Finset α) :
+    0 ≤ (∑ i, w i) - ∑ i ∈ T, w i := by
+  have h := Finset.sum_sdiff (Finset.subset_univ T) (f := w)
+  have h0 : 0 ≤ ∑ i ∈ Finset.univ \ T, w i := Finset.sum_nonneg (fun i _ => hw i)
+  linarith
+
+/-- Removing slots of scale `≥ 1` does not increase the source radius. -/
+theorem sourceRadius_restrict_le (s : Input α) (J : Finset α) (hhi : ∀ i, 1 ≤ s.hi i)
+    (hP : ∀ i, 1 ≤ s.P i) (hb₁ : 0 ≤ s.b₁) (hb₂ : 0 ≤ s.b₂) :
+    CenteredMomentOriginalCommonHarmonic.sourceRadius (s.restrict J) ≤
+      CenteredMomentOriginalCommonHarmonic.sourceRadius s := by
+  unfold CenteredMomentOriginalCommonHarmonic.sourceRadius
+  have h1 : ∏ i, s.hi i = (∏ j : J, s.hi j.val) * ∏ i : {i // i ∉ J}, s.hi i.val :=
+    prod_split J s.hi
+  have h2 : ∏ i, s.P i = (∏ j : J, s.P j.val) * ∏ i : {i // i ∉ J}, s.P i.val :=
+    prod_split J s.P
+  have one_le : ∀ (f : α → ℝ), (∀ i, 1 ≤ f i) → 1 ≤ ∏ j : J, f j.val := by
+    intro f hf
+    calc (1 : ℝ) = ∏ _j : J, (1 : ℝ) := Finset.prod_const_one.symm
+      _ ≤ ∏ j : J, f j.val :=
+        Finset.prod_le_prod₀ (fun _ _ => zero_le_one) (fun j _ => hf j.val)
+  have nonneg : ∀ (f : α → ℝ), (∀ i, 1 ≤ f i) → 0 ≤ ∏ i : {i // i ∉ J}, f i.val :=
+    fun f hf => Finset.prod_nonneg (fun i _ => zero_le_one.trans (hf i.val))
+  have hA := one_le s.hi hhi
+  have hB := one_le s.P hP
+  have ha := nonneg s.hi hhi
+  have hc := nonneg s.P hP
+  have hX : 0 ≤ s.X₁ * s.X₂ := (mul_pos s.X₁_pos s.X₂_pos).le
+  change (∏ i : {i // i ∉ J}, s.hi i.val) * s.b₁ * s.b₂ * (s.X₁ * s.X₂) *
+      (∏ i : {i // i ∉ J}, s.P i.val) ≤ (∏ i, s.hi i) * s.b₁ * s.b₂ * (s.X₁ * s.X₂) * (∏ i, s.P i)
+  rw [h1, h2]
+  have hmid : 0 ≤ s.b₁ * s.b₂ * (s.X₁ * s.X₂) := mul_nonneg (mul_nonneg hb₁ hb₂) hX
+  have key : (∏ i : {i // i ∉ J}, s.hi i.val) * (s.b₁ * s.b₂ * (s.X₁ * s.X₂)) *
+      (∏ i : {i // i ∉ J}, s.P i.val) ≤
+      ((∏ j : J, s.hi j.val) * ∏ i : {i // i ∉ J}, s.hi i.val) * (s.b₁ * s.b₂ * (s.X₁ * s.X₂)) *
+        ((∏ j : J, s.P j.val) * ∏ i : {i // i ∉ J}, s.P i.val) := by
+    apply mul_le_mul _ _ hc (mul_nonneg (mul_nonneg (by linarith) ha) hmid)
+    · exact mul_le_mul_of_nonneg_right (le_mul_of_one_le_left ha hA) hmid
+    · exact le_mul_of_one_le_left hc hB
+  calc (∏ i : {i // i ∉ J}, s.hi i.val) * s.b₁ * s.b₂ * (s.X₁ * s.X₂) *
+        (∏ i : {i // i ∉ J}, s.P i.val) =
+        (∏ i : {i // i ∉ J}, s.hi i.val) * (s.b₁ * s.b₂ * (s.X₁ * s.X₂)) *
+          (∏ i : {i // i ∉ J}, s.P i.val) := by ring
+    _ ≤ _ := key
+    _ = _ := by ring
+
 /-- At the top node the price needs only `0 ≤ f`. -/
 theorem piece_frozen_nonneg (s : Input α) {C : Ideal O} (B : actualAllocations s.pools C)
     (J : Finset α) (hJ : J ⊆ liveIndices B.val) (w : α → ℝ) (hw : ∀ i, 0 ≤ w i) :
@@ -496,3 +557,5 @@ end QRH.MixedStep.Downstream
 #print axioms QRH.MixedStep.Downstream.piece_frozen_residual
 #print axioms QRH.MixedStep.Downstream.piece_frozen_residual_live
 #print axioms QRH.MixedStep.Downstream.piece_frozen_nonneg
+#print axioms QRH.MixedStep.Downstream.piece_frozen_first
+#print axioms QRH.MixedStep.Downstream.sourceRadius_restrict_le

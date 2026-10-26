@@ -1,7 +1,8 @@
 /- Copyright (c) 2026 Hailey Collet. Apache-2.0.
 Genuine parent sources choose one shared parameter record and one LOW/HIGH
 control package before every moving physical family. -/
-/- Mixed step (L4/L5, F5): fork of Fork.Record1252270103Source.High.GlobalPhysicalRegularControls
+/- Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.
+Mixed step (L4/L5, F5): fork of Fork.Record1252270103Source.High.GlobalPhysicalRegularControls
 (PR 76 fork of Hailey Collet's module, Apache-2.0); changes: two parents, two amplitudes, node price
 as a hypothesis. The LOW package is `regular_low_controls_mx` at the node price
 `MixedNodePrice n low bcell φ` with the pool cell width `ellPool = poolAmp/2`; the HIGH package is

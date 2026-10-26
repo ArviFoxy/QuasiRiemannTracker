@@ -3,7 +3,8 @@ Actual selected rows enter the genuine buffered HIGH source. -/
 /- Repeated marks: fork of Record1252270103Source.Admission.SelectedRegularHighSourceSome (Hailey Collet, Apache-2.0; inherited notices retained).
 Only the declarations whose statement depends on the HIGH gain, the uniform detector
 cutoff or the source validity are restated, renamed `*_rm`. -/
-/- Mixed step (L4/L5, F4): fork of Fork.Record1252270103Source.Admission.SelectedRegularHighSourceSome
+/- Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.
+Mixed step (L4/L5, F4): fork of Fork.Record1252270103Source.Admission.SelectedRegularHighSourceSome
 (PR 76 fork of Hailey Collet's module, Apache-2.0); changes: two parents and two amplitudes.
 * `ModifierAt_rm_mx`/`SourceAt_rm_mx` take the first layer `s₀ : Input α₀` (columns, labels, keys, the
   first mass and its hypotheses) and the second-layer parent `s : Input α` (selections, coordinates,

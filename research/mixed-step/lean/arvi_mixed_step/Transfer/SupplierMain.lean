@@ -1,4 +1,5 @@
 /- Copyright (c) 2026 Sil. Apache-2.0.
+Modifications Copyright (c) 2026 ArviFoxy. Apache-2.0.
 `pushforward_bound_gen` and `ray_family_energy_labeled` are the labelled versions of
 the chain in Positive.lean, which adapts Sil's `fourth_family_sq` and
 `weighted_pushforward` (FourthPower, PR 74, vendored in PR 76). Change: the residual

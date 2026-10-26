@@ -1,0 +1,29 @@
+{
+  "title": "Mixed source step: Sil's fourth-power transfer inside Collet's pool step",
+  "authors": [
+    {
+      "name": "ArviFoxy",
+      "url": "https://github.com/ArviFoxy"
+    }
+  ],
+  "description": "DRAFT (numbers final, wording to be completed when the step proof lands). Proves the all-moduli Dirichlet boundary 34971/40000 = 0.874275, with the principal pole excluded. New theorem: a mixed source step. In Collet's NF source step the LOW price of a step from a face (B0, L0) to (B, L) is paid by a pool of fresh sixth-power amplifiers of width a at rate 1 - 6q B0/L0, which forces L0 > 6q B0. The mixed step keeps the pool and additionally transfers a block J of the input's own live slots of width delta into the row label by Sil's fourth-power identity G(D^4 k) = chi(D)^2 G(k) at the first MAIN layer. After Cauchy-Schwarz over the selected products the count cancels the renormalization V -> V/prod P exactly, and booked against the original first-layer target the residual saves exactly delta (e = 1): the LOW payment becomes a(1 - 6q beta) + delta(1 + q - 6q beta) >= q X0 + r, so the step descends whenever L0 > 6q B0/(1 + q). Collision columns p^2 m are handled by a mod-p^2 sublattice lemma, and supplier columns of the seed by a supplier split. With this step the source chain runs from Sil's fourth-power face (s = 0.016) through a fan of 46 steps to the stall line L/B = 6q/(1+q) and then along a fine face family (8 polynomial pieces, 2^16 grid steps each, uniform certificates) to the count face (0.9638418, 2.0972320) and physical face (0.9657869, 2.1306183) with caps 3/40. The final return (Collet's, forked as in PR 76) needs the switch bound only as dMinus > 1/2 (all its uses), with physical window and count window 29/500 and h = 2011/2500; it closes at 34971/40000 (exact theta* = 0.8742701). The research, drafting and Lean development were AI-assisted.",
+  "license": "Apache-2.0; inherited notices and dependency licenses retained.",
+  "builds_on": [
+    "arvi-repeated-marks-on-sil-face-20261025",
+    "sil-fourth-power-20261025",
+    "arvi-repeated-marks-20261024",
+    "hailey-collet-1252270103",
+    "openai-baseline"
+  ],
+  "dependencies": [
+    "arvi-repeated-marks-on-sil-face-20261025",
+    "hailey-collet-1252270103",
+    "openai-baseline"
+  ],
+  "references": [
+    {
+      "label": "Research notes: the mixed source step",
+      "url": "https://github.com/ArviFoxy/QuasiRiemannTracker/tree/ccr-48c53b87-r20g37/research/mixed-step"
+    }
+  ]
+}

@@ -53,7 +53,17 @@ def bounds_r(G):
                                                    - Fr(3, 20)*ell) + Fr(1, 10**30)}
 
 
-def certifiable(th, fc, h, sC, sP, mode, why=False):
+_CACHED_FACES = [None]
+
+
+def certifiable(th, fc, h, sC, sP, mode, why=False, extra=()):
+    """extra: further count faces (name, B, L, window cap) priced as additional branches (affine and
+    capped, like C/capC); not in the Lean return (price_faces.py uses it)."""
+    # cert_return.ADM_CACHE keys admissions by (branch name, window), not by the face: reset it
+    # whenever the faces change (theta and h do not enter the admissions)
+    if _CACHED_FACES[0] != (fc, tuple(extra)):
+        CR.ADM_CACHE.clear()
+        _CACHED_FACES[0] = (fc, tuple(extra))
     (BC, LC, capC), (BP, LP, capP) = fc
     G = CR.geometry(th, h, BP, LP, sP)
     rec = CR.receipt(G, BP, LP, capC, capP, sC, Fr(43, 1000), CR.THETA_I)
@@ -74,6 +84,9 @@ def certifiable(th, fc, h, sC, sP, mode, why=False):
         fdict = {'C': (BC, LC, sC), 'P': (BP, LP, Fr(43, 1000))}
     cands = [cd for cd in CR.candidates(fdict, G['kap']) if cd[0] in GR.ALLOWED]
     cands.sort(key=lambda cd: GR.ALLOWED.index(cd[0]))
+    for name, B_, L_, w_ in extra:
+        more = CR.candidates({name: (B_, L_, w_)}, G['kap'])
+        cands += [cd for cd in more if cd[0] in (name, name + 'cap')]
     for nm, d, C in edges:
         try:
             GR.cover_tree(G, d, C, cands)
@@ -82,17 +95,17 @@ def certifiable(th, fc, h, sC, sP, mode, why=False):
     return (True, 'ok') if why else True
 
 
-def theta_star(fc, h, sC, sP, mode, anchor, lo=8700000):
+def theta_star(fc, h, sC, sP, mode, anchor, lo=8700000, extra=()):
     """least passing theta (units 1e-7) at h, searched from the anchor; None if none within 2e-5 above."""
     hi, step = anchor, 0
-    while not certifiable(Fr(hi, 10**7), fc, h, sC, sP, mode):
+    while not certifiable(Fr(hi, 10**7), fc, h, sC, sP, mode, extra=extra):
         step += 1
         if step > 20:
             return None
         lo, hi = hi, hi + 10
     while hi - lo > 1:
         mid = (lo + hi) // 2
-        lo, hi = (lo, mid) if certifiable(Fr(mid, 10**7), fc, h, sC, sP, mode) else (mid, hi)
+        lo, hi = (lo, mid) if certifiable(Fr(mid, 10**7), fc, h, sC, sP, mode, extra=extra) else (mid, hi)
     return hi
 
 

@@ -1783,3 +1783,9 @@ slot; `mixed-slots/`).
 - **Package up to the endpoint (02:55):** package_mixed.py refreshed the dev copies (closure 295 = 134 dev + 161 return),
   build ALL-OK (22 recompiled). Packaged `beta_of_step3 : NFStep3 → β ≤ theta`, theta = 437037/500000, axioms clean.
   The submission now depends only on `nf_step3 : NFStep3`.
+- **Decision (k) for collision families (~03:00).** Exact check against `square_twist`: twist `idealRowHom(d³)(m) = r³`,
+  r = (d/m)₆; primary reciprocity `idealRowHom m (span d) = r·phase`, phase² = 1. Extended column (C·D², D′): D's primes
+  active with net exponent (2 + 5·0) % 6 = 2, activeConductor gains π_D, so the column character changes by
+  `r·(r·phase)² = r³` — exactly the twist. Collision families are ordinary first-layer families over (C·D², D′):
+  LOW pins hold by construction. Remaining: energy equality on supported ideals (rayShift_energy pattern), label
+  membership, shortenPlains parent, ω(D). Told transfer agent, fork lead, N3/N6.

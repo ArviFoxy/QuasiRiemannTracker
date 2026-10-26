@@ -854,3 +854,14 @@ def RegularSupplier3Statement (K:ℚ)(n low high:Source)(b:ℚ)(reserve θ mesh 
 * **Seeds (approved option (1)).** The per-label child seed in `Family_mx` will be done after the F5 bridge is green, as one coordinated
   recompile of `ForkMx/` (F4 helper, N3/N6 agent notified). The F6 complement top (`InitialRegularToTruncatedMainExceptional(_mx)`)
   assumes seed = column divisor and must be generalized by its owner (now N7).
+
+### `Downstream/Supplier3.lean` (fork lead, green; glue for `regular_supplier3`)
+- `uniform_regular_constants`: finitely many suppliers of the regular shape, monotone in `(degree, controls, C)` and antitone in
+  `(τ, σ)`, have common constants. Applied over `G.nodes ×ˢ univ (Finset α)`.
+- `restrict_face_vnode2`: `θ ≤ Σ_J w` and a cell admissible for `globalFace B L cap` give the residual cell admissible for `globalFace (B−Lθ) L cap`.
+- `restrict_initialGeometry i n low b δ θ width mesh r κ … J (θ ≤ Σ_J w) (Σ_J w ≤ δ) (δ−θ ≤ κ)`, with conclusion
+  `InitialGeometry (Initial'.restrict i J) (vnode2 n low b δ θ) ((b−θ:ℚ):ℝ) (width+κ) mesh r`.
+- `residual_shift`: `sourceAReal (vnode2 n low b δ θn) low (b−θn) − r ≤ logb Z (volume s) − logb Z (volume (s.restrict J)) + 2*mesh`,
+  given `δ − Σ_J w ≤ 2*mesh`.
+- `frozen_margin_restrict`: a frozen margin on the original widths is one on the residual widths and the `allocRestrict` allocation.
+- `scalar_vnode2`: `Scalar_mx (vnode2 n low b δ θn) low (b−θn) θ mesh ξ (width+κ)` from the RegularSupplier3Statement budgets and `NodeGeometry_mx`.

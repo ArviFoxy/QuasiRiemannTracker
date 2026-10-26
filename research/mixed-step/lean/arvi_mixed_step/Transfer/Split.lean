@@ -71,6 +71,25 @@ def residualInput (s : Input ι) (J : Finset ι) : Input {i // i ∉ J} where
   lower_le := fun i => s.lower_le i.val
   upper_ge := fun i => s.upper_ge i.val
 
+section ResidualFields
+variable (s : Input ι) (J : Finset ι)
+@[simp] theorem residualInput_W₁ : (residualInput s J).W₁ = s.W₁ := rfl
+@[simp] theorem residualInput_W₂ : (residualInput s J).W₂ = s.W₂ := rfl
+@[simp] theorem residualInput_X₁ : (residualInput s J).X₁ = s.X₁ := rfl
+@[simp] theorem residualInput_X₂ : (residualInput s J).X₂ = s.X₂ := rfl
+@[simp] theorem residualInput_Y₁ : (residualInput s J).Y₁ = s.Y₁ := rfl
+@[simp] theorem residualInput_Y₂ : (residualInput s J).Y₂ = s.Y₂ := rfl
+@[simp] theorem residualInput_slots (i : {i // i ∉ J}) :
+    (residualInput s J).slots i = s.slots i.val := rfl
+@[simp] theorem residualInput_ν (i : {i // i ∉ J}) : (residualInput s J).ν i = s.ν i.val := rfl
+@[simp] theorem residualInput_W (i : {i // i ∉ J}) : (residualInput s J).W i = s.W i.val := rfl
+@[simp] theorem residualInput_P (i : {i // i ∉ J}) : (residualInput s J).P i = s.P i.val := rfl
+@[simp] theorem residualInput_hi (i : {i // i ∉ J}) : (residualInput s J).hi i = s.hi i.val := rfl
+@[simp] theorem residualInput_M (i : {i // i ∉ J}) : (residualInput s J).M i = s.M i.val := rfl
+@[simp] theorem residualInput_plain₁ : (residualInput s J).plain₁ = s.plain₁ := rfl
+@[simp] theorem residualInput_plain₂ : (residualInput s J).plain₂ = s.plain₂ := rfl
+end ResidualFields
+
 /-- The residual volume is the original volume divided by the selected lengths. -/
 theorem residual_volume (s : Input ι) (J : Finset ι) :
     (residualInput s J).X₁ * (residualInput s J).X₂ * ∏ i, (residualInput s J).P i =

@@ -19,11 +19,17 @@ import cert_return as CR
 import gen_return_lean as GR
 
 
+def face_list(path):
+    """The faces [C, P] of a faces file: a list [C, P] (faces_exact.json) or a dict {C:…, P:…} (faces_k92.json)."""
+    F = json.load(open(path))
+    if isinstance(F, dict):
+        F = [dict(F['C'], name='C'), dict(F['P'], name='P')]
+    assert [f.get('name', n) for f, n in zip(F, 'CP')] == ['C', 'P'] and len(F) == 2
+    return F
+
+
 def faces():
-    F = json.load(open(os.environ['QRH_FACES']))
-    C, P = F[0], F[1]
-    assert C.get('name', 'C') == 'C' and P.get('name', 'P') == 'P'
-    return tuple(tuple(Fr(n[k]) for k in ('B', 'L', 'cap')) for n in (C, P))
+    return tuple(tuple(Fr(n[k]) for k in ('B', 'L', 'cap')) for n in face_list(os.environ['QRH_FACES']))
 
 
 def certifiable(th, fc, h, sC, sP, mode, why=False):

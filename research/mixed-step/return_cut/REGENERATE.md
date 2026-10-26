@@ -16,7 +16,9 @@ step) is formalized separately, and the return only consumes its two faces as hy
   discharges the natural cost by the baseline's `β ≤ 7/8`, as PR 76 does.
 - **Interface for the source half.** `countGlobal = globalFace countCB countCL (3/40)` and
   `physicalGlobal = globalFace physicalB physicalLambda (3/40)`, with `globalFace B Λ cap = ⟨B,Λ,0,B,0,cap⟩`
-  (Collet's `SourceInlet`) and the exact faces `C`, `P` of `../faces_exact.json`.
+  (Collet's `SourceInlet`) and the exact faces `C`, `P` of `../faces_k92.json` (the faces the Lean
+  source chain delivers, `Family/Gen/Data3.lean`, `mpiece7`). The first build used the earlier
+  `../faces_exact.json` (Python family, wrong `K`); see §5.
 
 ## 1. Design (all exact; `return_cut.env`)
 
@@ -24,8 +26,8 @@ step) is formalized separately, and the return only consumes its two faces as hy
 |---|---|---|
 | `theta` | `34971/40000` = 0.874275 (exact θ* = 0.8742701, `theta_star.py`) | `ReturnConstants.c = 5029/40000` |
 | `h` | `2011/2500` = 0.8044 | `ReturnConstants.h` |
-| count face C | `B = 517574273064321753867031/536870912000000000000000` (0.96406), `L = 563952501813603236449/268435456000000000000` (2.10089) | `countCB`, `countCL` |
-| physical face P | `B = 51846496626077474773381/53687091200000000000000` (0.96572), `L = 114318071421667363757/53687091200000000000` (2.12934) | `physicalB`, `physicalLambda` |
+| count face C (`../faces_k92.json`, Lean family `mpiece7`, node3 at `1 − Dy`, `s` ≈ 0.0595) | `B = 4553636084322336971646479/4724464025600000000000000` (0.9638418), `L = 4954148591857540990249/2362232012800000000000` (2.0972320) | `countCB`, `countCL` |
+| physical face P (`../faces_k92.json`, `mpiece7`, node3 at `35747·Dy`, `s` ≈ 0.0570) | `B = 74757332803822334159435159927/77405618595430400000000000000` (0.9657869), `L = 5033014753577776399373/2362232012800000000000` (2.1306183) | `physicalB`, `physicalLambda` |
 | face caps | `3/40` (both) | `SourceInlet.countGlobal`, `physicalGlobal` |
 | count window `SC` | `29/500` | `SourceInlet.countWindow`, `ReturnFormulas.branchCap` |
 | physical numerator cap `SP` | `29/500` | `ReturnConstants.numeratorCap`, `ReturnD/Schedule.cap`, the restriction in `EndpointFromSources` |
@@ -35,8 +37,10 @@ step) is formalized separately, and the return only consumes its two faces as hy
 | receipts | Lemma D mode (`QRH_MODE=lemmaD`): Collet's window receipts and `λ_P > 3` are not checked; the schedule needs `2 ≤ λ_P ≤ 9/2` | `gen_return_lean.py` |
 
 The certificate has 67 rows and 25 admission windows (PR 76: 42 and 17). Smallest kept receipts:
-`principal_z` 9.1e-5, `conductor_kink_before_top` 6.8e-4 (`dk` = 0.80372 < `dp` = 0.8044),
-`floor` 1.27e-3, `incumbent` 1.45e-3.
+`principal_z` 9.1e-5, `conductor_kink_before_top` 6.8e-4 (`dk` = 0.8037158 < `dp` = 0.8044),
+`floor` 1.27e-3, `incumbent` 1.45e-3. Exact θ* with exactly the Lean branch set (`theta_star.py`):
+**0.8742701** for both face files (0.8742700 fails the cover of the `newTop` edge), so the declared
+`theta = 0.874275` has a margin of 4.9e-6.
 
 ## 2. Changes to the generators (default behavior unchanged)
 

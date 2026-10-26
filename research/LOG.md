@@ -1665,3 +1665,33 @@ slot; `mixed-slots/`).
       makes the flow worse.
     - The q floor `q ≥ 1/2` is (LD1) of Collet's restricted HIGH count (`r* ≥ 22/29 > 3/4` for the
       inverse moment's domain). Relaxing it is new analytic input, not a refactor.
+- **Mixed step, formal build (2026-10-26).** Target: the cut at θ ≈ 0.87427 via the mixed source step.
+  - **Natural cost.** Every mixed-step Python run must export `QRH_K=9/2`. The tree's gates use
+    `Lref = 49/100 − (9/2)b`; the scripts defaulted to Collet's 4.4973. The first kernel test of a
+    fan step caught this (gate 11 negative at the cap). After regenerating, the flow is identical
+    (no gate in the flow depends on K), and only the fan changes.
+  - **Certificates, all kernel-checked (`decide +kernel`):**
+    - 46 fan steps (`Fan/Steps.lean`, 3 min);
+    - 8 junction steps (fan → piece 0 → … → piece 7, `Family/Gen/Junctions3.lean`).
+  - **Uniform family machinery for `SourceValid3`** (`Family/{Formulas3,High3,Packed3,Validity3}.lean`).
+    - With `q = (1 − den)L₀/(6B₀ − L₀)`, the mixed denominator `den3 = 1 + q − 6qB₀/L₀` is exactly
+      `den`. The selected width is `δ = Nd/Dd` with `Nd = (1−den)(L₀b + t − B₀ + 6B₀r)` and
+      `Dd = den(6B₀ − L₀)`.
+    - Every gate times `Dd` is a polynomial in `y`.
+    - `Certs3.valid` proves SourceValid3 for every grid step of a piece.
+  - **Exact family check.** With K = 9/2, the 8 pieces to `s = 0.0595` pass at every sample (ALL OK).
+  - **Faces C and P** (exact, `faces_k92.json`):
+    - C: B = 0.9638418, L = 2.0972320;
+    - P: B = 0.9657869, L = 2.1306183.
+  - **L2 transfer lemma, proved** (`Transfer/`, ~2k lines, axioms clean):
+    `collet_main_selected_transfer`, plus its pool and allocation versions, under (S) and (Col). The
+    Cauchy–Schwarz count cancels the renormalization `V → V/∏P` exactly, so there is no W factor.
+  - **L4/L5 design** (`mixed-step/L45_DESIGN.md`). A hybrid:
+    - the MAIN side takes the residual as a literal Collet object, `child (s.restrict J)`, at
+      virtual parameters;
+    - the LOW/HIGH waist is forked with two parents (`s₀` original, `s` residual) and two amplitudes
+      (`poolAmp = a`, `amp = a + δ`);
+    - one new piece of arithmetic, the δ-shift: `Z^{−a−side(A)} = Z^{−a_v−side(A_v)}·Z^{(a_v−a)−(A−A_v)}`.
+  - **New trap found by the design agent.** For `reflected = false` the first-layer scalar has slope +1
+    in A, so evaluating it at the virtual parent undercounts by `Z^{2δ}`. The scalar must stay at
+    the original A.

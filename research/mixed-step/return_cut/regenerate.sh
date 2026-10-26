@@ -14,9 +14,12 @@ W=$1
 [ -e "$W" ] && { echo "WORKDIR $W exists" >&2; exit 1; }
 mkdir -p "$W"
 echo "faces: $QRH_FACES ($(sha256sum "$QRH_FACES" | cut -c1-16))"
+# 0. the faces as the list [C, P] that gen_return_lean.py indexes (0 = count face, 1 = physical face)
+python3 -c "import sys, json; sys.path.insert(0, '$HERE'); import theta_star as T
+json.dump(T.face_list(sys.argv[1]), open(sys.argv[2], 'w'), indent=1)" "$QRH_FACES" "$W/faces.json"
 cd "$RM"
 # 1. exact receipts and covers; constants, row and admission certificates (FinalReturn/Rows)
-python3 gen_return_lean.py "$QRH_FACES" "$QRH_THETA" "$QRH_H" 0 1 "$W/RET" "$QRH_SC" "$QRH_SP" "$QRH_MODE"
+python3 gen_return_lean.py "$W/faces.json" "$QRH_THETA" "$QRH_H" 0 1 "$W/RET" "$QRH_SC" "$QRH_SP" "$QRH_MODE"
 # 2. Collet's final-stage modules re-instantiated with these constants (Lemma D, relaxed transport)
 python3 fork_return.py "$W/RET" "$W/OUT" "$QRH_CAP" "$QRH_CAP" "$QRH_SC" "$QRH_SP" transport
 # 3. Collet's transport layer and generic physical return against Geometry.BoundsR (QRH_RELAXED),

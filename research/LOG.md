@@ -1723,3 +1723,22 @@ slot; `mixed-slots/`).
       for the transfer to act on, and its moments are faces that already contain the transfer.
     - Levy's Hölder step is optimal given its inputs.
   - **Next source-side lever.** The count face's cap, at ≈ 0.085: up to −6e-5.
+
+## 2026-10-26 ~02:30 — variable-cap family (cap ramp) and F4 done
+- Variable cap Lean (Family/Formulas3c, High3c, Packed3c, Validity3c; Graph/Chain3c): `Certs3c.valid`,
+  `Certs3c.validX` for faces `node3c cp y` (cap `cp(y)`, parent cap `cp(y−Dy)`); cap guards `capFieldP` (5 polys).
+  `piece_sources3c`/`piece_last3c`; `node3c_zero` (a ramp starting at capM starts at the constant-cap face).
+- Generator gen_family3.py: QRH_CAPRAMP (default "7:3/40,1/100"), Data3c module (constant-cap pieces untouched),
+  extraction for selected pieces merged into ck3/cs3, chain with node3c on the last piece.
+  Faces: C cap 111411/1310720, P cap 527267/6553600. Python precheck of piece 7 with the ramp: all covers/trees ok.
+- Return agent (Lemma W): caps 3/40 → θ* 0.8741364 at h = 2011/2500; ramped caps → 0.8741042 at h = 0.7985 (scan running).
+- F4 helper (HIGH spine fork, 25 modules) green; parameter-order constraint (κ + δw ≲ θ_fb) recorded in HANDOFF.
+- **Lead closed (negative): "MF3.38 counts the slot width twice".** In Collet's proof of Theorem 7.3
+  (foundations §7.2.3, MF3.32–MF3.38) the two z's are distinct charges:
+  (i) the combined variable `c = n₀P₀` (Möbius variable times surviving slot primes) has length
+  `D₀ = r + z − 2G`, so the slot primes are genuinely part of the squared sum;
+  (ii) the child is the canonical marked energy (Prop. 7.2, MF3.7: `F − M − Q − z₀ ≥ c*`, `z₀ = z − G`), whose
+  slot cap is charged because the slot twist `χ_P^{-2}` enlarges the dual sum's conductor: this is atom 1's
+  `T_d ≤ H + z` (column branch of the reflected energy, hybrid norm = Frobenius bound).
+  `F_c − M_c − Q' − z₀ = m − r − 2z + 2G`. Slot cost 2 is intrinsic to the method; improving it needs the
+  operator-norm (not Frobenius) bound of `atom1/README.md` §4. No cheap lever here.

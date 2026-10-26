@@ -13,6 +13,9 @@ for j in pcs:
     t0 = time.time()
     for p in G.field3P(fam, j):
         G.cover1(p)
+    if j in G.CAPRAMP:
+        for p in G.capField(fam, j):
+            G.cover1(p)
     for e in (0, 1):
         b = G.endP3(fam, j, e)
         for p in G.sg3N(fam, j, b):

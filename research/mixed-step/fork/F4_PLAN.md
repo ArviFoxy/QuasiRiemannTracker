@@ -1,7 +1,9 @@
 # F4 plan: the HIGH spine with two parents (2026-10-26)
 
-Author: F4 agent. Status: plan. The lower chain is being drafted; nothing that imports unfinished
-F1 files is compiled yet.
+Author: F4 agent. **Status (2026-10-26 ~02:35): all F4 modules green** (25 modules, 4646 lines, standard
+axioms). Final signatures and assembly conditions: HANDOFF.md, "## F4 twins" and "### F4 tops for F5".
+Ownership after coordination with the lead: rows 18–21 (RegularControls, CombinedPointSome, RegularPoints,
+RegularSuppliers) are the lead's (F3/F5 junctions); BalancedCofactor is F4. F4 also took the twins below.
 
 Prefixes: `S/` = Collet `Record1252270103Source/`, `A/` = PR 76 `Fork/Record1252270103Source/`,
 `M/` = `Submissions/arvi_mixed_step/ForkMx/Record1252270103Source/`.
@@ -77,7 +79,21 @@ Lines are the source module sizes. The column "needs" lists non-Collet, non-PR 7
 Rows 1–10 depend only on Collet, PR 76, the lead's `Downstream/Shift.lean` and the lead's
 `eventual_modified_normalized_cofactor_mx`. They are drafted and compiled first.
 
-## 2. Ownership questions for the lead
+## 1b. Twins added during the work (not in the design's F4 list)
+
+| M/ module | declarations | why |
+|---|---|---|
+| Coefficient/NonregularRawFamily | `actual_modified_nonregular_raw_family_mx` | single-α Collet lemma inside AllRawPositive |
+| Admission/FirstFamilyGeometry | `FirstFamily.eventual_literal_high_frequency_mx` | first label of `s₀`, free volume `V` |
+| Admission/SelectedSecondKeyCaps | `eventual_regular_key_caps_mx` | same |
+| Admission/RetainedGeometryWidth | `RetainedGeometry.main_scale_upper_mx` | label of `s₀`, volume `V` |
+| Admission/SelectedRegularSourceDataKeys | `eventual_selected_keys_mx` | over the `_mx` structures (lead asked F4) |
+| Admission/SelectedRegularSourceDataState | `eventual_selected_retained_data_mx` | same; consumed by F3/F5 too |
+| Admission/SelectedRegularGeometryCaps | `eventual_selected_radius_mx`, `selected_inactive_norm_mx`, `selected_radial_cap_mx`, `eventual_selected_geometry_caps_mx` | same |
+| High/GlobalPhysicalRegularCofactor | `regularSelectedSlots/Centered/Corner_mx`, `regular_selected_weight_nonneg_mx`, `regular_selected_source_fusion_mx`, `regular_selected_cofactor_budget_mx` | conclusion of `actual_point_rm_mx`; the lead's combined point |
+| Admission/SelectedRegularHighPointSomeGeometry | + `pointBudget_mx`, `pointBudget_mx_eq` | the shift factor `Z^shiftLoss` |
+
+## 2. Ownership questions for the lead (resolved; kept for the record)
 
 1. **BalancedCofactor (row 5).** The design lists it under F2. The δ-shift enters there, so I plan to
    write `M/High/GlobalPhysicalBalancedCofactor.lean` myself, using your `shifted_high_mass_mx`

@@ -382,3 +382,206 @@ Two-parent twins (statement shape as Collet's with: `∀(reflected second){α₀
 
 Next (F3): `Admission/SelectedRegularLowPointData` (`Initial.anchor_mx`, `eventually_low_scalar_mx`, `Scalar_mx`, `Shared_mx`, `radial_mx`,
 `eventually_selected_frequency_mx`, `selected_common_norm_caps_mx`), `Admission/SelectedRegularLowPoint` (`eventually_initial_low_point_mx`).
+
+## F4 tops for F5 (HIGH spine; green 2026-10-26 ~02:25; axioms `[propext, Classical.choice, Quot.sound]`)
+Section variables of both modules (explicit order, as PR 76 with `amp ↦ poolAmp`, since PR 76's `amp`
+there only enters as the pool cell width `ell = amp/2`):
+`{α₀ α}(M)[NeZero M](H)(hH)(ηanchor η₀)(n low)(setup)(W hWs hW)(bRad hbRad hrad)(reserve θ mesh poolAmp)(N)
+(wmin rmin εslot)(hf:FixedBudget reserve 100 100 1 θ)(hc:CardinalityBudget θ 100 100 1 1 N wmin rmin εslot)
+(hm:0≤mesh)(hmesh:100*mesh≤θ)(hpoolAmp:0<poolAmp)(R₀ hR₀)(hβ hβhi)`.
+
+* `High/GlobalPhysicalRegularHighParameters`, namespace `…High.GlobalPhysical`:
+  `def regular_some_source_rm_mx (high) (hB0 hB1 hlam hcap0 hcap1) (hparent)` := `actual_selected_regular_high_source_uniform_tau_rm_mx … (poolAmp/2) …`
+  (type: `SelectedRegularHighSourceSome.FamilyStatement_rm_mx …`, exactly PR 76's specialization).
+* `Admission/SelectedRegularHighPointSome`, namespace `…Admission.SelectedRegularHighPointSome`:
+  `def SourceAt_rm_mx (high) (hB0 hB1 hlam hcap0 hcap1) (hparent) (J τ P control C Z) : Prop :=
+   SelectedRegularHighSourceSome.ActualAt_rm_mx … (poolAmp/2) …` (call: `SourceAt_rm_mx (α₀:=α₀) (α:=α) M H hH ηanchor η₀ n low
+   setup W hWs hW bRad hbRad hrad reserve θ mesh poolAmp N wmin rmin εslot hf hc hm hmesh hpoolAmp R₀ hR₀ hβ hβhi high hB0 hB1 hlam
+   hcap0 hcap1 hparent J τ P control C Z`).
+```lean
+theorem actual_point_rm_mx (high:Source) (hB0 …) (hB1 …) (hlam …) (hcap0 …) (hcap1 …) (hparent : UnitFaceSource … (100*mesh) θ)
+    (hs:SourceAt_rm_mx (α₀:=α₀) (α:=α) M H hH ηanchor η₀ n low setup W hWs hW bRad hbRad hrad reserve θ mesh poolAmp
+      N wmin rmin εslot hf hc hm hmesh hpoolAmp R₀ hR₀ hβ hβhi high hB0 hB1 hlam hcap0 hcap1 hparent J (P).τ P control C Z)
+    {Label Row:Type}[Fintype Label](rows:Finset Row)[Nonempty rows]
+    (a:Anchor_mx α₀ α Z)(F:Family_mx a Label)(second:Bool)(G:Selected_mx F Row rows second)
+    (c₀:Canonical M H hH W hW hWs ηanchor η₀ R₀ Z F.hZ F.s₀)(c:Canonical M H hH W hW hWs ηanchor η₀ R₀ Z F.hZ F.s)
+    (hR:F.R=R₀)(hmod:F.modifier₀=markedSourceModifier 1 1 1 1 (fun _=>1))
+    (hD:F.D=1)(hreserve:F.reserve=θ)(hξ:0≤F.ξ)(hξθ:F.ξ≤θ)
+    (bcell r height amp:ℝ)(hamp:0<amp)(hampEq:amp=sourceAReal n low bcell)(hamp1:amp≤1)
+    (hamps:∀l,F.amp l=amp)(hN₀:Fintype.card α₀≤N)(hN:Fintype.card α≤N)
+    (hnodeB:(n.B:ℝ)≤1)(hnodeL:1≤(n.L:ℝ))(hnodeQ:1/2≤(n.q:ℝ))
+    (hallow:θ≤(n.allowance:ℝ))(hallow1:(n.allowance:ℝ)≤1)
+    (hw:∀i,0≤c.w i)(hwm:∀i,c.w i≤mesh)
+    (hadm:(globalFace (n.B:ℝ) (n.L:ℝ) (n.cap:ℝ)).Admissible (length Z c.X₁) (length Z c.X₂) (∑i,c.w i) 1)
+    (hr:0≤r)(hl1:Z^r≤c.X₁)(hl2:Z^r≤c.X₂)(href:c.Y₂=Z^r)
+    (hwidthlo:bcell-θ≤∑i,c.w i)(hwidthhi:(∑i,c.w i)≤bcell)(hbcell:bcell≤1)
+    (hOmega:frequencyLoss Z 32 F.ξ+θ≤(n.allowance:ℝ))
+    (hgaps:∀ν∈Icc (n.q:ℝ) (3/4),ActualGaps_rm n low (some high) bcell ν reserve)
+    (hsrc₀:sourceRadius F.s₀≤Z^(2:ℝ))
+    (hinj:Function.Injective G.key)
+    (hTsec:∀l,F.Tsec (G.row l).val.1.1=firstMainFourierScale F.reflected (Z^F.D) (volume F.s) Z F.ξ
+      (3*F.amp (G.row l).val.1.1) F.reserve 2 N (F.first (G.row l).val.1))
+    (hLcap:(G.L.absNorm:ℝ)≤Z^(4:ℝ))
+    (hm0:F.m≠0)(hQmask:F.Q≤Ideal.span {(72:O)})(hml:goodLambda∣F.m)(hm2:(2:O)∣F.m)(hQM:F.Q≤M)(hQη:F.Q≤η₀.modulus)
+    (pool Snew Anew:Finset (Ideal O))(depth:ℕ)(poolLoss BD Bsource:ℝ)
+    (hpool:FixedCellPoolData pool Z poolAmp (poolAmp/2) mesh poolLoss BD Bsource depth)
+    (hpoolLoss:poolLoss≤θ)(hdepthamp:(depth:ℝ)*poolAmp<5)
+    (hS:Snew⊆pool)(hA:Anew⊆Snew)(hdepth:Snew.card≤depth)
+    (T:Finset α)(hT:∀l,T⊆(G.sel l).full)
+    (hheight:|height|≤Z^(P).τ)(hslotheight:∀i,|height+c.v i|≤Z^(P).τ)
+    (Wa:𝓢(ℝ,ℂ))(H0 radius:Label→ℝ)(hH0:∀l,0<H0 l)(hradius0:∀l,0≤radius l+6*poolAmp)(hradius:∀l,radius l+6*poolAmp≤32)
+    (hZlarge:(9/4:ℝ)^2≤Z)(habsorb:(2:ℝ)^N*(9/4)^2*Z≤Z^(2:ℝ))(hannular:(2:ℝ)^(3*N)≤Z)
+    (shiftLoss:ℝ)(hshift:amp-poolAmp≤Real.logb Z (volume F.s₀.toData)-Real.logb Z (volume F.s.toData)+shiftLoss):
+    let e:=highBuffer 1 1 εslot (θ/16)
+    let annular:=3*(N:ℝ)*Real.logb Z 2
+    let omega:=fun l:rows=>residualWeight F.datum (regularFamilyWeight_mx F Wa (fun _=>pool) (fun _=>poolAmp) H0 radius (poolAmp/2)) (G.row l).val
+    ∃st hfixed keep select,
+    SharedState_mx F rows second G M H hH η₀ P e (n.q:ℝ) θ annular wmin c.w T Snew Anew hQM hQη st hfixed keep select ∧
+    (∑l∈Finset.univ.filter (fun l:rows=>(n.q+1)/2≤bufferValue e (select l)),
+      ‖regularSelectedCentered_mx G Snew Anew T height l‖^2*selectedPaidWeight (G.sel l) (omega l))≤
+      Z^shiftLoss*pointBudget n N J θ reserve εslot wmin C Z P control F.s F.reflected F.bin F.ξ c.p
+-- here `P` is the PR 76 notation `regularParameters W θ εslot J bound hWs hW hf.positive hc.slot_pos hbound`
+-- (section variables `(bound)(hbound)(J)(control)(C Z)` as in PR 76).
+```
+`pointBudget` is Collet's, unchanged (so `regular_point_budgets_paid` applies); the shift costs the outer factor
+`Z^shiftLoss` (`pointBudget_mx_eq` in Admission/SelectedRegularHighPointSomeGeometry). `SharedState_mx` and
+`regularSelectedCentered_mx`/`…Corner_mx`/`regular_selected_source_fusion_mx` (High/GlobalPhysicalRegularCofactor) are mine.
+
+**What the second-layer data must satisfy (assembly, not proved by F4).** With `n := vnode2 n₀ low b δ θnode`,
+`bcell := b-θnode`, `c` the canonical record of `F.s = s₀.restrict J` (if `Input.restrict` of `initialInput` is
+`initialInput` of the restricted slot data, `c := ⟨w∘val, v∘val, ray∘val, …, rfl⟩`):
+1. `hwidthhi : Σ_res ≤ b-θnode` and the `B`-part of `hadm`: from `θnode ≤ δ_act` (ledger §0.3); the other parts of
+   `hadm` (`0≤m₁,m₂≤B'`, `0≤Σ_res≤cap`) follow from those of `s₀`.
+2. `hwidthlo : (b-θnode)-θ ≤ Σ_res`, where `θ` is the HIGH budget of `FixedBudget reserve 100 100 1 θ`
+   (`θ < reserve/256`, `θ ≤ 10⁻⁵`): from `b-width ≤ Σ_tot` it needs `δ_act-θnode ≤ θ-width`. So the grid cell
+   width and the node slack κ (`θnode = max 0 (δ-κ)`, `δ_act-θnode ≤ κ`) must satisfy **`width + κ ≤ θ`**, i.e. both
+   are chosen after the reserve and after `θ` (PR 76 already needs `width ≤ θ`).
+3. `hshift` with `amp = r+δ` (node), `poolAmp = a` (actual pool) and `shiftLoss ≥ δ-δ_act` (≤ 2·mesh with the
+   window `[δ-2mesh, δ-η]` and `a = r`); the factor `Z^shiftLoss` must be absorbed by the reserve (`shiftLoss ≤ reserve/4`
+   suffices against `Z^(-(reserve/2))`).
+4. `hsrc₀`, `c₀`: the original canonical input and its source cap (Collet's `c.radius_cap` at the original node).
+
+## F4 issues
+(F4 helper, 2026-10-26.) **No mathematical failure found in the HIGH spine**: the PR 76 `_rm` HIGH statements are
+generic in the node, so `vnode2` is an instance; the only semantic change is the δ-shift at BalancedCofactor,
+proved with the lead's `shifted_high_mass_mx`. One **parameter-order constraint** for the assembly (N7):
+* Where: `ForkMx/…/Admission/SelectedRegularHighPointSome.lean:132`
+  (`hwidthlo : bcell-θ ≤ Σ c.w`, at `bcell = b-θnode` for the residual), with `θ` the HIGH budget of
+  `FixedBudget reserve 100 100 1 θ` (Collet `Core/PhysicalAnalyticParameters.lean:15-16`: `θ ≤ 10⁻⁵`,
+  `16θ < reserve/16`), and `reserve ≤ e` (PR 76 `GlobalPhysicalRegularSuppliers.lean:69`). So `θ < e/256`.
+* What: from `b-width ≤ Σ_tot`, `Σ_res = Σ_tot-δ_act`, the bound needs `δ_act-θnode ≤ θ-width`. With
+  `θnode = max 0 (δ-κ)` and the window `δ_act ≥ δ-2mesh`, this means `κ + width ≲ θ < e/256`.
+  LEDGER_INTERFACE §0.4's example `δw = g = κ = 2e` violates it.
+* Fix: choose the grid width `δw` and the node slack `κ` after the reserve and after `θ`, e.g.
+  `δw, κ ≤ θ/2` (then `g`, `ε` as the ledger says, `mesh ≤ min (κ/2) (θ/100)`). All of them are free small rationals,
+  and the ledger's node facts hold for every `0 ≤ θnode ≤ δ ≤ d`, so this is satisfiable. `shiftLoss ≤ 2·mesh` is then
+  far below `reserve/4`.
+
+## F5 scope (helper)
+(fork agent, 2026-10-26 ~03:00.) **Status of the lead side:** F3 is green, and so are the F5 junctions `High/GlobalPhysicalRegularControls`
+(`regular_some_controls_rm_mx`) and `Admission/SelectedRegularCombinedPointSome` (`eventually_actual_point_rm_mx`). The lead is writing
+`High/GlobalPhysicalRegularPoints` now (`RegularPointAt_mx`, `regular_some_point_source_rm_mx`; statement below).
+
+**Helper owns: the family/norm bridge.** These are the closure modules 11, 12, 31–37 and 45–51 of `closure_mx.tsv`. Modules 38–44 belong to
+F6 (third agent). Fork only the declarations on the path, each as `_mx` at the same relative path under `ForkMx/Record1252270103Source/`:
+- `High/GlobalPhysicalRegularNormalized`: regularKey, regularFirstAllocation, regular_datum_slots/input/parent, regularModifier,
+  regularRowRay, RegularCofactorBound, RegularNormalizedAt, actual_regular_normalized_newton_collection.
+- `High/GlobalPhysicalRegularDictionary`: regular_datum_height, regular_common_residual_height.
+- `Low/SelectedRegularFibersGeometry` (9 declarations) and `Low/SelectedRegularFibersSelection` (eventual_regular_full_cost_selection).
+- `High/GlobalPhysicalRegularFinite`, `…RegularCofactorBridge`, `…RegularSmall` and `…RegularFamily` (`allocatedRegularFamily_mx`:
+  a `Family_mx` built from `Anchor_mx`; the columns are `a.Column`, i.e. first layer `a.s₀`; the allocation is over `a.s.pools`).
+- `Admission/SelectedRegularAbsolute` and `…CanonicalAbsoluteData`/`…CanonicalAbsolute`.
+- `High/GlobalPhysicalRegularCanonicalSmall`, `…RegularNorm` and `…RegularCanonicalNorm` (`regular_canonical_joint_mx`).
+- `Contraction/SelectedMainExceptionalIdentity`: regularMainFamily_mx and the two joint-norm rfl bridges.
+- `High/GlobalPhysicalRegularSupplier`:
+  - `RegularPointSupplier_mx`;
+  - `regular_supplier_of_points_mx : RegularPointSupplier_mx … → RegularJointSupplier_mx …`.
+
+  `RegularJointSupplier_mx` is a new definition written by the helper: the two-parent family body of Collet's `RegularJointSupplier`
+  (`Core/InitialRegularToTruncatedContract.lean:50`). Constraints:
+  1. Two parents come from `Initial` records `i₀ : Initial (α:=α₀)` and `i : Initial (α:=α)` with `i₀.p = i.p`:
+     - the second layer satisfies `InitialGeometry i n b width mesh r` at the node `n`;
+     - the first layer has only the face hypotheses of `eventually_initial_caps` on `globalFace B₀ lam₀ cap₀` (fixed before `Z`),
+       exactly as in `RegularPointAt_mx` below.
+
+     Raw data, with `i₀`/`i` built inside as in Collet, is also fine if it is easier, but keep the same two-parent content.
+  2. Columns, labels, characters, scalar and `common` are read on `s₀ := i₀.input …`:
+     - `column : Label → FirstColumnIndex (source s₀ …)`, `chars := columnCharacter reflected s₀ … (column l)`;
+     - the scalar is at `Real.logb Z (volume s₀)`;
+     - `extra` uses `actualAllocations s₀.pools (common l)` and the ball factor `(radius l + 6*poolAmp)/(poolAmp/2)`.
+
+     The second layer `s := i.input …` carries:
+     - `alloc : ∀ l, actualAllocations s.pools (common l)`, the frozen coefficient `frozenCoefficient (alloc l).val (common l) R₀ s.ν s.W s.P`;
+     - `Hmain`/`Tsec` at `volume s` and `3*sourceAReal n low b`;
+     - `T := fun _ => volume s`.
+
+     (N6 specializes `i := i₀` restricted to `{j // j ∉ J}` and `column := rayShift ∘ column`, and rewrites the frozen coefficient by
+     `frozenCoefficient_restrict`.)
+  3. The pool is the actual one: `P := primePool rayM H fixedBadPrimes (1/2) 1 (Z^poolAmp)`, with `0 < poolAmp` and `mesh < poolAmp/2`
+     (Collet builds it with `eventually_fixed_cell_pool … amp (amp/2) …`; here it is at `poolAmp`).
+  4. Node facts are hypotheses: the fields of `Scalar_mx n low b θ mesh ξ width` / `NodeGeometry_mx n low b`, plus whatever else the
+     chain needs, as explicit hypotheses. There is no `RealGeometry` and no `ParentGood n`. If a `RealGeometry` field beyond
+     `NodeGeometry_mx` is used (e.g. `reference_pos` for `r = 49/100 - K b`), make it a hypothesis and list it.
+  5. `∀ κ, sourceAReal n low b - poolAmp ≤ logb Z (volume s₀) - logb Z (volume s) + κ →`, then the frozen margins per label
+     `(∀ l, φ ≤ (∑ j, i.w j) - ∑ j ∈ liveIndices (alloc l).val, i.w j)`, before the conclusion.
+
+     The conclusion carries whatever power of `Z^κ` the chain gives: `Z^(κ - reserve/2)` at the point level. Record the exponent you get.
+
+**The helper may assume by statement:**
+- F3 tops:
+  - `eventually_initial_low_point_mx` (Admission/SelectedRegularLowPoint, green);
+  - `Scalar_mx`, `Shared_mx`, `radial_mx`, `Initial.anchor_mx`, `selected_common_norm_caps_mx`, `eventually_selected_frequency_mx`
+    (Admission/SelectedRegularLowPointData, green).
+- F5 lead tops (`High/GlobalPhysicalRegularPoints`, being written; import it once it is green):
+```lean
+def RegularPointAt_mx {α₀ α:Type}[Fintype α₀][DecidableEq α₀][Fintype α]
+    (M:Ideal O)[NeZero M](H:Subgroup (O⧸M)ˣ)(hH:RayOrthogonality.globalUnits M≤H)
+    (W:ℝ→ℂ)(hW:ContDiff ℝ ∞ W)(hWs:Function.support W⊆Icc (1:ℝ) 2)
+    (ηanchor η₀:Character)(R₀:Ideal O)(hR₀:R₀≠0)(Q:Ideal O)
+    (n low:Source)(bcell φ reserve θ mesh ξ width τsource poolAmp B₀ lam₀ cap₀:ℝ)(N degree:ℕ)
+    (controls:Finset (ℕ×ℕ))(C Z:ℝ):Prop:=
+    let amp:=sourceAReal n low bcell
+    ∀hZ:1<Z,
+      ∀(i₀:Initial (α:=α₀) M H Z)(i:Initial (α:=α) M H Z)(r:ℝ),InitialGeometry i n bcell width mesh r→
+        i₀.p=i.p→(∀j,0≤ i₀.w j)→
+        (globalFace B₀ lam₀ cap₀).Admissible (length Z i₀.X₁) (length Z i₀.X₂) (∑j,i₀.w j) 1→
+        1≤ i₀.Y₂→i₀.Y₂≤ i₀.X₁→i₀.Y₂≤ i₀.X₂→
+      ∀(seed:Ideal O)(hs:Squarefree seed)(bin:ℤ×(Fin 5→ℤ))(reflected second:Bool),
+      let a:=Initial.anchor_mx i₀ i hH W hW hWs hZ ηanchor η₀ R₀ seed hR₀ hs 1 1 1 1 (fun _=>1) ξ θ bin reflected Q
+      ∀{Label:Type}[Fintype Label](F:Family_mx a Label),(∀l,F.amp l=amp)→
+      ∀{Row:Type}(rows:Finset Row)(G:Selected_mx F Row rows second),Function.Injective G.key→
+        (G.L.absNorm:ℝ)≤Z^(4:ℝ)→
+        (∀u,F.Tsec (G.row u).val.1.1=firstMainFourierScale reflected (Z^(1:ℝ)) (volume F.s) Z ξ
+          (3*amp) θ 2 N (F.first (G.row u).val.1))→
+      ∀(pool S A:Finset (Ideal O))(BD Bsource:ℝ)(depth:ℕ),
+        FixedCellPoolData pool Z poolAmp (poolAmp/2) mesh θ BD Bsource depth→
+        S⊆pool→A⊆S→S.card≤depth→(depth:ℝ)*poolAmp<5→
+      ∀T:Finset α,(∀u,T⊆(G.sel u).full)→
+      ∀(t height:ℝ),0≤height→(∀j∈T,|i.freq j|≤height)→
+        |t|≤Z^τsource→(∀j,|t+i.freq j|≤Z^τsource)→
+      ∀(Wa:𝓢(ℝ,ℂ))(H0 mainRadius:Label→ℝ),(∀l,0<H0 l)→
+        (∀l,0≤mainRadius l+6*poolAmp ∧ mainRadius l+6*poolAmp≤32)→
+      ∀κ:ℝ,amp-poolAmp≤Real.logb Z (volume F.s₀)-Real.logb Z (volume F.s)+κ→
+        (∀u:rows,φ≤(∑j,i.w j)-∑j∈liveIndices (G.sel u).B₁.val,i.w j)→
+      (∑u:rows,‖regularSelectedCentered_mx G S A T t u‖^2*
+        selectedPaidWeight (G.sel u) (residualWeight F.datum
+          (regularFamilyWeight_mx F Wa (fun _=>pool) (fun _=>poolAmp) H0 mainRadius (poolAmp/2)) (G.row u).val))≤
+      C*geometryHighFactor reflected (geometrySupportConstant N 1 (1/4:ℝ) (1/4:ℝ)) bin*
+        (i.p.control controls)^2*(1+|t|+height)^degree*Z^(κ-(reserve/2))
+```
+  (`regular_some_point_source_rm_mx … : ∃degree controls,(0,0)∈controls ∧ ∃C τsource,0<C ∧ 0<τsource ∧ ∀ᶠZ in atTop,1<Z ∧
+  RegularPointAt_mx … Z`, given `card α₀ ≤ N`, `card α ≤ N`. Its section variables are those of CombinedPointSome below:
+  `sc : Scalar_mx`, `hprice : MixedNodePrice n low bcell φ`, `hLowMesh : mesh ≤ regularLowMesh_mx …`, `B₀ lam₀ cap₀` with
+  `hB₀ : B₀≤1`, `hlam₀ : 1≤lam₀`, `hcap₀ : cap₀≤1`, `poolAmp`/`hpoolAmp`.)
+
+**Lead keeps:**
+- `High/GlobalPhysicalRegularPoints` and `High/GlobalPhysicalRegularSuppliers`. The latter is `regular_supplier_some_rm_mx`, the
+  composition `regular_supplier_of_points_mx ∘ regular_some_point_source_rm_mx`, written once the helper's RegularSupplier is green.
+- N6 (`Core/Contract3`, `Core/Balanced3`): the residual specialization of `RegularJointSupplier_mx` and `balanced_of_regular3`.
+
+**Do not touch:**
+- F6's modules (`ForkMx/…/Core/*MainExceptional*`, `Exceptional*`, `InitialMainRemainderGap`, `Low/InitialRemainder*`, `Contraction/SelectedMainExceptional{Aggregate,Initial,Radical}`,
+  `Coefficient/{CorrectedExceptionalFirstPrice,MarkedMainRemainder*}`);
+- my F1–F3 modules.
+
+If you need a two-parent twin of one of my lemmas, write it in your module and list it here.

@@ -95,6 +95,43 @@ def SharedState_mx (st:rows→NaturalState Z P.Bmask P.bΦ)
       (Real.logb Z ((firstSourceMissing (!F.reflected) (G.key l).val.1).absNorm:ℝ)) ∧
     rawFrequencyNorm (nonzeroJointSourceRow (G.key l))≤Z^(G.x θ θ annular w wmin T l 2)
 
+section Budget
+variable {β:Type}[Fintype β]
+
+/-- Collet's `pointBudget` with the shift loss added to every exponent. -/
+def pointBudget_mx (n:Source)(N J:ℕ)(θ reserve εslot wmin C Z:ℝ)(P:HighSourceParameters)
+    (control:Finset (ℕ×ℕ))(s:Input β)(reflected:Bool)(bin:ℤ×(Fin 5→ℤ))
+    (ξ:ℝ)(p:Profiles (1/4) (9/4))(shiftLoss:ℝ):ℝ :=
+  let e:=highBuffer 1 1 εslot (θ/16)
+  let annular:=3*(N:ℝ)*Real.logb Z 2
+  ∑k∈High.BufferedSelectedPaidSome.highBins e (n.q:ℝ),
+    (C*Z^(θ+θ)*forcedProfileCost s)*((max 1 (forcedProfileCost s))^2*(
+    geometryHighFactor reflected (geometrySupportConstant N 1 (1/4) (1/4)) bin*
+    cofactorRestorationCost θ 2 Z*(p.control control)^2*
+    ((Finset.Icc (⌊-((256:ℝ)+5*6)/θ⌋:ℤ) ⌊((256:ℝ)+5*6)/θ⌋).card^4:ℕ)*
+    (1+rawGeometryHeight Z P.τ (bufferCount e))^J*
+    Z^(((1-unmarkedDensity (2*bufferValue e k-1))*(frequencyLoss Z 32 ξ+θ)+
+      unmarkedDensity (2*bufferValue e k-1)*θ+θ)-((n.highFee:ℝ)+reserve)+
+      (2*bufferValue e k-1)*annular+4*θ+θ+reserve/16+2*P.εplain*P.d+
+      (2*P.εslot*P.d)*N+6*(θ/100)+shiftLoss)))
+
+/-- The shifted budget is `Z^shiftLoss` times Collet's budget. -/
+theorem pointBudget_mx_eq (n:Source)(N J:ℕ)(θ reserve εslot wmin C Z:ℝ)(P:HighSourceParameters)
+    (control:Finset (ℕ×ℕ))(s:Input β)(reflected:Bool)(bin:ℤ×(Fin 5→ℤ))
+    (ξ:ℝ)(p:Profiles (1/4) (9/4))(shiftLoss:ℝ)(hZ:0<Z):
+    pointBudget_mx n N J θ reserve εslot wmin C Z P control s reflected bin ξ p shiftLoss=
+      Z^shiftLoss*pointBudget n N J θ reserve εslot wmin C Z P control s reflected bin ξ p := by
+  simp only [pointBudget_mx,pointBudget]
+  rw [Finset.mul_sum]
+  refine Finset.sum_congr rfl (fun k _=>?_)
+  rw [Real.rpow_add hZ (((1-unmarkedDensity (2*bufferValue (highBuffer 1 1 εslot (θ/16)) k-1))*
+      (frequencyLoss Z 32 ξ+θ)+unmarkedDensity (2*bufferValue (highBuffer 1 1 εslot (θ/16)) k-1)*θ+θ)-
+      ((n.highFee:ℝ)+reserve)+(2*bufferValue (highBuffer 1 1 εslot (θ/16)) k-1)*(3*(N:ℝ)*Real.logb Z 2)+
+      4*θ+θ+reserve/16+2*P.εplain*P.d+(2*P.εslot*P.d)*N+6*(θ/100)) shiftLoss]
+  ring
+end Budget
+
 end
 end QRH.Record1252270103Source.Admission.SelectedRegularHighPoint
 #print axioms QRH.Record1252270103Source.Admission.SelectedRegularHighPoint.actual_coordinate_box_mx
+#print axioms QRH.Record1252270103Source.Admission.SelectedRegularHighPoint.pointBudget_mx_eq

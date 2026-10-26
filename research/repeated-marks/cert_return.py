@@ -69,6 +69,9 @@ from chain_params import K as K_I, THETA_I   # natural cost and its incumbent bo
 # lower bound of the physical schedule's switch dMinus = ds (field `dMinus_lower` of ReturnD/Schedule.lean):
 # Collet's 3/4 by default; QRH_DMINUS=1/2 is the relaxed field (fork_transport.py reads the same flag)
 DMINUS = Fr(os.environ.get('QRH_DMINUS', '3/4'))
+# count windows: Collet's FR8 windows by default; QRH_WINDOWS=lemmaW opens them (admission_polys_W)
+WINDOWS = os.environ.get('QRH_WINDOWS', 'collet')
+assert WINDOWS in ('collet', 'lemmaW'), WINDOWS
 M_H = (1 - K_I*Fr(17, 500))/2
 V = sub(const(Fr(5, 6)), DEL)
 
@@ -94,7 +97,15 @@ def branch_old(kappa):
     N = add(mul(sub(const(1), DEL), J), smul(Fr(1, 2), mul(mul(DEL, C), V)))
     return dict(J=J, N=N)
 
+def crossover(B, L):
+    """Lemma W: the plain length m_X where the face width (B - 2m)/L equals the natural width (1 - 2m)/K,
+    and that width w_X = (1 - 2 m_X)/K = (B - 2 m_X)/L."""
+    mX = (K_I*B - L)/(2*(K_I - L))
+    return mX, (1 - 2*mX)/K_I
+
 def admission_polys(br, B, L, s_plus, capped):
+    if WINDOWS == 'lemmaW':
+        return admission_polys_W(br, B, L, s_plus, capped)
     if capped:
         zs = s_plus - ETA
         mL = M_MINUS + ETA
@@ -115,6 +126,35 @@ def admission_polys(br, B, L, s_plus, capped):
     if capped:
         polys['cap'] = smul(zs - S_MINUS - ETA, DJ)
     scal = {'mplus-mH': M_PLUS - M_H - ETA, 'B-2mH-L(s-+eta)': B - 2*M_H - L*(S_MINUS + ETA) - 2*ETA}
+    return polys, scal
+
+def admission_polys_W(br, B, L, s_plus, capped):
+    """Lemma W (research/return-transfer/REPORT.md §2): Collet's count windows opened to the face's
+    proved domain. No lower plain window (m_- = 0), no m_+ = 11/25 and no lower width window s_-;
+    the window cap s_+ may reach the face cap; the plain line joins the natural one at the crossover
+    m_X (no jump), so the N-tail test is taken at m_X with width w_X. Guards 12-14 become
+    1/2 - m_X - eta, w_X - eta and, for capped branches, (z_* - eta) DJ."""
+    mX, wX = crossover(B, L)
+    if capped:
+        zs = s_plus - ETA
+        mL = ETA
+        mU = min(Fr(1, 2) - ETA, mX - ETA, (B - L*zs)/2 - ETA)
+    else:
+        mL = max(ETA, (B - L*(s_plus - ETA))/2 + ETA)
+        mU = min(Fr(1, 2) - ETA, mX - ETA)
+    D, A, C0, U, J, N, T, Rn, Mn = (br[k] for k in ('D', 'A', 'C0', 'U', 'J', 'N', 'T', 'Rn', 'Mn'))
+    DJ = mul(D, J)
+    polys = {
+        'D': D, 'A': A, 'C0': C0, 'J': J, 'T-J': sub(T, J),
+        '1.2499J-T': sub(smul(Fr(12499, 10000), J), T),
+        'Rn-23/37DJ': sub(Rn, smul(Fr(23, 37), DJ)), 'DJ-Rn': sub(DJ, Rn),
+        'Mn-mLDJ': sub(Mn, smul(mL, DJ)), 'mUDJ-Mn': sub(smul(mU, DJ), Mn),
+        'N-tail': sub(N, mul(add(const(1), smul(-2*mX, DEL), smul(-2*wX, mul(DEL, PP))), J)),
+        'UJp-UpJ': sub(mul(U, dp(J)), mul(dp(U), J)),
+    }
+    if capped:
+        polys['cap'] = smul(zs - ETA, DJ)
+    scal = {'1/2-mX-eta': Fr(1, 2) - mX - ETA, 'wX-eta': wX - ETA, 'K-L': K_I - L, 'mX-2/5': mX - Fr(2, 5)}
     return polys, scal
 
 # ---------- geometry ----------

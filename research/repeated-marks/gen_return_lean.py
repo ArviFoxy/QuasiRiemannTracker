@@ -13,6 +13,10 @@ its global source theorem (Lemma D) and the window receipts of Collet's schedule
 With `lemmaD`, as `global`, and the receipt `source_lambda_low` (lambda_P > 3, PR 69's FR21) is not
 checked either: the forked schedule (ReturnD/Schedule.lean) needs only 2 <= lambda_P <= 9/2.
 The receipt `dMinus_lower_3_4` checks ds > 3/4, or ds > QRH_DMINUS when that is set (cert_return.py).
+With QRH_WINDOWS=lemmaW the count windows are Lemma W's (research/return-transfer/REPORT.md §2; run
+fork_return.py with the same flag): lowerM without 2/5, upperM and the natural tail at the crossover
+crossM b, guards 12-14 = 1/2 - m_X - eta, w_X - eta, (z_* - eta) DJ, and branchCap = the window caps
+(window_caps: QRH_WCAP, by default the face caps of the faces file).
 """
 import sys, json, os
 from fractions import Fraction as Fr
@@ -137,8 +141,9 @@ def guards(br, meta):
     order = ['D', 'A', 'C0', 'J', 'T-J', '1.2499J-T', 'Rn-23/37DJ', 'DJ-Rn', 'Mn-mLDJ', 'mUDJ-Mn', 'N-tail',
              'UJp-UpJ']
     out = [polys[k] for k in order]
-    out.append(CR.const(scal['mplus-mH']))
-    out.append(CR.const(scal['B-2mH-L(s-+eta)']))
+    k12, k13 = ('1/2-mX-eta', 'wX-eta') if CR.WINDOWS == 'lemmaW' else ('mplus-mH', 'B-2mH-L(s-+eta)')
+    out.append(CR.const(scal[k12]))
+    out.append(CR.const(scal[k13]))
     out.append(polys['cap'] if capped else CR.const(1))
     return out
 
@@ -148,6 +153,8 @@ CONST_SIMP = 'c,h,theta,ell,x,y,kappa,ds,dk,dp,d0,physicalB,physicalLambda,count
 ROW_SIMP = ('rowMargin,Ebase,countN,countJ,countT,RN,MN,DJ,V,D,A,C0,Z,U,oldD,oldC,branchB,branchL,branchCap,'
             'branchZ,isCap,' + CONST_SIMP)
 GUARD_SIMP = 'admissionGuard,lowerM,upperM,naturalM,derivativeD,derivativeA,derivativeC,derivativeU,derivativeJ,' + ROW_SIMP
+if CR.WINDOWS == 'lemmaW':
+    GUARD_SIMP = 'crossM,crossW,' + GUARD_SIMP
 
 
 def emit_constants(P):
@@ -324,6 +331,74 @@ theorem exponent_lt_of_margin {e : Edge} {b : CountBranch} {δ p R : ℝ}
 '''
 
 
+# Lemma W (QRH_WINDOWS=lemmaW; research/return-transfer/REPORT.md §2): the count windows opened to the
+# faces' proved domain. Each edit is (old, new) on FORMULAS and must apply exactly once.
+LEMMA_W_EDITS = [
+    (""" | .P | .capP => 43/1000
+""", """ | .P | .capP => @@WCAPP@@
+"""),
+    (""" | .C | .capC | .weakC7 => 11/250
+""", """ | .C | .capC | .weakC7 => @@WCAPC@@
+"""),
+    ("""def lowerM (b : CountBranch) : ℝ :=
+ if isCap b then 2/5+1/10000000 else
+ max (2/5+1/10000000) ((branchB b-branchL b*(branchCap b-1/10000000))/2+1/10000000)
+def upperM (b : CountBranch) : ℝ :=
+ if isCap b then min (min (11/25-1/10000000) (naturalM-1/10000000))
+ ((branchB b-branchL b*branchZ b)/2-1/10000000)
+ else min (min (11/25-1/10000000) (naturalM-1/10000000))
+ ((branchB b-branchL b*(17/500+1/10000000))/2-1/10000000)
+""", """/-- Lemma W: the crossover plain length, where the face width `(B-2m)/Λ` equals the natural width
+`(1-2m)/K`; the plain line joins the natural one there. -/
+def crossM (b : CountBranch) : ℝ := (naturalK*branchB b-branchL b)/(2*(naturalK-branchL b))
+def crossW (b : CountBranch) : ℝ := (1-2*crossM b)/naturalK
+def lowerM (b : CountBranch) : ℝ :=
+ if isCap b then 1/10000000 else
+ max (1/10000000) ((branchB b-branchL b*(branchCap b-1/10000000))/2+1/10000000)
+def upperM (b : CountBranch) : ℝ :=
+ if isCap b then min (min (1/2-1/10000000) (crossM b-1/10000000))
+ ((branchB b-branchL b*branchZ b)/2-1/10000000)
+ else min (1/2-1/10000000) (crossM b-1/10000000)
+"""),
+    (""" countN b δ p-(1-2*δ*naturalM-2*δ*p*(17/500))*countJ b δ p,
+ U b p*derivativeJ b δ p-derivativeU b p*countJ b δ p,
+ 11/25-naturalM-1/10000000,
+ branchB b-2*naturalM-branchL b*(17/500+1/10000000)-2/10000000,
+ if isCap b then (branchZ b-17/500-1/10000000)*DJ b δ p else 1] j
+""", """ countN b δ p-(1-2*δ*crossM b-2*δ*p*crossW b)*countJ b δ p,
+ U b p*derivativeJ b δ p-derivativeU b p*countJ b δ p,
+ 1/2-crossM b-1/10000000,
+ crossW b-1/10000000,
+ if isCap b then (branchZ b-1/10000000)*DJ b δ p else 1] j
+"""),
+]
+
+
+def lemma_w_formulas(wcapC, wcapP):
+    text = FORMULAS
+    for old, new in LEMMA_W_EDITS:
+        assert text.count(old) == 1, old
+        text = text.replace(old, new)
+    return text.replace('@@WCAPC@@', qs(wcapC)).replace('@@WCAPP@@', qs(wcapP))
+
+
+def window_caps(capC, capP):
+    """Lemma W: the source caps s_+ of the count windows (branchCap), at most the face caps (the count
+    moment is the face restricted to broadFace B L s_+; Restricts allows s_+ = cap). QRH_WCAP='sC,sP'
+    sets them; by default the face caps themselves (the report used cap - 1/10000 = 749/10000)."""
+    w = os.environ.get('QRH_WCAP')
+    wC, wP = (Fr(v) for v in w.split(',')) if w else (capC, capP)
+    assert 0 < wC <= capC and 0 < wP <= capP, 'window caps must lie in (0, face cap]'
+    return wC, wP
+
+
+def lemma_w_branches(BC, LC, BP, LP):
+    """the five improved Lean branches (C, capC, weakC7, P, capP) need K > L and 2/5 <= m_X < 1/2."""
+    for B, L in ((BC, LC), (BC - Fr(7, 4000), LC), (BP, LP)):
+        mX, wX = CR.crossover(B, L)
+        assert CR.K_I > L and Fr(2, 5) <= mX < Fr(1, 2) and wX > CR.ETA, (float(B), float(L), float(mX))
+
+
 def module_file(mod, imports, body):
     L = [HDR] + [f'import {i}' for i in imports] + ['set_option autoImplicit false', 'set_option linter.unnecessarySeqFocus false', f'namespace {NS}',
                                                     'noncomputable section', body, 'end', f'end {NS}', '']
@@ -393,7 +468,15 @@ def main():
         rec = {k: v for k, v in rec.items() if k not in CR.GLOBAL_DROP + ('source_lambda_low',)}
     bad = {k: v for k, v in rec.items() if v <= 0}
     assert not bad, bad
-    faces = {'C': (BC, LC, sC), 'P': (BP, LP, Fr(43, 1000))}
+    if CR.WINDOWS == 'lemmaW':
+        wcapC, wcapP = window_caps(capC, capP)
+        lemma_w_branches(BC, LC, BP, LP)
+        faces = {'C': (BC, LC, wcapC), 'P': (BP, LP, wcapP)}
+        formulas = lemma_w_formulas(wcapC, wcapP)
+        print('Lemma W windows: s_+ =', wcapC, wcapP)
+    else:
+        faces = {'C': (BC, LC, sC), 'P': (BP, LP, Fr(43, 1000))}
+        formulas = FORMULAS.replace(' | .C | .capC | .weakC7 => 11/250', f' | .C | .capC | .weakC7 => {qs(sC)}')
     cands = [cd for cd in CR.candidates(faces, G['kap']) if cd[0] in ALLOWED]
     cands.sort(key=lambda cd: ALLOWED.index(cd[0]))
     const_src, V, edges = emit_constants(P)
@@ -401,8 +484,7 @@ def main():
     fr = os.path.join(out, 'FinalReturn')
     open(os.path.join(fr, 'ReturnConstants.lean'), 'w').write(const_src)
     open(os.path.join(fr, 'ReturnFormulas.lean'), 'w').write(
-        module_file('ReturnFormulas', [f'{PKG}.FinalReturn.ReturnConstants'],
-                    FORMULAS.replace(' | .C | .capC | .weakC7 => 11/250', f' | .C | .capC | .weakC7 => {qs(sC)}')))
+        module_file('ReturnFormulas', [f'{PKG}.FinalReturn.ReturnConstants'], formulas))
     open(os.path.join(fr, 'ReturnFacts.lean'), 'w').write(
         module_file('ReturnFacts', [f'{PKG}.FinalReturn.ReturnFormulas'], FACTS))
     # covers

@@ -7,7 +7,10 @@ with ours.  Usage: python3 fork_return.py GENDIR OUTDIR CAPC CAPP
 An optional fifth argument SC is the constant-width cap of the count windows (default 11/250).
 An optional sixth argument SP selects Lemma D: the final stage then uses the generic physical
 return forked by fork_physical.py (numerator cap SP, the physical face applied at every shift)
-instead of Collet's windowed physical schedule."""
+instead of Collet's windowed physical schedule.
+With QRH_WINDOWS=lemmaW (and gen_return_lean.py run with the same flag), CountWidth, CountDecode and
+FinalWindows take Lemma W's windows (research/return-transfer/REPORT.md §2): no lower plain window,
+the natural join of each window at its crossover crossM b."""
 import os, re, sys
 
 SRC = '/home/user/QuasiRiemannTracker/submissions/hailey-collet-1252270103/src/Submissions/hailey_collet_1252270103'
@@ -139,6 +142,81 @@ def lemma_d(m, text, phys, sP, capP, ft=None):
     return text
 
 
+# Lemma W (QRH_WINDOWS=lemmaW, with gen_return_lean.py's Lemma W formulas): no lower plain window,
+# and each window joins the natural plain line at its crossover crossM b instead of Collet's naturalM.
+LEMMA_W = {
+    'CountWidth': [
+        ("theorem lowerM_buffer (b:CountBranch) : 2/5+1/10000000≤lowerM b := by\n",
+         "theorem lowerM_buffer (b:CountBranch) : 1/10000000≤lowerM b := by\n"),
+        ("""theorem natural_join_bounds : 2/5≤naturalM ∧ naturalM<1/2 := by
+ norm_num [naturalM,naturalK]
+""", """/-- Lemma W: each window joins the natural plain line at its crossover, in `[2/5, 1/2)`. -/
+theorem cross_join_bounds (b:CountBranch) (hb:b≠.old) : 2/5≤crossM b ∧ crossM b<1/2 := by
+ cases b <;> first | exact (hb rfl).elim | (constructor <;> norm_num [crossM,branchB,branchL,naturalK,countCB,countCL,physicalB,physicalLambda])
+
+/-- Lemma W: at the crossover the face width equals the natural width. -/
+theorem cross_width (b:CountBranch) (hb:b≠.old) : (branchB b-2*crossM b)/branchL b=crossW b := by
+ cases b <;> first | exact (hb rfl).elim | norm_num [crossM,crossW,branchB,branchL,naturalK,countCB,countCL,physicalB,physicalLambda]
+"""),
+        (""" ∀m:ℝ,witnessLower b≤m → m≤naturalM →
+ ν<min (branchZ b) ((branchB b-2*m)/branchL b) := by
+ have hl : 0<branchL b := lt_trans (by norm_num) (branch_lambda_gt_one b hb)
+ have hn : 0<branchB b-2*naturalM-branchL b*(17/500+1/10000000)-2/10000000 := by
+  cases b <;> first | exact (hb rfl).elim | simpa [admissionGuard] using hg 13
+ intro m _ hm
+ apply lt_min
+ · exact lt_of_le_of_lt hν (branch_cap_bounds b hb).2.2
+ · apply (lt_div_iff₀ hl).mpr
+   have hv := mul_le_mul_of_nonneg_right hν hl.le
+   have hpos : 0<branchL b*(17/500) := mul_pos hl (by norm_num)
+   nlinarith
+""", """ ∀m:ℝ,witnessLower b≤m → m≤crossM b →
+ ν<min (branchZ b) ((branchB b-2*m)/branchL b) := by
+ have hl : 0<branchL b := lt_trans (by norm_num) (branch_lambda_gt_one b hb)
+ have hn : 0<crossW b-1/10000000 := by
+  cases b <;> first | exact (hb rfl).elim | simpa [admissionGuard] using hg 13
+ have hw := cross_width b hb
+ intro m _ hm
+ apply lt_min
+ · exact lt_of_le_of_lt hν (branch_cap_bounds b hb).2.2
+ · have hmono : (branchB b-2*crossM b)/branchL b≤(branchB b-2*m)/branchL b :=
+    div_le_div_of_nonneg_right (by linarith) hl.le
+   linarith
+"""),
+    ],
+    'CountDecode': [
+        (""" 1-2*δ*naturalM-2*(δ*p)*(1-2*naturalM)/(6*(naturalK/6))≤branchCount b δ p := by
+ have hJ := (admitted_witness_ranges b hb hg).2.1
+ have ht : 0<countN b δ p-(1-2*δ*naturalM-2*δ*p*(17/500))*countJ b δ p := by
+  cases b <;> first | exact (hb rfl).elim | simpa [admissionGuard] using hg 10
+ have he : (1-2*naturalM)/(6*(naturalK/6))=(17/500:ℝ) := by norm_num [naturalM,naturalK]
+""", """ 1-2*δ*crossM b-2*(δ*p)*(1-2*crossM b)/(6*(naturalK/6))≤branchCount b δ p := by
+ have hJ := (admitted_witness_ranges b hb hg).2.1
+ have ht : 0<countN b δ p-(1-2*δ*crossM b-2*δ*p*crossW b)*countJ b δ p := by
+  cases b <;> first | exact (hb rfl).elim | simpa [admissionGuard] using hg 10
+ have he : (1-2*crossM b)/(6*(naturalK/6))=crossW b := by
+  rw [show (6:ℝ)*(naturalK/6)=naturalK by ring]; rfl
+"""),
+    ],
+    'FinalWindows': [
+        (" mHi := naturalM\n", " mHi := crossM w.branch\n"),
+        (""" mHi_lo := natural_join_bounds.1
+ mHi_hi := natural_join_bounds.2
+""", """ mHi_lo := (cross_join_bounds w.branch w.nonold).1
+ mHi_hi := (cross_join_bounds w.branch w.nonold).2
+"""),
+    ],
+}
+
+
+def lemma_w(m, text):
+    for old, new in LEMMA_W.get(m, []):
+        if text.count(old) != 1:
+            raise SystemExit(f'Lemma W patch for {m} applies {text.count(old)} times:\n{old}')
+        text = text.replace(old, new)
+    return text
+
+
 def main():
     gen, out, capC, capP = sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4]
     sC = sys.argv[5] if len(sys.argv) > 5 else '11/250'
@@ -227,6 +305,8 @@ def main():
         new = rewrite(body, fork_names, fin).replace('@@CPKG@@', CPKG)
         if sP is not None:
             new = lemma_d(m, new, phys, sP, capP, ft)
+        if os.environ.get('QRH_WINDOWS', 'collet') == 'lemmaW':
+            new = lemma_w(m, new)
 
         write_if_changed(os.path.join(fr, f'{m}.lean'), HDR.format(m=m) + new)
     print('forked', len(FORKED), 'modules;', len(fork_names), 'qualified names re-pointed')

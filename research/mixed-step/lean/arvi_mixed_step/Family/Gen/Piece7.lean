@@ -1,4 +1,4 @@
-import Submissions.arvi_mixed_step.Family.Gen.Data3
+import Submissions.arvi_mixed_step.Family.Gen.Data3c
 import Submissions.arvi_mixed_step.Family.Gen.Scalar7
 import Submissions.arvi_mixed_step.Family.Gen.High7_0_00
 import Submissions.arvi_mixed_step.Family.Gen.High7_0_01
@@ -19,11 +19,13 @@ set_option maxRecDepth 100000
 namespace QRH.MixedStep.Family
 open Record1252270103Finite QRH.RepeatedMarks QRH.RepeatedMarks.Finite QRH.MixedStep.Finite QRH.RepeatedMarks.Faceless
 
-theorem mpiece7_certs : mpiece7.Certs3 where
+theorem mpiece7_certs : mpiece7.Certs3c mcap7 where
   sig0 := by norm_num [mpiece7]
   H0 := by norm_num [mpiece7]
   Dy0 := by norm_num [mpiece7]
-  capS := by norm_num [mpiece7, capM]
+  capField i := by
+    fin_cases i
+    exacts [⟨_, m7_capfield_0⟩, ⟨_, m7_capfield_1⟩, ⟨_, m7_capfield_2⟩, ⟨_, m7_capfield_3⟩, ⟨_, m7_capfield_4⟩]
   field i := by
     fin_cases i
     exacts [⟨_, m7_field_0⟩, ⟨_, m7_field_1⟩, ⟨_, m7_field_2⟩, ⟨_, m7_field_3⟩, ⟨_, m7_field_4⟩, ⟨_, m7_field_5⟩, ⟨_, m7_field_6⟩, ⟨_, m7_field_7⟩, ⟨_, m7_field_8⟩]

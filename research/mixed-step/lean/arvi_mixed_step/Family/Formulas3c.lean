@@ -143,9 +143,10 @@ def cap0P : Poly := shift cp (-P.Dy)
 /-- The two width endpoints: the crossing `s(y)` and the cap `cp(y)`. -/
 def endP3c (e : Fin 2) : Poly := ![P.sp, cp] e
 
-/-- The cap guards: `cp > 0`, `1 − cp > 0`, `cp − s > 0`, `cp(· − Dy) − s > 0`. -/
-def capFieldP : Fin 4 → Poly :=
-  ![cp, sub [1] cp, sub cp P.sp, sub (P.cap0P cp) P.sp]
+/-- The cap guards: `cp > 0`, `1 − cp > 0`, `cp − s > 0`, `cp(· − Dy) − s > 0`,
+`1 − cp(· − Dy) > 0`. -/
+def capFieldP : Fin 5 → Poly :=
+  ![cp, sub [1] cp, sub cp P.sp, sub (P.cap0P cp) P.sp, sub [1] (P.cap0P cp)]
 
 /-- `sg3NAtc` as a polynomial in `y`. -/
 def sg3Nc (b : Poly) (j : Fin 18) : Poly :=

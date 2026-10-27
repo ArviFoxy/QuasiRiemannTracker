@@ -306,13 +306,6 @@ export default function App() {
                 including on drafts.
               </li>
               <li>
-                Your proof and its dependencies must compile, export, and pass
-                all proof checks within 12 hours on a worker with 6 virtual CPUs
-                and 24 GiB total RAM. Queue time and environment setup are
-                separate; individual phase deadlines and sandbox memory limits
-                also apply.
-              </li>
-              <li>
                 After review and merge, the website updates automatically.
               </li>
             </ol>

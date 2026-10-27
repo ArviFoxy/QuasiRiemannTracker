@@ -1,0 +1,44 @@
+{
+  "title": "Dirichlet nonvanishing at 0.873985 via a third density-split transition",
+  "authors": [
+    {
+      "name": "Rohan Arun",
+      "url": "https://github.com/rohanarun"
+    }
+  ],
+  "description": "Proves the all-moduli Dirichlet boundary 174797/200000 = 0.873985, with the principal pole excluded. This is Sil's density-split proof (PR 83, sil-density-split-20261026) with one more variable-density transition G(4967/5000, 49/20, 1/10) -> G(99/100, 239/100, 1/10) (selection A = 3/5, D = 35, s0 = 17/300), certified by the same thirteen exact scalar gates and density floor with Bernstein certificates on v in [0, 13/300]. The final all-shift physical return is re-certified at h = 16109/20000 with count face C = (99/100, 239/100, 9999/100000) and physical face P = (99/100, 239/100, 31/500), 16 admission windows (one re-tiled) and 29 exact Bernstein rows. All analytic content, the generic step machinery and the return framework are Sil's, ArviFoxy's (PR 76), Hailey Collet's (PR 69) and OpenAI's; inherited authorship and license notices are retained. The research, certificate generation and Lean changes were AI-assisted (Claude).",
+  "license": "Apache-2.0; inherited notices and dependency licenses retained.",
+  "builds_on": [
+    "openai-baseline",
+    "hailey-collet-1252270103",
+    "sil-fourth-power-20261025",
+    "arvi-repeated-marks-on-sil-face-20261025"
+  ],
+  "dependencies": [
+    "openai-baseline",
+    "hailey-collet-1252270103",
+    "arvi-repeated-marks-on-sil-face-20261025"
+  ],
+  "references": [
+    {
+      "label": "Original OpenAI framework and scope",
+      "url": "https://github.com/openai/math/blob/fd4aeeb2ee4fc729c18d98444fed42fd0529eeeb/lean/docs/003.md"
+    },
+    {
+      "label": "Finite ordinary source moments and return framework (PR 69)",
+      "url": "https://github.com/GTimG/QuasiRiemannTracker/pull/69"
+    },
+    {
+      "label": "Fourth-power source moments (PR 74)",
+      "url": "https://github.com/GTimG/QuasiRiemannTracker/pull/74"
+    },
+    {
+      "label": "Repeated marks on the fourth-power face, all-shift physical return (PR 76)",
+      "url": "https://github.com/GTimG/QuasiRiemannTracker/pull/76"
+    },
+    {
+      "label": "Density-split common-divisor bootstrap (PR 83)",
+      "url": "https://github.com/GTimG/QuasiRiemannTracker/pull/83"
+    }
+  ]
+}

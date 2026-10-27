@@ -104,7 +104,32 @@ the normal online main-branch build to recover older receipts from the archive.
    the statement and allowed axioms against the
    [canonical target](verifier/upstream-challenge.lean), with the submitted bound
    substituted for $7/8$. Lean, NanoDa, and con-ron must all accept the proof.
+   New proof submissions must also meet the [admission resource limits](#admission-resource-limits).
    After review and merge, the website adds the result automatically.
+
+### Admission resource limits
+
+Each new proof submission, including its required source dependencies, must
+complete compilation, export, and verification by Comparator, Lean, NanoDa, and
+con-ron within a shared **12-hour replay budget** on one admission worker:
+
+- **6 virtual CPUs**, x86-64 Linux, with up to six compilation workers.
+- **24 GiB total RAM** allocated to the worker VM. Sandbox memory limits are
+  lower: compilation shares 75% of available RAM, and final checking has an 85%
+  hard limit. A single process cannot assume that all 24 GiB is available.
+- **80 GiB guest disk**, shared by the checking environment, sources, and build
+  products. The three proof kernels run sequentially.
+
+The 12-hour limit covers the complete proof replay; queue time and checking
+environment setup are separate. Individual phase deadlines also apply, including
+30 minutes per source module, 10 minutes per export, and three hours for the
+combined final checking phase, bounded by the remaining replay time. A timeout or
+out-of-memory result does not meet these requirements; reduce the proof's resource
+usage before resubmitting. Caches may accelerate a replay but do not increase its
+resource limits. See the [runner configuration](infra/actions-runner/README.md)
+for operational details.
+
+### Submission dependencies
 
 Reusable modules live in `src/Submissions/<result_id>/`, with hyphens in the
 result ID replaced by underscores. Declare direct source dependencies in
@@ -162,6 +187,8 @@ Keep the raw receipt unchanged in `verifier/standard/receipts/<run>/result.json`
 with its hash-bound `contract.json`, `controls.json` and `dependency-pins.json`.
 The registration's `report_url` must identify an immutable commit and this evidence
 path in this repository. Candidate PRs cannot edit the verifier or register results.
+For new proof submissions, receipt review must also establish that the independent
+run met the [admission resource limits](#admission-resource-limits).
 
 An eligible entry in `verifier/local-results.json` also needs a maintainer-approved
 `reuse` object with `schema_version: 1`, `policy_sha256` and `runtime_sha256`.

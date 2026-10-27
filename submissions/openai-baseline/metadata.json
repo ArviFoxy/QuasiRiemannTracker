@@ -13,7 +13,7 @@
   "license": "Apache-2.0",
   "builds_on": [],
   "id": "openai-baseline",
-  "title": "OpenAI · seven eighths",
+  "title": "Seven eighths",
   "theta": {
     "numerator": "7",
     "denominator": "8"

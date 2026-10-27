@@ -15,7 +15,7 @@
     "openai-baseline"
   ],
   "id": "akashlevy-20261009-weighted-numerator",
-  "title": "Akash Levy · weighted numerator",
+  "title": "Weighted numerator",
   "theta": {
     "numerator": "10499",
     "denominator": "12000"

@@ -15,7 +15,7 @@
     "openai-baseline"
   ],
   "id": "argonaut-20261008",
-  "title": "Argonaut · perturbed boundary",
+  "title": "Perturbed boundary",
   "theta": {
     "numerator": "3499999",
     "denominator": "4000000"

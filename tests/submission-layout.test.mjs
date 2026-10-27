@@ -17,6 +17,10 @@ import {
 } from "../scripts/reconcile-admissions.mjs";
 import { exactBound } from "../core/exact-bound.mjs";
 import { standardChallenge } from "../core/standard-challenge.mjs";
+import {
+  submissionDirectory,
+  validateSubmissionDirectory,
+} from "../verifier/submission-paths.mjs";
 
 const metadata = {
   title: "Bound",
@@ -26,7 +30,7 @@ const metadata = {
 function fixture(t) {
   const root = mkdtempSync(join(tmpdir(), "qrh-layout-"));
   t.after(() => rmSync(root, { recursive: true, force: true }));
-  const dir = join(root, "submissions/example-proof");
+  const dir = join(root, "submissions/2026-10-27-example-proof");
   mkdirSync(join(dir, "src/Candidate"), { recursive: true });
   writeFileSync(join(dir, "src/Candidate/Main.lean"), "import Mathlib\n");
   writeFileSync(join(dir, "metadata.json"), JSON.stringify(metadata));
@@ -56,8 +60,11 @@ test("deployment rejects symlinked supporting modules and submission directories
   symlinkSync(dir, join(root, "submissions/another-proof"));
   assert.throws(() => readSubmissions(root), /Invalid submission directory/);
 });
-test("every retained revision has colocated metadata and a complete standard source layout", () => {
+test("every retained revision has a dated directory, colocated metadata and complete standard source layout", () => {
   const submissions = readSubmissions(process.cwd());
+  const directories = readdirSync("submissions");
+  for (const directory of directories)
+    assert.equal(validateSubmissionDirectory(directory), directory);
   for (const id of [
     "akashlevy-20261009-weighted-numerator",
     "argonaut-20261008",
@@ -71,7 +78,7 @@ test("every retained revision has colocated metadata and a complete standard sou
   for (const [id] of submissions) {
     assert.ok(
       readFileSync(
-        `submissions/${id}/src/Candidate/Main.lean`,
+        `submissions/${submissionDirectory(id, directories)}/src/Candidate/Main.lean`,
         "utf8",
       ).includes("bound"),
     );

@@ -15,6 +15,11 @@ import {
 } from "../core/catalogue-revisions.mjs";
 import { validateSubmissionMetadata } from "./submission-metadata.mjs";
 import { certificate, historicalCertificate } from "./certificate.mjs";
+import {
+  submissionId,
+  submissionDirectories,
+  validateSubmissionDirectory,
+} from "./submission-paths.mjs";
 
 export function maintenancePaths(files) {
   return files
@@ -38,6 +43,11 @@ export function maintenancePlan({
   list,
   admittedCatalogue,
   readAdmittedCertificate,
+  submittedAt,
+  sameContents = (basePath, headPath) => {
+    const before = read("base", basePath);
+    return before !== null && before === read("head", headPath);
+  },
 }) {
   if (
     files.some(
@@ -47,7 +57,7 @@ export function maintenancePlan({
     )
   )
     throw Error(
-      "Submission source and metadata belong in submissions/<result-id>/",
+      "Submission source and metadata belong in submissions/YYYY-MM-DD-<slug>/",
     );
   if (
     files.some(
@@ -60,22 +70,41 @@ export function maintenancePlan({
     )
   )
     throw Error(
-      "Catalogue and certificate JSON are generated output; edit submissions/<result-id>/metadata.json instead",
+      "Catalogue and certificate JSON are generated output; edit submissions/YYYY-MM-DD-<slug>/metadata.json instead",
     );
   const archived = admittedCatalogue
     ? catalogueProofRecords(admittedCatalogue)
     : [];
   const archiveIds = new Set(archived.map(proofRevision));
+  const paths = Object.fromEntries(
+    ["base", "head"].map((side) => [side, new Set(list(side, "submissions/"))]),
+  );
+  const directories = Object.fromEntries(
+    ["base", "head"].map((side) => [
+      side,
+      submissionDirectories(
+        new Set([...paths[side]].map((path) => path.split("/")[1])),
+      ),
+    ]),
+  );
+  const metadataPath = (side, id) => {
+    const directory = directories[side].get(id);
+    return directory ? `submissions/${directory}/metadata.json` : null;
+  };
+  const metadata = (side, id) => {
+    const path = metadataPath(side, id);
+    return path ? JSON.parse(read(side, path) || "null") : null;
+  };
   const metadataCatalogue = (side) => {
     const records = [],
       historical_records = [];
-    for (const path of list(side, "submissions/").filter((path) =>
+    for (const path of [...paths[side]].filter((path) =>
       /^submissions\/[^/]+\/metadata\.json$/.test(path),
     )) {
       const input = JSON.parse(read(side, path));
+      const id = submissionId(path.split("/")[1]);
       if (!input.id) {
         validateSubmissionMetadata(input);
-        const id = path.split("/")[1];
         const admitted =
           admittedCatalogue &&
           catalogueProofRecords(admittedCatalogue).find(
@@ -91,10 +120,10 @@ export function maintenancePlan({
       const admitted = archived.find(
         (record) => proofRevision(record) === input.id,
       );
-      if (admitted && !JSON.parse(read("base", path) || "null")?.id)
+      if (admitted && !metadata("base", id)?.id)
         throw Error(`Metadata duplicates an admitted proof: ${input.id}`);
       const { historical, dependencies, verification, ...record } = input;
-      if (path !== `submissions/${proofRevision(record)}/metadata.json`)
+      if (id !== proofRevision(record))
         throw Error("Proof metadata path differs from its revision");
       (historical === true ? historical_records : records).push(record);
     }
@@ -102,15 +131,25 @@ export function maintenancePlan({
   };
   const base = metadataCatalogue("base");
   const head = validateCatalogue(metadataCatalogue("head"));
-  const submissionPaths = new Set(list("head", "submissions/"));
-  const ids = new Set([...submissionPaths].map((p) => p.split("/")[1]));
-  for (const id of ids) {
+  const ids = new Set(directories.head.keys());
+  for (const [id, directory] of directories.head) {
     for (const file of ["metadata.json", "src/Candidate/Main.lean"])
       if (
-        !submissionPaths.has(`submissions/${id}/${file}`) ||
-        read("head", `submissions/${id}/${file}`) === null
+        !paths.head.has(`submissions/${directory}/${file}`) ||
+        read("head", `submissions/${directory}/${file}`) === null
       )
         throw Error(`Submission ${id} requires ${file}`);
+    if (directory !== directories.base.get(id))
+      validateSubmissionDirectory(directory, {
+        submittedAt:
+          metadata("base", id)?.submitted_at ||
+          archived.find((record) => proofRevision(record) === id)
+            ?.submitted_at ||
+          /^\d{4}-\d{2}-\d{2}(?=-)/.exec(directories.base.get(id) ?? "")?.[0] ||
+          (!directories.base.has(id) && !archiveIds.has(id)
+            ? submittedAt || ""
+            : undefined),
+      });
   }
   for (const record of catalogueProofRecords(head))
     if (!ids.has(proofRevision(record)))
@@ -153,11 +192,9 @@ export function maintenancePlan({
     if (record.certificate_url !== `certificates/${id}.json`)
       throw Error(`Missing verification record: ${id}`);
     const certificateData = (side) => {
-      const metadata = JSON.parse(
-        read(side, `submissions/${id}/metadata.json`) || "null",
-      );
-      if (metadata?.id && metadata.verification)
-        return JSON.stringify(historicalCertificate(metadata));
+      const input = metadata(side, id);
+      if (input?.id && input.verification)
+        return JSON.stringify(historicalCertificate(input));
       // Read earlier committed receipts when comparing a migration's base.
       return (
         read(side, name) ||
@@ -197,33 +234,40 @@ export function maintenancePlan({
       f.filename,
       ...(f.previous_filename ? [f.previous_filename] : []),
     ]) {
-      const m = /^submissions\/([^/]+)\//.exec(path);
-      if (m && path !== `submissions/${m[1]}/metadata.json`)
-        sourceIds.add(m[1]);
-      else if (
+      const m = /^submissions\/([^/]+)\/(.+)$/.exec(path);
+      if (m && m[2] !== "metadata.json") {
+        const id = submissionId(m[1]);
+        const before = directories.base.get(id);
+        const after = directories.head.get(id);
+        if (
+          !before ||
+          !after ||
+          !sameContents(
+            `submissions/${before}/${m[2]}`,
+            `submissions/${after}/${m[2]}`,
+          )
+        )
+          sourceIds.add(id);
+      } else if (
         /\.lean$/i.test(path) &&
         !/^(verifier|core|tests)\//.test(path) &&
         f.status !== "removed" &&
         path === f.filename
       )
         throw Error(
-          `Place maintained proof source in submissions/<result-id>/src: ${path}`,
+          `Place maintained proof source in submissions/YYYY-MM-DD-<slug>/src: ${path}`,
         );
     }
   }
   const graph = new Map();
   for (const id of ids) {
-    const file = `submissions/${id}/metadata.json`;
-    const deps = submissionDependencies(JSON.parse(read("head", file)));
+    const deps = submissionDependencies(metadata("head", id));
     for (const dep of deps)
       if (!ids.has(dep))
         throw Error(`Missing submission dependency: ${id} -> ${dep}`);
     graph.set(id, deps);
-    const before = read("base", file);
-    if (
-      !before ||
-      !isDeepStrictEqual(submissionDependencies(JSON.parse(before)), deps)
-    )
+    const before = metadata("base", id);
+    if (!before || !isDeepStrictEqual(submissionDependencies(before), deps))
       sourceIds.add(id);
   }
   const visited = new Set(),
@@ -238,7 +282,7 @@ export function maintenancePlan({
   }
   for (const id of ids) visit(id);
   for (const id of affectedSubmissions(sourceIds, graph)) {
-    if (list("head", `submissions/${id}/`).length) requireProof(id);
+    if (directories.head.has(id)) requireProof(id);
   }
   if (
     files.some(
@@ -281,16 +325,35 @@ export async function maintenanceVerification(root, { pr, files, repository }) {
       stdio: ["ignore", "pipe", "pipe"],
     });
   const refs = { base: pr.base.sha, head: pr.head.sha };
+  const trees = new Map();
+  const tree = (ref) => {
+    if (!trees.has(ref))
+      trees.set(
+        ref,
+        new Map(
+          git(["ls-tree", "-rz", refs[ref]])
+            .split("\0")
+            .filter(Boolean)
+            .map((entry) => {
+              const separator = entry.indexOf("\t");
+              return [entry.slice(separator + 1), entry.slice(0, separator)];
+            }),
+        ),
+      );
+    return trees.get(ref);
+  };
   const list = (ref, path) =>
-    git(["ls-tree", "-r", "--name-only", refs[ref], "--", path])
-      .trim()
-      .split("\n")
-      .filter(Boolean);
-  const read = (ref, path) => {
-    const entry = git(["ls-tree", refs[ref], "--", path]);
+    [...tree(ref).keys()].filter((entry) => entry.startsWith(path));
+  const regularBlob = (ref, path) => {
+    const entry = tree(ref).get(path);
     if (!entry) return null;
-    if (!/^100644 blob /.test(entry))
+    if (!/^100644 blob [a-f0-9]{40}$/.test(entry))
       throw Error(`Expected a regular data file: ${path}`);
+    return entry;
+  };
+  const read = (ref, path) => {
+    const entry = regularBlob(ref, path);
+    if (!entry) return null;
     return git(["show", `${refs[ref]}:${path}`]);
   };
   try {
@@ -312,6 +375,11 @@ export async function maintenanceVerification(root, { pr, files, repository }) {
       files,
       read,
       list,
+      submittedAt: pr.created_at,
+      sameContents: (basePath, headPath) => {
+        const before = regularBlob("base", basePath);
+        return before !== null && before === regularBlob("head", headPath);
+      },
       admittedCatalogue: existsSync(cataloguePath)
         ? JSON.parse(readFileSync(cataloguePath, "utf8"))
         : undefined,

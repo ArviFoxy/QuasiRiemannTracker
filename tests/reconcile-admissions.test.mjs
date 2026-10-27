@@ -53,7 +53,7 @@ const legacyRecord = () => ({
   certificate_url: "certificates/legacy-proof.json",
 });
 
-function fixture(t) {
+function fixture(t, { dated = false, dependencies = false } = {}) {
   const root = mkdtempSync(join(tmpdir(), "qrh-reconcile-"));
   t.after(() => rmSync(root, { recursive: true, force: true }));
   const git = (...args) =>
@@ -62,16 +62,40 @@ function fixture(t) {
       encoding: "utf8",
       stdio: ["ignore", "pipe", "pipe"],
     }).trim();
-  mkdirSync(join(root, "submissions/candidate-proof/src/Candidate"), {
+  const candidatePath = `submissions/${dated ? "2026-10-12-" : ""}candidate-proof`;
+  const legacyPath = `submissions/${dated ? "2026-10-10-" : ""}legacy-proof`;
+  const submissionMetadata = dependencies
+    ? { ...metadata, dependencies: ["legacy-proof"] }
+    : metadata;
+  const legacy = legacyRecord();
+  const writeLegacy = () => {
+    mkdirSync(join(root, legacyPath, "src/Candidate"), { recursive: true });
+    writeFileSync(
+      join(root, legacyPath, "metadata.json"),
+      JSON.stringify({
+        ...legacy,
+        verification: {
+          report_url: `https://github.com/${repository}/actions/runs/100`,
+          report_sha256: "f".repeat(64),
+        },
+      }),
+    );
+    writeFileSync(
+      join(root, legacyPath, "src/Candidate/Main.lean"),
+      "-- fixture source\n",
+    );
+  };
+  if (dependencies) writeLegacy();
+  mkdirSync(join(root, candidatePath, "src/Candidate"), {
     recursive: true,
   });
   writeFileSync(
-    join(root, "submissions/candidate-proof/src/Candidate/Main.lean"),
+    join(root, candidatePath, "src/Candidate/Main.lean"),
     "-- Source is data; reconciliation never compiles or executes it.\n",
   );
   writeFileSync(
-    join(root, "submissions/candidate-proof/metadata.json"),
-    JSON.stringify(metadata),
+    join(root, candidatePath, "metadata.json"),
+    JSON.stringify(submissionMetadata),
   );
   git("init", "-q");
   git(
@@ -134,7 +158,7 @@ function fixture(t) {
     head: { sha: head },
     base: { ref: "main", repo: { full_name: repository } },
     title: "PR title is separate from authored publication metadata",
-    body: `QRH-Result: candidate-proof\nQRH-Bound: 4/5\nQRH-Decimal: 0.8\n\n\`\`\`qrh-metadata\n${JSON.stringify(metadata)}\n\`\`\``,
+    body: `QRH-Result: candidate-proof\nQRH-Bound: 4/5\nQRH-Decimal: 0.8\n\n\`\`\`qrh-metadata\n${JSON.stringify(submissionMetadata)}\n\`\`\``,
     created_at: "2026-10-12T00:00:00Z",
     user: { login: "submitter" },
   };
@@ -144,8 +168,12 @@ function fixture(t) {
     expected,
     reportBytes,
     archivedAt: "2026-10-13T00:01:00Z",
-    metadata,
-    sourceTree: git("rev-parse", "HEAD:submissions/candidate-proof/src"),
+    metadata: submissionMetadata,
+    sourcePath: `${candidatePath}/src`,
+    sourceTree: git("rev-parse", `HEAD:${candidatePath}/src`),
+    dependencyTrees: dependencies
+      ? { "legacy-proof": git("rev-parse", `HEAD:${legacyPath}`) }
+      : {},
     record: workerCertificate(
       expected,
       report,
@@ -165,26 +193,18 @@ function fixture(t) {
     merged_at: merged.merged_at,
     merge_commit_sha: merged.merge_commit_sha,
   };
-  const legacy = legacyRecord();
-  mkdirSync(join(root, "submissions/legacy-proof"), { recursive: true });
-  writeFileSync(
-    join(root, "submissions/legacy-proof/metadata.json"),
-    JSON.stringify({
-      ...legacy,
-      verification: {
-        report_url: `https://github.com/${repository}/actions/runs/100`,
-        report_sha256: "f".repeat(64),
-      },
-    }),
-  );
-  mkdirSync(join(root, "submissions/legacy-proof/src/Candidate"), {
-    recursive: true,
-  });
-  writeFileSync(
-    join(root, "submissions/legacy-proof/src/Candidate/Main.lean"),
-    "-- fixture source\n",
-  );
-  return { root, git, earlier, legacy, envelope, admission, merged };
+  if (!dependencies) writeLegacy();
+  return {
+    root,
+    git,
+    earlier,
+    legacy,
+    envelope,
+    admission,
+    merged,
+    candidatePath,
+    legacyPath,
+  };
 }
 
 function mockApi(
@@ -351,6 +371,95 @@ test("a clean offline build regenerates historical verification records", async 
   rmSync(join(data.root, "public"), { recursive: true });
   await reconcileAdmissions({ root: data.root });
   assert.deepEqual(JSON.parse(readFileSync(path)), receipt);
+});
+
+test("date-first folder migration preserves historical catalogue entries, certificates and admission provenance", async (t) => {
+  const data = fixture(t);
+  const before = await online(data, mockApi(data));
+  const certificatePath = join(
+    data.root,
+    "public/certificates/candidate-proof.json",
+  );
+  const certificateBytes = readFileSync(certificatePath, "utf8");
+  const cachePath = join(data.root, ".work/admission-records.json");
+  const cacheBytes = readFileSync(cachePath, "utf8");
+  data.git("add", "submissions");
+  for (const [path, dated] of [
+    [data.candidatePath, "submissions/2026-10-12-candidate-proof"],
+    [data.legacyPath, "submissions/2026-10-10-legacy-proof"],
+  ])
+    data.git("mv", path, dated);
+  data.git(
+    "-c",
+    "user.name=Test",
+    "-c",
+    "user.email=test@example.com",
+    "commit",
+    "-qm",
+    "Date-first folder migration",
+  );
+  const after = await online(data, mockApi(data));
+  assert.deepEqual(after, before);
+  assert.equal(readFileSync(certificatePath, "utf8"), certificateBytes);
+  assert.equal(readFileSync(cachePath, "utf8"), cacheBytes);
+  assert.deepEqual(await reconcileAdmissions({ root: data.root }), before);
+  const candidate = after.records.find(({ id }) => id === "candidate-proof");
+  assert.equal(candidate.source_commit, data.envelope.head_sha);
+  assert.equal(
+    candidate.solution_url,
+    `https://github.com/${repository}/blob/${data.envelope.head_sha}/submissions/candidate-proof/src/Candidate/Main.lean`,
+  );
+});
+
+test("dated admissions authenticate dependency paths and trees at their immutable merge commit", async (t) => {
+  const data = fixture(t, { dated: true, dependencies: true });
+  const catalogue = await online(data, mockApi(data));
+  const published = catalogue.records.find(
+    ({ id }) => id === "candidate-proof",
+  );
+  assert.equal(published.id, data.envelope.result_id);
+  assert.equal(
+    published.solution_url,
+    `https://github.com/${repository}/blob/${data.envelope.head_sha}/${data.candidatePath}/src/Candidate/Main.lean`,
+  );
+  assert.equal(data.envelope.source_path, `${data.candidatePath}/src`);
+  assert.equal(
+    data.envelope.dependency_trees["legacy-proof"],
+    data.git("rev-parse", `${data.merged.merge_commit_sha}:${data.legacyPath}`),
+  );
+  writeFileSync(
+    join(data.root, data.legacyPath, "src/Candidate/Main.lean"),
+    "-- Later dependency maintenance\n",
+  );
+  data.git("add", "submissions");
+  data.git(
+    "-c",
+    "user.name=Test",
+    "-c",
+    "user.email=test@example.com",
+    "commit",
+    "-qm",
+    "Maintain dependency after admission",
+  );
+  assert.deepEqual(await online(data, mockApi(data)), catalogue);
+  assert.deepEqual(await reconcileAdmissions({ root: data.root }), catalogue);
+  const forged = structuredClone(data.envelope);
+  forged.dependency_trees["legacy-proof"] = data.git(
+    "rev-parse",
+    `HEAD:${data.legacyPath}`,
+  );
+  assert.notEqual(
+    forged.dependency_trees["legacy-proof"],
+    data.envelope.dependency_trees["legacy-proof"],
+  );
+  await assert.rejects(
+    online(data, mockApi(data, { records: [forged] })),
+    /Merged dependency differs from verified admission: legacy-proof/,
+  );
+  assert.deepEqual(
+    JSON.parse(readFileSync(join(data.root, ".work/admission-records.json"))),
+    [data.admission],
+  );
 });
 
 test("missing historical report provenance fails before publishing generated files", async (t) => {

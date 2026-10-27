@@ -55,6 +55,23 @@ test("admission uses the same publication record that a later build generates", 
   );
 });
 
+test("publication links follow the immutable dated source path while IDs remain stable", () => {
+  const { catalogue, admission } = fixture();
+  admission.source_path = "submissions/2030-10-03-candidate-proof/src";
+  const published = validatePublication(catalogue, admission);
+  assert.equal(published.id, "candidate-proof");
+  assert.equal(published.certificate_url, "certificates/candidate-proof.json");
+  assert.equal(
+    published.solution_url,
+    `https://github.com/example/proofs/blob/${admission.head_sha}/submissions/2030-10-03-candidate-proof/src/Candidate/Main.lean`,
+  );
+  admission.source_path = "submissions/2030-10-03-another-proof/src";
+  assert.throws(
+    () => publicationRecord(admission),
+    /differs from its verified source/,
+  );
+});
+
 for (const scenario of ["unknown", "later", "same-time"])
   test(`a ${scenario} predecessor cannot enter the published graph`, () => {
     const { catalogue, admission } = fixture();

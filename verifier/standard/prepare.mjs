@@ -8,6 +8,7 @@ import { submission, safePath } from "../manifest.mjs";
 import { challenge, solutionWrapper } from "../challenge.mjs";
 import { leanImports } from "../actions/imports.mjs";
 import { dependencyGraph } from "../submission-dependencies.mjs";
+import { submissionDirectory } from "../submission-paths.mjs";
 import { sha256 } from "../common.mjs";
 const { values: v } = parseArgs({
   options: Object.fromEntries(
@@ -40,26 +41,39 @@ const git = (args) =>
 const sourceCommit = v["source-commit"] ?? v.head;
 if (!/^[a-f0-9]{40}$/.test(sourceCommit))
   throw Error("Invalid original source commit");
+const directories = (commit) =>
+  git(["ls-tree", "-z", "--name-only", `${commit}:submissions`])
+    .toString()
+    .split("\0")
+    .filter(Boolean);
+const headDirectories = directories(v.head);
+const originalDirectories =
+  sourceCommit === v.head ? headDirectories : directories(sourceCommit);
 const trees = {};
 let total = 0,
   fileCount = 0;
 const graph = dependencyGraph(v.id, (id) => {
-  const prefix = `submissions/${id}/`;
+  const directory = submissionDirectory(id, headDirectories);
+  const originalDirectory = submissionDirectory(id, originalDirectories);
+  const prefix = `submissions/${directory}/`;
   const entries = git(["ls-tree", "-rz", v.head, "--", prefix]).toString();
   const rows = entries.split("\0").filter(Boolean);
   fileCount += rows.length;
   if (fileCount > 16384) throw Error("Submission dependency file count limit");
   if (!rows.length || rows.length > 8192)
     throw Error(`Invalid submission file count: ${id}`);
+  trees[id] = git(["rev-parse", `${v.head}:submissions/${directory}`])
+    .toString()
+    .trim();
   if (
-    entries !== git(["ls-tree", "-rz", sourceCommit, "--", prefix]).toString()
+    trees[id] !==
+    git(["rev-parse", `${sourceCommit}:submissions/${originalDirectory}`])
+      .toString()
+      .trim()
   )
     throw Error(
       `Original dependency source differs from the reviewed head: ${id}`,
     );
-  trees[id] = git(["rev-parse", `${v.head}:submissions/${id}`])
-    .toString()
-    .trim();
   const dir = join(out, "inputs", id);
   mkdirSync(dir, { recursive: true });
   for (const row of rows) {

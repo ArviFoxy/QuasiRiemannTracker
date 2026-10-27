@@ -1,7 +1,8 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { readFileSync, readdirSync } from "node:fs";
 import { leanImports } from "../verifier/actions/imports.mjs";
+import { submissionDirectory } from "../verifier/submission-paths.mjs";
 test("reads Lean module imports and ignores declarations, strings and comments", () => {
   assert.deepEqual(
     leanImports(`
@@ -26,12 +27,13 @@ namespace OAI.NumberTheory
   );
 });
 test("the standard theta-one proof needs no upstream OAI library build", () => {
+  const directory = submissionDirectory(
+    "classical-euler-product",
+    readdirSync("submissions"),
+  );
   assert.deepEqual(
     leanImports(
-      readFileSync(
-        "submissions/classical-euler-product/src/Candidate/Main.lean",
-        "utf8",
-      ),
+      readFileSync(`submissions/${directory}/src/Candidate/Main.lean`, "utf8"),
     ),
     ["Submissions.classical_euler_product.Main"],
   );

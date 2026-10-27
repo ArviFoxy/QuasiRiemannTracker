@@ -5,6 +5,10 @@ import { rational } from "../core/rational.mjs";
 import { maintenanceVerification } from "./pr-maintenance.mjs";
 import { currentVerification } from "./actions/result.mjs";
 import {
+  submissionId,
+  validateSubmissionDirectory,
+} from "./submission-paths.mjs";
+import {
   decimalPrecision,
   validateDecimalApproximation,
 } from "./pr-decimal.mjs";
@@ -139,11 +143,27 @@ export async function evaluatePR({
     }
     return `Maintenance requirements satisfied. Validated affected catalogue data and ${expected.length} proof(s).`;
   }
-  const prefix = `submissions/${declaration.result_id}/`;
-  if (paths(files).some((path) => !path.startsWith(prefix)))
+  const directory = /^submissions\/([^/]+)\//.exec(files[0].filename)?.[1];
+  if (!directory)
+    throw Error("A QRH result PR changes only its submission directory");
+  const prefix = `submissions/${directory}/`;
+  if (
+    submissionId(directory) !== declaration.result_id ||
+    files.some((file) => {
+      if (!file.filename.startsWith(prefix)) return true;
+      if (!file.previous_filename) return false;
+      const previous = /^submissions\/([^/]+)\//.exec(
+        file.previous_filename,
+      )?.[1];
+      return !previous || submissionId(previous) !== declaration.result_id;
+    })
+  )
     throw Error(
       `A QRH result PR changes only ${prefix}; edit existing submissions in a maintenance PR`,
     );
+  if (!Number.isFinite(Date.parse(pr.created_at)))
+    throw Error("Missing valid PR submission date");
+  validateSubmissionDirectory(directory, { submittedAt: pr.created_at });
   const evidence = await validateEvidence(root, {
     repository,
     number: pr.number,

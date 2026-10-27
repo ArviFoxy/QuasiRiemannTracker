@@ -36,7 +36,7 @@ writeFileSync(
 );
 const bound = "4374433/5000000";
 const approximation = "0.87488660";
-const resultId = "candidate-20261011";
+const resultId = "candidate-proof";
 const maintenance = "Updates the tracker documentation.";
 const newBound = [
   `QRH-Result: ${resultId}`,
@@ -57,6 +57,7 @@ function options(body = maintenance, files = [file("README.md")]) {
     files,
     pr: {
       number: 15,
+      created_at: "2026-10-11T13:14:15Z",
       state: "open",
       draft: false,
       body,
@@ -73,6 +74,57 @@ function options(body = maintenance, files = [file("README.md")]) {
 
 // Accept either a synchronous or asynchronous implementation of the gate.
 const run = (input) => Promise.resolve().then(() => evaluatePR(input));
+
+test("new submission folders require the PR creation date exactly once before queuing verification", async () => {
+  for (const directory of [
+    "candidate-proof",
+    "2026-10-12-candidate-proof",
+    "2026-02-30-candidate-proof",
+    "2026-10-11-candidate-proof-20261011",
+    "2026-10-11-candidate-proof-2026-10-11",
+  ]) {
+    const input = options(newBound, [
+      file(`submissions/${directory}/src/Candidate/Main.lean`),
+    ]);
+    await assert.rejects(
+      run(input),
+      /submission date|Invalid submission directory/,
+    );
+    assert.equal(input.validateEvidence.mock.callCount(), 0);
+  }
+});
+
+test("a later PR update keeps its original UTC submission date", async () => {
+  const input = options(newBound, [
+    file("submissions/2026-10-11-candidate-proof/src/Candidate/Main.lean", {
+      status: "modified",
+    }),
+  ]);
+  input.pr.created_at = "2026-10-12T00:30:00+02:00";
+  input.pr.updated_at = "2026-11-01T12:00:00Z";
+  input.validateEvidence = mock.fn(() => ({ theta_exact: bound }));
+  assert.match(await run(input), /Proof verification accepts/);
+});
+
+test("an existing open submission can rename its own folder without changing its result ID", async () => {
+  const input = options(newBound, [
+    file("submissions/2026-10-11-candidate-proof/src/Candidate/Main.lean", {
+      status: "renamed",
+      previous_filename: "submissions/candidate-proof/src/Candidate/Main.lean",
+    }),
+  ]);
+  input.validateEvidence = mock.fn(() => ({ theta_exact: bound }));
+  assert.match(await run(input), /Proof verification accepts/);
+});
+
+test("a missing PR creation timestamp cannot bypass folder-date validation", async () => {
+  const input = options(newBound, [
+    file("submissions/2026-10-11-candidate-proof/src/Candidate/Main.lean"),
+  ]);
+  delete input.pr.created_at;
+  await assert.rejects(run(input), /Missing valid PR submission date/);
+  assert.equal(input.validateEvidence.mock.callCount(), 0);
+});
 
 async function rejectsBeforeEvidence(input, message) {
   await assert.rejects(run(input), { message });
@@ -112,7 +164,7 @@ for (const [description, body, message] of [
   ],
   [
     "a missing colon",
-    "QRH-Result candidate-20261011",
+    "QRH-Result candidate-proof",
     "Malformed or unknown QRH declaration field",
   ],
   [
@@ -202,7 +254,7 @@ test("rejects result declaration fields mixed with maintenance changes", async (
     `QRH-Result: ${resultId}`,
     `QRH-Bound: ${bound}`,
     `QRH-Decimal: ${approximation}`,
-    "QRH-Result candidate-20261011",
+    "QRH-Result candidate-proof",
   ]) {
     assert.equal(hasResultSection(body), true, body);
     await rejectsBeforeEvidence(
@@ -213,7 +265,7 @@ test("rejects result declaration fields mixed with maintenance changes", async (
 });
 
 for (const filename of [
-  "submissions/candidate-20261011/src/Candidate/Main.lean",
+  "submissions/2026-10-11-candidate-proof/src/Candidate/Main.lean",
   "public/proofs/candidate/report.json",
   "submissions/candidate.json",
   "catalogue/records/candidate.json",
@@ -252,7 +304,7 @@ test("renaming a proof to a maintenance path classifies both sides of the rename
       file("docs/old-proof.txt", {
         status: "renamed",
         previous_filename:
-          "submissions/candidate-20261011/src/Candidate/Main.lean",
+          "submissions/2026-10-11-candidate-proof/src/Candidate/Main.lean",
       }),
     ]),
     { proof: true, maintenance: true },
@@ -320,10 +372,11 @@ test("PR #8's result metadata and maintenance changes fail the mixed-change requ
     "QRH-Decimal: 0.87878787",
   ].join("\n");
   const input = options(body, [
-    file("submissions/single-prime-29-33-20261010/src/Candidate/Main.lean"),
+    file("submissions/2026-10-10-single-prime-29-33/src/Candidate/Main.lean"),
     file("tests/browser/dashboard.spec.ts"),
   ]);
   input.pr.number = 8;
+  input.pr.created_at = "2026-10-10T08:14:51Z";
   await rejectsBeforeEvidence(
     input,
     "Submit QRH results and maintenance changes in separate PRs",
@@ -336,9 +389,10 @@ test("PR #8's proof-only 29/33 submission reaches the live verification requirem
       .replace(resultId, "single-prime-29-33-20261010")
       .replace(bound, "29/33")
       .replace(approximation, "0.87878787"),
-    [file("submissions/single-prime-29-33-20261010/src/Candidate/Main.lean")],
+    [file("submissions/2026-10-10-single-prime-29-33/src/Candidate/Main.lean")],
   );
   input.pr.number = 8;
+  input.pr.created_at = "2026-10-10T08:14:51Z";
   delete input.validateEvidence;
   await assert.rejects(run(input), {
     message: "Proof verification has not run for this PR head",
@@ -347,10 +401,9 @@ test("PR #8's proof-only 29/33 submission reaches the live verification requirem
 
 for (const draft of [false, true]) {
   test(`PR #15's declaration requires live verification as ${draft ? "a draft" : "ready for review"}`, async () => {
-    const input = options(
-      newBound.replace(resultId, "gao-local-moment-20261011"),
-      [file("submissions/gao-local-moment-20261011/src/Candidate/Main.lean")],
-    );
+    const input = options(newBound.replace(resultId, "gao-local-moment"), [
+      file("submissions/2026-10-11-gao-local-moment/src/Candidate/Main.lean"),
+    ]);
     input.pr.draft = draft;
     delete input.validateEvidence;
     await assert.rejects(run(input), {
@@ -360,7 +413,7 @@ for (const draft of [false, true]) {
 
   test(`new-bound admission binds evidence to the repository, PR, current head, result and value for draft=${draft}`, async () => {
     const input = options(newBound, [
-      file("submissions/candidate-20261011/src/Candidate/Main.lean"),
+      file("submissions/2026-10-11-candidate-proof/src/Candidate/Main.lean"),
     ]);
     input.pr.draft = draft;
     const calls = [];
@@ -396,7 +449,7 @@ for (const [theta, decimal] of [
   test(`accepts ${theta} with authenticated evidence and an accurate decimal`, async () => {
     const input = options(
       newBound.replace(bound, theta).replace(approximation, decimal),
-      [file("submissions/candidate-20261011/src/Candidate/Main.lean")],
+      [file("submissions/2026-10-11-candidate-proof/src/Candidate/Main.lean")],
     );
     input.validateEvidence = mock.fn(() => ({ theta_exact: theta }));
     assert.equal(
@@ -433,7 +486,7 @@ for (const [theta, message] of [
   test(`rejects invalid bound ${theta} before evidence validation`, async () => {
     await rejectsBeforeEvidence(
       options(newBound.replace(bound, theta), [
-        file("submissions/candidate-20261011/src/Candidate/Main.lean"),
+        file("submissions/2026-10-11-candidate-proof/src/Candidate/Main.lean"),
       ]),
       message,
     );
@@ -442,7 +495,7 @@ for (const [theta, message] of [
 
 test("propagates evidence validation failures to PR admission", async () => {
   const input = options(newBound, [
-    file("submissions/candidate-20261011/src/Candidate/Main.lean"),
+    file("submissions/2026-10-11-candidate-proof/src/Candidate/Main.lean"),
   ]);
   input.validateEvidence = () => {
     throw new Error("No trusted admission receipt for this PR head");
@@ -464,7 +517,7 @@ test("requires accurate and distinguishing decimal digits with accepted evidence
     ],
   ]) {
     const input = options(newBound.replace(approximation, decimal), [
-      file("submissions/candidate-20261011/src/Candidate/Main.lean"),
+      file("submissions/2026-10-11-candidate-proof/src/Candidate/Main.lean"),
     ]);
     input.validateEvidence = mock.fn(() => ({ theta_exact: bound }));
     await assert.rejects(run(input), { message });
@@ -477,7 +530,7 @@ test("irrational decimal digits require an enclosure from authenticated evidence
     .replace(bound, "sqrt(3)/2")
     .replace(approximation, "0.866025");
   const input = options(body, [
-    file("submissions/candidate-20261011/src/Candidate/Main.lean"),
+    file("submissions/2026-10-11-candidate-proof/src/Candidate/Main.lean"),
   ]);
   input.validateEvidence = mock.fn(() => ({ theta_exact: "sqrt(3)/2" }));
   await assert.rejects(run(input), {
@@ -497,7 +550,7 @@ test("irrational decimal digits require an enclosure from authenticated evidence
 
 test("requires a matching receipt after the PR head changes", async () => {
   const input = options(newBound, [
-    file("submissions/candidate-20261011/src/Candidate/Main.lean"),
+    file("submissions/2026-10-11-candidate-proof/src/Candidate/Main.lean"),
   ]);
   input.pr.head.sha = "b".repeat(40);
   input.validateEvidence = (_root, subject) => {
@@ -517,7 +570,7 @@ for (const filename of [
 ]) {
   test(`bound declarations require a separate maintenance PR for ${filename}`, async () => {
     const input = options(newBound, [
-      file("submissions/candidate-20261011/src/Candidate/Main.lean"),
+      file("submissions/2026-10-11-candidate-proof/src/Candidate/Main.lean"),
       file(filename),
     ]);
     assert.deepEqual(classifyPRChanges(input), {
@@ -635,7 +688,7 @@ test("maintenance propagates invalid bound metadata before proof checking", asyn
 
 for (const change of [
   file("submissions/openai-baseline/src/Submissions/openai_baseline/Main.lean"),
-  file(`submissions/${resultId}/src/Candidate/Main.lean`, {
+  file(`submissions/2026-10-11-${resultId}/src/Candidate/Main.lean`, {
     status: "renamed",
     previous_filename: "submissions/another-proof/src/Candidate/Main.lean",
   }),

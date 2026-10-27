@@ -6,6 +6,7 @@ import {
   submissionDependencies,
 } from "../verifier/submission-dependencies.mjs";
 import { submissionFiles } from "../verifier/manifest.mjs";
+import { submissionDirectories } from "../verifier/submission-paths.mjs";
 function input(dependencies, sources) {
   return {
     files: [
@@ -106,11 +107,13 @@ test("validates source revision IDs and uniqueness", () => {
 });
 test("every repository submission resolves its complete import closure", () => {
   const cache = new Map();
+  const directories = submissionDirectories(readdirSync("submissions"));
   const load = (id) => {
-    if (!cache.has(id)) cache.set(id, submissionFiles(`submissions/${id}`));
+    if (!cache.has(id))
+      cache.set(id, submissionFiles(`submissions/${directories.get(id)}`));
     return cache.get(id);
   };
-  for (const id of readdirSync("submissions")) {
+  for (const id of directories.keys()) {
     const g = dependencyGraph(id, load);
     assert.equal(g.order.at(-1), "Candidate.Main");
   }

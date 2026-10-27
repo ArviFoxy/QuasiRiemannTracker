@@ -32,6 +32,10 @@ import {
 } from "../verifier/certificate.mjs";
 import { validateSubmissionMetadata } from "../verifier/submission-metadata.mjs";
 import { submissionFiles } from "../verifier/manifest.mjs";
+import {
+  submissionDirectories,
+  submissionDirectory,
+} from "../verifier/submission-paths.mjs";
 import { publicationRecord } from "../verifier/publication-record.mjs";
 
 const isSha = (value) => /^[a-f0-9]{40}$/.test(value ?? "");
@@ -294,8 +298,19 @@ function sourceTree(root, admission) {
     throw Error(
       `Merged source differs from verified admission: ${admission.result_id}`,
     );
-  for (const [id, tree] of Object.entries(admission.dependency_trees ?? {})) {
-    const path = `submissions/${id}`;
+  const dependencies = Object.entries(admission.dependency_trees ?? {});
+  const directories = dependencies.length
+    ? gitRead(root, [
+        "ls-tree",
+        "--name-only",
+        `${admission.merge_commit_sha}:submissions`,
+      ])
+        .trimEnd()
+        .split("\n")
+        .filter(Boolean)
+    : [];
+  for (const [id, tree] of dependencies) {
+    const path = `submissions/${submissionDirectory(id, directories)}`;
     const entry = gitRead(root, [
       "ls-tree",
       admission.merge_commit_sha,
@@ -314,21 +329,23 @@ export function readSubmissions(root) {
   if (!lstatSync(directory).isDirectory())
     throw Error("Expected a regular submissions directory");
   const submissions = new Map();
-  for (const entry of readdirSync(directory, { withFileTypes: true })) {
-    if (!entry.isDirectory() || !/^[a-z][a-z0-9-]{2,63}$/.test(entry.name))
+  const entries = readdirSync(directory, { withFileTypes: true });
+  for (const entry of entries)
+    if (!entry.isDirectory())
       throw Error(`Invalid submission directory: ${entry.name}`);
-    const base = join(directory, entry.name);
+  for (const [id, name] of submissionDirectories(
+    entries.map((entry) => entry.name),
+  )) {
+    const base = join(directory, name);
     submissionFiles(base);
     const metadata = JSON.parse(
       readFileSync(join(base, "metadata.json"), "utf8"),
     );
     if (metadata.id !== undefined) {
-      if (proofRevision(metadata) !== entry.name)
-        throw Error(
-          `Submission metadata path differs from revision: ${entry.name}`,
-        );
+      if (proofRevision(metadata) !== id)
+        throw Error(`Submission metadata path differs from revision: ${name}`);
     } else validateSubmissionMetadata(metadata);
-    submissions.set(entry.name, metadata);
+    submissions.set(id, metadata);
   }
   return submissions;
 }

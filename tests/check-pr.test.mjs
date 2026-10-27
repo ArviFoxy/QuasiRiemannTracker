@@ -20,6 +20,7 @@ function fixture(files = [{ filename: "README.md", status: "modified" }]) {
   return {
     pr: {
       number: 15,
+      created_at: "2026-10-11T13:14:15Z",
       state: "open",
       draft: false,
       title: "Maintenance",
@@ -39,7 +40,7 @@ function fixture(files = [{ filename: "README.md", status: "modified" }]) {
 test("missing publication metadata fails before queuing a proof worker", (t) => {
   const data = fixture([
     {
-      filename: "submissions/example-bound/src/Candidate/Main.lean",
+      filename: "submissions/2026-10-11-example-bound/src/Candidate/Main.lean",
       status: "added",
     },
   ]);
@@ -56,6 +57,7 @@ test("missing publication metadata fails before queuing a proof worker", (t) => 
 const harness = `
 const fixture = JSON.parse(process.env.QRH_TEST_FIXTURE);
 const number = fixture.pr.number;
+const { createHash } = await import("node:crypto");
 const requests = [];
 const cp = (await import("node:child_process")).default;
 const originalExec = cp.execFileSync;
@@ -65,6 +67,12 @@ cp.execFileSync = (command, args, options) => {
   const op = args.slice(offset);
   const snapshots = fixture.snapshots || {base:{"catalogue/results.json":{schema_version:1,records:[]}},head:{"catalogue/results.json":{schema_version:1,records:[]}}};
   const side = sha => sha === fixture.pr.head.sha ? "head" : "base";
+  if (op[0] === "ls-tree" && op.includes("-rz")) {
+    const data = snapshots[side(op.at(-1))];
+    return Object.entries(data).map(([path, value]) =>
+      "100644 blob " + createHash("sha1").update(JSON.stringify(value)).digest("hex") +
+      String.fromCharCode(9) + path + String.fromCharCode(0)).join("");
+  }
   if (op[0] === "ls-tree") {
     const ref = op[op.indexOf("--")-1], path = op.at(-1), data = snapshots[side(ref)];
     if (op.includes("-r")) return Object.keys(data).filter(p=>p.startsWith(path)).join(String.fromCharCode(10));
@@ -93,7 +101,7 @@ globalThis.fetch = async (url, options = {}) => {
   if (request.method === "GET" && route.includes("/git/trees/")) {
     const key=route.split("/").at(-1), id=/QRH-Result: ([^\\n]+)/.exec(fixture.pr.body)[1];
     const item=(path,sha,type="tree",mode="040000")=>({path,sha:sha.repeat(40),type,mode});
-    value={tree:key===fixture.pr.head.sha?[item("submissions","d")]:key==="d".repeat(40)?[item(id,"e")]:key==="e".repeat(40)?[item("src","f"),...(fixture.omitMetadata?[]:[item("metadata.json","1","blob","100644")])]:key==="f".repeat(40)?[item("Candidate","2")]:[item("Main.lean","3","blob","100644")]};
+    value={tree:key===fixture.pr.head.sha?[item("submissions","d")]:key==="d".repeat(40)?[item(fixture.files.find(f=>f.filename.startsWith("submissions/"))?.filename.split("/")[1] || id,"e")]:key==="e".repeat(40)?[item("src","f"),...(fixture.omitMetadata?[]:[item("metadata.json","1","blob","100644")])]:key==="f".repeat(40)?[item("Candidate","2")]:[item("Main.lean","3","blob","100644")]};
   } else if (request.method === "GET" && route.includes("/git/blobs/")) {
     value={encoding:"base64",size:100,content:Buffer.from(JSON.stringify({title:"Fixture result",authors:[{name:"Fixture author"}],description:"Synthetic proof description."})).toString("base64")};
   } else if (request.method === "GET" && route === "/repos/${repository}/pulls/" + number) {
@@ -298,13 +306,13 @@ for (const draft of [false, true]) {
     const data = fixture([
       {
         filename:
-          "submissions/gao-local-moment-20261011/src/Candidate/Main.lean",
+          "submissions/2026-10-11-gao-local-moment/src/Candidate/Main.lean",
         status: "added",
       },
     ]);
     data.pr.draft = draft;
     data.pr.body =
-      "QRH-Result: gao-local-moment-20261011\nQRH-Bound: 4374433/5000000\nQRH-Decimal: 0.87488660";
+      "QRH-Result: gao-local-moment\nQRH-Bound: 4374433/5000000\nQRH-Decimal: 0.87488660";
     const result = run(t, data);
     assertFailure(result, "Proof verification has not run for this PR head");
     assert.deepEqual(
@@ -332,12 +340,13 @@ for (const [description, maintenanceFiles, message, labels] of [
     const data = fixture([
       {
         filename:
-          "submissions/single-prime-29-33-20261010/src/Candidate/Main.lean",
+          "submissions/2026-10-10-single-prime-29-33/src/Candidate/Main.lean",
         status: "added",
       },
       ...maintenanceFiles,
     ]);
     data.pr.number = 8;
+    data.pr.created_at = "2026-10-10T08:14:51Z";
     data.pr.body =
       "QRH-Result: single-prime-29-33-20261010\nQRH-Bound: 29/33\nQRH-Decimal: 0.87878787";
     const result = run(t, data);
@@ -352,7 +361,7 @@ for (const [description, maintenanceFiles, message, labels] of [
 test("a theta 1 submission publishes the live verification failure", (t) => {
   const data = fixture([
     {
-      filename: "submissions/theta-one/src/Candidate/Main.lean",
+      filename: "submissions/2026-10-11-theta-one/src/Candidate/Main.lean",
       status: "added",
     },
   ]);
@@ -413,7 +422,7 @@ for (const draft of [false, true]) {
   test(`queues live proof verification for draft=${draft}`, (t) => {
     const data = fixture([
       {
-        filename: "submissions/candidate/src/Candidate/Main.lean",
+        filename: "submissions/2026-10-11-candidate/src/Candidate/Main.lean",
         status: "added",
       },
     ]);
@@ -465,7 +474,7 @@ for (const draft of [false, true]) {
   test(`maintenance queues source checks while retaining maintenance label for draft=${draft}`, (t) => {
     const data = fixture([
       {
-        filename: "submissions/candidate/src/Candidate/Main.lean",
+        filename: "submissions/2026-10-11-candidate/src/Candidate/Main.lean",
         status: "modified",
       },
       { filename: "src/App.tsx", status: "modified" },
@@ -493,18 +502,22 @@ for (const draft of [false, true]) {
     data.snapshots = {
       base: Object.fromEntries(
         catalogue.records.flatMap((r) => [
-          [`submissions/${r.id}/metadata.json`, r],
-          [`submissions/${r.id}/src/Candidate/Main.lean`, "theorem"],
+          [`submissions/2026-10-11-${r.id}/metadata.json`, r],
+          [`submissions/2026-10-11-${r.id}/src/Candidate/Main.lean`, "theorem"],
         ]),
       ),
       head: {
         ...Object.fromEntries(
           catalogue.records.flatMap((r) => [
-            [`submissions/${r.id}/metadata.json`, r],
-            [`submissions/${r.id}/src/Candidate/Main.lean`, "theorem"],
+            [`submissions/2026-10-11-${r.id}/metadata.json`, r],
+            [
+              `submissions/2026-10-11-${r.id}/src/Candidate/Main.lean`,
+              "theorem",
+            ],
           ]),
         ),
-        "submissions/candidate/src/Candidate/Main.lean": "theorem",
+        "submissions/2026-10-11-candidate/src/Candidate/Main.lean":
+          "changed theorem",
       },
     };
     const result = run(t, data, { QRH_PHASE: "prepare" });

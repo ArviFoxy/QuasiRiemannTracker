@@ -1,4 +1,5 @@
 import { submissionDependencies } from "./submission-dependencies.mjs";
+import { submissionDirectories } from "./submission-paths.mjs";
 // Publication metadata lives beside the Lean source in metadata.json.
 const text = (value, limit) =>
   typeof value === "string" && value.trim().length > 0 && value.length <= limit;
@@ -119,6 +120,7 @@ export async function readSubmissionSources(
   };
   const root = await tree(head_sha);
   const entries = await tree(entry(root, "submissions", "tree").sha);
+  const directories = submissionDirectories(entries.map((file) => file.path));
   const trees = {},
     done = new Set(),
     active = new Set();
@@ -129,7 +131,7 @@ export async function readSubmissionSources(
     if (Object.keys(trees).length >= 256)
       throw Error("Submission dependency limit");
     active.add(id);
-    const revision = entry(entries, id, "tree");
+    const revision = entry(entries, directories.get(id) ?? id, "tree");
     trees[id] = revision.sha;
     const contents = await tree(revision.sha);
     const blob = entry(contents, "metadata.json", "blob");
@@ -152,7 +154,11 @@ export async function readSubmissionSources(
     done.add(id);
   }
   await visit(result_id);
-  return { metadata, trees };
+  return {
+    metadata,
+    trees,
+    source_path: `submissions/${directories.get(result_id)}/src`,
+  };
 }
 export async function readSubmissionMetadata(request, expected) {
   return (await readSubmissionSources(request, expected)).metadata;

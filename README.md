@@ -22,7 +22,7 @@ tests and production build.
 
 ## Data
 
-Each `submissions/<result-id>/` directory contains `metadata.json` and its Lean
+Each `submissions/YYYY-MM-DD-<slug>/` directory contains `metadata.json` and its Lean
 source in `src/`. Website deployment combines this metadata with
 merged admission records to generate the catalogue. Generated catalogue JSON is
 ignored by Git. Local development and preview builds generate the same files.
@@ -44,16 +44,22 @@ the normal online main-branch build to recover older receipts from the archive.
 ## Submit
 
 1. Start from the current `main` branch. Add Lean source under
-   `submissions/<result-id>/src/Candidate/`, with theorem
+   `submissions/YYYY-MM-DD-<slug>/src/Candidate/`, with theorem
    `Candidate.bound` in `Main.lean`. Use the pinned dependencies in
    [verifier/pins.json](verifier/pins.json) and
    [verifier/standard/lake-manifest.json](verifier/standard/lake-manifest.json).
-2. **Commit `submissions/<result-id>/metadata.json` alongside the Lean source.**
+
+   Use the original PR creation date in UTC as the directory prefix. The date
+   appears only once: choose a lowercase slug without another date, such as
+   `example-bound`. Admission checks the prefix against the PR creation time.
+   Keep that original directory name when updating the proof on later days.
+
+2. **Commit `submissions/YYYY-MM-DD-<slug>/metadata.json` alongside the Lean source.**
    Admission reads this required file from the exact PR head. The submission
    directory contains:
 
    ```text
-   submissions/example-bound/
+   submissions/2026-10-27-example-bound/
      metadata.json
      src/Candidate/Main.lean
      src/Candidate/...           supporting Lean modules
@@ -75,7 +81,8 @@ the normal online main-branch build to recover older receipts from the archive.
    explains the method and credits previous work.
 
    Declare each directly imported submission in `dependencies`, using its
-   directory name under `submissions/`. It defaults to an empty list.
+   stable result ID, without the new directory date prefix. It defaults to an
+   empty list.
    `builds_on` records attribution to existing result IDs; `dependencies`
    supplies the source modules available to imports.
 
@@ -86,7 +93,7 @@ the normal online main-branch build to recover older receipts from the archive.
 
 3. Open a PR using the [submission template](.github/PULL_REQUEST_TEMPLATE.md).
    Start its body with the result ID, exact bound, and decimal approximation.
-   The result ID must match the submission directory name:
+   For a new submission, the result ID is the slug without the date prefix:
 
    ```text
    QRH-Result: example-bound
@@ -99,6 +106,10 @@ the normal online main-branch build to recover older receipts from the archive.
    to differ from the current best verified bound.
    Equal bounds accept any supported decimal precision. These PR fields declare
    the bound; the committed `metadata.json` supplies its publication metadata.
+
+   Existing submissions retain their stable result IDs and Lean namespaces when
+   their folders are renamed, even if an older ID includes a date. Use those
+   unchanged IDs in `QRH-Result` and dependency declarations.
 
 4. GitHub Actions checks the exact PR head, including drafts. Comparator checks
    the statement and allowed axioms against the

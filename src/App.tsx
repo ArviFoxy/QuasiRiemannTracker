@@ -295,15 +295,19 @@ export default function App() {
               <li>
                 Add{" "}
                 <code>
-                  submissions/&lt;result-id&gt;/src/Candidate/Main.lean
+                  submissions/YYYY-MM-DD-&lt;slug&gt;/src/Candidate/Main.lean
                 </code>{" "}
-                with theorem <code>Candidate.bound</code>.
+                with theorem <code>Candidate.bound</code>. Use the PR’s original
+                creation date in UTC only once, at the start of the directory,
+                and keep it for later updates.
               </li>
               <li>
                 Start the PR body with QRH-Result, QRH-Bound and QRH-Decimal.
-                Add metadata.json beside the Lean source with the result title,
-                authors and description. Proof checks run automatically,
-                including on drafts.
+                For a new submission, QRH-Result is the slug without the date
+                prefix; existing submissions keep their stable IDs and Lean
+                namespaces. Add metadata.json beside the Lean source with the
+                result title, authors and description. Proof checks run
+                automatically, including on drafts.
               </li>
               <li>
                 After review and merge, the website updates automatically.

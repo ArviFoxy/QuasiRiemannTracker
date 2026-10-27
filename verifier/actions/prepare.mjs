@@ -59,18 +59,6 @@ git([
   e.head_sha,
 ]);
 try {
-  const listing = git([
-    "-C",
-    "verification/source.git",
-    "ls-tree",
-    e.head_sha,
-    "--",
-    `submissions/${e.result_id}/src/Candidate/Main.lean`,
-  ]).toString();
-  if (!listing)
-    throw new Error(
-      `Add submissions/${e.result_id}/src/Candidate/Main.lean with theorem Candidate.bound`,
-    );
   // Preparation binds source and generates the theorem before provisioning libraries.
   writeFileSync("verification/empty-libraries.json", "{}\n");
   execFileSync(

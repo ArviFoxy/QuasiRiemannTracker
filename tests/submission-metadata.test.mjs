@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import {
   parseSubmissionMetadata,
   readSubmissionMetadata,
+  readSubmissionSources,
   validateSubmissionMetadata,
 } from "../verifier/submission-metadata.mjs";
 
@@ -60,6 +61,7 @@ function sourceApi({
   mainMode = "100644",
   metadataMode = "100644",
   blob = null,
+  directories = ["candidate-proof"],
 } = {}) {
   const item = (path, sha, type = "tree", mode = "040000") => ({
     path,
@@ -69,7 +71,9 @@ function sourceApi({
   });
   const routes = {
     ["git/trees/" + "a".repeat(40)]: { tree: [item("submissions", "b")] },
-    ["git/trees/" + "b".repeat(40)]: { tree: [item("candidate-proof", "c")] },
+    ["git/trees/" + "b".repeat(40)]: {
+      tree: directories.map((directory) => item(directory, "c")),
+    },
     ["git/trees/" + "c".repeat(40)]: {
       tree: [
         item("src", "d"),
@@ -111,6 +115,68 @@ test("new submissions read metadata and require Lean source from the exact commi
       readSubmissionMetadata(sourceApi({ blob }), expected),
       /regular.*metadata.json/,
     );
+});
+test("dated source paths preserve the result identity and original immutable tree", async () => {
+  const historical = await readSubmissionSources(sourceApi(), expected);
+  const dated = await readSubmissionSources(
+    sourceApi({ directories: ["2026-10-12-candidate-proof"] }),
+    expected,
+  );
+  assert.deepEqual(dated.metadata, historical.metadata);
+  assert.deepEqual(dated.trees, historical.trees);
+  assert.equal(historical.source_path, "submissions/candidate-proof/src");
+  assert.equal(dated.source_path, "submissions/2026-10-12-candidate-proof/src");
+});
+test("immutable source lookup rejects duplicate dated and historical identities", async () => {
+  for (const directories of [
+    ["candidate-proof", "2026-10-12-candidate-proof"],
+    ["2026-10-12-candidate-proof", "2026-10-13-candidate-proof"],
+  ])
+    await assert.rejects(
+      readSubmissionSources(sourceApi({ directories }), expected),
+      /Duplicate submission directories/,
+    );
+});
+test("dated submissions resolve dated dependencies by their stable result IDs", async () => {
+  const item = (path, character, type = "tree", mode = "040000") => ({
+    path,
+    sha: character.repeat(40),
+    type,
+    mode,
+  });
+  const blob = (value) => ({
+    encoding: "base64",
+    size: Buffer.byteLength(JSON.stringify(value)),
+    content: Buffer.from(JSON.stringify(value)).toString("base64"),
+  });
+  const original = sourceApi({
+    blob: blob({ ...metadata(), dependencies: ["earlier-proof"] }),
+  });
+  const routes = {
+    ["git/trees/" + "b".repeat(40)]: {
+      tree: [
+        item("2026-10-12-candidate-proof", "c"),
+        item("2026-10-11-earlier-proof", "2"),
+      ],
+    },
+    ["git/trees/" + "2".repeat(40)]: {
+      tree: [item("src", "d"), item("metadata.json", "3", "blob", "100644")],
+    },
+    ["git/blobs/" + "3".repeat(40)]: blob(metadata()),
+  };
+  const result = await readSubmissionSources(
+    (route) =>
+      routes[route.slice("repos/owner/repo/".length)] ?? original(route),
+    expected,
+  );
+  assert.deepEqual(result.trees, {
+    "candidate-proof": "c".repeat(40),
+    "earlier-proof": "2".repeat(40),
+  });
+  assert.equal(
+    result.source_path,
+    "submissions/2026-10-12-candidate-proof/src",
+  );
 });
 test("a PR metadata block or an independent receipt cannot replace the committed Lean source", async () => {
   for (const change of [

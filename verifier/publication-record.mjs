@@ -8,6 +8,7 @@ import {
 import { rational } from "../core/rational.mjs";
 import { certificate } from "./certificate.mjs";
 import { validateSubmissionMetadata } from "./submission-metadata.mjs";
+import { validSubmissionSourcePath } from "./submission-paths.mjs";
 
 export function publicationRecord(admission, verification = admission) {
   const metadata = validateSubmissionMetadata(admission.metadata);
@@ -19,7 +20,7 @@ export function publicationRecord(admission, verification = admission) {
     evidence.theta_exact !== admission.theta_exact ||
     evidence.source_repository !== admission.repository ||
     evidence.source_commit !== admission.head_sha ||
-    admission.source_path !== `submissions/${admission.result_id}/src` ||
+    !validSubmissionSourcePath(admission.source_path, admission.result_id) ||
     verification.source_tree !== admission.source_tree
   )
     throw Error("Publication record differs from its verified source");

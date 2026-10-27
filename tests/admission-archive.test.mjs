@@ -92,7 +92,7 @@ function api(steps) {
   return { fetcher, requests, token: "secret-token" };
 }
 
-const sourceSteps = () => [
+const sourceSteps = (directory = "candidate-proof") => [
   {
     route: `git/trees/${hex("a")}`,
     data: {
@@ -106,7 +106,7 @@ const sourceSteps = () => [
     data: {
       tree: [
         {
-          path: "candidate-proof",
+          path: directory,
           mode: "040000",
           type: "tree",
           sha: hex("d"),
@@ -200,6 +200,52 @@ test("a rerun keeps the first durable certificate without overwriting it", async
   assert.deepEqual(result.record, saved);
   assert.equal(steps.length, 0);
   assert.ok(client.requests.every((r) => r.method === "GET"));
+});
+
+test("archives the dated path actually present in the immutable PR head", async () => {
+  const data = fixture();
+  const sourcePath = "submissions/2026-10-12-candidate-proof/src";
+  const saved = admissionRecord({ ...data, sourceTree: hex("e"), sourcePath });
+  const steps = [
+    ...sourceSteps("2026-10-12-candidate-proof"),
+    {
+      route: "git/ref/heads/admission-records",
+      data: { object: { sha: hex("3") } },
+    },
+    { route: `contents/${path}?ref=${hex("3")}`, data: savedResponse(saved) },
+  ];
+  const result = await archiveAdmission(data, api(steps));
+  assert.equal(result.record.source_path, sourcePath);
+  assert.equal(result.record.result_id, "candidate-proof");
+  assert.equal(steps.length, 0);
+});
+
+test("admission source lookup rejects ambiguous dated and historical folders before writing", async () => {
+  const steps = sourceSteps();
+  steps[1].data.tree.push({
+    ...steps[1].data.tree[0],
+    path: "2026-10-12-candidate-proof",
+  });
+  steps.pop();
+  const client = api(steps);
+  await assert.rejects(
+    archiveAdmission(fixture(), client),
+    /Duplicate submission directories/,
+  );
+  assert.ok(client.requests.every(({ method }) => method === "GET"));
+});
+
+test("archived source paths must identify their exact result without traversal", () => {
+  const original = admissionRecord({ ...fixture(), sourceTree: hex("e") });
+  for (const source_path of [
+    "submissions/2026-10-12-another-proof/src",
+    "submissions/2026-10-12-candidate-proof/../src",
+    "submissions/2026-02-30-candidate-proof/src",
+  ])
+    assert.throws(
+      () => validateAdmissionRecord({ ...original, source_path }),
+      /Invalid admission archive record/,
+    );
 });
 
 test("large archived reports are reread through the immutable Git Blob API", async () => {

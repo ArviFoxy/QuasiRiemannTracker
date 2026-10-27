@@ -5,6 +5,10 @@ import { canonical, sha256 } from "./common.mjs";
 import { parseDeclaration } from "./pr-admission.mjs";
 import { verificationResult } from "./actions/result.mjs";
 import {
+  submissionDirectory,
+  validSubmissionSourcePath,
+} from "./submission-paths.mjs";
+import {
   parseSubmissionMetadata,
   readSubmissionSources,
   validateSubmissionMetadata,
@@ -49,7 +53,7 @@ export function validateAdmissionRecord(value) {
   if (
     ![1, 2].includes(value.schema_version) ||
     !repository(value.repository) ||
-    value.source_path !== `submissions/${value.result_id}/src` ||
+    !validSubmissionSourcePath(value.source_path, value.result_id) ||
     !sha(value.source_tree) ||
     c.source_repository !== value.repository ||
     c.source_commit !== value.head_sha ||
@@ -142,6 +146,7 @@ export function admissionRecord({
   expected,
   record,
   sourceTree,
+  sourcePath = `submissions/${expected.result_id}/src`,
   dependencyTrees = {},
   metadata,
   reportBytes = null,
@@ -163,7 +168,7 @@ export function admissionRecord({
         (key) => [key, expected[key]],
       ),
     ),
-    source_path: `submissions/${expected.result_id}/src`,
+    source_path: sourcePath,
     source_tree: sourceTree,
     dependency_trees: dependencyTrees,
     metadata: structuredClone(validateSubmissionMetadata(metadata)),
@@ -229,10 +234,22 @@ function github(fetcher, token, repo) {
 async function submissionTree(request, expected) {
   validateIdentity(expected);
   let treeSha = expected.head_sha;
-  for (const part of ["submissions", expected.result_id, "src"]) {
+  let directory;
+  for (const [index, segment] of [
+    "submissions",
+    expected.result_id,
+    "src",
+  ].entries()) {
     const { data } = await request(`git/trees/${treeSha}`);
     if (data?.truncated || !Array.isArray(data?.tree))
       throw Error("Incomplete admitted source tree");
+    if (index === 1) {
+      directory = submissionDirectory(
+        expected.result_id,
+        data.tree.map((entry) => entry.path),
+      );
+    }
+    const part = index === 1 ? directory : segment;
     const entries = data.tree.filter((entry) => entry.path === part);
     if (
       entries.length !== 1 ||
@@ -243,7 +260,7 @@ async function submissionTree(request, expected) {
       throw Error("Verified submission source tree is missing");
     treeSha = entries[0].sha;
   }
-  return treeSha;
+  return { sourceTree: treeSha, sourcePath: `submissions/${directory}/src` };
 }
 
 // Non-force ref updates provide compare-and-swap: a competing commit makes our
@@ -255,7 +272,7 @@ export async function archiveAdmission(
   if (!repository(input.expected?.repository) || !token)
     throw Error("Admission archive requires repository credentials");
   const request = github(fetcher, token, input.expected.repository);
-  const sourceTree = await submissionTree(request, input.expected);
+  const source = await submissionTree(request, input.expected);
   const dependencyTrees = input.metadata.dependencies?.length
     ? (
         await readSubmissionSources(
@@ -269,7 +286,7 @@ export async function archiveAdmission(
         )
       ).trees
     : {};
-  const envelope = admissionRecord({ ...input, sourceTree, dependencyTrees });
+  const envelope = admissionRecord({ ...input, ...source, dependencyTrees });
   const path = admissionPath(envelope);
   const content = JSON.stringify(envelope, null, 2) + "\n";
   let blobSha;

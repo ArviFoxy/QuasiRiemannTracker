@@ -45,6 +45,17 @@ function fixture(files = []) {
   return { files, base, head, read, list };
 }
 const modified = (filename) => ({ filename, status: "modified" });
+function renameSubmission(data, id, directory = `2030-10-02-${id}`) {
+  const prefix = `submissions/${id}/`;
+  for (const path of Object.keys(data.head).filter((path) =>
+    path.startsWith(prefix),
+  )) {
+    const filename = `submissions/${directory}/${path.slice(prefix.length)}`;
+    data.head[filename] = data.head[path];
+    delete data.head[path];
+    data.files.push({ filename, previous_filename: path, status: "renamed" });
+  }
+}
 test("website-only maintenance needs no proof or catalogue reads", () => {
   assert.equal(maintenancePaths([modified("src/App.tsx")]), false);
   assert.equal(
@@ -333,4 +344,171 @@ test("maintenance keeps submission metadata and sources in the submission tree",
       () => maintenancePlan(fixture([modified(path)])),
       /belong in submissions/,
     );
+});
+
+test("dating a submission directory preserves its identity without replaying unchanged source", () => {
+  const data = fixture();
+  const main = "submissions/fixture-baseline/src/Candidate/Main.lean";
+  data.head[main] = data.base[main];
+  renameSubmission(data, "fixture-baseline");
+  assert.deepEqual(maintenancePlan(data), []);
+});
+
+test("edits inside a directory rename still replay the proof and dependent submissions", () => {
+  const data = fixture();
+  for (const side of [data.base, data.head])
+    side["submissions/fixture-improvement/metadata.json"].dependencies = [
+      "fixture-baseline",
+    ];
+  renameSubmission(data, "fixture-baseline");
+  assert.deepEqual(
+    maintenancePlan(data).map((result) => result.result_id),
+    ["fixture-baseline", "fixture-improvement"],
+  );
+});
+
+test("dated directory renames retain archive certificates for metadata without embedded identity", () => {
+  const data = fixture();
+  const id = "fixture-improvement";
+  const record = data.base[`submissions/${id}/metadata.json`];
+  const certificate = data.base[`public/certificates/${id}.json`];
+  for (const side of [data.base, data.head]) {
+    side[`submissions/${id}/metadata.json`] = {
+      title: "Test",
+      authors: [{ name: "Author" }],
+      description: "A proof.",
+    };
+    delete side[`public/certificates/${id}.json`];
+  }
+  data.head[`submissions/${id}/src/Candidate/Main.lean`] =
+    data.base[`submissions/${id}/src/Candidate/Main.lean`];
+  renameSubmission(data, id);
+  assert.deepEqual(
+    maintenancePlan({
+      ...data,
+      admittedCatalogue: { schema_version: 1, records: [record] },
+      readAdmittedCertificate: (revision) =>
+        revision === id ? JSON.stringify(certificate) : null,
+    }),
+    [],
+  );
+});
+
+test("renaming a submission must retain its recorded submission date", () => {
+  const data = fixture();
+  renameSubmission(data, "fixture-baseline", "2030-10-03-fixture-baseline");
+  assert.throws(
+    () => maintenancePlan(data),
+    /must start with the PR submission date 2030-10-02/,
+  );
+});
+
+test("dating a directory cannot change its immutable proof identity", () => {
+  const data = fixture();
+  renameSubmission(data, "fixture-baseline", "2030-10-02-unrelated-proof");
+  assert.throws(() => maintenancePlan(data), /metadata path differs/);
+});
+
+test("an already dated directory keeps its date even without a metadata timestamp", () => {
+  const data = fixture();
+  const id = "fixture-baseline";
+  delete data.base[`submissions/${id}/metadata.json`].submitted_at;
+  delete data.head[`submissions/${id}/metadata.json`].submitted_at;
+  renameSubmission(data, id, `2030-10-03-${id}`);
+  const prefix = `submissions/${id}/`;
+  for (const path of Object.keys(data.base).filter((path) =>
+    path.startsWith(prefix),
+  )) {
+    data.base[`submissions/2030-10-02-${id}/${path.slice(prefix.length)}`] =
+      data.base[path];
+    delete data.base[path];
+  }
+  assert.throws(
+    () => maintenancePlan(data),
+    /must start with the PR submission date 2030-10-02/,
+  );
+});
+
+test("dated and undated directories cannot duplicate a proof identity", () => {
+  const data = fixture();
+  const prefix = "submissions/fixture-baseline/";
+  for (const [path, value] of Object.entries(data.head))
+    if (path.startsWith(prefix))
+      data.head[
+        `submissions/2030-10-02-fixture-baseline/${path.slice(prefix.length)}`
+      ] = value;
+  assert.throws(
+    () => maintenancePlan(data),
+    /Duplicate submission directories for fixture-baseline/,
+  );
+});
+
+test("new submissions cannot introduce an undated directory", () => {
+  const data = fixture();
+  const id = "fixture-added";
+  data.head[`submissions/${id}/metadata.json`] = {
+    ...data.base["submissions/fixture-baseline/metadata.json"],
+    id,
+    theta: { numerator: "3", denominator: "4" },
+    status: "verification-pending",
+    first_verified_at: "",
+    certificate_url: undefined,
+  };
+  data.head[`submissions/${id}/src/Candidate/Main.lean`] = "new proof";
+  data.files.push({
+    filename: `submissions/${id}/metadata.json`,
+    status: "added",
+  });
+  assert.throws(() => maintenancePlan(data), /Invalid submission directory/);
+});
+
+test("new proof metadata cannot choose a folder date different from the trusted PR date", () => {
+  for (const submittedAt of [undefined, "2030-10-03T14:00:00Z"]) {
+    const data = fixture();
+    const id = "fixture-added";
+    const directory = `2030-10-02-${id}`;
+    data.head[`submissions/${directory}/metadata.json`] = {
+      ...data.base["submissions/fixture-baseline/metadata.json"],
+      id,
+      theta: { numerator: "3", denominator: "4" },
+      status: "verification-pending",
+      first_verified_at: "",
+      certificate_url: undefined,
+    };
+    data.head[`submissions/${directory}/src/Candidate/Main.lean`] = "new proof";
+    data.files.push({
+      filename: `submissions/${directory}/metadata.json`,
+      status: "added",
+    });
+    assert.throws(
+      () => maintenancePlan({ ...data, submittedAt }),
+      submittedAt
+        ? /must start with the PR submission date 2030-10-03/
+        : /Missing valid PR submission date/,
+    );
+    assert.deepEqual(
+      maintenancePlan({ ...data, submittedAt: "2030-10-02T14:00:00Z" }),
+      [{ result_id: id, theta_exact: "3/4" }],
+    );
+  }
+});
+
+test("removing a module from a dated submission replays its stable proof ID", () => {
+  const data = fixture();
+  const directory = "2030-10-02-fixture-improvement";
+  renameSubmission(data, "fixture-improvement", directory);
+  for (const [path, value] of Object.entries(data.base)) {
+    const oldPrefix = "submissions/fixture-improvement/";
+    if (!path.startsWith(oldPrefix)) continue;
+    data.base[`submissions/${directory}/${path.slice(oldPrefix.length)}`] =
+      value;
+    delete data.base[path];
+  }
+  data.files.length = 0;
+  const path = `submissions/${directory}/src/Candidate/Helper.lean`;
+  data.base[path] = "removed helper";
+  data.files.push({ filename: path, status: "removed" });
+  assert.deepEqual(maintenancePlan(data), [
+    { result_id: "fixture-improvement", theta_exact: "8749/10000" },
+  ]);
 });

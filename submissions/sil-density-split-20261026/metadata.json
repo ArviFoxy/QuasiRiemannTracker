@@ -1,0 +1,40 @@
+{
+  "title": "Dirichlet nonvanishing at 0.873995 via a density-split common-divisor bootstrap",
+  "authors": [
+    {
+      "name": "Sil",
+      "url": "https://github.com/TheSil"
+    }
+  ],
+  "description": "Proves the all-moduli Dirichlet boundary 174799/200000 = 0.873995, with the principal pole excluded. Starting from the fourth-power global source G(99999/100000, 93/25, 3/50), a generic cube-free common-divisor source step is iterated: cube-free columns with K3 local kernels, the first artificial divisor kept inside the Hilbert-space Cauchy inequality, second common divisors grouped at the physical row with a common-profile separation, growing twists packed into the row with a finite anchor dictionary, and the parent source applied to the physical packets with a partial whole-slot deletion price. Four explicit native steps and 22 steps of one geometric recurrence give G(0.9999, 2.58, 0.12). Two variable-density transitions then split each grouped physical moment into LOW rows, paid by erasure at the threshold q(w), and HIGH rows, bounded by the natural density count and uniform pointwise estimates, reaching G(4967/5000, 49/20, 1/10). An all-shift physical return with exact rational certificates and the same-source Mellin argument closes the bound; the coarse return box of the previous submission is replaced by a widened class with the actual functional inequalities. Builds on OpenAI's original framework, Hailey Collet's generic source, counting and return machinery (PR 69), Sil's fourth-power source (PR 74) and ArviFoxy's broadened source interface and all-shift physical return (PR 76); inherited authorship and license notices are retained. The research, drafting and Lean development were AI-assisted.",
+  "license": "Apache-2.0; inherited notices and dependency licenses retained.",
+  "builds_on": [
+    "openai-baseline",
+    "hailey-collet-1252270103",
+    "sil-fourth-power-20261025",
+    "arvi-repeated-marks-on-sil-face-20261025"
+  ],
+  "dependencies": [
+    "openai-baseline",
+    "hailey-collet-1252270103",
+    "arvi-repeated-marks-on-sil-face-20261025"
+  ],
+  "references": [
+    {
+      "label": "Original OpenAI framework and scope",
+      "url": "https://github.com/openai/math/blob/fd4aeeb2ee4fc729c18d98444fed42fd0529eeeb/lean/docs/003.md"
+    },
+    {
+      "label": "Finite ordinary source moments and return framework (PR 69)",
+      "url": "https://github.com/GTimG/QuasiRiemannTracker/pull/69"
+    },
+    {
+      "label": "Fourth-power source moments (PR 74)",
+      "url": "https://github.com/GTimG/QuasiRiemannTracker/pull/74"
+    },
+    {
+      "label": "Repeated marks on the fourth-power face, all-shift physical return (PR 76)",
+      "url": "https://github.com/GTimG/QuasiRiemannTracker/pull/76"
+    }
+  ]
+}

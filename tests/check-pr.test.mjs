@@ -128,9 +128,9 @@ globalThis.fetch = async (url, options = {}) => {
   return { ok: true, status: 200, json: async () => structuredClone(value) };
 };
 let importError;
+process.on("exit", () => console.log("MOCK_RESULT=" + JSON.stringify({ requests, importError })));
 try { await import(${JSON.stringify(entrypoint)}); }
 catch (error) { importError = error.message; process.exitCode = 1; }
-console.log("MOCK_RESULT=" + JSON.stringify({ requests, importError }));
 `;
 
 function run(t, data, overrides = {}) {
@@ -212,6 +212,57 @@ function assertFailure(result, message) {
   assert.equal(completed.conclusion, "failure");
   assert.equal(completed.output.title, "PR admission failed");
   assert.equal(completed.output.summary, `Admission failed: ${message}`);
+}
+
+for (const [description, change] of [
+  [
+    "closed",
+    (pr) => {
+      pr.state = "closed";
+    },
+  ],
+  [
+    "merged",
+    (pr) => {
+      pr.state = "closed";
+      pr.merged = true;
+    },
+  ],
+  [
+    "reset to main and closed",
+    (pr) => {
+      pr.state = "closed";
+      pr.head.sha = pr.base.sha;
+    },
+  ],
+  [
+    "reset to main before closure is visible",
+    (pr) => {
+      pr.head.sha = pr.base.sha;
+      pr.changed_files = 0;
+    },
+  ],
+]) {
+  test(`queued admission for a PR ${description} exits without publishing checks or queuing a worker`, (t) => {
+    const data = fixture();
+    change(data.pr);
+    const result = run(t, data, { QRH_PHASE: "prepare" });
+    assert.equal(result.status, 0);
+    assert.equal(result.importError, undefined);
+    assert.deepEqual(result.checkWrites, []);
+    assert.deepEqual(result.labelWrites, []);
+    assert.equal(result.context, null);
+    assert.equal(result.outputs, "");
+    assert.deepEqual(
+      result.requests.map(({ method, url }) => ({ method, url })),
+      [
+        {
+          method: "GET",
+          url: `https://api.github.com/repos/${repository}/pulls/15`,
+        },
+      ],
+    );
+  });
 }
 
 test("maintenance publishes success and replaces a stale new-bound label", (t) => {

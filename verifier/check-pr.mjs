@@ -48,6 +48,15 @@ async function writeCheck(route, method, data) {
 }
 
 const pr = await api(`repos/${repo}/pulls/${number}`);
+// A queued event can outlive its PR. In particular, resetting a fork to main
+// can close the PR and make its current head the repository's main commit.
+// Do not attach a failed admission check to that unrelated commit.
+if (pr.state === "closed" || pr.head.sha === pr.base.sha) {
+  console.log(
+    `Skipping PR #${number}: ${pr.state === "closed" ? "the PR is closed" : "the head matches the base commit"}.`,
+  );
+  process.exit(0);
+}
 const check = await writeCheck("check-runs", "POST", {
   name: "qrh/pr-admission",
   head_sha: pr.head.sha,

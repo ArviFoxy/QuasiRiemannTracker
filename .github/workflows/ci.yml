@@ -9,6 +9,7 @@ permissions:
 jobs:
   test:
     runs-on: ubuntu-24.04
+    timeout-minutes: 30
     permissions:
       contents: read
       pages: read
@@ -34,7 +35,23 @@ jobs:
       - run: npm run check
         env:
           QRH_BASE_PATH: ${{ steps.pages.outputs.base_path }}/
-      - run: npx playwright install --with-deps chromium
+      - name: Install Chromium system dependencies
+        timeout-minutes: 10
+        run: |
+          # The Azure mirror stalled font downloads; use Ubuntu's signed archive directly.
+          sudo sed -i -E 's@mirror\+file:/etc/apt/apt-mirrors\.txt|https?://azure\.archive\.ubuntu\.com/ubuntu/?@https://archive.ubuntu.com/ubuntu/@g' /etc/apt/sources.list.d/ubuntu.sources
+          sudo tee /etc/apt/apt.conf.d/zzzz-qrh-network-timeouts >/dev/null <<'EOF'
+          Acquire::http::Timeout "30";
+          Acquire::https::Timeout "30";
+          Acquire::Retries "2";
+          EOF
+          apt-config dump Acquire::http::Timeout Acquire::https::Timeout Acquire::Retries
+          npx playwright install-deps chromium
+      - name: Download Chromium headless shell
+        timeout-minutes: 10
+        env:
+          PLAYWRIGHT_DOWNLOAD_CONNECTION_TIMEOUT: "60000"
+        run: npx playwright install --only-shell chromium
       - run: npm run test:browser
       - name: Test production paths and verification records
         run: node scripts/test-deployment.mjs

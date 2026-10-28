@@ -1,1 +1,4 @@
 dch_cap_0.000003.json: steps=110 end L=2.0215 B=0.961256 | count L=2.2065 (s0=0.0830) phys L=2.3665 (s0=0.0598) -> theta=0.873939585 gap=+3.78e-06
+dch_cap_0.00001.json: steps=114 end L=2.0015 B=0.961571 | count L=2.2065 (s0=0.0843) phys L=2.3065 (s0=0.0644) -> theta=0.873925286 gap=-1.05e-05
+dch_cap_0.000005.json: steps=114 end L=2.0015 B=0.959950 | count L=2.2065 (s0=0.0830) phys L=2.3615 (s0=0.0593) -> theta=0.873935215 gap=-5.85e-07
+dch_cap_0.00002.json: steps=114 end L=2.0015 B=0.964644 | count L=2.0015 (s0=0.0884) phys L=2.2015 (s0=0.0854) -> theta=0.873916667 gap=-1.91e-05

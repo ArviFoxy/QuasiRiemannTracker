@@ -1,0 +1,3 @@
+dch_base_f60.json: steps=74 end L=2.2015 B=0.978283 | count L=2.2065 (s0=0.0837) phys L=2.3815 (s0=0.0594) -> theta=0.873946250 gap=+1.04e-05
+dch_e1012.json: steps=77 end L=2.1865 B=0.977900 | count L=2.1865 (s0=0.0847) phys L=2.3665 (s0=0.0592) -> theta=0.873936717 gap=+9.17e-07
+dch_e102.json: steps=80 end L=2.1715 B=0.977172 | count L=2.1765 (s0=0.0849) phys L=2.3515 (s0=0.0599) -> theta=0.873930389 gap=-5.41e-06

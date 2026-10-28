@@ -1,0 +1,15 @@
+   eps it0  x=0.051942  theta-target=+2.230e-07
+   eps it1  x=0.054325  theta-target=-2.010e-07
+   eps it2  x=0.052792  theta-target=+7.300e-08
+   eps it3  x=0.053437  theta-target=-4.200e-08
+   eps it4  x=0.053092  theta-target=+1.900e-08
+RESULT knob=eps floor=0.60 target=bar -> 0.05309191327549176  (282s)
+   dthr it0  x=0.004243  theta-target=-3.710e-07
+   dthr it1  x=0.003928  theta-target=+3.530e-07
+   dthr it2  x=0.004135  theta-target=-1.210e-07
+   dthr it3  x=0.004051  theta-target=+7.200e-08
+   dthr it4  x=0.004096  theta-target=-3.300e-08
+   dthr it5  x=0.004075  theta-target=+1.700e-08
+RESULT knob=dthr floor=0.60 target=bar -> 0.004074569326045852  (1095s)
+bracket failed ('floor', 0.55, 0.6, 9.12299999999977e-06, 9.240999999993171e-06)
+RESULT knob=floor floor=0.60 target=bar -> None  (205s)

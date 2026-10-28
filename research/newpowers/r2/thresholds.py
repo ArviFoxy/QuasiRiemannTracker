@@ -3,7 +3,7 @@
 For a one-parameter family of amplifier types, find the parameter value at which the exact-return continuum price
 (floor 3/5, role split, pricing2.price_cd) equals the target:  BAR (0.8739358)  and  BAR - 1.2e-6  (the discrete
 DeltaL = 0.005 chain is 1.1-1.3e-6 above its continuum, lemmaW.md s4.2 / B2 s2).
-usage: python3 thresholds.py <knob> [floor]       knob in {e, c, r, f, qcap}
+usage: python3 thresholds.py <knob> [floor] [bar]       knob in {e, c, r, f, eps, dthr, floor, phi_r2}; 'bar' = only the target BAR
 """
 import sys, os, json, time
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -32,6 +32,10 @@ def theta_of(knob, x, floor):
         ode = OdeAmp([SIMPLE], dthr=x)
     elif knob == 'eps':       # s0 scaled by (1-x)
         ode = OdeAmp([SIMPLE], eps=x)
+    elif knob == 'phi_r2':    # doubled share x counted with r = 2 (norm convention): e = 1 + x, r = 1 + x
+        ode = OdeAmp([mk(e=1 + x, r=1 + x)])
+    elif knob == 'floor':     # density floor of the return (brief: 3/5)
+        ode = OdeAmp([SIMPLE]); floor = x
     else:
         raise ValueError(knob)
     wall, res = P2.price_cd(ode, floor)
@@ -60,10 +64,11 @@ def solve(knob, lo, hi, target, floor, tol=2e-8, maxit=14):
 
 if __name__ == '__main__':
     knob = sys.argv[1]; floor = float(sys.argv[2]) if len(sys.argv) > 2 else 0.60
-    brackets = dict(e=(1.0, 1.03), c=(5.9, 6.0), r=(1.0, 1.05), f=(0.999, 1.0), dthr=(0.0, 0.01), eps=(0.0, 0.10))
+    brackets = dict(e=(1.0, 1.03), c=(5.9, 6.0), r=(1.0, 1.05), f=(0.999, 1.0), dthr=(0.0, 0.01), eps=(0.0, 0.10), floor=(0.55, 0.60), phi_r2=(0.0, 0.02))
     lo, hi = brackets[knob]
     out = {}
-    for tag, tgt in (('bar', BAR), ('bar-1.2e-6', BAR - 1.2e-6)):
+    targets = (('bar', BAR),) if (len(sys.argv) > 3 and sys.argv[3] == 'bar') else (('bar', BAR), ('bar-1.2e-6', BAR - 1.2e-6))
+    for tag, tgt in targets:
         t0 = time.time()
         try:
             x = solve(knob, lo, hi, tgt, floor)

@@ -1,7 +1,7 @@
 """price_amp.py -- exact return pricing of a (hypothetical) chain, floor 3/5, role split (R2).
 
 Uses B2's exact-cover return toolchain (Lemma-W windows / identical to Collet structure on PR 86's constants), unchanged:
-   $SCRATCH/analysis/B2/tc   (copy of lemmaW/tc, validated against PR 86's 32 rows / 240 admissions in lemmaW.md s1)
+   $R2_TC, default ../r3/tc   (copy of lemmaW/tc, validated against PR 86's 32 rows / 240 admissions in lemmaW.md s1)
 theta(BC,LC,BP,LP) = exact least theta (1e-9 resolution) for a count face G(BC,LC,.) and a physical face G(BP,LP,.).
 Separable role split (lemmaW.md s3.3): theta(LC,LP) = f(LC)+g(LP), so only 2 line scans are needed.
 """

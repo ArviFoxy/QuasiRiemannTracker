@@ -36,11 +36,17 @@ class Amp:
 
 
 def twist_free_k(m):
-    """minimal dilation exponent making the leftover twist trivial.  [Lean for m=0,1 (CA3, GaussTransfer);
+    """minimal dilation exponent (applied to h) making the leftover twist trivial.  [Lean for m=0,1 (CA3, GaussTransfer);
     m=2: square_twist (Collision/SquareGauss.lean) + [der]]"""
     if m == 0:
         return 6
     return (-2 * m) % 6
+
+
+def twist_free_j(m):
+    """exponent j of D on H' (h = D^(m-1) H') in the twist-free residual, reduced mod 6 by the coprime pool identity
+    g(n, D^6 x) = g(n, x) ((n,D)=1):  j = ((4m mod 6) + m - 1) mod 6   (m=1..5 -> 4,3,2,1,0).  Then c = m + 1 + j = 6 for m=1..5."""
+    return (((4 * m) % 6) + m - 1) % 6
 
 
 def leftover_twist_order(m, k):
@@ -58,6 +64,8 @@ def block_amp(m, k=None, cs_gain=None):
         cs_gain = 1 if m >= 2 else 0       # support D^(m-1)||h  => C-S over a divisor-bounded set  [der]
     e = 1 + cs_gain
     c = 2 * m + k
+    if m >= 1 and k == twist_free_k(m):
+        c = m + 1 + twist_free_j(m)          # reduced residual exponent (m=4,5: c = 6, not 12)
     return Amp(f"block m={m} k={k}", m, k, e, c, 1.0, leftover_twist_order(m, k), "")
 
 

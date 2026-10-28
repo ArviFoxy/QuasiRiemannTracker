@@ -27,3 +27,5 @@ RESULT knob=r floor=0.60 target=bar -> 1.017052404537244  (637s)
    r it5  x=1.019155  theta-target=+4.000e-08
    r it6  x=1.019264  theta-target=-1.900e-08
 RESULT knob=r floor=0.60 target=bar-1.2e-6 -> 1.0192643778399553  (794s)
+   eps it0  x=0.051942  theta-target=+2.230e-07
+   eps it1  x=0.054325  theta-target=-2.010e-07

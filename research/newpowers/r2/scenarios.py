@@ -3,6 +3,8 @@
 usage:  python3 scenarios.py <name> [<name> ...]        (names below)  -> appends JSON lines to results/<name>.jsonl
 All numbers: floor q >= 3/5, role split (count face anywhere on the chain, physical face anywhere), continuum chain
 (the discrete DeltaL=0.005 chain is +1.1..1.3e-6 above the continuum, lemmaW.md s4.2 / B2 s2).  bar = 0.8739358.
+NOTE: the role split here uses a mid-grid reference face (about 4e-7 bias); the consolidated prices of the report come from
+final_table.py (pricing2.price_cd, coordinate descent).  Kept for the older scen.jsonl.
 """
 import sys, os, json, time
 from concurrent.futures import ProcessPoolExecutor

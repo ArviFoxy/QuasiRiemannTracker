@@ -1,0 +1,9 @@
+scenario A = lowered floor 0.60, count 73 / physical 38 ; scenario B = PR 86 chain 46/38 (exact covers)
+A  base                                      exact theta* = 0.873946275  (gap to bar +1.05e-05)  [4s]
+A  eI = 7.3934e-4 (PM-needed; U units)       exact theta* = 0.873935801  (gap to bar +1.00e-09)  [4s]
+A  sL = 1.4e-4 ... shift of L line           exact theta* = 0.873941192  (gap to bar +5.39e-06)  [4s]
+A  sL = w/3 = 2.8849e-4 (wL=8.6547e-4)       exact theta* = 0.873935801  (gap to bar +1.00e-09)  [4s]
+A  eI = 4.9e-4 + sL = 1.6e-4                 exact theta* = 0.873933523  (gap to bar -2.28e-06)  [4s]
+B  base                                      exact theta* = 0.873954831  (gap to bar +1.90e-05)  [5s]
+B  eI = 1.3260e-3                            exact theta* = 0.873935800  (gap to bar +0.00e+00)  [4s]
+B  sL = w/3 = 5.196e-4 (wL=1.5588e-3)        exact theta* = 0.873935800  (gap to bar +0.00e+00)  [4s]

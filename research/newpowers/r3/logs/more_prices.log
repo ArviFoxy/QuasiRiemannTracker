@@ -1,0 +1,22 @@
+== face-level equivalents of the same need
+ A: count face B_C 0.9787225 -> 0.9805065 (+1.78e-03) ; Lam_C 2.20650 -> 2.18618 (-0.92%) ; physical face B_P +1.30e-03 ; Lam_P 2.38150 -> 2.35984 (-0.91%)
+    NB: priced with the numerator cap raised to 0.09 (PhysicalSchedule.cap_lt_fifth allows < 1/5); with 3/50 the clip s_P*d saturates after +5e-4 in B_P
+ B: count face B_C 0.9888151 -> 0.9923727 (+3.56e-03) ; Lam_C 2.34150 -> 2.30106 (-1.73%) ; physical face B_P +2.37e-03 ; Lam_P 2.38150 -> 2.34245 (-1.64%)
+    NB: priced with the numerator cap raised to 0.09 (PhysicalSchedule.cap_lt_fifth allows < 1/5); with 3/50 the clip s_P*d saturates after +5e-4 in B_P
+
+== plain line constant shift sPl (count exponent of the P line lowered by sPl at fixed m): needed
+ A: sPl = 3.586e-04  <=> extra plain slot width dz = sPl/(2 delta p) = 8.093e-04  = 0.93% of z_P(m*)=0.0867
+ B: sPl = 6.718e-04  <=> extra plain slot width dz = sPl/(2 delta p) = 1.522e-03  = 1.76% of z_P(m*)=0.0867
+
+== superposition (linearity) test for pairs at half size each (scenario A)
+  cI/2 + kL/2        shift -1.0457e-05  (target -1.0475e-05)  gap to bar +1.80e-08
+  cI/2 + eps/2       shift -1.0465e-05  (target -1.0475e-05)  gap to bar +1.02e-08
+  eE/2 + kL/2        shift -1.0470e-05  (target -1.0475e-05)  gap to bar +5.16e-09
+  eE/2 + cI/2        shift -1.0466e-05  (target -1.0475e-05)  gap to bar +9.43e-09
+  eE/3+cI/3+kL/3     shift -1.0460e-05  (target -1.0475e-05)  gap to bar +1.47e-08
+  wL/2 + eps/2       shift -1.0475e-05  (target -1.0475e-05)  gap to bar -2.99e-10
+
+== relative sizes of the needed improvements (A | B)
+  c_I: 2 -> 1.99414 (-0.293%%) | 1.98956 (-0.522%%)
+  k_L: 5/6 -> 0.83132 (-0.24%%) | 0.82969 (-0.44%%)
+  eps/(1/2): +0.92%% | +1.67%% ; capacity +0.92%% | +1.66%%

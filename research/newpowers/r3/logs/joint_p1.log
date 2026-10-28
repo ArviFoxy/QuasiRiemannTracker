@@ -1,0 +1,12 @@
+scenario A (gap +1.047e-05):
+   probe only                             e_Z needed = 1.6619e-04
+   inverse line only                      e_Z needed = 5.9546e-04
+   long line only (z=0 diagonal range)    e_Z needed = 2.7882e-04
+   probe + inverse                        e_Z needed = 1.2991e-04
+   probe + inverse + long                 e_Z needed = 8.8621e-05
+scenario B (gap +1.903e-05):
+   probe only                             e_Z needed = 3.0194e-04
+   inverse line only                      e_Z needed = 1.0679e-03
+   long line only (z=0 diagonal range)    e_Z needed = 5.0217e-04
+   probe + inverse                        e_Z needed = 2.3536e-04
+   probe + inverse + long                 e_Z needed = 1.6024e-04

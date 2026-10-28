@@ -1,0 +1,64 @@
+binding point (scenario A): delta=0.44310 R=0.612573 h=0.805137 ell=0.170882 m0=2ell/h=0.42448 C=0.04813 C/h=0.05978 q=delta p=0.22155
+
+== 1. amplification by exact copies with exchange rate e: multiplicity (H/U)^(1/e)
+   bound for rows<=U from a known bound B(H) at a larger range H:  B_amp(U) = min_{H>=U} B(H) / (H/U)^(1/e)
+   pays iff B is flatter than H^(1/e) somewhere.  Slopes d log B / d log H of the bounds that occur in the return:
+   Lemma 17.1 / 18.1 diagonal (marked inverse, face)       slope 1.00  -> amplification pays for: never (slope >= 1/e for every e>=1)
+   Moebius plateau H<D (long line)                         slope 0.00  -> amplification pays for: any exchange rate (flat)
+   quadratic large sieve N>K plateau (column branch)       slope 0.00  -> amplification pays for: any exchange rate (flat)
+   sextic large sieve (KD)^(2/3) range                     slope 0.67  -> amplification pays for: exchange rate e > 1.50
+
+== 2. amplified marked inverse moment (slots kept): exponent(r,z) = 1 + (e-1)/e*(r + c_I z - 1)_+ - delta r - 2 q z
+   exchange rate 6: d exponent / d z = +1.2236  (needs < 0 to pay)  [2q = 0.4431]
+   exchange rate 4: d exponent / d z = +1.0569  (needs < 0 to pay)  [2q = 0.4431]
+   exchange rate 3: d exponent / d z = +0.8902  (needs < 0 to pay)  [2q = 0.4431]
+   exchange rate 2: d exponent / d z = +0.5569  (needs < 0 to pay)  [2q = 0.4431]
+   break-even exchange rate for the I line: (e-1)/e*2 = 2q  ->  e = 1.2846  (i.e. a multiplier family denser than X^(1/1.285))
+   with loss rate lam per unit excess instead (P1-type partial saving): pays iff lam < delta p = 0.2215
+
+== 3. long line: L(r) = (1+5r)/6 - min(w/3,(r-1)/12) - delta r   (w = fourth-power width absorbed, units of log U)
+   at t* = 1.1427: pure sixth powers L = 0.612591 ; pure fourth powers (w=(t-1)/4=0.0357) would give shift 0.01189
+   scenario A: needed w = 8.655e-04 (U units) = 6.968e-04 (Z units) = 0.41% of the slot supply ell/d=0.2122, = 2.43% of a pure fourth-power family
+      check: PM theta* with wL=8.6547e-04 : 0.873935800 (bar 0.8739358)
+   scenario B: needed w = 1.559e-03 (U units) = 1.255e-03 (Z units) = 0.73% of the slot supply ell/d=0.2122, = 4.37% of a pure fourth-power family
+      check: PM theta* with wL=1.5588e-03 : 0.873935800 (bar 0.8739358)
+
+== 4. Hoelder orders as large-values lines.  Sum_B |S| <= max_v [ v + min(R, mu_k - k v) ] (v = exponent of |S|)
+   k=4 with slot weight 2 (the Lean proof): corner v4=(1-R-2qC/d)/4=0.09023, value R+v4=0.70281  (cap |S|<=U^(delta m0/2)=0.09404)
+   k=2: line mu_k - k v crosses R exactly at the 4th-moment corner iff mu_k = R + k v4 = 0.7930   (diagonal mu=1; excess lam*=-0.2070)
+   k=6: line mu_k - k v crosses R exactly at the 4th-moment corner iff mu_k = R + k v4 = 1.1540   (diagonal mu=1; excess lam*=0.1540)
+   k=8: line mu_k - k v crosses R exactly at the 4th-moment corner iff mu_k = R + k v4 = 1.3345   (diagonal mu=1; excess lam*=0.3345)
+   available 6th moment of the packet S (length m0=0.4245): large sieve on S^3 (length D=3m0=1.2734):
+       ideal (K+D) sieve:  mu6 = 1.2734 ;  sextic sieve Lemma 9.1 (K+D+(KD)^(2/3)):  mu6 = 1.5156
+       amplified with exchange rate 6    : ideal sieve mu6 = 1.2279 ; sextic sieve mu6 = 1.5156   (need <= 1.1540)
+       amplified with exchange rate 4    : ideal sieve mu6 = 1.2051 ; sextic sieve mu6 = 1.5156   (need <= 1.1540)
+       amplified with exchange rate 3    : ideal sieve mu6 = 1.1824 ; sextic sieve mu6 = 1.5156   (need <= 1.1540)
+       amplified with exchange rate 2.285: ideal sieve mu6 = 1.1539 ; sextic sieve mu6 = 1.5156   (need <= 1.1540)
+       amplified with exchange rate 2    : ideal sieve mu6 = 1.1369 ; sextic sieve mu6 = 1.5156   (need <= 1.1540)
+   critical exchange rate (ideal large sieve) for Hoelder-6 to beat Hoelder-4: e <= 2.289
+   k=8: need mu8 <= 1.3345; ideal sieve on S^4 (length 1.6979) amplified e=6: 1.5816
+   if the 6th moment were diagonal (mu6=1) with the same slot credit, E would drop by 0.02599 (= 530.5x the 4.9e-5 needed)
+   Hoelder-2 (face m0+z<=1/2, credit q C2, C2/d=0.0755): exponent 0.78956  vs Hoelder-4 0.70281   -> worse by 0.08675 (x d = 0.0698 in E)
+   Hoelder-6 with mu_6=1.0000 (no slot credit): exponent 0.67714 ; minus Hoelder-4: -0.02566 (x d = -0.0207 in E)
+   Hoelder-6 with mu_6=1.1540 (no slot credit): exponent 0.70281 ; minus Hoelder-4: +0.00000 (x d = +0.0000 in E)
+   Hoelder-6 with mu_6=1.2279 (no slot credit): exponent 0.71513 ; minus Hoelder-4: +0.01232 (x d = +0.0099 in E)
+   Hoelder-6 with mu_6=1.5156 (no slot credit): exponent 0.76308 ; minus Hoelder-4: +0.06027 (x d = +0.0485 in E)
+
+== 5. pointwise cap on |S| (zero-free region): kappa_S = delta*m0/2 = 0.09404 ; Hoelder-4 extremal level v4 = 0.09023
+   a cap below v4 binds: E falls by d per unit of cap; the cap must be lowered by 4.05% to tie and by 4.11% to gain 4.9e-5
+
+== 6. doubled slots: a face with weight |Q|^4 at cost (2 - eta) Lam per unit width gives credit (1/2+eps) q C, eps = eta/(2(2-eta))
+   scenario A: eps=0.00459  <->  eta = 0.01819  (second copy 0.91% cheaper than the first; cost 1.9818 Lam)
+   scenario B: eps=0.00834  <->  eta = 0.03280  (second copy 1.64% cheaper than the first; cost 1.9672 Lam)
+   K copies (weight |Q|^{2K}) with face cost c_K Lam per unit width: eps_K = 1/(2 c_K / K)... credit per cost scales by K/c_K
+      K=2 c_K=1.98 -> credit factor K/c_K = 1.0101 -> eps = 0.00505
+      K=2 c_K=1.90 -> credit factor K/c_K = 1.0526 -> eps = 0.02632
+      K=3 c_K=2.95 -> credit factor K/c_K = 1.0169 -> eps = 0.00847
+      K=3 c_K=2.90 -> credit factor K/c_K = 1.0345 -> eps = 0.01724
+
+== 7. column branch (P1 regime): split n = n1 n2, turn the n2-twist chi_{n2}(n1)^4 into the dilation k -> k n2^4 (cf. whole_column),
+      Cauchy in n2, then the sextic sieve (Lemma 9.1: K + D + (KD)^(2/3)) on n1 over the rows W = K N2^4.   exponents are log_K
+   N=K^(1+0.0001): converted minus original exponent, minimised over N2=K^a: +0.3333 (at a=0.000)   [>0: the conversion loses]
+   N=K^(1+0.01): converted minus original exponent, minimised over N2=K^a: +0.3300 (at a=0.000)   [>0: the conversion loses]
+   N=K^(1+0.1): converted minus original exponent, minimised over N2=K^a: +0.3000 (at a=0.000)   [>0: the conversion loses]
+   N=K^(1+0.5): converted minus original exponent, minimised over N2=K^a: +0.1667 (at a=0.000)   [>0: the conversion loses]

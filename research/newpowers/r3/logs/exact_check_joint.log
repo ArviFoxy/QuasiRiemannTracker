@@ -1,0 +1,5 @@
+exact (h scanned, floor receipts dropped), scenario A = 73/38, bar 0.8739358
+  e=0                                exact theta* = 0.873945990 at h=0.8056  gap +1.02e-05  [12s]
+  probe only e=1.6619e-4             exact theta* = 0.873935550 at h=0.8056  gap -2.50e-07  [13s]
+  probe+inverse e=1.2991e-4          exact theta* = 0.873935527 at h=0.8056  gap -2.73e-07  [13s]
+  probe+inverse+long e=8.8621e-5     exact theta* = 0.873935508 at h=0.8056  gap -2.92e-07  [12s]

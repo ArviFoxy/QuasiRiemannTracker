@@ -1,0 +1,50 @@
+base: A 0.873946275 (gap +1.047e-05)  B 0.873954830 (gap +1.903e-05)
+
+== long line, supply-limited fourth-power width w (units of log U; Z-units = w*h; pure fourth powers: w=(t-1)/4=0.0357)
+  w = 1.0e-04                                    dtheta A -1.210e-06 (gap +9.26e-06) | B -1.221e-06 (gap +1.78e-05)
+  w = 3.0e-04                                    dtheta A -3.631e-06 (gap +6.84e-06) | B -3.663e-06 (gap +1.54e-05)
+  w = 1.0e-03                                    dtheta A -1.210e-05 (gap -1.63e-06) | B -1.221e-05 (gap +6.82e-06)
+  w = 3.0e-03                                    dtheta A -3.629e-05 (gap -2.58e-05) | B -3.661e-05 (gap -1.76e-05)
+  w = 1.0e-02                                    dtheta A -1.208e-04 (gap -1.10e-04) | B -1.218e-04 (gap -1.03e-04)
+  w = 3.6e-02                                    dtheta A -4.286e-04 (gap -4.18e-04) | B -4.324e-04 (gap -4.13e-04)
+
+== diagonal-range extension e_Z (Lemma 17.1 at z=0 reaches D <= H Z^e):  L(t) -> L(t) - (5/6) e/h
+  long line only, e_Z = 5.0e-05                  dtheta A -1.878e-06 (gap +8.60e-06) | B -1.895e-06 (gap +1.71e-05)
+  long line only, e_Z = 1.0e-04                  dtheta A -3.757e-06 (gap +6.72e-06) | B -3.790e-06 (gap +1.52e-05)
+  long line only, e_Z = 2.0e-04                  dtheta A -7.514e-06 (gap +2.96e-06) | B -7.581e-06 (gap +1.14e-05)
+  long line only, e_Z = 5.0e-04                  dtheta A -1.878e-05 (gap -8.31e-06) | B -1.895e-05 (gap +8.26e-08)
+
+== column excess in the probe (x+y = 1-ell+e), inverse line (r + 2z <= 1 + e/h), joint
+  probe only e_Z = 5.0e-05                       dtheta A -3.151e-06 (gap +7.32e-06) | B -3.151e-06 (gap +1.59e-05)
+  inverse only e_Z = 5.0e-05                     dtheta A -8.792e-07 (gap +9.60e-06) | B -8.912e-07 (gap +1.81e-05)
+  probe + inverse e_Z = 5.0e-05                  dtheta A -4.031e-06 (gap +6.44e-06) | B -4.043e-06 (gap +1.50e-05)
+  probe only e_Z = 1.0e-04                       dtheta A -6.303e-06 (gap +4.17e-06) | B -6.303e-06 (gap +1.27e-05)
+  inverse only e_Z = 1.0e-04                     dtheta A -1.759e-06 (gap +8.72e-06) | B -1.783e-06 (gap +1.72e-05)
+  probe + inverse e_Z = 1.0e-04                  dtheta A -8.062e-06 (gap +2.41e-06) | B -8.085e-06 (gap +1.09e-05)
+  probe only e_Z = 1.3e-04                       dtheta A -8.194e-06 (gap +2.28e-06) | B -8.193e-06 (gap +1.08e-05)
+  inverse only e_Z = 1.3e-04                     dtheta A -2.287e-06 (gap +8.19e-06) | B -2.318e-06 (gap +1.67e-05)
+  probe + inverse e_Z = 1.3e-04                  dtheta A -1.048e-05 (gap -6.85e-09) | B -1.051e-05 (gap +8.52e-06)
+  probe only e_Z = 2.0e-04                       dtheta A -1.261e-05 (gap -2.13e-06) | B -1.261e-05 (gap +6.42e-06)
+  inverse only e_Z = 2.0e-04                     dtheta A -3.519e-06 (gap +6.96e-06) | B -3.565e-06 (gap +1.55e-05)
+  probe + inverse e_Z = 2.0e-04                  dtheta A -1.613e-05 (gap -5.65e-06) | B -1.617e-05 (gap +2.86e-06)
+  probe only e_Z = 3.0e-04                       dtheta A -1.891e-05 (gap -8.43e-06) | B -1.891e-05 (gap +1.22e-07)
+  inverse only e_Z = 3.0e-04                     dtheta A -5.278e-06 (gap +5.20e-06) | B -5.348e-06 (gap +1.37e-05)
+  probe + inverse e_Z = 3.0e-04                  dtheta A -2.419e-05 (gap -1.37e-05) | B -2.426e-05 (gap -5.23e-06)
+
+== halving: selected slots save (1/2+eps) delta p C; doubled-slot discount eta = 4 eps/(1+2 eps)
+  eps = 0.0010 (eta = 0.0040)                    dtheta A -2.286e-06 (gap +8.19e-06) | B -2.291e-06 (gap +1.67e-05)
+  eps = 0.0030 (eta = 0.0119)                    dtheta A -6.852e-06 (gap +3.62e-06) | B -6.867e-06 (gap +1.22e-05)
+  eps = 0.0046 (eta = 0.0182)                    dtheta A -1.050e-05 (gap -2.19e-08) | B -1.052e-05 (gap +8.51e-06)
+  eps = 0.0100 (eta = 0.0392)                    dtheta A -2.276e-05 (gap -1.23e-05) | B -2.281e-05 (gap -3.78e-06)
+
+== slot costs
+  c_I = 1.999                                    dtheta A -1.781e-06 (gap +8.69e-06) | B -1.811e-06 (gap +1.72e-05)
+  c_I = 1.997                                    dtheta A -5.352e-06 (gap +5.12e-06) | B -5.441e-06 (gap +1.36e-05)
+  c_I = 1.995                                    dtheta A -8.930e-06 (gap +1.54e-06) | B -9.080e-06 (gap +9.95e-06)
+  c_I = 1.990                                    dtheta A -1.792e-05 (gap -7.44e-06) | B -1.822e-05 (gap +8.14e-07)
+  k_L = 0.833                                    dtheta A -1.727e-06 (gap +8.75e-06) | B -1.734e-06 (gap +1.73e-05)
+  k_L = 0.832                                    dtheta A -6.917e-06 (gap +3.56e-06) | B -6.946e-06 (gap +1.21e-05)
+  k_L = 0.831                                    dtheta A -1.212e-05 (gap -1.64e-06) | B -1.217e-05 (gap +6.86e-06)
+  k_L = 0.830                                    dtheta A -1.733e-05 (gap -6.85e-06) | B -1.740e-05 (gap +1.63e-06)
+
+== how far can the C branch go before another edge binds?  (old-branch edges saturate near 0.87364 per lemmaW s4.3)

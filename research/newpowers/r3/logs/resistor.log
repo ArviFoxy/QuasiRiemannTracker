@@ -1,0 +1,7 @@
+scenario A: delta*=0.443096  R_closed=0.612573416881  R_exact(N/J)=0.612573416881  t*=1.142656   diff 1.1e-16
+   weights of 1/(R-(1-delta))*(1-Z): {'delta_term': 0.2258, 'I': 0.4938, 'L': 0.2804}
+   dR/dkL=0.0400  dR/dcI=0.01375  dR/dLam=0.00392  dR/dB=-0.0453
+scenario B: delta*=0.441408  R_closed=0.614242206854  R_exact(N/J)=0.614242206854  t*=1.141992   diff 0.0e+00
+   weights of 1/(R-(1-delta))*(1-Z): {'delta_term': 0.2182, 'I': 0.5001, 'L': 0.2816}
+   dR/dkL=0.0400  dR/dcI=0.01392  dR/dLam=0.00352  dR/dB=-0.0411
+brute-force max_r min(lines) minimised over t:  0.612570   closed form 0.612570

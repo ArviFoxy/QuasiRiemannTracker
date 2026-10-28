@@ -1,0 +1,39 @@
+base: A 0.873946275 (gap +1.047e-05)  B 0.873954830 (gap +1.903e-05)
+
+lever (value at which theta* = bar) scenario A     scenario B    
+dE  additive change of E           -4.8853884e-05 -8.8414491e-05
+dR  count lowered                  8.0913486e-05  0.00014643513 
+dC  capacity added                 0.00044082253  0.00080054212 
+cI  inverse slot cost (2)          1.9941386      1.9895562     
+kL  long-line slope (5/6)          0.83131557     0.82968878    
+eps  halving 1/2 -> 1/2+eps        0.0045901181   0.008335742   
+eE  probe column excess (Z units)  0.00016618599  0.00030194126 
+eI  inverse column excess (U units) 0.00073934024  0.0013259738  
+wL  fourth-power width, long line (U) 0.00086547105  0.0015587653  
+
+A binding point: {'theta': 0.873946, 'h': 0.805137, 'delta': np.float64(0.443096), 'R': np.float64(0.612573), 'C': 0.04813}
+B binding point: {'theta': 0.873955, 'h': 0.805217, 'delta': np.float64(0.441408), 'R': np.float64(0.614242), 'C': 0.048221}
+
+joint column excess e (probe: x+y=1-ell+e ; inverse: r+2z<=1+e/h):  A 1.2991e-04   B 2.3536e-04
+A  single: eE 1.6619e-04 ; eI 7.3934e-04 (=> e_Z 5.9546e-04)
+B  single: eE 3.0194e-04 ; eI 1.3260e-03 (=> e_Z 1.0679e-03)
+
+theta shift per unit lever:
+  A dE        d(theta)/d(lever) = +2.1450e-01
+  A dR        d(theta)/d(lever) = -1.2953e-01
+  A dC        d(theta)/d(lever) = -2.3757e-02
+  A cI        d(theta)/d(lever) = +1.7814e-03
+  A kL        d(theta)/d(lever) = +5.1857e-03
+  A eps_half  d(theta)/d(lever) = -2.2858e-03
+  A eE        d(theta)/d(lever) = -6.3032e-02
+  A eI        d(theta)/d(lever) = -1.4166e-02
+  A wL        d(theta)/d(lever) = -1.2102e-02
+  B dE        d(theta)/d(lever) = +2.1540e-01
+  B dR        d(theta)/d(lever) = -1.3009e-01
+  B dC        d(theta)/d(lever) = -2.3768e-02
+  B cI        d(theta)/d(lever) = +1.8115e-03
+  B kL        d(theta)/d(lever) = +5.2076e-03
+  B eps_half  d(theta)/d(lever) = -2.2912e-03
+  B eE        d(theta)/d(lever) = -6.3026e-02
+  B eI        d(theta)/d(lever) = -1.4357e-02
+  B wL        d(theta)/d(lever) = -1.2210e-02

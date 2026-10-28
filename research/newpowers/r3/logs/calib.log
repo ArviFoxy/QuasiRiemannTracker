@@ -1,0 +1,23 @@
+scenario B: PM theta* = 0.873954830  exact 0.873954831  diff -8.7e-10
+   dE=-1e-5   PM shift -2.154e-06   exact -2.154e-06   diff -2.6e-11
+   dE=-1e-4   PM shift -2.152e-05   exact -2.152e-05   diff -1.0e-09
+   dR=1e-4    PM shift -1.300e-05   exact -1.300e-05   diff +2.7e-10
+   dC=+1e-3   PM shift -2.377e-05   exact -2.377e-05   diff -1.3e-09
+   cI=1.995   PM shift -9.080e-06   exact -9.080e-06   diff +1.5e-11
+   cI=1.99    PM shift -1.822e-05   exact -1.822e-05   diff +3.8e-09
+   cI=1.9     PM shift -1.930e-04   exact -1.930e-04   diff +3.6e-08
+   kL=0.83    PM shift -1.740e-05   exact -1.740e-05   diff +4.2e-10
+   kL=0.82    PM shift -7.031e-05   exact -7.031e-05   diff +2.7e-09
+   kL=0.80    PM shift -1.794e-04   exact -1.794e-04   diff -3.3e-08
+scenario A: PM theta* = 0.873946275  exact 0.873946275  diff -2.4e-11
+   dE=-1e-5   PM shift -2.145e-06   exact -2.144e-06   diff -9.7e-10
+   dE=-1e-4   PM shift -2.143e-05   exact -2.143e-05   diff -7.9e-10
+   dR=1e-4    PM shift -1.294e-05   exact -1.294e-05   diff -3.4e-09
+   dC=+1e-3   PM shift -2.376e-05   exact -2.376e-05   diff -1.8e-09
+   cI=1.995   PM shift -8.930e-06   exact -8.930e-06   diff -3.6e-10
+   cI=1.99    PM shift -1.792e-05   exact -1.792e-05   diff +2.8e-09
+   cI=1.9     PM shift -1.899e-04   exact -1.899e-04   diff +2.1e-09
+   kL=0.83    PM shift -1.733e-05   exact -1.733e-05   diff +2.9e-09
+   kL=0.82    PM shift -7.002e-05   exact -7.002e-05   diff +3.0e-09
+   kL=0.80    PM shift -1.787e-04   exact -1.787e-04   diff +2.8e-09
+worst |PM - exact| over the 20 lever prices: 3.6e-08

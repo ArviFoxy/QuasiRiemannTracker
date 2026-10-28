@@ -1,0 +1,6 @@
+   c it0  x=5.957913  theta-target=-2.090e-07
+   c it1  x=5.959735  theta-target=+2.050e-07
+   c it2  x=5.958528  theta-target=-6.900e-08
+   c it3  x=5.959014  theta-target=+4.100e-08
+   c it4  x=5.958750  theta-target=-1.900e-08
+RESULT knob=c floor=0.60 target=bar -> 5.95874994155069  (656s)

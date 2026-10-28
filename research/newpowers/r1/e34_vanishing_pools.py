@@ -7,7 +7,8 @@ PART A  local vanishing table of the prime-power Gauss sum:  Z(j,v) = [ g(p^j, p
             6  | j :  nonzero  <=>  v >= j-1            (g = -N^{j-1} for v = j-1,  phi(p^j) = N^{j-1}(N-1) for v >= j)
 
 PART B  the dilation identity    g(n, D^s h) = chi_n(D)^{[-s]} g(n,h)     (chi^6 := coprimality mask)
-        for ALL n (also n not prime to D), ALL h.  Holds for every h  iff  for every p | gcd(D,n):  6 !| v_p(n) and v_p(n) <= s v_p(D).
+        for ALL n (also n not prime to D), ALL h.  Holds for every h  iff  there EXISTS p | gcd(D,n) with  6 !| v_p(n) and v_p(n) <= s v_p(D)
+        (the right side is a product of local factors; one vanishing local factor kills it).
 
 PART C  pools:  g(u, p^k h) for u = p^i u', i = 0..6 :
             i = 0           : chi_u(p)^{-k} g(u,h)
@@ -90,15 +91,14 @@ def lhs_rhs(n, D, s, h):
 
 
 def criterion(n, D, s):
-    """predicted: identity holds for every h"""
+    """predicted: identity holds for every h  <=>  n, D coprime with ... no: D, n NOT coprime and some common prime has a vanishing local factor;
+    for D, n coprime the identity is the unit-scale identity (always true)."""
     fn = dict(factor(n))
     fD = dict(factor(D))
-    for p, vD in fD.items():
-        if p in fn:
-            j = fn[p]
-            if j % 6 == 0 or j > s * vD:
-                return False
-    return True
+    common = [p for p in fD if p in fn]
+    if not common:
+        return True
+    return any((fn[p] % 6 != 0) and (fn[p] <= s * fD[p]) for p in common)
 
 
 tab = collections.defaultdict(lambda: [0, 0])      # (class) -> [holds, total]
@@ -162,6 +162,37 @@ for s in range(1, 13):
             viol.add('table', False, (j, s))
     print("   %2d   " % s + " ".join(row))
 print("  table violations of the criterion:", dict(viol.bad))
+
+# two common primes: one vanishing local factor suffices (D = p q, n = p^i q^j)
+print("  two common primes (D = p q, n = p^i q^j, s = 1..6):  identity for all sampled h  vs  existential criterion")
+p7 = [x for x in PRIMES if norm(x) == 7][0]
+q13 = [x for x in PRIMES if norm(x) == 13][0]
+D2 = mul(p7, q13)
+two = Counter2()
+for i in range(0, 6):
+    for j in range(0, 4):
+        if i == 0 and j == 0:
+            continue
+        n = mul(pw(p7, i), pw(q13, j))
+        if norm(n) > 600_000:
+            continue
+        for s_ in range(1, 7):
+            allok = True
+            for t in range(0, 7):
+                h = mul(pw(p7, t % 4), rand_h0(rng, [p7, q13]))
+                if t >= 4:
+                    h = mul(h, pw(q13, t - 3))
+                L, R = lhs_rhs(n, D2, s_, h)
+                if abs(L - R) > 1e-6 * math.sqrt(norm(n)):
+                    allok = False
+            pred = criterion(n, D2, s_)
+            if pred:
+                two.add('pred holds -> holds', allok, (i, j, s_))
+            else:
+                two.add('pred fails -> some h fails', not allok, (i, j, s_))
+print("   existential criterion: holds-cases %d/%d consistent, fail-cases %d/%d consistent" %
+      (two.ok['pred holds -> holds'], two.ok['pred holds -> holds'] + two.bad['pred holds -> holds'],
+       two.ok['pred fails -> some h fails'], two.ok['pred fails -> some h fails'] + two.bad['pred fails -> some h fails']))
 
 # ---------------------------------------------------------------------------------------------------------
 # PART C  pools

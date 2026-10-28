@@ -130,3 +130,8 @@ for _ in range(300):
 print("V6 unit orbit: g(n,-h)=(-1)^{(N-1)/2} g(n,h): %d checks, %d failures ; g(n,w h) = zeta6^{-(N-1)/3} g(n,h): %d checks, %d failures" %
       (res.ok['V6a'] + res.bad['V6a'], res.bad['V6a'], res.ok['V6b'] + res.bad['V6b'], res.bad['V6b']))
 print("time %.1fs" % (time.time() - t0))
+
+# --- V7: complex conjugation swaps the classes E0 = lambda and -lambda, fixes +-1 --------------------------------
+swap = {'1': '1', '-1': '-1', 'lambda': '-lambda', '-lambda': 'lambda'}
+okc = all(E0[(conj(r)[0] % 4, conj(r)[1] % 4)] == swap[E0[r]] for r in odd_classes)
+print("V7 E0(conj B) = swap(E0(B)) for all 12 classes:", okc)

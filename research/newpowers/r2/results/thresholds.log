@@ -9,3 +9,50 @@ RESULT knob=e floor=0.60 target=bar -> 1.0116095126891578  (747s)
    e it1  x=1.012699  theta-target=+3.490e-07
    e it2  x=1.013291  theta-target=-1.210e-07
    e it3  x=1.013049  theta-target=+7.200e-08
+   e it4  x=1.013180  theta-target=-3.300e-08
+   e it5  x=1.013117  theta-target=+1.700e-08
+RESULT knob=e floor=0.60 target=bar-1.2e-6 -> 1.0131173574887364  (743s)
+Traceback (most recent call last):
+  File "/home/user/QuasiRiemannTracker/research/newpowers/r2/thresholds.py", line 13, in <module>
+    import pricing2 as P2  # noqa: E402
+    ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/QuasiRiemannTracker/research/newpowers/r2/pricing2.py", line 11, in <module>
+    import price_amp as PA  # noqa: E402
+    ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/QuasiRiemannTracker/research/newpowers/r2/price_amp.py", line 12, in <module>
+    import pr86, best  # noqa: E402
+    ^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'pr86'
+Traceback (most recent call last):
+  File "/home/user/QuasiRiemannTracker/research/newpowers/r2/thresholds.py", line 13, in <module>
+    import pricing2 as P2  # noqa: E402
+    ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/QuasiRiemannTracker/research/newpowers/r2/pricing2.py", line 11, in <module>
+    import price_amp as PA  # noqa: E402
+    ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/QuasiRiemannTracker/research/newpowers/r2/price_amp.py", line 12, in <module>
+    import pr86, best  # noqa: E402
+    ^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'pr86'
+Traceback (most recent call last):
+  File "/home/user/QuasiRiemannTracker/research/newpowers/r2/thresholds.py", line 13, in <module>
+    import pricing2 as P2  # noqa: E402
+    ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/QuasiRiemannTracker/research/newpowers/r2/pricing2.py", line 11, in <module>
+    import price_amp as PA  # noqa: E402
+    ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/QuasiRiemannTracker/research/newpowers/r2/price_amp.py", line 12, in <module>
+    import pr86, best  # noqa: E402
+    ^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'pr86'
+Traceback (most recent call last):
+  File "/home/user/QuasiRiemannTracker/research/newpowers/r2/thresholds.py", line 13, in <module>
+    import pricing2 as P2  # noqa: E402
+    ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/QuasiRiemannTracker/research/newpowers/r2/pricing2.py", line 11, in <module>
+    import price_amp as PA  # noqa: E402
+    ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/QuasiRiemannTracker/research/newpowers/r2/price_amp.py", line 12, in <module>
+    import pr86, best  # noqa: E402
+    ^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'pr86'

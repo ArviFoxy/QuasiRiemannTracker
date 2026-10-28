@@ -3,7 +3,7 @@
 Scope: item list of the R1 brief (cross factor, dilation table, vanishing, pools, other identities, Lean map).
 Everything below was re-derived and re-checked from the Lean *definitions* (not from earlier notes). Scripts and raw output:
 `r1/` (`bash r1/run_all.sh` regenerates `r1/results.txt`, about 3.5 minutes; numpy + mpmath).
-Status tags used throughout: **[L]** = a Lean theorem proves it as stated (named); **[L+]** = follows from Lean theorems by short glue that is
+I did not run Lean. Status tags used throughout: **[L]** = a theorem with that statement exists in the Lean files I read (named, file given; not recompiled here); **[L+]** = follows from such theorems by short glue that is
 not yet written as a lemma; **[N]** = own derivation, backed only by numerics (counts given); nothing tagged [N] should be used as established.
 
 ## 0. Verdict in twelve lines
@@ -21,9 +21,9 @@ not yet written as a lemma; **[N]** = own derivation, backed only by numerics (c
 6. **New exact identity: the ray sign is a bounded dilation.** `ε(B,n) = (E₀/n)₂ = χ_n(E₀)³` with `E₀ ∈ {1,−1,λ,−λ}` determined by `B mod 4`
    (`B ≡ ζ·E₀`, `ζ³=1`). Hence **`g(B n,h) = g(B,h)·g(n, E_B h)`, `E_B = E₀(B)³·∏ p^{(4 m_p mod 6)}`, with no leftover twist at all.** Cost of the correction: `N(E₀³) ∈ {1,27}`.
    This replaces the ray-character expansion of the sign (`firstPhaseTable_expansion`, mass bound 256) by a single common vector and four bounded evaluation points. [N: 307+98+366 cases double precision, 40 cases at 40 digits, finite 12×12 table exact]
-7. **Non-coprime n:** `g(n,D^s h) = χ_n(D)^{[−s]} g(n,h)` holds for *all* n and h iff at every `p | gcd(n,D)`: `6 ∤ v_p(n)` and `v_p(n) ≤ s·v_p(D)`. So `FifthFree` is the
-   exact condition for `s=4`, it only matters at the primes of `D`, and for `s=2` the condition is cube-freeness at `D`.
-8. **Block scalars are spiky:** `g(D^m,h) ≠ 0 ⇔ v_D(h)=m−1` (m ≤ 5; *exactly* `D^{m−1}∥h`, not `D^{m−1}|h`), `|gaussRow| = N(D)^{(m−1)/2}`. Mean square over one period is `1−1/N` for every `m` (Parseval; checked N=7, m≤3 and N=13, m≤2: the sup is exactly `N^{(m−1)/2}`),
+7. **Non-coprime n:** `g(n,D^s h) = χ_n(D)^{[−s]} g(n,h)` (`χ⁶:=` coprimality mask) holds for *all* h iff `D,n` are coprime or **some** common prime `p | gcd(n,D)` has `6 ∤ v_p(n)` and `v_p(n) ≤ s·v_p(D)`
+   (the right side is a product of local factors, one vanishing factor suffices). So for `D` prime `FifthFree` is exactly the condition for `s=4`, for a composite `D` it is needed at one common prime only, and for `s=2` the condition is cube-freeness there.
+8. **Block scalars are spiky:** `g(D^m,h) ≠ 0 ⇔ v_D(h)=m−1` (6∤m; *exactly* `D^{m−1}∥h`, not `D^{m−1}|h`; for m=6: `v_D(h)≥5`), `|gaussRow| = N(D)^{(m−1)/2}`. Mean square over one period is `1−1/N` for every `m` (Parseval; checked N=7, m≤3 and N=13, m≤2: the sup is exactly `N^{(m−1)/2}`),
    so the height is paid for by a support of density `N(D)^{−(m−1)}`: for m ≥ 2 each frequency `h` sees only the primes `D` with `D^{m−1}∥h` (≤ ω(h) of them), not a whole family.
 9. **Pools:** `g(u,p⁶h)=1_{p∤u}g(u,h)` holds for all `u` with `v_p(u) ≤ 5` (Lean has squarefree-at-p only). `p^k`, `k=1..5`, is *not* a copy: on `p∤u` it multiplies by `χ_u(p)^{−k}`
    (k=3 quadratic, k=2,4 cubic, k=1,5 sextic), and it keeps exactly the columns with `v_p(u)=k+1`; `p∥u` never survives any `k≥1`; `p²∥u` survives only at `k=1`.
@@ -61,10 +61,10 @@ its cost is 6 per pool-prime width). "scalar" = `g(D^m,h)`: support and normalis
 | U | unit scale, any `E` prime to `n` | `g(n,Eh)=χ_n(E)⁻¹g(n,h)` | – | – | – | 2787 | **[L]** `sexticGauss_unit_scale` |
 | P6 | pool (Collet) | `g(u,p⁶h)=1_{p∤u}·g(u,h)`, `v_p(u)≤5`; composite `E`: `g(u,E⁶h)=1_{(E,u)=1}g(u,h)` | none | `p⁶`, 6 per pool width | – | grid 1265+234; 207; 40 digits | **[L]** squarefree at p (`sexticGauss_pool_prime_mask`), coprime (`gauss_sixth_frequency`); `v_p∈2..5` **[L+]** |
 | Pk | valuation selector `p^k`, k=1..5, p∤h | `p∤u`: `g(u,p^kh)=χ_u(p)^{−k}g(u,h)`; `v_p(u)=i≥1`: nonzero iff `i=k+1`, then `=ε(p,u')^iχ_{u'}(p)^{i+1}·g(p^i,p^{k}h)g(u',h)` | `p∤u`: k=3 quad `(p/u)₂`; k=2,4 cubic; k=1,5 sextic; survivors `i=k+1`: k=0 `εc`, 1 `Q`, 2 `εC`, 3 `S`, 4 `ε` | `p^k` | `g(p^i,p^{i−1}h')=N^{i−1}χ_p(h')^{−i}G_i(p)` | 1265 + 95 ratios | local table **[L]**; assembly **[L+]** |
-| T1 | simple block (Sil) | `g(Dn,h)=ε(D,n)·g(D,h)·g(n,D⁴h)` | `ε(D,n)` only | `D⁴`, **4** (κ=4) | `|gaussRow|=1`, `D∤h` | 500 + 293 (norms to 1500) | **[L]** `normalized_coprime_product`+`fourth_power`/`whole_column`; sign: see C |
+| T1 | simple block (Sil) | `g(Dn,h)=ε(D,n)·g(D,h)·g(n,D⁴h)` | `ε(D,n)` only | `D⁴`, **4** (κ=4) | `‖gaussRow‖=1`, `D∤h` | 500 + 293 (norms to 1500) | **[L]** `normalized_coprime_product`+`fourth_power`/`whole_column`; sign: see C |
 | T1′ | simple block, light | `g(Dn,h)=(n/D)₂·g(D,h)·g(n,Dh)` | `(n/D)₂ = ε(D,n)(D/n)₂` (quadratic sieve kernel) | `D¹`, **1** | as T1 | 500/500; 40 digits | **[L+]** |
 | T2 | squared block | `g(D²n,h)=g(D²,h)·g(n,D²h)`, equivalently `g(D²n,DH')=(D/n)₂·g(D²,DH')g(n,H')` | **none** | `D²`, **1** (κ=3) | `D∥h`, `gaussRow(D²,DH')=G₂(D;H')`, a cubic Gauss sum of modulus `√N` | 450 + 58; 25 at 40 digits | **[L]** H'-form `square_twist` (arvi_mixed_step); h-form **[L+]** |
-| T3 | cube block | `g(D³n,h)=ε(D,n)·g(D³,h)·g(n,h)` | `ε(D,n)` only (absent if `D≡ζ mod 4`) | none, **0** (κ=2) | `D²∥h`, `|gaussRow|=N`, quadratic Gauss sum, explicit (§3.5.5) | 350 + 15; 10 at 40 digits | **[L+]** |
+| T3 | cube block | `g(D³n,h)=ε(D,n)·g(D³,h)·g(n,h)` | `ε(D,n)` only (absent if `D≡ζ mod 4`) | none, **0** (κ=2) | `D²∥h`, `‖gaussRow‖=N`, quadratic Gauss sum, explicit (§3.5.5) | 350 + 15; 10 at 40 digits | **[L+]** |
 | T4 | 4th-power block | `g(D⁴n,h)=g(D⁴,h)·g(n,D⁴h)` | none | `D⁴`, **1** (κ=1) | `D³∥h`, `N^{3/2}` | 200 | **[L+]** |
 | T5 | 5th-power block | `g(D⁵n,h)=ε(D,n)·g(D⁵,h)·g(n,D²h)` | `ε(D,n)` only | `D²`, **2/5** (κ=0: residual undilated in `H'`) | `D⁴∥h`, `N²` | 60 | **[L+]** (outside `FifthFree`) |
 | T6 | 6th-power block | `g(D⁶n,h)=g(D⁶,h)·g(n,h)` | none | none, **0** (κ=5) | `v_D(h)≥5`: `−N²` (=5), `N²(N−1)` (≥6) | 25 | **[L+]** |
@@ -108,6 +108,16 @@ Cubic part cancels iff `k ≡ m (mod 3)`; the rest is `ε^m s^k`. Table (verifie
     m=5   eS   e  eS  eC  eQ  eC  eS   e  eS  eC  eQ  eC
     m=6    S   C   Q   C   S   1   S   C   Q   C   S   1
 
+Lists of absorbing exponents (the answer to "which `D^k`, k=1..12"); `exact` leaves nothing for even `m` and only the ray sign `ε(D,n)` for odd `m`:
+
+    m   exact       leaves Q (quadratic)   leaves C (cubic)     leaves S (sextic)
+    1   4, 10       1, 7                   2, 6, 8, 12          3, 5, 9, 11
+    2   2, 8        5, 11                  4, 6, 10, 12         1, 3, 7, 9
+    3   6, 12       3, 9                   2, 4, 8, 10          1, 5, 7, 11
+    4   4, 10       1, 7                   2, 6, 8, 12          3, 5, 9, 11
+    5   2, 8        5, 11                  4, 6, 10, 12         1, 3, 7, 9
+    6   6, 12       3, 9                   2, 4, 8, 10          1, 5, 7, 11      (k=0 is also exact for m=3 up to ε and for m=6)
+
 Which quadratic character: for **odd `m`**, `ε·s = χ_D(n)³ = (n/D)₂` (Dirichlet character of `n` mod `D`; library kernel `QuadraticSieve.quadraticRow`), for **even `m`** it is `s = (D/n)₂` (modulus `n`, numerator `D`).
 Cubic leftovers are `c^{±1}`: the kernel `CubicSieve.idealKernel` (`idealKernel_reciprocity` makes the modulus irrelevant).
 
@@ -140,9 +150,9 @@ for `1≤j`, `p` prime, `h₀` prime to `p`:
     6 ∤ j :  g(p^j, p^v h₀) ≠ 0  ⇔  v = j−1,   |g| = N^{j−1/2}
     6 | j :  g(p^j, p^v h₀) ≠ 0  ⇔  v ≥ j−1,   g = −N^{j−1} (v=j−1),  N^{j−1}(N−1) (v≥j).
 
-Hence, for dilation `D^s` and any frequency, `g(n,D^sh)=0` for **all `h`** iff for every prime `p | gcd(n,D)` the exponent `j=v_p(n)` satisfies `6∤j` and `j ≤ s·v_p(D)`. Then
+Hence, for dilation `D^s`, `g(n,D^sh)=0` for **all `h`** iff some prime `p | gcd(n,D)` has `j=v_p(n)` with `6∤j` and `j ≤ s·v_p(D)` (CRT: the Gauss sum is a product of local factors, and if every common prime admits a non-vanishing frequency one can choose `h` making all of them non-zero). Then
 `g(n,D^sh) = χ_n(D)^{[−s]}g(n,h)` holds for every `n` and `h`, both sides being 0 when `D,n` share a prime (here `χ^6 := coprimality mask`, `[−s]∈{1..6}`, `[−s]≡−s`).
-Sufficiency was tested on 1048 random cases (0 violations); sharpness on every cell of the table below (p of norm 7, `D=p`, `n=p^j`, valuations `v_p(h)=0..j+2` sampled; A = identity holds for every sampled `h`, `.` = it fails for some `h`), and on 124 random cases predicted to fail (48 showed a failure at the 4 sampled `h`):
+Sufficiency was tested on 1048 random cases (0 violations), the existential form on 114 cases with two common primes (`D=pq`, `n=p^iq^j`; 97 predicted-hold all hold, 17 predicted-fail all fail for some `h`); sharpness on every cell of the table below (p of norm 7, `D=p`, `n=p^j`, valuations `v_p(h)=0..j+2` sampled; A = identity holds for every sampled `h`, `.` = it fails for some `h`), and on 124 random cases predicted to fail (48 showed a failure at the 4 sampled `h`):
 
     s\j   1  2  3  4  5  6  7
     1     A  .  .  .  .  .  .
@@ -153,9 +163,9 @@ Sufficiency was tested on 1048 random cases (0 violations); sharpness on every c
     7..12 A  A  A  A  A  .  A
 
 In the situation of the transfer the block scalar already forces `v_D(h) ≥ m−1`, so the range improves to `v_p(n) ≤ κ=k(m)+m−1`, `6∤v_p(n)`: m=1 → {1..4} (= FifthFree), m=2 → {1,2,3}, m=3 → {1,2}, m=4 → {1..5,7},
-m=5 → {1..5}, m=6 → {1..5} (`r1/table_gen.py`). Whole-column check (`e7`): inside the range 614/614 exact, outside 45/45 fail (so the range is sharp). Consequences:
+m=5 → {1..5}, m=6 → {1..5} (`r1/table_gen.py`). Whole-column check (`e7`, prime `D`; for composite `D` read "at one common prime"): inside the range 614/614 exact, outside 45/45 fail (so the range is sharp). Consequences:
 the squared-block transfer is exact on columns that are cube-free (indeed 4th-power-free) at the primes of `D` (compatible with the CubeFree chain); the cube-block identity needs an explicit mask (`k=0` gives none); the 6|j obstruction is why `FifthFree` cannot be relaxed to 6th-power-free for `s=4`.
-Lean: `FifthFree` is global in `fifth_free_nonunit_zero` but only the primes of `D` are used in its proof; the localisation and the `s`-parametrisation are a rewrite of `prime_power_nonunit_zero` ([L+]).
+Lean: `FifthFree` is a global hypothesis of `fifth_free_nonunit_zero`, but its proof picks one common prime `p` and uses `multiplicity p a < 5` only there; the localisation and the `s`-parametrisation are a rewrite of `prime_power_nonunit_zero` ([L+]).
 
 ### 3.4 Pools (item 4)
 
@@ -185,7 +195,7 @@ So `k=6` is the only twist-free indicator among `k=1..6`; `k=3` gives a pure qua
 
 Finite proof: the exact 12×12 table `quadraticRaySign r s = q_{E₀(r)}(s)` (`v_final.py` V2) built from two class functions of `n mod 4`: `lambdaQuadraticTable` (Lean) and `(−1)^{(N−1)/2}` (not a Lean table yet); both were checked against the actual symbols on 6 primary elements in each of the 12 classes (144 checks). Conceptually: `ε(B,n)` is the dyadic Hilbert symbol `(B,n)₂`;
 for `n≡1 mod λ` the product formula gives `(λ/n)₂=(λ,n)₂`; the four classes `x_B∈F₄` are represented by `1` (x=0), `−1` (x=1), `λ` (x=ω²), `−λ` (x=ω), because `λω ≡ 1+2ω² (mod 4)`.
-Only these four quadratic classes occur (never anything involving 2: `(2/n)₂=χ₈(N n)` has conductor 8). Rational blocks only ever need `E₀=±1` (`D=q≡1 mod 12`: E₀=1; `q≡7 mod 12`: −1; inert `−q`: E₀=1 iff `q≡3 mod 4`). Conjugation swaps `λ↔−λ`.
+Only these four quadratic classes occur (never anything involving 2: `(2/n)₂=χ₈(N n)` has conductor 8). Rational blocks only ever need `E₀=±1` (`D=q≡1 mod 12`: E₀=1; `q≡7 mod 12`: −1; inert `−q`: E₀=1 iff `q≡3 mod 4`). Conjugation swaps `λ↔−λ` (checked on all 12 classes).
 Consequences: (i) `g(Bn,h)=g(B,h)g(n,E_Bh)` exactly; (ii) whole-column form (W) replaces `selected_row_rays` (ray expansion, `firstPhaseTable_mass ≤ 256`) by a *single* common vector and four evaluation points `E₀³D⁴k`;
 (iii) restricting the selected primes to `D ≡ ζ (mod 4)` (density 1/4) or the residual columns to `n ≡ ζ (mod 4)` removes `ε` entirely. Cost: `E₀³` has norm 1 or 27, a constant.
 Evidence: 307 prime-power blocks (`m=1,3,5`) + 98 composite blocks + 366 cases `N(D)≤1500` (all 12 classes) at double precision, 40 cases at 40 digits (max rel. error 1.7e−40), whole column 614.
@@ -224,7 +234,7 @@ Double precision (ratios of Gauss sums identified with an exact 6th root of unit
 | `t0_basics.py` | Lean theorems L1–L4 (unit scale, CRT, reciprocity, fourth power) | 2787+187+586+500 | 0 |
 | `e12_cross_dilation.py` | cross factor m=1..6 (500/450/350/200/60/25), 78 leftover cells, free-variable form, negative control | 1585 (×13 cells), 1560 | 0 |
 | `e8_large_primes.py` | same, `N(D)` up to 1500, all 12 classes, sign-free form | 366 | 0 |
-| `e34_vanishing_pools.py`, `e4_pools.py` | local vanishing table, non-coprime criterion, pool grid | 143+111; 1172 (+table 84); 234+1265+95 | 0 |
+| `e34_vanishing_pools.py`, `e4_pools.py` | local vanishing table, non-coprime criterion (single and two common primes), pool grid | 143+111; 1172 + 114 (+table 84); 234+1265+95 | 0 |
 | `e5_other.py` | conjugation, supplements, E₀ classes, F₄ form, multi-block, sign-free | 131; 136; 307; 144; 815+228+98 | 0 |
 | `e6_gauss_structure.py`, `e9_jacobi.py` | imprimitive reduction, DH, inert, Kummer, Jacobi, cube-block closed form | 240; 231; 65; 74; 40+74 | 0 |
 | `e7_wholecolumn.py` | whole column with sign, range sharpness | 614 in; 45 out (all fail as predicted) | 0 |
@@ -260,4 +270,22 @@ Double precision (ratios of Gauss sums identified with an exact 6th root of unit
 * The prices are not free: block `D^m` needs `D^{m−1}∥h` (support density `N^{−(m−1)}`), has a spike of height `N^{(m−1)/2}` (mean square unchanged), and per frequency only the primes `D` with `D^{m−1}∥h` can be selected; columns must contain `D^m` exactly (`D∤n`), and residual columns must satisfy the range of §3.3.
 * The ray sign is not a quadratic character of the selected modulus; it is a mod-4 object and can be removed exactly: restrict `D≡ζ (mod 4)` (density 1/4), or dilate by `E₀³` (norm ≤ 27).
 * Twist type ↔ sieve: leftover `Q` is the kernel of the quadratic sieve already in the library (`quadraticRow`), `C` of the cubic sieve (`idealKernel`), `S` only meets the generic sextic sieve (Sil `FourthPower/SexticSieve`, not read here); the table of §3.2 says which `(m,k)` land where (e.g. `m=1,k=1: Q`; `m=1,k=2: C`; `m=4,k=1: Q`; `m=2,k=5: Q`; `m=3,k=3: Q`).
-* Corrections to the working notes: (1) twist is `ε·χ_n(B)²`, not `χ_n(B)²`; (2) leftover of `D¹` is `(n/D)₂`; (3) `g(D²,h)≠0` iff `D∥h`, not `D|h`; (4) the pool mask holds for `v_p(u)≤5`; (5) `FifthFree` is only needed at the primes of `D`; (6) "4 is the least exponent" only for simple blocks.
+* Corrections to the working notes: (1) twist is `ε·χ_n(B)²`, not `χ_n(B)²`; (2) leftover of `D¹` is `(n/D)₂`; (3) `g(D²,h)≠0` iff `D∥h`, not `D|h`; (4) the pool mask holds for `v_p(u)≤5`; (5) `FifthFree` is only needed at one common prime of `D` and the column; (6) "4 is the least exponent" only for simple blocks.
+
+## Appendix A. Lean-ready statements for the glue (not written, not compiled)
+
+    -- general dilation (U + argument_pow)
+    sexticGauss a _ (D^s * k) = (idealRowHom D (span {a}))⁻¹ ^ s * sexticGauss a _ k              -- IsCoprime D a
+    -- every block, unreduced exponent (crossFactor_primary / normalized_coprime_product + unit scale)
+    sexticGauss (d^m * a) _ k = sexticReciprocityPhase d a ^ m * sexticGauss (d^m) _ k * sexticGauss a _ (d^(4*m) * k)
+    -- ray sign as a quadratic symbol of a bounded element (finite decide on Coord x Coord + idealRowHom_lambda_cube)
+    def E0 : Coord → O          -- 1 on {(1,0),(0,1),(3,3)}, -1 on {(3,0),(0,3),(1,1)}, λ on {(3,1),(3,2),(2,1)}, -λ on {(1,3),(1,2),(2,3)}
+    sexticReciprocityPhase d a = (idealRowHom (E0 (residue d)) (span {a}))^3                      -- d, a primary, supported
+    -- sign-free block factorisation (m arbitrary; E0 taken at the class of d^m)
+    sexticGauss (d^m * a) _ k = sexticGauss (d^m) _ k * sexticGauss a _ ((E0 (residue (d^m)))^3 * d^(4*m) * k)
+    -- local vanishing (generalises prime_power_nonunit_zero / fifth_free_nonunit_zero; D with multiplicities v_p(D))
+    (∃ p prime, p ∣ a ∧ p ∣ D ∧ multiplicity p a ≤ s * multiplicity p D ∧ ¬ 6 ∣ multiplicity p a) → sexticGauss a _ (D^s * k) = 0
+    -- pool mask for sixth-power-free columns (generalises sexticGauss_pool_prime_mask)
+    ¬ p^6 ∣ a → sexticGauss a _ (p^6 * h) = if p ∣ a then 0 else sexticGauss a _ h
+    -- valuation selector (1 ≤ i ≤ 5, p ∤ h, p ∤ u')
+    sexticGauss (p^i * u') _ (p^k * h) = 0 unless k + 1 = i ;  at k + 1 = i: = ε(p,u')^i * χ_{u'}(p)^(i+1) * g(p^i, p^k h) * g(u', h)

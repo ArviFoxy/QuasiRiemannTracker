@@ -1876,3 +1876,7 @@ slot; `mixed-slots/`).
   (v, t, p); all 46 PR 86 transitions certify marked at floor 3/5 (one box per branch); a transition the unmarked gates
   reject (high_at_q = −0.0045) certifies marked with reserve 41/25000 and compiles; 74 steps of the floor-0.60 model
   chain certify marked.
+- **Chain assembly works end to end** (`density/gen_chain.py`): steps JSON → `gen_hybrid.py --marked` certificates →
+  one module with `boot` (PR 86's native chain + subface step, `QRH.SilDensitySplit.K15.boot_source`) and
+  `source_NN` per step (every chain face exported, for the count/physical role split). Test: PR 86's transitions 1–2 as
+  marked steps at floor 3/5 (`lean/arvi_density/ChainTest/`): `final_source` compiles, axioms clean.

@@ -78,7 +78,7 @@ def main():
     L.append("/-- PR 86's boot face: the native chain from the fourth-power face and Sil's subface step. -/")
     L.append("theorem boot (hβ : (51/100 : ℝ) ≤ HeckeZeroSupremum.beta) :")
     L.append(f"    {face(*BOOT)} := by")
-    L.append("  simpa only [QRH.SilDensitySplit.K15.Face.Source, QRH.SilDensitySplit.K15.bootFace] using")
+    L.append("  simpa only [QRH.SilDensitySplit.Face.Source, QRH.SilDensitySplit.K15.bootFace] using")
     L.append("    QRH.SilDensitySplit.K15.boot_source hβ")
     prevname = "boot hβ"
     for i, s in zip(nums, steps):

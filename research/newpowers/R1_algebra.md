@@ -202,6 +202,7 @@ The baseline's `numeratorBadTwist u a b r = unitSupplement u·supportedIdealRow 
 Remark (argument only, not tested): bounded dilations can give only polylog gains as exact copies, because `χ_n(E)=1` on the whole support, for a pool of `P` non-sixth-power elements, forces density about `6^{−P}` among the alphabet primes.
 
 **3.5.4 Conjugation.** `g(ā,h̄)=conj g(a,h)` for every supported generator `a` (`χ_{ā}(x̄)=conj χ_a(x)`, `ψ_{ā}(x̄)=conj ψ_a(x)`) [N, 131 + 20 at 40 digits; no Lean lemma]. It swaps block `D` with `D̄`, classes `E₀=λ↔−λ`, and halves case analyses.
+Corollary [N, 740 symbol checks over all split primary primes of norm ≤ 400 and exponents ≤ 3, 199 Gauss-sum checks]: a prime and its conjugate multiply **without any twist or sign**: `cross(a^i,ā^j)=χ_a(ā)^{ij}χ_ā(a)^{ij}=1`, i.e. `(a/ā)₃=1`, `ε(a,ā)=1`, `g(aā,h)=g(a,h)g(ā,h)` for every `h`, and `g(aā,h)=N(a)` for integer `h` prime to `q=aā`.
 
 **3.5.5 Block scalars (what the selected factor is).** [N unless stated]
 * imprimitive reduction [L: `primePowerGauss_lift`, `sexticGauss_prime_power`]: `g(p^j,p^{j−1}h')=N^{j−1}G_j(p,h')`, `G_j(p,h)=Σ_{d mod p}χ_p(d)^jψ_p(hd)` (240 cases). Squared block = **cubic** Gauss sum, cube block = **quadratic** Gauss sum, 4th = conjugate cubic, 5th = conjugate sextic.
@@ -227,7 +228,8 @@ Double precision (ratios of Gauss sums identified with an exact 6th root of unit
 | `e5_other.py` | conjugation, supplements, E₀ classes, F₄ form, multi-block, sign-free | 131; 136; 307; 144; 815+228+98 | 0 |
 | `e6_gauss_structure.py`, `e9_jacobi.py` | imprimitive reduction, DH, inert, Kummer, Jacobi, cube-block closed form | 240; 231; 65; 74; 40+74 | 0 |
 | `e7_wholecolumn.py` | whole column with sign, range sharpness | 614 in; 45 out (all fail as predicted) | 0 |
-| `e10_misc.py`, `e11_bidilation.py` | generator change, composite pool, unit orbit, bi-dilation | 237; 207; 100; 900×144 | 0 |
+| `e10_misc.py`, `e11_bidilation.py` | generator change, composite pool, unit orbit, conjugate pairs, bi-dilation | 237; 207; 100; 740+199; 900×144 | 0 |
+| `e13_exhaustive.py` | sign-free identity for ALL pairs of primary primes of norm ≤ 100 and blocks `D^m` (m ≤ 3) | 2046 | 0 |
 | `v_final.py` | all 144 class pairs, E₀ table, sixth-power law, Kummer, inert, unit orbits | 3349; 144+144; 300; 74+74; 65; 338 | 0 |
 | `highprec.py` | mpmath 40 digits: cross, dilated, sign-free, `D¹`, squared, cube, pools, Kummer, inert, conjugation | ≈ 330 | max rel. error 4e−38 |
 

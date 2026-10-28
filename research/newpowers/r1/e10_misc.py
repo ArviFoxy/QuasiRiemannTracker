@@ -57,3 +57,28 @@ for _ in range(100):
         vals.append(F)
     ok.add('M3', max(abs(v - vals[0]) for v in vals) < 1e-6 * max(1, abs(vals[0])), (ps, h))
 print("M3 unit-orbit invariance for columns with N(n) = 1 mod 36 : %d checks, %d failures" % (ok.ok['M3'], ok.bad['M3']))
+
+# M4  conjugate pairs multiply without any twist:  cross(a^i, conj(a)^j) = 1, i.e. (a/conj a)_3 = 1 and eps(a, conj a) = 1;
+#     hence g(a conj a, h) = g(a,h) g(conj a,h) for every h, and g(q,h) = N(a) = q for integer h prime to q (q = a conj a split)
+tot = bad = 0
+for a in [p for p in PRIMES if is_prime_int(norm(p))]:
+    ab = conj(a)
+    for i in range(1, 4):
+        for j in range(1, 4):
+            c2 = (i * j * chi_exp(ab, a) + i * j * chi_exp(a, ab)) % 6
+            tot += 1
+            bad += (c2 != 0)
+    tot += 1
+    bad += (ray_sign(a, ab) != 1 or (2 * chi_exp(a, ab)) % 6 != 0)
+cnt = 0
+okc = 0
+for _ in range(100):
+    a = rng.choice([p for p in PRIMES if is_prime_int(norm(p)) and norm(p) <= 100])
+    h = rand_h0(rng, [a, conj(a)])
+    cnt += 1
+    okc += abs(gauss(mul(a, conj(a)), h) - gauss(a, h) * gauss(conj(a), h)) < 1e-7 * norm(a)
+    hz = (rng.randint(1, 60), 0)
+    if hz[0] % norm(a):
+        cnt += 1
+        okc += abs(gauss(mul(a, conj(a)), hz) - norm(a)) < 1e-7 * norm(a)
+print("M4 conjugate pairs: symbol identities %d/%d (all split primary primes of norm <= 400, i,j<=3), Gauss sums %d/%d" % (tot - bad, tot, okc, cnt))

@@ -4,7 +4,7 @@
 cd "$(dirname "$0")"
 export PYTHONDONTWRITEBYTECODE=1
 {
-for s in t0_basics e12_cross_dilation e34_vanishing_pools e4_pools e5_other e6_gauss_structure e7_wholecolumn e8_large_primes e9_jacobi e10_misc e11_bidilation table_gen v_final highprec; do
+for s in t0_basics e12_cross_dilation e34_vanishing_pools e4_pools e5_other e6_gauss_structure e7_wholecolumn e8_large_primes e9_jacobi e10_misc e11_bidilation e13_exhaustive table_gen v_final highprec; do
   echo "################################################################  $s.py"
   python3 $s.py
   echo

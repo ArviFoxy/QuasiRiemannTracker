@@ -11,7 +11,7 @@ dictionary identity of a column character at *all* ideals. `twistDict τ A` is t
 * `twistDict_rowWeight`: the row weights of `twistChar` (so the energies agree,
   `child_energy_twistDict`);
 * `twistDict_dict`: if `τ` equals a natural row `F` of `B` on the ideals coprime to `M`, then
-  `twistDict τ A` equals any natural row of `B` at `A·w` there, with the same `M`. -/
+  `twistDict τ A` equals any natural row of `B` at a frequency `z = A·w` there, with the same `M`. -/
 import Submissions.arvi_mixed_step.Collision.CollTwist
 import Submissions.hailey_collet_1252270103.Cycle61.Moment.PrimaryMaskTransport
 
@@ -71,21 +71,21 @@ theorem twistDict_rowWeight_eq (τ : Character) (A : O) (hA : A ≠ 0) (t : ℝ)
 
 /-- **The dictionary of the twist.** If `τ` is a natural row `F` of `B` on the ideals coprime to
 `M` (and `0` elsewhere), then `twistDict τ A` is any natural row of `B` at `A·w` there. -/
-theorem twistDict_dict {B : Character} {w : O} (τ : Character) (M : Ideal O)
+theorem twistDict_dict {B : Character} {w z : O} (τ : Character) (M : Ideal O)
     (F : NaturalRow B w)
     (hτ : ∀ I : Ideal O, idealCoeff τ I = if IsCoprime I M then idealCoeff F.character I else 0)
-    (A : O) (hA : A ≠ 0) (F' : NaturalRow B (A * w)) (I : Ideal O) :
+    (A : O) (hA : A ≠ 0) (F' : NaturalRow B z) (hz : z = A * w) (I : Ideal O) :
     idealCoeff (twistDict τ A) I = if IsCoprime I M then idealCoeff F'.character I else 0 := by
   by_cases hI : Supported I
   · rw [twistDict_ideal_supported τ A hA I hI, hτ I,
-      natural_row_supported_ideal B (A * w) F' I hI]
+      natural_row_supported_ideal B z F' I hI, hz]
     by_cases hc : IsCoprime I M
     · simp only [hc, ite_true]
       rw [natural_row_supported_ideal B w F I hI, idealRowHom_argument_mul]
       ring
     · simp only [hc, ite_false, zero_mul]
   · rw [twistDict_ideal_unsupported τ A hA I hI,
-      natural_row_ideal_zero_of_not_supported B (A * w) F' I hI]
+      natural_row_ideal_zero_of_not_supported B z F' I hI]
     simp only [ite_self]
 
 /-- The modulus of the dictionary twist. -/

@@ -6,9 +6,11 @@ theta(BC,LC,BP,LP) = exact least theta (1e-9 resolution) for a count face G(BC,L
 Separable role split (lemmaW.md s3.3): theta(LC,LP) = f(LC)+g(LP), so only 2 line scans are needed.
 """
 import sys, os, math, json, functools
-TC = os.environ.get('R2_TC')          # directory of B2's exact-return toolchain (copy of lemmaW/tc); see README in the report
-if not TC or not os.path.isdir(TC):
-    raise SystemExit('set R2_TC to the directory holding pr86.py/best.py (analysis/B2/tc in the scratchpad)')
+TC = os.environ.get('R2_TC')          # directory of the exact-return toolchain (copy of lemmaW/tc: pr86.py, best.py, cert_return.py, ...)
+if not TC:                            # default: the copy kept by R3 next to this folder (research/newpowers/r3/tc)
+    TC = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'r3', 'tc')
+if not os.path.isfile(os.path.join(TC, 'pr86.py')):
+    raise SystemExit('set R2_TC to the directory holding pr86.py/best.py (e.g. research/newpowers/r3/tc)')
 sys.path.insert(0, TC)
 from fractions import Fraction as Fr
 import pr86, best  # noqa: E402

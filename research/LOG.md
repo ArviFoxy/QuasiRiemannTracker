@@ -1863,3 +1863,6 @@ slot; `mixed-slots/`).
   with `highTermM = highTerm − gainC ν B₀ L₀ c₀ s M` (PR 76's repeated-mark gain, K = 8), parent range
   22/23 ≤ B₀ ≤ 1, 1 < L₀, 0 ≤ c₀ < 1; axioms propext/choice/Quot.sound, no sorry. Built before the container
   restart (agent lost; files and oleans survived). Next: marked step gates/ledger + generator (agent), ceiling (agent).
+- **Independently re-checked (fresh elaboration):** `density_priced_source_marked` holds for floors qf ∈ [1/2, 3/4],
+  parent 22/23 ≤ B₀ ≤ 1, 0 ≤ c₀ < 1, 1 < L₀; price `f w P s M = max (lowPart …) (highSupM …)` with the gain in
+  `highSupM`; axioms propext, Classical.choice, Quot.sound.

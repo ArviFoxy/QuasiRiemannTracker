@@ -385,3 +385,80 @@ bash lean_check/run_marked_check.sh            # marked certificates: generate i
 (1: write `Gen_NN.lean` and `Gen_Test.lean` into the lab directory, 0: scratch directory `$WORK`), `QRH` (the
 Lake project), `OLEAN_DIR` (scratch `.olean` overlay), `WORK`; it compiles strictly one file at a time and
 exits with status 1 if any file fails to elaborate.
+
+
+## `gen_return86.py`: the final-return layer `Return/` (PR 86's layout, any constants, two sources)
+
+PR 86's `Return/` (44 modules) is Sil's return (PR 83) with retuned constants and regenerated Bernstein rows; it imports
+PR 83's `ReturnD/` (the transport layer with the box `BoundsN`) and re-declares PR 83's `Return` namespace, so a new
+submission forks both. `Submissions.arvi_density` now contains
+
+* `ReturnD/` (119 modules): PR 83's `ReturnD/` renamed by a plain token rename (`Submissions.sil_density_split_20261026` to
+  `Submissions.arvi_density`, `SilDensitySplit` to `ArviDensity`; `fork_returnd.py`), notice comments copied verbatim plus one
+  `Modified by ArviFoxy` block per file, and the transport box widened as in `newpowers/TB_transport_box.md`, option B:
+  `ell < 175/1000` (was `171/1000`), `y > 440/1000` (was `458/1000`), `small_saving` threshold `6/100` (was `7/100`); the
+  edits are 9 lines in `TransportGeometry.lean` and `Transport/FinalFixedHigh.lean`, nothing else changes. The box is then cut only by
+  `theta > 873/1000` and the functional field `floor_margin` (`h <= 9.36 theta - 7.375`).
+* `Return/` (44 modules): the baseline output of `gen_return86.py` at PR 86's constants (theta = 4369779/5000000, both sources
+  PR 86's final face), with the two-source endpoint below.
+
+| file | purpose |
+|---|---|
+| `fork_returnd.py` | PR 83's `ReturnD/` to `Submissions.arvi_density.ReturnD` (rename, box edits, notices) |
+| `gen_return86.py` | the generator: Constants, Windows, Rows/Admission*, Rows/Edge_*, EdgeCertificates, Endpoint; the other 19 modules are copied from `return86_tpl/` (PR 86's text, tokens renamed) |
+| `return86_tpl/` | PR 86's constant-free modules, `Endpoint_single.lean` (PR 86's endpoint), `cover_pr86.json` (PR 86's cover trees, extracted by `gen_return86.py --extract-cover`) |
+| `validate_return86.py` | regenerates PR 86's `Return/` and diffs it (below) |
+| `lean_check/run_return_check.sh`, `lean_check/Return_Test.lean` | build `Return.Endpoint` with the `ReturnD` fork and test the endpoint against PR 86's chain |
+
+### Regenerate for new faces / theta
+
+```
+cd research/density
+# least certifiable theta (multiples of 1e-7) of a pair of faces; h = floor ceiling h <= 9.36 theta - 7.375 rounded down to 4 digits
+python3 gen_return86.py --preset pr86 --count-face B_C,L_C,9999/100000 --phys-face B_P,L_P,31/500 --find-theta 0.8737 0.8740 --h auto:4
+# emit the 44 modules (count face = chain end, physical face = an earlier chain face; source faces default to B,L with cap 1/10)
+python3 gen_return86.py /home/user/lean-env/qrh/Submissions/arvi_density/Return --preset pr86 --pkg Submissions.arvi_density \
+    --ns QRH.ArviDensity --count-face B_C,L_C,9999/100000 --phys-face B_P,L_P,31/500 --theta T --h H --cover pr86 --repair --clean
+```
+
+All constants of `Return/Constants.lean` are options (`--theta --h --count-face --phys-face --numerator-cap --dm --reserve --m-minus
+--s-minus --natural-k`; `--count-src/--phys-src B,L,C` for the endpoint hypotheses). `--cover auto` is a greedy dyadic cover (candidates
+`old`, `C`, `capP`, as Sil's), `--cover pr86` PR 86's trees (tiling of window 03 and the split row023a/b), `--repair` re-covers failing leaves
+greedily, `--emit-cover FILE` saves the trees. Before writing anything the generator checks the side conditions Lean proves by `norm_num` (`--receipts`
+lists their margins): `Geometry.Parameters`, the widened `BoundsN`, `PhysicalSchedule`, face domination for `Restricts`, window floors, caps.
+Build: `QRH_PKG=Submissions.arvi_density python3 ../mixed-step/build/build_roots.py 2 LOGDIR Submissions.arvi_density.Return.Endpoint`.
+
+### Endpoint (two sources)
+
+```lean
+theorem QRH.ArviDensity.Return.dirichlet_of_sources
+    (hC : (51/100:ℝ) ≤ HeckeZeroSupremum.beta → GlobalSource countB countL countSrcCap)     -- the count face C
+    (hP : (51/100:ℝ) ≤ HeckeZeroSupremum.beta → GlobalSource physB physL physSrcCap)       -- the physical face P
+    {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) {s : ℂ} (hs : (θ : ℝ) < s.re) (hpole : ¬ (χ = 1 ∧ s = 1)) :
+    DirichletCharacter.LFunction χ s ≠ 0
+```
+
+(`beta_le_theta_of_sources` is the same with conclusion `β ≤ θ`; `countSrcCap`, `physSrcCap` are the caps of the chain's sources, 1/10 in PR 86's
+chain.) The faces `countSourceFace` and `physicalSourceFace` only have to restrict `countGlobal = (countCB, countCL, countCap)` and
+`physicalGlobal = (physicalB, physicalLambda, physicalCap)` (`B_return <= B_source`, `L_source <= L_return`, `cap_return <= cap_source`).
+`--endpoint single` emits PR 86's one-source text instead.
+
+### Validation
+
+`python3 validate_return86.py`: (1) PR 86's constants in PR 86's names (`--no-notice --endpoint single --cover pr86 --box pr83`): the 44 modules are
+byte-identical to PR 86's `Return/` (32 rows with their Bernstein matrices, 16 windows with 240 guard certificates, the cover trees including the
+split row023a/b); (2) in the names of `Submissions.arvi_density`, equal to PR 86's after mapping the names back and dropping the 44 one-line notices;
+(3) the files of `Submissions/arvi_density/Return` equal a fresh generation (regeneration is idempotent: unchanged files are not touched, so oleans stay
+fresh); (4) the cover spec re-extracted from the output equals the stored one; (5) the greedy cover certifies PR 86's constants (35 rows, 19 windows) and
+the least 7-digit theta of PR 86's faces is 0.8739558, PR 86's. After the name mapping the baseline `Return/` differs from PR 86's in `Endpoint.lean` only
+(the two-source text); `ReturnD/` differs from PR 83's in `TransportGeometry.lean` (7 code lines plus the docstring) and `Transport/FinalFixedHigh.lean`
+(2 lines).
+
+Lean (Lean 4.34.1, 2 processes, machine shared with other jobs): `ReturnD/` 119 modules, 936 s wall (1750 s module time), `Return/` baseline 44 modules,
+499 s wall (914 s), no error, no `sorry`. `lean_check/Return_Test.lean` (about 10 s) feeds `dirichlet_of_sources` with PR 86's `K15.final_source` for both
+sources and type-checks against PR 86's `K15.dirichlet_nonvanishing` (`type_of%`); axioms `propext`, `Classical.choice`, `Quot.sound`. The widened box was
+exercised below the old range: `Constants`, `Geometry` and `TransportInstances` (`finalBounds : BoundsN`) generated at (theta, h) = (0.8738, 0.8037),
+(0.8735, 0.8000), (0.8731, 0.795), (0.8739058, 0.8047) compile against `ReturnD/`; at theta = 0.8738 the same modules fail against PR 83's `ReturnD/`
+(the `ell < 171/1000` field). A role split was built as a throw-away package (count = PR 86's final face, physical = its step 38 face
+`G(2478297/2500000, 5953751/2500000, 1/10)`, theta = 0.8739549, h = 8052/10000, greedy cover: 33 rows, 17 windows): 45 modules, 445 s wall, no error;
+the least theta is 0.8739549 for that split and 0.8739464 for the floor-0.60 chain end (step 73) with step 38, the values of `replan/lemmaW.md`.

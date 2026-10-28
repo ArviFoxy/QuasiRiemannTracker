@@ -1880,3 +1880,10 @@ slot; `mixed-slots/`).
   one module with `boot` (PR 86's native chain + subface step, `QRH.SilDensitySplit.K15.boot_source`) and
   `source_NN` per step (every chain face exported, for the count/physical role split). Test: PR 86's transitions 1–2 as
   marked steps at floor 3/5 (`lean/arvi_density/ChainTest/`): `final_source` compiles, axioms clean.
+- **Return side done** (`lean/arvi_density/{ReturnD, Return}`, `density/{fork_returnd.py, gen_return86.py,
+  validate_return86.py}`): PR 83's `ReturnD` forked (119 modules, our namespace) with the box widened (ell < 175/1000,
+  y > 440/1000, small_saving 6/100; admits θ ≥ 0.8730001), builds clean (936 s wall). `gen_return86.py` reproduces PR 86's
+  44 `Return` modules byte for byte, supports different count/physical faces, greedy covers and θ search; endpoint
+  `Return.dirichlet_of_sources (hC : β ≥ 51/100 → count face) (hP : … → physical face) … : L(χ,s) ≠ 0` for Re s > θ,
+  axioms clean. Cross-checks: role split 0.8739549, floor-0.60 chain 0.8739464 (= lemmaW). Pipeline complete; waiting for
+  the optimized marked chain (T-A).

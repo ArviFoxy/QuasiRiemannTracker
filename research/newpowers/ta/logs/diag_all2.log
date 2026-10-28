@@ -1,0 +1,19 @@
+g0_f0.50_b0_d0.999_dL0.005_q             th=0.873946114 ell=0.170882 fail=newTop d*,p*=(0.4433, 0.5000) best=C newTop leaves={'old': 11, 'Pcap': 1, 'C-7': 1, 'C': 21} small_saving=0.0021
+g0_f0.50_b1_d1.000_dL0.005_q             th=0.873944002 ell=0.170891 fail=newTop d*,p*=(0.4434, 0.5000) best=C newTop leaves={'old': 11, 'Pcap': 2, 'C': 22, 'C-7': 1} small_saving=0.0021
+g0_f0.55_b0_d0.999_dL0.005_q             th=0.873946114 ell=0.170882 fail=newTop d*,p*=(0.4433, 0.5000) best=C newTop leaves={'old': 11, 'Pcap': 1, 'C-7': 1, 'C': 21} small_saving=0.0021
+g0_f0.55_b1_d1.000_dL0.005_q             th=0.873944002 ell=0.170891 fail=newTop d*,p*=(0.4434, 0.5000) best=C newTop leaves={'old': 11, 'Pcap': 2, 'C': 22, 'C-7': 1} small_saving=0.0021
+g0_f0.60_b0_d0.999_dL0.005_q             th=0.873946250 ell=0.170882 fail=newTop d*,p*=(0.4431, 0.5000) best=C newTop leaves={'old': 11, 'Pcap': 1, 'C-7': 1, 'C': 17} small_saving=0.0021
+g0_f0.60_b1_d1.000_dL0.005_q             th=0.873944104 ell=0.170890 fail=newTop d*,p*=(0.4432, 0.5000) best=C newTop leaves={'old': 11, 'Pcap': 1, 'C-7': 1, 'C': 19} small_saving=0.0021
+g0_f0.65_b0_d0.999_dL0.005_q             th=0.873954796 ell=0.170847 fail=newTop d*,p*=(0.4415, 0.5000) best=C newTop leaves={'old': 11, 'Pcap': 1, 'C': 22} small_saving=0.0022
+g1_f0.50_b0_d0.999_dL0.005_q             th=0.873872341 ell=0.171177 fail=newTop d*,p*=(0.4488, 0.5000) best=C newTop leaves={'old': 11, 'Pcap': 5, 'Ccap': 3, 'C-7': 3, 'C': 20} small_saving=0.0016
+g1_f0.50_b0_d1.000_dL0.005_q             th=0.873871502 ell=0.171181 fail=newTop d*,p*=(0.4488, 0.5000) best=C newTop leaves={'old': 11, 'Pcap': 5, 'Ccap': 3, 'C-7': 3, 'C': 20} small_saving=0.0016
+g1_f0.50_b1_d0.999_dL0.005_q             th=0.873871246 ell=0.171182 fail=newTop d*,p*=(0.4488, 0.5000) best=C newTop leaves={'old': 11, 'Pcap': 5, 'Ccap': 3, 'C-7': 3, 'C': 20} small_saving=0.0016
+g1_f0.50_b1_d1.000_dL0.005_q             th=0.873870352 ell=0.171185 fail=newTop d*,p*=(0.4489, 0.5000) best=C newTop leaves={'old': 11, 'Pcap': 5, 'Ccap': 3, 'C-7': 3, 'C': 20} small_saving=0.0016
+g1_f0.55_b0_d0.999_dL0.005_q             th=0.873886758 ell=0.171120 fail=newTop d*,p*=(0.4459, 0.5000) best=C newTop leaves={'old': 11, 'Pcap': 5, 'Ccap': 8, 'C': 22, 'C-7': 11} small_saving=0.0017
+g1_f0.55_b0_d1.000_dL0.005_q             th=0.873885828 ell=0.171123 fail=newTop d*,p*=(0.4460, 0.5000) best=C newTop leaves={'old': 11, 'Pcap': 5, 'Ccap': 7, 'C': 22, 'C-7': 9} small_saving=0.0017
+g1_f0.55_b1_d0.999_dL0.005_q             th=0.873885622 ell=0.171124 fail=newTop d*,p*=(0.4459, 0.5000) best=C newTop leaves={'old': 11, 'Pcap': 5, 'Ccap': 8, 'C': 22, 'C-7': 10} small_saving=0.0017
+g1_f0.55_b1_d1.000_dL0.005_q             th=0.873884702 ell=0.171128 fail=newTop d*,p*=(0.4460, 0.5000) best=C newTop leaves={'old': 11, 'Pcap': 5, 'Ccap': 7, 'C': 22, 'C-7': 9} small_saving=0.0017
+g1_f0.60_b0_d0.999_dL0.005_q             th=0.873910822 ell=0.171023 fail=newTop d*,p*=(0.4435, 0.5000) best=C newTop leaves={'old': 10, 'Pcap': 2, 'Ccap': 2, 'C-7': 2, 'C': 21} small_saving=0.0019
+g1_f0.60_b0_d1.000_dL0.005_q             th=0.873910055 ell=0.171026 fail=newTop d*,p*=(0.4436, 0.5000) best=C newTop leaves={'old': 10, 'Pcap': 2, 'Ccap': 2, 'C-7': 2, 'C': 21} small_saving=0.0019
+g1_f0.60_b1_d0.999_dL0.005_q             th=0.873910205 ell=0.171026 fail=newTop d*,p*=(0.4436, 0.5000) best=C newTop leaves={'old': 10, 'Pcap': 2, 'Ccap': 2, 'C-7': 2, 'C': 21} small_saving=0.0019
+g1_f0.60_b1_d1.000_dL0.005_q             th=0.873909421 ell=0.171029 fail=newTop d*,p*=(0.4436, 0.5000) best=C newTop leaves={'old': 10, 'Pcap': 2, 'Ccap': 2, 'C-7': 2, 'C': 23} small_saving=0.0019

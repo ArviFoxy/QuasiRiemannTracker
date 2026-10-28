@@ -1,0 +1,6 @@
+g1_f0.60_b1_d1.000 old,C,Pcap (PR 86): fails | +Ccap: fails | +C-7: 0.873921205 | +Ccap,C-7: 0.873909421 | six: 0.873909421
+g1_f0.55_b1_d1.000 old,C,Pcap (PR 86): fails | +Ccap: fails | +C-7: fails | +Ccap,C-7: 0.873884702 | six: 0.873884702
+g1_f0.50_b1_d1.000 old,C,Pcap (PR 86): fails | +Ccap: fails | +C-7: fails | +Ccap,C-7: 0.873870352 | six: 0.873870352
+g1_f0.60_b0_d0.999 old,C,Pcap (PR 86): 0.873999393 | +Ccap: 0.873999393 | +C-7: 0.873910822 | +Ccap,C-7: 0.873910822 | six: 0.873910822
+g1_f0.55_b0_d0.999 old,C,Pcap (PR 86): fails | +Ccap: fails | +C-7: fails | +Ccap,C-7: 0.873886758 | six: 0.873886758
+g1_f0.50_b0_d0.999 old,C,Pcap (PR 86): fails | +Ccap: fails | +C-7: fails | +Ccap,C-7: 0.873872341 | six: 0.873872341

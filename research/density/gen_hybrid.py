@@ -29,9 +29,12 @@ Command line (see README.md):
     gen_hybrid.py --steps steps.json --outdir DIR --module-pattern 'Gen_{i:02d}'
     gen_hybrid.py --list-gates
 
-Python API:  generate(Params(...), namespace=..., module=..., lib=PR83_LIB) -> Result (.text, .report).
+Python API:  gen_step(B0, L0, c0, B, L, c, A, D, floor, namespace, module) -> Result, or
+             generate(Params(...), namespace=..., module=..., lib=PR83_LIB) -> Result
+             (.text = the Lean file, .report, .summary(), .warnings, .certs = exact polynomials and boxes).
 A gate is replaced with `lib.replace(key, Gate(...))` (or `--gate-lib my_lib.py`), the floor numeral is
-`Params.floor` / `--floor` (the Lean side needs a matching copy of HybridGates: make_gates_variant.py).
+`Params.floor` / `--floor` (the Lean side needs a matching copy of HybridGates: make_gates_variant.py;
+`lean_model_check.py` / `--check-gates-file` compares the Python gates with a Lean source without Lean).
 """
 from __future__ import annotations
 
@@ -42,7 +45,7 @@ import re
 import runpy
 import sys
 import time
-from dataclasses import dataclass, replace
+from dataclasses import dataclass, field, replace
 from fractions import Fraction
 from functools import reduce
 from math import comb, gcd
@@ -229,6 +232,19 @@ class Params:
     def W(self) -> Poly:
         """width = s0 + v"""
         return self.s0 + V
+
+    def chain_step_warnings(self) -> List[str]:
+        """Hypotheses of PR 86's `K15.density_step` (`Density.DSFace`, positivity) that are not part of
+        `HybridGates`: a step violating them certifies but cannot be fed to `density_step`."""
+        w = []
+        for ok, msg in ((self.B <= self.B0, "DSFace.B_le: B <= B0"), (self.B0 < 1, "DSFace.B0_lt: B0 < 1"),
+                        (self.L < self.L0, "DSFace.L_lt: L < L0"), (1 < self.L, "DSFace.one_lt_L: 1 < L"),
+                        (self.c < Fr(1, 6), "DSFace.c_lt: c < 1/6"), (self.c0 < Fr(1, 6), "DSFace.c0_lt: c0 < 1/6"),
+                        (0 < self.L0, "density_step: 0 < L0"), (0 < self.B0, "density_step: 0 < B0"),
+                        (0 < self.c0, "density_step: 0 < c0")):
+            if not ok:
+                w.append(f"density_step hypothesis fails: {msg}")
+        return w
 
     def lit(self, name: str) -> str:
         return lean_real(self.get(name))
@@ -878,6 +894,7 @@ class Result:
     certs: List[GateCert]
     text: str
     seconds: float
+    warnings: List[str] = field(default_factory=list)
 
     @property
     def report(self) -> str:
@@ -891,6 +908,7 @@ class Result:
             rows.append(f"{c.gate.key:26s} {c.n.deg}/{c.d.deg:<5d} {c.nboxes:5d} {float(c.r):12.4e}")
         rows.append(f"total boxes: {sum(c.nboxes for c in self.certs)}; lines: "
                     f"{self.text.count(chr(10)) + 1}; generated in {self.seconds:.2f}s")
+        rows += [f"warning: {w}" for w in self.warnings]
         return "\n".join(rows)
 
     @property
@@ -906,6 +924,7 @@ class Result:
                        **{k: plain_frac(v) for k, v in P.extra}},
             "s0": plain_frac(P.s0), "h": plain_frac(P.h),
             "total_boxes": sum(c.nboxes for c in self.certs), "lines": self.text.count("\n") + 1,
+            "warnings": list(self.warnings),
             "gates": {c.gate.key: {"deg_n": c.n.deg, "deg_d": c.d.deg, "boxes": c.nboxes,
                                    "reserve": plain_frac(c.r), "reserve_float": float(c.r)}
                       for c in self.certs},
@@ -924,6 +943,11 @@ def generate(P: Params, namespace: Optional[str] = None, module: Optional[str] =
     if module is not None:
         cfg = replace(cfg, module=module)
     P.check_template_preconditions()
+    for what, ident in (("namespace", cfg.namespace), ("gates namespace", cfg.gates_namespace)):
+        if not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_']*(\.[A-Za-z_][A-Za-z0-9_']*)*", ident):
+            raise ValueError(f"{what} {ident!r} is not a Lean namespace")
+    if not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_']*", cfg.module):
+        raise ValueError(f"module name {cfg.module!r} is not a Lean identifier")
     keys, shorts = [g.key for g in lib.gates], [g.short for g in lib.gates]
     if len(set(keys)) != len(keys) or len(set(shorts)) != len(shorts):
         raise ValueError("gate library has duplicate gate keys or duplicate Lean name suffixes")
@@ -937,7 +961,15 @@ def generate(P: Params, namespace: Optional[str] = None, module: Optional[str] =
     bad = FORBIDDEN.search(text)
     if bad:
         raise AssertionError(f"forbidden token {bad.group(0)!r} in generated Lean")
-    return Result(P, cfg, certs, text, time.time() - t0)
+    return Result(P, cfg, certs, text, time.time() - t0, P.chain_step_warnings())
+
+
+def gen_step(B0, L0, c0, B, L, c, A, D, floor=Fr(13, 20), namespace="QRH.SilDensitySplit",
+             module="HybridStep", **kw) -> Result:
+    """`generate` with the inputs in the order (B0, L0, c0, B, L, c, A, D, floor, namespace, module);
+    values may be Fractions, ints or strings such as '99999/100000'. Further keywords go to `generate`."""
+    P = Params(*[_parse_frac(x) for x in (B0, L0, c0, B, L, c, A, D)], floor=_parse_frac(floor))
+    return generate(P, namespace=namespace, module=module, **kw)
 
 
 # ----------------------------------------------------------------------------------------------
@@ -995,7 +1027,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     ap.add_argument("--extra", action="append", default=[], metavar="NAME=VALUE",
                     help="extra scalar parameter for replaced/new gates (repeatable), e.g. --extra K=3/4")
     ap.add_argument("--max-heartbeats", type=int, default=1000000)
-    ap.add_argument("--title", help="descriptor for the header comment")
+    ap.add_argument("--title", help="descriptor for the header comment; {i} = step number with --steps")
     ap.add_argument("--gate-lib", metavar="FILE.py",
                     help="Python file defining LIB (GateLib) or modify(lib): replaced/added/removed gates")
     ap.add_argument("--check-gates-file", metavar="HybridGates.lean",
@@ -1035,10 +1067,11 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
                 print("  -", e, file=sys.stderr)
             return 2
 
-    def cfg_for(module: str) -> LeanConfig:
+    def cfg_for(module: str, i: Optional[int] = None) -> LeanConfig:
+        title = a.title.format(i=i) if (a.title and i is not None) else a.title
         return LeanConfig(namespace=a.namespace, module=module, gates_import=a.gates_import,
                           gates_namespace=a.gates_namespace, max_heartbeats=a.max_heartbeats,
-                          title=a.title)
+                          title=title)
 
     reports = []
     if a.steps:
@@ -1058,7 +1091,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             prev = P
             mod = a.module_pattern.format(i=i)
             try:
-                res = generate(P, config=cfg_for(mod), lib=lib, verify=not a.no_verify)
+                res = generate(P, config=cfg_for(mod, i), lib=lib, verify=not a.no_verify)
             except (ValueError, InfeasibleGate) as e:
                 print(f"error: step {i} ({mod}): {e}", file=sys.stderr)
                 failed.append(i)
@@ -1069,6 +1102,9 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
                     f.write(res.text)
             reports.append(res.summary())
             nbox += sum(res.box_counts.values())
+            if a.quiet:
+                for w in res.warnings:
+                    print(f"warning: step {i}: {w}", file=sys.stderr)
             if not a.quiet:
                 print(f"[{i}] {path or '(dry run)'}\n{res.report}\n", file=sys.stderr)
         if a.report_json:
@@ -1100,6 +1136,9 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         sys.stdout.write(res.text)
     if not a.quiet or a.dry_run:
         print(res.report, file=sys.stderr)
+    else:
+        for w in res.warnings:
+            print(f"warning: {w}", file=sys.stderr)
     return 0
 
 

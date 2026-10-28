@@ -1827,3 +1827,8 @@ slot; `mixed-slots/`).
   active), at p = 1/2: f ≈ ν(5−6ν)(K+1/2)S/(7.5−3ν) = 0.141(K+1/2)S at ν = 0.62. Self-consistently
   s0 = (B − (1−ρ)/ν)/(L − 1 + c_K/ν), c_K/ν ≈ 0.227(K+1/2): s0 −20 % (K = 1), −37 % (K = 3), −43 % (K = 4), against
   the ≈ −6 % that the 2e-5 bar needed. If it survives the other gates and branches, 5e-5 is in range.
+- **A1 done (`density/gen_hybrid.py`, Python, exact rationals).** Regenerates all 46 PR 86 step files
+  byte-identically (1288 cleared polynomials, 941 Bernstein boxes, 0 differences); all 46 compile in Lean
+  (8.8–21.2 s each) with PR 86's exact theorem types. Gates are modular (`GateLib.replace/add/without`); floor is a
+  parameter (`make_gates_variant.py --floor 3/5`); 74 steps of the floor-3/5 model chain certify (steps 20–74 fail
+  at 13/20, as expected). Chain assembly (`ChainK15`-style) not generated yet.

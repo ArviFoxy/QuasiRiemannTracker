@@ -9,9 +9,10 @@ numerator is shown positive on boxes of `v in [0, c - s0]`, `s0 = (B0-B)/(L0-L)`
 coefficients (`bern0`..`bern4`, `box_lower`), splitting only where needed.
 
 **Status.** Fed with the header parameters of the 46 PR 86 files it reproduces all 46 files byte for byte
-(everything after the header comment), including all 941 Bernstein boxes. Regenerated steps 01, 23 and 46
-(scratch namespace `QRH.ArviDensityLab`) elaborate against PR 83's `HybridGates`, have literally the type of
-PR 86's `hybridGates_HybridK15_NN`, and feed `K15.density_step`. Details in "Validation results".
+(everything after the header comment), including all 941 Bernstein boxes. All 46 regenerated steps
+(scratch namespace `QRH.ArviDensityLab`) elaborate in Lean against PR 83's `HybridGates`; steps 01, 23 and 46
+(installed as `Submissions.arvi_density_lab.Source.Gen_NN`) have literally the type of PR 86's
+`hybridGates_HybridK15_NN` and feed `K15.density_step`. Details in "Validation results".
 
 Everything is exact (`fractions.Fraction`); Lean is never called by the generator. Generating a step takes
 about 0.03 s (the whole PR 86 chain: 0.9 s).
@@ -39,7 +40,9 @@ python3 gen_hybrid.py --B0 99999/100000 --L0 5143/2000 --c0 1397/10000 \
 ```
 
 The report goes to stderr: for each gate the Bernstein degrees of `n` / `d`, the number of boxes and the
-certified reserve (`high_at_q` is the only gate that needs more than one box in PR 86's chain: 5 to 11).
+certified reserve (`high_at_q` is the only gate that needs more than one box in PR 86's chain: 5 to 11),
+and warnings for hypotheses of `K15.density_step` that lie outside `HybridGates` (see "Extending the chain").
+Errors (a gate that is not positive, parameters outside the supported region) give exit status 1.
 
 | option | meaning |
 |---|---|
@@ -52,13 +55,15 @@ certified reserve (`high_at_q` is the only gate that needs more than one box in 
 | `--from-header FILE` | read `B0..D` from a header line `parent G('..','..','..') -> child G(..), selection A = .., D = ..` (PR 86 files and our own files) |
 | `--steps steps.json --outdir DIR --module-pattern 'Gen_{i:02d}'` | batch: a JSON list of `{"B0":..,"L0":..,"c0":..,"B":..,"L":..,"c":..,"A":..,"D":..[,"floor":..]}`; warns if a parent is not the child of the previous step |
 | `--dry-run`, `--report-json FILE` | certify and report only (fast feasibility scan), machine-readable report |
+| `--title TEXT` | descriptor in the header comment (`{i}` = step number with `--steps`) |
 | `--gate-lib FILE.py`, `--list-gates`, `--extra NAME=VAL` | other gate sets, see below |
 | `--check-gates-file HybridGates.lean` | first check the gate library against that Lean source |
 | `--max-heartbeats N` | `set_option maxHeartbeats` in the file (default `1000000`, PR 86's value) |
 
-Python API: `res = generate(Params(B0,L0,c0,B,L,c,A,D,floor=Fraction(13,20)), namespace=..., module=...,
-lib=PR83_LIB)`; `res.text` is the Lean file, `res.report` / `res.summary()` the report, `res.certs` the exact
-data (polynomials, boxes, Bernstein coefficients).
+Python API: `res = gen_step(B0, L0, c0, B, L, c, A, D, floor, namespace, module)` (Fractions, ints or strings
+like `'99999/100000'`), or `generate(Params(..., floor=Fraction(13, 20)), namespace=..., module=..., lib=PR83_LIB)`.
+`res.text` is the Lean file, `res.report` / `res.summary()` the report, `res.warnings` the list of warnings,
+`res.certs` the exact data (polynomials, boxes, Bernstein coefficients).
 
 The generated file imports only the gates module. If `--namespace` differs from `--gates-namespace` it
 issues `open <gates namespace>`, so a file in `QRH.ArviDensityLab` uses PR 83's `QRH.SilDensitySplit.*`
@@ -95,10 +100,12 @@ No `sorry`, `admit`, `axiom`, `native_decide` (the generator refuses to emit the
   `bern2` for `n`, `bern1` for `d`; `low_per_excess_width`: `bern0` / `bern1`).
 * **Boxes.** Start with `[0, c - s0]`. A box is accepted if all Bernstein coefficients of `n` and of `d` on it
   are `> 0`; otherwise it is bisected at the midpoint and both halves are treated the same way (left to
-  right). This gives `[0, h/128], [h/128, h/64], .., [h/2, h]` for most `high_at_q` gates and a further
-  local bisection of `[h/128, h/64]` in PR 86 steps 12 and 16-19 (11 and 9 boxes). Every other gate of the
-  46 steps passes with one box. If a gate is not positive at some box end the generator stops with an
-  error naming the gate and the point (no subdivision can help); a depth limit (60) catches interior zeros.
+  right). For `high_at_q` (whose numerator dips close to zero near the left end) this gives, in 41 of the 46
+  PR 86 steps, `[0, h/2^(K-1)], [h/2^(K-1), h/2^(K-2)], .., [h/2, h]` with K = 5..8; in steps 16-19 the box
+  `[h/128, h/64]` is bisected once more (9 boxes) and in step 12 down to depth 3 (11 boxes). Every other
+  gate of the 46 steps passes with one box. If a gate is not positive at some box end the generator stops
+  with an error naming the gate and the point (no subdivision can help); a depth limit (60) catches
+  interior zeros.
 * **Per box:** `m` = smallest Bernstein coefficient of `n`, `M` = largest of `d`, reserve `m/M` (reduced).
   The gate reserve is the minimum over its boxes.
 * **Self-checks before writing** (exact, Python only): `value(v) * Dg(v) = Ng(v)` for the independent
@@ -188,6 +195,28 @@ structure as well).
 4. Generate. The generated `clearedX` proof is the same for every gate:
    `mul_eq_of_cleared <Dg ≠ 0> (gX_mul .. v hyps) ?_; simp only [nX, dX, ..]; ring`.
 
+### Extending the chain past PR 86 (lower floor)
+
+1. Write the steps as exact rationals, each child equal to the next parent (`steps.json`, see `--steps`).
+2. `python3 gen_hybrid.py --steps steps.json --dry-run --floor 3/5 --report-json rep.json` certifies every
+   gate of every step in exact arithmetic (about 30 ms per step) and reports degrees, box counts and
+   reserves without writing Lean. A step that is not provable stops with the gate and the point; it also
+   warns when a hypothesis of `K15.density_step` outside `HybridGates` fails (`DSFace`: `B <= B0 < 1`,
+   `1 < L < L0`, `c0, c < 1/6`; `0 < L0, B0, c0`).
+3. Make the Lean copy of `HybridGates` for the floor (above) and write the files with `--outdir`,
+   `--module-pattern`, `--gates-import`, `--gates-namespace`, `--title 'density step {i}'`.
+
+Chain assembly (`ChainK15`-style `have sNN := density_step ..` lines) is not generated.
+
+Test of this workflow: the 74 float steps of the scratchpad file
+`$SCRATCH/analysis/B2/dch_pr83_f60.json`
+(a floor-0.60 chain from the PR 86 boot face; rationalised to 1e-9 in `B`, 1e-6 in `A`, 1e-3 in `D`, `L` on the
+1/2000 grid, each child made the next parent) all certify with `--floor 3/5`: 1621 boxes, `high_at_q` needs 4
+to 10 boxes, no other gate more than one, smallest reserves `q_floor` 1.0e-6 and `high_at_q` 1.3e-8. With the
+default floor 13/20 steps 20 to 74 fail in `q_floor` (55 of 74 steps). Steps 20 and 74, generated against
+`HybridGatesF60`, compile in Lean (12.0 s and 10.6 s wall, no output); their `B` has 10-digit denominators.
+This is a test of the generator on realistic inputs, not a claim about the chain itself.
+
 ## Validation results
 
 All commands were run from `research/density` against the built Lake project in `/home/user/lean-env/qrh`.
@@ -215,15 +244,17 @@ The same script checks the Python gate library against PR 83's `HybridGates.lean
 process at a time, scratch `.olean`s in an overlay directory so that `.lake/build` is untouched).
 All three elaborate without error or warning against PR 83's `HybridGates`:
 
-| file | `high_at_q` boxes | lines | wall time, final run | first run |
-|---|---|---|---|---|
-| `Gen_01.lean` | 8 | 850 | 19.3 s | 16.4 s |
-| `Gen_23.lean` | 7 | 823 | 17.0 s | 13.7 s |
-| `Gen_46.lean` | 5 | 769 | 17.5 s | 15.7 s |
+| file | `high_at_q` boxes | lines | wall, run 1 | wall, run 2 (load 8) | wall, run 3 (script, lighter load) |
+|---|---|---|---|---|---|
+| `Gen_01.lean` | 8 | 850 | 16.4 s | 19.3 s | 14.5 s |
+| `Gen_23.lean` | 7 | 823 | 13.7 s | 17.0 s | 12.7 s |
+| `Gen_46.lean` | 5 | 769 | 15.7 s | 17.5 s | 11.9 s |
+| `Gen_Test.lean` | | 40 | 65 s (cold file cache) | 8.3 s | 7.1 s |
 
 Wall time includes about 5 s for importing Mathlib and `HybridGates` (a file that only imports
-`HybridGates` takes 4.8-5.9 s); the machine was shared (load average about 8 on 4 cores), so these are upper
-bounds. `lean_check/Gen_Test.lean` (8.3 s) states, for each of the three steps,
+`HybridGates` takes 4.8-5.9 s), so elaboration of a step takes about 7-14 s. The machine was shared
+(load average 8-11 on 4 cores in runs 1-2), so the times are upper bounds. `Gen_Test.lean` states, for each of
+the three steps,
 
 * `example : type_of% hybridGates_HybridK15_NN := QRH.ArviDensityLab.hybridGates_Gen_NN`, i.e. the generated
   theorem has literally the statement of PR 86's theorem;
@@ -232,7 +263,10 @@ bounds. `lean_check/Gen_Test.lean` (8.3 s) states, for each of the three steps,
   (by norm_num) hβ hp : GlobalSource child`, with `hp : GlobalSource parent`;
 * `#print axioms`: `[propext, Classical.choice, Quot.sound]` for each.
 
-ALL46_PLACEHOLDER
+**All 46 steps.** `STEPS=all INSTALL=0 bash lean_check/run_lean_check.sh` regenerates all 46 steps in the same
+scratch namespace (sources in a scratch directory, not in the Lake project) and compiles them one after the
+other: **46/46 elaborate with no error and no warning**; wall time per file 8.8 s (min), 16.9 s (median),
+21.2 s (max), 12.4 min in total, under load average 8-11 on 4 cores.
 
 ### Further Lean checks of the modular parts (not required by PR 86 parity)
 
@@ -277,3 +311,8 @@ python3 lean_model_check.py                    # Python gates vs PR 83's HybridG
 bash lean_check/run_lean_check.sh              # (b): generate + compile Gen_01, Gen_23, Gen_46, Gen_Test
 STEPS=all INSTALL=0 bash lean_check/run_lean_check.sh    # all 46 steps, compiled from a scratch dir
 ```
+
+`run_lean_check.sh` reads the environment variables `STEPS` (default `"01 23 46"`, or `all`), `INSTALL`
+(1: write `Gen_NN.lean` and `Gen_Test.lean` into the lab directory, 0: scratch directory `$WORK`), `QRH` (the
+Lake project), `OLEAN_DIR` (scratch `.olean` overlay), `WORK`; it compiles strictly one file at a time and
+exits with status 1 if any file fails to elaborate.

@@ -39,7 +39,7 @@ possible is decided in section 2.4 (it is not, for twist-free transfers) and sec
    `D¹` cubic with `j = 0`, `(0,2,1)` (payment `+0.067 − 0.27κ`, no squares needed), and it needs a conductor-uniform source theorem (lemma T, section 4.5) with `κ < 0.25` — implausible.
 
 5. **Pricing with the exact Lean-return toolchain (floor 3/5, role split) [N].** Baseline chain: θ = 0.873945041 (continuum), 0.873946250 (ΔL = 0.005 discrete); bar 0.8739358.
-   Distance to the bar in single-knob currencies (continuum): «DISTANCE_SENTENCE». Full doubling saturates the return's transport box at θ = 0.8739166667 (−1.9e-5 vs the bar).
+   Distance to the bar in single-knob currencies (continuum): `e ≥ 1.0116` (doubled share 1.16 %; 1.31 % on the discrete chain), `c ≤ 5.9587` (−0.69 %), `r ≥ 1.0171` (+1.7 %), density slope `s₀` −5.3 % (B2: −5.3 %), HIGH threshold `10/(15−6q)` +0.0041; lowering the floor does not help (0.55 gains `1.2e-7`); `f → 1` gives only −8e-7 (9 % of the gap). Full doubling saturates the return's transport box at θ = 0.8739166667 (−1.9e-5 vs the bar).
 
 6. **Ranking (section 6).** (1) native doubled-slot source with the doubled transfer: clears the bar at ≈ 1.3 % doubled share; all ingredients of the *step* are algebraic and mostly in the library, the *source* and the return accounting are new.
    (2) conductor-uniform twisted source theorem (lemma T): only `D¹`-cubic `(0,2,1)` could profit, and only for a conductor charge `κ < 0.25`; squared twisted types are dominated by (1). (3) knob-level improvements of the simple chain (f → 1 gives −8e-7).
@@ -65,7 +65,7 @@ possible is decided in section 2.4 (it is not, for twist-free transfers) and sec
 
 | candidate | exact inequality that fails | by how much | rescue |
 |---|---|---|---|
-| PR 83/86 chain (simple block) | the unit payment `1 + q − 6qβ` equals only the slack `1−f = 0.001`, so the LOW density is pinned at `q_∞ = f·L/(6B − L)`, which reaches the floor `3/5` at `L = 2.2031` (`B = 0.97855`): the chain cannot go below | θ above the bar by `+9.24e-6` (continuum) / `+1.04e-5` (discrete); the wall must reach `L = 2.1859` (−0.0172) | any of: room `e +1.16 %`, scale `c −0.69 %`, width `r +1.7 %`, slope `s₀ −5.3 %`, «DTHR_FLOOR_RESCUE»; `f → 1` only `−8e-7` |
+| PR 83/86 chain (simple block) | the unit payment `1 + q − 6qβ` equals only the slack `1−f = 0.001`, so the LOW density is pinned at `q_∞ = f·L/(6B − L)` (reaching the floor `3/5` at `L = 2.2031`) and the faces `B(L)` fall at slope `s₀ ≈ 0.065–0.085`; the return needs a count face above its bar-contour | the count face is short by `ΔB_C ≈ 1.5e-3` at `L_C ∈ [2.15, 2.20]` (physical face fixed; `dθ/dB_C ≈ −5.9e-3`), i.e. θ is above the bar by `+9.24e-6` (continuum) / `+1.04e-5` (discrete). The floor wall is **not** the limit: floor 0.55 gains only `1.2e-7`, since the θ-optimal count face (`L_C ≈ 2.18–2.20`) is flat there | any of: room `e +1.16 %`, scale `c −0.69 %`, width `r +1.7 %`, slope `s₀ −5.3 %`, HIGH threshold `10/(15−6q) +0.0041`; `f → 1` only `−8e-7` |
 | doubled block `(2,6,1)` | **availability**, not the step: doubled mass `u_dbl > 0` in the object | `u_dbl = 0` in every current source; need `≈ 1.1e-3` in total (`φ ≥ 1.31 %`), or `≈ 5e-6` per step (section 5.6) | a construction with squared-prime slots + the return-side accounting (D8, D9) |
 | `D¹` with the quadratic twist `(0,3,1)` | `π = q(1 − 3β) ≥ 0` | `−0.20` per unit `d` at the operating point (`−0.125` at the start) | `e ≥ 0.2` (recover 20 % of the count `W`), or `c ≤ 2.25` instead of 3 |
 | `D¹` with the cubic twist, `j = 0`, `(0,2,1)` | conductor charge `κ < κ* = 0.25` | natural `κ ≈ 1` [inference: the dual length grows with the conductor] | lemma T with `κ < 0.25` |
@@ -355,7 +355,7 @@ The baseline row reproduces B2's `0.873945041`.
 | `r = 1.0171` | 2.1881 | 0.0634 (0.66) / 0.0833 (0.60) / 0.1109 (0.54) | (2.1881, 0.97810) | (2.3650, 0.99092) | 0.873935783 | -1.70e-08 |
 | `r = 1.05` | 2.1597 | 0.0592 (0.67) / 0.0804 (0.61) / 0.1094 (0.54) | (2.1597, 0.97726) | (2.3800, 0.99264) | 0.873920066 | -1.57e-05 |
 
-(`s₀` and `q` at `L` below the row's wall are the formal ODE continuation with `q` below the floor; the chain stops at the wall, those entries are shown only to compare the slopes. `L_C` is the count face, always at or near the wall; `L_P` the physical face.)
+(`s₀` and `q` at `L` below the row's wall are the formal ODE continuation with `q` below the floor; the chain stops at the wall, those entries are shown only to compare the slopes. In every row the best count face on the truncated chain is the wall itself; for the baseline the unconstrained optimum is `L_C ≈ 2.18` with the same θ to `1e-7` (5.5). `L_P` is the physical face.)
 
 Discrete `ΔL = 0.005` chains (replica of `HybridGates`, `dchain_amp.py` + `eval_discrete.py`; count face among all steps, physical face among `L ∈ [2.2, 2.6]`): baseline (74 steps to `L = 2.2015`) **0.873946250** (`+1.04e-5`);
 `e = 1.012`: **0.873936717** (`+9.2e-7`); `e = 1.02`: **0.873930389** (`−5.41e-6`). (`results/disc_eval.log`.)
@@ -374,12 +374,14 @@ is invisible to the return unless the box is re-widened (a return-side change, o
 | width removed `r` | 1.0 | 1.01705 | 1.01926 | +1.71 % | -5.42e-04 |
 | density slope `s₀ → (1−eps)s₀` | 0.0 | 0.0531 | – | +0.05309 | -1.74e-04 |
 | HIGH threshold `T(q) → T(q) + dthr` | 0.0 | 0.00407 | – | +0.004075 | -2.27e-03 |
-| density floor `q ≥ floor` | 0.6 | (not run) | | | |
+| density floor `q ≥ floor` | 0.6 | **no root in [0.55, 0.60]**: `θ(floor=0.55) − bar = +9.12e-6` vs `+9.24e-6` at 0.60 | | the count-face optimum sits at `L_C ≈ 2.18–2.20`, not at the wall | `dθ/dfloor ≈ 2.4e-6` |
 | LOW slack `f` | 0.999 | `f = 1` reaches only `θ = 0.873944247` (`−8.0e-7`, 9 % of the gap) | | | |
 <!--THR_END-->
 
 Reading: the baseline chain is `9.2e-6` (continuum) / `1.04e-5` (discrete) above the bar; every currency needs a *percent-level* change (`+1.2 %` room, `−0.7 %` scale, `+1.7 %` width removed, `−5 %` density slope), which is also the size of the return-side
 demands in `R3` (`−0.9 %` on a slot cost). The doubled share needed is `φ* = e* − 1 = 1.16 %` (continuum) / `1.31 %` (discrete) of the transferred width; with `Σu = 0.085` over the 74 steps that is `1.0e-3` / `1.1e-3` of absolute doubled volume.
+Face language: with the physical face fixed at the baseline's, the count face must rise by `ΔB_C ≈ 1.5e-3` (`dθ/dB_C ≈ −5.9e-3`, computed at `L_C = 2.15, 2.19, 2.2031`) to reach the bar; along the baseline chain `θ(L_C)` is flat to `±1e-7` on `L_C ∈ [2.18, 2.20]`
+(gap `+9.14e-6 … +9.24e-6`) and rises on both sides (`+1.05e-5` at 2.13, `+1.41e-5` at 2.30), so the optimal count face is *not* pinned to the floor wall and lowering the floor is not a lever (`θ(0.55)` is only `1.2e-7` lower). The percent-level currencies above are what shifts that curve.
 Cross-check with `B2_source_slope.md` §0: B2 states that the bar needs `s₀` lowered by `5.3 %` (equivalently `6 → 5.93…5.95`, `10/(15−6q)` up by `0.5…0.6 %`); my independent solve gives `eps* = 5.31 %` and `c* = 5.9587` (B2's `c` used an uncapped `q > ¾`, section 7).
 If the face counted a squared slot by norm (`r = 2` for doubled units) the linear estimate `dθ ≈ −(7.96e-4 + 5.42e-4)·φ` gives `φ* ≈ 0.7 %`. `f → 1` is worth `−8.0e-7` only.
 
@@ -395,6 +397,7 @@ Model (`dchain_cap.py`): in each step the first `UD` of the selected width `u(v)
 | 3e-06 | 110 (2.0215) | 3.30e-04 | 2.2065 / 2.3665 | 0.873939585 | +3.78e-06 | -6.67e-06 |
 | 5e-06 | 114 (2.0015) | 5.70e-04 | 2.2065 / 2.3615 | 0.873935215 | -5.85e-07 | -1.10e-05 |
 | 1e-05 | 114 (2.0015) | 1.14e-03 | 2.2065 / 2.3065 | 0.873925286 | -1.05e-05 | -2.10e-05 |
+| 2e-05 | 114 (2.0015) | 2.28e-03 | 2.0015 / 2.2015 | 0.873916667 | -1.91e-05 | -2.96e-05 |
 <!--CAP_END-->
 
 Reading. (i) The bar is crossed at **`UD* ≈ 4.7e-6` per step** (linear interpolation between `+3.78e-6` at `3e-6` and `−5.9e-7` at `5e-6`), i.e. about **`5.4e-4` of consumed doubled volume** over the ≈ 114-step chain (0.5 % of the slot budget `c₀ = 0.1`) —

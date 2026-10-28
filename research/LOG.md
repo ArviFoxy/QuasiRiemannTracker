@@ -1839,6 +1839,6 @@ slot; `mixed-slots/`).
   LOW Σx_T(e_T + q r_T − c_T qβ) ≥ qX₀ + r; descent Λ₀ > min c q B₀/(e + q r). Bar 2e-5 ⇔ effective e ≥ 1.0116
   (c ≤ 5.9587, or HIGH threshold +0.0041). Squares are absent from every input; a native doubled-slot source is a new
   object (needs ≈ 1.2 % doubled share of the transferred width) — open, low plausibility.
-- **Floor 1/2 in Lean (in build):** `lean/arvi_density/Density/NaturalEndpoint34.lean` proves Lemma 2.1 at `3/4 ≤ a`
+- **Floor 1/2 in Lean (built, axioms clean):** `lean/arvi_density/Density/NaturalEndpoint34.lean` proves Lemma 2.1 at `3/4 ≤ a`
   (`Range34.fixed_natural_dictionary_raw_density`, axioms clean) from Collet's `OrdinaryRange` 3/4 wrappers; the fork's
   HIGH count now takes `3/4 ≤ b`, all floor hypotheses `1/2 ≤ qf`; new `density_step_floor` for `qf ∈ [1/2, 3/4]`.

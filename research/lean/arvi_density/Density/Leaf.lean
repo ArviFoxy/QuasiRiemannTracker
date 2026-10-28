@@ -22,7 +22,7 @@ ordinary lengths alone leave the face) and HIGH rows (count × pointwise per bin
 above `Z^{d·vg/16}` use the native bound with the polynomial height factor.
 
 Fork of Sil's `Density/Leaf` (PR 83): the density floor `13/20` is a real parameter
-`qf ∈ [3/5, 3/4]` (the price is `densityPrice qf …`, the HIGH branch is the fork's
+`qf ∈ [1/2, 3/4]` (the price is `densityPrice qf …`, the HIGH branch is the fork's
 `high_branch … qf`, the LOW branch is unchanged because it is uniform in `q ∈ [1/50, 1]`). -/
 import Submissions.sil_density_split_20261026.Density.LeafLow
 import Submissions.arvi_density.Density.LeafHighEnergy
@@ -139,9 +139,9 @@ theorem height_gate {Z τ c d vg base : ℝ} {B h : ℕ} (hZ : 1 ≤ Z) (hτ : 0
 /-! ### The density leaf -/
 
 /-- **Density Seam A with the floor `qf`.** From the parent `G(B₀,L₀,c₀)` at `M = 1`, the packed
-leaf with the density-split price (cut `q = densQ qf …`, `3/5 ≤ qf ≤ 3/4`) on `[Mmin, Mmax]`. -/
+leaf with the density-split price (cut `q = densQ qf …`, `1/2 ≤ qf ≤ 3/4`) on `[Mmin, Mmax]`. -/
 theorem density_priced_source (qf B₀ L₀ c₀ L A D s₀ Mmin Mmax Lplain : ℝ) (hL : 0 < L₀)
-    (hqf : 3/5 ≤ qf) (hqf' : qf ≤ 3/4)
+    (hqf : 1/2 ≤ qf) (hqf' : qf ≤ 3/4)
     (hβ : (51/100:ℝ) ≤ HeckeZeroSupremum.beta)
     (hface : 0 < B₀ ∧ B₀ ≤ 1 ∧ 0 < c₀) (h0 : 0 < Mmin) (h1 : Mmin ≤ Mmax)
     (hparent : QRH.Record1252270103Source.GlobalSource B₀ L₀ c₀) :

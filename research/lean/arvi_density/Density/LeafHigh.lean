@@ -19,6 +19,7 @@ Fork of Sil's `Density/LeafHigh` (PR 83): the row count `high_row_count` is stat
 `4/5 ≤ b` (the HIGH range of a floor `qf ≥ 3/5`) and calls the PR 67 vintage
 (`Record1252270103Bootstrap.PR67…fixed_natural_dictionary_raw_density`, `4/5 ≤ a`) of Collet's
 count instead of the Cycle61 one (`33/40 ≤ a`); the scalar lemmas are unchanged. -/
+import Submissions.arvi_density.Density.NaturalEndpoint34
 import Submissions.sil_density_split_20261026.Density.LeafHighRow
 import Submissions.arvi_density.Density.Price
 import Submissions.hailey_collet_1252270103.Cycle61.Moment.PhysicalHighRows
@@ -124,14 +125,13 @@ theorem high_row_count {κ : Type} [Fintype κ] (anchors : κ → Character) (η
     ∃ J : ℕ, ∃ C : ℝ, 0 < C ∧ ∀ {Z bΦ : ℝ}, 0 < bΦ → ∀ (j : κ) (st : NaturalState Z 0 bΦ),
       st.character = anchors j → st.puncture = 1 →
       ∀ (hQM : st.fixedModulus ≤ rayM) (hQη : st.fixedModulus ≤ η₀.modulus)
-        (b T' : ℝ), 4/5 ≤ b → b ≤ 7/8 → 0 ≤ T' →
+        (b T' : ℝ), 3/4 ≤ b → b ≤ 7/8 → 0 ≤ T' →
       ∀ rows : Finset O, (∀ z ∈ rows, ∃ hz : st.radial.keep z,
         st.radial.profile (‖eisEmbedding z‖^2/st.radial.scale) ≠ 0 ∧
         b ≤ Cycle61InitialMass.geometryRowMaximum rayM H hH st η₀ hQM hQη z hz T') →
       (rows.card : ℝ) ≤ C*(1+T')^J*(bΦ*Z^st.rowWidth)^(unmarkedDensity (2*b-1)+loss) := by
-  obtain ⟨J, hJ⟩ := fixed_natural_dictionary_raw_density_four_fifths
-    (Label := (κ × WholeSourceIndex rayM H) × Bool) loss hloss
-  obtain ⟨C, hC, hcount⟩ := hJ (orientedFixedBase (highDictionary rayM H hH anchors η₀))
+  obtain ⟨J, C, hC, hcount⟩ := OAI.SevenEighths.LocalMoment.Range34.fixed_natural_dictionary_raw_density
+    (orientedFixedBase (highDictionary rayM H hH anchors η₀)) loss hloss
   refine ⟨J, C, hC, ?_⟩
   intro Z bΦ hbΦ j st hchar hu hQM hQη b T' hb hb' hT' rows hrows
   let rows' : Finset NonzeroFrequency := rows.subtype (fun z => z ≠ 0)

@@ -10,8 +10,8 @@ The HIGH rows (kept, not LOW at the cut `q`) are classified by their q-free chos
 `K'·diag·ctl²·(1+|t|+height)^J·Z^{M + highSup q P s M + small + loss·Mcap + τJ}`.
 
 Fork of Sil's `Density/LeafHighEnergy` (PR 83): the cut ranges over `q ∈ [qf, 3/4]` for a real
-floor `qf ≥ 3/5` (instead of `[13/20, 3/4]`), and the bins of a nonempty class satisfy
-`4/5 ≤ b` (instead of `33/40 ≤ b`) because `(q+1)/2 ≥ (qf+1)/2 ≥ 4/5`. -/
+floor `qf ≥ 1/2` (instead of `[13/20, 3/4]`), and the bins of a nonempty class satisfy
+`3/4 ≤ b` (instead of `33/40 ≤ b`) because `(q+1)/2 ≥ (qf+1)/2 ≥ 3/4`. -/
 import Submissions.arvi_density.Density.LeafHigh
 
 set_option autoImplicit false
@@ -40,12 +40,12 @@ variable (H : Subgroup (O⧸rayM)ˣ) (hH : RayOrthogonality.globalUnits rayM ≤
 /-- **HIGH branch.** The dictionary (anchors, `η₀`) and the loss are fixed first; the
 density degree `J` comes next; then for every height scale `τ > 0` one constant, one
 control set and one threshold, uniformly in the anchor index, the cut `q ∈ [qf,3/4]`
-(`qf ≥ 3/5` fixed before `J`), the state, the base height index `h`, the slot data, the
+(`qf ≥ 1/2` fixed before `J`), the state, the base height index `h`, the slot data, the
 ordinary profiles and lengths. -/
 theorem high_branch {α : Type} [Fintype α] [DecidableEq α]
     (W : ℝ → ℂ) (hWs : Function.support W ⊆ Set.Icc (1:ℝ) 2) (hW : ContDiff ℝ ∞ W)
     (bΦ : ℝ) (hbΦ : 1 ≤ bΦ) {κ : Type} [Fintype κ] (anchors : κ → Character)
-    (η₀ : Character) (qf : ℝ) (hqf : 3/5 ≤ qf)
+    (η₀ : Character) (qf : ℝ) (hqf : 1/2 ≤ qf)
     (hβ : (51/100:ℝ) ≤ HeckeZeroSupremum.beta) (hβ' : HeckeZeroSupremum.beta ≤ 7/8)
     (Mcap Lplain ε₁ e kap v d loss : ℝ) (hL : 0 ≤ Lplain)
     (hε₁ : 0 < ε₁) (he : 0 < e) (he' : e < 1/1000) (hkap : 0 < kap) (hkap' : kap ≤ 1)

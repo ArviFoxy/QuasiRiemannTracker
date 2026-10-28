@@ -30,7 +30,7 @@ theorem density_priced_source_three_fifths (B₀ L₀ c₀ L A D s₀ Mmin Mmax 
     PricedPackedSource
       (Density.densityPrice (3/5) B₀ L₀ c₀ L A D s₀ hL (by norm_num) (by norm_num))
       Mmin Mmax Lplain :=
-  Density.density_priced_source (3/5) B₀ L₀ c₀ L A D s₀ Mmin Mmax Lplain hL le_rfl (by norm_num)
+  Density.density_priced_source (3/5) B₀ L₀ c₀ L A D s₀ Mmin Mmax Lplain hL (by norm_num) (by norm_num)
     hβ hface h0 h1 hparent
 
 /-- **Step gates at the floor `qf = 3/5`.** -/
@@ -45,7 +45,7 @@ theorem density_step_three_fifths (B₀ L₀ c₀ B L c A D : ℝ) (hL : 0 < L�
     (hβ : (51/100:ℝ) ≤ HeckeZeroSupremum.beta)
     (hparent : QRH.Record1252270103Source.GlobalSource B₀ L₀ c₀) :
     QRH.Record1252270103Source.GlobalSource B L c :=
-  Density.density_step (3/5) B₀ L₀ c₀ B L c A D hL le_rfl (by norm_num) hB₀ h hF hβ hparent
+  Density.density_step (3/5) B₀ L₀ c₀ B L c A D hL (by norm_num) (by norm_num) hB₀ h hF hβ hparent
 
 /-- PR 83's first transition `G(9999/10000, 129/50, 3/25) → G(9959/10000, 5/2, 1/10)`
 (`A = 6/5`, `D = 140`, certified with floor `13/20`, hence with floor `3/5`) as an instance of
@@ -78,5 +78,18 @@ theorem sil_second_step_three_fifths (hβ : (51/100:ℝ) ≤ HeckeZeroSupremum.b
 #print axioms Density.dsGates_first_of_floor
 #print axioms Density.dsGates_second_of_floor
 
+
+/-- **The density-split step at any floor `qf ∈ [1/2, 3/4]`** (HIGH count from Collet's
+3/4-range wrappers, `Density/NaturalEndpoint34.lean`). -/
+theorem density_step_floor (qf B₀ L₀ c₀ B L c A D : ℝ) (hqf : 1/2 ≤ qf) (hqf' : qf ≤ 3/4)
+    (hL : 0 < L₀) (hB₀ : 0 < B₀)
+    (h : HybridGates qf B₀ L₀ c₀ B L c A D) (hF : Density.DSFace B₀ L₀ c₀ B L c)
+    (hβ : (51/100:ℝ) ≤ HeckeZeroSupremum.beta)
+    (hparent : QRH.Record1252270103Source.GlobalSource B₀ L₀ c₀) :
+    QRH.Record1252270103Source.GlobalSource B L c :=
+  Density.density_step qf B₀ L₀ c₀ B L c A D hL hqf hqf' hB₀ h hF hβ hparent
+
 end
 end QRH.ArviDensity
+
+#print axioms QRH.ArviDensity.density_step_floor

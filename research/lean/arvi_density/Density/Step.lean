@@ -1,7 +1,7 @@
 /- The density-split step with the floor `qf`, accepted by Sil's generic cube-free engine.
 
 For a density transition `G(B₀,L₀,c₀) → G(B,L,c)` certified by this package's `HybridGates qf …`
-(floor `qf ∈ [3/5, 3/4]`):
+(floor `qf ∈ [1/2, 3/4]`):
 
 * `dsGates` (`Density/StepGates`) shows that the step data `dsData qf …` satisfy the generic
   `StepGates` of the engine;
@@ -26,7 +26,7 @@ open QRH.SilDensitySplit.CubeFree
 
 /-- **The density leaf of a step at the floor `qf`:** the Seam A leaf with the price of `dsData qf …`
 at its envelope `[Hmin, Hmax + 1]`. -/
-theorem density_leaf (qf B₀ L₀ c₀ B L c A D Lplain : ℝ) (hL : 0 < L₀) (hqf : 3/5 ≤ qf)
+theorem density_leaf (qf B₀ L₀ c₀ B L c A D Lplain : ℝ) (hL : 0 < L₀) (hqf : 1/2 ≤ qf)
     (hqf' : qf ≤ 3/4) (hβ : (51/100:ℝ) ≤ HeckeZeroSupremum.beta)
     (hface : 0 < B₀ ∧ B₀ ≤ 1 ∧ 0 < c₀)
     (hparent : QRH.Record1252270103Source.GlobalSource B₀ L₀ c₀) :
@@ -36,11 +36,11 @@ theorem density_leaf (qf B₀ L₀ c₀ B L c A D Lplain : ℝ) (hL : 0 < L₀) 
   density_priced_source qf B₀ L₀ c₀ L A D _ _ _ Lplain hL hqf hqf' hβ hface
     (by norm_num [dsData]) (by norm_num [dsData]) hparent
 
-/-- **The density-split step at the floor `qf ∈ [3/5, 3/4]`.** If the transition
+/-- **The density-split step at the floor `qf ∈ [1/2, 3/4]`.** If the transition
 `G(B₀,L₀,c₀) → G(B,L,c)` with selection `A`, `D` is certified by `HybridGates qf …` (and the face
 facts `DSFace`, `0 < B₀`), the generic cube-free engine turns the parent source into the child
 source, under the contrary hypothesis `51/100 ≤ β`. -/
-theorem density_step (qf B₀ L₀ c₀ B L c A D : ℝ) (hL : 0 < L₀) (hqf : 3/5 ≤ qf)
+theorem density_step (qf B₀ L₀ c₀ B L c A D : ℝ) (hL : 0 < L₀) (hqf : 1/2 ≤ qf)
     (hqf' : qf ≤ 3/4) (hB₀ : 0 < B₀) (h : HybridGates qf B₀ L₀ c₀ B L c A D)
     (hF : DSFace B₀ L₀ c₀ B L c) (hβ : (51/100:ℝ) ≤ HeckeZeroSupremum.beta)
     (hparent : QRH.Record1252270103Source.GlobalSource B₀ L₀ c₀) :

@@ -1,72 +1,42 @@
-// Local pre-push check: use the same parser, limits and secret scanner as CI.
+// Local pre-push check: scan the same embedded metadata field as CI.
 import { existsSync, lstatSync, readdirSync, readFileSync } from "node:fs";
 import { relative, resolve, sep, join } from "node:path";
-import {
-  scanTrace,
-  traceDirectory,
-  validateTraceSizes,
-} from "../verifier/agent-traces.mjs";
+import { metadataDirectory, scanTrace } from "../verifier/agent-traces.mjs";
+import { maxMetadataBytes } from "../verifier/submission-metadata.mjs";
 
 try {
   const root = process.cwd();
-  const directory = join(root, "agent-traces");
-  let folders = process.argv.slice(2);
-  if (!folders.length && existsSync(directory)) {
-    if (
-      !lstatSync(directory).isDirectory() ||
-      lstatSync(directory).isSymbolicLink()
-    )
-      throw Error("Expected a regular agent-traces directory");
-    folders = readdirSync(directory)
-      .filter((name) => name !== "README.md")
-      .map((name) => join(directory, name));
+  const submissions = join(root, "submissions");
+  const directory = (path) => {
+    const stat = lstatSync(path);
+    if (!stat.isDirectory() || stat.isSymbolicLink())
+      throw Error("Expected a regular submission directory");
+  };
+  let paths = process.argv.slice(2);
+  if (!paths.length && existsSync(submissions)) {
+    directory(submissions);
+    paths = readdirSync(submissions).map((name) =>
+      join(submissions, name, "metadata.json"),
+    );
   }
   let count = 0;
-  for (const folder of folders) {
-    const full = resolve(folder);
+  for (const input of paths) {
+    const full = resolve(input);
     const path = relative(root, full).split(sep).join("/");
-    const name = traceDirectory(`${path}/trace.json`);
-    if (
-      !name ||
-      !lstatSync(directory).isDirectory() ||
-      lstatSync(directory).isSymbolicLink() ||
-      !lstatSync(full).isDirectory() ||
-      lstatSync(full).isSymbolicLink()
-    )
-      throw Error(
-        "Select a regular agent-traces/<submission-folder> directory",
-      );
-    const submission = join(root, "submissions", name);
-    if (
-      !existsSync(submission) ||
-      !lstatSync(submission).isDirectory() ||
-      lstatSync(submission).isSymbolicLink()
-    )
-      throw Error(
-        `Agent traces must match an existing submission directory: ${name}`,
-      );
-    const files = readdirSync(full).map((file) => {
-      const filePath = `${path}/${file}`;
-      const stat = lstatSync(join(full, file));
-      if (
-        !traceDirectory(filePath) ||
-        !stat.isFile() ||
-        stat.isSymbolicLink() ||
-        stat.mode & 0o111
-      )
-        throw Error(
-          "Agent traces must be regular, non-executable JSON/JSONL files",
-        );
-      return { path: filePath, full: join(full, file), size: stat.size };
-    });
-    validateTraceSizes(files);
-    for (const file of files) {
-      scanTrace(file.path, readFileSync(file.full));
-      count++;
-    }
+    const folder = metadataDirectory(path);
+    if (!folder)
+      throw Error("Select submissions/<submission-folder>/metadata.json");
+    directory(submissions);
+    directory(join(submissions, folder));
+    const stat = lstatSync(full);
+    if (!stat.isFile() || stat.isSymbolicLink())
+      throw Error("Expected a regular submission metadata.json");
+    if (stat.size > maxMetadataBytes)
+      throw Error("Submission metadata must be at most 2 MiB");
+    count += scanTrace(path, readFileSync(full));
   }
   console.log(
-    `Agent traces: ${count} files checked; no suspected secrets found.`,
+    `Agent traces: ${count} embedded exports checked; no suspected secrets found.`,
   );
 } catch (error) {
   console.error(error.message);

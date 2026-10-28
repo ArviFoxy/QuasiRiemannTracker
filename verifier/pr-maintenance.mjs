@@ -13,7 +13,10 @@ import {
   catalogueProofRecords,
   proofRevision,
 } from "../core/catalogue-revisions.mjs";
-import { validateSubmissionMetadata } from "./submission-metadata.mjs";
+import {
+  parseSubmissionMetadataJSON,
+  validateSubmissionMetadata,
+} from "./submission-metadata.mjs";
 import { certificate, historicalCertificate } from "./certificate.mjs";
 import {
   submissionId,
@@ -93,7 +96,8 @@ export function maintenancePlan({
   };
   const metadata = (side, id) => {
     const path = metadataPath(side, id);
-    return path ? JSON.parse(read(side, path) || "null") : null;
+    const bytes = path ? read(side, path) : null;
+    return bytes ? parseSubmissionMetadataJSON(bytes) : null;
   };
   const metadataCatalogue = (side) => {
     const records = [],
@@ -101,7 +105,7 @@ export function maintenancePlan({
     for (const path of [...paths[side]].filter((path) =>
       /^submissions\/[^/]+\/metadata\.json$/.test(path),
     )) {
-      const input = JSON.parse(read(side, path));
+      const input = parseSubmissionMetadataJSON(read(side, path));
       const id = submissionId(path.split("/")[1]);
       if (!input.id) {
         validateSubmissionMetadata(input);
@@ -122,7 +126,13 @@ export function maintenancePlan({
       );
       if (admitted && !metadata("base", id)?.id)
         throw Error(`Metadata duplicates an admitted proof: ${input.id}`);
-      const { historical, dependencies, verification, ...record } = input;
+      const {
+        historical,
+        dependencies,
+        verification,
+        agent_traces,
+        ...record
+      } = input;
       if (id !== proofRevision(record))
         throw Error("Proof metadata path differs from its revision");
       (historical === true ? historical_records : records).push(record);

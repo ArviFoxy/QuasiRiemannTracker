@@ -118,3 +118,39 @@ test("metadata changes are included in the authenticated submission inventory", 
     after.find((f) => f.path.endsWith("Main.lean")).sha256,
   );
 });
+
+test("embedded traces retain exact metadata bytes and source inventory binding", async (t) => {
+  const { submissionFiles } = await import("../verifier/manifest.mjs");
+  const { dir } = fixture(t);
+  const before = submissionFiles(dir);
+  const bytes = Buffer.from(
+    JSON.stringify(
+      {
+        ...metadata,
+        agent_traces: [{ output: "x".repeat(70 * 1024) }],
+      },
+      null,
+      2,
+    ) + "\n",
+  );
+  writeFileSync(join(dir, "metadata.json"), bytes);
+  const after = submissionFiles(dir);
+  assert.deepEqual(
+    after.files.find((file) => file.path === "metadata.json").bytes,
+    bytes,
+  );
+  assert.notDeepEqual(after.inventory, before.inventory);
+  assert.equal(
+    after.inventory.find((file) => file.path.endsWith("Main.lean")).sha256,
+    before.inventory.find((file) => file.path.endsWith("Main.lean")).sha256,
+  );
+  writeFileSync(
+    join(dir, "metadata.json"),
+    '{"agent_traces":[{"secret":"private-credential" INVALID}]}',
+  );
+  assert.throws(
+    () => submissionFiles(dir),
+    (error) =>
+      error.message === "Submission metadata must contain valid UTF-8 JSON",
+  );
+});

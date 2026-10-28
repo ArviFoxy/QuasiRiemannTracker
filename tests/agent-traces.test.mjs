@@ -17,138 +17,24 @@ import test from "node:test";
 import {
   scanTrace,
   traceContents,
-  traceDirectory,
-  traceLimits,
+  metadataDirectory,
   validatePRTraces,
-  validateTraceSizes,
 } from "../verifier/agent-traces.mjs";
+import { maxMetadataBytes } from "../verifier/submission-metadata.mjs";
 
 const folder = "2026-10-28-example-bound";
-const tracePath = `agent-traces/${folder}/run-01.json`;
-const jsonlPath = `agent-traces/${folder}/run-01.jsonl`;
+const metadataPath = `submissions/${folder}/metadata.json`;
 const marker = "PRIVATE_TRACE_CONTENT_MUST_NOT_BE_PRINTED";
 const cli = fileURLToPath(
   new URL("../scripts/check-agent-traces.mjs", import.meta.url),
 );
-
-test("CI installer failures are scanner errors, while scanner exit 1 remains a secret finding", (t) => {
-  const root = temporary(t);
-  mkdirSync(join(root, "scripts"));
-  mkdirSync(join(root, "bin"));
-  const wrapper = join(root, "scripts/gitleaks.sh");
-  copyFileSync(new URL("../scripts/gitleaks.sh", import.meta.url), wrapper);
-  for (const [name, code] of [
-    ["curl", 0],
-    ["sha256sum", 1],
-  ])
-    writeFileSync(join(root, "bin", name), `#!/bin/sh\nexit ${code}\n`, {
-      mode: 0o700,
-    });
-  withEnvironment(
-    { QRH_GITLEAKS: wrapper, PATH: `${join(root, "bin")}:${process.env.PATH}` },
-    () => {
-      assert.throws(
-        () => scanTrace(tracePath, Buffer.from("{}")),
-        /secret scan could not complete/,
-      );
-      const cache = join(root, ".work/trace-gitleaks-8.30.1");
-      writeFileSync(join(cache, "gitleaks"), "#!/bin/sh\nexit 1\n", {
-        mode: 0o700,
-      });
-      assert.throws(
-        () => scanTrace(tracePath, Buffer.from("{}")),
-        /Possible secret/,
-      );
-    },
-  );
-});
+const embedded = (...traces) =>
+  Buffer.from(JSON.stringify({ agent_traces: traces }));
 
 function temporary(t) {
   const root = mkdtempSync(join(tmpdir(), "qrh-trace-test-"));
   t.after(() => rmSync(root, { recursive: true, force: true }));
   return root;
-}
-
-function fixture() {
-  const id = (n) => n.toString(16).padStart(40, "0");
-  const ids = { head: id(1), traces: id(2), submissions: id(3), folder: id(4) };
-  const prefix = "repos/owner/repository/git/";
-  const directory = (path, sha) => ({
-    path,
-    sha,
-    mode: "040000",
-    type: "tree",
-  });
-  const responses = new Map([
-    [
-      `${prefix}trees/${ids.head}`,
-      {
-        tree: [
-          directory("agent-traces", ids.traces),
-          directory("submissions", ids.submissions),
-        ],
-      },
-    ],
-    [`${prefix}trees/${ids.traces}`, { tree: [directory(folder, ids.folder)] }],
-    [`${prefix}trees/${ids.submissions}`, { tree: [directory(folder, id(5))] }],
-    [`${prefix}trees/${ids.folder}`, { tree: [] }],
-  ]);
-  const requests = [],
-    scans = [];
-  const files = [{ filename: tracePath, status: "added" }];
-  const tree = (name) => responses.get(`${prefix}trees/${ids[name]}`);
-  let nextBlob = 10;
-  function addFile(
-    path = "run-01.json",
-    content = '{"message":"proof checked"}',
-  ) {
-    const bytes = Buffer.from(content);
-    const entry = {
-      path,
-      sha: id(nextBlob++),
-      mode: "100644",
-      type: "blob",
-      size: bytes.length,
-    };
-    tree("folder").tree.push(entry);
-    const blob = {
-      size: bytes.length,
-      encoding: "base64",
-      content: bytes.toString("base64"),
-    };
-    responses.set(`${prefix}blobs/${entry.sha}`, blob);
-    return { entry, blob };
-  }
-  const first = addFile();
-  const options = {
-    repository: "owner/repository",
-    pr: {
-      head: {
-        sha: ids.head,
-        ref: "untrusted-branch",
-        repo: { full_name: "fork/repository" },
-      },
-    },
-    files,
-    request: async (path) => {
-      requests.push(path);
-      assert.ok(responses.has(path), `Unexpected request: ${path}`);
-      return structuredClone(responses.get(path));
-    },
-    scan: (path, bytes) => scans.push({ path, bytes }),
-  };
-  return {
-    options,
-    requests,
-    scans,
-    tree,
-    addFile,
-    first,
-    ids,
-    files,
-    responses,
-    prefix,
-  };
 }
 
 function scanner(t, exitCode = 0) {
@@ -190,8 +76,107 @@ function withEnvironment(values, action) {
   }
 }
 
-test("native JSON objects, arrays and ATIF exports remain accepted without inventing a schema", () => {
-  for (const value of [
+function fixture() {
+  const id = (n) => n.toString(16).padStart(40, "0");
+  const ids = {
+    head: id(1),
+    submissions: id(2),
+    folder: id(3),
+    metadata: id(4),
+  };
+  const prefix = "repos/owner/repository/git/";
+  const directory = (path, sha) => ({
+    path,
+    sha,
+    mode: "040000",
+    type: "tree",
+  });
+  const bytes = embedded({ message: "proof checked" });
+  const entry = {
+    path: "metadata.json",
+    sha: ids.metadata,
+    mode: "100644",
+    type: "blob",
+    size: bytes.length,
+  };
+  const blob = {
+    size: bytes.length,
+    encoding: "base64",
+    content: bytes.toString("base64"),
+  };
+  const responses = new Map([
+    [
+      `${prefix}trees/${ids.head}`,
+      { tree: [directory("submissions", ids.submissions)] },
+    ],
+    [
+      `${prefix}trees/${ids.submissions}`,
+      { tree: [directory(folder, ids.folder)] },
+    ],
+    [`${prefix}trees/${ids.folder}`, { tree: [entry] }],
+    [`${prefix}blobs/${ids.metadata}`, blob],
+  ]);
+  const requests = [],
+    scans = [];
+  const files = [{ filename: metadataPath, status: "added" }];
+  const tree = (name) => responses.get(`${prefix}trees/${ids[name]}`);
+  const options = {
+    repository: "owner/repository",
+    pr: {
+      head: {
+        sha: ids.head,
+        ref: "untrusted-branch",
+        repo: { full_name: "fork/repository" },
+      },
+    },
+    files,
+    request: async (path) => {
+      requests.push(path);
+      assert.ok(responses.has(path), `Unexpected request: ${path}`);
+      return structuredClone(responses.get(path));
+    },
+    scan: (path, bytes) => {
+      scans.push({ path, bytes });
+      return 1;
+    },
+  };
+  return { options, requests, scans, tree, entry, blob, ids, files, prefix };
+}
+
+test("CI installer failures are scanner errors, while scanner exit 1 remains a secret finding", (t) => {
+  const root = temporary(t);
+  mkdirSync(join(root, "scripts"));
+  mkdirSync(join(root, "bin"));
+  const wrapper = join(root, "scripts/gitleaks.sh");
+  copyFileSync(new URL("../scripts/gitleaks.sh", import.meta.url), wrapper);
+  for (const [name, code] of [
+    ["curl", 0],
+    ["sha256sum", 1],
+  ])
+    writeFileSync(join(root, "bin", name), `#!/bin/sh\nexit ${code}\n`, {
+      mode: 0o700,
+    });
+  withEnvironment(
+    { QRH_GITLEAKS: wrapper, PATH: `${join(root, "bin")}:${process.env.PATH}` },
+    () => {
+      assert.throws(
+        () => scanTrace(metadataPath, embedded({})),
+        /secret scan could not complete/,
+      );
+      const cache = join(root, ".work/trace-gitleaks-8.30.1");
+      writeFileSync(join(cache, "gitleaks"), "#!/bin/sh\nexit 1\n", {
+        mode: 0o700,
+      });
+      assert.throws(
+        () => scanTrace(metadataPath, embedded({})),
+        /Possible secret/,
+      );
+    },
+  );
+});
+
+test("embedded ATIF and native objects/arrays are accepted without a second trace schema", () => {
+  const traces = [
     {
       agent: "native-export",
       events: [{ role: "assistant", text: "checked" }],
@@ -203,44 +188,27 @@ test("native JSON objects, arrays and ATIF exports remain accepted without inven
       agent: { name: "example", version: "1.0" },
       steps: [],
     },
-  ]) {
-    const raw = JSON.stringify(value);
-    assert.equal(traceContents(tracePath, Buffer.from(raw)).raw, raw);
-  }
+  ];
+  const result = traceContents(metadataPath, embedded(...traces));
+  assert.equal(result.count, 3);
+  assert.deepEqual(JSON.parse(result.raw).agent_traces, traces);
 });
 
-test("JSONL accepts object records and blank lines but rejects arrays and scalar records", () => {
-  const raw = '\n{"event":"start"}\r\n  \n{"event":"end"}\n';
-  assert.equal(traceContents(jsonlPath, Buffer.from(raw)).raw, raw);
-  for (const bad of [
-    "[]\n",
-    "null\n",
-    "true\n",
-    "1\n",
-    '"message"\n',
-    "{}\n[]\n",
-    " \n\t",
-  ]) {
-    assert.throws(
-      () => traceContents(jsonlPath, Buffer.from(bad)),
-      /Invalid UTF-8 JSON/,
-    );
-  }
-});
-
-test("JSON and UTF-8 errors never include source content", () => {
+test("metadata parsing errors never include trace content", () => {
   for (const bytes of [
-    Buffer.from(`{"message":"${marker}"`),
+    Buffer.from(`{"agent_traces":[{"text":"${marker}"`),
     Buffer.from(`"${marker}"`),
     Buffer.from("null"),
-    Buffer.from("123"),
-    Buffer.from("false"),
+    Buffer.from("[]"),
     Buffer.from([0xc3, 0x28]),
   ]) {
     assert.throws(
-      () => traceContents(tracePath, bytes),
+      () => traceContents(metadataPath, bytes),
       (error) => {
-        assert.match(error.message, /Invalid UTF-8 JSON/);
+        assert.match(
+          error.message,
+          /valid UTF-8 JSON|Invalid submission metadata/,
+        );
         assert.ok(!error.message.includes(marker));
         return true;
       },
@@ -248,79 +216,47 @@ test("JSON and UTF-8 errors never include source content", () => {
   }
 });
 
-test("JSON-unescaped strings, keys and tool output retain scannable context", () => {
+test("escaped JSON keys, values and tool newlines retain scannable context", () => {
   const raw =
-    '{"api\\u005fkey":"abc\\u002d123","tool":{"output":"first\\nsecond"},"nested":[{"credential\\u005fname":"value"}]}';
-  const result = traceContents(tracePath, Buffer.from(raw));
+    '{"agent_traces":[{"api\\u005fkey":"abc\\u002d123","tool":{"output":"first\\nsecond"},"nested":[{"credential\\u005fname":"value"}]}]}';
+  const result = traceContents(metadataPath, Buffer.from(raw));
   assert.equal(result.raw, raw);
   assert.match(result.decoded, /api_key: abc-123/);
   assert.match(result.decoded, /output: first\nsecond/);
   assert.match(result.decoded, /credential_name: value/);
 });
 
-test("trace paths require one valid date, flat regular filenames and JSON extensions", () => {
-  assert.equal(traceDirectory(tracePath), folder);
-  assert.equal(traceDirectory(jsonlPath), folder);
+test("only submission metadata is selected, including historical submission IDs", () => {
+  assert.equal(metadataDirectory(metadataPath), folder);
+  assert.equal(
+    metadataDirectory("submissions/example-bound/metadata.json"),
+    "example-bound",
+  );
   for (const path of [
-    "agent-traces",
-    "agent-traces/README.md",
-    "agent-traces/example-bound/run.json",
-    "agent-traces/2026-02-30-example-bound/run.json",
-    "agent-traces/2026-10-28-example-2026-10-27/run.json",
-    `agent-traces/${folder}/../run.json`,
-    `agent-traces/${folder}/nested/run.json`,
-    `agent-traces/${folder}/.run.json`,
-    `agent-traces/${folder}/run.txt`,
-    `agent-traces/${folder}/run.JSON`,
-    `agent-traces/${folder}/run name.json`,
-    `agent-traces/${folder}/${"a".repeat(101)}.json`,
-    `agent-traces/${folder}/run.json\n`,
-    `/agent-traces/${folder}/run.json`,
-    `agent-traces\\${folder}\\run.json`,
+    "README.md",
+    `submissions/${folder}/run.json`,
+    `submissions/${folder}/nested/metadata.json`,
+    "submissions/../metadata.json",
+    `${metadataPath}\n`,
+    `/${metadataPath}`,
   ])
-    assert.equal(traceDirectory(path), null, path);
+    assert.equal(metadataDirectory(path), null, path);
 });
 
-test("per-file and aggregate limits are bounded before parsing or fetching blobs", () => {
-  assert.throws(() => traceContents(tracePath, Buffer.alloc(0)), /nonempty/);
+test("raw metadata size is bounded before parsing", () => {
+  assert.throws(() => traceContents(metadataPath, Buffer.alloc(0)), /nonempty/);
   assert.throws(
-    () => traceContents(tracePath, Buffer.alloc(traceLimits.fileBytes + 1)),
-    /at most 10 MiB/,
+    () => traceContents(metadataPath, Buffer.alloc(maxMetadataBytes + 1)),
+    /at most 2 MiB/,
   );
-  assert.doesNotThrow(() =>
-    validateTraceSizes(Array.from({ length: 50 }, () => ({ size: 1 }))),
-  );
-  assert.doesNotThrow(() =>
-    validateTraceSizes(
-      Array.from({ length: 5 }, () => ({ size: traceLimits.fileBytes })),
-    ),
-  );
-  for (const files of [
-    [{ size: 0 }],
-    [{ size: -1 }],
-    [{ size: 1.5 }],
-    [{ size: NaN }],
-    [{ size: Infinity }],
-    [{}],
-    [{ size: traceLimits.fileBytes + 1 }],
-    Array.from({ length: 51 }, () => ({ size: 1 })),
-    [
-      ...Array.from({ length: 5 }, () => ({ size: traceLimits.fileBytes })),
-      { size: 1 },
-    ],
-  ])
-    assert.throws(() => validateTraceSizes(files), /size limit/);
 });
 
-test("a PR reads immutable head trees and scans every file in each touched folder", async () => {
+test("changed metadata is read from immutable head trees and blobs", async () => {
   const data = fixture();
-  const second = data.addFile("older-run.jsonl", '{"older":true}\n');
-  assert.equal(await validatePRTraces(data.options), 2);
-  assert.deepEqual(
-    data.scans.map((scan) => scan.path),
-    [tracePath, `agent-traces/${folder}/${second.entry.path}`],
-  );
-  assert.equal(data.scans[0].bytes.toString(), '{"message":"proof checked"}');
+  assert.equal(await validatePRTraces(data.options), 1);
+  assert.deepEqual(data.scans, [
+    { path: metadataPath, bytes: embedded({ message: "proof checked" }) },
+  ]);
   assert.equal(data.requests[0], `${data.prefix}trees/${data.ids.head}`);
   assert.ok(
     data.requests.every((path) =>
@@ -329,161 +265,65 @@ test("a PR reads immutable head trees and scans every file in each touched folde
   );
 });
 
-test("unchanged traces and the trace README need no API or scanner", async () => {
+test("unmodified or removed metadata needs no API calls or scanner", async () => {
   const data = fixture();
   data.options.files = [
     { filename: "README.md" },
-    { filename: "agent-traces/README.md" },
+    { filename: metadataPath, status: "removed" },
   ];
   assert.equal(await validatePRTraces(data.options), 0);
   assert.deepEqual(data.requests, []);
   assert.deepEqual(data.scans, []);
 });
 
-test("removing the last trace or a whole trace folder requires no scanner", async () => {
-  for (const wholeRoot of [false, true]) {
-    const data = fixture();
-    data.files[0].status = "removed";
-    if (wholeRoot) data.tree("head").tree = [];
-    else data.tree("traces").tree = [];
-    assert.equal(await validatePRTraces(data.options), 0);
-    assert.deepEqual(data.scans, []);
-  }
-});
-
-test("renames validate the previous trace folder as well as the new path", async () => {
+test("metadata renames scan the destination blob", async () => {
   const data = fixture();
-  data.options.files = [
-    { filename: "notes.json", previous_filename: tracePath, status: "renamed" },
-  ];
+  data.files[0].status = "renamed";
+  data.files[0].previous_filename = "submissions/other-bound/metadata.json";
   assert.equal(await validatePRTraces(data.options), 1);
-  assert.equal(data.scans[0].path, tracePath);
+  assert.equal(data.scans[0].path, metadataPath);
 });
 
-test("invalid PR identities and unsupported trace paths fail before any API calls", async () => {
+test("invalid PR identities fail before API calls", async () => {
   for (const mutate of [
-    (data) => {
-      data.options.repository = "owner/repo/../other";
+    (d) => {
+      d.options.repository = "owner/repo/../other";
     },
-    (data) => {
-      data.options.pr.head.sha = "main";
-    },
-    (data) => {
-      data.files[0].filename = `agent-traces/${folder}/run.sh`;
+    (d) => {
+      d.options.pr.head.sha = "main";
     },
   ]) {
     const data = fixture();
     mutate(data);
     await assert.rejects(
       validatePRTraces(data.options),
-      /Invalid agent trace PR identity|Agent traces must use/,
+      /Invalid agent trace PR identity/,
     );
     assert.deepEqual(data.requests, []);
   }
 });
 
-test("a changed trace must exist at the immutable head and have a matching submission", async () => {
-  for (const [mutate, message] of [
-    [
-      (data) => {
-        data.tree("head").tree = data
-          .tree("head")
-          .tree.filter((entry) => entry.path !== "agent-traces");
-      },
-      /missing from the PR head/,
-    ],
-    [
-      (data) => {
-        data.tree("traces").tree = [];
-      },
-      /missing from the PR head/,
-    ],
-    [
-      (data) => {
-        data.first.entry.path = "other-run.json";
-      },
-      /missing from the PR head/,
-    ],
-    [
-      (data) => {
-        data.tree("submissions").tree = [];
-      },
-      /existing submission directory/,
-    ],
-    [
-      (data) => {
-        data.tree("head").tree = data
-          .tree("head")
-          .tree.filter((entry) => entry.path !== "submissions");
-      },
-      /existing submission directory/,
-    ],
-  ]) {
-    const data = fixture();
-    mutate(data);
-    await assert.rejects(validatePRTraces(data.options), message);
-    assert.deepEqual(data.scans, []);
+test("changed metadata and its parent directories must exist and be regular", async () => {
+  for (const name of ["head", "submissions", "folder"]) {
+    for (const patch of [
+      null,
+      { mode: "120000", type: "blob" },
+      { sha: "main" },
+    ]) {
+      const data = fixture();
+      if (patch) Object.assign(data.tree(name).tree[0], patch);
+      else data.tree(name).tree = [];
+      await assert.rejects(
+        validatePRTraces(data.options),
+        /Expected a regular/,
+      );
+      assert.deepEqual(data.scans, []);
+    }
   }
 });
 
-test("trace and submission directories cannot be symlinks or non-tree entries", async () => {
-  for (const [treeName, index] of [
-    ["head", 0],
-    ["head", 1],
-    ["traces", 0],
-    ["submissions", 0],
-  ]) {
-    const data = fixture();
-    Object.assign(data.tree(treeName).tree[index], {
-      mode: "120000",
-      type: "blob",
-    });
-    await assert.rejects(
-      validatePRTraces(data.options),
-      /regular agent trace\/submission directory/,
-    );
-    assert.deepEqual(data.scans, []);
-  }
-});
-
-test("trace blobs cannot be executable, symlinks, nested directories or unsupported files", async () => {
-  for (const patch of [
-    { mode: "100755" },
-    { mode: "120000" },
-    { type: "tree", mode: "040000" },
-    { path: "nested/run.json" },
-    { path: "gitleaks.toml" },
-    { sha: "main" },
-  ]) {
-    const data = fixture();
-    data.addFile("other.json");
-    Object.assign(data.tree("folder").tree[1], patch);
-    await assert.rejects(
-      validatePRTraces(data.options),
-      /regular JSON\/JSONL files/,
-    );
-    assert.deepEqual(data.scans, []);
-  }
-});
-
-test("limits apply to unchanged files in a touched folder before downloading any blob", async () => {
-  for (const mode of ["count", "total", "file"]) {
-    const data = fixture();
-    if (mode === "count")
-      for (let n = 0; n < 50; n++) data.addFile(`older-${n}.json`);
-    if (mode === "total")
-      for (let n = 0; n < 5; n++)
-        data.addFile(`older-${n}.json`).entry.size = traceLimits.fileBytes;
-    if (mode === "file")
-      data.addFile("older.json").entry.size = traceLimits.fileBytes + 1;
-    await assert.rejects(validatePRTraces(data.options), /size limit/);
-    assert.ok(data.requests.every((path) => !path.includes("/blobs/")));
-    assert.deepEqual(data.scans, []);
-  }
-});
-
-test("truncated and duplicate Git trees cannot silently omit traces", async () => {
-  for (const name of ["head", "traces", "submissions", "folder"]) {
+test("truncated or duplicate trees fail closed", async () => {
+  for (const name of ["head", "submissions", "folder"]) {
     for (const ambiguous of [false, true]) {
       const data = fixture();
       if (ambiguous) data.tree(name).tree.push({ ...data.tree(name).tree[0] });
@@ -497,23 +337,35 @@ test("truncated and duplicate Git trees cannot silently omit traces", async () =
   }
 });
 
-test("blob encoding and both advertised and decoded sizes must agree", async () => {
-  for (const [patch, message] of [
-    [{ encoding: "utf-8" }, /Invalid agent trace blob/],
-    [{ size: 12345 }, /Invalid agent trace blob/],
-    [{ content: "e30=" }, /blob size mismatch/],
-    [{ content: null }, /Invalid agent trace blob/],
+test("oversized or invalid blob lengths fail before downloading metadata", async () => {
+  for (const size of [0, -1, 1.5, undefined, maxMetadataBytes + 1]) {
+    const data = fixture();
+    data.entry.size = size;
+    await assert.rejects(
+      validatePRTraces(data.options),
+      /nonempty and at most 2 MiB/,
+    );
+    assert.ok(data.requests.every((path) => !path.includes("/blobs/")));
+  }
+});
+
+test("blob encoding and declared and decoded lengths must agree", async () => {
+  for (const patch of [
+    { encoding: "utf-8" },
+    { size: 12345 },
+    { content: "e30=" },
+    { content: null },
   ]) {
     const data = fixture();
-    Object.assign(data.first.blob, patch);
-    await assert.rejects(validatePRTraces(data.options), message);
+    Object.assign(data.blob, patch);
+    await assert.rejects(validatePRTraces(data.options), /metadata blob/);
     assert.deepEqual(data.scans, []);
   }
 });
 
-test("scanner receives raw and decoded content with protected files and no inherited credentials", (t) => {
+test("scanner gets embedded content in protected files without inherited credentials", (t) => {
   const fake = scanner(t);
-  const raw = '{"api\\u005fkey":"abc\\u002d123","comment":"gitleaks:allow"}';
+  const bytes = embedded({ api_key: "abc-123", comment: "gitleaks:allow" });
   withEnvironment(
     {
       QRH_GITLEAKS: fake.executable,
@@ -523,34 +375,33 @@ test("scanner receives raw and decoded content with protected files and no inher
       GITLEAKS_CONFIG: "/untrusted/rules.toml",
       NODE_OPTIONS: "--no-warnings",
     },
-    () => scanTrace(tracePath, Buffer.from(raw)),
+    () => assert.equal(scanTrace(metadataPath, bytes), 1),
   );
   const capture = JSON.parse(readFileSync(fake.capture, "utf8"));
-  assert.equal(capture.files["raw.json"].content, raw);
+  assert.deepEqual(
+    JSON.parse(capture.files["raw.json"].content),
+    JSON.parse(bytes),
+  );
   assert.match(capture.files["decoded.txt"].content, /api_key: abc-123/);
-  assert.equal(capture.files["ignore"].content, "");
+  assert.equal(capture.files.ignore.content, "");
   assert.match(capture.files["rules.toml"].content, /useDefault = true/);
   assert.ok(capture.argv.includes("--ignore-gitleaks-allow"));
   assert.ok(capture.argv.includes("--redact=100"));
-  assert.equal(capture.env.HOME, undefined);
   assert.equal(capture.cwd, capture.directory);
   assert.deepEqual(Object.keys(capture.env), ["PATH"]);
   assert.ok(Object.values(capture.files).every((file) => file.mode === 0o600));
-  assert.ok(
-    !existsSync(capture.directory),
-    "scanner workspace must be removed",
-  );
+  assert.ok(!existsSync(capture.directory));
 });
 
 for (const [exitCode, message] of [
   [1, /Possible secret/],
   [2, /secret scan could not complete/],
 ]) {
-  test(`scanner failure ${exitCode} hides all output and removes its temporary files`, (t) => {
+  test(`scanner failure ${exitCode} hides output and removes temporary files`, (t) => {
     const fake = scanner(t, exitCode);
     withEnvironment({ QRH_GITLEAKS: fake.executable }, () => {
       assert.throws(
-        () => scanTrace(tracePath, Buffer.from('{"message":"example"}')),
+        () => scanTrace(metadataPath, embedded({ message: "example" })),
         (error) => {
           assert.match(error.message, message);
           assert.ok(!error.message.includes(marker));
@@ -563,23 +414,27 @@ for (const [exitCode, message] of [
   });
 }
 
-test("an unavailable scanner fails closed", (t) => {
+test("an unavailable scanner fails only when traces are supplied", (t) => {
   withEnvironment(
     { QRH_GITLEAKS: join(temporary(t), "does-not-exist") },
     () => {
       assert.throws(
-        () => scanTrace(tracePath, Buffer.from("{}")),
+        () => scanTrace(metadataPath, embedded({})),
         /secret scan could not complete/,
       );
+      assert.equal(scanTrace(metadataPath, embedded()), 0);
+      assert.equal(scanTrace(metadataPath, Buffer.from("{}")), 0);
     },
   );
 });
 
 function localFixture(t, exitCode = 0) {
   const root = temporary(t);
-  mkdirSync(join(root, "agent-traces", folder), { recursive: true });
   mkdirSync(join(root, "submissions", folder), { recursive: true });
-  writeFileSync(join(root, tracePath), '{"message":"proof checked"}');
+  writeFileSync(
+    join(root, metadataPath),
+    embedded({ message: "proof checked" }),
+  );
   const fake = scanner(t, exitCode);
   const run = (...args) =>
     spawnSync(process.execPath, [cli, ...args], {
@@ -590,22 +445,23 @@ function localFixture(t, exitCode = 0) {
   return { root, run };
 }
 
-test("local command checks a selected submission folder and suppresses scanner output", (t) => {
+test("local command checks selected or all submission metadata without exposing scanner output", (t) => {
   const data = localFixture(t);
-  const result = data.run(`agent-traces/${folder}`);
-  assert.equal(result.status, 0, result.stderr);
-  assert.match(result.stdout, /1 files checked/);
-  assert.ok(!result.stdout.includes(marker));
-  assert.equal(result.stderr, "");
+  for (const args of [[metadataPath], []]) {
+    const result = data.run(...args);
+    assert.equal(result.status, 0, result.stderr);
+    assert.match(result.stdout, /1 embedded exports checked/);
+    assert.ok(!result.stdout.includes(marker));
+    assert.equal(result.stderr, "");
+  }
 });
 
 for (const [exitCode, message] of [
   [1, /Possible secret/],
   [2, /secret scan could not complete/],
 ]) {
-  test(`local command suppresses scanner stdout and stderr on failure ${exitCode}`, (t) => {
-    const data = localFixture(t, exitCode);
-    const result = data.run(`agent-traces/${folder}`);
+  test(`local command suppresses scanner output on failure ${exitCode}`, (t) => {
+    const result = localFixture(t, exitCode).run(metadataPath);
     assert.equal(result.status, 1);
     assert.match(result.stderr, message);
     assert.ok(!result.stdout.includes(marker));
@@ -613,27 +469,40 @@ for (const [exitCode, message] of [
   });
 }
 
-test("local command rejects symlink trace roots, folders and files", (t) => {
-  for (const path of ["agent-traces", `agent-traces/${folder}`, tracePath]) {
+test("local command rejects symlink submission roots, directories and metadata", (t) => {
+  for (const path of ["submissions", `submissions/${folder}`, metadataPath]) {
     const data = localFixture(t);
     const target = join(temporary(t), "target");
     const original = join(data.root, path);
-    if (path.endsWith(".json")) writeFileSync(target, "{}");
+    if (path.endsWith(".json")) writeFileSync(target, embedded({}));
     else mkdirSync(target);
     rmSync(original, { recursive: true, force: true });
     symlinkSync(target, original);
-    const result = data.run(`agent-traces/${folder}`);
+    const result = data.run(metadataPath);
     assert.equal(result.status, 1);
-    assert.match(result.stderr, /regular|ENOENT/);
+    assert.match(result.stderr, /regular/);
   }
 });
 
-test("local command succeeds without an installed scanner when no traces are present", (t) => {
+test("local command needs no installed scanner without embedded traces", (t) => {
+  const data = localFixture(t);
+  writeFileSync(join(data.root, metadataPath), '{"agent_traces":[]}');
   const result = spawnSync(process.execPath, [cli], {
-    cwd: temporary(t),
+    cwd: data.root,
     encoding: "utf8",
     env: { ...process.env, QRH_GITLEAKS: "/not-installed/gitleaks" },
   });
   assert.equal(result.status, 0, result.stderr);
-  assert.match(result.stdout, /0 files checked/);
+  assert.match(result.stdout, /0 embedded exports checked/);
+});
+
+test("historical metadata with an executable bit is read only as JSON", async (t) => {
+  const data = fixture();
+  data.entry.mode = "100755";
+  assert.equal(await validatePRTraces(data.options), 1);
+  const local = localFixture(t);
+  const { chmodSync } = await import("node:fs");
+  chmodSync(join(local.root, metadataPath), 0o755);
+  const result = local.run(metadataPath);
+  assert.equal(result.status, 0, result.stderr);
 });

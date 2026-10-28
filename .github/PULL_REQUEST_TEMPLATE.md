@@ -14,7 +14,8 @@ for result and maintenance PR instructions. -->
   "title": "Result title",
   "authors": [{ "name": "Your name" }],
   "description": "Method and attribution to previous work.",
-  "dependencies": ["openai-baseline"]
+  "dependencies": ["openai-baseline"],
+  "agent_traces": []
 }
 ```
 
@@ -35,10 +36,9 @@ Maintenance-only PRs can omit this checklist and use a plain description. -->
 
 ### Agent traces (recommended, optional)
 
-Trace paths or links: <!-- Leave blank if no trace is available. -->
+Include sanitized exports in `metadata.json`'s `agent_traces` array. Prefer
+[ATIF](https://docs.harborframework.com/agents/atif); native JSON exports are also
+accepted. Leave the array empty or omit it if no trace is available.
 
-<!-- Include sanitized ATIF JSON or native JSON/JSONL exports under
-agent-traces/<submission-directory>/, keeping the submission's original date.
-Preserve available prompts, messages, tool calls, results, and failed attempts.
-Run the local secret check before pushing; uploaded traces must pass CI checks.
-See https://github.com/GTimG/QuasiRiemannTracker/blob/main/agent-traces/README.md -->
+Run the [local secret check](https://github.com/GTimG/QuasiRiemannTracker/blob/main/README.md#submit)
+before pushing; supplied traces must pass CI checks.

@@ -15,6 +15,11 @@ import { join } from "node:path";
 const repository = "GTimG/QuasiRiemannTracker";
 const head = "a".repeat(40);
 const entrypoint = new URL("../verifier/check-pr.mjs", import.meta.url).href;
+const publicationMetadata = {
+  title: "Fixture result",
+  authors: [{ name: "Fixture author" }],
+  description: "Synthetic proof description.",
+};
 
 function fixture(files = [{ filename: "README.md", status: "modified" }]) {
   return {
@@ -57,6 +62,7 @@ test("missing publication metadata fails before queuing a proof worker", (t) => 
 const harness = `
 const fixture = JSON.parse(process.env.QRH_TEST_FIXTURE);
 const number = fixture.pr.number;
+const metadataText = fixture.metadataRaw ?? JSON.stringify(fixture.metadata ?? ${JSON.stringify(publicationMetadata)});
 const { createHash } = await import("node:crypto");
 const requests = [];
 const cp = (await import("node:child_process")).default;
@@ -98,14 +104,13 @@ globalThis.fetch = async (url, options = {}) => {
   const route = parsed.pathname;
   if (parsed.origin !== "https://api.github.com") throw Error("Unexpected API origin");
   let value;
-  if (request.method === "GET" && fixture.traceResponses && Object.hasOwn(fixture.traceResponses, route)) {
-    value = fixture.traceResponses[route];
-  } else if (request.method === "GET" && route.includes("/git/trees/")) {
-    const key=route.split("/").at(-1), id=/QRH-Result: ([^\\n]+)/.exec(fixture.pr.body)[1];
+  if (request.method === "GET" && route.includes("/git/trees/")) {
+    const key=route.split("/").at(-1), id=/QRH-Result: ([^\\n]+)/.exec(fixture.pr.body)?.[1] ?? "candidate";
     const item=(path,sha,type="tree",mode="040000")=>({path,sha:sha.repeat(40),type,mode});
-    value={tree:key===fixture.pr.head.sha?[item("submissions","d")]:key==="d".repeat(40)?[item(fixture.files.find(f=>f.filename.startsWith("submissions/"))?.filename.split("/")[1] || id,"e")]:key==="e".repeat(40)?[item("src","f"),...(fixture.omitMetadata?[]:[item("metadata.json","1","blob","100644")])]:key==="f".repeat(40)?[item("Candidate","2")]:[item("Main.lean","3","blob","100644")]};
+    const metadata = {...item("metadata.json","1","blob","100644"),size:Buffer.byteLength(metadataText)};
+    value={tree:key===fixture.pr.head.sha?[item("submissions","d")]:key==="d".repeat(40)?[item(fixture.files.find(f=>f.filename.startsWith("submissions/"))?.filename.split("/")[1] || id,"e")]:key==="e".repeat(40)?[item("src","f"),...(fixture.omitMetadata?[]:[metadata])]:key==="f".repeat(40)?[item("Candidate","2")]:[item("Main.lean","3","blob","100644")]};
   } else if (request.method === "GET" && route.includes("/git/blobs/")) {
-    value={encoding:"base64",size:100,content:Buffer.from(JSON.stringify({title:"Fixture result",authors:[{name:"Fixture author"}],description:"Synthetic proof description."})).toString("base64")};
+    value={encoding:"base64",size:Buffer.byteLength(metadataText),content:Buffer.from(metadataText).toString("base64")};
   } else if (request.method === "GET" && route === "/repos/${repository}/pulls/" + number) {
     value = prReads++ === 0 ? fixture.pr : (fixture.current ?? fixture.pr);
   } else if (request.method === "GET" && route === "/repos/${repository}/pulls/" + number + "/files") {
@@ -216,52 +221,21 @@ function run(t, data, overrides = {}) {
   };
 }
 
-function addTrace(
+function withMetadata(
   data,
   {
     directory = "2026-10-11-candidate",
-    name = "run-01.json",
-    content = '{"steps":[]}',
+    metadata = { ...publicationMetadata, agent_traces: [{ steps: [] }] },
+    raw,
   } = {},
 ) {
   data.files.unshift({
-    filename: `agent-traces/${directory}/${name}`,
+    filename: `submissions/${directory}/metadata.json`,
     status: "added",
   });
   data.pr.changed_files = data.files.length;
-  const item = (path, sha, extra = {}) => ({
-    path,
-    sha: sha.repeat(40),
-    type: "tree",
-    mode: "040000",
-    ...extra,
-  });
-  const prefix = `/repos/${repository}/git`;
-  data.traceResponses = {
-    [`${prefix}/trees/${head}`]: {
-      tree: [item("submissions", "d"), item("agent-traces", "4")],
-    },
-    [`${prefix}/trees/${"d".repeat(40)}`]: {
-      tree: [item(directory, "e")],
-    },
-    [`${prefix}/trees/${"4".repeat(40)}`]: {
-      tree: [item(directory, "5")],
-    },
-    [`${prefix}/trees/${"5".repeat(40)}`]: {
-      tree: [
-        item(name, "6", {
-          type: "blob",
-          mode: "100644",
-          size: Buffer.byteLength(content),
-        }),
-      ],
-    },
-    [`${prefix}/blobs/${"6".repeat(40)}`]: {
-      encoding: "base64",
-      size: Buffer.byteLength(content),
-      content: Buffer.from(content).toString("base64"),
-    },
-  };
+  data.metadata = metadata;
+  if (raw !== undefined) data.metadataRaw = raw;
   return data;
 }
 
@@ -502,8 +476,8 @@ test("an incomplete file list fails before assigning classification labels", (t)
   );
 });
 
-test("optional traces are scanned before a new result queues a proof worker", (t) => {
-  const data = addTrace(
+test("embedded agent traces are scanned before a new result queues a proof worker", (t) => {
+  const data = withMetadata(
     fixture([
       {
         filename: "submissions/2026-10-11-candidate/src/Candidate/Main.lean",
@@ -524,9 +498,38 @@ test("optional traces are scanned before a new result queues a proof worker", (t
   assert.doesNotMatch(result.stdout + result.stderr, /scanner output/);
 });
 
-for (const name of ["run-01.json", "run-01.jsonl"]) {
-  test(`a trace-only ${name} followup succeeds without queuing Lean`, (t) => {
-    const data = addTrace(fixture([]), { name });
+for (const trace of [
+  { steps: [] },
+  [{ role: "assistant", content: "Checked." }],
+]) {
+  test(`a metadata-only followup with an embedded ${Array.isArray(trace) ? "array" : "object"} trace succeeds without queuing Lean`, (t) => {
+    const metadata = {
+      id: "candidate",
+      theta: { numerator: "1", denominator: "1" },
+      status: "verification-pending",
+      timeline_at: "2026-10-01T00:00:00Z",
+      date_label: "Submitted",
+      verification_note: "Pending",
+      authors: [{ name: "Author" }],
+      references: [{ url: "https://example.com/proof" }],
+      title: "Candidate",
+      method: "Proof",
+      builds_on: [],
+    };
+    const data = withMetadata(fixture([]), {
+      metadata: { ...metadata, agent_traces: [trace] },
+    });
+    data.files[0].status = "modified";
+    data.snapshots = {
+      base: {
+        "submissions/2026-10-11-candidate/metadata.json": metadata,
+        "submissions/2026-10-11-candidate/src/Candidate/Main.lean": "theorem",
+      },
+      head: {
+        "submissions/2026-10-11-candidate/metadata.json": data.metadata,
+        "submissions/2026-10-11-candidate/src/Candidate/Main.lean": "theorem",
+      },
+    };
     const result = run(t, data, { QRH_PHASE: "prepare" });
     assert.equal(result.status, 0, JSON.stringify(result));
     assert.equal(result.scanned, true);
@@ -540,23 +543,51 @@ for (const name of ["run-01.json", "run-01.jsonl"]) {
   });
 }
 
-for (const [description, content, scannerExit, expected, scanned] of [
-  ["invalid JSON", "{ broken", 0, /JSON/i, false],
-  ["suspected secrets", '{"steps":[]}', 1, /secret|credential/i, true],
-  ["scanner failure", '{"steps":[]}', 2, /scan|Gitleaks/i, true],
+for (const [description, metadata, raw, scannerExit, expected, scanned] of [
+  [
+    "invalid metadata JSON",
+    publicationMetadata,
+    '{"agent_traces":[{"token":"DO_NOT_LOG_PAYLOAD", broken',
+    0,
+    /JSON/i,
+    false,
+  ],
+  [
+    "invalid trace shape",
+    { ...publicationMetadata, agent_traces: ["DO_NOT_LOG_PAYLOAD"] },
+    undefined,
+    0,
+    /agent_traces|trace/i,
+    false,
+  ],
+  [
+    "suspected secrets",
+    { ...publicationMetadata, agent_traces: [{ token: "DO_NOT_LOG_PAYLOAD" }] },
+    undefined,
+    1,
+    /secret|credential/i,
+    true,
+  ],
+  [
+    "scanner failure",
+    { ...publicationMetadata, agent_traces: [{ steps: [] }] },
+    undefined,
+    2,
+    /scan|Gitleaks/i,
+    true,
+  ],
 ]) {
-  test(`${description} in an optional trace fails required admission before metadata or proof queuing`, (t) => {
-    const data = addTrace(
+  test(`${description} fails required admission before source reads or proof queuing`, (t) => {
+    const data = withMetadata(
       fixture([
         {
           filename: "submissions/2026-10-11-candidate/src/Candidate/Main.lean",
           status: "added",
         },
       ]),
-      { content },
+      { metadata, raw },
     );
     data.pr.body = "QRH-Result: candidate\nQRH-Bound: 1/1\nQRH-Decimal: 1.0";
-    data.omitMetadata = true;
     data.scannerExit = scannerExit;
     const result = run(t, data, { QRH_PHASE: "prepare" });
     assert.equal(result.status, 1, JSON.stringify(result));
@@ -569,18 +600,46 @@ for (const [description, content, scannerExit, expected, scanned] of [
     assert.deepEqual(result.labelWrites, []);
     assert.ok(
       result.requests.every(
-        (request) => !request.url.endsWith(`/git/trees/${"e".repeat(40)}`),
+        (request) => !request.url.endsWith(`/git/trees/${"f".repeat(40)}`),
       ),
-      "publication metadata must not be read after a trace validation failure",
+      "proof sources must not be read after a trace validation failure",
     );
-    assert.doesNotMatch(result.stdout + result.stderr, /scanner output/);
+    assert.doesNotMatch(
+      result.stdout + result.stderr,
+      /scanner output|DO_NOT_LOG_PAYLOAD/,
+    );
   });
 }
 
-test("trace documentation maintenance does not require a scanner or read candidate trees", (t) => {
-  const data = fixture([
-    { filename: "agent-traces/README.md", status: "modified" },
-  ]);
+for (const agent_traces of [undefined, []]) {
+  test(`metadata with ${agent_traces ? "empty" : "absent"} agent_traces skips the scanner and still queues a declared proof`, (t) => {
+    const metadata = { ...publicationMetadata };
+    if (agent_traces !== undefined) metadata.agent_traces = agent_traces;
+    const data = withMetadata(
+      fixture([
+        {
+          filename: "submissions/2026-10-11-candidate/src/Candidate/Main.lean",
+          status: "added",
+        },
+      ]),
+      { metadata },
+    );
+    data.pr.body = "QRH-Result: candidate\nQRH-Bound: 1/1\nQRH-Decimal: 1.0";
+    const result = run(t, data, { QRH_PHASE: "prepare" });
+    assert.equal(result.status, 0, JSON.stringify(result));
+    assert.equal(result.scanned, false);
+    assert.equal(result.context.expected.result_id, "candidate");
+    assert.equal(result.outputs, 'verify=true\nmatrix=["candidate"]\n');
+    assert.ok(
+      result.requests.some((request) =>
+        request.url.endsWith(`/git/blobs/${"1".repeat(40)}`),
+      ),
+    );
+  });
+}
+
+test("documentation maintenance does not require a scanner or read candidate trees", (t) => {
+  const data = fixture();
   const result = run(t, data, { QRH_PHASE: "prepare" });
   assert.equal(result.status, 0, JSON.stringify(result));
   assert.equal(result.scanned, false);

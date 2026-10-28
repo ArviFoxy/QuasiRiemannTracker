@@ -84,6 +84,22 @@ test("proof metadata attribution edits validate without rerunning unchanged proo
     "Corrected attribution";
   assert.deepEqual(maintenancePlan(data), []);
 });
+
+test("legacy metadata accepts embedded traces without scheduling proof verification", () => {
+  const data = fixture([
+    modified("submissions/fixture-baseline/metadata.json"),
+  ]);
+  data.head["submissions/fixture-baseline/metadata.json"].agent_traces = [
+    {
+      output: "x".repeat(70 * 1024),
+    },
+  ];
+  assert.deepEqual(maintenancePlan(data), []);
+  data.head["submissions/fixture-baseline/metadata.json"].agent_traces = [
+    "run.json",
+  ];
+  assert.throws(() => maintenancePlan(data), /array of embedded JSON/);
+});
 test("changing a proof metadata bound alone fails for its mismatched verification record", () => {
   const data = fixture([
     modified("submissions/fixture-baseline/metadata.json"),

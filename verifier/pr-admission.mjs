@@ -4,7 +4,6 @@ import { join } from "node:path";
 import { rational } from "../core/rational.mjs";
 import { maintenanceVerification } from "./pr-maintenance.mjs";
 import { currentVerification } from "./actions/result.mjs";
-import { traceDirectory } from "./agent-traces.mjs";
 import {
   submissionId,
   validateSubmissionDirectory,
@@ -78,12 +77,9 @@ function paths(files) {
 
 export function classifyChanges(files) {
   const changedPaths = paths(files);
-  const proof = changedPaths.some(proofPath);
   return {
-    proof,
-    maintenance: changedPaths.some(
-      (name) => !proofPath(name) && !(proof && traceDirectory(name)),
-    ),
+    proof: changedPaths.some(proofPath),
+    maintenance: changedPaths.some((name) => !proofPath(name)),
   };
 }
 
@@ -147,22 +143,15 @@ export async function evaluatePR({
     }
     return `Maintenance requirements satisfied. Validated affected catalogue data and ${expected.length} proof(s).`;
   }
-  const directory = files
-    .map((file) => /^submissions\/([^/]+)\//.exec(file.filename)?.[1])
-    .find(Boolean);
+  const directory = /^submissions\/([^/]+)\//.exec(files[0].filename)?.[1];
   if (!directory)
     throw Error("A QRH result PR changes only its submission directory");
   const prefix = `submissions/${directory}/`;
   if (
     submissionId(directory) !== declaration.result_id ||
     files.some((file) => {
-      if (
-        !file.filename.startsWith(prefix) &&
-        traceDirectory(file.filename) !== directory
-      )
-        return true;
+      if (!file.filename.startsWith(prefix)) return true;
       if (!file.previous_filename) return false;
-      if (traceDirectory(file.previous_filename) === directory) return false;
       const previous = /^submissions\/([^/]+)\//.exec(
         file.previous_filename,
       )?.[1];
@@ -170,7 +159,7 @@ export async function evaluatePR({
     })
   )
     throw Error(
-      `A QRH result PR changes only ${prefix} and its matching agent-traces directory; edit existing submissions in a maintenance PR`,
+      `A QRH result PR changes only ${prefix}; edit existing submissions in a maintenance PR`,
     );
   if (!Number.isFinite(Date.parse(pr.created_at)))
     throw Error("Missing valid PR submission date");

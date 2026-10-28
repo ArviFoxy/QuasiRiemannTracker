@@ -5,6 +5,7 @@ import { sha256 } from "./common.mjs";
 
 import { submissionDependencies } from "./submission-dependencies.mjs";
 import { exactBound } from "../core/exact-bound.mjs";
+import { parseSubmissionMetadataJSON } from "./submission-metadata.mjs";
 export function manifest({ id, theta, exact_bound }) {
   if (!/^[a-z][a-z0-9-]{2,63}$/.test(id ?? ""))
     throw Error("Invalid submission ID");
@@ -80,9 +81,8 @@ export function submissionFiles(dir) {
     throw Error("Missing src/Candidate/Main.lean");
   const metadataFile = files.find((f) => f.path === "metadata.json");
   if (!metadataFile) throw Error("Missing metadata.json");
-  if (metadataFile.bytes.length > 65536)
-    throw Error("Submission metadata is too large");
-  submissionDependencies(JSON.parse(metadataFile.bytes.toString()));
+  const metadata = parseSubmissionMetadataJSON(metadataFile.bytes);
+  submissionDependencies(metadata);
   return {
     files,
     inventory: files.map(({ path, sha256 }) => ({ path, sha256 })),

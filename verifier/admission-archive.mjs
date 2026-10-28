@@ -20,6 +20,9 @@ const repository = (value) => /^[\w.-]+\/[\w.-]+$/.test(value ?? "");
 const positive = (value) => Number.isSafeInteger(value) && value > 0;
 const runNumber = (value) => /^[1-9][0-9]*$/.test(String(value ?? ""));
 const maxRecordBytes = 8 * 1024 * 1024;
+// Compact encoding keeps bounded embedded traces bounded in the durable record,
+// even when deeply nested JSON would expand substantially under indentation.
+const recordContent = (record) => JSON.stringify(record) + "\n";
 const authorUrl = (login) =>
   login.endsWith("[bot]")
     ? `https://github.com/apps/${login.slice(0, -5)}`
@@ -135,7 +138,7 @@ export function validateAdmissionRecord(value) {
     )
       throw Error("Archived report metadata differs from its certificate");
   }
-  if (Buffer.byteLength(JSON.stringify(value)) > maxRecordBytes)
+  if (Buffer.byteLength(recordContent(value)) > maxRecordBytes)
     throw Error("Admission archive record is too large");
   return value;
 }
@@ -288,7 +291,7 @@ export async function archiveAdmission(
     : {};
   const envelope = admissionRecord({ ...input, ...source, dependencyTrees });
   const path = admissionPath(envelope);
-  const content = JSON.stringify(envelope, null, 2) + "\n";
+  const content = recordContent(envelope);
   let blobSha;
   for (let retry = 0; retry < attempts; retry++) {
     const ref = await request(`git/ref/heads/${ADMISSION_BRANCH}`, {

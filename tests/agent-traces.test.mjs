@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
 import {
+  copyFileSync,
   existsSync,
   mkdirSync,
   mkdtempSync,
@@ -29,6 +30,38 @@ const marker = "PRIVATE_TRACE_CONTENT_MUST_NOT_BE_PRINTED";
 const cli = fileURLToPath(
   new URL("../scripts/check-agent-traces.mjs", import.meta.url),
 );
+
+test("CI installer failures are scanner errors, while scanner exit 1 remains a secret finding", (t) => {
+  const root = temporary(t);
+  mkdirSync(join(root, "scripts"));
+  mkdirSync(join(root, "bin"));
+  const wrapper = join(root, "scripts/gitleaks.sh");
+  copyFileSync(new URL("../scripts/gitleaks.sh", import.meta.url), wrapper);
+  for (const [name, code] of [
+    ["curl", 0],
+    ["sha256sum", 1],
+  ])
+    writeFileSync(join(root, "bin", name), `#!/bin/sh\nexit ${code}\n`, {
+      mode: 0o700,
+    });
+  withEnvironment(
+    { QRH_GITLEAKS: wrapper, PATH: `${join(root, "bin")}:${process.env.PATH}` },
+    () => {
+      assert.throws(
+        () => scanTrace(tracePath, Buffer.from("{}")),
+        /secret scan could not complete/,
+      );
+      const cache = join(root, ".work/trace-gitleaks-8.30.1");
+      writeFileSync(join(cache, "gitleaks"), "#!/bin/sh\nexit 1\n", {
+        mode: 0o700,
+      });
+      assert.throws(
+        () => scanTrace(tracePath, Buffer.from("{}")),
+        /Possible secret/,
+      );
+    },
+  );
+});
 
 function temporary(t) {
   const root = mkdtempSync(join(tmpdir(), "qrh-trace-test-"));

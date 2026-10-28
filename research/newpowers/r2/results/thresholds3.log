@@ -15,3 +15,4 @@ bracket failed ('floor', 0.55, 0.6, 9.12299999999977e-06, 9.240999999993171e-06)
 RESULT knob=floor floor=0.60 target=bar -> None  (205s)
    phi_r2 it0  x=0.007393  theta-target=-6.490e-07
    phi_r2 it1  x=0.006483  theta-target=+5.700e-07
+   phi_r2 it2  x=0.007063  theta-target=-2.070e-07

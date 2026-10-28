@@ -115,24 +115,24 @@ add(St('E3', 'Transport/Transport/PrincipalRemainderBounds.lean:589 (source_w_st
 add(St('E4', 'Transport/Transport/PrincipalRemainderBounds.lean:592 (source_z_strict_exponent)', 'e <= h/600 - 1/4000 for e <= 1/1000',
        'nlinarith [h_interval, ly_coarse, theta_bounds] (linear in effect)', ('h_lo',),
        lambda b: b.h_lo / 600 - F(1, 1000) - F(1, 4000), thr={'h_lo': F(3, 4)}, par=lambda t, h: h / 600 - F(1, 1000) - F(1, 4000)))
-add(St('E5a', 'Transport/Transport/PrincipalRemainderRegion.lean:25-90 remainder_unramified_bound, hR (used by PrincipalSlots.lean principal_correction_defect, region_correction_defect and via marked_bound/local_norm_bound by FiniteProduct)',
+add(St('E5a', 'Transport/Transport/PrincipalRemainderRegion.lean:39-40 (remainder_unramified_bound, hR); callers PrincipalSlots.lean:32,252 and PrincipalRemainderRegion.lean:141',
        '4 - 6 theta - 6*(4/25) <= -219/100  (coordR_norm_le exponent 4-6x-6z)', 'Real.rpow_le_rpow_of_exponent_le .. (by linarith) with hx: theta <= x.re (theta_bounds.1)', ('theta_lo',),
        lambda b: 6 * b.theta_lo + F(24, 25) - 4 - F(219, 100), thr={'theta_lo': F(5230, 6000)},
        par=lambda t, h: 6 * t + F(24, 25) - 4 - F(219, 100),
        note='SHARPEST theta-lower-end use: needs theta >= 0.871667'))
-add(St('E5b', 'PrincipalRemainderRegion.lean:25-90, hK', '1 - theta - 9/10 <= -77/100 (coordK_norm_le exponent 1-x-w)', 'linarith [theta_bounds]', ('theta_lo',),
+add(St('E5b', 'Transport/Transport/PrincipalRemainderRegion.lean:45-46 (same lemma, hK)', '1 - theta - 9/10 <= -77/100 (coordK_norm_le exponent 1-x-w)', 'linarith [theta_bounds]', ('theta_lo',),
        lambda b: b.theta_lo + F(9, 10) - 1 - F(77, 100), thr={'theta_lo': F(87, 100)}, par=lambda t, h: t + F(9, 10) - 1 - F(77, 100)))
-add(St('E6', 'PrincipalSlots.lean (principal_marked_error_bounds hBR, hRT; region_marked_error_bounds hBR hRT)', '3-5s <= -theta, 3-6s <= -theta with s >= theta: theta >= 3/4',
+add(St('E6', 'Transport/Transport/PrincipalSlots.lean:108-109, 115-120 (principal_marked_error_bounds hRT, hBR); :328, :334-338 (region_marked_error_bounds hRT, hBR)', '3-5s <= -theta, 3-6s <= -theta with s >= theta: theta >= 3/4',
        'linarith [theta_bounds] with hs: theta <= s.re', ('theta_lo',), lambda b: 4 * b.theta_lo - 3, thr={'theta_lo': F(3, 4)}, par=lambda t, h: 4 * t - 3))
-add(St('E7', 'PrincipalSlots.lean region_marked_error_bounds hBKV (1 - w - 6z <= -theta: theta <= 0.94)', 'theta <= 0.94', 'linarith [theta_bounds.2]', ('theta_hi',),
+add(St('E7', 'Transport/Transport/PrincipalSlots.lean:339-346 (region_marked_error_bounds hBKV: 1 - w - 6z <= -theta)', 'theta <= 0.94', 'linarith [theta_bounds.2]', ('theta_hi',),
        lambda b: F(94, 100) - b.theta_hi, thr={'theta_hi': F(94, 100)}, par=lambda t, h: F(94, 100) - t))
 # theta-only soft uses ----------------------------------------------------------------------------------------------
 add(St('F1', 'PrincipalRemainder{Contours,FiniteProduct,FiniteProductX,Transport,Bounds,Region,RayThresholds,Normalized,Physical,PhysicalBounds}.lean, PrincipalSlots.lean, PrincipalSignal.lean:63, SignalShift.lean:58, TransportParameters.lean:95,191',
        '0 < Q, 1 <= Q, 4 <= Q (from 480 <= Q), 0 < theta, 4/25 <= xi from 1/6 < xi, Z^(...) monotone: theta > 0 .. 1/2',
        'linarith [theta_bounds] used only as a weak positivity hint', ('theta_lo',), lambda b: b.theta_lo - F(1, 2), thr={'theta_lo': F(1, 2)},
        par=lambda t, h: t - F(1, 2), note='~110 call sites, none sharp (largest need among them: E5a, E5b, E6)'))
-add(St('F2', 'Transport/FinalCommonProbe.lean:45-46', '1/2 <= theta and theta <= 7/8', 'theta_bounds.1 / theta_bounds.2.le', ('theta_lo', 'theta_hi'),
-       lambda b: min(b.theta_lo - F(1, 2), b.theta_hi - F(7, 8)), thr={}, par=lambda t, h: F(7, 8) - t))
+add(St('F2', 'Transport/FinalCommonProbe.lean:45-46 (and TransportGeometry.lean:79)', 'theta <= 7/8 (the upper field must not exceed 7/8; 1/2 <= theta is A5)', 'theta_bounds.2.le (direct projection)', ('theta_hi',),
+       lambda b: F(7, 8) - b.theta_hi, thr={}, par=lambda t, h: F(7, 8) - t))
 # fields as hypotheses of the instance -------------------------------------------------------------------------------
 add(St('G1', 'Transport/Transport/FloorExponent.lean:25 (floor_source_margin)', 'floorSourceExponent(v) <= signal theta - 1/200 for v <= h+1e-10, i.e. 0.01 + 1.03 ell <= (5+3 ell-4h)/12 - fm',
        'the field floor_margin itself (dsimp + linarith; it is a restatement)', ('fm',), lambda b: F(0), thr={}, par=lambda t, h: floor_slack(t, h),

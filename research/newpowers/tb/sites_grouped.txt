@@ -1,0 +1,40 @@
+GenericFeedback.lean                                         θ:23,44; h:26; dP<1:52
+PhysicalDirect/Active.lean                                   y:57
+PhysicalDirect/Chosen.lean                                   θ:52
+PhysicalDirect/Finite/Bridge.lean                            ell:39; θ:39
+PhysicalDirect/Finite/Geometry.lean                          h:63
+PhysicalDirect/Finite/Summation.lean                         h:82
+PhysicalDirect/FiniteError/FullW.lean                        ell:39,176; y:39; h:57,170
+PhysicalDirect/Geometry.lean                                 h:87; y:87
+PhysicalDirect/JointHeight.lean                              θ:37
+PhysicalDirect/OldActive.lean                                y:45,160
+PhysicalDirect/OldGeometry.lean                              y:66,158; ell:157
+PhysicalDirect/SourceActual.lean                             θ:83; h:111
+PhysicalDirect/SourceLedger.lean                             h:81; dP<1:105
+PhysicalDirect/SourceParameters.lean                         y:51
+Transport/FinalCommonProbe.lean                              θ:45,46
+Transport/FinalFixedHigh.lean                                ell:66,109; y:67,110; h:72,115
+Transport/Transport/CanonicalReduction.lean                  h:45,54
+Transport/Transport/CentralErrorSaving.lean                  y:31; h:49
+Transport/Transport/CommonProbe.lean                         h:67
+Transport/Transport/CubeFiniteError.lean                     h:52; ell:58
+Transport/Transport/CubeFloorSaving.lean                     h+ext<1:86
+Transport/Transport/FloorExponent.lean                       fm:25; y:40
+Transport/Transport/LargeTail.lean                           h>0:55,66
+Transport/Transport/NonfloorTransport.lean                   h:136
+Transport/Transport/NormalizedTransportSaving.lean           ss:97; θlo:97
+Transport/Transport/PrincipalRemainderBounds.lean            θ:54,343,405,501,511,526,589,592,617,621; h:589,592,617,621; y:589,592,617,621
+Transport/Transport/PrincipalRemainderContours.lean          θ:86,90,96,253,257,331,334,436,442,468,471,534,540,676,677,770,771,774,775
+Transport/Transport/PrincipalRemainderFiniteProduct.lean     θ:46,51,64,80,105,129,130,132,134,137,139,142,191,204,205,212,214,218,223,310,329,434
+Transport/Transport/PrincipalRemainderFiniteProductX.lean    θ:26,43
+Transport/Transport/PrincipalRemainderNormalized.lean        θ:66,79
+Transport/Transport/PrincipalRemainderPhysical.lean          θ:68
+Transport/Transport/PrincipalRemainderPhysicalBounds.lean    θ:50,57
+Transport/Transport/PrincipalRemainderRayThresholds.lean     θ:32,36
+Transport/Transport/PrincipalRemainderRegion.lean            θ:28,49,65,66,91
+Transport/Transport/PrincipalRemainderTransport.lean         θ:98,104,108,113,118,121,151,168,190,193,195,275,277,278,302,355,404
+Transport/Transport/PrincipalSignal.lean                     θ:63
+Transport/Transport/PrincipalSlots.lean                      θ:29,45,54,62,73,126,140,155,166,188,193,206,216,247,264,274,283,293,307,360,381,399,412,425
+Transport/Transport/SignalShift.lean                         θ:58
+Transport/TransportParameters.lean                           θ:95,191
+TransportGeometry.lean                                       θ:20,79,80,98,99; h:21,54,55,59,64,96,97,100; y:22,55,101; ell:23,60,95; ss:24,104; fm:25; h>1/2:54; h<2y:55; 4ell<h:58; dP<1:64; θ<7/8:79; θ>1/2:80; h+ext<1:97; θlo:98

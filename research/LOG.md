@@ -1842,3 +1842,12 @@ slot; `mixed-slots/`).
 - **Floor 1/2 in Lean (built, axioms clean):** `lean/arvi_density/Density/NaturalEndpoint34.lean` proves Lemma 2.1 at `3/4 ≤ a`
   (`Range34.fixed_natural_dictionary_raw_density`, axioms clean) from Collet's `OrdinaryRange` 3/4 wrappers; the fork's
   HIGH count now takes `3/4 ≤ b`, all floor hypotheses `1/2 ≤ qf`; new `density_step_floor` for `qf ∈ [1/2, 3/4]`.
+- **Bridge found (`newpowers/BRIDGE_MAP.md`).** The analytic half of the marked leaf is already proved in our PR 76:
+  `actual_dictionary_regular_raw_max_uniform_tau_rm` (PR 76 `Fork/Record1252270103Source/PositiveRadius/SomeDictionary.lean:31`)
+  bounds Σ_HIGH rows (∏ slots max 1 ‖labeledRawSlot‖)² ≤ C(1+height)^J Z^{ρ(ν)F + νS − gainC(ν, B, Λ, cap, S, F) + loss}
+  (Sil's HIGH count × slot factor, minus the 8-copy repeated-mark gain); rows = the leaf's (`geometryRowFamily` is defeq
+  `wholeSourceFamily`); it consumes only the parent's `UnitFaceSource` (the leaf's own `hu`), `hβ` and the counting setup;
+  no 7/37 supply (z = min(8S, (Q−r)/2)). Gain (Q = 1, parent (0.9998, 2.5665, 0.10)): ν = 0.65: 0.0123 (S = 0.03) –
+  0.0133 (S ≥ 0.05); ν = 0.60, S = 0.03: 0.0154. Mismatches: guard heights (cut the bounded branch at Z^τ), slot width
+  floor `wmin ≤ w` (split slots), finite exceptional cores, hypotheses 22/23 ≤ B₀, 1 < L₀, c₀ < 1, a plain-factor lemma.
+  Plan ≈ 1000 lines (L0–L6).

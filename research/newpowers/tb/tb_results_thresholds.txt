@@ -1,8 +1,7 @@
 theta_lo  current 0.8730  
    must stay ABOVE 0.87167  (binding statement E5a); others: E5a 0.8717, E5b 0.8700, E2 0.8550, C1 0.8500, D11 0.8500
 theta_hi  current 0.8750  
-   must stay ABOVE 0.87500  (binding statement F2); others: F2 0.8750
-   must stay BELOW 0.94000  (binding statement E7); others: E7 0.9400
+   must stay BELOW 0.87500  (binding statement F2); others: F2 0.8750, E7 0.9400
 h_lo      current 0.7930  
    must stay ABOVE 0.75000  (binding statement E4); others: E4 0.7500, A1 0.6840, A2 0.5000, D14 0.0100, A6 0.0000
 h_hi      current 0.8060  

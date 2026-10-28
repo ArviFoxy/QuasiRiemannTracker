@@ -1,0 +1,38 @@
+| id | where (`ReturnD/…`, PR 83) | inequality the proof needs | proof | margin now | ℓ<.175 | future-proof | limit of the numerals it uses |
+|---|---|---|---|---|---|---|---|
+| A1 | TransportGeometry.lean:58-62 (four_ell_lt_h) | 4*ell < h | linarith [h_interval.1, ell_interval.2] | 0.1090 | 0.0930 | 0.0930 | h_lo ≥ 0.6840; ℓ_hi ≤ 0.1983 |
+| A2 | TransportGeometry.lean:54 (half_lt_h) | 1/2 < h | linarith [h_interval] | 0.2930 | 0.2930 | 0.2930 | h_lo ≥ 0.5000 |
+| A3 | TransportGeometry.lean:55 (h_lt_two_y) | h < 2*y | linarith [h_interval, ly_coarse] | 0.1100 | 0.1100 | 0.0740 | h_hi ≤ 0.9160; y_lo ≥ 0.4030 |
+| A4 | TransportGeometry.lean:64 (dPlus_lt_one), :97 (extended_h_lt_one) | h + 1e-10 < 1 | linarith [h_interval.2] | 0.1940 | 0.1940 | 0.1940 | h_hi ≤ 1.0000 |
+| A5 | TransportGeometry.lean:80 (theta_gt_half) | 1/2 < theta | linarith [theta_bounds.1] | 0.3730 | 0.3730 | 0.3730 | θ_lo ≥ 0.5000 |
+| A6 | TransportGeometry.lean:96 (h_pos) | 0 < h | linarith [h_interval.1] | 0.7930 | 0.7930 | 0.7930 | h_lo ≥ 0.0000 |
+| B1 | Transport/FinalFixedHigh.lean:64-70 and :107-113 (hsig) | 1/10 < signal theta = (5x+y)/12 with x > ell_lo, y > y_lo | linarith [signal_at_boundary, ell_interval.1.trans ell_lt_x, ly_coarse.1] (numerals 1672/10000, 458/1000 hard-coded at :66,:67,:109,:110) | 0.0078 | 0.0078 | 0.0063 | ℓ_lo ≥ 0.1484; y_lo ≥ 0.3640 |
+| B2 | Transport/FinalFixedHigh.lean:71-74 and :114-117 (hcap) | h + 5e-11 <= 7/8 - 1/100 | have hb : h<806/1000 (hard-coded numeral at :72,:115) ; linarith | 0.0590 | 0.0590 | 0.0590 | h_hi ≤ 0.8650 |
+| C1 | GenericFeedback.lean:23 and :44 | 7/10 <= kappa = 2 theta - 1 | linarith [theta_bounds.1] | 0.0460 | 0.0460 | 0.0460 | θ_lo ≥ 0.8500 |
+| C2 | GenericFeedback.lean:26 (hcoef) | 5*dp/288 <= 1/50 | linarith [h_interval.2] | 0.0060 | 0.0060 | 0.0060 | h_hi ≤ 1.1520 |
+| D1 | PhysicalDirect/Geometry.lean:87 (shiftBase_nonneg) | dp < 2*y | linarith [h_interval.2, ly_coarse.1] | 0.1100 | 0.1100 | 0.0740 | h_hi ≤ 0.9160; y_lo ≥ 0.4030 |
+| D2 | PhysicalDirect/SourceParameters.lean:51 (hy: y <= 19/40) | y <= 19/40 (then y/d <= 19/20 for d >= 1/2) | linarith [ly_coarse.1, ly_coarse.2] | 0.0080 | 0.0080 | 0.0080 | y_hi ≤ 0.4750 |
+| D3 | PhysicalDirect/Active.lean:57 (eventually_new_cutoff_le_base) | y/d <= 19/20 for d > 1/2, i.e. y <= 19/40 | linarith [ly_coarse.2] | 0.0080 | 0.0080 | 0.0080 | y_hi ≤ 0.4750 |
+| D4 | PhysicalDirect/OldGeometry.lean:66 (physical_y_range), OldActive.lean:45 | y/d <= 99 for d >= 1/200, i.e. y <= 99/200 | linarith [ly_coarse.2] | 0.0280 | 0.0280 | 0.0280 | y_hi ≤ 0.4950 |
+| D5 | PhysicalDirect/OldGeometry.lean:155-160 (hyell) | y <= ell*(6*kappa), kappa >= 7/10: y <= 4.2*ell | linarith [ell_interval.1, ly_coarse.2] + one product | 0.2352 | 0.2352 | 0.2352 | y_hi ≤ 0.7022; ℓ_lo ≥ 0.1112 |
+| D6 | PhysicalDirect/OldActive.lean:160 | 0 < y | linarith [ly_coarse.1, ly_coarse.2] | 0.4580 | 0.4580 | 0.4400 | y_lo ≥ 0.0000 |
+| D7 | PhysicalDirect/Finite/Bridge.lean:39 (target_positive) | 1/10 < theta + signalShift = theta - 5/6 + x/3 + ell/6, x > ell > ell_lo | linarith [theta_bounds.1, ell_interval.1, ell_lt_x] | 0.0233 | 0.0233 | 0.0233 | θ_lo ≥ 0.8497; ℓ_lo ≥ 0.1207 |
+| D8 | PhysicalDirect/Finite/Summation.lean:82, Finite/Geometry.lean:63, SourceLedger.lean:81 | dp <= 1 | linarith [h_interval.2] | 0.1940 | 0.1940 | 0.1940 | h_hi ≤ 1.0000 |
+| D9 | PhysicalDirect/SourceActual.lean:111 | dp <= 7/8 | linarith [h_interval.2] | 0.0690 | 0.0690 | 0.0690 | h_hi ≤ 0.8750 |
+| D10 | PhysicalDirect/JointHeight.lean:37, SourceActual.lean:83 | 51/100 < theta | linarith [theta_bounds.1] | 0.3630 | 0.3630 | 0.3630 | θ_lo ≥ 0.5100 |
+| D11 | PhysicalDirect/Chosen.lean:52 | 85/100 < theta | linarith [theta_bounds.1] | 0.0230 | 0.0230 | 0.0230 | θ_lo ≥ 0.8500 |
+| D12 | PhysicalDirect/FiniteError/FullW.lean:39, Transport/CentralErrorSaving.lean:31 | crude exponent 0.16*x + 1.34 - y(a+6e) <= 2 (a,e >= 0), x <= 1-ell_lo-y_lo | nlinarith [length_sum, ly_coarse, ell_interval] (products y*a, y*e >= 0) | 0.6000 | 0.6000 | 0.5972 | — |
+| D13 | FullW.lean:57,170,176; CubeFiniteError.lean:52,58; CentralErrorSaving.lean:49 | h + zeta <= 1 and ell <= 1 | linarith [h_interval.2] / [ell_interval] | 0.1940 | 0.1940 | 0.1940 | h_hi ≤ 1.0000 |
+| D14 | CommonProbe.lean:67, CanonicalReduction.lean:54, NonfloorTransport.lean:136 | 1/100 <= h + zeta (rpow exponent order) | linarith [h_interval.1] | 0.7830 | 0.7830 | 0.7830 | h_lo ≥ 0.0100 |
+| E1 | Transport/Transport/FloorExponent.lean:40 (floor_loss_bound) | (16-6 ly) e <= 14 e (e>=0): ly >= 1/3 | nlinarith [ly_coarse, e*(ly-1/3) >= 0] | 0.1247 | 0.1247 | 0.1067 | y_lo ≥ 0.3333 |
+| E2 | Transport/Transport/NormalizedTransportSaving.lean:97 (h1) | 7/8 - S + 8e + nu + sigma <= theta  with sigma+8e+nu <= 1/20: theta + S >= 0.925, S = y/2-h(17/50-1/6)-1/50 | linarith [small_saving, theta_lower] (+ hypotheses hbetalo, _hgeometric) | 0.0180 | 0.0180 | 0.0080 | θ_lo ≥ 0.8550; ss ≥ 0.0520 |
+| E3 | Transport/Transport/PrincipalRemainderBounds.lean:589 (source_w_strict_exponent), :617,:621 (same hint) | e(1+h) - y/20 + 1/4000 <= 0 for e <= 1/1000 | nlinarith [h_interval, ly_coarse, theta_bounds] | 0.0208 | 0.0208 | 0.0199 | y_lo ≥ 0.0411 |
+| E4 | Transport/Transport/PrincipalRemainderBounds.lean:592 (source_z_strict_exponent) | e <= h/600 - 1/4000 for e <= 1/1000 | nlinarith [h_interval, ly_coarse, theta_bounds] (linear in effect) | 7.2e-05 | 7.2e-05 | 7.2e-05 | h_lo ≥ 0.7500 |
+| E5a | Transport/Transport/PrincipalRemainderRegion.lean:39-40 (remainder_unramified_bound, hR); callers PrincipalSlots.lean:32,252 and PrincipalRemainderRegion.lean:141 | 4 - 6 theta - 6*(4/25) <= -219/100  (coordR_norm_le exponent 4-6x-6z) | Real.rpow_le_rpow_of_exponent_le .. (by linarith) with hx: theta <= x.re (theta_bounds.1) | 0.0080 | 0.0080 | 0.0080 | θ_lo ≥ 0.8717 |
+| E5b | Transport/Transport/PrincipalRemainderRegion.lean:45-46 (same lemma, hK) | 1 - theta - 9/10 <= -77/100 (coordK_norm_le exponent 1-x-w) | linarith [theta_bounds] | 0.0030 | 0.0030 | 0.0030 | θ_lo ≥ 0.8700 |
+| E6 | Transport/Transport/PrincipalSlots.lean:108-109, 115-120 (principal_marked_error_bounds hRT, hBR); :328, :334-338 (region_marked_error_bounds hRT, hBR) | 3-5s <= -theta, 3-6s <= -theta with s >= theta: theta >= 3/4 | linarith [theta_bounds] with hs: theta <= s.re | 0.4920 | 0.4920 | 0.4920 | θ_lo ≥ 0.7500 |
+| E7 | Transport/Transport/PrincipalSlots.lean:339-346 (region_marked_error_bounds hBKV: 1 - w - 6z <= -theta) | theta <= 0.94 | linarith [theta_bounds.2] | 0.0650 | 0.0650 | 0.0650 | θ_hi ≤ 0.9400 |
+| F1 | PrincipalRemainder{Contours,FiniteProduct,FiniteProductX,Transport,Bounds,Region,RayThresholds,Normalized,Physical,PhysicalBounds}.lean, PrincipalSlots.lean, PrincipalSignal.lean:63, SignalShift.lean:58, TransportParameters.lean:95,191 | 0 < Q, 1 <= Q, 4 <= Q (from 480 <= Q), 0 < theta, 4/25 <= xi from 1/6 < xi, Z^(...) monotone: theta > 0 .. 1/2 | linarith [theta_bounds] used only as a weak positivity hint | 0.3730 | 0.3730 | 0.3730 | θ_lo ≥ 0.5000 |
+| F2 | Transport/FinalCommonProbe.lean:45-46 (and TransportGeometry.lean:79) | theta <= 7/8 (the upper field must not exceed 7/8; 1/2 <= theta is A5) | theta_bounds.2.le (direct projection) | 0.0000 | 0.0000 | 0.0000 | θ_hi ≤ 0.8750 |
+| G1 | Transport/Transport/FloorExponent.lean:25 (floor_source_margin) | floorSourceExponent(v) <= signal theta - 1/200 for v <= h+1e-10, i.e. 0.01 + 1.03 ell <= (5+3 ell-4h)/12 - fm | the field floor_margin itself (dsimp + linarith; it is a restatement) | field | field | field | — |
+| G2 | TransportGeometry.lean:24 (field small_saving) -> NormalizedTransportSaving.lean:97 only | 7/100 < y/2 - h(17/50-1/6) - 1/50 | field | field | field | field | — |

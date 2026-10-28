@@ -1,0 +1,41 @@
+PR83/86 BoundsN   [theta>0.8730 h<0.8060 y>0.4580 y<0.4670 ell<0.1710 ss=0.070 fm=1/200]
+   theta_min = 0.8739167
+   theta=0.8739167 h=0.800000 ell=0.171000 y=0.458000 x=0.371000  active: ell<hi, y>lo
+   theta=0.8747917 h=0.793000 ell=0.167500 y=0.458000 x=0.374500  active: h>lo, y>lo
+   theta=0.8748667 h=0.793000 ell=0.167200 y=0.458600 x=0.374200  active: h>lo, ell>lo
+   theta=0.8748667 h=0.801400 ell=0.167200 y=0.467000 x=0.365800  active: ell>lo, y<hi
+   theta=0.8742917 h=0.806000 ell=0.169500 y=0.467000 x=0.363500  active: h<hi, y<hi
+   theta=0.8740385 h=0.806000 ell=0.170513 y=0.464974 x=0.364513  active: h<hi, floor_margin
+   theta=0.8739167 h=0.804860 ell=0.171000 y=0.462860 x=0.366140  active: ell<hi, floor_margin
+
+minimal: ell<0.1715   [theta>0.8730 h<0.8060 y>0.4580 y<0.4670 ell<0.1715 ss=0.070 fm=1/200]
+   theta_min = 0.8737917
+   theta=0.8747917 h=0.793000 ell=0.167500 y=0.458000 x=0.374500  active: h>lo, y>lo
+   theta=0.8748667 h=0.793000 ell=0.167200 y=0.458600 x=0.374200  active: h>lo, ell>lo
+   theta=0.8748667 h=0.801400 ell=0.167200 y=0.467000 x=0.365800  active: ell>lo, y<hi
+   theta=0.8742917 h=0.806000 ell=0.169500 y=0.467000 x=0.363500  active: h<hi, y<hi
+   theta=0.8740385 h=0.806000 ell=0.170513 y=0.464974 x=0.364513  active: h<hi, floor_margin
+   theta=0.8737917 h=0.803690 ell=0.171500 y=0.460690 x=0.367810  active: ell<hi, floor_margin
+   theta=0.8737917 h=0.801000 ell=0.171500 y=0.458000 x=0.370500  active: ell<hi, y>lo
+
+ell<0.175 (theta>0.873 kept)   [theta>0.8730 h<0.8060 y>0.4580 y<0.4670 ell<0.1750 ss=0.070 fm=1/200]
+   theta_min = 0.8736445
+   theta=0.8747917 h=0.793000 ell=0.167500 y=0.458000 x=0.374500  active: h>lo, y>lo
+   theta=0.8748667 h=0.793000 ell=0.167200 y=0.458600 x=0.374200  active: h>lo, ell>lo
+   theta=0.8748667 h=0.801400 ell=0.167200 y=0.467000 x=0.365800  active: ell>lo, y<hi
+   theta=0.8742917 h=0.806000 ell=0.169500 y=0.467000 x=0.363500  active: h<hi, y<hi
+   theta=0.8740385 h=0.806000 ell=0.170513 y=0.464974 x=0.364513  active: h<hi, floor_margin
+   theta=0.8736445 h=0.802312 ell=0.172089 y=0.458135 x=0.369776  active: small_saving, floor_margin
+   theta=0.8736763 h=0.801923 ell=0.171962 y=0.458000 x=0.370038  active: y>lo, small_saving
+
+future-proof: ell<0.175, y>0.44, ss=0.06   [theta>0.8730 h<0.8060 y>0.4400 y<0.4670 ell<0.1750 ss=0.060 fm=1/200]
+   theta_min = 0.8730000
+   theta=0.8730000 h=0.796280 ell=0.174667 y=0.446947 x=0.378387  active: theta>lo, floor_margin
+   theta=0.8730000 h=0.793000 ell=0.174667 y=0.443667 x=0.381667  active: theta>lo, h>lo
+   theta=0.8748667 h=0.793000 ell=0.167200 y=0.458600 x=0.374200  active: h>lo, ell>lo
+   theta=0.8748667 h=0.801400 ell=0.167200 y=0.467000 x=0.365800  active: ell>lo, y<hi
+   theta=0.8742917 h=0.806000 ell=0.169500 y=0.467000 x=0.363500  active: h<hi, y<hi
+   theta=0.8740385 h=0.806000 ell=0.170513 y=0.464974 x=0.364513  active: h<hi, floor_margin
+
+PR86 actual point: theta>lo 9.56e-04, theta<hi 1.04e-03, h>lo 1.21e-02, h<hi 9.00e-04, ell>lo 3.64e-03, ell<hi 1.57e-04, y>lo 5.41e-03, y<hi 3.59e-03, small_saving 2.16e-03, floor_margin 4.21e-05
+PR83 actual point: theta>lo 9.95e-04, theta<hi 1.01e-03, h>lo 1.23e-02, h<hi 7.00e-04, ell>lo 3.49e-03, ell<hi 3.13e-04, y>lo 5.93e-03, y<hi 3.07e-03, small_saving 2.38e-03, floor_margin 9.77e-05

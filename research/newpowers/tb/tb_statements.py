@@ -97,7 +97,7 @@ add(St('D12', 'PhysicalDirect/FiniteError/FullW.lean:39, Transport/CentralErrorS
 add(St('D13', 'FullW.lean:57,170,176; CubeFiniteError.lean:52,58; CentralErrorSaving.lean:49', 'h + zeta <= 1 and ell <= 1',
        'linarith [h_interval.2] / [ell_interval]', ('h_hi', 'ell_hi'), lambda b: min(1 - b.h_hi - ts, 1 - b.ell_hi),
        thr={'h_hi': F(1), 'ell_hi': F(1)}, par=lambda t, h: min(1 - h - ts, 1 - ell_of(t))))
-add(St('D14', 'CommonProbe.lean:67, CanonicalReduction.lean:54, NonfloorTransport.lean:136', '1/100 <= h + zeta (rpow exponent order)',
+add(St('D14', 'CommonProbe.lean:67, CanonicalReduction.lean:54 (1/100 <= h+zeta); NonfloorTransport.lean:136 (0 <= h+zeta)', '1/100 <= h + zeta (rpow exponent order)',
        'linarith [h_interval.1]', ('h_lo',), lambda b: b.h_lo - F(1, 100), thr={'h_lo': F(1, 100)}, par=lambda t, h: h - F(1, 100)))
 # exponent-type -----------------------------------------------------------------------------------------------------
 add(St('E1', 'Transport/Transport/FloorExponent.lean:40 (floor_loss_bound)', '(16-6 ly) e <= 14 e (e>=0): ly >= 1/3',

@@ -1,0 +1,24 @@
+{
+  "title": "All-moduli Dirichlet nonvanishing at 87393379/100000000 = 0.87393379",
+  "authors": [
+    {
+      "name": "Joseph Bebel"
+    }
+  ],
+  "description": "All-moduli Dirichlet nonvanishing for Re(s) > 87393379/100000000 = 0.87393379, excluding only the principal pole. The argument combines a selected all-source sextic norm, a joint zero-detector/slot-amplitude count and pointwise retained-slope pricing. A finite chain of 4,526 source transitions supplies separate count and physical estimates, followed by a certified full-domain return. It builds on the original OpenAI framework and the source, counting and return machinery of Hailey Collet, ArviFoxy, Sil and Jacob Sussman. All inherited copyright notices, source attributions and dependency licenses are retained. The research and Lean development were AI-assisted.",
+  "license": "Apache-2.0; inherited source notices and dependency licenses retained.",
+  "builds_on": [
+    "openai-baseline",
+    "hailey-collet-1252270103",
+    "arvi-repeated-marks-on-sil-face-20261025",
+    "sil-density-split-20261026",
+    "density-split-fine-chain"
+  ],
+  "dependencies": [
+    "openai-baseline",
+    "hailey-collet-1252270103",
+    "arvi-repeated-marks-on-sil-face-20261025",
+    "sil-density-split-20261026",
+    "density-split-fine-chain"
+  ]
+}

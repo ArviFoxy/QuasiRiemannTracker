@@ -1,6 +1,90 @@
 import { submissionDependencies } from "./submission-dependencies.mjs";
 import { submissionDirectories } from "./submission-paths.mjs";
+import { TextDecoder } from "node:util";
 // Publication metadata lives beside the Lean source in metadata.json.
+export const maxMetadataBytes = 2 * 1024 ** 2;
+export const maxAgentTracesBytes = 1024 ** 2;
+
+export function parseSubmissionMetadataJSON(bytes) {
+  if (Buffer.byteLength(bytes) > maxMetadataBytes)
+    throw Error("Submission metadata is too large");
+  let value, raw;
+  try {
+    raw =
+      typeof bytes === "string"
+        ? bytes
+        : new TextDecoder("utf-8", { fatal: true }).decode(bytes);
+    value = JSON.parse(raw);
+  } catch {
+    // Parser diagnostics can contain credential-bearing fragments of a trace.
+    throw Error("Submission metadata must contain valid UTF-8 JSON");
+  }
+  validateAgentTraces(value);
+  // JSON.parse keeps only the last duplicate key. Reject ambiguous top-level
+  // fields so a second empty agent_traces cannot conceal an earlier export.
+  const keys = new Set();
+  let depth = 0,
+    expectKey = false;
+  for (const [token] of raw.matchAll(/"(?:[^"\\]|\\.)*"|[{}\[\],]/g)) {
+    if (token === "{" || token === "[") {
+      depth++;
+      if (depth === 1) expectKey = true;
+    } else if (token === "}" || token === "]") depth--;
+    else if (depth === 1 && token === ",") expectKey = true;
+    else if (depth === 1 && expectKey) {
+      const key = JSON.parse(token);
+      if (keys.has(key)) throw Error("Duplicate submission metadata field");
+      keys.add(key);
+      expectKey = false;
+    }
+  }
+  return value;
+}
+
+// Shared by modern and legacy metadata readers. Traces are JSON data, not paths
+// or executable input; their original bytes remain in the submission inventory.
+export function validateAgentTraces(metadata) {
+  if (!metadata || typeof metadata !== "object" || Array.isArray(metadata))
+    throw Error("Invalid submission metadata");
+  const traces = metadata.agent_traces ?? [];
+  if (
+    (metadata.agent_traces !== undefined &&
+      !Array.isArray(metadata.agent_traces)) ||
+    traces.some((trace) => !trace || typeof trace !== "object")
+  )
+    throw Error(
+      "agent_traces must be an array of embedded JSON objects or arrays",
+    );
+  const pending = traces.map((value) => [value, 1]);
+  while (pending.length) {
+    const [value, depth] = pending.pop();
+    if (value && typeof value === "object") {
+      if (depth > 64)
+        throw Error("Agent trace nesting must not exceed 64 levels");
+      if (
+        !Array.isArray(value) &&
+        ![Object.prototype, null].includes(Object.getPrototypeOf(value))
+      )
+        throw Error("Agent traces must contain only JSON data");
+      for (const child of Object.values(value))
+        pending.push([child, depth + 1]);
+    } else if (
+      value !== null &&
+      !["string", "boolean"].includes(typeof value) &&
+      !(typeof value === "number" && Number.isFinite(value))
+    )
+      throw Error("Agent traces must contain only JSON data");
+  }
+  if (Buffer.byteLength(JSON.stringify(traces)) > maxAgentTracesBytes)
+    throw Error("Embedded agent traces must be at most 1 MiB");
+  const { agent_traces, ...publication } = metadata;
+  if (Buffer.byteLength(JSON.stringify(publication)) > 65536)
+    throw Error("Submission metadata excluding agent traces is too large");
+  if (Buffer.byteLength(JSON.stringify(metadata)) > maxMetadataBytes)
+    throw Error("Submission metadata is too large");
+  return traces;
+}
+
 const text = (value, limit) =>
   typeof value === "string" && value.trim().length > 0 && value.length <= limit;
 const url = (value) => {
@@ -20,6 +104,7 @@ export function validateSubmissionMetadata(value) {
     "builds_on",
     "references",
     "dependencies",
+    "agent_traces",
   ]);
   if (
     !value ||
@@ -65,6 +150,7 @@ export function validateSubmissionMetadata(value) {
       "Invalid publication metadata: provide title, authors and description in metadata.json",
     );
   submissionDependencies(value);
+  validateAgentTraces(value);
   return value;
 }
 
@@ -142,12 +228,11 @@ export async function readSubmissionSources(
     if (
       file.encoding !== "base64" ||
       typeof file.content !== "string" ||
-      file.size > 65536
+      file.size > maxMetadataBytes
     )
       throw Error("Expected a regular submission metadata.json");
     const bytes = Buffer.from(file.content, "base64");
-    if (bytes.length > 65536) throw Error("Submission metadata is too large");
-    const value = JSON.parse(bytes.toString("utf8"));
+    const value = parseSubmissionMetadataJSON(bytes);
     if (id === result_id) metadata = validateSubmissionMetadata(value);
     for (const dep of submissionDependencies(value)) await visit(dep);
     active.delete(id);

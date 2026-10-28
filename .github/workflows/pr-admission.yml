@@ -54,6 +54,7 @@ jobs:
           QRH_PR: ${{ github.event.pull_request.number || inputs.pr }}
           QRH_DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
           QRH_PHASE: prepare
+          QRH_GITLEAKS: ${{ github.workspace }}/scripts/gitleaks.sh
       - name: Preserve the catalogue used for admission
         if: steps.prepare.outputs.verify == 'true'
         run: cp catalogue/results.json verification-context/catalogue.json

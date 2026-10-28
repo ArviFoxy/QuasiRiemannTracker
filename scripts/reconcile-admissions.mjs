@@ -30,7 +30,11 @@ import {
   certificate,
   historicalCertificate,
 } from "../verifier/certificate.mjs";
-import { validateSubmissionMetadata } from "../verifier/submission-metadata.mjs";
+import {
+  validateAgentTraces,
+  parseSubmissionMetadataJSON,
+  validateSubmissionMetadata,
+} from "../verifier/submission-metadata.mjs";
 import { submissionFiles } from "../verifier/manifest.mjs";
 import {
   submissionDirectories,
@@ -124,10 +128,12 @@ export function generateCatalogue({
     historical = [],
     revisions = new Map();
   for (const input of legacy) {
+    validateAgentTraces(input);
     const {
       historical: isHistorical,
       dependencies,
       verification,
+      agent_traces,
       ...original
     } = structuredClone(input);
     const record = withSubmissionTimeline(original);
@@ -394,8 +400,8 @@ export function readSubmissions(root) {
   )) {
     const base = join(directory, name);
     submissionFiles(base);
-    const metadata = JSON.parse(
-      readFileSync(join(base, "metadata.json"), "utf8"),
+    const metadata = parseSubmissionMetadataJSON(
+      readFileSync(join(base, "metadata.json")),
     );
     if (metadata.id !== undefined) {
       if (proofRevision(metadata) !== id)

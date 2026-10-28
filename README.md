@@ -72,7 +72,8 @@ the normal online main-branch build to recover older receipts from the archive.
      "title": "Result title",
      "authors": [{ "name": "Your name" }],
      "description": "Method and attribution to previous work.",
-     "dependencies": ["openai-baseline"]
+     "dependencies": ["openai-baseline"],
+     "agent_traces": []
    }
    ```
 
@@ -87,9 +88,27 @@ the normal online main-branch build to recover older receipts from the archive.
    supplies the source modules available to imports.
 
    The other supported fields are `license` and `references` (an array of
-   objects with `label` and HTTPS `url`). The
+   objects with `label` and HTTPS `url`), and `agent_traces` (an optional array
+   of embedded JSON exports). Agent traces are recommended: prefer
+   [ATIF (Agent Trajectory Interchange Format)](https://docs.harborframework.com/agents/atif);
+   native JSON objects or arrays are also accepted. Omit `agent_traces` or leave
+   it empty if no trace is available. Embedded traces may total up to 1 MiB;
+   the complete metadata file may be up to 2 MiB. The
    [metadata validator](verifier/submission-metadata.mjs) defines the field
    formats and size limits.
+
+   Remove credentials and private information before committing traces. Install
+   [Gitleaks v8.30.1](https://github.com/gitleaks/gitleaks/releases/tag/v8.30.1)
+   on your `PATH`, then check locally before pushing:
+
+   ```sh
+   node scripts/check-agent-traces.mjs submissions/YYYY-MM-DD-example-bound/metadata.json
+   ```
+
+   Omit the path to check all submission metadata. Supplied traces must pass the
+   automatic secret check, which scans raw content and decoded JSON strings and
+   redacts findings in logs. This is a basic safeguard; CI runs after upload.
+   Revoke any real credential accidentally pushed.
 
 3. Open a PR using the [submission template](.github/PULL_REQUEST_TEMPLATE.md).
    Start its body with the result ID, exact bound, and decimal approximation.

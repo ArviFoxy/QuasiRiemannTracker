@@ -499,6 +499,29 @@ test("catalogue generation uses authored metadata, exact evidence and explicit h
   assert.deepEqual(inputs, before);
 });
 
+test("embedded legacy and modern traces remain in metadata rather than the public catalogue", (t) => {
+  const data = fixture(t);
+  data.legacy.agent_traces = [{ message: "Legacy research history" }];
+  data.admission.metadata = {
+    ...data.admission.metadata,
+    agent_traces: [{ message: "New research history" }],
+  };
+  data.admission.metadata_sha256 = sha256(canonical(data.admission.metadata));
+  const catalogue = generateCatalogue({
+    legacy: [data.legacy],
+    admissions: [data.admission],
+  });
+  assert.ok(
+    catalogue.records.every((record) => !Object.hasOwn(record, "agent_traces")),
+  );
+  assert.deepEqual(data.legacy.agent_traces, [
+    { message: "Legacy research history" },
+  ]);
+  assert.deepEqual(data.admission.metadata.agent_traces, [
+    { message: "New research history" },
+  ]);
+});
+
 test("a merged exact-head admission generates the catalogue and certificate and supports offline rebuilds", async (t) => {
   const data = fixture(t);
   const api = mockApi(data);

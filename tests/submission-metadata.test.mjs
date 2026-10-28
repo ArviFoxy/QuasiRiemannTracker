@@ -5,6 +5,10 @@ import {
   readSubmissionMetadata,
   readSubmissionSources,
   validateSubmissionMetadata,
+  validateAgentTraces,
+  parseSubmissionMetadataJSON,
+  maxMetadataBytes,
+  maxAgentTracesBytes,
 } from "../verifier/submission-metadata.mjs";
 
 const metadata = () => ({
@@ -54,6 +58,79 @@ test("publication metadata cannot provide verification claims or unsafe links", 
       () => validateSubmissionMetadata({ ...metadata(), ...changes }),
       /Invalid publication metadata/,
     );
+});
+
+test("optional embedded traces preserve native exports without prescribing their format", () => {
+  const value = {
+    ...metadata(),
+    agent_traces: [
+      {
+        schema_version: "ATIF-v1.7",
+        steps: [{ message: "Checked the proof" }],
+      },
+      [{ role: "user", content: "Find a bound" }, { tool: { output: "done" } }],
+    ],
+  };
+  assert.equal(validateSubmissionMetadata(value), value);
+  assert.equal(validateAgentTraces(value), value.agent_traces);
+  assert.deepEqual(validateAgentTraces(metadata()), []);
+  assert.deepEqual(
+    parseSubmissionMetadataJSON(Buffer.from(JSON.stringify(value))),
+    value,
+  );
+  for (const agent_traces of [null, {}, "run.json", ["run.json"], [null], [1]])
+    assert.throws(
+      () => validateSubmissionMetadata({ ...metadata(), agent_traces }),
+      /array of embedded JSON/,
+    );
+});
+
+test("trace limits bound payload and nesting while retaining the publication metadata limit", () => {
+  assert.throws(
+    () =>
+      validateAgentTraces({
+        agent_traces: [{ output: "x".repeat(maxAgentTracesBytes) }],
+      }),
+    /at most 1 MiB/,
+  );
+  assert.throws(
+    () => validateAgentTraces({ description: "x".repeat(65536) }),
+    /excluding agent traces is too large/,
+  );
+  let trace = {};
+  for (let i = 1; i < 64; i++) trace = { child: trace };
+  assert.equal(validateAgentTraces({ agent_traces: [trace] })[0], trace);
+  assert.throws(
+    () => validateAgentTraces({ agent_traces: [{ child: trace }] }),
+    /nesting.*64/,
+  );
+  for (const value of [undefined, Infinity, () => {}, new Date()])
+    assert.throws(
+      () => validateAgentTraces({ agent_traces: [{ value }] }),
+      /only JSON data/,
+    );
+  const cyclic = {};
+  cyclic.child = cyclic;
+  assert.throws(
+    () => validateAgentTraces({ agent_traces: [cyclic] }),
+    /nesting/,
+  );
+});
+
+test("metadata JSON parsing caps raw bytes and never exposes malformed trace fragments", () => {
+  for (const bytes of [
+    Buffer.from('{"agent_traces":[{"output":"private-credential" INVALID}]}'),
+    Buffer.from([0xff, 0xfe]),
+  ])
+    assert.throws(
+      () => parseSubmissionMetadataJSON(bytes),
+      (error) =>
+        error.message === "Submission metadata must contain valid UTF-8 JSON",
+    );
+  assert.throws(
+    () => parseSubmissionMetadataJSON(" ".repeat(maxMetadataBytes) + "{}"),
+    /metadata is too large/,
+  );
 });
 
 function sourceApi({
@@ -115,6 +192,29 @@ test("new submissions read metadata and require Lean source from the exact commi
       readSubmissionMetadata(sourceApi({ blob }), expected),
       /regular.*metadata.json/,
     );
+});
+test("immutable metadata reads preserve embedded exports larger than the old 64 KiB cap", async () => {
+  const value = {
+    ...metadata(),
+    agent_traces: [{ output: "x".repeat(70 * 1024) }],
+  };
+  const bytes = Buffer.from(JSON.stringify(value));
+  const blob = {
+    encoding: "base64",
+    size: bytes.length,
+    content: bytes.toString("base64"),
+  };
+  assert.deepEqual(
+    await readSubmissionMetadata(sourceApi({ blob }), expected),
+    value,
+  );
+  await assert.rejects(
+    readSubmissionMetadata(
+      sourceApi({ blob: { ...blob, size: maxMetadataBytes + 1 } }),
+      expected,
+    ),
+    /regular.*metadata.json/,
+  );
 });
 test("dated source paths preserve the result identity and original immutable tree", async () => {
   const historical = await readSubmissionSources(sourceApi(), expected);
@@ -213,4 +313,24 @@ test("immutable metadata validation rejects dependency cycles", async () => {
     readSubmissionMetadata(sourceApi({ blob }), expected),
     /Cyclic submission dependencies/,
   );
+});
+
+test("duplicate metadata fields cannot hide traces, including escaped keys", () => {
+  for (const key of ['"agent_traces"', '"agent\\u005ftraces"']) {
+    const raw =
+      '{"agent_traces":[{"output":"private-credential"}],' + key + ":[]}";
+    assert.throws(
+      () => parseSubmissionMetadataJSON(raw),
+      (error) => error.message === "Duplicate submission metadata field",
+    );
+  }
+  const value = {
+    title: "agent_traces",
+    description: 'brackets {[,]}, quote \\"',
+    agent_traces: [
+      { agent_traces: [], child: { agent_traces: [1] } },
+      { message: '"agent_traces":[], "agent_traces":[]' },
+    ],
+  };
+  assert.deepEqual(parseSubmissionMetadataJSON(JSON.stringify(value)), value);
 });

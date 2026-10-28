@@ -384,6 +384,47 @@ test("publication metadata cannot differ from the exact admitted source metadata
   assert.throws(() => validateAdmissionRecord(value), /metadata differs/);
 });
 
+test("embedded trace snapshots survive archive round trips and remain authenticated", () => {
+  const data = fixture();
+  data.metadata.agent_traces = [{ output: "x".repeat(70 * 1024) }];
+  const record = admissionRecord({ ...data, sourceTree: hex("e") });
+  const saved = validateAdmissionRecord(JSON.parse(JSON.stringify(record)));
+  assert.deepEqual(saved.metadata.agent_traces, data.metadata.agent_traces);
+  saved.metadata.agent_traces[0].output = "Altered research history";
+  assert.throws(() => validateAdmissionRecord(saved), /metadata differs/);
+});
+
+test("nested traces use compact durable encoding so archive size limits match stored bytes", async () => {
+  const data = fixture();
+  let trace = Array(100000).fill(null);
+  for (let i = 0; i < 40; i++) trace = { child: trace };
+  data.metadata.agent_traces = [trace];
+  const record = admissionRecord({ ...data, sourceTree: hex("e") });
+  assert.ok(Buffer.byteLength(JSON.stringify(record, null, 2)) > 8 * 1024 ** 2);
+  const steps = [
+    ...sourceSteps(),
+    { route: "git/ref/heads/admission-records", status: 404 },
+    {
+      route: "git/blobs",
+      method: "POST",
+      data: { sha: hex("1") },
+      inspect: ({ content }) => {
+        assert.ok(Buffer.byteLength(content) < 1024 ** 2);
+        const saved = validateAdmissionRecord(JSON.parse(content));
+        assert.deepEqual(
+          saved.metadata.agent_traces,
+          data.metadata.agent_traces,
+        );
+      },
+    },
+    { route: "git/trees", method: "POST", data: { sha: hex("2") } },
+    { route: "git/commits", method: "POST", data: { sha: hex("3") } },
+    { route: "git/refs", method: "POST", status: 201, data: {} },
+  ];
+  await archiveAdmission(data, api(steps));
+  assert.equal(steps.length, 0);
+});
+
 test("separate runs preserve their immutable metadata snapshots", () => {
   const data = fixture();
   const paths = new Set();

@@ -273,20 +273,76 @@ function gitRead(root, args) {
   });
 }
 
-function sourceTree(root, admission) {
+function isAncestor(root, ancestor, descendant) {
   try {
-    gitRead(root, [
-      "merge-base",
-      "--is-ancestor",
-      admission.merge_commit_sha,
-      "HEAD",
-    ]);
+    gitRead(root, ["merge-base", "--is-ancestor", ancestor, descendant]);
+    return true;
   } catch (error) {
-    // A concurrent merge may be newer than this checkout (and its fetched
-    // objects). Publish it only once the build includes the actual merge.
     if (error.status === 1 || error.status === 128) return false;
     throw error;
   }
+}
+
+// A base-branch update can change the PR head without changing any proof input.
+// Keep the receipt bound to its verified commit, and authenticate the complete
+// submission (including metadata) and dependency trees at all three commits.
+function unchangedAdmission(root, admission) {
+  const head = admission.merged_head_sha;
+  const merge = admission.merge_commit_sha;
+  if (
+    !isSha(head) ||
+    !isAncestor(root, admission.head_sha, head) ||
+    !isAncestor(root, head, merge)
+  )
+    return false;
+  const treeAt = (commit, path) => {
+    const entry = gitRead(root, ["ls-tree", commit, "--", path]).trimEnd();
+    return /^040000 tree ([a-f0-9]{40})\t/.exec(entry)?.[1];
+  };
+  if (
+    treeAt(admission.head_sha, admission.source_path) !== admission.source_tree
+  )
+    return false;
+  const path = admission.source_path.replace(/\/src$/, "");
+  const tree = treeAt(admission.head_sha, path);
+  if (!tree || treeAt(head, path) !== tree || treeAt(merge, path) !== tree)
+    return false;
+  const dependencies = Object.entries(admission.dependency_trees ?? {});
+  if (!dependencies.length) return true;
+  for (const commit of [admission.head_sha, head, merge]) {
+    const directories = gitRead(root, [
+      "ls-tree",
+      "--name-only",
+      `${commit}:submissions`,
+    ])
+      .trimEnd()
+      .split("\n")
+      .filter(Boolean);
+    let paths;
+    try {
+      paths = submissionDirectories(directories);
+    } catch {
+      // Removed or ambiguous dependencies cannot reuse an older admission.
+      return false;
+    }
+    for (const [id, expected] of dependencies) {
+      const directory = paths.get(id);
+      if (!directory || treeAt(commit, `submissions/${directory}`) !== expected)
+        return false;
+    }
+  }
+  return true;
+}
+
+function sourceTree(root, admission) {
+  // A concurrent merge may be newer than this checkout (and its fetched
+  // objects). Publish it only once the build includes the actual merge.
+  if (!isAncestor(root, admission.merge_commit_sha, "HEAD")) return false;
+  if (
+    admission.merged_head_sha !== undefined &&
+    !unchangedAdmission(root, admission)
+  )
+    return false;
   const entry = gitRead(root, [
     "ls-tree",
     admission.merge_commit_sha,
@@ -379,10 +435,11 @@ export async function reconcileAdmissions({
       if (!pulls.has(record.number))
         pulls.set(record.number, await request(`pulls/${record.number}`));
       const pr = pulls.get(record.number);
-      // Old heads and unmerged submissions are routinely present in the archive.
+      // Unmerged submissions are routinely present in the archive. Ancestor
+      // receipts are considered below only if every proof input is unchanged.
       if (
         !pr.merged ||
-        pr.head?.sha !== record.head_sha ||
+        !isSha(pr.head?.sha) ||
         pr.base?.ref !== defaultBranch ||
         pr.base?.repo?.full_name !== repository
       )
@@ -399,6 +456,9 @@ export async function reconcileAdmissions({
         ...record,
         merged_at: pr.merged_at,
         merge_commit_sha: pr.merge_commit_sha,
+        ...(pr.head.sha !== record.head_sha
+          ? { merged_head_sha: pr.head.sha }
+          : {}),
       });
     }
   } else {

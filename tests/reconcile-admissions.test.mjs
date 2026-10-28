@@ -266,6 +266,193 @@ const online = (data, api) =>
     fetcher: api.fetcher,
   });
 
+function ancestorFixture(t, { changeHead, changeMerge } = {}) {
+  const data = fixture(t, { dated: true, dependencies: true });
+  data.git("config", "user.name", "Test");
+  data.git("config", "user.email", "test@example.com");
+  data.git("checkout", "--detach", data.earlier);
+  writeFileSync(join(data.root, "README.md"), "Unrelated main maintenance\n");
+  data.git("add", "README.md");
+  data.git("commit", "-qm", "Main advances independently");
+  const base = data.git("rev-parse", "HEAD");
+  data.git("checkout", "--detach", data.envelope.head_sha);
+  if (changeHead) {
+    changeHead(data);
+    data.git("add", "submissions");
+    data.git("commit", "-qm", "Update the submission branch");
+  }
+  data.git("merge", "--no-ff", "-qm", "Refresh PR from main", base);
+  data.merged.head = { sha: data.git("rev-parse", "HEAD") };
+  data.merged.base.sha = base;
+  data.git("checkout", "--detach", base);
+  data.git("merge", "--no-ff", "--no-commit", data.merged.head.sha);
+  if (changeMerge) {
+    changeMerge(data);
+    data.git("add", "submissions");
+  }
+  data.git("commit", "-qm", "Merge the refreshed PR");
+  data.merged.merge_commit_sha = data.git("rev-parse", "HEAD");
+  return data;
+}
+
+test("an unchanged ancestor admission survives a main refresh with its original certificate and offline provenance", async (t) => {
+  const data = ancestorFixture(t);
+  assert.notEqual(data.envelope.head_sha, data.merged.head.sha);
+  assert.notEqual(data.merged.head.sha, data.merged.merge_commit_sha);
+  const catalogue = await online(data, mockApi(data));
+  const published = catalogue.records.find(
+    ({ id }) => id === "candidate-proof",
+  );
+  assert.equal(published.source_commit, data.envelope.head_sha);
+  assert.equal(
+    published.first_verified_at,
+    data.envelope.certificate.verified_at,
+  );
+  assert.equal(published.merged_at, data.merged.merged_at);
+  assert.equal(
+    published.solution_url,
+    `https://github.com/${repository}/blob/${data.envelope.head_sha}/${data.candidatePath}/src/Candidate/Main.lean`,
+  );
+  const certificatePath = join(data.root, "public", published.certificate_url);
+  const certificateBytes = readFileSync(certificatePath, "utf8");
+  assert.deepEqual(JSON.parse(certificateBytes), data.envelope.certificate);
+  const cached = JSON.parse(
+    readFileSync(join(data.root, ".work/admission-records.json")),
+  );
+  assert.equal(cached.length, 1);
+  assert.equal(cached[0].head_sha, data.envelope.head_sha);
+  assert.equal(cached[0].merge_commit_sha, data.merged.merge_commit_sha);
+  assert.deepEqual(cached[0].certificate, data.envelope.certificate);
+  assert.deepEqual(
+    await reconcileAdmissions({
+      root: data.root,
+      fetcher: () => assert.fail("Offline rebuild accessed the network"),
+    }),
+    catalogue,
+  );
+  assert.equal(readFileSync(certificatePath, "utf8"), certificateBytes);
+});
+
+for (const [label, directory, file] of [
+  ["candidate source", "candidatePath", "src/Candidate/Main.lean"],
+  ["candidate metadata", "candidatePath", "metadata.json"],
+  ["dependency source", "legacyPath", "src/Candidate/Main.lean"],
+  ["dependency metadata", "legacyPath", "metadata.json"],
+]) {
+  for (const stage of ["changeHead", "changeMerge"]) {
+    test(`an ancestor receipt cannot publish changed ${label} in the ${stage === "changeHead" ? "final PR head" : "merge result"}`, async (t) => {
+      const data = ancestorFixture(t, {
+        [stage]: (data) => {
+          const path = join(data.root, data[directory], file);
+          const contents =
+            file === "metadata.json"
+              ? JSON.stringify({
+                  ...JSON.parse(readFileSync(path)),
+                  title: "Changed after verification",
+                })
+              : "-- Changed after verification\n";
+          writeFileSync(path, contents);
+        },
+      });
+      await assert.rejects(
+        online(data, mockApi(data)),
+        /Submission has no verified publication record: candidate-proof/,
+      );
+      assert.equal(
+        existsSync(join(data.root, "catalogue/results.json")),
+        false,
+      );
+      assert.equal(
+        existsSync(join(data.root, ".work/admission-records.json")),
+        false,
+      );
+      assert.equal(
+        existsSync(join(data.root, "public/certificates/candidate-proof.json")),
+        false,
+      );
+    });
+  }
+}
+
+test("identical submission trees on an unrelated PR head cannot reuse an admission", async (t) => {
+  const data = ancestorFixture(t);
+  const unrelated = data.git(
+    "commit-tree",
+    `${data.envelope.head_sha}^{tree}`,
+    "-m",
+    "Unrelated identical source snapshot",
+  );
+  data.git("checkout", "--detach", unrelated);
+  data.merged.head.sha = unrelated;
+  data.merged.merge_commit_sha = unrelated;
+  await assert.rejects(
+    online(data, mockApi(data)),
+    /Submission has no verified publication record: candidate-proof/,
+  );
+});
+
+test("an ancestor receipt cannot publish a final PR head absent from the merge history", async (t) => {
+  const data = ancestorFixture(t);
+  data.merged.head.sha = data.git(
+    "commit-tree",
+    `${data.merged.head.sha}^{tree}`,
+    "-p",
+    data.merged.head.sha,
+    "-m",
+    "An identical but unmerged descendant",
+  );
+  await assert.rejects(
+    online(data, mockApi(data)),
+    /Submission has no verified publication record: candidate-proof/,
+  );
+});
+
+test("an ineligible ancestor receipt does not block a valid admission for the final head", async (t) => {
+  const data = ancestorFixture(t, {
+    changeHead: (data) =>
+      writeFileSync(
+        join(data.root, data.candidatePath, "src/Candidate/Main.lean"),
+        "-- A changed proof requires its own successful verification\n",
+      ),
+  });
+  const current = structuredClone(data.envelope);
+  current.head_sha = data.merged.head.sha;
+  current.source_tree = data.git(
+    "rev-parse",
+    `${current.head_sha}:${data.candidatePath}/src`,
+  );
+  const report = JSON.parse(current.report_json);
+  report.reviewed_pr_head = current.head_sha;
+  report.verified_at = "2026-10-13T00:20:00Z";
+  const bytes = Buffer.from(JSON.stringify(report));
+  current.certificate = workerCertificate(
+    current,
+    report,
+    current.certificate.report_url,
+    bytes,
+  );
+  current.report_json = bytes.toString();
+  current.admission.archived_at = "2026-10-13T00:21:00Z";
+  for (const records of [
+    [data.envelope, current],
+    [current, data.envelope],
+  ]) {
+    const catalogue = await online(data, mockApi(data, { records }));
+    const published = catalogue.records.find(
+      ({ id }) => id === "candidate-proof",
+    );
+    assert.equal(published.source_commit, current.head_sha);
+    assert.equal(published.first_verified_at, current.certificate.verified_at);
+    assert.deepEqual(
+      JSON.parse(
+        readFileSync(join(data.root, "public", published.certificate_url)),
+      ),
+      current.certificate,
+    );
+    assert.deepEqual(await reconcileAdmissions({ root: data.root }), catalogue);
+  }
+});
+
 test("catalogue generation uses authored metadata, exact evidence and explicit historical snapshots", (t) => {
   const data = fixture(t);
   const original = {

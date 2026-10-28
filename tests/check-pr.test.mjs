@@ -98,7 +98,9 @@ globalThis.fetch = async (url, options = {}) => {
   const route = parsed.pathname;
   if (parsed.origin !== "https://api.github.com") throw Error("Unexpected API origin");
   let value;
-  if (request.method === "GET" && route.includes("/git/trees/")) {
+  if (request.method === "GET" && fixture.traceResponses && Object.hasOwn(fixture.traceResponses, route)) {
+    value = fixture.traceResponses[route];
+  } else if (request.method === "GET" && route.includes("/git/trees/")) {
     const key=route.split("/").at(-1), id=/QRH-Result: ([^\\n]+)/.exec(fixture.pr.body)[1];
     const item=(path,sha,type="tree",mode="040000")=>({path,sha:sha.repeat(40),type,mode});
     value={tree:key===fixture.pr.head.sha?[item("submissions","d")]:key==="d".repeat(40)?[item(fixture.files.find(f=>f.filename.startsWith("submissions/"))?.filename.split("/")[1] || id,"e")]:key==="e".repeat(40)?[item("src","f"),...(fixture.omitMetadata?[]:[item("metadata.json","1","blob","100644")])]:key==="f".repeat(40)?[item("Candidate","2")]:[item("Main.lean","3","blob","100644")]};
@@ -147,6 +149,13 @@ function run(t, data, overrides = {}) {
   }
   const cwd = mkdtempSync(join(tmpdir(), "qrh-check-pr-"));
   t.after(() => rmSync(cwd, { recursive: true, force: true }));
+  const scanner = join(cwd, "fake-gitleaks");
+  const scannerMarker = join(cwd, "scanner-called");
+  writeFileSync(
+    scanner,
+    `#!${process.execPath}\nrequire("node:fs").writeFileSync(${JSON.stringify(scannerMarker)}, "called");\nconsole.error("synthetic scanner output must stay private");\nprocess.exit(${data.scannerExit ?? 0});\n`,
+    { mode: 0o700 },
+  );
   mkdirSync(join(cwd, "verifier"));
   writeFileSync(
     join(cwd, "verifier/pr-admissions.json"),
@@ -171,6 +180,7 @@ function run(t, data, overrides = {}) {
         QRH_PR: String(data.pr.number),
         QRH_DEFAULT_BRANCH: "main",
         QRH_TEST_FIXTURE: JSON.stringify(data),
+        QRH_GITLEAKS: scanner,
         ...overrides,
       },
     },
@@ -192,6 +202,9 @@ function run(t, data, overrides = {}) {
     outputs: existsSync(join(cwd, "outputs"))
       ? readFileSync(join(cwd, "outputs"), "utf8")
       : "",
+    scanned: existsSync(scannerMarker),
+    stdout: child.stdout,
+    stderr: child.stderr,
     status: child.status,
     checkWrites: result.requests.filter(
       (request) =>
@@ -201,6 +214,55 @@ function run(t, data, overrides = {}) {
       (request) => request.method !== "GET" && request.url.includes("/labels"),
     ),
   };
+}
+
+function addTrace(
+  data,
+  {
+    directory = "2026-10-11-candidate",
+    name = "run-01.json",
+    content = '{"steps":[]}',
+  } = {},
+) {
+  data.files.unshift({
+    filename: `agent-traces/${directory}/${name}`,
+    status: "added",
+  });
+  data.pr.changed_files = data.files.length;
+  const item = (path, sha, extra = {}) => ({
+    path,
+    sha: sha.repeat(40),
+    type: "tree",
+    mode: "040000",
+    ...extra,
+  });
+  const prefix = `/repos/${repository}/git`;
+  data.traceResponses = {
+    [`${prefix}/trees/${head}`]: {
+      tree: [item("submissions", "d"), item("agent-traces", "4")],
+    },
+    [`${prefix}/trees/${"d".repeat(40)}`]: {
+      tree: [item(directory, "e")],
+    },
+    [`${prefix}/trees/${"4".repeat(40)}`]: {
+      tree: [item(directory, "5")],
+    },
+    [`${prefix}/trees/${"5".repeat(40)}`]: {
+      tree: [
+        item(name, "6", {
+          type: "blob",
+          mode: "100644",
+          size: Buffer.byteLength(content),
+        }),
+      ],
+    },
+    [`${prefix}/blobs/${"6".repeat(40)}`]: {
+      encoding: "base64",
+      size: Buffer.byteLength(content),
+      content: Buffer.from(content).toString("base64"),
+    },
+  };
+  return data;
 }
 
 function assertFailure(result, message) {
@@ -438,6 +500,93 @@ test("an incomplete file list fails before assigning classification labels", (t)
   assert.ok(
     result.requests.every((request) => !request.url.includes("/labels")),
   );
+});
+
+test("optional traces are scanned before a new result queues a proof worker", (t) => {
+  const data = addTrace(
+    fixture([
+      {
+        filename: "submissions/2026-10-11-candidate/src/Candidate/Main.lean",
+        status: "added",
+      },
+    ]),
+  );
+  data.pr.body = "QRH-Result: candidate\nQRH-Bound: 1/1\nQRH-Decimal: 1.0";
+  const result = run(t, data, { QRH_PHASE: "prepare" });
+  assert.equal(result.status, 0, JSON.stringify(result));
+  assert.equal(result.scanned, true);
+  assert.equal(result.outputs, 'verify=true\nmatrix=["candidate"]\n');
+  assert.equal(result.context.expected.result_id, "candidate");
+  assert.deepEqual(
+    result.labelWrites.map((request) => request.body?.labels),
+    [["new-bound"]],
+  );
+  assert.doesNotMatch(result.stdout + result.stderr, /scanner output/);
+});
+
+for (const name of ["run-01.json", "run-01.jsonl"]) {
+  test(`a trace-only ${name} followup succeeds without queuing Lean`, (t) => {
+    const data = addTrace(fixture([]), { name });
+    const result = run(t, data, { QRH_PHASE: "prepare" });
+    assert.equal(result.status, 0, JSON.stringify(result));
+    assert.equal(result.scanned, true);
+    assert.equal(result.context, null);
+    assert.equal(result.outputs, "");
+    assert.equal(result.checkWrites.at(-1).body.conclusion, "success");
+    assert.deepEqual(
+      result.labelWrites.map((request) => request.body?.labels),
+      [["maintenance"]],
+    );
+  });
+}
+
+for (const [description, content, scannerExit, expected, scanned] of [
+  ["invalid JSON", "{ broken", 0, /JSON/i, false],
+  ["suspected secrets", '{"steps":[]}', 1, /secret|credential/i, true],
+  ["scanner failure", '{"steps":[]}', 2, /scan|Gitleaks/i, true],
+]) {
+  test(`${description} in an optional trace fails required admission before metadata or proof queuing`, (t) => {
+    const data = addTrace(
+      fixture([
+        {
+          filename: "submissions/2026-10-11-candidate/src/Candidate/Main.lean",
+          status: "added",
+        },
+      ]),
+      { content },
+    );
+    data.pr.body = "QRH-Result: candidate\nQRH-Bound: 1/1\nQRH-Decimal: 1.0";
+    data.omitMetadata = true;
+    data.scannerExit = scannerExit;
+    const result = run(t, data, { QRH_PHASE: "prepare" });
+    assert.equal(result.status, 1, JSON.stringify(result));
+    assert.equal(result.importError, undefined);
+    assert.equal(result.checkWrites.at(-1).body.conclusion, "failure");
+    assert.match(result.checkWrites.at(-1).body.output.summary, expected);
+    assert.equal(result.scanned, scanned);
+    assert.equal(result.context, null);
+    assert.equal(result.outputs, "");
+    assert.deepEqual(result.labelWrites, []);
+    assert.ok(
+      result.requests.every(
+        (request) => !request.url.endsWith(`/git/trees/${"e".repeat(40)}`),
+      ),
+      "publication metadata must not be read after a trace validation failure",
+    );
+    assert.doesNotMatch(result.stdout + result.stderr, /scanner output/);
+  });
+}
+
+test("trace documentation maintenance does not require a scanner or read candidate trees", (t) => {
+  const data = fixture([
+    { filename: "agent-traces/README.md", status: "modified" },
+  ]);
+  const result = run(t, data, { QRH_PHASE: "prepare" });
+  assert.equal(result.status, 0, JSON.stringify(result));
+  assert.equal(result.scanned, false);
+  assert.equal(result.context, null);
+  assert.equal(result.outputs, "");
+  assert.ok(result.requests.every((request) => !request.url.includes("/git/")));
 });
 
 test("publishes admission failure when the head or declaration changes during validation", (t) => {

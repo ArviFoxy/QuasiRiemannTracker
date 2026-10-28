@@ -32,3 +32,13 @@ for result and maintenance PR instructions. -->
 
 <!-- This requirement applies to proof submissions and changes to proofs.
 Maintenance-only PRs can omit this checklist and use a plain description. -->
+
+### Agent traces (recommended, optional)
+
+Trace paths or links: <!-- Leave blank if no trace is available. -->
+
+<!-- Include sanitized ATIF JSON or native JSON/JSONL exports under
+agent-traces/<submission-directory>/, keeping the submission's original date.
+Preserve available prompts, messages, tool calls, results, and failed attempts.
+Run the local secret check before pushing; uploaded traces must pass CI checks.
+See https://github.com/GTimG/QuasiRiemannTracker/blob/main/agent-traces/README.md -->

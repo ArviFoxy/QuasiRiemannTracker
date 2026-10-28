@@ -117,6 +117,11 @@ the normal online main-branch build to recover older receipts from the archive.
    substituted for $7/8$. Lean, NanoDa, and con-ron must all accept the proof.
    After review and merge, the website adds the result automatically.
 
+Agent traces are recommended and optional. Include sanitized ATIF JSON or native
+JSON/JSONL exports under `agent-traces/<submission-directory>/` and link them in
+the PR. See the [trace format and local secret check](agent-traces/README.md)
+before uploading. Trace-only updates do not trigger another Lean verification.
+
 Reusable modules live in `src/Submissions/<result_id>/`, with hyphens in the
 result ID replaced by underscores. Declare direct source dependencies in
 `metadata.json`, for example `"dependencies": ["openai-baseline"]`, then import:

@@ -10,6 +10,7 @@ import {
 } from "./pr-admission.mjs";
 import { readSubmissionMetadata } from "./submission-metadata.mjs";
 import { syncPRLabels } from "./pr-labels.mjs";
+import { validatePRTraces } from "./agent-traces.mjs";
 
 const repo = process.env.GITHUB_REPOSITORY;
 const number = Number(process.env.QRH_PR);
@@ -99,6 +100,7 @@ try {
     repository: repo,
     defaultBranch,
   });
+  await validatePRTraces({ request: api, repository: repo, pr, files });
   await syncPRLabels(repo, number, classification);
   const declaration = parseDeclaration(pr.body);
   if (declaration)

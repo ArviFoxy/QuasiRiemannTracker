@@ -1,0 +1,52 @@
+{
+  "title": "Dirichlet nonvanishing at 0.8739465 by widening the density range",
+  "authors": [
+    {
+      "name": "SovereignSteak",
+      "url": "https://github.com/SovereignSteak"
+    }
+  ],
+  "description": "Extends the fixed natural-row density interface from a >= 33/40 to a >= 3/4 using its existing underlying maxima theorem. This supplies Sil's density-split HIGH branch on q in [1/2,3/4], removing the conservative q >= 13/20 gate. Fifteen exactly certified transitions extend Jacob Sussman's fine-chain count source from tracker PR 86 to G(977400389/1000000000,4383001/2000000,1/10); its step 38 is retained separately for the physical return. The return at h=80513/100000 has exact boundary 1747893/2000000=0.8739465, with the principal pole excluded. All claims retain the preprint's 7/8 theorem as input. Builds on OpenAI's preprint, Hailey Collet's density/source/count machinery, Sil's fourth-power and density-split construction, ArviFoxy's physical return, Jacob Sussman's fine chain, and Rohan Arun's preceding research. Research, certificate generation and formalization were substantially AI-assisted by OpenAI Codex. Inherited authorship and license notices are retained.",
+  "license": "Apache-2.0; inherited notices and dependency licenses retained.",
+  "builds_on": [
+    "openai-baseline",
+    "hailey-collet-1252270103",
+    "sil-fourth-power-20261025",
+    "arvi-repeated-marks-on-sil-face-20261025",
+    "sil-density-split-20261026",
+    "density-split-fine-chain"
+  ],
+  "dependencies": [
+    "openai-baseline",
+    "hailey-collet-1252270103",
+    "arvi-repeated-marks-on-sil-face-20261025",
+    "sil-density-split-20261026",
+    "density-split-fine-chain"
+  ],
+  "references": [
+    {
+      "label": "Research claim and handoff",
+      "url": "https://github.com/rohanarun/quasi-rh-hillclimb/issues/31"
+    },
+    {
+      "label": "Hailey Collet: finite ordinary-source machinery",
+      "url": "https://github.com/GTimG/QuasiRiemannTracker/pull/69"
+    },
+    {
+      "label": "Sil: fourth-power source",
+      "url": "https://github.com/GTimG/QuasiRiemannTracker/pull/74"
+    },
+    {
+      "label": "ArviFoxy: all-shift physical return",
+      "url": "https://github.com/GTimG/QuasiRiemannTracker/pull/76"
+    },
+    {
+      "label": "Sil: density-split bootstrap",
+      "url": "https://github.com/GTimG/QuasiRiemannTracker/pull/83"
+    },
+    {
+      "label": "Jacob Sussman: exact fine density chain",
+      "url": "https://github.com/GTimG/QuasiRiemannTracker/pull/86"
+    }
+  ]
+}

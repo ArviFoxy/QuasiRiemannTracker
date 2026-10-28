@@ -103,7 +103,7 @@ export function scanTrace(path, bytes) {
       ],
       {
         cwd: directory,
-        env: { PATH: process.env.PATH, HOME: directory },
+        env: { PATH: process.env.PATH },
         encoding: "utf8",
         // Allow the trusted CI wrapper to download the pinned binary on first use.
         timeout: 180_000,

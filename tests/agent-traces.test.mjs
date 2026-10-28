@@ -532,9 +532,9 @@ test("scanner receives raw and decoded content with protected files and no inher
   assert.match(capture.files["rules.toml"].content, /useDefault = true/);
   assert.ok(capture.argv.includes("--ignore-gitleaks-allow"));
   assert.ok(capture.argv.includes("--redact=100"));
-  assert.equal(capture.env.HOME, capture.directory);
+  assert.equal(capture.env.HOME, undefined);
   assert.equal(capture.cwd, capture.directory);
-  assert.deepEqual(Object.keys(capture.env).sort(), ["HOME", "PATH"]);
+  assert.deepEqual(Object.keys(capture.env), ["PATH"]);
   assert.ok(Object.values(capture.files).every((file) => file.mode === 0o600));
   assert.ok(
     !existsSync(capture.directory),

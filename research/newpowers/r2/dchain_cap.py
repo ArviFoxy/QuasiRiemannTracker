@@ -44,12 +44,12 @@ def gmin(B0, L0, c0, B, L, c, A, D, floor, E_, C_, R_, N=300, dfac=None, qmax=0.
     ud = np.minimum(UD, u)
     num = (L0 - L) * v + (C_ * B0 - R_ * L0) * u
     q = np.minimum(qmax - 2e-6, dfac * L0 * (E_ * u + ud) / np.maximum(num, 1e-300))
-    q = np.where(v <= 0, np.minimum(qmax - 2e-6, dfac * L0 * (E_ * A + 0.0) / ((L0 - L) + (C_ * B0 - R_ * L0) * A)), q)   # LOW holds for every q <= formula; HIGH range [q, 3/4] needs q <= 3/4
+    q = np.where(v <= 0, np.minimum(qmax - 2e-6, dfac * L0 * ((E_ + (1.0 if UD > 0 else 0.0)) * A) / ((L0 - L) + (C_ * B0 - R_ * L0) * A)), q)   # LOW holds for every q <= formula; HIGH range [q, 3/4] needs q <= 3/4
     H = 1 - C_ * u
     J = 1 - rho(q) - q * B + q * (L - 1) * w - (C_ * (1 - rho(q)) - q * R_ - E_) * u + ud
     g = dict(q_lower=q - 0.5, q_upper=qmax - q, q_floor=q - floor, H_lower=H - 0.9,
              retained_cap=c0 * H - (w - R_ * u), retained_width=w - R_ * u,
-             low=np.where(v > 0, (1 - dfac) * L0 * (E_ * u + ud) / np.maximum(v, 1e-300), (1 - dfac) * L0 * E_ * A), high_at_q=J,
+             low=np.where(v > 0, (1 - dfac) * L0 * (E_ * u + ud) / np.maximum(v, 1e-300), (1 - dfac) * L0 * (E_ + (1.0 if UD > 0 else 0.0)) * A), high_at_q=J,
              high_deriv=25 / 24 * H - (B - (L - 1) * w - R_ * u),
              principal=1 - B + (L - 2) * w - 4.5 * u, second_ref=0.05 + 1.5 * (1 - B) + (1.5 * L - 2.5) * w - 4.5 * u,
              second_diag=1 - B + (L - 1) * w - 4 * u, ref_upper=1 / 3 - 2 * w - 3 * u, sel_deriv=A / (1 + D * v) ** 2)

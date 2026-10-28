@@ -12,3 +12,18 @@ RESULT knob=c floor=0.60 target=bar -> 5.95874994155069  (656s)
    c it5  x=5.953580  theta-target=+1.200e-08
 RESULT knob=c floor=0.60 target=bar-1.2e-6 -> 5.953580282544948  (717s)
    r it0  x=1.018501  theta-target=-8.050e-07
+   r it1  x=1.015756  theta-target=+6.860e-07
+   r it2  x=1.017485  theta-target=-2.530e-07
+   r it3  x=1.016751  theta-target=+1.460e-07
+   r it4  x=1.017145  theta-target=-6.800e-08
+   r it5  x=1.016955  theta-target=+3.600e-08
+   r it6  x=1.017052  theta-target=-1.700e-08
+RESULT knob=r floor=0.60 target=bar -> 1.017052404537244  (637s)
+   r it0  x=1.020903  theta-target=-9.100e-07
+   r it1  x=1.017800  theta-target=+7.750e-07
+   r it2  x=1.019755  theta-target=-2.860e-07
+   r it3  x=1.018925  theta-target=+1.650e-07
+   r it4  x=1.019370  theta-target=-7.700e-08
+   r it5  x=1.019155  theta-target=+4.000e-08
+   r it6  x=1.019264  theta-target=-1.900e-08
+RESULT knob=r floor=0.60 target=bar-1.2e-6 -> 1.0192643778399553  (794s)

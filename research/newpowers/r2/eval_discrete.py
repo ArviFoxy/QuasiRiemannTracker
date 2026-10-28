@@ -1,7 +1,7 @@
 """eval_discrete.py -- exact-return price of a DISCRETE chain (dchain_amp.py output), floor 3/5, role split (R2).
 
 count face: best of the last `nlast` steps; physical face: best step with L in [2.20, 2.60]; coordinate descent, exact thetas
-(price_amp.theta = B2/tc exact-cover Lean return).   usage: python3 eval_discrete.py chain.json [nlast]
+(price_amp.theta = B2/tc exact-cover Lean return).   usage: python3 eval_discrete.py chain.json [nlast]     (nlast = number of last steps tried as count face; 0 = all faces with L <= 2.5)
 """
 import sys, json, os
 from concurrent.futures import ProcessPoolExecutor
@@ -20,7 +20,7 @@ def evaluate(fn, nlast=12, workers=4):
     rows = [r for r in json.load(open(fn)) if not r.get('infeasible')]
     faces = [(r['B'], r['L'], r['s0']) for r in rows]
     phys = [f for f in faces if 2.20 <= f[1] <= 2.60]
-    cnt = faces[-nlast:]
+    cnt = faces[-nlast:] if nlast > 0 else [f for f in faces if f[1] <= 2.5]   # nlast = 0: every face with L <= 2.5
     pref = min(phys, key=lambda f: abs(f[1] - 2.38))
     with ProcessPoolExecutor(workers) as ex:
         tv = list(ex.map(_ev, [(c[0], c[1], pref[0], pref[1]) for c in cnt]))

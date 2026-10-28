@@ -1,0 +1,280 @@
+################################################################  t0_basics.py
+primary primes of norm <= 200: 44
+arithmetic OK
+symbols OK (x^{(N-1)/6} = zeta6^j mod pi, multiplicative)
+psi closed form vs direct complex definition: max err 5.29e-14
+|g(pi,1)|^2 = N(pi) for the first 40 primary primes
+L1 unit scale verified in 2787 cases
+L2 CRT product verified in 187 cases (arbitrary supported generators, no primary assumption)
+L3 primary reciprocity chi_a(b)=ray_sign(a,b) chi_b(a) verified in 586 cases
+L4 fourth_power verified in 500 cases (of which 14 have D not coprime to a)
+t0 OK
+
+################################################################  e12_cross_dilation.py
+m=1 done  (1s)
+m=2 done  (6s)
+m=3 done  (21s)
+m=4 done  (38s)
+m=5 done  (49s)
+m=6 done  (54s)
+
+=== magnitude |g(D^m,h)| = N^{m-1/2} (m<6), N^{5} (m=6) at v_D(h)=m-1 : failures: 0 of 1585
+=== cross factor = eps(D,n)^m chi_n(D)^{2m}:
+   m=1 : 500 / 500 cases match
+   m=2 : 450 / 450 cases match
+   m=3 : 350 / 350 cases match
+   m=4 : 200 / 200 cases match
+   m=5 : 60 / 60 cases match
+   m=6 : 25 / 25 cases match
+=== cubic reciprocity chi_n(D)^2 = chi_D(n)^2 and chi_D(n)^3 = eps * chi_n(D)^3 : failures: 0  of  1585
+=== class pairs (D mod 4, n mod 4) covered for m=1: 134 of 144
+
+=== leftover(m,k) = eps^m chi_n(D)^{2m+k}   (passed/total):
+m\k       0       1       2       3       4       5       6       7       8       9      10      11      12
+m=1 500/500 500/500 500/500 500/500 500/500 500/500 500/500 500/500 500/500 500/500 500/500 500/500 500/500
+m=2 450/450 450/450 450/450 450/450 450/450 450/450 450/450 450/450 450/450 450/450 450/450 450/450 450/450
+m=3 350/350 350/350 350/350 350/350 350/350 350/350 350/350 350/350 350/350 350/350 350/350 350/350 350/350
+m=4 200/200 200/200 200/200 200/200 200/200 200/200 200/200 200/200 200/200 200/200 200/200 200/200 200/200
+m=5  60/60   60/60   60/60   60/60   60/60   60/60   60/60   60/60   60/60   60/60   60/60   60/60   60/60 
+m=6  25/25   25/25   25/25   25/25   25/25   25/25   25/25   25/25   25/25   25/25   25/25   25/25   25/25 
+
+=== negative control, m=1,k=1: {'cases': 500, 'leftover == (n/D)_2': 500, 'leftover == (D/n)_2': 304, 'eps == -1': 196, 'leftover != (D/n)_2 (needs eps=-1)': 196}
+=== free-variable form  g(D^m n, D^{m-1}H') = eps^m g(D^m, D^{m-1}H') g(n, D^{(5-m) mod 6} H')  [kappa-view]:
+   m=1 : 500 / 500
+   m=2 : 450 / 450
+   m=3 : 350 / 350
+   m=4 : 200 / 200
+   m=5 : 60 / 60
+
+failures: {}
+time 53.5s
+
+################################################################  e34_vanishing_pools.py
+PART A: local vanishing pattern  Z(j,v)
+  failures: {}  | checks: {('Z', 7): 56, ('Z', 13): 35, ('Z', 19): 26, ('mag', 19): 4, ('mag', 25): 4, ('Z', 25): 26, ('ram', 7): 5, ('mag', 7): 6, ('mag', 13): 5}
+  observed v with g(p^j, p^v h0) != 0 (norm-7 prime): {1: [0], 2: [1], 3: [2], 4: [3], 5: [4], 6: [5, 6, 7, 8, 9], 7: [6]}
+  with extra coprime prime factor q (n = p^j q):
+   failures {} checks 111
+
+PART B: dilation identity for non-coprime n
+  cases where the criterion predicts 'holds for every h':   identity held for all sampled h in 1048 / 1048
+  cases where the criterion predicts 'fails for some h':    identity failed for some sampled h in 48 / 124
+  violations of the sufficiency direction: {}
+  table (p of norm 7, D = p, n = p^j):  'A' identity holds for every sampled h, '.' fails for some h
+   s\j   1  2  3  4  5  6  7
+    1    A  .  .  .  .  .  .
+    2    A  A  .  .  .  .  .
+    3    A  A  A  .  .  .  .
+    4    A  A  A  A  .  .  .
+    5    A  A  A  A  A  .  .
+    6    A  A  A  A  A  .  .
+    7    A  A  A  A  A  .  A
+    8    A  A  A  A  A  .  A
+    9    A  A  A  A  A  .  A
+   10    A  A  A  A  A  .  A
+   11    A  A  A  A  A  .  A
+   12    A  A  A  A  A  .  A
+  table violations of the criterion: {}
+
+PART C: pool dilations  g(u, p^k h),  u = p^i u'
+  failures: {}
+  checks: {'i=0 twist chi_u(p)^{-k}': 131, 'nonvanishing: ratio = eps^i chi^{2i-k}': 14, 'vanishing pattern (i>=1)': 630}
+  (i,k) pairs seen with non-vanishing g(p^i u', p^k h) (t = v_p(h)): [((1, 0), 6), ((2, 0), 2), ((3, 1), 3), ((4, 3), 1), ((5, 2), 2)]
+time 28.6s
+
+################################################################  e4_pools.py
+failures: {}
+checks: {'i=0: g(u,p^k h) = chi_u(p)^{-k} g(u,h)': 234, 'vanishing pattern': 1265, 'ratio = eps^i chi^{2i-k}': 95}
+
+surviving (i,k) at t = v_p(h) = 0   [i = v_p(u), k = dilation exponent]  (nonzero cases / tested):
+  i=1 :   9/9   0/9   0/9   0/9   0/9   0/9   0/9   0/9   0/9   0/9   0/9   0/9   0/9
+  i=2 :   0/9   9/9   0/9   0/9   0/9   0/9   0/9   0/9   0/9   0/9   0/9   0/9   0/9
+  i=3 :   0/7   0/7   7/7   0/7   0/7   0/7   0/7   0/7   0/7   0/7   0/7   0/7   0/7
+  i=4 :   0/3   0/3   0/3   4/4   0/4   0/4   0/4   0/3   0/3   0/4   0/3   0/3   0/4
+  i=5 :   0/2   0/2   0/2   0/2   2/2   0/2   0/2   0/2   0/2   0/2   0/2   0/2   0/2
+  i=6 :   0/1   0/1   0/1   0/1   0/1   1/1   1/1   1/1   1/1   1/1   1/1   1/1   1/1
+  i=7 :   0/1   0/1   0/1   0/1   0/1   0/1   1/1   0/1   0/1   0/1   0/1   0/1   0/1
+   (k = 0..12 left to right)
+
+twist of the surviving class relative to g(p^i,H) g(u',h):  eps(p,u')^i chi_{u'}(p)^{2i-k};   i = k+1+t:
+   i=1 k=0 : chi exponent 2i-k = 2  (mod 6) -> cubic ; eps^1
+   i=2 k=1 : chi exponent 2i-k = 3  (mod 6) -> quadratic ; eps^2
+   i=3 k=2 : chi exponent 2i-k = 4  (mod 6) -> cubic ; eps^3
+   i=4 k=3 : chi exponent 2i-k = 5  (mod 6) -> sextic ; eps^4
+   i=5 k=4 : chi exponent 2i-k = 0  (mod 6) -> trivial ; eps^5
+   i=6 k=5 : chi exponent 2i-k = 1  (mod 6) -> sextic ; eps^6
+time 18.4s
+
+################################################################  e5_other.py
+5a conjugation g(conj a, conj h) = conj g(a,h): checks 131, failures 0
+   chi_{conj a}(conj x) = conj chi_a(x): checks 131, failures 0
+
+5b supplement characters n -> chi_n(E), n primary (generated by primes of norm <= 400, products with norm <= 4000)
+   sample size: 136
+   E = -1     : chi_n(E) depends only on n mod M for M in [4, 8, 12, 16, 24, 36]   (smallest 4)
+   E = w      : chi_n(E) depends only on n mod M for M in [9, 18, 36, 72]   (smallest 9)
+   E = 2      : chi_n(E) depends only on n mod M for M in [8, 16, 24, 72]   (smallest 8)
+   E = lambda : chi_n(E) depends only on n mod M for M in [36, 72]   (smallest 36)
+   closed forms violated (counts): none 
+     chi_n(-1) = (-1)^{(N n-1)/2};  chi_n(w) = zeta6^{(N n-1)/3};  chi_n(2)^3 = chi_8(N n) = (2/N n);
+     chi_n(lambda)^3 = lambdaQuadraticTable(n mod 4) [Lean RowCompletion/ThetaNonvanishing.lean]
+   cubic part chi_n(2)^2 depends on n mod 2 only: True {(0, 1): 2, (1, 1): 4, (1, 0): 0}
+
+5c ray sign eps(B,n) = (E0/n)_2 = chi_n(E0)^3 :  which E0 reproduce eps(B,.) for B in each class mod 4 (B primary)
+   odd classes mod 4 reachable by primary B: 12 (expect 12 = |(O/4)^*|)
+   B mod 4 = (0, 1) (B = (4, -3)   ): eps(B,.) = (E/.)_2 for E in ['1']
+   B mod 4 = (0, 3) (B = (4, 3)    ): eps(B,.) = (E/.)_2 for E in ['-1']
+   B mod 4 = (1, 0) (B = (1, 0)    ): eps(B,.) = (E/.)_2 for E in ['1']
+   B mod 4 = (1, 1) (B = (1, -3)   ): eps(B,.) = (E/.)_2 for E in ['-1']
+   B mod 4 = (1, 2) (B = (1, 6)    ): eps(B,.) = (E/.)_2 for E in ['-lam']
+   B mod 4 = (1, 3) (B = (1, 3)    ): eps(B,.) = (E/.)_2 for E in ['-lam']
+   B mod 4 = (2, 1) (B = (-2, -3)  ): eps(B,.) = (E/.)_2 for E in ['lam']
+   B mod 4 = (2, 3) (B = (-2, 3)   ): eps(B,.) = (E/.)_2 for E in ['-lam']
+   B mod 4 = (3, 0) (B = (-5, 0)   ): eps(B,.) = (E/.)_2 for E in ['-1']
+   B mod 4 = (3, 1) (B = (-5, -3)  ): eps(B,.) = (E/.)_2 for E in ['lam']
+   B mod 4 = (3, 2) (B = (-5, -6)  ): eps(B,.) = (E/.)_2 for E in ['lam']
+   B mod 4 = (3, 3) (B = (7, 3)    ): eps(B,.) = (E/.)_2 for E in ['1']
+
+   Verification of  g(B n, h) = g(B,h) g(n, B^4 E0^3 h)  with E0 = E0(B mod 4) in {1,-1,lambda,-lambda}
+      class (1, 0) : E0 = (1, 0)
+      class (1, 3) : E0 = (1, -1)
+      class (1, 2) : E0 = (1, -1)
+      class (1, 1) : E0 = (-1, 0)
+      class (0, 3) : E0 = (-1, 0)
+      class (0, 1) : E0 = (1, 0)
+      class (3, 0) : E0 = (-1, 0)
+      class (3, 3) : E0 = (1, 0)
+      class (3, 2) : E0 = (-1, 1)
+      class (3, 1) : E0 = (-1, 1)
+      class (2, 3) : E0 = (1, -1)
+      class (2, 1) : E0 = (-1, 1)
+   exact identity g(Bn,h)=g(B,h)g(n,B^4 E0^3 h): 307 cases, 0 failures
+
+5d eps(B,n) = (-1)^{Tr(x_B x_n)}, B = zeta (1 + 2 x_B) (mod 4), zeta in mu_3, x_B in F_4 = O/2
+   all 12x12 class pairs: mismatches with (-1)^{Tr(x_B x_n)}: 0
+   classes with x_B = 0 (eps(B,.) == 1, i.e. B = cube root of unity mod 4): [(0, 1), (1, 0), (3, 3)]
+   primary B with trivial ray sign: B = 1, w, w^2 (mod 4)   (density 3/12 = 1/4 among odd classes)
+
+5e several blocks D1^m1 D2^m2 (and a frozen part f) : leftover = eps(B,n) chi_n(B)^2 / (dilation twist chi_n(E)^{-1})
+   checks 815, failures 0
+   sign-free exact form for composite blocks B = prod D_i^{m_i} (2-3 primes, m_i in 1..4): 98 checks, 0 failures
+   dilation prod D_i^{(4 m_i mod 6)} leaves only eps(B,n): checks 228, failures 0, exponent pairs seen {(1, 2): 37, (2, 1): 37, (1, 3): 14, (1, 4): 12, (1, 1): 70, (2, 2): 42, (3, 2): 4, (2, 3): 6, (4, 1): 6}
+time 56.1s
+
+################################################################  e6_gauss_structure.py
+6a g(p^j, p^{j-1}h') = N^{j-1} G_j(p,h'):  240 checks, 0 failures
+6b DH product: G1 G4 = chi_p(2)^{-2} G2 G3 :  231 checks, 0 failures
+6c inert q (primary generator -q):  g(q,h) / ( q * chi_q(sqrt(-3) h)^{-1} ) :
+   q= 5 (q mod 12 =  5):  g/(q chi^{-1}) in [-1.0]
+   q=11 (q mod 12 = 11):  g/(q chi^{-1}) in [1.0]
+   q=17 (q mod 12 =  5):  g/(q chi^{-1}) in [-1.0]
+   q=23 (q mod 12 = 11):  g/(q chi^{-1}) in [1.0]
+   q=29 (q mod 12 =  5):  g/(q chi^{-1}) in [-1.0]
+   q=41 (q mod 12 =  5):  g/(q chi^{-1}) in [-1.0]
+   q=47 (q mod 12 = 11):  g/(q chi^{-1}) in [1.0]
+   q=53 (q mod 12 =  5):  g/(q chi^{-1}) in [-1.0]
+   q=59 (q mod 12 = 11):  g/(q chi^{-1}) in [1.0]
+   q=71 (q mod 12 = 11):  g/(q chi^{-1}) in [1.0]
+   q=83 (q mod 12 = 11):  g/(q chi^{-1}) in [1.0]
+   6c reality check: 11 ok, 0 bad
+6d Kummer-type laws (split primes pi, primary):
+   G_2(pi,1)^3 / (N pi)   takes values: {(-1.0, -0.0): 74}
+   G_3(pi,1)^2 / N        takes values: {(-1.0, 0.0): 40, (1.0, -0.0): 34}
+   G_1(pi,1)^6 / (N pi^4) takes values: {(-1.0, 0.0): 40, (1.0, -0.0): 34}
+time 0.8s
+
+################################################################  e7_wholecolumn.py
+whole-column identity  sum_v B_v 1[(D,a_v)=1] gaussRow(D^m a_v,k) = gaussRow(D^m,k) sum_v B_v gaussRow(a_v, E0^3 D^(4m mod 6) k)
+   inside the range v_p(a_v) <= (4m mod 6)+m-1 (and 6 !| v_p):
+      m=1 : 183 / 183
+      m=2 : 179 / 179
+      m=3 : 86 / 86
+      m=4 : 89 / 89
+      m=5 : 77 / 77
+   outside the range (some column with v_p(a_v) > kappa, or 6 | v_p): identity failed in
+      m=1 : 18 / 18 cases
+      m=2 : 19 / 19 cases
+      m=3 : 8 / 8 cases
+      m=4 : 0 / 0 cases
+      m=5 : 0 / 0 cases
+failures: {}
+time 13.3s
+
+################################################################  e8_large_primes.py
+m=1  cross factor: 293/293   sign-free exact form: 293/293
+m=2  cross factor: 58/58   sign-free exact form: 58/58
+m=3  cross factor: 15/15   sign-free exact form: 15/15
+residue classes of B mod 4 seen: 12 of 12; failures: {}  time 21.5s
+
+################################################################  e9_jacobi.py
+J_D = G_1(1)^2/G_2(1): in O and equal to (unit) * D for all?  counts {(is_integral, unit_index_j with J = zeta6^j * D)}: {(True, 2): 14, (True, 4): 14, (True, 1): 12, (True, 5): 12, (True, 0): 12, (True, 3): 10}
+h-independence failures: 0
+unit index j (J = zeta6^j D) by chi_D(-1) = (-1)^c : {1: {2: 14, 4: 14, 0: 12}, 0: {1: 12, 5: 12, 3: 10}}
+g(D^2, D H') = N(D) g(D,H')^2 / J_D : 40 / 40
+cube-block scalar: G_3(pi,1) = ((-b)/N) eps_N sqrt(N) for pi = a + b w : 74 / 74    g(pi^3, pi^2 h') = N^2 (h'/pi)_2 G_3(pi,1): 6 / 6
+
+################################################################  e10_misc.py
+M1 generator change g(us,h) = chi_s(u) g(s,h): 237 checks, 0 failures
+M2 composite pool element g(a,E^6 h) = 1[(E,a)=1] g(a,h) (v_p(a)<=5): 207 checks, 0 failures
+   primes with N = 1 mod 36 (norm <= 800): 11 [37, 37, 73, 73, 109, 109, 181, 181]
+M3 unit-orbit invariance for columns with N(n) = 1 mod 36 : 100 checks, 0 failures
+
+################################################################  e11_bidilation.py
+cases: 900  cells (m, j mod 6, k mod 6): 144  violations of the rule: 0
+exact cells (m, j mod 6, k):
+   m=1 : (j mod 6, k) = [(1, 3), (3, 1), (5, 5)]
+   m=2 : (j mod 6, k) = [(0, 2), (1, 0), (2, 4), (3, 2), (4, 0), (5, 4)]
+   m=3 : (j mod 6, k) = [(1, 3), (3, 3), (5, 3)]
+   m=4 : (j mod 6, k) = [(0, 4), (1, 0), (2, 2), (3, 4), (4, 0), (5, 2)]
+
+################################################################  table_gen.py
+leftover after dilating the residual by D^k, block D^m  (1 exact; e = only the ray sign eps(D,n);
+  Q quadratic chi^3, C cubic chi^{2,4}, S sextic chi^{1,5}; prefix e: times eps(D,n) when m is odd)
+m\k    1   2   3   4   5   6   7   8   9  10  11  12
+m=1   eQ  eC  eS   e  eS  eC  eQ  eC  eS   e  eS  eC
+m=2    S   1   S   C   Q   C   S   1   S   C   Q   C
+m=3   eS  eC  eQ  eC  eS   e  eS  eC  eQ  eC  eS   e
+m=4    Q   C   S   1   S   C   Q   C   S   1   S   C
+m=5   eS   e  eS  eC  eQ  eC  eS   e  eS  eC  eQ  eC
+m=6    S   C   Q   C   S   1   S   C   Q   C   S   1
+
+minimal exact dilation exponent k(m) = 4m mod 6 (exact up to eps); cost k/m; free-variable exponent kappa = (5-m) mod 6 (n coprime to D)
+m=1  k=4  k/m=4.000   kappa_raw=k+m-1=4  kappa_mod6=4   vanishing range v_p(n) <= 4   block scalar |gaussRow|=N^{0.0} on v_D(h)=0
+m=2  k=2  k/m=1.000   kappa_raw=k+m-1=3  kappa_mod6=3   vanishing range v_p(n) <= 3   block scalar |gaussRow|=N^{0.5} on v_D(h)=1
+m=3  k=0  k/m=0.000   kappa_raw=k+m-1=2  kappa_mod6=2   vanishing range v_p(n) <= 2   block scalar |gaussRow|=N^{1.0} on v_D(h)=2
+m=4  k=4  k/m=1.000   kappa_raw=k+m-1=7  kappa_mod6=1   vanishing range v_p(n) <= 7   block scalar |gaussRow|=N^{1.5} on v_D(h)=3
+m=5  k=2  k/m=0.400   kappa_raw=k+m-1=6  kappa_mod6=0   vanishing range v_p(n) <= 6   block scalar |gaussRow|=N^{2.0} on v_D(h)=4
+m=6  k=0  k/m=0.000   kappa_raw=k+m-1=5  kappa_mod6=5   vanishing range v_p(n) <= 5   block scalar |gaussRow|=N^{2.5} on v_D(h)=>=5
+
+################################################################  v_final.py
+V1 reciprocity sign over all 144 class pairs: 3349 checks, 0 failures
+V2 tables (lambdaQuadraticTable, (-1/s)_2) vs actual symbols: 144 checks, 0 failures
+V2 ray_sign(r,s) = (E0(r)/s)_2 for all 12 x 12 class pairs; E0 by class mod 4:
+      E0 = 1        : B mod 4 in [(0, 1), (1, 0), (3, 3)]
+      E0 = -1       : B mod 4 in [(0, 3), (1, 1), (3, 0)]
+      E0 = lambda   : B mod 4 in [(2, 1), (3, 1), (3, 2)]
+      E0 = -lambda  : B mod 4 in [(1, 2), (1, 3), (2, 3)]
+   failures: 0
+V3 g(D,h)^6 = (-1)^{(N-1)/2} N(D) D^4 : 300 checks, 0 failures
+V4 Kummer G_2^3 = -N pi : 74 checks, 0 failures;  G_3^2 = chi(-1) N : 74 checks, 0 failures
+V5 inert Gauss sums g(q,h) = (-1)^{(q+1)/2} q chi_q(sqrt(-3) h)^{-1} : 65 checks, 0 failures
+V6 unit orbit: g(n,-h)=(-1)^{(N-1)/2} g(n,h): 169 checks, 0 failures ; g(n,w h) = zeta6^{-(N-1)/3} g(n,h): 169 checks, 0 failures
+time 2.7s
+
+################################################################  highprec.py
+mpmath, 40 digits:  (max relative error, number of cases)
+  m=1 cross: g(Dn,h) = eps chi_n(D)^2 g(D,h) g(n,h)                         max err 1.67e-40   (40 cases)
+  m=1 dilated: g(Dn,h) = eps g(D,h) g(n,D^4 h)                              max err 1.3e-40   (40 cases)
+  m=1 sign-free: g(Dn,h) = g(D,h) g(n, D^4 E0^3 h)                          max err 1.65e-40   (40 cases)
+  m=1 D^1: g(Dn,h) = g(D,h) (n/D)_2 g(n,D h)                                max err 1.69e-40   (40 cases)
+  m=2 squared block: g(D^2 n,h) = g(D^2,h) g(n,D^2 h)                       max err 4.32e-40   (25 cases)
+  m=2 cross = chi_n(D)^4                                                    max err 4.46e-40   (25 cases)
+  m=3 cube block: g(D^3 n,h) = eps g(D^3,h) g(n,h)                          max err 2.22e-39   (10 cases)
+  pool p^6: g(u,p^6 h) = 0 (p | u, i<=3)  [abs value]                       max err 2.89e-38   (21 cases)
+  pool p^6: g(u,p^6 h) = g(u,h) (p !| u)                                    max err 1.49e-41   (6 cases)
+  pool p^3: g(u,p^3 h) = (p/u)_2 g(u,h)                                     max err 3.8e-41   (6 cases)
+  Kummer: G_2(pi,1)^3 = -N pi                                               max err 1.7e-40   (20 cases)
+  inert: g(q,h) = (-1)^{(q+1)/2} q chi_q(sqrt(-3) h)^{-1}                   max err 1.01e-40   (5 cases)
+  conjugation: g(conj a, conj h) = conj g(a,h)                              max err 1.02e-40   (20 cases)
+time 1.5s
+

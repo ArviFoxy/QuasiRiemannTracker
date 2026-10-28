@@ -20,16 +20,15 @@ theorem ReturnCountWindow.toAdmitted_face (w:ReturnCountWindow) :
  w.toAdmitted.face=countingSource w.branch := rfl
 
 theorem final_windows_common_mesh
- (hC:UniformUnitFaceSource countGlobal)
- (hF:UniformUnitFaceSource fourthCountGlobal) (hP:UniformUnitFaceSource physicalGlobal)
+ (hC:UniformUnitFaceSource countGlobal) (hP:UniformUnitFaceSource physicalGlobal)
  {ε:ℝ} (hε:0<ε) : ∃mesh:ℝ,0<mesh ∧
  ∀w∈finalCountScheme.windows,UnitFaceSource w.face mesh ε := by
- obtain ⟨mesh,hm,hc,hf,hp⟩ := selected_sources_common_mesh hC hF hP hε
+ obtain ⟨mesh,hm,hc,hp⟩ := selected_sources_common_mesh hC hP hε
  refine ⟨mesh,hm,?_⟩
  intro w hw
  obtain ⟨v,hv,rfl⟩ := List.mem_map.mp hw
  change UnitFaceSource (countingSource v.branch) _ ε
  apply unit_source_restrict (supplier_restricts_counting v.branch v.nonold)
- cases v.branch <;> first | exact (v.nonold rfl).elim | exact hc | exact hf
+ cases v.branch <;> first | exact (v.nonold rfl).elim | exact hc | exact hp
 end
 end QRH.DensitySplitThird.Return

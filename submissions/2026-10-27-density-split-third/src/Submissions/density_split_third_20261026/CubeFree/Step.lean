@@ -91,42 +91,12 @@ theorem hybrid_step_third (I : ∃ Lplain : ℝ, StepInputs dsThird Density.dsGa
     exact cubefree_step dsThird Density.dsGates_third Lplain hI hβ hp
       (density_leaf_third hβ hp Lplain)
 
-/-- Two fourth transitions share the third face as parent. -/
-abbrev dsFourthPhysical : StepData :=
-  Density.dsData (99/100) (239/100) (1/10) (49461297/50000000)
-    (23767/10000) (1/10) (27/50) 94 (by norm_num)
-abbrev dsFourthCount : StepData :=
-  Density.dsData (99/100) (239/100) (1/10) (987987/1000000)
-    (2357/1000) (1/10) (103/200) 23 (by norm_num)
-
-theorem hybrid_step_fourthPhysical
-    (I : ∃ Lplain : ℝ, StepInputs dsFourthPhysical Density.dsGates_fourthPhysical Lplain) :
-    (51/100:ℝ) ≤ HeckeZeroSupremum.beta →
-      GlobalSource (99/100) (239/100) (1/10) →
-      GlobalSource (49461297/50000000) (23767/10000) (1/10) :=
-  fun hβ hp => by
-    obtain ⟨Lplain, hI⟩ := I
-    exact cubefree_step dsFourthPhysical Density.dsGates_fourthPhysical Lplain hI hβ hp
-      (density_leaf_fourthPhysical hβ hp Lplain)
-
-theorem hybrid_step_fourthCount
-    (I : ∃ Lplain : ℝ, StepInputs dsFourthCount Density.dsGates_fourthCount Lplain) :
-    (51/100:ℝ) ≤ HeckeZeroSupremum.beta →
-      GlobalSource (99/100) (239/100) (1/10) →
-      GlobalSource (987987/1000000) (2357/1000) (1/10) :=
-  fun hβ hp => by
-    obtain ⟨Lplain, hI⟩ := I
-    exact cubefree_step dsFourthCount Density.dsGates_fourthCount Lplain hI hβ hp
-      (density_leaf_fourthCount hβ hp Lplain)
-
 /-- All remaining inputs of the source chain. -/
 structure AllStepInputs : Prop where
   native : NativeInputs
   first : ∃ Lplain : ℝ, StepInputs dsFirst Density.dsGates_first Lplain
   second : ∃ Lplain : ℝ, StepInputs dsSecond Density.dsGates_second Lplain
   third : ∃ Lplain : ℝ, StepInputs dsThird Density.dsGates_third Lplain
-  fourthPhysical : ∃ Lplain : ℝ, StepInputs dsFourthPhysical Density.dsGates_fourthPhysical Lplain
-  fourthCount : ∃ Lplain : ℝ, StepInputs dsFourthCount Density.dsGates_fourthCount Lplain
 
 end
 end QRH.DensitySplitThird.CubeFree

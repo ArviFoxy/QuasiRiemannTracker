@@ -1,5 +1,5 @@
 /- Copyright (c) 2026 Sil. Apache-2.0.
-The return at theta = 873981/1000000 from the fourth physical and count children of G(99/100, 239/100, 1/10).
+The return at theta = 174797/200000 from the global source G(99/100, 239/100, 1/10).
 Adapted from PR76 `FinalReturn/EndpointFromGlobalSources.lean` and `Graph/Endpoint.lean`
 (Repeated marks, Apache-2.0; forks of Collet's Record1252270103Graph, Apache-2.0).
 The count face C = (4967/5000, 49/20, 9999/100000) and the physical face
@@ -19,19 +19,13 @@ open OAI.SevenEighths OAI.SevenEighths.HeckeFamily
 
 /-- The global face of the source G(99/100, 239/100, 1/10). -/
 abbrev sourceFace : SourceFace := QRH.Record1252270103Source.globalFace (99/100) (239/100) (1/10)
-abbrev fourthCountSourceFace : SourceFace := QRH.Record1252270103Source.globalFace (987987/1000000) (2357/1000) (1/10)
-abbrev fourthPhysicalSourceFace : SourceFace := QRH.Record1252270103Source.globalFace (49461297/50000000) (23767/10000) (1/10)
 
 theorem source_restricts_count : sourceFace.Restricts countGlobal := by
  constructor <;> norm_num [sourceFace,QRH.Record1252270103Source.globalFace,countGlobal,
   QRH.Record1252270103Return.globalFace,countCB,countCL,countCap]
 
-theorem source_restricts_fourth_count : fourthCountSourceFace.Restricts fourthCountGlobal := by
- constructor <;> norm_num [fourthCountSourceFace,QRH.Record1252270103Source.globalFace,
-  fourthCountGlobal,QRH.Record1252270103Return.globalFace,fourthCountB,fourthCountL,countCap]
-
-theorem source_restricts_physical : fourthPhysicalSourceFace.Restricts physicalGlobal := by
- constructor <;> norm_num [fourthPhysicalSourceFace,QRH.Record1252270103Source.globalFace,physicalGlobal,
+theorem source_restricts_physical : sourceFace.Restricts physicalGlobal := by
+ constructor <;> norm_num [sourceFace,QRH.Record1252270103Source.globalFace,physicalGlobal,
   QRH.Record1252270103Return.globalFace,physicalB,physicalLambda,physicalCap]
 
 theorem uniform_restrict {strong weak : SourceFace} (h : strong.Restricts weak)
@@ -46,34 +40,28 @@ lemma natural_cap_return : 2*HeckeZeroSupremum.beta-1≤naturalK/6 := by
  linarith
 
 theorem beta_of_two_global_sources
- (hC:UniformUnitFaceSource countGlobal) (hF:UniformUnitFaceSource fourthCountGlobal)
- (hP:UniformUnitFaceSource physicalGlobal) :
+ (hC:UniformUnitFaceSource countGlobal) (hP:UniformUnitFaceSource physicalGlobal) :
  HeckeZeroSupremum.beta≤theta :=
- Final.beta_of_global_sources hC hF hP natural_cap_return
+ Final.beta_of_global_sources hC hP natural_cap_return
 
 theorem beta_le_theta_of_source
     (hsrc : (51/100:ℝ) ≤ HeckeZeroSupremum.beta →
-      QRH.Record1252270103Source.GlobalSource (99/100) (239/100) (1/10) ∧
-      QRH.Record1252270103Source.GlobalSource (49461297/50000000) (23767/10000) (1/10) ∧
-      QRH.Record1252270103Source.GlobalSource (987987/1000000) (2357/1000) (1/10)) :
-    HeckeZeroSupremum.beta ≤ (873981/1000000 : ℝ) := by
+      QRH.Record1252270103Source.GlobalSource (99/100) (239/100) (1/10)) :
+    HeckeZeroSupremum.beta ≤ (174797/200000 : ℝ) := by
   rw [← theta_value]
   by_cases hbeta : (51/100:ℝ) ≤ HeckeZeroSupremum.beta
-  · obtain ⟨hG, hGP, hGF⟩ := hsrc hbeta
+  · have hG : UniformUnitFaceSource sourceFace := hsrc hbeta
     exact beta_of_two_global_sources (uniform_restrict source_restricts_count hG)
-      (uniform_restrict source_restricts_fourth_count hGF)
-      (uniform_restrict source_restricts_physical hGP)
+      (uniform_restrict source_restricts_physical hG)
   · have ht : (51/100:ℝ) ≤ theta := by norm_num [theta,c]
     exact (not_le.mp hbeta).le.trans ht
 
 /-- The Dirichlet transfer of `beta_le_theta_of_source` (as PR76 `Graph.dirichlet_of_step`). -/
 theorem dirichlet_of_source
     (hsrc : (51/100:ℝ) ≤ HeckeZeroSupremum.beta →
-      QRH.Record1252270103Source.GlobalSource (99/100) (239/100) (1/10) ∧
-      QRH.Record1252270103Source.GlobalSource (49461297/50000000) (23767/10000) (1/10) ∧
-      QRH.Record1252270103Source.GlobalSource (987987/1000000) (2357/1000) (1/10))
+      QRH.Record1252270103Source.GlobalSource (99/100) (239/100) (1/10))
     {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) {s : ℂ}
-    (hs : (873981 / 1000000 : ℝ) < s.re) (hpole : ¬ (χ = 1 ∧ s = 1)) :
+    (hs : (174797 / 200000 : ℝ) < s.re) (hpole : ¬ (χ = 1 ∧ s = 1)) :
     DirichletCharacter.LFunction χ s ≠ 0 :=
   Cycle25.dirichlet_of_hecke (by norm_num)
     (fun η s hs hpole => HeckeZeroSupremum.LFunction_ne_zero_of_beta_lt η

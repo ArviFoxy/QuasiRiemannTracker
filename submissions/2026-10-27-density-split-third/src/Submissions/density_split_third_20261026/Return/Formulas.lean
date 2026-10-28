@@ -11,20 +11,18 @@ set_option linter.unnecessarySeqFocus false
 namespace QRH.DensitySplitThird.Return
 noncomputable section
 
-inductive CountBranch | old | C | capP | fourthC
+inductive CountBranch | old | C | capP
  deriving DecidableEq
 def branchB : CountBranch → ℝ
  | .C => countCB
- | .fourthC => fourthCountB
- | .capP => parentCapB
+ | .capP => physicalB
  | .old => 0
 def branchL : CountBranch → ℝ
  | .C => countCL
- | .fourthC => fourthCountL
- | .capP => parentCapLambda
+ | .capP => physicalLambda
  | .old => 1
 def branchCap : CountBranch → ℝ
- | .C | .fourthC => countCap
+ | .C => countCap
  | .capP => physicalCap
  | .old => 1/25
 def isCap : CountBranch → Bool

@@ -19,13 +19,12 @@ local instance : CountScheme := finalCountScheme
 local instance : GenericArithmetic.PhysicalSchedule := finalPhysicalSchedule
 
 theorem literal_numerator_of_global_sources
- (hC:UniformUnitFaceSource countGlobal)
- (hF:UniformUnitFaceSource fourthCountGlobal) (hP:UniformUnitFaceSource physicalGlobal)
+ (hC:UniformUnitFaceSource countGlobal) (hP:UniformUnitFaceSource physicalGlobal)
  (hcap:2*HeckeZeroSupremum.beta-1≤QRH.DensitySplitThird.Return.naturalK/6) : LiteralNumeratorInput := by
  have hc : ∀ε:ℝ,0<ε → ∃mesh:ℝ,0< mesh ∧
    ∀w∈finalCountScheme.windows,UnitFaceSource w.face mesh ε := by
   intro ε hε
-  obtain ⟨mesh,hm,hw⟩ := final_windows_common_mesh hC hF hP hε
+  obtain ⟨mesh,hm,hw⟩ := final_windows_common_mesh hC hP hε
   exact ⟨mesh,hm,hw⟩
  have hr : physicalGlobal.Restricts GenericPhysical.PhysicalDirect.physicalFace := by
   change physicalGlobal.Restricts
@@ -40,34 +39,30 @@ theorem literal_numerator_of_global_sources
   (GenericPhysical.PhysicalDirect.chosen_initial_source_of_uniform_faces hcap hc hp)
 
 theorem beta_of_global_sources
- (hC:UniformUnitFaceSource countGlobal)
- (hF:UniformUnitFaceSource fourthCountGlobal) (hP:UniformUnitFaceSource physicalGlobal)
+ (hC:UniformUnitFaceSource countGlobal) (hP:UniformUnitFaceSource physicalGlobal)
  (hcap:2*HeckeZeroSupremum.beta-1≤QRH.DensitySplitThird.Return.naturalK/6) :
  HeckeZeroSupremum.beta≤QRH.DensitySplitThird.Return.theta :=
- beta_of_literal_numerator (literal_numerator_of_global_sources hC hF hP hcap)
+ beta_of_literal_numerator (literal_numerator_of_global_sources hC hP hcap)
 
 theorem hecke_of_global_sources
- (hC:UniformUnitFaceSource countGlobal)
- (hF:UniformUnitFaceSource fourthCountGlobal) (hP:UniformUnitFaceSource physicalGlobal)
+ (hC:UniformUnitFaceSource countGlobal) (hP:UniformUnitFaceSource physicalGlobal)
  (hcap:2*HeckeZeroSupremum.beta-1≤QRH.DensitySplitThird.Return.naturalK/6)
  (χ:Character) (s:ℂ) (hs:QRH.DensitySplitThird.Return.theta<s.re) (hpole:s≠1 ∨ χ.residue≠1) :
  LFunction χ s≠0 :=
- hecke_of_literal_numerator (literal_numerator_of_global_sources hC hF hP hcap) χ s hs hpole
+ hecke_of_literal_numerator (literal_numerator_of_global_sources hC hP hcap) χ s hs hpole
 
 theorem dirichlet_of_global_sources
- (hC:UniformUnitFaceSource countGlobal)
- (hF:UniformUnitFaceSource fourthCountGlobal) (hP:UniformUnitFaceSource physicalGlobal)
+ (hC:UniformUnitFaceSource countGlobal) (hP:UniformUnitFaceSource physicalGlobal)
  (hcap:2*HeckeZeroSupremum.beta-1≤QRH.DensitySplitThird.Return.naturalK/6)
  {q:ℕ} [NeZero q] (χ:DirichletCharacter ℂ q) (s:ℂ)
  (hs:QRH.DensitySplitThird.Return.theta<s.re) (hpole:¬(χ=1 ∧ s=1)) : χ.LFunction s≠0 :=
- dirichlet_of_literal_numerator (literal_numerator_of_global_sources hC hF hP hcap) χ s hs hpole
+ dirichlet_of_literal_numerator (literal_numerator_of_global_sources hC hP hcap) χ s hs hpole
 
 theorem zeta_of_global_sources
- (hC:UniformUnitFaceSource countGlobal)
- (hF:UniformUnitFaceSource fourthCountGlobal) (hP:UniformUnitFaceSource physicalGlobal)
+ (hC:UniformUnitFaceSource countGlobal) (hP:UniformUnitFaceSource physicalGlobal)
  (hcap:2*HeckeZeroSupremum.beta-1≤QRH.DensitySplitThird.Return.naturalK/6)
  (s:ℂ) (hs:QRH.DensitySplitThird.Return.theta<s.re) : riemannZeta s≠0 :=
- zeta_of_literal_numerator (literal_numerator_of_global_sources hC hF hP hcap) s hs
+ zeta_of_literal_numerator (literal_numerator_of_global_sources hC hP hcap) s hs
 end Final
 
 end

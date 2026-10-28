@@ -108,13 +108,7 @@ theorem allStepInputs_of_providers
       ContraryRawSideProvider Density.dsGates_second)
     (h3 : ∃ Lplain : ℝ, GlobalSource dsThird.B₀ dsThird.L₀ dsThird.c₀ →
       PricedPackedSource dsThird.price dsThird.Hmin (dsThird.Hmax+1) Lplain →
-      ContraryRawSideProvider Density.dsGates_third)
-    (h4p : ∃ Lplain : ℝ, GlobalSource dsFourthPhysical.B₀ dsFourthPhysical.L₀ dsFourthPhysical.c₀ →
-      PricedPackedSource dsFourthPhysical.price dsFourthPhysical.Hmin (dsFourthPhysical.Hmax+1) Lplain →
-      ContraryRawSideProvider Density.dsGates_fourthPhysical)
-    (h4c : ∃ Lplain : ℝ, GlobalSource dsFourthCount.B₀ dsFourthCount.L₀ dsFourthCount.c₀ →
-      PricedPackedSource dsFourthCount.price dsFourthCount.Hmin (dsFourthCount.Hmax+1) Lplain →
-      ContraryRawSideProvider Density.dsGates_fourthCount) :
+      ContraryRawSideProvider Density.dsGates_third) :
     AllStepInputs where
   native := fun p n a h => by
     obtain ⟨Lplain, hp⟩ := hnat p n a h
@@ -127,12 +121,6 @@ theorem allStepInputs_of_providers
     exact ⟨Lplain, step_inputs_of_provider _ _ Lplain hp⟩
   third := by
     obtain ⟨Lplain, hp⟩ := h3
-    exact ⟨Lplain, step_inputs_of_provider _ _ Lplain hp⟩
-  fourthPhysical := by
-    obtain ⟨Lplain, hp⟩ := h4p
-    exact ⟨Lplain, step_inputs_of_provider _ _ Lplain hp⟩
-  fourthCount := by
-    obtain ⟨Lplain, hp⟩ := h4c
     exact ⟨Lplain, step_inputs_of_provider _ _ Lplain hp⟩
 
 end

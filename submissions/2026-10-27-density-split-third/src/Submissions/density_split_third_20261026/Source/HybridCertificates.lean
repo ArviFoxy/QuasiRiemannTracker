@@ -6,8 +6,6 @@ Arithmetic only; the analytic density-split step is not proved here. -/
 import Submissions.density_split_third_20261026.Source.HybridCertificatesFirst
 import Submissions.density_split_third_20261026.Source.HybridCertificatesSecond
 import Submissions.density_split_third_20261026.Source.HybridCertificatesThird
-import Submissions.density_split_third_20261026.Source.HybridFourthPhysical
-import Submissions.density_split_third_20261026.Source.HybridFourthCount
 
 set_option autoImplicit false
 namespace QRH.DensitySplitThird

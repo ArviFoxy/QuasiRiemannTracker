@@ -15,14 +15,13 @@ def countingSource (b:CountBranch) : SourceFace :=
  broadFace (branchB b) (branchL b) (branchCap b)
 def sourceSupplier (b:CountBranch) : SourceFace :=
  match b with
- | .fourthC => fourthCountGlobal
+ | .capP => physicalGlobal
  | _ => countGlobal
 
 theorem supplier_restricts_counting (b:CountBranch) (hb:b≠.old) :
  (sourceSupplier b).Restricts (countingSource b) := by
  cases b <;> first | exact (hb rfl).elim | (constructor <;>
-  norm_num [sourceSupplier,countingSource,broadFace,countGlobal,fourthCountGlobal,globalFace,
-   branchB,branchL,branchCap,countCB,countCL,countCap,parentCapB,parentCapLambda,
-   fourthCountB,fourthCountL,physicalCap])
+  norm_num [sourceSupplier,countingSource,broadFace,countGlobal,physicalGlobal,globalFace,
+   branchB,branchL,branchCap,countCB,countCL,countCap,physicalB,physicalLambda,physicalCap])
 end
 end QRH.DensitySplitThird.Return

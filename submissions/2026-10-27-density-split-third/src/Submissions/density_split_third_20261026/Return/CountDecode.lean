@@ -11,7 +11,7 @@ noncomputable section
 
 
 theorem branch_lambda_gt_one (b : CountBranch) (hb:b≠.old) : 1<branchL b := by
- cases b <;> norm_num [branchL,countCL,physicalLambda,parentCapLambda,fourthCountL] at *
+ cases b <;> norm_num [branchL,countCL,physicalLambda] at *
 
 theorem linear_plain_at_crossing (b:CountBranch) (hb:b≠.old) {δ p:ℝ}
  (hD:0<D b p) (hJ:0<countJ b δ p) :

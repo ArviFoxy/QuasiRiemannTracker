@@ -14,24 +14,17 @@ noncomputable section
 open QRH.Record12518109Source QRH.Record12518109Existence
 
 def countGlobal : SourceFace := globalFace countCB countCL countCap
-def fourthCountGlobal : SourceFace := globalFace fourthCountB fourthCountL countCap
 def physicalGlobal : SourceFace := globalFace physicalB physicalLambda physicalCap
 
-/-- Choose one mesh for all three source roles before any live parameters. -/
+/-- One mesh, chosen before the ambient slot type and every live parameter,
+works for both global sources. -/
 theorem selected_sources_common_mesh
-    (hC : UniformUnitFaceSource countGlobal)
-    (hF : UniformUnitFaceSource fourthCountGlobal)
-    (hP : UniformUnitFaceSource physicalGlobal)
-    {ε : ℝ} (hε : 0 < ε) :
-    ∃ mesh : ℝ, 0 < mesh ∧ UnitFaceSource countGlobal mesh ε ∧
-      UnitFaceSource fourthCountGlobal mesh ε ∧
+    (hC : UniformUnitFaceSource countGlobal) (hP : UniformUnitFaceSource physicalGlobal)
+    {ε : ℝ} (hε : 0<ε) :
+    ∃mesh : ℝ,0<mesh ∧ UnitFaceSource countGlobal mesh ε ∧
       UnitFaceSource physicalGlobal mesh ε := by
-  obtain ⟨c, hc, hcs⟩ := hC ε hε
-  obtain ⟨f, hf, hfs⟩ := hF ε hε
-  obtain ⟨p, hp, hps⟩ := hP ε hε
-  refine ⟨min (min c f) p, lt_min (lt_min hc hf) hp, ?_, ?_, ?_⟩
-  · exact hcs.mono_mesh ((min_le_left _ _).trans (min_le_left _ _))
-  · exact hfs.mono_mesh ((min_le_left _ _).trans (min_le_right _ _))
-  · exact hps.mono_mesh (min_le_right _ _)
+  obtain ⟨c,hc,hcs⟩ := hC ε hε
+  obtain ⟨p,hp,hps⟩ := hP ε hε
+  exact ⟨min c p,lt_min hc hp,hcs.mono_mesh (min_le_left c p),hps.mono_mesh (min_le_right c p)⟩
 end
 end QRH.DensitySplitThird.Return

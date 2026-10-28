@@ -1815,3 +1815,10 @@ slot; `mixed-slots/`).
   matches this derivation. Build started: floor fork (`Submissions.arvi_density`), bridge map, step generator.
 - **Bar raised to 5e-5 (θ ≤ 0.8739058).** Below the return's transport box (θ > 0.8739167 from ell < 0.171): the box
   must be widened. Marked leaf with all extras models at ≈ 0.873927; more new mathematics is needed.
+- **Lean (proved, standard axioms):** `newpowers/lean/CountingR.lean` (`Submissions.arvi_newpowers.CountingR`):
+  `countingR_zero` (marked count at p = 0 = ρ(ν)), `countingR_anti` (antitone in p on [0,1/2] for κ ≥ 7/10,
+  0 ≤ ν < 5/6), `countingR_le_unmarked`. So the marked HIGH count never loses against Sil's unmarked count.
+- **Repeated marks are the supply fix.** Our PR 73/76 HIGH count (Lemmas A_K/B_K, `repeated-marks/README.md` §2–3;
+  Lean in PR 76 `Fork/Record1252270103Source/High/`, `Gain/`) uses each slot up to K times in the inverse witness
+  (supply K·s, widths with multiplicity via Collet's `overlapping_annular_inverse_marked_energy`) and a HIGH parent
+  face in the plain branch. Sil's density leaf dropped this gain (unmarked ρ only). Porting it is the marked leaf.

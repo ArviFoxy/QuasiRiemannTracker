@@ -14,7 +14,7 @@ BOOT = {False: (0.99999, 2.5715), True: (0.99999, 2.56738)}
 
 class Chain:
     def __init__(self, var='pr83', dfac=0.999, boot=False, c6=6.0, Lend=1.80, shift_R=0.0, h0=0.1, sigma=None,
-                 s0scale=1.0, rtol=1e-11):
+                 s0scale=1.0, rtol=1e-11, dL0=0.0, dB0=0.0):
         self.var, self.dfac, self.boot, self.c6 = var, dfac, boot, c6
         self.kappa = KAPPA_BOOT if boot else KAPPA_NAT
         self.h0 = h0
@@ -22,6 +22,7 @@ class Chain:
         self.sigma = sigma
         self.s0scale = s0scale
         B0, L0 = BOOT[boot]
+        B0, L0 = B0 + dB0, L0 - dL0
         self.B0, self.L0 = B0, L0
         self.sol = solve_ivp(lambda L, y: [self.s0(y[0], L)], [L0, Lend], [B0], rtol=rtol, atol=1e-13,
                              dense_output=True, events=[self._dead])
@@ -38,7 +39,7 @@ class Chain:
         d = dict(kappa=self.kappa, B0=B, L0=L, h0=self.h0)
         if self.sigma is not None:
             d['sigma'] = self.sigma
-        d['shift_R'] = self.shift_R
+        d['shift_R'] = self.shift_R(L) if callable(self.shift_R) else self.shift_R
         return d
 
     def s0(self, B, L):

@@ -21,12 +21,14 @@ def run_discrete(var, floor, boot, dfac, dL, nC=14, shift_R=0.0, sigma=None, tag
         rows = chain.run(cfg, out=fn, verbose=False)
     faces = split.chain_faces(rows)
     n = len(faces)
-    c_c = list(range(max(0, n - nC), n))
+    # count candidates: the last faces (floor wall), faces near the count break-even slope s0 ~ 0.0857, a coarse sweep
+    near = [i for i, f in enumerate(faces) if 0.078 <= f[2] <= 0.095]
+    c_c = sorted(set(list(range(max(0, n - 10), n)) + near[::2] + list(range(max(0, n - 70), n, 7))))
     p_c = [i for i, f in enumerate(faces) if Lp_lo <= f[0] <= Lp_hi]
     # coarse P scan: every k-th so that ~10 points
     k = max(1, len(p_c) // 10)
     p_c = p_c[::k]
-    res = split.best_split(faces, c_c, p_c, verbose=False)
+    res = split.best_split(faces, c_c, p_c, verbose=False, refine=True, refine_range=set(range(n)))
     res.update(name=name, var=var, floor=floor, boot=boot, dfac=dfac, dL=dL, nsteps=n, end=dict(L=faces[-1][0], B=faces[-1][1]),
                last_bind=rows[-2].get('bind') if len(rows) > 1 else None,
                infeasible_at=rows[-1] if rows and rows[-1].get('infeasible') else None)

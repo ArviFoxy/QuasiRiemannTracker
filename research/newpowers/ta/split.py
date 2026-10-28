@@ -9,7 +9,7 @@ BAR = 0.8739058
 RECORD = 0.8739558
 
 
-def best_split(faces, c_cands, p_cands, guess=0.87390, P0=None, unit=10**8, verbose=True, **kw):
+def best_split(faces, c_cands, p_cands, guess=0.87390, P0=None, unit=10**8, verbose=True, refine=False, refine_range=None, **kw):
     """faces: list of (L,B,s0). c_cands / p_cands: indices into faces. returns dict."""
     log = []
     if P0 is None:
@@ -28,6 +28,17 @@ def best_split(faces, c_cands, p_cands, guess=0.87390, P0=None, unit=10**8, verb
             g = t
             if bestC is None or t < bestC[0]:
                 bestC = (t, i)
+    # refine: neighbours (+-1..3 indices) of the best count candidate
+    if refine:
+        done = set(c_cands)
+        for j in range(bestC[1] - 3, bestC[1] + 4):
+            if 0 <= j < len(faces) and j not in done and j in refine_range:
+                L, B, s0 = faces[j]
+                r = exact.theta_exact(B, L, BP0, LP0, guess=bestC[0], unit=unit, span=300 if unit == 10**8 else 2000, **kw)
+                t = None if r is None else r[0]
+                log.append(('C', j, L, B, s0, t))
+                if t is not None and t < bestC[0]:
+                    bestC = (t, j)
     iC = bestC[1]
     LC, BC = faces[iC][0], faces[iC][1]
     bestP = None

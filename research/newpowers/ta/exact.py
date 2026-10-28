@@ -82,7 +82,7 @@ def diagnose(BC, LC, BP, LP, th_units, unit=10**9, **kw):
     if not ok and why.startswith('cover of edge'):
         edge = why.split()[-1]
         try:
-            boxes = pr86.failing_boxes(c_bad, edge, maxdepth=12)
+            boxes = pr86.failing_boxes(c_bad, edge, maxdepth=26)
         except Exception as e:                      # noqa
             boxes = []
         if boxes:
@@ -99,11 +99,18 @@ def diagnose(BC, LC, BP, LP, th_units, unit=10**9, **kw):
             d, Cc = edges[edge]
             bx = boxes[0]
             res = []
+            (bd0, bd1), (bp0, bp1) = bx
             for name, br, meta in cands:
                 rp = CR.return_poly(br, Gb, d, Cc)
-                res.append((float(CR.bernstein_min(rp, bx)), name))
+                m = float(CR.bernstein_min(rp, bx))
+                if meta is None:
+                    adm = float(CR.bernstein_min(br['J'], bx)) > 0
+                else:
+                    adm = bool(CR.admitted(name, br, meta, ((bd0, bd1), (bp0, Fr(1, 2))))[0])
+                res.append((m, name, adm))
             res.sort(reverse=True)
-            out['branch_margins_first_box'] = res[:3]
+            out['branch_margins_first_box'] = [(round(m, 8), n, 'admitted' if a else 'NOT admitted') for m, n, a in res[:4]]
+            out['best_admitted_margin'] = max([(m, n) for m, n, a in res if a], default=None)
     return out
 
 

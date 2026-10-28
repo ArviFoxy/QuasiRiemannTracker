@@ -33,18 +33,19 @@ def run_ode(var, boot, dfac, floors=(0.60, 0.55, 0.50), shift_R=0.0, tag='', sig
         Lc = [wall + o for o in offs]
         if LC_be is not None and LC_be > wall + offs[-1]:
             Lc.append(LC_be)
-        Lp = [LP0 + o for o in poffs]
+        Lp = [max(LP0 + o, wall) for o in poffs]
+        Lp = sorted(set(round(x, 6) for x in Lp), reverse=True)
         faces = [(L, ch.B(L), ch.slope(L)) for L in Lc + Lp]
         c_c = list(range(len(Lc)))
         p_c = list(range(len(Lc), len(faces)))
-        res = split.best_split(faces, c_c, p_c, verbose=False)
+        res = split.best_split(faces, c_c, p_c, P0=p_c[len(p_c) // 2], verbose=False)
         LPb, LCb = res['P']['L'], res['C']['L']
-        refP = [LPb - 0.015, LPb + 0.015]
+        refP = [x for x in (LPb - 0.015, LPb + 0.015) if x >= wall]
         refC = [LCb + d for d in (-0.006, 0.006, 0.018) if LCb + d >= wall - 1e-9]
         faces2 = faces + [(L, ch.B(L), ch.slope(L)) for L in refC + refP]
         c2 = c_c + list(range(len(faces), len(faces) + len(refC)))
         p2 = p_c + list(range(len(faces) + len(refC), len(faces2)))
-        res = split.best_split(faces2, c2, p2, verbose=False)
+        res = split.best_split(faces2, c2, p2, P0=p_c[len(p_c) // 2], verbose=False)
         name = 'ode_%s_f%.2f_b%d_d%.3f%s' % (var, fl, int(boot), dfac, tag)
         res.update(name=name, var=var, floor=fl, boot=boot, dfac=dfac, wall=wall, dL=0)
         json.dump(res, open(os.path.join(RES, 'eval_%s.json' % name), 'w'), indent=1, default=str)

@@ -1,0 +1,13 @@
+a    floor 0.60 all-on: theta0=0.873935761 theta(R-2e-3)=0.873929187 dtheta/dR=3.2870e-03 C L 2.204->2.206
+a    floor 0.55 all-on: theta0=0.873933136 theta(R-2e-3)=0.873924874 dtheta/dR=4.1310e-03 C L 2.114->2.086
+a    floor 0.50 all-on: theta0=0.873933181 theta(R-2e-3)=0.873924982 dtheta/dR=4.0995e-03 C L 2.123->2.104
+b1   floor 0.60 all-on: theta0=0.873918198 theta(R-2e-3)=0.873913908 dtheta/dR=2.1450e-03 C L 2.209->2.211
+b1   floor 0.55 all-on: theta0=0.873906658 theta(R-2e-3)=0.873897712 dtheta/dR=4.4730e-03 C L 2.068->2.070
+b1   floor 0.50 all-on: theta0=0.873904318 theta(R-2e-3)=0.873893186 dtheta/dR=5.5660e-03 C L 1.975->1.936
+d2   floor 0.60 all-on: theta0=0.873908202 theta(R-2e-3)=0.873903769 dtheta/dR=2.2165e-03 C L 2.213->2.215
+d2   floor 0.55 all-on: theta0=0.873883297 theta(R-2e-3)=0.873875388 dtheta/dR=3.9545e-03 C L 2.074->2.076
+d2   floor 0.50 all-on: theta0=0.873868954 theta(R-2e-3)=0.873855304 dtheta/dR=6.8250e-03 C L 1.925->1.928
+d2   floor 0.50 window L in [2.45,2.58]: theta0=0.873868954 theta=0.873866762 dtheta/dR=1.0960e-03
+d2   floor 0.50 window L in [2.30,2.45]: theta0=0.873868954 theta=0.873865222 dtheta/dR=1.8660e-03
+d2   floor 0.50 window L in [2.15,2.30]: theta0=0.873868954 theta=0.873865705 dtheta/dR=1.6245e-03
+d2   floor 0.50 window L in [1.80,2.15]: theta0=0.873868954 theta=0.873864363 dtheta/dR=2.2955e-03

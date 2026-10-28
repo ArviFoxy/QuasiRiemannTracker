@@ -30,7 +30,8 @@ def R_b(nu, x, sigma, kappa, partial):
     nu, x, sigma = np.broadcast_arrays(*(np.asarray(a, dtype=float) for a in (nu, x, sigma)))
     sg = np.clip(sigma, SGG[0], SGG[-1])
     pts = np.stack([nu, x, sg], axis=-1)
-    return table(kappa, partial)(pts)
+    out = table(kappa, partial)(pts.reshape(-1, 3))
+    return out.reshape(nu.shape)
 
 
 if __name__ == '__main__':

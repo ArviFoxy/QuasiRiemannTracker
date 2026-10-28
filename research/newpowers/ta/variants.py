@@ -40,6 +40,9 @@ def cs(var, nu, x, S, Q, par):
         out = (1 - C.R_face(nu, x, par['B0'], par['L0'])) * Q
     elif var == 'cc':
         out = (1 - C.R_face(nu, x, par['B0'], par['L0'], capped=True, zs=S / Q)) * Q
+    elif var.startswith('dn'):      # repeated marks with the *natural* plain face (1, 4.497, 11/200): PR 69-era plain branch
+        K = int(var[2:])
+        out = nu * C.xi_roots(nu, x, S, Q, K, 1.0, 4.4973108, 0.055)
     elif var.startswith('d'):
         K = int(var[1:])
         out = nu * C.xi_roots(nu, x, S, Q, K, par['B0'], par['L0'], par['h0'])

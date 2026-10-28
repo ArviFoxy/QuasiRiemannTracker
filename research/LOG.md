@@ -1789,3 +1789,29 @@ slot; `mixed-slots/`).
   `r·(r·phase)² = r³` — exactly the twist. Collision families are ordinary first-layer families over (C·D², D′):
   LOW pins hold by construction. Remaining: energy equality on supported ideals (rayShift_energy pattern), label
   membership, shortenPlains parent, ω(D). Told transfer agent, fork lead, N3/N6.
+
+## 2026-10-28 — replan after the density-split records; new targets 2e-5, then 5e-5
+
+- **Upstream.** Merged since PR 76: PR 83 (Sil, density split, 0.873995), PR 84 (0.873985), PR 85 (0.873981),
+  PR 86 (Jacob Sussman, 46-step chain, **0.8739558**, record). All depend on PR 76. Open: #52 (WIP), #72 (0.874771).
+  New rules: folders `YYYY-MM-DD-<slug>`, Lean prefix `Submissions.<slug_>`, 12 h replay / 30 min per module / 24 GiB.
+  Reports: `replan/{pr83,pr84_86,process}.md`.
+- **Mixed step superseded.** PR 83's native step has our barrier 18B/7 = 6qB/(1+q) (its LOW identity q(6B−L) ≤ L is our
+  payoff 1+q−6qB/L > 0), handles p² columns, and its chain alone gives 0.874024 < 0.874074. Formalization stopped.
+- **Levers priced (exact return toolchain, validated to rational equality against PR 86's 32 rows and 240
+  admissions; `replan/lemmaW.md`).** Lemma W: 0 (PR 83's constants absorb it). Cheap tuning ≤ 2e-6. Density floor
+  13/20 → 3/5 (Collet's `a ≥ 4/5` lemma exists, `replan/floor.md`) + chain + count/physical role split: 0.8739463.
+  Incumbent bootstrap: −1.3e-6 (`replan/B3_incumbent_bootstrap.md`). Return constants: no slack found
+  (`replan/B1_return_constants.md`). Source: only a marked (amplitude-class) HIGH leaf is of the right size
+  (`replan/B2_source_slope.md`).
+- **New amplifier types (`newpowers/`).** R1 (numerically verified): g(Dᵐn,h) = εᵐ·g(Dᵐ,h)·g(n, D^{4m mod 6}h); dilation
+  cost per unit volume 4, 1, 0, 1, 2/5, 0 for m = 1..6; g(Dᵐ,h) ≠ 0 iff v_D(h) = m−1; the ray sign ε = (E₀/n)₂ is a bounded
+  dilation. R2 (draft): every cheapest amplifier has scale cost 6; squared blocks save at rate 2 (descent 1.64·B), but
+  inputs have no squared columns of positive volume (higher blocks come from slots with χ², χ³, … — other L-functions).
+  R3: no recombination of the return's inputs closes the gap; smallest demand is a column-excess (P1-type) saving.
+- **Marked HIGH leaf (`newpowers/MARKED_LEAF.md`).** Checked by algebra: countingR κ ν 0 = ρ(ν); the root constraint
+  P_C + (c_g−f) + L·S ≤ B forces the binding HIGH rows to carry s = W − u of slots, so the marked count gains
+  (ρ − R(p*))·H there. The 7/37 supply is a selection cap (`DetectorBranchBudget`), not analytic. B2's joint-gate model
+  matches this derivation. Build started: floor fork (`Submissions.arvi_density`), bridge map, step generator.
+- **Bar raised to 5e-5 (θ ≤ 0.8739058).** Below the return's transport box (θ > 0.8739167 from ell < 0.171): the box
+  must be widened. Marked leaf with all extras models at ≈ 0.873927; more new mathematics is needed.

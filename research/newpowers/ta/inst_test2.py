@@ -1,9 +1,8 @@
 import sys
-sys.path.insert(0, '$SCRATCH/analysis/B2')
 import numpy as np
-from odemod import Ode
+from ode import Chain
 import inst, counts as C
-base = Ode()
+base = Chain('pr83')
 kap = 0.74791
 for L in (2.3415, 2.20):
     B = base.B(L); q = base.qinf(L)

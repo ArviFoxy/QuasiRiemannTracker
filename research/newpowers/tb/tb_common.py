@@ -77,6 +77,7 @@ PR83 = Box('PR83/86 BoundsN')           # the current box
 W_CALLER = PR83.w(name='caller example: theta>0.8735, ell<0.175', theta_lo=F(8735, 10000), ell_hi=F(175, 1000))
 W_MIN = PR83.w(name='minimal: ell<0.1715', ell_hi=F(1715, 10000))
 W_WIDE = PR83.w(name='ell<0.175 (theta>0.873 kept)', ell_hi=F(175, 1000))
+W_FUT = PR83.w(name='future-proof: ell<0.175, y>0.44, ss=0.06', ell_hi=F(175, 1000), y_lo=F(440, 1000), ss=F(60, 1000))
 
 
 def constraints(box):

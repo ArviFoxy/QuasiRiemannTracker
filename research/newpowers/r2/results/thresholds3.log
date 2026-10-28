@@ -19,3 +19,5 @@ RESULT knob=floor floor=0.60 target=bar -> None  (205s)
    phi_r2 it3  x=0.006819  theta-target=+1.200e-07
    phi_r2 it4  x=0.006950  theta-target=-5.500e-08
    phi_r2 it5  x=0.006887  theta-target=+2.900e-08
+   phi_r2 it6  x=0.006919  theta-target=-1.400e-08
+RESULT knob=phi_r2 floor=0.60 target=bar -> 0.006919215701869804  (841s)

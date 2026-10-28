@@ -9,7 +9,7 @@ Requires the exact-return toolchain in the scratchpad (pr86.py, cert_return.py, 
 """
 import os, sys
 os.environ.setdefault('QRH_K', '9/2')
-TC = '/tmp/claude-0/-home-user-QuasiRiemannTracker/b22b8f38-5565-550f-b1b7-0bec29e2d6ba/scratchpad/analysis/lemmaW/tc'
+TC = '$SCRATCH/analysis/lemmaW/tc'
 sys.path.insert(0, TC)
 from fractions import Fraction as Fr
 import pr86

@@ -1832,3 +1832,13 @@ slot; `mixed-slots/`).
   (8.8–21.2 s each) with PR 86's exact theorem types. Gates are modular (`GateLib.replace/add/without`); floor is a
   parameter (`make_gates_variant.py --floor 3/5`); 74 steps of the floor-3/5 model chain certify (steps 20–74 fail
   at 13/20, as expected). Chain assembly (`ChainK15`-style) not generated yet.
+- **R2 final (`newpowers/R2_ledger.md`).** Ledger re-derived from Lean: simple transfer (e,c,r) = (1,6,1) (PR 83's
+  `envelope_identity`), pool (1,6,0); doubled block D² (2,6,1) from `square_twist`/`square_row`/
+  `collision_family_energy_div` (divisor-bounded CS, no count W; pushforward μ+2d). Rigidity: twist-free ⇒ c ≡ 0 mod 6,
+  so c = 6 for every block type m ≤ 5, e ≤ 2. Twisted types dead (D¹ quadratic (0,3,1): payment −0.20). Combination law:
+  LOW Σx_T(e_T + q r_T − c_T qβ) ≥ qX₀ + r; descent Λ₀ > min c q B₀/(e + q r). Bar 2e-5 ⇔ effective e ≥ 1.0116
+  (c ≤ 5.9587, or HIGH threshold +0.0041). Squares are absent from every input; a native doubled-slot source is a new
+  object (needs ≈ 1.2 % doubled share of the transferred width) — open, low plausibility.
+- **Floor 1/2 in Lean (in build):** `lean/arvi_density/Density/NaturalEndpoint34.lean` proves Lemma 2.1 at `3/4 ≤ a`
+  (`Range34.fixed_natural_dictionary_raw_density`, axioms clean) from Collet's `OrdinaryRange` 3/4 wrappers; the fork's
+  HIGH count now takes `3/4 ≤ b`, all floor hypotheses `1/2 ≤ qf`; new `density_step_floor` for `qf ∈ [1/2, 3/4]`.

@@ -1,12 +1,11 @@
 import sys
-sys.path.insert(0, '$SCRATCH/analysis/B2')
 import numpy as np
-from odemod import Ode
+from ode import Chain
 import inst, counts as C
-base = Ode()
+base = Chain('pr83')
 kap = 0.74791
 print('L, B, q, s0(PR83) | % change vs PR83 for variants')
-vars_ = ['a', 'u', 'c', 'cu', 'd1', 'd2', 'd3', 'd4']
+vars_ = ['a', 'b0', 'b1', 'c', 'cu', 'u', 'd1', 'd2', 'd3', 'd4']
 print(' '*30 + ' '.join('%7s' % v for v in vars_))
 for L in (2.3415, 2.30, 2.25, 2.20, 2.15):
     B = base.B(L); q = base.qinf(L)

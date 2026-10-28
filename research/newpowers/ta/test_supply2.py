@@ -1,5 +1,5 @@
 import sys
-sys.path.insert(0, '/tmp/claude-0/-home-user-QuasiRiemannTracker/b22b8f38-5565-550f-b1b7-0bec29e2d6ba/scratchpad/analysis/B2')
+sys.path.insert(0, '$SCRATCH/analysis/B2')
 import numpy as np, counts as C, supply as S
 import markedcount as M
 k = 0.74791

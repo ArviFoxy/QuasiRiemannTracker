@@ -30,7 +30,7 @@ possible is decided in section 2.4 (it is not, for twist-free transfers) and sec
 
 3. **No current source supplies squares [D, L-backed].** Collision columns have relative volume `U^{−w_C}` and are absorbed by the restoration induction (`RestorationCollisionEnergy`); PR 83's cube-free squares live in the
    *common* support, not in the selectable block; "repeated marks" is a HIGH-count device, not squares in the Gauss columns. A positive-density doubled slot is a *new source family*;
-   section 3.3 gives what it needs and how little of it is needed (≈ 1.3 % of the transferred width, ≈ 1e-3 absolute `log_U` in the object, consumed along the chain).
+   section 3.3 gives what it needs and how little of it is needed (≈ 1.3 % of the transferred width, i.e. ≈ 1.1e-3 absolute `log_U` in the object; ≈ 5.4e-4 in the capacity model; consumed along the chain).
 
 4. **Twisted types [D, partly H].** A twist of conductor `N(D) = U^d` is not a ray label of the fixed modulus over which `ActualLow` quantifies (`∀ rayM … ∃ C, ∀ᶠ Z`), so a twisted residual
    has no source theorem. Lean's route (`twistDict`) turns the twist back into a dilation = the canonical type (c = 6). Bounding the twisted residuals one by one loses the count `W`:
@@ -88,7 +88,7 @@ possible is decided in section 2.4 (it is not, for twist-free transfers) and sec
 | `D⁴` identity, fifth-free columns, all non-unit cases: `gaussRow a (D⁴k) = (idealRowHom D (span a))²·gaussRow a k` | `RMS/FourthPower/GaussTransfer.lean:98` (`normalized_fourth_power`) |
 | selected-row fourth-power transfer, `N(D⁴k) = N(D)⁴N(k)`, D-Cauchy | `S83/CubeFree/Second/FourthTransfer.lean:35,64,71` (`selected_row_fourth_one`, `fourth_scale`, `d_cauchy`) |
 | `2a − k + q_C = 1 + t − 6u` for `a = A−c−u`, `k = K+4u` (`ring`); price function `D.price.f g.w g.PC g.s g.H` takes `H` as an argument | `S83/CubeFree/Second/Side.lean:36` (`envelope_identity`), `large_side_exponent` |
-| LOW defect `F ≤ (L₀−L)v + (6B₀−L₀)u`; LOW `qF ≤ L₀(u+ε/16)`; HIGH `ν(P_C+s) − k(1+t−6u) ≤ u`; `q(6B₀−L₀) ≤ L₀` | `S83/Density/StepGates.lean:122,134,152,87` (`ds_defect_aux`, `ds_low_aux`, `ds_high_aux`, `dsDens_overshoot`) |
+| LOW defect `F ≤ (L₀−L)v + (6B₀−L₀)u`; LOW `qF ≤ L₀(u+ε/16)`; HIGH `ν(P_C+s) − k(1+t−6u) ≤ u`; `q(6B₀−L₀) ≤ L₀` | `S83/Density/StepGates.lean:89,122,134,152` (`ds_defect_aux`, `ds_low_aux`, `ds_high_aux`, `dsDens_overshoot`) |
 | gates `dens`, `packed = 1−6u`, `highJ`, `gRetainedCap/Width`, `gPrincipal`(9/2), `gSecondRef`(9/2), `gSecondDiag`(4), `gRefUpper`(3), `HybridGates` | `S83/Source/HybridGates.lean:48,58,62,71-94,114` |
 | squared block: `gaussRow(d²m, dH′) = idealRowHom(d³)(span m)·gaussRow(d², dH′)·gaussRow(m, H′)` (the sign enters squared); `gaussRow(δ²,·)` vanishes off `δ·O`, norm `≤ √N(δ)` | `MS/Collision/SquareGauss.lean:198` (`square_twist`), `:164` (`square_row`), `:81` (`square_gauss`); built |
 | divisor-count Cauchy–Schwarz over colliding primes, with factor `N(p_x)` and the twisted residual at `H′` | `MS/Residual/CollisionWeight.lean:34` (`collision_family_energy_div`); built |
@@ -372,8 +372,9 @@ is invisible to the return unless the box is re-widened (a return-side change, o
 | room `e` per unit (= 1 + doubled share) | 1.0 | 1.01161 | 1.01312 | +1.16 % | -7.96e-04 |
 | scale cost `c` | 6.0 | 5.95875 | 5.95358 | -0.69 % | 2.24e-04 |
 | width removed `r` | 1.0 | 1.01705 | 1.01926 | +1.71 % | -5.42e-04 |
-| density slope `s₀ → (1−eps)s₀` | 0.0 | 0.0531 | – | +0.05309 | -1.74e-04 |
-| HIGH threshold `T(q) → T(q) + dthr` | 0.0 | 0.00407 | – | +0.004075 | -2.27e-03 |
+| density slope `s₀ → (1−eps)s₀` | 0.0 | 0.0531 | – | 5.31 % lower slope | -1.74e-04 |
+| HIGH threshold `T(q) → T(q) + dthr` | 0.0 | 0.00407 | – | +0.0041 (0.46 % of T(0.6) = 0.877) | -2.27e-03 |
+| doubled share `φ` if squared slots remove `r = 2` (e = 1+φ, r = 1+φ) | 0.0 | 0.00692 | – | 0.69 % doubled share | -1.34e-03 |
 | density floor `q ≥ floor` | 0.6 | **no root in [0.55, 0.60]**: `θ(floor=0.55) − bar = +9.12e-6` vs `+9.24e-6` at 0.60 | | the count-face optimum sits at `L_C ≈ 2.18–2.20`, not at the wall | `dθ/dfloor ≈ 2.4e-6` |
 | LOW slack `f` | 0.999 | `f = 1` reaches only `θ = 0.873944247` (`−8.0e-7`, 9 % of the gap) | | | |
 <!--THR_END-->
@@ -383,7 +384,7 @@ demands in `R3` (`−0.9 %` on a slot cost). The doubled share needed is `φ* = 
 Face language: with the physical face fixed at the baseline's, the count face must rise by `ΔB_C ≈ 1.5e-3` (`dθ/dB_C ≈ −5.9e-3`, computed at `L_C = 2.15, 2.19, 2.2031`) to reach the bar; along the baseline chain `θ(L_C)` is flat to `±1e-7` on `L_C ∈ [2.18, 2.20]`
 (gap `+9.14e-6 … +9.24e-6`) and rises on both sides (`+1.05e-5` at 2.13, `+1.41e-5` at 2.30), so the optimal count face is *not* pinned to the floor wall and lowering the floor is not a lever (`θ(0.55)` is only `1.2e-7` lower). The percent-level currencies above are what shifts that curve.
 Cross-check with `B2_source_slope.md` §0: B2 states that the bar needs `s₀` lowered by `5.3 %` (equivalently `6 → 5.93…5.95`, `10/(15−6q)` up by `0.5…0.6 %`); my independent solve gives `eps* = 5.31 %` and `c* = 5.9587` (B2's `c` used an uncapped `q > ¾`, section 7).
-If the face counted a squared slot by norm (`r = 2` for doubled units) the linear estimate `dθ ≈ −(7.96e-4 + 5.42e-4)·φ` gives `φ* ≈ 0.7 %`. `f → 1` is worth `−8.0e-7` only.
+If the face counted a squared slot by norm (`r = 2` for doubled units, i.e. `(e,c,r) = (1+φ, 6, 1+φ)`), the exact solve (`thresholds.py phi_r2`) gives **`φ* = 0.69 %`** (the linear estimate `dθ ≈ −(7.96e-4 + 5.42e-4)·φ` agrees). `f → 1` is worth `−8.0e-7` only.
 
 ### 5.6 Capacity-limited doubled mass (absolute, per step) [N]
 
@@ -464,11 +465,11 @@ gives the e-equivalents `1.009 / 1.015 / 1.021` against the discrete threshold `
 * `ledger.py` — `Amp(name,m,k,e,c,r,…)`, twist-free classification, unit payments, native barriers, `qinf`, symbolic checks (PR 83 defect identity, generalised identity, envelope `1+t−(2m+k)u`). `python3 ledger.py`.
 * `twisted.py` — the `(m,j)` twisted-type table and the break-even conductor charge `κ*`. `python3 twisted.py`.
 * `ode_amp.py` — continuum density-step ODE for a mixture; `wall(floor)`. `price_amp.py` — exact-return θ for a pair of faces (cache `results/theta_cache.jsonl`); needs the toolchain: set `R2_TC` to a directory with `pr86.py`, `best.py`, … (default: sibling `../r3/tc`).
-* `pricing2.py` — coordinate-descent role split (count face vs physical face). `scenarios.py`, `thresholds.py` — scenario prices and one-knob thresholds (`python3 thresholds.py e|c|r|eps|dthr`). `final_table.py` — the consolidated table of 5.4.
+* `pricing2.py` — coordinate-descent role split (count face vs physical face). `scenarios.py`, `thresholds.py` — scenario prices and one-knob thresholds (`python3 thresholds.py e|c|r|eps|dthr|floor|phi_r2 0.60 [bar]`). `final_table.py` — the consolidated table of 5.4.
 * `dchain_amp.py` — discrete greedy chain (replica of `HybridGates`) with `(E,C,R)`; `dchain_cap.py` — capacity-limited doubled mass (env `UD`); `eval_discrete.py` — exact-return price of a discrete chain; `run_cap.sh` — the capacity scan.
 * `results/` — raw JSON/logs referenced above (`scen.jsonl` (older scenario prices), `final.jsonl` (5.4), `thresholds.jsonl` (5.5), `dch_*.json` (discrete chains), `cap_eval.log` (5.6), `theta_cache.jsonl` (every exact-return θ ever evaluated, keyed by the four face coordinates)).
 
 Reproduce the headline numbers (4 cores; the exact-return θ costs seconds each, everything is cached in `results/theta_cache.jsonl`):
 `python3 ledger.py` (barriers, symbolic identities); `python3 twisted.py` (section 4 table); `python3 final_table.py base e1.0116 e1.02 e2 …` (5.4; ≈ 2 min per scenario);
-`python3 thresholds.py e|c|r|eps|dthr|floor 0.60 [bar]` (≈ 10–15 min per target); `python3 dchain_amp.py 1 6 1 0.60 2.00 out.json` (baseline discrete chain) then `python3 eval_discrete.py out.json 14`;
+`python3 thresholds.py e|c|r|eps|dthr|floor|phi_r2 0.60 [bar]` (≈ 5–20 min per target); `python3 dchain_amp.py 1 6 1 0.60 2.00 out.json` (baseline discrete chain) then `python3 eval_discrete.py out.json 14`;
 `UD=5e-6 python3 dchain_cap.py 1 6 1 0.60 2.00 out.json && python3 eval_discrete.py out.json 0` (5.6).

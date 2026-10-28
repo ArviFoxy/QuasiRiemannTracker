@@ -1,0 +1,19 @@
+theta_lo  current 0.8730  
+   must stay ABOVE 0.87167  (binding statement E5a); others: E5a 0.8717, E5b 0.8700, E2 0.8550, C1 0.8500, D11 0.8500
+theta_hi  current 0.8750  
+   must stay ABOVE 0.87500  (binding statement F2); others: F2 0.8750
+   must stay BELOW 0.94000  (binding statement E7); others: E7 0.9400
+h_lo      current 0.7930  
+   must stay ABOVE 0.75000  (binding statement E4); others: E4 0.7500, A1 0.6840, A2 0.5000, D14 0.0100, A6 0.0000
+h_hi      current 0.8060  
+   must stay BELOW 0.86500  (binding statement B2); others: B2 0.8650, D9 0.8750, D1 0.9160, A3 0.9160, A4 1.0000
+y_lo      current 0.4580  
+   must stay ABOVE 0.40300  (binding statement D1); others: D1 0.4030, A3 0.4030, B1 0.3640, E1 0.3333, E3 0.0411
+y_hi      current 0.4670  
+   must stay BELOW 0.47500  (binding statement D2); others: D2 0.4750, D3 0.4750, D4 0.4950, D5 0.7022
+ell_lo    current 0.1672  
+   must stay ABOVE 0.14840  (binding statement B1); others: B1 0.1484, D7 0.1207, D5 0.1112, D12 -3.5830
+ell_hi    current 0.1710  
+   must stay BELOW 0.19825  (binding statement A1); others: A1 0.1983
+ss        current 0.0700  
+   must stay ABOVE 0.05200  (binding statement E2); others: E2 0.0520

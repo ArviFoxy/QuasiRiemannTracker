@@ -1,0 +1,13 @@
+(a) PR 86 declared theta 0.8739558 certifiable with its own constants: (True, 'ok')
+    least theta at h = 8051/10000, PR 86 face (step 46), PR 86 box, windows Collet, branches old/C/Pcap: 0.8739557853
+    7-digit (1e-7 grid): 8739558
+    floor-coupled h (largest allowed by floor_margin): 0.8739558 0.805226
+    single face, box ell<0.171, collet, old/C/Pcap, floor-coupled h, 1e-9: (0.873955712, Fraction(32209, 40000), 873955712)
+    same, six branches, ell < 0.18: (0.873955712, Fraction(32209, 40000), 873955712)
+    role split 46/38 on PR 86 faces (old/C/Pcap, ell<0.171): (0.873954831, Fraction(805217, 1000000), 873954831)
+    role split 46/38, six branches, ell < 0.18: (0.873954831, Fraction(805217, 1000000), 873954831)
+(b) replica chain, gain 0, floor 0.65: 46 steps; step 46: L=2.3415 B=0.9888174 (Lean 0.9888151, diff +2.26e-06), s0=0.06507 (Lean 0.06510)
+    max |B_replica - B_Lean| over the 46 steps: 2.26e-06;  max |s0 diff| 2.75e-05
+    binding gate at every step: ['high']
+(c) replica faces: single face 46, PR 86 return (old/C/Pcap, ell<0.171, floor-coupled h): (0.873955681, Fraction(32209, 40000), 873955681)
+    replica faces role split 46/38 (PR 86 return): (0.873954804, Fraction(25163, 31250), 873954804)

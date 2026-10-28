@@ -35,16 +35,18 @@ def highJ(B, L, w, u, nu):
 
 class Cfg:
     def __init__(self, gain=1.0, floor=0.6, dfac=0.999, boot=False, dL=0.005, eps=1e-6, N=90, cchild=0.1, nu_mode='q',
-                 qmax=0.75, c6=6.0, K=8, shift=0.0, pl=(65, 33, 3), bmin_check=True, c0_override=None):
+                 qmax=0.75, c6=6.0, K=8, shift=0.0, pl=(65, 33, 3), bmin_check=True, c0_override=None, qlow=0.5):
         self.gain, self.floor, self.dfac, self.boot, self.dL, self.eps, self.N = gain, floor, dfac, boot, dL, eps, N
         self.cchild, self.nu_mode, self.qmax, self.c6, self.K, self.shift = cchild, nu_mode, qmax, c6, K, shift
         self.pl = pl
         self.bmin_check = bmin_check
         self.c0_override = c0_override
+        self.qlow = qlow
 
     def name(self):
-        return 'g%g_f%.2f_b%d_d%.3f_dL%g_%s%s' % (self.gain, self.floor, int(self.boot), self.dfac, self.dL, self.nu_mode,
-                                                  '' if self.K == 8 else '_K%d' % self.K)
+        return 'g%g_f%.2f_b%d_d%.3f_dL%g_%s%s%s' % (self.gain, self.floor, int(self.boot), self.dfac, self.dL, self.nu_mode,
+                                                    '' if self.K == 8 else '_K%d' % self.K,
+                                                    '' if self.qlow == 0.5 else '_ql%g' % self.qlow)
 
 
 def marked_gain(cfg, nu, B0, L0, c0, S, Q):
@@ -84,7 +86,7 @@ def gmin(cfg, B0, L0, c0, s0, A, D, N=None, full=False, nuf=None):
     J = highJ(B, L, w[:, None], u[:, None], nu)
     gn = marked_gain(cfg, nu, B0, L0, c0, s_ret[:, None], H[:, None])
     Jm = J + gn
-    g = dict(q_lower=q - 0.5, q_upper=cfg.qmax - q, q_floor=q - cfg.floor, H_lower=H - 0.9,
+    g = dict(q_lower=q - cfg.qlow, q_upper=cfg.qmax - q, q_floor=q - cfg.floor, H_lower=H - 0.9,
              retained_cap=c0 * H - s_ret, retained_width=s_ret, low=(1 - cfg.dfac) * L0 * A / (1 + D * v),
              high=Jm.min(axis=1), high_deriv=25 / 24 * H - (B - (L - 1) * w - u),
              principal=1 - B + (L - 2) * w - 4.5 * u, second_ref=0.05 + 1.5 * (1 - B) + (1.5 * L - 2.5) * w - 4.5 * u,
@@ -106,6 +108,8 @@ def worst(cfg, B0, L0, c0, s0, A, D, **kw):
     bk = None
     for k, x in m.items():
         if k.startswith('_'):
+            continue
+        if k == 'low' and cfg.dfac >= 1.0:       # 0.999 -> 1: the LOW identity gate is identically 0 (not required)
             continue
         val = (x if x <= 0 else 1.0) if k in SCALEFREE else x - cfg.eps
         if best is None or val < best:

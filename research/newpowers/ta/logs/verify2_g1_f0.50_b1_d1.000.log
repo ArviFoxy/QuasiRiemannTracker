@@ -1,0 +1,16 @@
+steps 129 max s0 shortfall (fine settings) 8.28e-07  sum*dL 2.08e-07  steps>1e-7: 90
+binding gate counts (fine settings): {'high': 129}
+min reserve per gate over chain (x - eps; scale-free raw):
+   q_lower         1.720e-06 at step 129
+   q_upper         3.795e-03 at step 1
+   q_floor         1.720e-06 at step 129
+   H_lower         6.054e-02 at step 129
+   retained_cap    2.014e-04 at step 106
+   retained_width  2.818e-02 at step 1
+   high            2.024e-12 at step 33
+   high_deriv      8.526e-02 at step 1
+   principal       5.706e-04 at step 129
+   second_ref      8.759e-02 at step 1
+   second_diag     4.398e-02 at step 1
+   ref_upper       1.136e-01 at step 129
+   sel_deriv       3.148e-04 at step 17

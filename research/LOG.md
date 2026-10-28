@@ -1866,3 +1866,13 @@ slot; `mixed-slots/`).
 - **Independently re-checked (fresh elaboration):** `density_priced_source_marked` holds for floors qf ∈ [1/2, 3/4],
   parent 22/23 ≤ B₀ ≤ 1, 0 ≤ c₀ < 1, 1 < L₀; price `f w P s M = max (lowPart …) (highSupM …)` with the gain in
   `highSupM`; axioms propext, Classical.choice, Quot.sound.
+- **Marked step proved in Lean** (`lean/arvi_density/{Source/HybridGatesMarked, Density/StepGatesMarked,
+  Density/StepMarked}.lean`, `MarkedStepTheorem.lean`): `Density.density_step_marked : 1/2 ≤ qf → qf ≤ 3/4 →
+  22/23 ≤ B₀ → HybridGatesM qf B₀ L₀ c₀ B L c A D → DSFace … → 51/100 ≤ β → GlobalSource B₀ L₀ c₀ →
+  GlobalSource B L c`. `HybridGatesM` = Sil's 18 non-HIGH fields + one marked field: ∀ v ∈ [0, c − s₀],
+  ∀ ν ∈ [q(v), 3/4]: r ≤ highJ(B, L, w(v), sel v, ν) + gainC ν B₀ L₀ c₀ (w(v) − sel v) (packed v) (the gain is not
+  monotone in ν, so ν is quantified directly; retained width handled by PR 76's `weighted_exponent_mono_rm`).
+  `HybridGatesM.ofHybridGates`: every PR 83/86 certificate is a marked one. Generator `--marked`: 3D Bernstein boxes in
+  (v, t, p); all 46 PR 86 transitions certify marked at floor 3/5 (one box per branch); a transition the unmarked gates
+  reject (high_at_q = −0.0045) certifies marked with reserve 41/25000 and compiles; 74 steps of the floor-0.60 model
+  chain certify marked.

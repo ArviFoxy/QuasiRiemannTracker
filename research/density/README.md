@@ -28,6 +28,8 @@ about 0.03 s (the whole PR 86 chain: 0.9 s).
 | `example_gate_lib.py` | example of `--gate-lib`: replacing gates (here: higher Bernstein degrees) |
 | `lean_check/run_lean_check.sh` | regenerates steps in the scratch namespace and compiles them, one Lean process at a time |
 | `lean_check/Gen_Test.lean` | the test file: type identity with PR 86 and use in `K15.density_step` |
+| `validate_marked.py` | no-Lean validation of the marked mode: 46 PR 86 steps, a step beyond the unmarked gates, the boundary, the package files |
+| `lean_check/run_marked_check.sh` | regenerates the two marked certificates of `Submissions.arvi_density` and builds `MarkedStepTheorem` |
 
 ## Usage
 
@@ -59,6 +61,8 @@ Errors (a gate that is not positive, parameters outside the supported region) gi
 | `--gate-lib FILE.py`, `--list-gates`, `--extra NAME=VAL` | other gate sets, see below |
 | `--check-gates-file HybridGates.lean` | first check the gate library against that Lean source |
 | `--max-heartbeats N` | `set_option maxHeartbeats` in the file (default `1000000`, PR 86's value) |
+| `--marked` | certify `HybridGatesM` (marked HIGH gate, this package): see "Marked HIGH gate" below; defaults `--gates-import Submissions.arvi_density.Source.HybridGatesMarked`, `--gates-namespace QRH.ArviDensity` |
+| `--marked-max-boxes N`, `--marked-force-split 0,2` | box limit per branch (default 400); axes (0 = v, 1 = t, 2 = p) bisected unconditionally first (tests the cover code) |
 
 Python API: `res = gen_step(B0, L0, c0, B, L, c, A, D, floor, namespace, module)` (Fractions, ints or strings
 like `'99999/100000'`), or `generate(Params(..., floor=Fraction(13, 20)), namespace=..., module=..., lib=PR83_LIB)`.
@@ -217,6 +221,69 @@ default floor 13/20 steps 20 to 74 fail in `q_floor` (55 of 74 steps). Steps 20 
 `HybridGatesF60`, compile in Lean (12.0 s and 10.6 s wall, no output); their `B` has 10-digit denominators.
 This is a test of the generator on realistic inputs, not a claim about the chain itself.
 
+## Marked HIGH gate (`--marked`): `HybridGatesM`
+
+`Submissions.arvi_density.Source.HybridGatesMarked` defines `HybridGatesM qf B0 L0 c0 B L c A D`: the fields of the
+fork's `HybridGates qf` without `high_at_q` and `high_density_derivative`, plus
+
+```
+high_marked : ∃ r > 0, ∀ v ∈ [0, c - s0], ∀ ν ∈ [q(v), 3/4],
+   r ≤ highJ B L (s0 + v) (u v) ν + gainC ν B0 L0 c0 (s0 + v - u v) (1 - 6 u v)
+```
+
+(`gainC`: PR 76's repeated-mark gain, K = 8 copies; `highJ = (1-ρ)(1-6u) - ν(B-(L-1)w-u) + u`, so the unmarked
+reserve is the case `gainC = 0`). The marked ledger needs exactly this (`Density.ds_ledger_marked`): the marked excess
+`ν s - gainC ν … s H` is nondecreasing in the retained width `s`, so the HIGH payment is the one at `s = w - u`.
+
+**Certification.** `gainC = inf_{p ∈ [0,1/2]} min_{k} facetVal_k`, six branches `k = (i,j)` (inverse `i ∈ {0: eight
+copies of the slots, 1: inverse cap}`, plain `j ∈ {0: slots, 1: width cap, 2: affine cap}`), each facet linear in
+`(S, Q)` with coefficients rational in `(ν, p)`. Hence it suffices that for every branch
+`G_ij(v,ν,p) = highJ + facetVal_ij ≥ r` for `v ∈ [0,h]`, `h = c - s0`, `ν ∈ [q(v), 3/4]`, `p ∈ [0,1/2]`
+(`le_gainC_of_facets`). Facts that shaped the design (numerics in `research/density`, checked on PR 86's steps):
+
+* `G_ij` is **not monotone in `ν`** (the eight-copy inverse facets decrease in `ν` at large `p`), so the unmarked
+  reduction "gate at `ν = q(v)` plus the density-derivative gate" does not apply; the gate is quantified over `ν`.
+* A constant lower end `ν₀ ≤ min q(v)` for the box is lossy: `q(v)` drops by up to `0.05` over `[0,h]` in the early steps,
+  while `highJ` has slope `≈ 0.4` in `ν` (PR 86 step 1: `highJ(ν₀) = -0.017` against a margin of `2·10⁻⁴`).
+* So the density is the box variable `t ∈ [0,1]`, `ν = q(v) + t (3/4 - q(v)) = Y/E`, `E = densE`,
+  `Y = densK (1-t) + 3/4 t E`: the region is the **box** `[0,h] × [0,1] × [0,1/2]`, without loss.
+
+With `X = 1 + D v`, `U, αU, βU, eU` the denominator-cleared coefficients of the branch (`offS`, `offQ`, `slopeExcess` of
+`Gain/Gain.lean`; e.g. branch `(1,2)`: `U = (1-p)(L0-2p)`, `αU = 0`, `βU = p(L0-2p) + B0 p (1-p)`,
+`eU = p(L0-2p) + p(1-p)`) and `d̂ = (15-6ν)/2·U + (5-6ν)·eU`:
+
+```
+G_ij · X d̂ = ν (5 QX U + (5-6ν)(αU SX + βU QX)) + ν ((1-2p) SX - PiX) d̂ + (A v) d̂,
+SX = w X - A v,  QX = X - 6 A v,  PiX = (B - (L-1) w) X - A v,  w = s0 + v           (Lean: gHighM_ij, cNumM, cDenM)
+```
+
+(the identity `highJ + facet = ν (root + (1-2p)S - Π) + u` uses `(1-ρ) = ν ξ₀`). Multiplied by `E²` at `ν = Y/E` it is a pair
+of polynomials in `(v,t,p)` of degree `(4,2,≤3)` / `(3,1,≤2)` (`cNumY`, `E · cDenY`, `gHighM_scaled`). They are made primitive
+integer polynomials (as in the one-variable gates) and certified by exact tensor Bernstein coefficients on boxes of
+`[0,h] × [0,1] × [0,1/2]`: a box is accepted when all Bernstein coefficients of `n` and of `d` are positive, else it is
+bisected along the variable that raises the smallest `n`-coefficient the most (a non-positive corner value is an error:
+no subdivision can help). The Lean text per branch: `nM_ij`, `dM_ij`, `clearedM_ij` (`mul_eq_of_cleared`, `gHighM_scaled`,
+`ring`), per leaf the nested Bernstein forms (`bern2 (bern2 (bern3 …))`, outermost `v`), `box_lower3`, the cover by
+`rcases le_total`, and `markedHigh` (`exists_nuT`, `le_gainC_of_facets`, `forall_branch`). The reserve is the minimum of
+`m/M` over all boxes, rounded down to 3 significant digits.
+
+**Results.** All 46 PR 86 steps at floor `3/5` (`validate_marked.py`): one box per branch (276 boxes), global reserves
+`4.5·10⁻⁵ … 2.7·10⁻³` (20 s for the 46 files with all gates); the 74 steps of the floor-0.60 chain of the scratchpad
+(`dch_pr83_f60.json`, rationalised as above): one box per branch. A transition beyond the unmarked gates: PR 86's parent
+of step 46 with `B` lowered by `3/10000` and `A = 2/5` (`high_at_q = -0.0045` at `v = 0`, the unmarked generator
+refuses it): six boxes, reserve `41/25000`; lowering `B` by `25/100000` with `c = 9/100` makes `highJ + facet_(1,0)`
+negative at `(v,t,p) = (0,0,1/2)` and the generator stops there.
+
+**Lean.** `python3 gen_hybrid.py --from-header HybridK15_46.lean --floor 3/5 --marked --namespace QRH.ArviDensity
+--module HybridMarkedK15_46 -o ...` writes `Submissions/arvi_density/Source/HybridMarkedK15_46.lean` (945 lines, elaborates
+in about 40 s, no output); `MarkedStepTheorem.lean` feeds it, and `HybridMarkedStretch46`, to `Density.density_step_marked`
+(`#print axioms`: `propext`, `Classical.choice`, `Quot.sound`). With `--marked-force-split 0,2` the same step is
+emitted with four boxes per branch (1575 lines, 68 s) and compiles, which exercises the box-cover code.
+
+Limits: the marked mode needs the fork's `HybridGates` conventions (`gQFloor qf …`); `--check-gates-file` is not supported with
+`--marked` (the gate definitions are checked by compiling the file); the parent must satisfy `22/23 ≤ B0 ≤ 1`, `1 < L0`,
+`0 ≤ c0 ≤ 1` (the range of the gain lemmas); `density_step_marked` needs `22/23 ≤ B0` and `DSFace`.
+
 ## Validation results
 
 All commands were run from `research/density` against the built Lake project in `/home/user/lean-env/qrh`.
@@ -310,6 +377,8 @@ python3 validate_pr86.py                       # (a), about 1 s
 python3 lean_model_check.py                    # Python gates vs PR 83's HybridGates.lean
 bash lean_check/run_lean_check.sh              # (b): generate + compile Gen_01, Gen_23, Gen_46, Gen_Test
 STEPS=all INSTALL=0 bash lean_check/run_lean_check.sh    # all 46 steps, compiled from a scratch dir
+python3 validate_marked.py                     # marked mode, no Lean
+bash lean_check/run_marked_check.sh            # marked certificates: generate into the package, build MarkedStepTheorem
 ```
 
 `run_lean_check.sh` reads the environment variables `STEPS` (default `"01 23 46"`, or `all`), `INSTALL`

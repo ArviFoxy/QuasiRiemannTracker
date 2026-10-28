@@ -72,3 +72,68 @@ Compared with PR 83's leaf and provider modules the closure gains 9 modules of t
 Collet's tree (13 `PR67Source/Cycle63/Density/*`, 8 `PR67Source/LocalMoment/*`), all already built.
 Build: `QRH_PKG=Submissions.arvi_density python3 research/mixed-step/build/build_roots.py 2 LOGDIR
 Submissions.arvi_density.Theorem` (clean build: 165 s wall with 2 jobs, 189 s of module time, on a loaded machine).
+
+## The marked step (`density_step_marked`)
+
+The marked leaf (`Density/LeafMarked.lean`, `Density.density_priced_source_marked`, price `markedDensityPrice`: the HIGH
+term `highTerm` reduced by PR 76's repeated-mark gain `gainC ν B₀ L₀ c₀ s M`, eight copies) is turned into a step
+`G(B₀,L₀,c₀) → G(B,L,c)` exactly as the unmarked leaf is by `Density/Step.lean`: scalar gates `HybridGatesM`, the
+generic `StepGates (dsDataM …)` (`dsGatesM`), and Sil's `cubefree_step`.
+
+| file | content |
+|---|---|
+| `Source/HybridGatesMarked.lean` (from scratch) | `HybridGatesM`; `HybridGatesM.ofHybridGates`; the machinery of the generated certificates: `le_gainC_of_facets`, cleared forms `gHighM_ij` of `highJ + facetVal_ij`, the density box variable `nuT`, `cNumY/cDenY`, `gHighM_scaled`, `box_lower3` |
+| `Density/StepGatesMarked.lean` (modified copy of `Density/StepGates`) | `dsDataM`, `ds_high_aux_marked`, `ds_ledger_marked`, `ds_reference_marked`, `dsGatesM` |
+| `Density/StepMarked.lean` (from scratch) | `density_leaf_marked`, `density_step_marked`, `density_step_marked_of_hybridGates` |
+| `Source/HybridMarkedK15_46.lean`, `Source/HybridMarkedStretch46.lean` (generated) | marked certificates (below) |
+| `MarkedStepTheorem.lean` (from scratch) | instantiation at `qf = 3/5`, the two certificates and PR 83's two transitions, `#print axioms` |
+
+### The gates
+
+`HybridGatesM qf B0 L0 c0 B L c A D` has the 18 fields of `HybridGates qf …` (`width_pos`, `sel_den_pos`, `dens_den_pos`,
+`q_lower`, `q_upper`, `q_floor`, `H_lower`, `retained_cap`, `retained_width`, `low_identity`, `low_div_eq`,
+`low_per_excess_width`, `principal_reference`, `second_reference`, `second_diagonal`, `reference_upper_positive`,
+`sel_hasDerivAt`, `selection_monotonicity`) and, in place of `high_at_q` and `high_density_derivative`,
+
+```lean
+high_marked : ∃ r, 0 < r ∧ ∀ v, 0 ≤ v → v ≤ c - cross B0 L0 B L → ∀ ν, dens B0 L0 L A D v ≤ ν → ν ≤ 3/4 →
+  r ≤ highJ B L (width B0 L0 B L v) (sel A D v) ν
+        + gainC ν B0 L0 c0 (width B0 L0 B L v - sel A D v) (packed A D v)
+```
+
+How the unmarked ledger controls HIGH on all of `ν ∈ [q, 3/4]`: `HybridGates.high_reserve` (uniform reserve of `highJ` there)
+comes from `high_at_q` (reserve of `highJ` at `ν = q(v)`) and `high_density_derivative` (`25/24·H - (B-(L-1)w-u) > 0`) through
+`highJ(ν₂) - highJ(ν₁) ≥ (ν₂-ν₁)(25/24·H - …)` on `[1/2, 3/4]`; `ds_high_aux` turns it into `ν(P_C+s) - (1-ρ)H ≤ u`.
+
+The marked ledger (`ds_ledger_marked`, HIGH part): the marked excess `ν s - gainC ν … s H` is nondecreasing in the
+retained width (`weighted_exponent_mono_rm`), `s ≤ w - u ≤ w - σ` (`σ = sel v`) and `P_C ≤ B + tl - L w`
+(root face, `S ≥ w`), so the payment is `ν(B+tl-(L-1)w-σ) - (1-ρ)H - gainC ν … (w-σ) H`; the gain at the actual
+`H = 1+t-6u` is compared with the nominal `1-6σ` by `gain_mono_rm`/`gain_row_loss_rm` (loss `≤ tl + 6·mesh`); then
+`ds_high_aux_marked` closes it from `high_marked`. No separate `s = 0` gate and no density-derivative gate are needed
+(a convexity argument is not necessary: the monotonicity in `s` is PR 76's `gainK_width_mono`). The reserve
+`12·mesh + 3·tl ≤ r` fixes `meshL = m/24`, `tlL ≤ m/6`.
+
+`high_marked` quantifies over all `ν ∈ [q(v), 3/4]` because the facets of the gain are not monotone in `ν`
+(the eight-copy inverse facets decrease), so the reduction to `ν = q(v)` of the unmarked case does not hold.
+
+### Certificates (`research/density/gen_hybrid.py --marked`)
+
+`gainC` is the infimum over `p ∈ [0,1/2]` of the minimum of six facets `(i,j)`, so `high_marked` follows from
+`r ≤ highJ + facetVal_ij` for all `(v, ν, p)` (`le_gainC_of_facets`). The density is the box variable
+`t ∈ [0,1]`, `ν = q(v) + t(3/4 - q(v)) = Y/E` (`E = densE`, `Y = densK (1-t) + 3/4 t E`), so the region is the
+box `[0, c-s₀] × [0,1] × [0,1/2]` and nothing is lost; the cleared forms times `E²` are polynomials of degree
+`(4,2,≤3)` / `(3,1,≤2)` in `(v,t,p)` and are certified by exact tensor Bernstein coefficients (nested `bern2`, `bern3`).
+For all 46 PR 86 steps at floor `3/5` each branch is one box (276 boxes); the 74 steps of the scratch floor-0.60 chain also.
+
+* `HybridMarkedK15_46`: PR 86's transition 46, `A = 1/2`, `D = 5713/250`, floor `3/5`: reserve `67/25000`.
+* `HybridMarkedStretch46`: the same parent, child `B = 4944203/5000000` (`B` lowered by `3/10000`), `A = 2/5`; here
+  `high_at_q` is `-0.0045` at `v = 0`, so there is no `HybridGates` certificate, while the marked gate holds with
+  reserve `41/25000`.
+
+`MarkedStepTheorem.lean`: `k15_46_marked_step`, `stretch_marked_step` apply `density_step_marked` to them;
+`sil_first_step_marked`, `sil_second_step_marked` apply `density_step_marked_of_hybridGates` to PR 83's certificates.
+All depend only on `propext`, `Classical.choice`, `Quot.sound`.
+
+Build: `QRH_PKG=Submissions.arvi_density python3 research/mixed-step/build/build_roots.py 2 LOGDIR
+Submissions.arvi_density.MarkedStepTheorem` (`research/density/lean_check/run_marked_check.sh` regenerates the two
+certificates first); each certificate elaborates in about 40 s.

@@ -1,9 +1,9 @@
 /- Copyright (c) 2026 Rohan Arun. Apache-2.0.
 The candidate bound 873981/1000000 = 0.873981 for all Dirichlet L-functions, with the
 principal pole excluded. The proof is `QRH.DensitySplitThird.dirichlet_nonvanishing`
-(Submissions/density_split_third_20261026/Theorem.lean), a modification of Sil's PR83
+(Submissions/density_split_fourth/Theorem.lean), a modification of Sil's PR83
 (sil-density-split-20261026, Apache-2.0) with a fourth density-split transition. -/
-import Submissions.density_split_third_20261026.Theorem
+import Submissions.density_split_fourth.Theorem
 
 set_option autoImplicit false
 

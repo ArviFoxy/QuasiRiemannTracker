@@ -1,0 +1,7 @@
+declared PR86 theta passes with lemmaW windows? (True, 'ok')
+Lemma W, PR86 faces (old,C,Pcap), h=0.803                              theta* = 0.8739581  cover of edge newTop [11.3s]
+Lemma W, PR86 faces (old,C,Pcap), h=0.8035                             theta* = 0.8739574  cover of edge newTop [11.2s]
+Lemma W, PR86 faces (old,C,Pcap), h=0.804                              theta* = 0.8739568  cover of edge newTop [10.1s]
+Lemma W, PR86 faces (old,C,Pcap), h=0.8045                             theta* = 0.8739563  cover of edge newTop [10.2s]
+Lemma W, PR86 faces (old,C,Pcap), h=0.8049                             theta* = 0.8739560  cover of edge newTop [6.8s]
+Lemma W, PR86 faces (old,C,Pcap), h=0.8051                             theta* = 0.8739558  cover of edge newTop [2.8s]

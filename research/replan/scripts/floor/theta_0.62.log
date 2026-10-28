@@ -1,0 +1,4 @@
+floor 0.62 step 14  L=2.2715 B=0.983895 s0=0.07479  theta(role split)=0.873948669 bad=[(3, 'C')] | theta(single)=0.873955116
+floor 0.62 step 15  L=2.2665 B=0.983517 s0=0.07548  theta(role split)=0.873948364 bad=[(3, 'C')] | theta(single)=0.873955421
+floor 0.62 step 16  L=2.2615 B=0.983137 s0=0.07616  theta(role split)=0.873948059 bad=[(3, 'C')] | theta(single)=0.873955765
+floor 0.62 step 17  L=2.2565 B=0.982700 s0=0.08739  theta(role split)=0.873948097 bad=[(3, 'C')] | theta(single)=0.873956871

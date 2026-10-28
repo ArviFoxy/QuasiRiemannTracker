@@ -1,0 +1,6 @@
+no-floor ODE role split: C@2.300 (B=0.98607, s0=0.0710) P@2.371 -> theta(Sil windows)=0.873949738 bad=[] | pointwise 0.873949738
+no-floor ODE role split: C@2.270 (B=0.98388, s0=0.0751) P@2.371 -> theta(Sil windows)=0.873947487 bad=[(3, 'C')] | pointwise 0.873947487
+no-floor ODE role split: C@2.250 (B=0.98235, s0=0.0779) P@2.371 -> theta(Sil windows)=0.873946342 bad=[(3, 'C')] | pointwise 0.873946342
+no-floor ODE role split: C@2.220 (B=0.97995, s0=0.0820) P@2.371 -> theta(Sil windows)=0.873945160 bad=[(3, 'C')] | pointwise 0.873945160
+no-floor ODE role split: C@2.200 (B=0.97828, s0=0.0847) P@2.371 -> theta(Sil windows)=0.873944740 bad=[(3, 'C')] | pointwise 0.873944740
+no-floor ODE role split: C@2.150 (B=0.97388, s0=0.0914) P@2.371 -> theta(Sil windows)=0.873945160 bad=[(3, 'C')] | pointwise 0.873945160

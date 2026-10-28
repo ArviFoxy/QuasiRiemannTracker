@@ -1,0 +1,7 @@
+L0 our Collet constants (m_-=2/5, s_-=17/500, window caps 29/500 & 43/1000), six branches, our 6 edges theta* = 0.874256814
+L1 + s_- = 3/100 (natural join 0.4235 -> 0.4325)                                                     theta* = 0.874256814
+L2 + m_- = 377/1000                                                                                  theta* = 0.874231359
+L3 + window caps = face caps (0.09999 / 31/500)                                                      theta* = 0.873955711
+L4 + PR 86 edge set (dm=19/25), branches old/C/capP, reserve 1e-8  [= PR 86 replica]                 theta* = 0.873955712
+L3 with Lemma W windows instead (m_-=0, crossover join)                                              theta* = 0.873955711
+L0 with Lemma W windows (window caps = 29/500 & 43/1000)                                             theta* = 0.874231359

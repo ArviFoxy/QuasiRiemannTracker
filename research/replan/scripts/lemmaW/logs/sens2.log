@@ -1,0 +1,18 @@
+sP=0.07 base 0.873955712
+  count dB=0.0001: d/dB=-0.00534 (fwd -0.00533 bwd -0.00534)
+  count dB=0.0005: d/dB=-0.00533 (fwd -0.00533 bwd -0.00533)
+  count dL=0.001: d/dL=+0.000456 (fwd +0.000457 bwd +0.000456)
+  count dL=0.005: d/dL=+0.000457 (fwd +0.000455 bwd +0.000458)
+  physical dB=0.0001: d/dB=-0.00813 (fwd -0.00813 bwd -0.00814)
+  physical dB=0.0005: d/dB=-0.00814 (fwd -0.00814 bwd -0.00814)
+  physical dL=0.001: d/dL=+0.000487 (fwd +0.000487 bwd +0.000487)
+  physical dL=0.005: d/dL=+0.000487 (fwd +0.000487 bwd +0.000488)
+sP=0.09 base 0.873955712
+  count dB=0.0001: d/dB=-0.00534 (fwd -0.00533 bwd -0.00534)
+  count dB=0.0005: d/dB=-0.00533 (fwd -0.00533 bwd -0.00533)
+  count dL=0.001: d/dL=+0.000456 (fwd +0.000457 bwd +0.000456)
+  count dL=0.005: d/dL=+0.000457 (fwd +0.000455 bwd +0.000458)
+  physical dB=0.0001: d/dB=-0.00813 (fwd -0.00813 bwd -0.00814)
+  physical dB=0.0005: d/dB=-0.00814 (fwd -0.00814 bwd -0.00814)
+  physical dL=0.001: d/dL=+0.000487 (fwd +0.000487 bwd +0.000487)
+  physical dL=0.005: d/dL=+0.000487 (fwd +0.000487 bwd +0.000488)

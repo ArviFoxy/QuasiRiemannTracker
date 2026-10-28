@@ -1,0 +1,22 @@
+=== windows collet
+  C     delta=0.4415 p=0.50: m*=0.39416  r*(Rn/DJ)=0.74788   guards(min over 12 poly, listed): Mn-mLDJ/DJ=0.0168 mUDJ-Mn/DJ=0.0383 N-tail/J=0.0093 {'mplus-mH': 0.0075, 'B-2mH-L(s-+eta)': 0.05357}
+  C     delta=0.4000 p=0.50: m*=0.38825  r*(Rn/DJ)=0.73435   guards(min over 12 poly, listed): Mn-mLDJ/DJ=0.0109 mUDJ-Mn/DJ=0.0442 N-tail/J=0.0111 {'mplus-mH': 0.0075, 'B-2mH-L(s-+eta)': 0.05357}
+  C     delta=0.3800 p=0.50: m*=0.38560  r*(Rn/DJ)=0.72828   guards(min over 12 poly, listed): Mn-mLDJ/DJ=0.0083 mUDJ-Mn/DJ=0.0469 N-tail/J=0.0117 {'mplus-mH': 0.0075, 'B-2mH-L(s-+eta)': 0.05357}
+  C     delta=0.4500 p=0.50: m*=0.39544  r*(Rn/DJ)=0.75082   guards(min over 12 poly, listed): Mn-mLDJ/DJ=0.0181 mUDJ-Mn/DJ=0.0371 N-tail/J=0.0088 {'mplus-mH': 0.0075, 'B-2mH-L(s-+eta)': 0.05357}
+  C     delta=0.4415 p=0.45: m*=0.39465  r*(Rn/DJ)=0.75634   guards(min over 12 poly, listed): Mn-mLDJ/DJ=0.0173 mUDJ-Mn/DJ=0.0378 N-tail/J=0.0115 {'mplus-mH': 0.0075, 'B-2mH-L(s-+eta)': 0.05357}
+  Pcap  delta=0.4415 p=0.50: m*=0.40434  r*(Rn/DJ)=0.74137   guards(min over 12 poly, listed): Mn-mLDJ/DJ=0.0273 mUDJ-Mn/DJ=0.0175 N-tail/J=0.0107 {'mplus-mH': 0.0075, 'B-2mH-L(s-+eta)': 0.05357}
+  Pcap  delta=0.4000 p=0.50: m*=0.40049  r*(Rn/DJ)=0.72598   guards(min over 12 poly, listed): Mn-mLDJ/DJ=0.0235 mUDJ-Mn/DJ=0.0213 N-tail/J=0.0128 {'mplus-mH': 0.0075, 'B-2mH-L(s-+eta)': 0.05357}
+  Pcap  delta=0.3800 p=0.50: m*=0.39875  r*(Rn/DJ)=0.71901   guards(min over 12 poly, listed): Mn-mLDJ/DJ=0.0218 mUDJ-Mn/DJ=0.0231 N-tail/J=0.0135 {'mplus-mH': 0.0075, 'B-2mH-L(s-+eta)': 0.05357}
+  Pcap  delta=0.4500 p=0.50: m*=0.40517  r*(Rn/DJ)=0.74469   guards(min over 12 poly, listed): Mn-mLDJ/DJ=0.0282 mUDJ-Mn/DJ=0.0166 N-tail/J=0.0102 {'mplus-mH': 0.0075, 'B-2mH-L(s-+eta)': 0.05357}
+  Pcap  delta=0.4415 p=0.45: m*=0.40358  r*(Rn/DJ)=0.75083   guards(min over 12 poly, listed): Mn-mLDJ/DJ=0.0266 mUDJ-Mn/DJ=0.0182 N-tail/J=0.0128 {'mplus-mH': 0.0075, 'B-2mH-L(s-+eta)': 0.05357}
+=== windows lemmaW
+  C     delta=0.4415 p=0.50: m*=0.39416  r*(Rn/DJ)=0.74788   guards(min over 12 poly, listed): Mn-mLDJ/DJ=0.0168 mUDJ-Mn/DJ=0.0942 N-tail/J=0.0476 {'1/2-mX-eta': 0.01166, 'wX-eta': 0.00518, 'K-L': 2.1585, 'mX-2/5': 0.08834}
+  C     delta=0.4000 p=0.50: m*=0.38825  r*(Rn/DJ)=0.73435   guards(min over 12 poly, listed): Mn-mLDJ/DJ=0.0109 mUDJ-Mn/DJ=0.1001 N-tail/J=0.0459 {'1/2-mX-eta': 0.01166, 'wX-eta': 0.00518, 'K-L': 2.1585, 'mX-2/5': 0.08834}
+  C     delta=0.3800 p=0.50: m*=0.38560  r*(Rn/DJ)=0.72828   guards(min over 12 poly, listed): Mn-mLDJ/DJ=0.0083 mUDJ-Mn/DJ=0.1027 N-tail/J=0.0447 {'1/2-mX-eta': 0.01166, 'wX-eta': 0.00518, 'K-L': 2.1585, 'mX-2/5': 0.08834}
+  C     delta=0.4500 p=0.50: m*=0.39544  r*(Rn/DJ)=0.75082   guards(min over 12 poly, listed): Mn-mLDJ/DJ=0.0181 mUDJ-Mn/DJ=0.0929 N-tail/J=0.0479 {'1/2-mX-eta': 0.01166, 'wX-eta': 0.00518, 'K-L': 2.1585, 'mX-2/5': 0.08834}
+  C     delta=0.4415 p=0.45: m*=0.39465  r*(Rn/DJ)=0.75634   guards(min over 12 poly, listed): Mn-mLDJ/DJ=0.0173 mUDJ-Mn/DJ=0.0937 N-tail/J=0.0509 {'1/2-mX-eta': 0.01166, 'wX-eta': 0.00518, 'K-L': 2.1585, 'mX-2/5': 0.08834}
+  Pcap  delta=0.4415 p=0.50: m*=0.40434  r*(Rn/DJ)=0.74137   guards(min over 12 poly, listed): Mn-mLDJ/DJ=0.4043 mUDJ-Mn/DJ=0.0175 N-tail/J=0.0491 {'1/2-mX-eta': 0.01166, 'wX-eta': 0.00518, 'K-L': 2.1585, 'mX-2/5': 0.08834}
+  Pcap  delta=0.4000 p=0.50: m*=0.40049  r*(Rn/DJ)=0.72598   guards(min over 12 poly, listed): Mn-mLDJ/DJ=0.4005 mUDJ-Mn/DJ=0.0213 N-tail/J=0.0475 {'1/2-mX-eta': 0.01166, 'wX-eta': 0.00518, 'K-L': 2.1585, 'mX-2/5': 0.08834}
+  Pcap  delta=0.3800 p=0.50: m*=0.39875  r*(Rn/DJ)=0.71901   guards(min over 12 poly, listed): Mn-mLDJ/DJ=0.3988 mUDJ-Mn/DJ=0.0231 N-tail/J=0.0465 {'1/2-mX-eta': 0.01166, 'wX-eta': 0.00518, 'K-L': 2.1585, 'mX-2/5': 0.08834}
+  Pcap  delta=0.4500 p=0.50: m*=0.40517  r*(Rn/DJ)=0.74469   guards(min over 12 poly, listed): Mn-mLDJ/DJ=0.4052 mUDJ-Mn/DJ=0.0166 N-tail/J=0.0493 {'1/2-mX-eta': 0.01166, 'wX-eta': 0.00518, 'K-L': 2.1585, 'mX-2/5': 0.08834}
+  Pcap  delta=0.4415 p=0.45: m*=0.40358  r*(Rn/DJ)=0.75083   guards(min over 12 poly, listed): Mn-mLDJ/DJ=0.4036 mUDJ-Mn/DJ=0.0182 N-tail/J=0.0523 {'1/2-mX-eta': 0.01166, 'wX-eta': 0.00518, 'K-L': 2.1585, 'mX-2/5': 0.08834}

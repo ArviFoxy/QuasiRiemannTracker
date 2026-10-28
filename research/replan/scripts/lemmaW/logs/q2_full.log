@@ -1,0 +1,4 @@
+collet, all six branches, h=0.8051                                                     theta* = 0.8739558  cover of edge newTop [5.7s]
+collet, all six branches, h=0.80525                                                    theta* = 0.8739584  receipts {'floor': -1.04067e-07, 'floor_margin': -1.04067e-07} [0.4s]
+lemmaW, all six branches, h=0.8051                                                     theta* = 0.8739558  cover of edge newTop [5.6s]
+lemmaW, all six branches, h=0.80525                                                    theta* = 0.8739584  receipts {'floor': -1.04067e-07, 'floor_margin': -1.04067e-07} [0.3s]

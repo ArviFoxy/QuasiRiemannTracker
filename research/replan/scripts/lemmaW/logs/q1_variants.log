@@ -1,0 +1,8 @@
+PR86 replica (pr86 edges, old/C/Pcap, BoundsN)                   theta* = 0.8739558  cover of edge newTop [1.2s]
+  + our 6 edges (capacity-join ds, peak, kink), dMinus>3/4       theta* = None   [0.0s]
+  + our 6 edges, dMinus>1/2                                      theta* = 0.8739558  cover of edge newTop [1.3s]
+  + all six branches old,C,Ccap,C-7,P,Pcap                       theta* = 0.8739558  cover of edge newTop [1.9s]
+  reserve 1e-9 (our rowFee)                                      theta* = 0.8739558  cover of edge newTop [1.1s]
+  BoundsR (874/1000<theta, h<807/1000, ell<171/1000)             theta* = 0.8740001  receipts {'theta>lo': 0.0} [0.4s]
+  dm=0.74 (fixed switch moved)                                   theta* = None   [0.0s]
+  dm=0.80                                                        theta* = None   [8.9s]

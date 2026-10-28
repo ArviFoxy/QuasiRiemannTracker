@@ -1,0 +1,21 @@
+PR86 split 46/38 [collet]: theta*=0.873954831 h=0.805217 | failing box delta[0.4395,0.4424] p[0.4980,0.5000]
+   C     count=0.614778  m*=0.39407   guard slacks (/DJ): lowerM 0.0167 upperM 0.0384 ; N-tail/J 0.0094 ; scal {'mplus-mH': 0.0075, 'B-2mH-L(s-+eta)': 0.0536}
+   Pcap  count=0.616219  m*=0.40427   guard slacks (/DJ): lowerM 0.0273 upperM 0.0176 ; N-tail/J 0.0108 ; scal {'mplus-mH': 0.0075, 'B-2mH-L(s-+eta)': 0.0549}
+PR86 split 46/38 [lemmaW]: theta*=0.873954831 h=0.805217 | failing box delta[0.4395,0.4424] p[0.4980,0.5000]
+   C     count=0.614778  m*=0.39407   guard slacks (/DJ): lowerM 0.0167 upperM 0.0943 ; N-tail/J 0.0477 ; scal {'1/2-mX-eta': 0.0117, 'wX-eta': 0.0052, 'K-L': 2.1585, 'mX-2/5': 0.0883}
+   Pcap  count=0.616219  m*=0.40427   guard slacks (/DJ): lowerM 0.4043 upperM 0.0176 ; N-tail/J 0.0508 ; scal {'1/2-mX-eta': 0.0092, 'wX-eta': 0.0041, 'K-L': 2.1185, 'mX-2/5': 0.0908}
+   Ccap  count=0.613909  m*=0.38793   guard slacks (/DJ): lowerM 0.3879 upperM -0.0106 ; N-tail/J 0.0468 ; scal {'1/2-mX-eta': 0.0117, 'wX-eta': 0.0052, 'K-L': 2.1585, 'mX-2/5': 0.0883}
+lowered floor split 73/38 [collet]: theta*=0.873946275 h=0.805137 | failing box delta[0.4424,0.4453] p[0.4980,0.5000]
+   C     count=0.611930  m*=0.39406   guard slacks (/DJ): lowerM 0.0150 upperM 0.0384 ; N-tail/J 0.0091 ; scal {'mplus-mH': 0.0075, 'B-2mH-L(s-+eta)': 0.0475}
+   Pcap  count=0.613416  m*=0.40455   guard slacks (/DJ): lowerM 0.0276 upperM 0.0173 ; N-tail/J 0.0106 ; scal {'mplus-mH': 0.0075, 'B-2mH-L(s-+eta)': 0.0549}
+lowered floor split 73/38 [lemmaW]: theta*=0.873946275 h=0.805137 | failing box delta[0.4424,0.4453] p[0.4980,0.5000]
+   C     count=0.611930  m*=0.39406   guard slacks (/DJ): lowerM 0.0150 upperM 0.0851 ; N-tail/J 0.0414 ; scal {'1/2-mX-eta': 0.0209, 'wX-eta': 0.0093, 'K-L': 2.2935, 'mX-2/5': 0.0791}
+   Pcap  count=0.613416  m*=0.40455   guard slacks (/DJ): lowerM 0.4046 upperM 0.0173 ; N-tail/J 0.0509 ; scal {'1/2-mX-eta': 0.0092, 'wX-eta': 0.0041, 'K-L': 2.1185, 'mX-2/5': 0.0908}
+   Ccap  count=0.611101  m*=0.38820   guard slacks (/DJ): lowerM 0.3882 upperM -0.0092 ; N-tail/J 0.0405 ; scal {'1/2-mX-eta': 0.0209, 'wX-eta': 0.0093, 'K-L': 2.2935, 'mX-2/5': 0.0791}
+lowered floor split 74/38 [collet]: theta*=0.873946328 h=0.805137 | failing box delta[0.4424,0.4453] p[0.4980,0.5000]
+   C     count=0.611931  m*=0.39406   guard slacks (/DJ): lowerM 0.0150 upperM 0.0384 ; N-tail/J 0.0091 ; scal {'mplus-mH': 0.0075, 'B-2mH-L(s-+eta)': 0.0472}
+   Pcap  count=0.613416  m*=0.40455   guard slacks (/DJ): lowerM 0.0276 upperM 0.0173 ; N-tail/J 0.0106 ; scal {'mplus-mH': 0.0075, 'B-2mH-L(s-+eta)': 0.0549}
+lowered floor split 74/38 [lemmaW]: theta*=0.873946328 h=0.805137 | failing box delta[0.4424,0.4453] p[0.4980,0.5000]
+   C     count=0.611931  m*=0.39406   guard slacks (/DJ): lowerM 0.0150 upperM 0.0847 ; N-tail/J 0.0411 ; scal {'1/2-mX-eta': 0.0213, 'wX-eta': 0.0094, 'K-L': 2.2985, 'mX-2/5': 0.0787}
+   Pcap  count=0.613416  m*=0.40455   guard slacks (/DJ): lowerM 0.4046 upperM 0.0173 ; N-tail/J 0.0509 ; scal {'1/2-mX-eta': 0.0092, 'wX-eta': 0.0041, 'K-L': 2.1185, 'mX-2/5': 0.0908}
+   Ccap  count=0.611101  m*=0.38820   guard slacks (/DJ): lowerM 0.3882 upperM -0.0091 ; N-tail/J 0.0403 ; scal {'1/2-mX-eta': 0.0213, 'wX-eta': 0.0094, 'K-L': 2.2985, 'mX-2/5': 0.0787}

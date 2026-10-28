@@ -1,0 +1,7 @@
+faces_k92 (caps 3/40): Collet windows [report: 0.8742701]                                    theta* = 0.8742701 cover of edge newTop [9.6s]
+faces_k92: Lemma W, window caps = cap-1e-4 [report: 0.8741364 at h=2011/2500]                theta* = 0.8741364 cover of edge newTop [4.8s]
+faces_k92: Lemma W, window caps = face caps                                                  theta* = 0.8741356 cover of edge newTop [5.9s]
+faces_k92: Collet structure, PR86 constants mMinus=.377 sMinus=.03, window caps = face caps  theta* = 0.8741356 cover of edge newTop [6.9s]
+faces_k92_ramp (caps .085/.0805): Collet windows (2/5, 17/500, caps 29/500, 43/1000)         theta* = None  [5.2s]
+faces_k92_ramp: Collet structure, PR86 constants, window caps = face caps                    theta* = 0.8740728 cover of edge newTop [4.4s]
+faces_k92_ramp: Lemma W (face caps) [report design (b): 0.8740728]                           theta* = 0.8740728 cover of edge newTop [3.1s]

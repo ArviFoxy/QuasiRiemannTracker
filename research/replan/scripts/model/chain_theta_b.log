@@ -1,0 +1,7 @@
+k=20  B=0.9961062 L=2.47150  theta(Sil windows)=0.873978653 ok | theta(pointwise branches)=0.873978653
+k=25  B=0.9948959 L=2.44650  theta(Sil windows)=0.873972015 ok | theta(pointwise branches)=0.873972015
+k=30  B=0.9935930 L=2.42150  theta(Sil windows)=0.873966398 ok | theta(pointwise branches)=0.873966398
+k=35  B=0.9921987 L=2.39650  theta(Sil windows)=0.873961840 ok | theta(pointwise branches)=0.873961840
+k=40  B=0.9907142 L=2.37150  theta(Sil windows)=0.873958349 ok | theta(pointwise branches)=0.873958349
+k=43  B=0.9897807 L=2.35650  theta(Sil windows)=0.873956757 ok | theta(pointwise branches)=0.873956757
+k=46  B=0.9888151 L=2.34150  theta(Sil windows)=0.873955555 ok | theta(pointwise branches)=0.873955555

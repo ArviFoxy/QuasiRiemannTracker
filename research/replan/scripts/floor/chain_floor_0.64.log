@@ -1,0 +1,7 @@
+k= 1 L=2.3365 B=0.988486 s0=0.06576 A=0.485 D=54.35 q(0)=0.6495 q(vmax)=0.6460 bind=high_at_q | high_at_q=1.00e-06 low=3.97e-04 retained_cap=2.32e-03
+k= 2 L=2.3315 B=0.988154 s0=0.06646 A=0.489 D=71.05 q(0)=0.6475 q(vmax)=0.6432 bind=high_at_q | high_at_q=1.00e-06 low=3.38e-04 retained_cap=1.94e-03
+k= 3 L=2.3265 B=0.987818 s0=0.06716 A=0.498 D=96.60 q(0)=0.6457 q(vmax)=0.6400 bind=high_at_q | high_at_q=1.00e-06 q_floor=1.21e-06 low=2.78e-04
+k= 4 L=2.3215 B=0.987479 s0=0.06786 A=0.487 D=63.20 q(0)=0.6437 q(vmax)=0.6400 bind=high_at_q | high_at_q=1.00e-06 q_floor=1.58e-06 low=3.74e-04
+k= 5 L=2.3165 B=0.987136 s0=0.06856 A=0.473 D=19.83 q(0)=0.6417 q(vmax)=0.6406 bind=high_at_q | high_at_q=1.00e-06 q_floor=5.61e-04 low=6.76e-04
+k= 6 L=2.3115 B=0.986731 s0=0.08107 A=1.106 D=59.23 q(0)=0.6409 q(vmax)=0.6400 bind=q_floor | q_floor=1.00e-06 principal=1.00e-06 low=1.21e-03
+k=7 INFEASIBLE from L0=2.3115 B0=0.986731

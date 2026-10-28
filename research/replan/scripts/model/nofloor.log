@@ -1,0 +1,8 @@
+ODE (no q-floor) L=2.3385 B=0.988697 s0=0.06557 q_inf=0.6501 -> theta(Sil windows)=0.873954315 bad=0 | theta(pointwise)=0.873954315
+ODE (no q-floor) L=2.3300 B=0.988135 s0=0.06676 q_inf=0.6468 -> theta(Sil windows)=0.873953857 bad=0 | theta(pointwise)=0.873953857
+ODE (no q-floor) L=2.3200 B=0.987460 s0=0.06817 q_inf=0.6429 -> theta(Sil windows)=0.873953400 bad=0 | theta(pointwise)=0.873953400
+ODE (no q-floor) L=2.3100 B=0.986772 s0=0.06956 q_inf=0.6391 -> theta(Sil windows)=0.873953133 bad=0 | theta(pointwise)=0.873953133
+ODE (no q-floor) L=2.3000 B=0.986069 s0=0.07096 q_inf=0.6354 -> theta(Sil windows)=0.873953056 bad=0 | theta(pointwise)=0.873953056
+ODE (no q-floor) L=2.2800 B=0.984622 s0=0.07373 q_inf=0.6279 -> theta(Sil windows)=0.873953438 bad=1 | theta(pointwise)=0.873953438
+ODE (no q-floor) L=2.2500 B=0.982348 s0=0.07786 q_inf=0.6168 -> theta(Sil windows)=0.873955345 bad=1 | theta(pointwise)=0.873955345
+ODE (no q-floor) L=2.2000 B=0.978285 s0=0.08467 q_inf=0.5989 -> theta(Sil windows)=0.873962288 bad=1 | theta(pointwise)=0.873962288

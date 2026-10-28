@@ -1,0 +1,3 @@
+PR86 replica (Collet windows, 4 pr86 edges, branches old/C/Pcap, BoundsN, h=8051/10000): theta* = 8739558/1e7 = 0.8739558  [1.7s]
+  theta*-1e-7 fails: cover of edge newTop
+  submitted 4369779/5000000 = 0.8739558; margin submitted - theta* = 0.0e+00

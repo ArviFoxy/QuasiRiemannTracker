@@ -1,0 +1,15 @@
+k= 1 L=2.3315 B=0.988151 s0=0.06646 A=0.494 D=41.09 q(0)=0.6477 q(vmax)=0.6427 bind=high_at_q | high_at_q=1.00e-06 low=4.86e-04 retained_cap=2.79e-03
+k= 2 L=2.3215 B=0.987472 s0=0.06785 A=0.495 D=45.39 q(0)=0.6438 q(vmax)=0.6386 bind=high_at_q | high_at_q=1.00e-06 low=4.70e-04 retained_cap=2.59e-03
+k= 3 L=2.3115 B=0.986780 s0=0.06924 A=0.501 D=55.36 q(0)=0.6401 q(vmax)=0.6341 bind=high_at_q | high_at_q=1.00e-06 low=4.31e-04 retained_cap=2.28e-03
+k= 4 L=2.3015 B=0.986073 s0=0.07063 A=0.501 D=56.10 q(0)=0.6363 q(vmax)=0.6306 bind=high_at_q | high_at_q=1.00e-06 low=4.38e-04 retained_cap=2.23e-03
+k= 5 L=2.2915 B=0.985353 s0=0.07201 A=0.503 D=58.81 q(0)=0.6326 q(vmax)=0.6269 bind=high_at_q | high_at_q=1.00e-06 low=4.38e-04 retained_cap=2.13e-03
+k= 6 L=2.2815 B=0.984619 s0=0.07339 A=0.529 D=99.24 q(0)=0.6290 q(vmax)=0.6205 bind=high_at_q | high_at_q=1.00e-06 low=3.33e-04 retained_cap=1.55e-03
+k= 7 L=2.2715 B=0.983872 s0=0.07476 A=0.528 D=100.05 q(0)=0.6253 q(vmax)=0.6172 bind=high_at_q | high_at_q=1.00e-06 low=3.42e-04 retained_cap=1.51e-03
+k= 8 L=2.2615 B=0.983110 s0=0.07613 A=0.566 D=160.36 q(0)=0.6218 q(vmax)=0.6105 bind=high_at_q | high_at_q=1.00e-06 low=2.67e-04 retained_cap=1.12e-03
+k= 9 L=2.2515 B=0.982335 s0=0.07750 A=0.627 D=255.88 q(0)=0.6184 q(vmax)=0.6033 bind=high_at_q | high_at_q=1.00e-06 low=2.10e-04 retained_cap=8.35e-04
+k=10 L=2.2415 B=0.981547 s0=0.07886 A=0.635 D=271.55 q(0)=0.6148 q(vmax)=0.6000 bind=high_at_q | high_at_q=1.00e-06 q_floor=3.22e-06 low=2.12e-04
+k=11 L=2.2315 B=0.980745 s0=0.08022 A=0.585 D=193.77 q(0)=0.6110 q(vmax)=0.6003 bind=high_at_q | high_at_q=1.00e-06 low=2.71e-04 q_floor=2.80e-04
+k=12 L=2.2215 B=0.979929 s0=0.08157 A=0.544 D=129.77 q(0)=0.6072 q(vmax)=0.6000 bind=high_at_q | high_at_q=1.00e-06 q_floor=2.18e-05 low=3.58e-04
+k=13 L=2.2115 B=0.979100 s0=0.08293 A=0.482 D=30.43 q(0)=0.6033 q(vmax)=0.6015 bind=high_at_q | high_at_q=1.00e-06 low=7.05e-04 q_floor=1.50e-03
+k=14 L=2.2015 B=0.978240 s0=0.08599 A=0.602 D=10.51 q(0)=0.6004 q(vmax)=0.6000 bind=high_at_q | high_at_q=1.00e-06 q_floor=1.00e-06 low=1.16e-03
+k=15 INFEASIBLE from L0=2.2015 B0=0.978240

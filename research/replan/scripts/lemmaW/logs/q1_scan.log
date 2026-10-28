@@ -1,0 +1,13 @@
+fine theta* at h=0.8051: 873955786/1e9 = 0.873955786
+h=0.804  theta*=0.8739568  (cover of edge newTop)
+h=0.8044  theta*=0.8739564  (cover of edge newTop)
+h=0.8046  theta*=0.8739562  (cover of edge newTop)
+h=0.8048  theta*=0.8739560  (cover of edge newTop)
+h=0.805  theta*=0.8739559  (cover of edge newTop)
+h=0.8051  theta*=0.8739558  (cover of edge newTop)
+h=0.8052  theta*=0.8739558  (cover of edge newTop)
+h=0.8054  theta*=0.8739744  (receipts {'floor': -1.84067e-07, 'floor_margin': -1.84067e-07})
+h=0.8056  theta*=0.8739958  (receipts {'floor': -8.273366666666666e-08, 'floor_margin': -8.273366666666666e-08})
+h=0.8058  theta*=0.8740171  (receipts {'floor': -2.934003333333333e-07, 'floor_margin': -2.934003333333333e-07})
+h=0.8059  theta*=0.8740278  (receipts {'floor': -2.4273366666666667e-07, 'floor_margin': -2.4273366666666667e-07})
+h=0.806  theta*=None  (None)

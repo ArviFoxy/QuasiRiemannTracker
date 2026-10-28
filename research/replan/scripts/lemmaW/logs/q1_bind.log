@@ -1,0 +1,10 @@
+depth 10 failing boxes on newTop: 1
+   delta in [0.42188,0.44531]  p in [0.48438,0.50000]
+depth 14 failing boxes on newTop: 1
+   delta in [0.43945,0.44531]  p in [0.49609,0.50000]
+geometry: ell=0.170844 x=0.365744 y=0.463412 kappa=0.747911 dplus=0.805100 C_newTop=0.048140
+delta=0.4300 p=0.5  old: count=0.627960 margin=-1.742e-03 | C: count=0.625040 margin=+2.104e-05 | Pcap: count=0.626552 margin=-8.919e-04
+delta=0.4400 p=0.5  old: count=0.618479 margin=-1.751e-03 | C: count=0.615579 margin=+7.658e-08 | Pcap: count=0.617027 margin=-8.744e-04
+delta=0.4415 p=0.5  old: count=0.617052 margin=-1.750e-03 | C: count=0.614155 margin=-3.870e-07 | Pcap: count=0.615593 margin=-8.689e-04
+delta=0.4430 p=0.5  old: count=0.615624 margin=-1.748e-03 | C: count=0.612730 margin=-1.404e-07 | Pcap: count=0.614159 margin=-8.626e-04
+delta=0.4500 p=0.5  old: count=0.608942 margin=-1.727e-03 | C: count=0.606065 margin=+1.051e-05 | Pcap: count=0.607446 margin=-8.229e-04

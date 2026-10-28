@@ -1,0 +1,26 @@
+== PR86 chain role split 46/38: base 0.873954831 (gap to bar 1.903e-05)
+   dE=-1e-5                                   theta*=0.873952677 shift -2.154e-06 gap to bar +1.688e-05
+   dE=-1e-4                                   theta*=0.873933310 shift -2.152e-05 gap to bar -2.490e-06
+   dR=1e-4 (count R lowered)                  theta*=0.873941831 shift -1.300e-05 gap to bar +6.031e-06
+   dC=+1e-3 (capacity)                        theta*=0.873931059 shift -2.377e-05 gap to bar -4.741e-06
+   CI=1.995                                   theta*=0.873945751 shift -9.080e-06 gap to bar +9.951e-06
+   CI=1.99                                    theta*=0.873936614 shift -1.822e-05 gap to bar +8.140e-07
+   CI=1.9                                     theta*=0.873761867 shift -1.930e-04 gap to bar -1.739e-04
+   KL=0.83                                    theta*=0.873937431 shift -1.740e-05 gap to bar +1.631e-06
+   KL=0.82                                    theta*=0.873884523 shift -7.031e-05 gap to bar -5.128e-05
+   KL=0.80                                    theta*=0.873775397 shift -1.794e-04 gap to bar -1.604e-04
+   eta4=5e-4                                  theta*=0.873933175 shift -2.166e-05 gap to bar -2.625e-06
+   Cfull (delta p C instead of delta p C/2)   theta*=0.873644521 shift -3.103e-04 gap to bar -2.913e-04
+== lowered floor split 73/38: base 0.873946275 (gap to bar 1.047e-05)
+   dE=-1e-5                                   theta*=0.873944131 shift -2.144e-06 gap to bar +8.331e-06
+   dE=-1e-4                                   theta*=0.873924845 shift -2.143e-05 gap to bar -1.096e-05
+   dR=1e-4 (count R lowered)                  theta*=0.873933332 shift -1.294e-05 gap to bar -2.468e-06
+   dC=+1e-3 (capacity)                        theta*=0.873922514 shift -2.376e-05 gap to bar -1.329e-05
+   CI=1.995                                   theta*=0.873937345 shift -8.930e-06 gap to bar +1.545e-06
+   CI=1.99                                    theta*=0.873928358 shift -1.792e-05 gap to bar -7.442e-06
+   CI=1.9                                     theta*=0.873756378 shift -1.899e-04 gap to bar -1.794e-04
+   KL=0.83                                    theta*=0.873928948 shift -1.733e-05 gap to bar -6.852e-06
+   KL=0.82                                    theta*=0.873876259 shift -7.002e-05 gap to bar -5.954e-05
+   KL=0.80                                    theta*=0.873767578 shift -1.787e-04 gap to bar -1.682e-04
+   eta4=5e-4                                  theta*=0.873924712 shift -2.156e-05 gap to bar -1.109e-05
+   Cfull (delta p C instead of delta p C/2)   theta*=0.873644521 shift -3.018e-04 gap to bar -2.913e-04

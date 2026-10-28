@@ -1,0 +1,18 @@
+reference: role split 46/38, Collet structure      theta*=0.873954831  shift vs ref +0.00e+00  cover of edge newTop
+same, Lemma W six-branch                           theta*=0.873954831  shift vs ref +0.00e+00  cover of edge newTop
+count cap 0.0857 (= width at the crossing)         theta*=None  shift vs ref None  None
+count cap 0.0870                                   theta*=None  shift vs ref None  None
+count cap 0.0900                                   theta*=None  shift vs ref None  None
+count cap 0.0800 (below crossing width)            theta*=None  shift vs ref None  None
+Lemma W + count cap 0.0800                         theta*=None  shift vs ref None  None
+Lemma W + count cap 0.0700                         theta*=None  shift vs ref None  None
+Lemma W + count cap 0.0600                         theta*=None  shift vs ref None  None
+physical cap 0.0999 (numerator cap 0.06)           theta*=0.873954831  shift vs ref +0.00e+00  cover of edge newTop
+numerator cap sP=0.0605/phys cap 0.062             theta*=0.873954831  shift vs ref +0.00e+00  cover of edge newTop
+numerator cap sP=0.07/phys cap 0.071               theta*=0.873954831  shift vs ref +0.00e+00  cover of edge newTop
+numerator cap sP=0.05 (clip binds)                 theta*=None  shift vs ref None  None
+switch dm=0.75005                                  theta*=0.873954831  shift vs ref +0.00e+00  cover of edge newTop
+switch dm=0.78                                     theta*=0.873954831  shift vs ref +0.00e+00  cover of edge newTop
+mMinus=0.30 (Collet structure)                     theta*=0.873954831  shift vs ref +0.00e+00  cover of edge newTop
+mMinus=0.40                                        theta*=None  shift vs ref None  None
+reserve 1e-9 instead of 1e-8                       theta*=0.873954829  shift vs ref -2.00e-09  cover of edge newTop

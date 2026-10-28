@@ -1,0 +1,6 @@
+  row021   newTop    C     delta[0.4336,0.4395] p[0.4922,0.5000]  m_lean=7.960e-07  m_mine=7.960e-07  EXACT
+  row023a  newTop    C     delta[0.4395,0.4417] p[0.4961,0.5000]  m_lean=6.233e-08  m_mine=6.233e-08  EXACT
+  row023b  newTop    C     delta[0.4417,0.4424] p[0.4961,0.5000]  m_lean=5.411e-08  m_mine=5.411e-08  EXACT
+  row024   newTop    C     delta[0.4424,0.4453] p[0.4961,0.5000]  m_lean=1.219e-07  m_mine=1.219e-07  EXACT
+  row025   newTop    C     delta[0.4453,0.4688] p[0.4688,0.5000]  m_lean=1.881e-06  m_mine=1.881e-06  EXACT
+rows compared: 32, exactly equal Bernstein minima: 32

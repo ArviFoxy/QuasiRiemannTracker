@@ -1822,3 +1822,8 @@ slot; `mixed-slots/`).
   Lean in PR 76 `Fork/Record1252270103Source/High/`, `Gain/`) uses each slot up to K times in the inverse witness
   (supply K·s, widths with multiplicity via Collet's `overlapping_annular_inverse_marked_energy`) and a HIGH parent
   face in the plain branch. Sil's density leaf dropped this gain (unmarked ρ only). Porting it is the marked leaf.
+- **Estimate (mine, single point, to be checked by the full model `newpowers/TA_ceiling.md`):** with Lemma B_K in
+  Sil's leaf the HIGH price drops by f = min_p f^K_p(s, H). For small S (inverse branch ξ − KS and plain branch ξ − S
+  active), at p = 1/2: f ≈ ν(5−6ν)(K+1/2)S/(7.5−3ν) = 0.141(K+1/2)S at ν = 0.62. Self-consistently
+  s0 = (B − (1−ρ)/ν)/(L − 1 + c_K/ν), c_K/ν ≈ 0.227(K+1/2): s0 −20 % (K = 1), −37 % (K = 3), −43 % (K = 4), against
+  the ≈ −6 % that the 2e-5 bar needed. If it survives the other gates and branches, 5e-5 is in range.

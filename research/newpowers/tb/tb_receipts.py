@@ -5,11 +5,11 @@ physical schedule bounds, ...) at (theta, h) with PR 86's faces, with the Bounds
 box.  It shows which scalar conditions other than the box are affected by lowering theta.
 
 usage: python3 tb_receipts.py
-Requires the exact-return toolchain in the scratchpad (pr86.py, cert_return.py, gen_return_lean.py).
+Uses the verbatim copies of the exact-return toolchain in ./tc (pr86.py, cert_return.py, gen_return_lean.py, chain_params.py).
 """
 import os, sys
 os.environ.setdefault('QRH_K', '9/2')
-TC = '$SCRATCH/analysis/lemmaW/tc'
+TC = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'tc')   # verbatim copies of pr86.py, cert_return.py, gen_return_lean.py, chain_params.py
 sys.path.insert(0, TC)
 from fractions import Fraction as Fr
 import pr86

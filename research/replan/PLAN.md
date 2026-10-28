@@ -78,3 +78,29 @@ phases 1–5). The branch keeps the history; nothing more goes into it.
 **Execution.** Analysis and research: Sonnet/Haiku agents, reports into this folder. Implementation:
 one Sonnet agent per item with a written brief; one Lean process at a time; I review, integrate and
 commit. No PR without Arvi's OK.
+
+## 4. Results of track B (2026-10-28)
+
+- **B1, return constants** (`B1_return_constants.md`): negative. Every constant (c_I, c_E, k_L, η4, the
+  δpC/2 halving = capacity) is the exact output of an analytic input; each needs an open improvement
+  (large-sieve saving for slot-twisted cubic-theta coefficients; sextic Möbius moment; a ‖Q‖⁴ face).
+- **B2, source slope** (`B2_source_slope.md`): no slack constant (the 6 = 4 + 2 and the L − 1 are
+  forced; 0.999 → 1 gives −0.8e-6). One structural lever of the right size: a **marked
+  (amplitude-class) HIGH leaf** — count PR 83's HIGH rows with the library's marked count
+  (`Cycle25DetectorRowCount.rowCount` / `physical_source_amplitude_count`, today used only by the
+  return) instead of the unmarked ρ(ν). Floor 3/5 + role split: black box 0.8739390 (+3.2e-6 to the
+  bar), supply relaxed to 0.12: 0.8739344 (passes), floor 0.55 + supply 0.12: 0.8739274. Needed from the
+  first density step. Cost 4–7k hand-written + 60–200k generated lines, multi-week; completion
+  estimated 35–45 %; first a 1–2 day bridge audit (report §6).
+- **B3, incumbent bootstrap** (`B3_incumbent_bootstrap.md`): sound (PR 86 proves the Hecke-family
+  `beta ≤ θ_rec` as an intermediate), only the native slot price κ moves: **−1.3e-6**; requires
+  regenerating all density certificates; worthwhile only as an add-on.
+
+| route | θ | vs record | vs bar |
+|---|---|---|---|
+| floor 3/5 + split (A only) | 0.8739463 | −9.5e-6 | +1.05e-5 |
+| A + bootstrap + 0.999→1 + finer chain | ≈ 0.873943 | ≈ −1.3e-5 | ≈ +7e-6 |
+| A + marked leaf (black box) + extras | ≈ 0.873935 | ≈ −2.1e-5 | ≈ −1e-6 |
+| A + marked leaf, supply 0.12, floor 0.55 + extras | ≈ 0.873925 | ≈ −3.1e-5 | ≈ −1e-5 |
+
+Only the marked HIGH leaf reaches the bar.

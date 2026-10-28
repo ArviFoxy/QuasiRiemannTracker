@@ -125,5 +125,33 @@ theorem density_leaf_third (hβ : (51/100:ℝ) ≤ HeckeZeroSupremum.beta)
   density_priced_source _ _ _ _ _ _ _ _ _ Lplain (by norm_num) hβ ⟨by norm_num, by norm_num, by norm_num⟩
     (by norm_num [dsData]) (by norm_num [dsData]) hparent
 
+open QRH.DensitySplitThird.Density in
+/-- The leaf of the fourth physical density transition. -/
+theorem density_leaf_fourthPhysical (hβ : (51/100:ℝ) ≤ HeckeZeroSupremum.beta)
+    (hparent : QRH.Record1252270103Source.GlobalSource (99/100) (239/100) (1/10))
+    (Lplain : ℝ) :
+    PricedPackedSource
+      (dsData (99/100) (239/100) (1/10) (49461297/50000000) (23767/10000) (1/10) (27/50) 94 (by norm_num)).price
+      (dsData (99/100) (239/100) (1/10) (49461297/50000000) (23767/10000) (1/10) (27/50) 94 (by norm_num)).Hmin
+      ((dsData (99/100) (239/100) (1/10) (49461297/50000000) (23767/10000) (1/10) (27/50) 94
+        (by norm_num)).Hmax+1) Lplain :=
+  density_priced_source _ _ _ _ _ _ _ _ _ Lplain (by norm_num) hβ ⟨by norm_num, by norm_num, by norm_num⟩
+    (by norm_num [dsData]) (by norm_num [dsData]) hparent
+
+
+open QRH.DensitySplitThird.Density in
+/-- The leaf of the fourth count density transition. -/
+theorem density_leaf_fourthCount (hβ : (51/100:ℝ) ≤ HeckeZeroSupremum.beta)
+    (hparent : QRH.Record1252270103Source.GlobalSource (99/100) (239/100) (1/10))
+    (Lplain : ℝ) :
+    PricedPackedSource
+      (dsData (99/100) (239/100) (1/10) (987987/1000000) (2357/1000) (1/10) (103/200) 23 (by norm_num)).price
+      (dsData (99/100) (239/100) (1/10) (987987/1000000) (2357/1000) (1/10) (103/200) 23 (by norm_num)).Hmin
+      ((dsData (99/100) (239/100) (1/10) (987987/1000000) (2357/1000) (1/10) (103/200) 23
+        (by norm_num)).Hmax+1) Lplain :=
+  density_priced_source _ _ _ _ _ _ _ _ _ Lplain (by norm_num) hβ ⟨by norm_num, by norm_num, by norm_num⟩
+    (by norm_num [dsData]) (by norm_num [dsData]) hparent
+
+
 end
 end QRH.DensitySplitThird.CubeFree.Assembly

@@ -2,9 +2,9 @@
 WP-L: the target statement from the remaining step inputs.
 
 `dirichlet_of_step_inputs` is the Candidate-shaped theorem (Dirichlet `L`-functions do not
-vanish for `Re s > 174797/200000`, away from the pole) conditional only on
+vanish for `Re s > 873981/1000000`, away from the pole) conditional only on
 `CubeFree.AllStepInputs`: the root chain's restricted source for every native step and for
-the two density transitions. It joins `Endpoint.dirichlet_of_steps` (PR76 source, bootstrap,
+the density transitions through the fourth physical and count children. It joins `Endpoint.dirichlet_of_steps` (PR76 source, bootstrap,
 return) with `CubeFree.Step`.
 
 This module necessarily sees both PR76's FP source (through `Source.Assembly`) and the
@@ -19,16 +19,18 @@ namespace QRH.DensitySplitThird.CubeFree.Assembly
 theorem nativeStepStatement_of_inputs (I : NativeInputs) : NativeStepStatement :=
   fun p n a h hβ hp => native_step I p n a h hβ hp
 
-/-- **Conditional target**: Dirichlet nonvanishing for `Re s > 174797/200000` from the
+/-- **Conditional target**: Dirichlet nonvanishing for `Re s > 873981/1000000` from the
 remaining step inputs. -/
 theorem dirichlet_of_step_inputs (I : AllStepInputs)
     {q : ℕ} [NeZero q] (χ : _root_.DirichletCharacter ℂ q) {s : ℂ}
-    (hs : (174797 / 200000 : ℝ) < s.re) (hpole : ¬ (χ = 1 ∧ s = 1)) :
+    (hs : (873981 / 1000000 : ℝ) < s.re) (hpole : ¬ (χ = 1 ∧ s = 1)) :
     _root_.DirichletCharacter.LFunction χ s ≠ 0 :=
   dirichlet_of_steps (nativeStepStatement_of_inputs I.native)
     (fun hβ hp => hybrid_step_first I.first hβ hp)
     (fun hβ hp => hybrid_step_second I.second hβ hp)
-    (fun hβ hp => hybrid_step_third I.third hβ hp) χ hs hpole
+    (fun hβ hp => hybrid_step_third I.third hβ hp)
+    (fun hβ hp => hybrid_step_fourthPhysical I.fourthPhysical hβ hp)
+    (fun hβ hp => hybrid_step_fourthCount I.fourthCount hβ hp) χ hs hpole
 
 /-- **Conditional target from the root chain's providers** (WP-M's `contrary_raw_side_provider`
 for the native steps with the parent leaf and for the two density steps with the density
@@ -50,9 +52,17 @@ theorem dirichlet_of_providers
       QRH.Record1252270103Source.GlobalSource dsThird.B₀ dsThird.L₀ dsThird.c₀ →
       PricedPackedSource dsThird.price dsThird.Hmin (dsThird.Hmax+1) Lplain →
       FP.RepairedSourceSideSupply.ContraryRawSideProvider Density.dsGates_third)
+    (h4p : ∃ Lplain : ℝ,
+      QRH.Record1252270103Source.GlobalSource dsFourthPhysical.B₀ dsFourthPhysical.L₀ dsFourthPhysical.c₀ →
+      PricedPackedSource dsFourthPhysical.price dsFourthPhysical.Hmin (dsFourthPhysical.Hmax+1) Lplain →
+      FP.RepairedSourceSideSupply.ContraryRawSideProvider Density.dsGates_fourthPhysical)
+    (h4c : ∃ Lplain : ℝ,
+      QRH.Record1252270103Source.GlobalSource dsFourthCount.B₀ dsFourthCount.L₀ dsFourthCount.c₀ →
+      PricedPackedSource dsFourthCount.price dsFourthCount.Hmin (dsFourthCount.Hmax+1) Lplain →
+      FP.RepairedSourceSideSupply.ContraryRawSideProvider Density.dsGates_fourthCount)
     {q : ℕ} [NeZero q] (χ : _root_.DirichletCharacter ℂ q) {s : ℂ}
-    (hs : (174797 / 200000 : ℝ) < s.re) (hpole : ¬ (χ = 1 ∧ s = 1)) :
+    (hs : (873981 / 1000000 : ℝ) < s.re) (hpole : ¬ (χ = 1 ∧ s = 1)) :
     _root_.DirichletCharacter.LFunction χ s ≠ 0 :=
-  dirichlet_of_step_inputs (allStepInputs_of_providers hnat h1 h2 h3) χ hs hpole
+  dirichlet_of_step_inputs (allStepInputs_of_providers hnat h1 h2 h3 h4p h4c) χ hs hpole
 
 end QRH.DensitySplitThird.CubeFree.Assembly

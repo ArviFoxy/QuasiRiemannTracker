@@ -18,13 +18,14 @@ theorem countJ_pos (b : CountBranch) {δ p : ℝ}
   · nlinarith [hp.2]
   · norm_num [kappa,c]; nlinarith [hp.2]
  have had (b : CountBranch) : 0<D b p := by
-  cases b <;> norm_num [D,isCap,branchL,countCL,physicalLambda] <;> nlinarith [hp.2]
+  cases b <;> norm_num [D,isCap,branchL,countCL,physicalLambda,parentCapLambda,fourthCountL] <;> nlinarith [hp.2]
  have haa (b : CountBranch) : 0≤A b p := by
-  cases b <;> norm_num [A,isCap,branchL,countCL,physicalLambda] <;> nlinarith [hp.2]
+  cases b <;> norm_num [A,isCap,branchL,countCL,physicalLambda,parentCapLambda,fourthCountL] <;> nlinarith [hp.2]
  cases b with
  | old => exact add_pos_of_pos_of_nonneg (mul_pos hv hd) (mul_nonneg hδ.1 hc)
  | C => exact add_pos_of_pos_of_nonneg (mul_pos hv (had .C)) (mul_nonneg hdp (haa .C))
  | capP => exact add_pos_of_pos_of_nonneg (mul_pos hv (had .capP)) (mul_nonneg hdp (haa .capP))
+ | fourthC => exact add_pos_of_pos_of_nonneg (mul_pos hv (had .fourthC)) (mul_nonneg hdp (haa .fourthC))
 
 theorem edgeD_nonneg (e : Edge) : 0≤edgeD e := by
  cases e <;> norm_num [edgeD,dm,dp,d0,h]

@@ -1,12 +1,12 @@
 {
-  "title": "Dirichlet nonvanishing at 0.873985 via a third density-split transition",
+  "title": "Dirichlet nonvanishing at 0.873981 via a fourth density-split transition",
   "authors": [
     {
       "name": "Rohan Arun",
       "url": "https://github.com/rohanarun"
     }
   ],
-  "description": "Proves the all-moduli Dirichlet boundary 174797/200000 = 0.873985, with the principal pole excluded. This is Sil's density-split proof (PR 83, sil-density-split-20261026) with one more variable-density transition G(4967/5000, 49/20, 1/10) -> G(99/100, 239/100, 1/10) (selection A = 3/5, D = 35, s0 = 17/300), certified by the same thirteen exact scalar gates and density floor with Bernstein certificates on v in [0, 13/300]. The final all-shift physical return is re-certified at h = 16109/20000 with count face C = (99/100, 239/100, 9999/100000) and physical face P = (99/100, 239/100, 31/500), 16 admission windows (one re-tiled) and 29 exact Bernstein rows. All analytic content, the generic step machinery and the return framework are Sil's, ArviFoxy's (PR 76), Hailey Collet's (PR 69) and OpenAI's; inherited authorship and license notices are retained. The research, certificate generation and Lean changes were AI-assisted (Claude).",
+  "description": "Extends Rohan Arun’s accepted third density-split proof (PR 84) to the exact boundary 873981/1000000 = 0.873981, with the principal pole excluded. The fourth transition starts from G(99/100, 239/100, 1/10) and uses separate physical-source and count children while retaining the parent capped-count branch. Its scalar source gates and density floor have exact Bernstein certificates; the final all-shift return at h = 16109/20000 uses 29 certified admission windows and 91 exact four-edge rectangle certificates. The analytic framework and inherited source/return machinery are credited to OpenAI, Sil, Hailey Collet, ArviFoxy, and Rohan Arun; inherited license and authorship notices remain. The fourth-step research, certificate generation, and Lean integration were substantially AI-assisted by Codex (OpenAI).",
   "license": "Apache-2.0; inherited notices and dependency licenses retained.",
   "builds_on": [
     "openai-baseline",
@@ -39,6 +39,14 @@
     {
       "label": "Density-split common-divisor bootstrap (PR 83)",
       "url": "https://github.com/GTimG/QuasiRiemannTracker/pull/83"
+    },
+    {
+      "label": "Accepted third density-split transition (PR 84)",
+      "url": "https://github.com/GTimG/QuasiRiemannTracker/pull/84"
+    },
+    {
+      "label": "Fourth density-step scalar proposal and exact replay (research PR 30)",
+      "url": "https://github.com/rohanarun/quasi-rh-hillclimb/pull/30"
     }
   ]
 }

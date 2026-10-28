@@ -46,6 +46,8 @@ def HybridStepFor (p n : Face) (A D : ℝ) : Prop :=
 def hybridFace1 : Face := ⟨9959/10000, 5/2, 1/10⟩
 def hybridFace2 : Face := ⟨4967/5000, 49/20, 1/10⟩
 def hybridFace3 : Face := ⟨99/100, 239/100, 1/10⟩
+def hybridFace4Physical : Face := ⟨49461297/50000000, 23767/10000, 1/10⟩
+def hybridFace4Count : Face := ⟨987987/1000000, 2357/1000, 1/10⟩
 
 theorem face0_source (hβ : (51/100 : ℝ) ≤ HeckeZeroSupremum.beta) : face0.Source := by
   have h := Candidate.FourthPower.RepairedRestrictedSource.actual_global_source hβ
@@ -66,6 +68,20 @@ theorem final_source (hstep : NativeStepStatement)
     GlobalSource (99/100) (239/100) (1/10) := by
   have h := h3 hβ (h2 hβ (h1 hβ (bootstrap_source hstep hβ)))
   simpa only [Face.Source, hybridFace3] using h
+
+/-- Both fourth source faces are children of the same retained parent face. -/
+theorem final_sources (hstep : NativeStepStatement)
+    (h1 : HybridStepFor bootstrapFace hybridFace1 (6/5) 140)
+    (h2 : HybridStepFor hybridFace1 hybridFace2 (7/10) 70)
+    (h3 : HybridStepFor hybridFace2 hybridFace3 (3/5) 35)
+    (h4p : HybridStepFor hybridFace3 hybridFace4Physical (27/50) 94)
+    (h4c : HybridStepFor hybridFace3 hybridFace4Count (103/200) 23)
+    (hβ : (51/100 : ℝ) ≤ HeckeZeroSupremum.beta) :
+    GlobalSource (99/100) (239/100) (1/10) ∧
+    GlobalSource (49461297/50000000) (23767/10000) (1/10) ∧
+    GlobalSource (987987/1000000) (2357/1000) (1/10) := by
+  have hp := final_source hstep h1 h2 h3 hβ
+  exact ⟨hp, h4p hβ hp, h4c hβ hp⟩
 
 end
 end QRH.DensitySplitThird

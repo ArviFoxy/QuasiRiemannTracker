@@ -364,5 +364,21 @@ theorem dsGates_third :
   dsGates hybridGates_third ⟨by norm_num, by norm_num, by norm_num, by norm_num, by norm_num,
     by norm_num⟩ _
 
+/-- Fourth transition for the physical numerator. -/
+theorem dsGates_fourthPhysical :
+    StepGates (dsData (99/100) (239/100) (1/10) (49461297/50000000)
+      (23767/10000) (1/10) (27/50) 94 (by norm_num)) :=
+  dsGates hybridGates_hybridfourthphysical
+    ⟨by norm_num, by norm_num, by norm_num, by norm_num, by norm_num,
+      by norm_num⟩ _
+
+/-- Separate fourth transition for the count envelope. -/
+theorem dsGates_fourthCount :
+    StepGates (dsData (99/100) (239/100) (1/10) (987987/1000000)
+      (2357/1000) (1/10) (103/200) 23 (by norm_num)) :=
+  dsGates hybridGates_hybridfourthcount
+    ⟨by norm_num, by norm_num, by norm_num, by norm_num, by norm_num,
+      by norm_num⟩ _
+
 end
 end QRH.DensitySplitThird.Density

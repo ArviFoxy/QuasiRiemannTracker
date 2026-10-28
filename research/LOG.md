@@ -1857,3 +1857,9 @@ slot; `mixed-slots/`).
   θ = 0.8739058 needs ell = 0.1710435 (just above 0.171). The real floor is functional (`floor_margin`, `small_saving`,
   y > 0.458): θ ≥ 0.873644 with stock constants, 0.873 after relaxing ss/y_lo inside their proof limits (7 lines).
   A new PR must fork PR 83's 119 `ReturnD` modules anyway (sed rename, ~15–20 min build).
+- **Marked HIGH leaf proved in Lean** (`lean/arvi_density/Density/{HighParams, LeafRowsMarked, LeafHighRowMarked,
+  LeafHighMarked, LeafHighEnergyMarked, PriceMarked, LeafMarked}.lean`, `MarkedTheorem.lean`):
+  `Density.density_priced_source_marked : … → PricedPackedSource (markedDensityPrice qf B₀ L₀ c₀ L A D s₀ …)`,
+  with `highTermM = highTerm − gainC ν B₀ L₀ c₀ s M` (PR 76's repeated-mark gain, K = 8), parent range
+  22/23 ≤ B₀ ≤ 1, 1 < L₀, 0 ≤ c₀ < 1; axioms propext/choice/Quot.sound, no sorry. Built before the container
+  restart (agent lost; files and oleans survived). Next: marked step gates/ledger + generator (agent), ceiling (agent).

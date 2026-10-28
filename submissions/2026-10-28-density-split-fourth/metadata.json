@@ -1,0 +1,52 @@
+{
+  "title": "Dirichlet nonvanishing at 0.873981 via a fourth density-split transition",
+  "authors": [
+    {
+      "name": "Rohan Arun",
+      "url": "https://github.com/rohanarun"
+    }
+  ],
+  "description": "Extends Rohan Arun’s accepted third density-split proof (PR 84) to the exact boundary 873981/1000000 = 0.873981, with the principal pole excluded. The fourth transition starts from G(99/100, 239/100, 1/10) and uses separate physical-source and count children while retaining the parent capped-count branch. Its scalar source gates and density floor have exact Bernstein certificates; the final all-shift return at h = 16109/20000 uses 29 certified admission windows and 91 exact four-edge rectangle certificates. The analytic framework and inherited source/return machinery are credited to OpenAI, Sil, Hailey Collet, ArviFoxy, and Rohan Arun; inherited license and authorship notices remain. The fourth-step research, certificate generation, and Lean integration were substantially AI-assisted by Codex (OpenAI).",
+  "license": "Apache-2.0; inherited notices and dependency licenses retained.",
+  "builds_on": [
+    "openai-baseline",
+    "hailey-collet-1252270103",
+    "sil-fourth-power-20261025",
+    "arvi-repeated-marks-on-sil-face-20261025"
+  ],
+  "dependencies": [
+    "openai-baseline",
+    "hailey-collet-1252270103",
+    "arvi-repeated-marks-on-sil-face-20261025"
+  ],
+  "references": [
+    {
+      "label": "Original OpenAI framework and scope",
+      "url": "https://github.com/openai/math/blob/fd4aeeb2ee4fc729c18d98444fed42fd0529eeeb/lean/docs/003.md"
+    },
+    {
+      "label": "Finite ordinary source moments and return framework (PR 69)",
+      "url": "https://github.com/GTimG/QuasiRiemannTracker/pull/69"
+    },
+    {
+      "label": "Fourth-power source moments (PR 74)",
+      "url": "https://github.com/GTimG/QuasiRiemannTracker/pull/74"
+    },
+    {
+      "label": "Repeated marks on the fourth-power face, all-shift physical return (PR 76)",
+      "url": "https://github.com/GTimG/QuasiRiemannTracker/pull/76"
+    },
+    {
+      "label": "Density-split common-divisor bootstrap (PR 83)",
+      "url": "https://github.com/GTimG/QuasiRiemannTracker/pull/83"
+    },
+    {
+      "label": "Accepted third density-split transition (PR 84)",
+      "url": "https://github.com/GTimG/QuasiRiemannTracker/pull/84"
+    },
+    {
+      "label": "Fourth density-step scalar proposal and exact replay (research PR 30)",
+      "url": "https://github.com/rohanarun/quasi-rh-hillclimb/pull/30"
+    }
+  ]
+}

@@ -1851,3 +1851,9 @@ slot; `mixed-slots/`).
   0.0133 (S ≥ 0.05); ν = 0.60, S = 0.03: 0.0154. Mismatches: guard heights (cut the bounded branch at Z^τ), slot width
   floor `wmin ≤ w` (split slots), finite exceptional cores, hypotheses 22/23 ≤ B₀, 1 < L₀, c₀ < 1, a plain-factor lemma.
   Plan ≈ 1000 lines (L0–L6).
+- **Transport box (T-B, `newpowers/TB_transport_box.md`).** Widening is numeral-only: ell < 175/1000 is 3 lines
+  (`ReturnD/TransportGeometry.lean:23,60,95`; the only real consumer `four_ell_lt_h` holds to ell < 0.198); all 229
+  consumers are `linarith`/`nlinarith` with positive margins. Relations: ell = 11/3 − 4θ, x = 1 + ell − h, y = h − 2ell;
+  θ = 0.8739058 needs ell = 0.1710435 (just above 0.171). The real floor is functional (`floor_margin`, `small_saving`,
+  y > 0.458): θ ≥ 0.873644 with stock constants, 0.873 after relaxing ss/y_lo inside their proof limits (7 lines).
+  A new PR must fork PR 83's 119 `ReturnD` modules anyway (sed rename, ~15–20 min build).

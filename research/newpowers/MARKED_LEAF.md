@@ -62,3 +62,20 @@ Model prices (B2, floor 3/5, role split; to be re-checked with the final gate): 
 4. Gate `highJ_marked`, step gates, certificate generator (two-parameter in `(v, x)` unless
    monotonicity in `x` is proved), chain to the new wall, two-source return, package.
 5. Then (b)/(c) for margin.
+
+## 5. Update after the bridge map (2026-10-28)
+
+- **Analytic half exists (PR 76):** `actual_dictionary_regular_raw_max_uniform_tau_rm` gives, per HIGH class,
+  Σ (∏ slots max 1 ‖labeledRawSlot‖)² ≤ C(1+height)^J Z^{ρ(ν)F + νS − gainC ν B₀ L₀ c₀ S F + loss} (K = 8 copies,
+  no 7/37 supply). Implementation L0–L6 per `BRIDGE_MAP.md` §6 is running.
+- **Gain** (`Source/GainC.lean`, `Gain/Gain.lean`): `gainC = inf_{p∈[0,1/2]} min_{k ∈ 2×3 branches}`
+  `[(1−2p)νS + ν(root_k(p) − ξ₀Q)]`, `root_k = (5Q − offset_k)/slope_k`; valid (`ParentParams`) for
+  0 < ν ≤ 3/4, 22/23 ≤ B ≤ 1, 1 < Λ, 0 ≤ cap ≤ 1 — true along our chain (B ≥ 0.97, Λ ∈ (2.2, 3.72), cap ≤ 0.14).
+- **Ledger with the gain.** The gain is an infimum of affine functions of S, hence concave in S, with gain(0) = 0.
+  So the marked HIGH price ν(P_C + s) − (1−ρ)H − gain(s) is convex in the retained slot width s ∈ [0, W − u] and
+  its worst case is at an endpoint. s = 0: ν·P_max − (1−ρ)H with P_max = B − LW (root constraint) — implied by
+  Sil's unmarked gate since u ≤ W. s = W − u: the new gate
+  `highJ(B, L, W, u, ν) + gainC(ν, B₀, L₀, c₀, W − u, H) ≥ reserve`, which must hold for every class p and every
+  branch k: six two-parameter (v, p) gates, certified by 2D Bernstein boxes (as PR 76's `certify_all_k.py` does).
+  Note: with K = 8 the S-slope of the unsaturated inverse facet exceeds ν (e.g. 1.2 at ν = 0.62), so the gain can
+  exceed the slots' pointwise cost; the endpoint argument handles this.

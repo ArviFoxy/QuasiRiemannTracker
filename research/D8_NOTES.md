@@ -89,7 +89,29 @@ the face term (0.0481). So without lifting numeratorCap too, the gain is only ab
 5. Conjecture: an optimal large sieve for the structured sextic family, Lindelöf-on-average type,
    would give T = {m₁ + m₂ + s ≤ 1}. That is the ideal face G(1, 1, ·).
 
-## 6. Next
+## 6. Redesign options (D8a′; the lead's analysis, in progress)
+
+Redesigns are allowed: any complete Lean proof counts. The question is which consumer can bind at an
+unbalanced configuration.
+
+1. **Numerator, as written.** It is unbalanced by nothing. Paper §14.7 (Collet `paper/foundations.tex`,
+   around line 6583) bounds Σ_u|N_u| by Hölder with the count, count^{3/4}·(Σ|N_u|⁴)^{1/4}. Here N_u is
+   one reflected sum S of length U^{1−m+t}, so |N_u|⁴ = |S·S|² is balanced by construction.
+2. **Mixing the original sum (length m > ½) with the reflected one.** This fails: 2m > 1 exceeds every
+   face, since E(0) = 0.99999.
+3. **Second-moment Hölder (n, 0, s).** The faces already cover it directly; Cauchy–Schwarz adds nothing,
+   and the Hölder exponent bookkeeping is worse.
+4. **Count with two different plain blocks: most promising, open.**
+   - If a bad row is certified to have two plain blocks S_{m₁}, S_{m₂} large at once, the count can use
+     the unbalanced pair (m₁, m₂, s).
+   - Its lower bound depends only on m₁ + m₂, through U^{δ(m₁+m₂)}.
+   - Cauchy–Schwarz then allows up to +0.011 more total plain length at the same s. That lowers the count
+     exponent by δ·ΔP ≈ 0.005 at the binding bin δ ≈ 0.455 [rough].
+   - Needed: the detector must certify both blocks on the same fiber. Today a fiber certifies one subband
+     pair (M_r, S_m), and M_r is a Möbius sum, not a face plain. Check whether the detector identity, or
+     the self-saturation of plain bands, gives the second block.
+
+## 7. Next
 
 - D8b: the continuum ODE of the density chain, i.e. the method's limit.
 - D8a′: a numerator design with an unbalanced binding configuration, and the origin of numeratorCap.

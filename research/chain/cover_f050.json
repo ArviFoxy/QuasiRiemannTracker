@@ -214,20 +214,84 @@
                   "name": "row028"
                  },
                  "hi": {
-                  "cand": "C",
-                  "name": "row029"
+                  "axis": "p",
+                  "mid": "255/512",
+                  "lo": {
+                   "cand": "C",
+                   "name": "row029"
+                  },
+                  "hi": {
+                   "axis": "d",
+                   "mid": "921/2048",
+                   "lo": {
+                    "axis": "p",
+                    "mid": "511/1024",
+                    "lo": {
+                     "cand": "C",
+                     "name": "row030"
+                    },
+                    "hi": {
+                     "axis": "d",
+                     "mid": "1839/4096",
+                     "lo": {
+                      "axis": "p",
+                      "mid": "1023/2048",
+                      "lo": {
+                       "cand": "C",
+                       "name": "row031"
+                      },
+                      "hi": {
+                       "axis": "d",
+                       "mid": "3675/8192",
+                       "lo": {
+                        "cand": "C",
+                        "name": "row032"
+                       },
+                       "hi": {
+                        "axis": "p",
+                        "mid": "2047/4096",
+                        "lo": {
+                         "cand": "C",
+                         "name": "row033"
+                        },
+                        "hi": {
+                         "axis": "d",
+                         "mid": "7353/16384",
+                         "lo": {
+                          "cand": "C",
+                          "name": "row034"
+                         },
+                         "hi": {
+                          "cand": "C",
+                          "name": "row035"
+                         }
+                        }
+                       }
+                      }
+                     },
+                     "hi": {
+                      "cand": "C",
+                      "name": "row036"
+                     }
+                    }
+                   },
+                   "hi": {
+                    "cand": "C",
+                    "name": "row037"
+                   }
+                  }
                  }
                 }
                },
                "hi": {
                 "cand": "C",
-                "name": "row030"
+                "name": "row038"
                }
               }
              },
              "hi": {
               "cand": "C",
-              "name": "row031"
+              "name": "row039"
              }
             }
            }
@@ -240,46 +304,46 @@
         "mid": "7/16",
         "lo": {
          "cand": "old",
-         "name": "row032"
+         "name": "row040"
         },
         "hi": {
          "axis": "d",
          "mid": "33/64",
          "lo": {
           "cand": "C",
-          "name": "row033"
+          "name": "row041"
          },
          "hi": {
           "axis": "p",
           "mid": "15/32",
           "lo": {
            "cand": "old",
-           "name": "row034"
+           "name": "row042"
           },
           "hi": {
            "axis": "d",
            "mid": "69/128",
            "lo": {
             "cand": "C",
-            "name": "row035"
+            "name": "row043"
            },
            "hi": {
             "axis": "p",
             "mid": "31/64",
             "lo": {
              "cand": "old",
-             "name": "row036"
+             "name": "row044"
             },
             "hi": {
              "axis": "d",
              "mid": "141/256",
              "lo": {
               "cand": "capP",
-              "name": "row037"
+              "name": "row045"
              },
              "hi": {
               "cand": "old",
-              "name": "row038"
+              "name": "row046"
              }
             }
            }
@@ -291,7 +355,7 @@
      },
      "hi": {
       "cand": "old",
-      "name": "row039"
+      "name": "row047"
      }
     }
    }

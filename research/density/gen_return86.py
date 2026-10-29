@@ -1107,6 +1107,7 @@ def main():
     ap.add_argument('--emit-cover', metavar='FILE', help='also write the cover spec that was used (re-usable with --cover FILE)')
     ap.add_argument('--receipts', action='store_true')
     ap.add_argument('--find-theta', nargs=2, metavar=('LO', 'HI'))
+    ap.add_argument('--theta-digits', type=int, default=7, help='--find-theta searches multiples of 10^-D (default 7)')
     ap.add_argument('--extract-cover', nargs=3, metavar=('EDGECERT', 'WINDOWS', 'OUT'))
     ap.add_argument('--branches', choices=['pr86', 'five'], default='pr86',
                     help="count branches: PR 86's {old, C, capP}, or 'five' = + PR 76's capC and weakC7")
@@ -1146,11 +1147,12 @@ def main():
         assert P.h is not None, 'h missing'
 
     if a.find_theta:
-        lo, hi = (int(Fr(v) * 10 ** 7) for v in a.find_theta)
+        U = 10 ** a.theta_digits
+        lo, hi = (int(Fr(v) * U) for v in a.find_theta)
 
         def ok(units):
             P2 = Params(**{k: getattr(P, k) for k in Params.FIELDS})
-            P2.theta = Fr(units, 10 ** 7)
+            P2.theta = Fr(units, U)
             set_h(P2)
             return certifiable(P2, a.box)
         assert ok(hi), 'hi is not certifiable'
@@ -1162,11 +1164,11 @@ def main():
             else:
                 lo = mid
         P2 = Params(**{k: getattr(P, k) for k in Params.FIELDS})
-        P2.theta = Fr(hi, 10 ** 7)
+        P2.theta = Fr(hi, U)
         set_h(P2)
-        print('least certifiable theta:', Fr(hi, 10 ** 7), f'= {hi}/10^7 = {hi / 1e7:.7f}', f'with h = {P2.h} (= {float(P2.h):.6f}; floor ceiling'
+        print('least certifiable theta:', Fr(hi, U), f'= {hi}/10^{a.theta_digits} = {hi / U:.{a.theta_digits}f}', f'with h = {P2.h} (= {float(P2.h):.6f}; floor ceiling'
               f' {float(hceiling(P2.theta)):.7f})')
-        print(f'regenerate with: --theta {Fr(hi, 10 ** 7)} --h {P2.h}')
+        print(f'regenerate with: --theta {Fr(hi, U)} --h {P2.h}')
         return
 
     set_h(P)

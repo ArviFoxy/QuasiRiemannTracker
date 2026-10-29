@@ -30,6 +30,7 @@ about 0.03 s (the whole PR 86 chain: 0.9 s).
 | `lean_check/Gen_Test.lean` | the test file: type identity with PR 86 and use in `K15.density_step` |
 | `validate_marked.py` | no-Lean validation of the marked mode: 46 PR 86 steps, a step beyond the unmarked gates, the boundary, the package files |
 | `lean_check/run_marked_check.sh` | regenerates the two marked certificates of `Submissions.arvi_density` and builds `MarkedStepTheorem` |
+| `gen_reflect.py` | reflective certificates of the marked HIGH gate (`Cert/Reflect.lean`): replaces the box section of the step files |
 
 ## Usage
 
@@ -462,3 +463,35 @@ exercised below the old range: `Constants`, `Geometry` and `TransportInstances` 
 (the `ell < 171/1000` field). A role split was built as a throw-away package (count = PR 86's final face, physical = its step 38 face
 `G(2478297/2500000, 5953751/2500000, 1/10)`, theta = 0.8739549, h = 8052/10000, greedy cover: 33 rows, 17 windows): 45 modules, 445 s wall, no error;
 the least theta is 0.8739549 for that split and 0.8739464 for the floor-0.60 chain end (step 73) with step 38, the values of `replan/lemmaW.md`.
+
+## Reflective marked certificates (`gen_reflect.py`, `Cert/Reflect.lean`)
+
+The box certificates above cost about 100 MB of `.olean` per chain step (the cleared identities `clearedM_ij` and the
+40-digit Bernstein boxes are elaborated per step by `ring`/`norm_num`), about 13 GB for the 129-step chain: over the
+verifier's 4 GiB limit on compiled submission files (`verifier/standard/build_cache.py`). `Cert/Reflect.lean` proves
+the gate once for all parameters instead:
+
+* `Fpoly S U αU βU eU` computes the cleared gate `cNumY − r · E · cDenY` from the rational step data
+  `S = (B0, L0, c0, B, L, A, D, r)` by list polynomial arithmetic in three layers (`t`, `p`, then `v`), and
+  `eval_Fpoly` shows that it evaluates to that expression (one `ring`, for all `S`); `br00` … `br12` are the branch data.
+* `checkF P a Dn X L T`: degrees ≤ 3 in `t` and `p`, `Dn · P(a y, t, p)` has integer coefficients, and PR 76's
+  `IPoly.checkZ` accepts them with the tree `T` (Bernstein form in `u = t` and `p`, dyadic intervals with `tm1` in `y`).
+  `checkF_sound` gives `0 < F` at rational `y`, and continuity (`nonneg_of_rat_pos`) gives `0 ≤ F` for all real
+  `v ∈ [0, a]`.
+* `branch_ge_of_check` turns a passed check into `r ≤ gHighM_ij` (`gHighM_ij`, `gHighM_scaled`, `cDenY_pos_all`);
+  `high_marked_of_checks` assembles the six branches into `high_marked` (as the generated `markedHigh` did).
+
+`gen_reflect.py` mirrors the list arithmetic exactly (lengths included), computes `Dn`, the tree, `L` and the packing
+base `X` (from the `tm1Y` digit bounds), replays the kernel check in Python (`replay`) and rewrites the marked section
+of a step file: `def stepQ`, per branch `def treeIJ` and `theorem checkIJ … := by decide +kernel`, then `markedHigh`.
+The reserve is `r = 10⁻¹²` (only `0 < r` is used downstream). Independent check: `F = Ng − r·Dg` with gen_hybrid's
+`marked_scaled` and `Ng = gHighM · Dg` with its exact transcription `marked_value`, at 360 random rational points
+for steps 1, 64 and 129.
+
+Result on the floor-1/2 chain (`../chain/steps_f050_dL200.json`): every branch of every step is one tree leaf
+(16–146 dyadic intervals); a step file is about 43 kB, compiles in about 15 s and gives a 1.8 MB `.olean`
+(before: 280 kB, about 2 min and about 100 MB).
+
+```
+python3 gen_reflect.py ../chain/steps_f050_dL200.json <box step files> <Lean dir ChainF50> [--only 1,2]
+```

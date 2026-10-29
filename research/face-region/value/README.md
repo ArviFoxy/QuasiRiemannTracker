@@ -115,6 +115,18 @@ raising κ lifts the whole path.
 Reading: "boot at Λb" is the same as κ = 1 for q ≥ q_ray(Λb) (the HIGH rows there cost nothing). Λb = 2.4
 corresponds to q = 2/3, i.e. a count with no HIGH loss for σ ≥ 5/6.
 
+## 4b. A better plain fourth moment (face with budget 1 and slot cost c_P) [numerical, `plaincost.py`]
+
+The face G(1, c_P) added to today's region (count and physical queries both read it; merged faces kept):
+
+| c_P | 2.0 | 2.1 | 2.2 | 2.3 | 2.4 |
+|---|---|---|---|---|---|
+| Δθ | −1.80e-4 | −1.80e-4 | −1.01e-4 | −2.7e-5 | −6.5e-6 |
+
+The bar is crossed at c_P ≈ 2.27. Today the budget-1 end of the region is the native line's end, slot cost 2.5715
+(its overshoot gate, K = 3/4). Slot cost 2 is what the marked *inverse* moment already has, but its proof reflects
+the Möbius-type source specifically (`original_source_energy`), so it does not transfer to plain products.
+
 ## 5. What new mathematics would pay
 
 1. **A better HIGH count (T6).** Crossing the bar needs a zero-density exponent A ≲ 2.226 on σ ∈ [3/4, 7/8]
@@ -144,4 +156,5 @@ corresponds to q = 2/3, i.e. a count with no HIGH loss for σ ≥ 5/6.
 | `zerodensity.py` | the curve with a zero-density HIGH count (Huxley, DH from s₀, constant A); `logs/zd_*.log` |
 | `zone_value.py` | the whole window and today's exact curve; `logs/zone_value.log` |
 | `pastfloor.py` | past-floor count faces; `logs/pastfloor.log` |
+| `plaincost.py` | the face G(1, c_P); `logs/pc_*.log` |
 | `fig_value.py` | `fig/value.png` |

@@ -50,13 +50,21 @@ def theta_global(cface, pface, r=1e-8):
     lo = float(b[0]) - 2e-8 if b else 0.8735
     (v, where), _ = global_max(lo, cface, pface)
     if v <= lo - r:
-        return lo, where
-    hi = lo + 2e-5
-    while True:
-        (v, where), _ = global_max(hi, cface, pface)
-        if v <= hi - r:
-            break
-        lo, hi = hi, hi + 2e-5
+        # the other faces may do better than this face's own binding point: walk down until the grid fails
+        hi = lo
+        while True:
+            lo = hi - 2e-5
+            (v, where_l), _ = global_max(lo, cface, pface)
+            if v > lo - r:
+                break
+            hi, where = lo, where_l
+    else:
+        hi = lo + 2e-5
+        while True:
+            (v, where), _ = global_max(hi, cface, pface)
+            if v <= hi - r:
+                break
+            lo, hi = hi, hi + 2e-5
     for _ in range(12):
         mid = (lo + hi) / 2
         (v, where_m), _ = global_max(mid, cface, pface)

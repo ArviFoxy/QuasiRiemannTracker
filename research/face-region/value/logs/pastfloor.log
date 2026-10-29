@@ -2,5 +2,5 @@ L=1.800 B=0.951390  global theta*=0.87387171  -6.28e-07  ('newTop', np.float64(0
 L=1.840 B=0.954993  global theta*=0.87387172  -6.24e-07  ('newTop', np.float64(0.45), np.float64(0.5), 'mC')
 L=1.870 B=0.957628  global theta*=0.87387172  -6.24e-07  ('newTop', np.float64(0.45), np.float64(0.5), 'mC')
 L=1.900 B=0.960204  global theta*=0.87386927  -3.07e-06  ('newTop', np.float64(0.45), np.float64(0.5), 'C-0')
-L=1.920 B=0.961888  global theta*=0.87387055  -1.79e-06  ('newTop', np.float64(0.45), np.float64(0.5), 'C-0')
-L=1.926 B=0.962388  global theta*=0.87387097  -1.37e-06  ('newTop', np.float64(0.45), np.float64(0.5), 'C-0')
+L=1.920 B=0.961888  global theta*=0.87387054  -1.80e-06  ('newTop', np.float64(0.45), np.float64(0.5), 'C-0')
+L=1.926 B=0.962388  global theta*=0.87387095  -1.39e-06  ('newTop', np.float64(0.45), np.float64(0.5), 'C-0')

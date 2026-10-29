@@ -1,0 +1,6 @@
+chain end (merged count face)          B=0.96232839 Lam=1.92650000  theta*=0.8738723399  (+0.00e+00 vs first)  delta*=0.44879  tightest guard: natural tail
+ODE floor face (CONTINUUM.md sec. 0)   B=0.96239387 Lam=1.92607179  theta*=0.8738715773  (-7.63e-07 vs first)  delta*=0.44882  tightest guard: natural tail
+chain end, B + 1e-5                    B=0.96233839 Lam=1.92650000  theta*=0.8738722675  (-7.24e-08 vs first)  delta*=0.44879  tightest guard: natural tail
+chain end, Lam - 1e-4                  B=0.96232839 Lam=1.92640000  theta*=0.8738722726  (-6.73e-08 vs first)  delta*=0.44879  tightest guard: natural tail
+physical face 64 (merged)              capacity(dp)=0.04806089  theta*=0.8738723399  (+0.00e+00 vs merged)
+physical B + 1e-5                      capacity(dp)=0.04806353  theta*=0.8738722563  (-8.36e-08 vs merged)

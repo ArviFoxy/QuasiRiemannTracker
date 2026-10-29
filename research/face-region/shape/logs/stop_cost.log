@@ -1,0 +1,5 @@
+eta=1e-4  q_stop=0.5000  count face (B=0.96235261, Lam=1.92598922)  theta*=0.8738713910  vs merged -9.49e-07
+eta=1e-4  q_stop=0.5002  count face (B=0.96240385, Lam=1.92660514)  theta*=0.8738714344  vs merged -9.06e-07
+eta=1e-4  q_stop=0.5005  count face (B=0.96248062, Lam=1.92752872)  theta*=0.8738714997  vs merged -8.40e-07
+eta=1e-4  q_stop=0.5015  count face (B=0.96273592, Lam=1.93060473)  theta*=0.8738717195  vs merged -6.21e-07
+eta=1e-4  q_stop=0.5030  count face (B=0.96311708, Lam=1.93521128)  theta*=0.8738720553  vs merged -2.85e-07

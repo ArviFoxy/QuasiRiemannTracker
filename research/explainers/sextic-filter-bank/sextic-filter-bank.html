@@ -53,7 +53,7 @@ nav.map a { color: var(--ink-2); text-decoration: none; border-bottom: 1px solid
 nav.map a:hover, nav.map a:focus-visible { color: var(--accent); border-color: var(--accent); }
 section { padding-block: 40px 4px; border-bottom: 1px solid var(--rule); }
 section:last-of-type { border-bottom: 0; }
-.secno { font: 500 12px var(--f-mono); letter-spacing: 0.08em; color: var(--accent); text-transform: uppercase; margin: 0 0 6px; }
+.secno { font: 500 13px var(--f-mono); letter-spacing: 0.02em; color: var(--accent); margin: 0 0 6px; }
 h2 { font-family: var(--f-display); font-weight: 500; font-size: clamp(26px, 5vw, 32px); line-height: 1.15; margin: 0 0 14px; text-wrap: balance; }
 p { max-width: 66ch; margin: 0 0 14px; }
 em.v { font-family: var(--f-display); font-style: italic; font-size: 1.08em; }
@@ -88,163 +88,46 @@ figcaption { font-size: 14px; color: var(--ink-2); margin-top: 12px; line-height
 .flow { max-width: 470px; margin: 0 auto; color: var(--ink); }
 .note { font-size: 14px; color: var(--muted); }
 footer { padding-block: 28px 0; font-size: 13px; color: var(--muted); }
+ul.ledger { margin: 0 0 16px; padding-left: 20px; max-width: 64ch; display: grid; gap: 6px; }
+dl.gloss { display: grid; grid-template-columns: minmax(150px, 13em) 1fr; gap: 8px 18px; margin: 4px 0 24px; max-width: 72ch; }
+dl.gloss dt { font-weight: 500; color: var(--ink); }
+dl.gloss dd { margin: 0; color: var(--ink-2); min-width: 0; }
+@media (max-width: 560px) { dl.gloss { grid-template-columns: 1fr; gap: 2px; } dl.gloss dd { margin-bottom: 10px; } }
 footer p { max-width: 72ch; }
 </style>
 
 <div class="wrap">
 <header>
-  <p class="eyebrow">θ = 0.87387234 · all-moduli Dirichlet nonvanishing</p>
+  <p class="eyebrow">A visual guide · θ = 0.87387234</p>
   <h1>Sextic Filter Bank</h1>
-  <p class="lede">The proof hunts a hypothetical zero with a bank of filters built from sixth-order characters on the hexagonal lattice ℤ[ω]. This page draws the pieces: the lattice and its finite tori, the two kinds of waves that live on them, Gauss sums as DFT coefficients, the D⁴ transfer, frame bounds, and the 130 faces of the density chain. The pictures are computed live from the definitions; the faces are the exact numbers of the merged chain.</p>
+  <p class="lede">This page explains a proof, checked by the Lean proof assistant, that no Dirichlet L-function vanishes to the right of Re s = 0.87387234. It starts from scratch with pictures: a lattice in the plane, its finite tori, the waves that live on them, and the energy bounds built from those waves. No prior knowledge of the proof is assumed. Every picture is computed in your browser from the definitions.</p>
   <nav class="map" aria-label="Sections">
-    <a href="#lattice">1 Lattice</a><a href="#waves">2 Waves</a><a href="#gauss">3 Gauss sums</a><a href="#transfer">4 Transfer</a><a href="#combs">5 Combs</a><a href="#frames">6 Frames</a><a href="#faces">7 Faces</a><a href="#zero">8 The zero</a>
+    <a href="#question">1 The question</a><a href="#plan">2 The plan</a><a href="#lift">3 Why ℤ[ω]</a><a href="#lattice">4 Tori</a><a href="#waves">5 Waves</a><a href="#gauss">6 Gauss sums</a><a href="#frames">7 Energy bounds</a><a href="#faces">8 Faces</a><a href="#step">9 One step</a><a href="#wall">10 The wall</a><a href="#return">11 The return</a><a href="#glossary">Glossary</a>
   </nav>
 </header>
 
-<section id="lattice">
-  <p class="secno">1 · Lattice</p>
-  <h2>The lattice and its tori</h2>
-  <p>All the arithmetic lives in ℤ[ω], with ω = e<sup>2πi/3</sup>: the hexagonal lattice in the complex plane. The norm N(a + bω) = a² − ab + b² is the squared length. Multiplying by a lattice point <em class="v">s</em> rotates the plane by arg <em class="v">s</em> and scales it by √N(<em class="v">s</em>), so <em class="v">s</em>ℤ[ω] is a rotated, coarser copy of the same lattice.</p>
-  <p>The quotient ℤ[ω]/(<em class="v">s</em>) is a finite torus: the lattice folded into one cell of <em class="v">s</em>ℤ[ω]. It has exactly N(<em class="v">s</em>) points. This is the signal space; every DFT below runs over one of these tori.</p>
-  <figure class="panel">
-    <div class="controls" role="group" aria-label="Choose the modulus">
-      <span class="lab">modulus π</span>
-      <span id="pi-chips" style="display:contents"></span>
-    </div>
-    <div class="controls">
-      <button class="chip" id="wind" type="button" aria-pressed="false">show 0, 1, 2, … winding</button>
-    </div>
-    <canvas id="c-lattice" role="img" aria-label="The hexagonal lattice with the period lattice of the chosen prime and one torus cell shaded"></canvas>
-    <figcaption>Small dots: ℤ[ω]. Rings: the period lattice πℤ[ω]. Shaded: one cell, the torus ℤ[ω]/(π), with its N(π) points filled. Dashed: neighbouring cells, which are glued to it. For prime N(π) = <em class="v">p</em> the torus is cyclic: the integers 0, 1, 2, … each step by +1 and wrap around, visiting every point once, like a line winding around a doughnut.</figcaption>
-  </figure>
-</section>
-
-<section id="waves">
-  <p class="secno">2 · Waves</p>
-  <h2>Two kinds of waves</h2>
-  <p>Signals on a torus come in two natural families. The additive characters ψ<sub>h</sub>(x) = e(Tr(hx / π√−3)) are plane waves, one for each frequency h. The frequencies live on the same lattice, read modulo π.</p>
-  <p>The sextic residue symbol χ<sub>π</sub>(x) = (x/π)₆ is a multiplicative character: χ(xy) = χ(x)χ(y). It takes the six values e<sup>2πik/6</sup> and vanishes at 0. It is not a wave. On the torus it looks like a spread-spectrum code.</p>
-  <figure class="panel">
-    <div class="controls" role="group" aria-label="Choose the frequency">
-      <span class="lab">frequency h</span>
-      <span id="h-chips" style="display:contents"></span>
-    </div>
-    <div class="pair">
-      <div><p class="sub">plane wave ψ<sub>h</sub></p><canvas id="c-wave" role="img" aria-label="Plane wave on the torus, coloured by phase"></canvas></div>
-      <div><p class="sub">sextic code χ<sub>π</sub></p><canvas id="c-code" role="img" aria-label="Sextic residue symbol on the torus, six colours for six values"></canvas></div>
-    </div>
-    <div class="legend" id="legend-six"></div>
-    <figcaption>Colour is phase. The wave panel shows the plane wave for the chosen h, drawn continuously across the cell (faint) and sampled at the torus points. The code panel shows the sextic character, one colour per sixth root of unity, with a ring at 0. Changing h changes the wave; the code stays fixed.</figcaption>
-  </figure>
-</section>
-
-<section id="gauss">
-  <p class="secno">3 · Gauss sums</p>
-  <h2>Gauss sums are DFT coefficients</h2>
-  <p>The Gauss sum g(π, h) = Σ<sub>x</sub> χ<sub>π</sub>(x) ψ<sub>h</sub>(x) is the inner product of the code with a plane wave, i.e. the DFT of χ<sub>π</sub> at frequency h. In the Lean library it is <code>sexticGauss</code>. Each term is a unit phasor, so g is the end point of a walk of <em class="v">p</em> − 1 unit steps. For every frequency off the period lattice, the walk ends at distance exactly √<em class="v">p</em>.</p>
-  <figure class="panel">
-    <canvas id="c-walk" role="img" aria-label="Phasor walk whose end point is the Gauss sum, on a circle of radius root p"></canvas>
-    <div class="readout" id="walk-read"></div>
-    <figcaption>Head-to-tail sum of the terms χ(x)ψ<sub>h</sub>(x), x = 1, …, <em class="v">p</em> − 1, each segment coloured by its phase. Dashed circle: radius √<em class="v">p</em>. Arrow: g(π, h). Use the π and h choices above.</figcaption>
-  </figure>
-  <p>Doing this for every frequency gives the spectrum of the code. It is flat, it vanishes exactly on the period lattice, and its phase pattern is the code again, conjugated: g(π, h) = χ̄<sub>π</sub>(h)·g(π, 1). A multiplicative character is an eigenfunction of dilation x ↦ ax, and the DFT turns dilation by a into dilation by a⁻¹.</p>
-  <figure class="panel">
-    <canvas id="c-spec" role="img" aria-label="Spectrum of the sextic code over the frequency lattice: flat magnitude, zeros on the period lattice"></canvas>
-    <div class="readout" id="spec-read"></div>
-    <figcaption>Each dot is a frequency h near the origin. Colour = arg g(π, h); every dot has the same size because |g| = √<em class="v">p</em>. Rings: frequencies in πℤ[ω], where g = 0. The colour pattern repeats with the period lattice: the spectrum is itself a copy of the code.</figcaption>
-  </figure>
-</section>
-
-<section id="transfer">
-  <p class="secno">4 · Transfer</p>
-  <h2>Good–Thomas, and the transfer</h2>
-  <p>For a modulus <em class="v">s</em> = D·n with coprime parts, the Chinese remainder theorem splits the torus: ℤ[ω]/(Dn) ≅ ℤ[ω]/(D) × ℤ[ω]/(n). Under the index map x = a·n + b·D the plane waves factor, and the code factors up to one constant phase. So the DFT factors with no twiddle factors: the prime-factor (Good–Thomas) FFT.</p>
-  <p>The constant phase is χ<sub>D</sub>(n)·χ<sub>n</sub>(D). Sextic reciprocity gives χ<sub>D</sub>(n) = ±χ<sub>n</sub>(D). The leftover χ<sub>n</sub>(D)² becomes a dilation of the frequency by D⁴, because χ⁶ = 1 makes D⁻² act like D⁴. The result is the transfer identity:</p>
-  <p class="eq">g(Dn, h) = ± g(D, h) · g(n, D⁴h)</p>
-  <p>The prime D leaves the modulus and comes back as a dilation of the frequency.</p>
-  <figure class="panel">
-    <div class="controls" role="group" aria-label="Choose n">
-      <span class="lab">D = 2+3ω, n</span>
-      <span id="n-chips" style="display:contents"></span>
-    </div>
-    <canvas id="c-crt" role="img" aria-label="The sextic code of the composite torus laid out as a separable two-dimensional array"></canvas>
-    <div class="readout" id="crt-read"></div>
-    <figcaption>The code of ℤ[ω]/(Dn) laid out by the index map: rows a mod D, columns b mod n. Each row is the column code shifted by a constant hue, so the array is separable (row code × column code × one constant phase). The numbers check the transfer identity at the frequency h chosen in section 2, with the left side summed directly over all N(D)·N(n) points.<span class="lean">Lean: sexticGauss_coprime_product, fourth_power (GaussTransfer.lean), selected_row_fourth_one (FourthTransfer.lean)</span></figcaption>
-  </figure>
-  <p>Geometrically, h ↦ D⁴h is a similarity: a rotation by 4·arg D and a magnification by N(D)², which is 49 for N(D) = 7. In the proof D runs over a whole slot of primes, so the parent's frequency window is spread over a window N(D)⁴ times larger in area.</p>
+<section id="question">
+  <p class="secno">1 · The question</p>
+  <h2>Where can an L-function vanish?</h2>
+  <p>A Dirichlet character χ modulo q is a function on the integers that repeats with period q and is multiplicative: χ(mn) = χ(m)χ(n). On numbers coprime to q its values are roots of unity; on the others it is 0. Its L-function is L(s, χ) = Σ<sub>n≥1</sub> χ(n) n<sup>−s</sup>, extended to the whole complex plane.</p>
+  <p>These functions govern how the primes split among residue classes mod q. Each zero ρ of L(s, χ) adds an oscillating error of size about x<sup>Re ρ</sup> to the count of primes up to x in a class. The further right the zeros, the larger the error.</p>
+  <p>All the interesting zeros lie in the critical strip 0 &lt; Re s &lt; 1. The generalized Riemann hypothesis says they all lie on the line Re s = ½, which is far out of reach. This proof gives a weaker statement that holds for every character of every modulus at once:</p>
+  <p class="eq">L(s, χ) ≠ 0 whenever Re s &gt; θ,   θ = 0.87387234</p>
+  <p>The only exception is the pole of the trivial character at s = 1. A smaller θ is a stronger theorem, and the value is tracked on a public leaderboard of proofs checked by Lean.</p>
   <figure class="panel">
     <div class="pair">
-      <div><p class="sub">parent window</p><canvas id="c-par" role="img" aria-label="The 42 parent frequencies with norm at most 12"></canvas></div>
-      <div><p class="sub">after k ↦ D⁴k</p><canvas id="c-push" role="img" aria-label="The parent frequencies mapped by D to the fourth for two primes of norm 7, inside a large disc"></canvas></div>
+      <div><p class="sub">the critical strip</p><div class="svgbox" id="s-strip" role="img" aria-label="The critical strip with the line Re s = 1/2 and the proven zero-free region Re s greater than theta"></div></div>
+      <div><p class="sub">some records for θ (smaller is stronger)</p><div class="svgbox" id="s-history" role="img" aria-label="Selected leaderboard records for theta, from 7/8 down to 0.87387234"></div></div>
     </div>
-    <div class="legend" id="legend-push"></div>
-    <figcaption>The parent window holds 42 frequencies with 0 &lt; N(k) ≤ 12. The second panel shows them after k ↦ D⁴k for the two primes of norm 7. Each prime gives a rotated, 49× magnified copy. Together they are samples of one residual signal on two sparse lattices, inside a disc that holds about 104,000 lattice frequencies. The transfer bounds these samples by the residual's energy on the whole disc. That is the frequency half of the scale cost c = 6: 4 from the dilation, 2 from the smaller moduli.</figcaption>
+    <figcaption>The strip 0 &lt; Re s &lt; 1 with the first zeros of the Riemann zeta function (the case q = 1), all on the line Re s = ½. The shaded band Re s &gt; θ is proven zero-free for every Dirichlet L-function. A zero there, like the cross, is what the proof rules out. The records differ in the fourth decimal; each one is a new complete formal proof.</figcaption>
   </figure>
 </section>
 
-<section id="combs">
-  <p class="secno">5 · Combs</p>
-  <h2>Combs from squared primes</h2>
-  <p>If the modulus is a squared prime D², the code χ<sub>D²</sub> = χ<sub>D</sub>² depends only on x mod D: it has a shorter period than its torus. Its spectrum is therefore a comb. It is zero except at frequencies divisible by D exactly once, where the normalized atom 𝔤 = g/√N has height √N(D) instead of 1. Same energy, concentrated on a fraction 1/N(D) of the frequencies.</p>
-  <p>That sparsity is where a doubled block would get its extra room (e = 2 in our ledger model). The identity is in Lean; the ledger value is not yet.</p>
-  <figure class="panel">
-    <div class="pair">
-      <div><p class="sub">prime modulus D</p><canvas id="c-flat" role="img" aria-label="Flat spectrum of the prime modulus"></canvas></div>
-      <div><p class="sub">squared modulus D²</p><canvas id="c-comb" role="img" aria-label="Comb spectrum of the squared modulus"></canvas></div>
-    </div>
-    <div class="readout" id="comb-read"></div>
-    <figcaption>Dot area ∝ |𝔤(·, h)|², on the same scale in both panels, for D = 2+3ω and 0 &lt; N(h) ≤ 84; colour is phase. Prime modulus: flat, with holes on Dℤ[ω]. Squared modulus: a comb on the frequencies with D ∥ h, each tooth √7 times taller, and the same average energy over a full period.<span class="lean">Lean: square_row, square_twist (Collision/SquareGauss.lean)</span></figcaption>
-  </figure>
-</section>
-
-<section id="frames">
-  <p class="secno">6 · Frames</p>
-  <h2>Frame bounds</h2>
-  <p>Every density step has to bound the energy of a synthesized signal S(h) = Σ<sub>u</sub> b<sub>u</sub> 𝔤(u, h) over a frequency window, with one atom 𝔤(u, ·) per modulus u. A bound ‖S‖² ≤ C·‖b‖² is an upper frame (Bessel) bound for this dictionary; number theorists call it a large-sieve inequality.</p>
-  <p>Whether the bound is good depends on coherence: how much atoms with different moduli correlate on the window. The product of the atoms for u and u′ is periodic with period lattice uu′ℤ[ω], whose cell holds about Q² points. Once the window holds many such cells, the atoms are nearly orthogonal.</p>
-  <figure class="panel">
-    <div class="slider"><label for="win">window N(h) ≤</label><input id="win" type="range" min="0" max="6" step="1" value="2"><b id="win-val" class="m"></b></div>
-    <canvas id="c-gram" role="img" aria-label="Gram matrix of 26 normalized Gauss-sum atoms over a frequency window"></canvas>
-    <div class="readout" id="gram-read"></div>
-    <figcaption>The 26 atoms for the prime moduli with N(u) ≤ 109, sorted by norm (Q ≈ 109, Q² ≈ 11,900). Cell (u, u′) shows |⟨𝔤(u,·), 𝔤(u′,·)⟩| averaged over the window; the diagonal is 1 − 1/N(u). Small windows: visible off-diagonal coherence. Windows larger than Q²: an almost orthonormal system, the diagonal regime.</figcaption>
-  </figure>
-</section>
-
-<section id="faces">
-  <p class="secno">7 · Faces</p>
-  <h2>What a face is</h2>
-  <p>A face G(B, Λ, cap) is a proven frame bound with an explicit region of validity. Take plain polynomials of total length P and slot (prime-amplifier) polynomials of total length s, over a family of size U<sup>M</sup>. The face says the energy of their product is at most U<sup>M+ε</sup>, the diagonal order, whenever</p>
-  <p class="eq">P + Λ·s ≤ B·M,   s ≤ cap·M</p>
-  <p>Divide by M. In the plane of slot length s and plain length P, each face is the region under a line with height B at s = 0 and slope −Λ. Slot components are charged Λ times their nominal length; a smaller Λ means the amplifier behaves more like its nominal bandwidth. Everything under some face is proven, so the proven region is everything under the upper envelope of the lines.</p>
-  <figure class="panel">
-    <div class="slider"><label for="step">step k</label><input id="step" type="range" min="1" max="129" step="1" value="64"><b id="step-val" class="m"></b></div>
-    <div class="controls" style="margin-top:8px">
-      <button class="chip" id="zoom" type="button" aria-pressed="false">zoom into the fan</button>
-    </div>
-    <div class="svgbox" id="s-faces" role="img" aria-label="The 130 faces of the density chain as lines in the plane of slot length and plain length, with their upper envelope"></div>
-    <div class="readout" id="faces-read"></div>
-    <figcaption>All 130 faces of the merged chain, from PR 86's boot face G(0.99999, 2.5715, 0.1397) to the count face G(0.96233, 1.9265, 0.1), coloured from early (light) to late (dark). Each line stops at its cap. Bold: the envelope; shaded: the proven region. Orange and blue: the parent and new face of step k. Tap or click anywhere to test a point.<span class="lean">Lean: SourceFace.Admissible (m₁ + m₂ + lam·s ≤ B·M), UnitFaceSource</span></figcaption>
-  </figure>
-  <p>A density step adds a slightly flatter line: Λ drops by 1/200 and B drops a little. The new line crosses its parent at s₀ = (B₀ − B)/(Λ₀ − Λ) and is higher beyond it. That sliver is the step's new territory. It is too thin to see at full scale, so here it is under a magnifier: height above the parent face.</p>
-  <figure class="panel">
-    <div class="svgbox" id="s-mag" role="img" aria-label="The new territory of one density step: a thin triangle above the parent face, beyond the crossing point"></div>
-    <figcaption>The step chosen above, magnified. Horizontal axis: slot length s. Vertical axis: how far the new face lies above its parent. The shaded triangle, from the crossing s₀ to the cap, is the defect the step has to pay for. The LOW gate pays with the transfer (room e, removed width r, scale cost c); the HIGH rows are counted with zero-density estimates.<span class="lean">Lean: cross, ds_defect_aux, ds_low_aux (Density/StepGates.lean)</span></figcaption>
-  </figure>
-  <p>How far a step can push is set by the density cut q, which separates LOW rows (weak slots, deleted) from HIGH rows (counted). The LOW gate caps it at q ≤ 0.999·Λ₀/(6B₀ − Λ₀), the transfer constants e = 1, c = 6, r = 1 written out. In the (Λ, B) plane every face is a point, and each value of q is a line through the origin, B = Λ·(1 + 0.999/q)/6. A face can still descend at cut q only while it lies below that line.</p>
-  <figure class="panel">
-    <div class="pair">
-      <div><p class="sub">faces as points (Λ, B)</p><div class="svgbox" id="s-dual" role="img" aria-label="The faces as points in the Lambda B plane, between the q equals three quarters and q equals one half lines"></div></div>
-      <div><p class="sub">density cut per step</p><div class="svgbox" id="s-q" role="img" aria-label="Range of the density cut q for each step, between the floor one half and the cap three quarters"></div></div>
-    </div>
-    <figcaption>Faces as points: each dot is a face, and the fan shows where the LOW gate allows exactly q = 3/4, 0.70, …, 1/2. The chain starts on the q = 3/4 line (Λ = 18B/7 at the boot face) and ends on the q = 1/2 line (Λ = 2.0019·B at the count face). Density cut per step: the range of q(v) over the allowed excess widths v, which must stay between the floor 1/2 and the cap 3/4. The last step bottoms out at q = 0.500001. The floor is what ends the chain.<span class="lean">Lean: dens (Source/HybridGates.lean), dsDens_overshoot</span></figcaption>
-  </figure>
-  <p>This is why new identities matter. With transfer constants (e, c, r) the lines become B = Λ·(r + e/q)/c, ignoring the 0.999. More room e or a smaller cost c makes them steeper, so the same floor reaches further left: c = 3 would allow Λ down to about B, and e = 2 down to about 1.2·B. Both are ledger-model numbers; neither transfer is available in Lean.</p>
-</section>
-
-<section id="zero">
-  <p class="secno">8 · The zero</p>
-  <h2>Where the zero comes in</h2>
-  <p>Nothing above mentions a zero: the faces are unconditional theorems. The zero enters only in the last stage, the return. There the probe, built from this sextic family and matched to the character χ, is computed in two ways.</p>
+<section id="plan">
+  <p class="secno">2 · The plan</p>
+  <h2>Proof by contradiction, with a detector</h2>
+  <p>Suppose some L(s, χ) had a zero ρ with Re ρ &gt; θ. The proof builds a detector, a large combination of filters tuned to χ, and computes one quantity from it in two different ways.</p>
+  <p>The first way goes through the zero. In a contour integral the zero becomes a pole of 1/L, and its residue makes the quantity large, more so the further right the zero sits. The second way uses energy bounds: proven inequalities saying that sums of many oscillating terms mostly cancel. They make the same quantity small. Past θ the two answers contradict each other, so the zero cannot exist.</p>
   <figure class="panel">
     <svg class="flow" viewBox="0 0 360 430" role="img" aria-label="Flow: a hypothetical zero, the probe, two evaluations, and the contradiction">
       <defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs>
@@ -284,13 +167,206 @@ footer p { max-width: 72ch; }
         <text x="250" y="346">capped by θ</text>
       </g>
     </svg>
-    <figcaption>The return, schematically. The residue grows with Re ρ. The face-based bound does not depend on ρ. θ is the largest real part at which the bound still wins.</figcaption>
+    <figcaption>The argument at a glance. The rest of the page builds the pieces. Sections 3–6 cover the instruments the detector is made of. Sections 7–10 cover the energy bounds and how a chain of steps improves them. Section 11 is the final comparison that produces θ.</figcaption>
   </figure>
-  <p>In LTI terms, L(s, χ) is the transfer function of a causal system with impulse response χ(n) in log-time u = log n. Its inverse 1/L has impulse response μ(n)χ(n), and a zero with Re ρ &gt; θ is a pole of the inverse: past θ the inverse filter is unstable, and its response grows like x<sup>Re ρ</sup>. The Mellin side sees that growth as the residue; the Fourier side, through the faces, says the same quantity cannot grow that fast.</p>
+  <p>In signal-processing language, L(s, χ) is the transfer function of a causal system whose impulse response is χ(n), with log-time u = log n. The inverse 1/L has impulse response μ(n)χ(n), where μ is the Möbius function. A zero with Re ρ &gt; θ is a pole of the inverse: past θ the inverse filter would be unstable, and its response would grow like x<sup>Re ρ</sup>. The energy bounds say that growth cannot happen.</p>
+</section>
+
+<section id="lift">
+  <p class="secno">3 · Why ℤ[ω]</p>
+  <h2>Moving the problem to a hexagonal lattice</h2>
+  <p>The proof does not work with χ on the ordinary integers. It moves it to the Eisenstein integers ℤ[ω] = {a + bω}, with ω = e<sup>2πi/3</sup>. They form the hexagonal lattice in the complex plane, and N(a + bω) = a² − ab + b² = |a + bω|² is their norm. The lift is η(z) = χ(N(z)).</p>
+  <p>The lifted L-function factors: L(s, η) = L(s, χ)·L(s, χχ₋₃), where χ₋₃ is the character of ℚ(√−3). So a zero of L(s, χ) is also a zero of L(s, η), and it is enough to rule out zeros of L-functions on ℤ[ω].</p>
+  <p>Why this lattice? It contains the six sixth roots of unity ±1, ±ω, ±ω². That makes sixth-power residue symbols possible (section 5), and the whole filter bank is built from them.</p>
+  <figure class="panel">
+    <div class="controls" role="group" aria-label="Choose the modulus q"><span class="lab">χ modulo q =</span><span id="q-chips" style="display:contents"></span></div>
+    <canvas id="c-lift" role="img" aria-label="Lattice points coloured by the lifted character, constant on circles around the origin"></canvas>
+    <figcaption>Each lattice point z is coloured by the phase of η(z) = χ(N(z)), for a character χ mod q of the largest possible order, q − 1. Rings mark points where q divides N(z), so η = 0. Because η depends only on the norm, it is constant on every circle around 0. The six units (the outlined hexagon) all have norm 1, so η = 1 on them.<span class="lean">Lean: elementCoeff_character, LFunction_eq_dirichlet_product (Hecke/Dirichlet.lean)</span></figcaption>
+  </figure>
+</section>
+
+<section id="lattice">
+  <p class="secno">4 · Tori</p>
+  <h2>The lattice and its finite tori</h2>
+  <p>Two facts about the lattice drive everything. First, multiplying by a lattice point s is a similarity of the plane: it rotates by arg s and scales by √N(s). So sℤ[ω] is a rotated, coarser copy of the same lattice.</p>
+  <p>Second, folding the lattice into one cell of sℤ[ω] gives the quotient ℤ[ω]/(s). It is a finite torus with exactly N(s) points. These tori are the signal spaces of the proof; every DFT below runs over one.</p>
+  <p>A prime of ℤ[ω] is a lattice point that does not factor further. The figure uses primes π whose norm is an ordinary prime p ≡ 1 (mod 6).</p>
+  <figure class="panel">
+    <div class="controls" role="group" aria-label="Choose the modulus">
+      <span class="lab">prime π =</span>
+      <span id="pi-chips" style="display:contents"></span>
+    </div>
+    <div class="controls">
+      <button class="chip" id="wind" type="button" aria-pressed="false">show 0, 1, 2, … winding</button>
+    </div>
+    <canvas id="c-lattice" role="img" aria-label="The hexagonal lattice with the period lattice of the chosen prime and one torus cell shaded"></canvas>
+    <figcaption>Small dots: ℤ[ω]. Rings: the period lattice πℤ[ω]. Shaded: one cell, the torus ℤ[ω]/(π), with its N(π) points filled. Dashed: neighbouring cells, which are glued to it. Because N(π) = p is prime, the torus is cyclic: the integers 0, 1, 2, … step by +1 and wrap around, visiting every point once, like a line winding around a doughnut.</figcaption>
+  </figure>
+</section>
+
+<section id="waves">
+  <p class="secno">5 · Waves</p>
+  <h2>Two kinds of waves</h2>
+  <p>Signals on a torus come in two natural families. Write e(t) = e<sup>2πit</sup> and Tr(z) = z + z̄ = 2 Re z. The additive characters ψ<sub>h</sub>(x) = e(Tr(hx / π√−3)) are plane waves, one for each frequency h. The frequencies live on the same lattice, read modulo π.</p>
+  <p>The sextic residue symbol χ<sub>π</sub>(x) = (x/π)₆ is a multiplicative character: χ(xy) = χ(x)χ(y). It is the sixth root of unity congruent to x<sup>(p−1)/6</sup> modulo π, and 0 at x ≡ 0. It is not a wave. On the torus it looks like a spread-spectrum code.</p>
+  <figure class="panel">
+    <div class="controls" role="group" aria-label="Choose the frequency">
+      <span class="lab">frequency h =</span>
+      <span id="h-chips" style="display:contents"></span>
+    </div>
+    <div class="pair">
+      <div><p class="sub">plane wave ψ<sub>h</sub></p><canvas id="c-wave" role="img" aria-label="Plane wave on the torus, coloured by phase"></canvas></div>
+      <div><p class="sub">sextic code χ<sub>π</sub></p><canvas id="c-code" role="img" aria-label="Sextic residue symbol on the torus, six colours for six values"></canvas></div>
+    </div>
+    <div class="legend" id="legend-six"></div>
+    <figcaption>Colour is phase. The wave panel shows the plane wave for the chosen h, drawn continuously across the cell (faint) and sampled at the torus points. The code panel shows the sextic character, one colour per sixth root of unity, with a ring at 0. Changing h changes the wave; the code stays fixed. The prime π is the one chosen in section 4.</figcaption>
+  </figure>
+</section>
+
+<section id="gauss">
+  <p class="secno">6 · Gauss sums</p>
+  <h2>Gauss sums are DFT coefficients</h2>
+  <p>The Gauss sum g(π, h) = Σ<sub>x</sub> χ<sub>π</sub>(x) ψ<sub>h</sub>(x) is the inner product of the code with a plane wave: the DFT of χ<sub>π</sub> at frequency h. Each term is a unit phasor, so g is the end point of a walk of p − 1 unit steps. For every frequency off the period lattice the walk ends at distance exactly √p.</p>
+  <p>That is cancellation: p − 1 steps, but only √p of net progress. A detector reacting to a zero would need its phases lined up far better than this, and the energy bounds of section 7 say that rarely happens. The second button shows the fully aligned walk for comparison.</p>
+  <figure class="panel">
+    <div class="controls" role="group" aria-label="Walk mode"><span id="walk-chips" style="display:contents"></span></div>
+    <canvas id="c-walk" role="img" aria-label="Phasor walk whose end point is the Gauss sum, on a circle of radius root p"></canvas>
+    <div class="readout" id="walk-read"></div>
+    <figcaption>Head-to-tail sum of the terms χ(x)ψ<sub>h</sub>(x), x = 1, …, p − 1, each segment coloured by its phase. Dashed circle: radius √p. Arrow: the sum. The prime and the frequency are the ones chosen in sections 4 and 5.<span class="lean">Lean: sexticGauss (Detector/Physical.lean)</span></figcaption>
+  </figure>
+  <p>Doing this for every frequency gives the spectrum of the code. It is flat, it vanishes exactly on the period lattice, and its phase pattern is the code again, conjugated: g(π, h) = χ̄<sub>π</sub>(h)·g(π, 1). The reason is that a multiplicative character is an eigenfunction of dilation x ↦ ax, and the DFT turns dilation by a into dilation by a⁻¹.</p>
+  <figure class="panel">
+    <canvas id="c-spec" role="img" aria-label="Spectrum of the sextic code over the frequency lattice: flat magnitude, zeros on the period lattice"></canvas>
+    <div class="readout" id="spec-read"></div>
+    <figcaption>Each dot is a frequency h near the origin. Colour = arg g(π, h); every dot has the same size because |g| = √p. Rings: frequencies in πℤ[ω], where g = 0. The colour pattern repeats with the period lattice, so the spectrum is itself a copy of the code.</figcaption>
+  </figure>
+</section>
+
+<section id="frames">
+  <p class="secno">7 · Energy bounds</p>
+  <h2>Many atoms at once: frame bounds</h2>
+  <p>The detector does not use one Gauss sum but very many. Each modulus u gives an atom 𝔤(u, ·) = g(u, ·)/√N(u), and the detector combines them with coefficients b<sub>u</sub> into a signal S(h) = Σ<sub>u</sub> b<sub>u</sub> 𝔤(u, h).</p>
+  <p>An energy bound says Σ<sub>h</sub> |S(h)|² over a window of frequencies is at most a constant times Σ<sub>u</sub> |b<sub>u</sub>|². If the atoms were orthogonal, the constant would be the window size: the energy of a sum would be the sum of the energies. In signal processing this is an upper frame bound, or Bessel bound. Number theorists call it a large-sieve inequality.</p>
+  <p>How good the bound can be depends on coherence, i.e. how much atoms with different moduli correlate on the window. The product of the atoms for u and u′ repeats with period lattice uu′ℤ[ω], whose cell holds about Q² points. Once the window holds many such cells, the atoms are nearly orthogonal.</p>
+  <figure class="panel">
+    <div class="slider"><label for="win">window N(h) ≤</label><input id="win" type="range" min="0" max="6" step="1" value="2"><b id="win-val" class="m"></b></div>
+    <canvas id="c-gram" role="img" aria-label="Gram matrix of 26 normalized Gauss-sum atoms over a frequency window"></canvas>
+    <div class="readout" id="gram-read"></div>
+    <figcaption>The 26 atoms for the prime moduli with N(u) ≤ 109, sorted by norm (Q ≈ 109, Q² ≈ 11,900). Cell (u, u′) shows |⟨𝔤(u,·), 𝔤(u′,·)⟩| averaged over the window; the diagonal is 1 − 1/N(u). In small windows there is visible off-diagonal coherence. Windows larger than Q² give an almost orthonormal system: the diagonal regime.</figcaption>
+  </figure>
+</section>
+
+<section id="faces">
+  <p class="secno">8 · Faces</p>
+  <h2>What a face is</h2>
+  <p>The energy bounds in the proof hold only while the detector is not too long for the family it is averaged over. The detector has two kinds of parts: plain polynomials, of total length P, and amplifier polynomials, sums over primes, of total length s. Lengths are exponents, measured relative to the family size U<sup>M</sup>. A face G(B, Λ, cap) is one proven bound of this kind: the energy is at most the diagonal value U<sup>M+ε</sup> whenever</p>
+  <p class="eq">P + Λ·s ≤ B·M,   s ≤ cap·M</p>
+  <p>Divide by M. In the plane of amplifier length s and plain length P, each face is the region under a line, with height B at s = 0 and slope −Λ. Amplifier parts are charged Λ times their nominal length; a smaller Λ means the amplifier behaves more like its nominal bandwidth. Anything under at least one face is proven, so the proven region is everything under the upper envelope of the lines.</p>
+  <figure class="panel">
+    <div class="slider"><label for="step">step k</label><input id="step" type="range" min="1" max="129" step="1" value="64"><b id="step-val" class="m"></b></div>
+    <div class="controls" style="margin-top:8px">
+      <button class="chip" id="zoom" type="button" aria-pressed="false">zoom into the fan</button>
+    </div>
+    <div class="svgbox" id="s-faces" role="img" aria-label="The 130 faces of the density chain as lines in the plane of amplifier length and plain length, with their upper envelope"></div>
+    <div class="readout" id="faces-read"></div>
+    <figcaption>All 130 faces of the proof's chain, coloured from early (light) to late (dark). The first one is inherited from earlier work; the last, the count face, is what the final stage uses. Each line stops at its cap. Bold: the envelope; shaded: the proven region. Orange and blue: the two faces of step k. Tap or click anywhere to test a point.<span class="lean">Lean: SourceFace.Admissible (m₁ + m₂ + lam·s ≤ B·M), UnitFaceSource</span></figcaption>
+  </figure>
+</section>
+
+<section id="step">
+  <p class="secno">9 · One step</p>
+  <h2>How a step earns a better face</h2>
+  <p>Each step of the chain proves a new face from the previous one. The new line is a little flatter (Λ drops by 1/200) and starts a little lower (B drops slightly), so it is higher than its parent beyond the crossing point s₀ = (B₀ − B)/(Λ₀ − Λ). That sliver is the step's new territory, and the step must pay for it. The sliver is too thin to see at full scale, so here it is under a magnifier.</p>
+  <figure class="panel">
+    <div class="slider"><label for="step2">step k</label><input id="step2" type="range" min="1" max="129" step="1" value="64"><b id="step2-val" class="m"></b></div>
+    <div class="svgbox" id="s-mag" role="img" aria-label="The new territory of one step: a thin triangle above the parent face, beyond the crossing point"></div>
+    <figcaption>Horizontal axis: amplifier length s. Vertical axis: how far the new face lies above its parent. The shaded triangle, from the crossing s₀ to the cap, is what the step has to pay for. The slider is linked to the one in section 8.<span class="lean">Lean: cross, ds_defect_aux (Density/StepGates.lean)</span></figcaption>
+  </figure>
+  <p>The payment comes from an exact identity that moves one amplifier prime out of the problem. For a modulus s = D·n with coprime parts, the Chinese remainder theorem splits the torus: ℤ[ω]/(Dn) ≅ ℤ[ω]/(D) × ℤ[ω]/(n). Under the index map x = a·n + b·D the plane waves factor, and the code factors up to one constant phase. So the DFT factors with no twiddle factors, as in the prime-factor (Good–Thomas) FFT.</p>
+  <p>The constant phase is χ<sub>D</sub>(n)·χ<sub>n</sub>(D). Sextic reciprocity gives χ<sub>D</sub>(n) = ±χ<sub>n</sub>(D). The leftover χ<sub>n</sub>(D)² becomes a dilation of the frequency by D⁴, because χ⁶ = 1 makes D⁻² act like D⁴. The result is the transfer identity:</p>
+  <p class="eq">g(Dn, h) = ± g(D, h) · g(n, D⁴h)</p>
+  <figure class="panel">
+    <div class="controls" role="group" aria-label="Choose n">
+      <span class="lab">D = 2+3ω, n =</span>
+      <span id="n-chips" style="display:contents"></span>
+    </div>
+    <canvas id="c-crt" role="img" aria-label="The sextic code of the composite torus laid out as a separable two-dimensional array"></canvas>
+    <div class="readout" id="crt-read"></div>
+    <figcaption>The code of ℤ[ω]/(Dn) laid out by the index map: rows a mod D, columns b mod n. Each row is the column code shifted by a constant hue, so the array is separable: row code × column code × one constant phase. The numbers check the transfer identity at the frequency h from section 5, with the left side summed directly over all N(D)·N(n) points.<span class="lean">Lean: sexticGauss_coprime_product, fourth_power (GaussTransfer.lean), selected_row_fourth_one (FourthTransfer.lean)</span></figcaption>
+  </figure>
+  <p>The prime D has left the modulus and come back as a dilation of the frequency. Geometrically, h ↦ D⁴h rotates by 4·arg D and magnifies by N(D)², which is 49 for N(D) = 7. In the proof D runs over a whole slot of primes, so the parent's frequency window is spread over a window N(D)⁴ times larger in area.</p>
+  <figure class="panel">
+    <div class="pair">
+      <div><p class="sub">parent window</p><canvas id="c-par" role="img" aria-label="The 42 parent frequencies with norm at most 12"></canvas></div>
+      <div><p class="sub">after k ↦ D⁴k</p><canvas id="c-push" role="img" aria-label="The parent frequencies mapped by D to the fourth for two primes of norm 7, inside a large disc"></canvas></div>
+    </div>
+    <div class="legend" id="legend-push"></div>
+    <figcaption>The parent window holds 42 frequencies with 0 &lt; N(k) ≤ 12. The second panel shows them after k ↦ D⁴k for the two primes of norm 7. Each prime gives a rotated, 49× magnified copy. Together they are samples of one residual signal, sitting sparsely in a disc that holds about 104,000 lattice frequencies. The step bounds these samples by the residual's energy on the whole disc, which is where it pays.</figcaption>
+  </figure>
+  <p>The step's accounting has three entries, each measured per unit of the selected primes' length d:</p>
+  <ul class="ledger">
+    <li><b>Room e = 1.</b> The parent family has about U<sup>d</sup> times more members than the residual. Averaged per member, the residual's bound comes with a saving U<sup>−d</sup>.</li>
+    <li><b>Removed width r = 1.</b> The selected prime is no longer part of the amplifier, so its length no longer costs Λ.</li>
+    <li><b>Scale cost c = 6.</b> The previous face is applied to a problem that is smaller by U<sup>6d</sup>: 4 from the dilated window and 2 from the smaller moduli.</li>
+  </ul>
+  <p>Before applying the face, the step sorts the residual's rows. LOW rows are those where the amplifier fires weakly; they are deleted cheaply and handled by the energy bound. HIGH rows are those where it fires strongly; there are few of them, and they are counted with zero-density estimates. The threshold between the two is the density cut q. The step is affordable while e + q·r − c·q·B/Λ ≥ 0.</p>
+</section>
+
+<section id="wall">
+  <p class="secno">10 · The wall</p>
+  <h2>Why the chain stops</h2>
+  <p>A higher cut q means fewer HIGH rows to count, so each step wants q as large as possible. The affordability condition caps it: q ≤ 0.999·Λ/(6B − Λ). In the (Λ, B) plane every face is a point and every value of q is a line through the origin, B = Λ·(1 + 0.999/q)/6. A face can still take a step at cut q only while it lies below that line.</p>
+  <p>The chain starts on the q = ¾ line and walks left until it reaches the q = ½ line, the lowest cut the HIGH counting accepts. There it stops.</p>
+  <figure class="panel">
+    <div class="pair">
+      <div><p class="sub">faces as points (Λ, B)</p><div class="svgbox" id="s-dual" role="img" aria-label="The faces as points in the Lambda B plane, between the q equals three quarters and q equals one half lines"></div></div>
+      <div><p class="sub">density cut per step</p><div class="svgbox" id="s-q" role="img" aria-label="Range of the density cut q for each step, between the floor one half and the cap three quarters"></div></div>
+    </div>
+    <figcaption>Faces as points: each dot is a face, and the fan shows where the cap on q equals 3/4, 0.70, …, 1/2. The chain starts on the q = 3/4 line (Λ = 18B/7) and ends on the q = 1/2 line (Λ = 2.0019·B). Density cut per step: the range of q over each step's allowed widths, which must stay between the floor 1/2 and the cap 3/4. The last step bottoms out at q = 0.500001.<span class="lean">Lean: dens (Source/HybridGates.lean), ds_low_aux, dsDens_overshoot (Density/StepGates.lean)</span></figcaption>
+  </figure>
+  <p>The way through the wall is a better identity. With constants (e, c, r) the lines become B = Λ·(r + e/q)/c, ignoring the 0.999. More room e or a smaller cost c makes them steeper, so the same floor reaches further left. A proven theorem shows that identities of this type without a leftover twist cannot have c below 6. That leaves twisted identities, and more room.</p>
+  <p>More room could come from squared primes. If the modulus is D², the code χ<sub>D²</sub> = χ<sub>D</sub>² depends only on x mod D, a shorter period than its torus. Its spectrum is therefore a comb: zero except at frequencies divisible by D exactly once, where the normalized atom is √N(D) tall instead of 1. That is the same energy concentrated on 1/N(D) of the frequencies, and that sparsity is worth extra room.</p>
+  <figure class="panel">
+    <div class="pair">
+      <div><p class="sub">prime modulus D</p><canvas id="c-flat" role="img" aria-label="Flat spectrum of the prime modulus"></canvas></div>
+      <div><p class="sub">squared modulus D²</p><canvas id="c-comb" role="img" aria-label="Comb spectrum of the squared modulus"></canvas></div>
+    </div>
+    <div class="readout" id="comb-read"></div>
+    <figcaption>Dot area ∝ |𝔤(·, h)|², on the same scale in both panels, for D = 2+3ω and 0 &lt; N(h) ≤ 84; colour is phase. Prime modulus: flat, with holes on Dℤ[ω]. Squared modulus: a comb on the frequencies with D ∥ h, each tooth √7 times taller, and the same average energy over a full period.<span class="lean">Lean: square_row, square_twist (Collision/SquareGauss.lean); rigidity: no_cheaper_transfer_general</span></figcaption>
+  </figure>
+  <p>In a back-of-envelope accounting that is not yet proven, a squared block has e = 2, which would let the chain run on to Λ ≈ 1.2·B. A cost c = 3 would allow Λ ≈ B. Neither transfer is available yet: squared primes need a source theorem that supplies them, and no cubic identity of this kind is known.</p>
+</section>
+
+<section id="return">
+  <p class="secno">11 · The return</p>
+  <h2>How θ comes out</h2>
+  <p>The chain's last faces feed the comparison of section 2. The final comparison is not checked in one piece. Its parameter range is split into 31 windows, and each window is handled by one of six counting methods with its own certificate. θ is the largest real part at which every window still wins.</p>
+  <p>Everything before this point is unconditional: the faces are theorems about energy, true whether or not zeros exist. The zero enters only here, as the residue that the face-based bound cannot accommodate.</p>
+</section>
+
+<section id="glossary">
+  <p class="secno">Glossary</p>
+  <h2>Terms used on this page</h2>
+  <dl class="gloss">
+    <dt>Dirichlet character χ mod q</dt><dd>A q-periodic multiplicative function on the integers, with roots of unity as values on numbers coprime to q.</dd>
+    <dt>L-function, zero, θ</dt><dd>L(s, χ) = Σ χ(n)n<sup>−s</sup>, extended to ℂ. A zero is an s with L(s, χ) = 0; θ is a proven bound on the real parts of all zeros.</dd>
+    <dt>ℤ[ω], norm</dt><dd>The hexagonal lattice a + bω with ω = e<sup>2πi/3</sup>; N(a + bω) = a² − ab + b².</dd>
+    <dt>torus ℤ[ω]/(s)</dt><dd>The lattice folded into one cell of the coarser lattice sℤ[ω]; a finite group with N(s) points.</dd>
+    <dt>plane wave ψ<sub>h</sub></dt><dd>An additive character on the torus, one for each frequency h.</dd>
+    <dt>sextic code χ<sub>π</sub></dt><dd>The sixth-power residue symbol (x/π)₆, a multiplicative character with six values.</dd>
+    <dt>Gauss sum g(π, h)</dt><dd>The DFT of the code at frequency h; |g| = √p off the period lattice.</dd>
+    <dt>atom, frame bound</dt><dd>An atom is a normalized Gauss sum, one per modulus. A frame (Bessel) bound limits the energy of any combination of atoms; in number theory it is called a large-sieve inequality.</dd>
+    <dt>face G(B, Λ, cap)</dt><dd>A proven energy bound, valid while P + Λ·s ≤ B·M and s ≤ cap·M.</dd>
+    <dt>step, crossing s₀</dt><dd>A step proves a flatter face from the previous one; the new line beats its parent beyond s₀.</dd>
+    <dt>transfer</dt><dd>The identity g(Dn, h) = ±g(D, h)·g(n, D⁴h), which moves a prime from the modulus into the frequency.</dd>
+    <dt>room e, width r, cost c</dt><dd>What a transfer saves per unit of selected length, what it removes from the amplifier, and how much scale it costs.</dd>
+    <dt>density cut q, LOW and HIGH rows</dt><dd>Rows where the amplifier fires weakly (LOW) are handled by energy; rows where it fires strongly (HIGH) are counted. q is the threshold between them.</dd>
+    <dt>return</dt><dd>The final stage, which turns the last faces into θ.</dd>
+  </dl>
 </section>
 
 <footer>
-  <p>Definitions and identities: OpenAI baseline <code>Detector/Physical.lean</code> (<code>sexticGauss</code>), Sil's <code>GaussTransfer.lean</code> and <code>FourthTransfer.lean</code>, <code>SourceFace.Admissible</code>, <code>HybridGates.dens</code>, <code>StepGates.ds_low_aux</code>. Faces: the 129 steps of the merged arvi-density chain (PR 94, θ = 43693617/50000000). The Gauss sums, Gram matrix and identity checks are computed in your browser from the definitions.</p>
+  <p>Definitions and identities: OpenAI baseline <code>Detector/Physical.lean</code> (<code>sexticGauss</code>) and <code>Hecke/Dirichlet.lean</code>; Sil's <code>GaussTransfer.lean</code> and <code>FourthTransfer.lean</code>; <code>SourceFace.Admissible</code>; <code>HybridGates.dens</code>; <code>StepGates.ds_low_aux</code>; <code>Rigidity.no_cheaper_transfer_general</code>. Faces: the 129 steps of the arvi-density submission (θ = 43693617/50000000). The Gauss sums, Gram matrix and identity checks are computed in your browser.</p>
 </footer>
 </div>
 <div id="tip" role="tooltip" hidden></div>
@@ -603,8 +679,8 @@ canvasFig("c-walk", (w) => (w < 520 ? 1 : 0.62), (ctx, w, h) => {
   const f = state.pi, pts = [[0, 0]], cols = [];
   let re = 0, im = 0;
   for (let x = 1; x < f.p; x++) {
-    const k = f.table[x]; const t = tr(state.h, [x, 0], f.pi) + k / 6;
-    re += Math.cos(TAU * t); im += Math.sin(TAU * t); pts.push([re, im]); cols.push(t);
+    const k = f.table[x]; const t0 = tr(state.h, [x, 0], f.pi) + k / 6, t = state.coherent ? 0 : t0;
+    re += Math.cos(TAU * t); im += Math.sin(TAU * t); pts.push([re, im]); cols.push(t0);
   }
   const rad = Math.sqrt(f.p);
   const xs = pts.map((p) => p[0]).concat([-rad, rad]), ys = pts.map((p) => p[1]).concat([-rad, rad]);
@@ -629,9 +705,10 @@ canvasFig("c-walk", (w) => (w < 520 ? 1 : 0.62), (ctx, w, h) => {
   }
   dot(ctx, o, 3, tok("--ink"));
   const g = [re, im], inLattice = f.chiK(state.h) < 0;
-  document.getElementById("walk-read").innerHTML =
-    `π = ${fmtE(f.pi)}, h = ${fmtE(state.h)}: <b>g(π, h) = ${fC(g)}</b>, |g| = ${fx(absC(g), 6)}, √p = ${fx(rad, 6)}` +
-    (inLattice ? "<br>h lies in πℤ[ω]: the walk closes up and g = 0." : "");
+  document.getElementById("walk-read").innerHTML = state.coherent
+    ? `the same ${f.p - 1} unit phasors, all aligned: length <b>${f.p - 1}</b>, against √p = ${fx(rad, 4)} for the Gauss sum`
+    : `π = ${fmtE(f.pi)}, h = ${fmtE(state.h)}: <b>g(π, h) = ${fC(g)}</b>, |g| = ${fx(absC(g), 6)}, √p = ${fx(rad, 6)}` +
+      (inLattice ? "<br>h lies in πℤ[ω]: the walk closes up and g = 0." : "");
 });
 canvasFig("c-spec", 1, (ctx, w, h, fig) => {
   const f = state.pi, Nmax = Math.max(36, 3.2 * f.p), pts = ballPoints(Nmax, true);
@@ -812,7 +889,7 @@ document.getElementById("win").addEventListener("input", (e) => { state.win = +e
 const F = CHAIN.faces, ST = CHAIN.steps, NF = F.length;
 const line = (k, s) => F[k][0] - F[k][1] * s;
 function envelope(s) { let best = -Infinity, arg = -1; for (let k = 0; k < NF; k++) if (s <= F[k][2] + 1e-12) { const v = line(k, s); if (v > best) { best = v; arg = k; } } return [best, arg]; }
-const pal = () => ({ ink: tok("--ink"), ink2: tok("--ink-2"), muted: tok("--muted"), grid: tok("--grid"), acc: tok("--accent"),
+const pal = () => ({ rule: tok("--rule"), ink: tok("--ink"), ink2: tok("--ink-2"), muted: tok("--muted"), grid: tok("--grid"), acc: tok("--accent"),
   wash: tok("--accent-wash"), s2: tok("--s2"), panel: tok("--panel"), mono: tok("--f-mono").replace(/"/g, "'"), body: tok("--f-body").replace(/"/g, "'") });
 function axes(W, H, m, xs, ys, xticks, yticks, xlab, ylab, fmtX, fmtY) {
   const K = pal();
@@ -917,10 +994,7 @@ svgFig("s-mag", (el, W) => {
   s += `</svg>`;
   el.innerHTML = s;
 });
-document.getElementById("step").addEventListener("input", (e) => {
-  state.step = +e.target.value; document.getElementById("step-val").textContent = state.step;
-  figs.filter((f) => f.el.id === "s-faces" || f.el.id === "s-mag" || f.el.id === "s-dual" || f.el.id === "s-q").forEach(render);
-});
+for (const id of ["step", "step2"]) document.getElementById(id).addEventListener("input", (e) => setStep(+e.target.value));
 document.getElementById("zoom").addEventListener("click", (e) => { state.zoom = !state.zoom; e.currentTarget.setAttribute("aria-pressed", String(state.zoom)); render(facesFig); });
 svgFig("s-dual", (el, W) => {
   const K = pal();
@@ -984,13 +1058,95 @@ svgFig("s-q", (el, W) => {
   svg.addEventListener("pointerleave", (e) => { if (e.pointerType !== "touch") hideTip(); });
 });
 
+
+// ---------- 1. the question ----------
+const ZETA = [14.134725, 21.02204, 25.010858, 30.424876, 32.935062, 37.586178, 40.918719, 43.327073];
+const THETA = 0.87387234;
+svgFig("s-strip", (el, W) => {
+  const K = pal(), H = Math.round(Math.max(270, Math.min(380, W * 1.0)));
+  const m = { l: 40, r: 12, t: 14, b: 40 }, xs = [-0.06, 1.1], ys = [0, 45];
+  const X = (x) => m.l + ((x - xs[0]) / (xs[1] - xs[0])) * (W - m.l - m.r);
+  const Y = (y) => m.t + (1 - (y - ys[0]) / (ys[1] - ys[0])) * (H - m.t - m.b);
+  const txt = (x, y, t, o = "") => `<text x="${x}" y="${y}" fill="${K.ink2}" font-size="11" font-family="${K.mono}" ${o}>${t}</text>`;
+  let s = `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">`;
+  s += `<rect x="${X(0)}" y="${m.t}" width="${X(1) - X(0)}" height="${H - m.t - m.b}" fill="${K.grid}"/>`;
+  s += `<rect x="${X(THETA)}" y="${m.t}" width="${X(xs[1]) - X(THETA)}" height="${H - m.t - m.b}" fill="${K.wash}"/>`;
+  for (const t of [10, 20, 30, 40]) s += `<line x1="${m.l}" x2="${W - m.r}" y1="${Y(t)}" y2="${Y(t)}" stroke="${K.rule}" stroke-width="0.6"/>` + txt(m.l - 6, Y(t) + 4, t, 'text-anchor="end"');
+  s += `<line x1="${X(0)}" x2="${X(0)}" y1="${m.t}" y2="${H - m.b}" stroke="${K.muted}"/><line x1="${X(1)}" x2="${X(1)}" y1="${m.t}" y2="${H - m.b}" stroke="${K.muted}"/>`;
+  s += `<line x1="${X(0.5)}" x2="${X(0.5)}" y1="${m.t}" y2="${H - m.b}" stroke="${K.ink2}" stroke-dasharray="5 4"/>`;
+  s += `<line x1="${X(THETA)}" x2="${X(THETA)}" y1="${m.t}" y2="${H - m.b}" stroke="${K.acc}" stroke-width="2"/>`;
+  s += `<line x1="${m.l}" x2="${W - m.r}" y1="${H - m.b}" y2="${H - m.b}" stroke="${K.muted}"/>`;
+  for (const g of ZETA) s += `<circle cx="${X(0.5)}" cy="${Y(g)}" r="4" fill="${K.ink}" stroke="${K.panel}" stroke-width="1.5"><title>zero of ζ at ½ + ${g}i</title></circle>`;
+  const cx = X(0.95), cy = Y(27), d = 6;
+  s += `<path d="M${cx - d},${cy - d}L${cx + d},${cy + d}M${cx - d},${cy + d}L${cx + d},${cy - d}" stroke="${K.acc}" stroke-width="2.4" stroke-linecap="round"/>`;
+  s += txt(X(0), H - m.b + 15, "0", 'text-anchor="middle"') + txt(X(0.5), H - m.b + 15, "½", 'text-anchor="middle"') + txt(X(1), H - m.b + 15, "1", 'text-anchor="middle"');
+  s += `<text x="${X(THETA)}" y="${H - m.b + 15}" text-anchor="end" fill="${K.acc}" font-size="11" font-family="${K.mono}">θ</text>`;
+  s += `<text x="${(m.l + W - m.r) / 2}" y="${H - 6}" text-anchor="middle" fill="${K.ink2}" font-size="12" font-family="${K.body}">Re s</text>`;
+  s += `<text transform="translate(11 ${(m.t + H - m.b) / 2}) rotate(-90)" text-anchor="middle" fill="${K.ink2}" font-size="12" font-family="${K.body}">Im s</text>`;
+  s += `<text transform="translate(${X(0.5) - 7} ${Y(6)}) rotate(-90)" fill="${K.ink2}" font-size="11" font-family="${K.mono}">Re s = ½</text>`;
+  s += `<text transform="translate(${(X(THETA) + X(1)) / 2 + 4} ${Y(3)}) rotate(-90)" fill="${K.acc}" font-size="11" font-family="${K.mono}">proven zero-free</text>`;
+  s += `</svg>`;
+  el.innerHTML = s;
+});
+const RECORDS = [["OpenAI baseline", 0.875, "7/8"], ["Collet", 0.8747729897, "0.8747730"], ["fine density chain", 0.8739558, "0.8739558"], ["joint count", 0.87393379, "0.8739338"], ["this proof", THETA, "0.8738723"]];
+svgFig("s-history", (el, W) => {
+  const K = pal(), rowH = 46, m = { l: 12, r: 14, t: 8, b: 40 }, H = m.t + rowH * RECORDS.length + m.b;
+  const xs = [0.87375, 0.87515], X = (x) => m.l + ((x - xs[0]) / (xs[1] - xs[0])) * (W - m.l - m.r);
+  let s = `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">`;
+  for (const t of [0.874, 0.8745, 0.875]) s += `<line x1="${X(t)}" x2="${X(t)}" y1="${m.t}" y2="${H - m.b}" stroke="${K.rule}" stroke-width="0.6"/><text x="${X(t)}" y="${H - m.b + 15}" text-anchor="middle" fill="${K.muted}" font-size="11" font-family="${K.mono}">${t}</text>`;
+  s += `<line x1="${m.l}" x2="${W - m.r}" y1="${H - m.b}" y2="${H - m.b}" stroke="${K.muted}"/>`;
+  s += `<text x="${m.l}" y="${H - 6}" fill="${K.ink2}" font-size="12" font-family="${K.body}">← stronger</text>`;
+  RECORDS.forEach(([name, v, label], i) => {
+    const y = m.t + rowH * i + 24, x = X(v), last = i === RECORDS.length - 1;
+    s += `<line x1="${m.l}" x2="${W - m.r}" y1="${y}" y2="${y}" stroke="${K.rule}" stroke-width="0.6" stroke-dasharray="2 4"/>`;
+    s += `<circle cx="${x}" cy="${y}" r="${last ? 5.5 : 4}" fill="${last ? K.acc : K.ink2}" stroke="${K.panel}" stroke-width="1.5"/>`;
+    const text = `<tspan font-family="${K.mono}">${label}</tspan>  ${name}`;
+    const right = x + 9 + 7.2 * (label.length + name.length + 2) < W - m.r;
+    s += `<text x="${right ? x + 10 : x - 10}" y="${y - 9}" ${right ? "" : 'text-anchor="end"'} fill="${last ? K.acc : K.ink2}" font-size="11.5" font-family="${K.body}" xml:space="preserve">${text}</text>`;
+  });
+  s += `</svg>`;
+  el.innerHTML = s;
+});
+
+// ---------- 3. the lift ----------
+const LIFT = [{ q: 5, g: 2 }, { q: 7, g: 3 }, { q: 13, g: 2 }];
+state.lift = LIFT[1];
+canvasFig("c-lift", (w) => (w < 520 ? 0.9 : 0.6), (ctx, w, h, fig) => {
+  const { q, g } = state.lift, dlog = new Map();
+  for (let k = 0, x = 1; k < q - 1; k++, x = (x * g) % q) dlog.set(x, k);
+  const R = 6.2, ar = w / h, V = view(w, h, -R * ar, R * ar, -R, R, 4);
+  const panel = tok("--panel"), muted = tok("--muted"), acc = tok("--accent");
+  const M = Math.ceil(R * ar * 1.25) + 2, r = Math.max(3, Math.min(7, V.sc * 0.27));
+  ctx.strokeStyle = acc; ctx.lineWidth = 2; polyPath(ctx, V, UNIT.map(E.cx)); ctx.stroke();
+  for (let a = -M; a <= M; a++) for (let b = -M; b <= M; b++) {
+    const z = [a, b], q0 = V.P(E.cx(z));
+    if (q0[0] < -8 || q0[0] > w + 8 || q0[1] < -8 || q0[1] > h + 8) continue;
+    const n = E.norm(z);
+    if (n === 0) { dot(ctx, q0, 2.5, tok("--ink")); continue; }
+    if (n % q === 0) { dot(ctx, q0, r - 1, null, { c: muted, w: 1.5 }); fig.items.push({ x: q0[0], y: q0[1], r, html: `z = ${fmtE(z)}, N(z) = ${n}<br>q divides N(z): η(z) = 0` }); continue; }
+    const k = dlog.get(n % q);
+    dot(ctx, q0, r, phase(k / (q - 1)), { c: panel, w: 1.4 });
+    fig.items.push({ x: q0[0], y: q0[1], r, html: `z = ${fmtE(z)}, N(z) = ${n}<br>N(z) ≡ ${n % q} (mod ${q})<br>η(z) = e(${k}/${q - 1})` });
+  }
+});
+
+// ---------- linked step sliders ----------
+function setStep(k) {
+  state.step = k;
+  for (const id of ["step", "step2"]) { const el = document.getElementById(id); if (+el.value !== k) el.value = String(k); document.getElementById(id + "-val").textContent = k; }
+  figs.filter((f) => ["s-faces", "s-mag", "s-dual", "s-q"].includes(f.el.id)).forEach(render);
+}
+
 // ---------- wiring ----------
 function refreshPi() { ["c-lattice", "c-wave", "c-code", "c-walk", "c-spec"].forEach((id) => render(figs.find((f) => f.el.id === id))); }
 chips("pi-chips", MODS, (f) => `${fmtE(f.pi)} · N ${f.p}`, (f) => f === state.pi, (f) => { state.pi = f; refreshPi(); });
 chips("h-chips", FREQS, (h) => fmtE(h), (h) => h === state.h, (h) => { state.h = h; ["c-wave", "c-walk", "c-crt"].forEach((id) => render(figs.find((f) => f.el.id === id))); });
 chips("n-chips", [primeOf(-1, 3), primeOf(5, 3), primeOf(5, 6)], (f) => `${fmtE(f.pi)} · N ${f.p}`, (f) => f === state.n, (f) => { state.n = f; render(figs.find((x) => x.el.id === "c-crt")); });
-document.getElementById("wind").addEventListener("click", (e) => { state.wind = !state.wind; e.currentTarget.setAttribute("aria-pressed", String(state.wind)); render(figs[0]); });
-document.getElementById("step-val").textContent = state.step;
+document.getElementById("wind").addEventListener("click", (e) => { state.wind = !state.wind; e.currentTarget.setAttribute("aria-pressed", String(state.wind)); render(figs.find((f) => f.el.id === "c-lattice")); });
+document.getElementById("step-val").textContent = state.step; document.getElementById("step2-val").textContent = state.step;
+chips("q-chips", LIFT, (L) => String(L.q), (L) => L === state.lift, (L) => { state.lift = L; render(figs.find((f) => f.el.id === "c-lift")); });
+const MODES = [false, true];
+chips("walk-chips", MODES, (c) => (c ? "all phases aligned" : "the Gauss sum"), (c) => c === !!state.coherent, (c) => { state.coherent = c; render(figs.find((f) => f.el.id === "c-walk")); });
 
 document.addEventListener("pointerdown", (e) => { if (!e.target.closest("canvas, .svgbox")) hideTip(); });
 function legends() { legendSix(); legendPush(); }

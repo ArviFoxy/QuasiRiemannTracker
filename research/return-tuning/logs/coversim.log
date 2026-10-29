@@ -1,0 +1,16 @@
+existing 31 windows:
+  oldSmall  ok=True leaves=1 bernstein tests=1 maxdepth=0 windows used=[] (0.0s)
+  oldSwitch ok=True leaves=2 bernstein tests=3 maxdepth=1 windows used=[] (0.0s)
+  newSwitch ok=True leaves=2 bernstein tests=3 maxdepth=1 windows used=[] (0.0s)
+  newTop    ok=True leaves=42 bernstein tests=218 maxdepth=23 windows used=[0, 2, 3, 6, 7, 8, 28, 29, 30] (0.1s)
+small window set:
+    C ['27/64', '35/64', '1/4'] True
+    capP ['1/4', '7/16', '1/4'] True
+    capC ['21/64', '51/128', '7/16'] True
+    capC ['21/64', '25/64', '13/32'] True
+    weakC7 ['51/128', '7/16', '3/8'] True
+    capP ['69/128', '141/256', '31/64'] True
+  oldSmall  ok=True leaves=1 bernstein tests=1 maxdepth=0 windows used=[] (0.0s)
+  oldSwitch ok=True leaves=2 bernstein tests=3 maxdepth=1 windows used=[] (0.0s)
+  newSwitch ok=True leaves=2 bernstein tests=3 maxdepth=1 windows used=[] (0.0s)
+  newTop    ok=True leaves=42 bernstein tests=142 maxdepth=23 windows used=[0, 1, 2, 4, 5] (0.1s)

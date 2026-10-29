@@ -1,0 +1,10 @@
+best single faces at p=1/2 (newTop max over delta):
+  0.872239537974  boot         capped=True  delta*=0.423539  admissible=False  slack=+1.633e-03
+  0.873678055698  final_source capped=True  delta*=0.427932  admissible=False  slack=+1.943e-04
+  0.873678055698  source_01    capped=True  delta*=0.427932  admissible=False  slack=+1.943e-04
+  0.873678055698  source_02    capped=True  delta*=0.427932  admissible=False  slack=+1.943e-04
+  0.873678055698  source_03    capped=True  delta*=0.427932  admissible=False  slack=+1.943e-04
+  0.873678055698  source_04    capped=True  delta*=0.427932  admissible=False  slack=+1.943e-04
+  0.873678055698  source_05    capped=True  delta*=0.427932  admissible=False  slack=+1.943e-04
+  0.873678055698  source_06    capped=True  delta*=0.427932  admissible=False  slack=+1.943e-04
+envelope over all chain faces: max newTop exponent at p=1/2 = 0.873872329550 at delta=0.448789; slack=+4.504e-10

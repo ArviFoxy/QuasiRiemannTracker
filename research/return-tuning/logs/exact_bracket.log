@@ -1,0 +1,11 @@
+theta_t = 43693617/50000000 = 0.8738723400, h = floor ceiling = 0.804445102199
+   best admissible branch at (0.4487894, 1/2): source_129  exponent - (theta_t - rowFee) = -9.4740e-09  (exact sign: -/0)
+   lowest exponent over all candidates (admissible or not): boot/cap admissible=False -1.7300e-03
+theta_t = 436936169/500000000 = 0.8738723380, h = floor ceiling = 0.804445083479
+   best admissible branch at (0.4487894, 1/2): source_129  exponent - (theta_t - rowFee) = +1.1691e-10  (exact sign: +)
+   lowest exponent over all candidates (admissible or not): boot/cap admissible=False -1.7299e-03
+theta_t = 873872337/1000000000 = 0.8738723370, h = floor ceiling = 0.804445074119
+   best admissible branch at (0.4487894, 1/2): source_129  exponent - (theta_t - rowFee) = +4.9124e-09  (exact sign: +)
+   lowest exponent over all candidates (admissible or not): boot/cap admissible=False -1.7299e-03
+theta_t = 0.8738723380: min over all faces (uncapped crossing, any admissibility) and old: source_129, exponent - (theta_t - rowFee) = +1.1691e-10 (exact sign +)
+theta_t = 0.8738723370: min over all faces (uncapped crossing, any admissibility) and old: source_129, exponent - (theta_t - rowFee) = +4.9124e-09 (exact sign +)

@@ -1,0 +1,16 @@
+C       max_d newTop exponent at p=1/2: 0.873872329550 at delta=0.44878936; count=0.6067212954  (theta-reserve) - max = +4.504e-10
+        witness t=1.144355 r=0.752620 m=0.391734;  normalized guards:
+        D>0=+1.462, A>0=+0.9618, C0>0=+0.5005, J>0=+0.778, t>1=+0.1444, t<1.2499=+0.1055, r>23/37=+0.131, r<1=+0.2474, m>lowerM=+0.006885, m<upperM=+0.04077, natural tail=+0.008388, antitone (dR/dp<=0)=+0.4252, 11/25>naturalM=+0.0075, widths (const)=+0.03953, cap>sMinus (const)=+0.8793
+capC    max_d newTop exponent at p=1/2: 0.873678418769 at delta=0.42793290; count=0.6262275843  (theta-reserve) - max = +1.939e-04
+        witness t=1.133597 r=0.746874 m=0.386724;  normalized guards:
+        D>0=+2.5, A>0=+2, C0>0=+0.9, J>0=+1.441, t>1=+0.1336, t<1.2499=+0.1163, r>23/37=+0.1253, r<1=+0.2531, m>lowerM=+0.009723, m<upperM=-0.001875, natural tail=+0.009228, antitone (dR/dp<=0)=+0.4206, 11/25>naturalM=+0.0075, widths (const)=+0.03953, cap>sMinus (const)=+0.06999
+weakC7  max_d newTop exponent at p=1/2: 0.873933122188 at delta=0.44896157; count=0.6066583467  (theta-reserve) - max = -6.079e-05
+        witness t=1.144703 r=0.752229 m=0.392475;  normalized guards:
+        D>0=+1.462, A>0=+0.9618, C0>0=+0.5014, J>0=+0.7778, t>1=+0.1447, t<1.2499=+0.1052, r>23/37=+0.1306, r<1=+0.2478, m>lowerM=+0.008501, m<upperM=+0.04003, natural tail=+0.008479, antitone (dR/dp<=0)=+0.4236, 11/25>naturalM=+0.0075, widths (const)=+0.03778, cap>sMinus (const)=+0.8795
+P       max_d newTop exponent at p=1/2: 0.874057079451 at delta=0.44441922; count=0.6111820859  (theta-reserve) - max = -1.847e-04
+        witness t=1.142966 r=0.749780 m=0.393186;  normalized guards:
+        D>0=+1.612, A>0=+1.112, C0>0=+0.5622, J>0=+0.8738, t>1=+0.143, t<1.2499=+0.1069, r>23/37=+0.1282, r<1=+0.2502, m>lowerM=-0.02985, m<upperM=+0.03931, natural tail=+0.008937, antitone (dR/dp<=0)=+0.4196, 11/25>naturalM=+0.0075, widths (const)=+0.05313, cap>sMinus (const)=+0.71
+capP    max_d newTop exponent at p=1/2: 0.875060125025 at delta=0.43173936; count=0.6248989985  (theta-reserve) - max = -1.188e-03
+        witness t=1.141034 r=0.737627 m=0.403407;  normalized guards:
+        D>0=+2.5, A>0=+2, C0>0=+0.938, J>0=+1.436, t>1=+0.141, t<1.2499=+0.1089, r>23/37=+0.116, r<1=+0.2624, m>lowerM=+0.02641, m<upperM=+0.01963, natural tail=+0.01131, antitone (dR/dp<=0)=+0.4087, 11/25>naturalM=+0.0075, widths (const)=+0.05313, cap>sMinus (const)=+0.032
+old     max_d newTop exponent at p=1/2: 0.875924616052 at delta=0.43973818; count=0.6187275949  (theta-reserve) - max = -2.052e-03

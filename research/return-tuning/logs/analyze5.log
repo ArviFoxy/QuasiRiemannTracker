@@ -1,0 +1,16 @@
+current: theta = 0.87387234  max newTop exponent = 0.873872329549624  at delta = 0.448789382461  theta - max = 1.04504e-8
+exact floor ceiling h(theta_cur) = 0.804445102199 (current h = 0.8044451)
+reserve 1.0e-8 h=exact : theta* = 0.873872339901   gain vs current = 9.884e-11
+reserve 1.0e-8 h=round7: theta* = 0.873872339904   gain vs current = 9.593e-11
+reserve 1.0e-9 h=exact : theta* = 0.873872338024   gain vs current = 1.976e-09
+reserve 1.0e-9 h=round7: theta* = 0.873872338216   gain vs current = 1.784e-09
+reserve 0.0    h=exact : theta* = 0.873872337816   gain vs current = 2.184e-09
+reserve 0.0    h=round7: theta* = 0.873872338003   gain vs current = 1.997e-09
+max E = 0.873872329549624  delta* = 0.4487893825
+dE/dh (theta fixed) = -0.0107439    dE/dtheta (h fixed) = -3.69489
+floor ceiling slope dh/dtheta = 9.36  => total dE/dtheta along the ceiling = -3.79546
+  h=0.8030  maxE=0.873890104847
+  h=0.8040  maxE=0.873877325496
+  h=0.8044451  maxE=0.87387232955
+  h=0.8050  maxE=0.873867127467
+  h=0.8060  maxE=0.873900681313

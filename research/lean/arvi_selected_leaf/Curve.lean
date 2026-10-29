@@ -5,9 +5,10 @@ From the end of the native line `G(99999/100000, 5143/2000, 1/10)` (`ArviOdeShap
 selected-leaf native step (`e5_step`, deletion cut `K = 501/1000`, selected fraction `a = 1/250`) is valid
 from every face `(B, Λ₀, c(Λ₀))` of the line `c(Λ) = 1/10 + γ (5143/2000 - Λ)` to every face at most
 `10⁻⁵` further down. So every face of the line, `Λ ∈ [101/50, 5143/2000]`, is proven by one induction,
-given the selected leaf.
+given the selected root energy (R1).
 -/
 import Submissions.arvi_selected_leaf.Step
+import Submissions.arvi_selected_leaf.Leaf
 import Submissions.arvi_ode_shape.NativeCurve
 
 set_option autoImplicit false
@@ -69,13 +70,20 @@ theorem e5_gates {Λ₀ Λ : ℝ} (hΛ₀ : Λ₀ ∈ Icc (101/50 : ℝ) (5143/2
   · show sK ≤ 3/4
     simp only [sK]; norm_num
 
-/-- The selected-leaf hypothesis for every step of the line. -/
-def LineLeaf : Prop :=
-  ∀ (p n : Face) (h : E5Gates p n sA sK), E5Leaf p n sA sK h
+/-- The selected leaf for every step of the line, from the selected root energy (R1). -/
+theorem line_leaf (hR1 : SelectedRootEnergy sK) (hβ : (51/100 : ℝ) ≤ HeckeZeroSupremum.beta)
+    {Λ₀ Λ : ℝ} (hΛ₀ : Λ₀ ∈ Icc (101/50 : ℝ) (5143/2000)) (h : E5Gates (sFace Λ₀) (sFace Λ) sA sK) :
+    E5Leaf (sFace Λ₀) (sFace Λ) sA sK h := by
+  intro hp
+  have hc0 : 0 < sCap Λ₀ := by unfold sCap; nlinarith [hΛ₀.2]
+  exact e5_priced_source sK h.K_pos h.K_le hR1 sB Λ₀ (sCap Λ₀) ((1 - 6*sA*sCap Λ)/2) (3 + 1) hβ
+    ⟨h.L₀_pos, by simp only [sB]; norm_num, by simp only [sB]; norm_num, hc0⟩
+    (by have := h.H; simp only [sFace] at this ⊢; linarith) (by
+      have := h.H; have := h.a_pos; have := h.cap_pos; simp only [sFace] at *; nlinarith) hp
 
 /-- **Every face of the selected-leaf line is proven**, from the end of the native line, by one
-induction (given the selected leaf). -/
-theorem e5_sources (hleaf : LineLeaf) (hβ : (51/100 : ℝ) ≤ HeckeZeroSupremum.beta) :
+induction, given the selected root energy (R1). -/
+theorem e5_sources (hR1 : SelectedRootEnergy sK) (hβ : (51/100 : ℝ) ≤ HeckeZeroSupremum.beta) :
     ∀ Λ ∈ Icc (101/50 : ℝ) (5143/2000), GlobalSource sB Λ (sCap Λ) := by
   have htop : GlobalSource sB (5143/2000) (sCap (5143/2000)) := by
     have h := ArviOdeShape.native_end hβ
@@ -85,12 +93,12 @@ theorem e5_sources (hleaf : LineLeaf) (hβ : (51/100 : ℝ) ≤ HeckeZeroSupremu
     (by norm_num : (0:ℝ) < 1/100000) htop
     (fun Λ₀ hΛ₀ Λ hΛ hlt hle hsrc => by
       have hg := e5_gates hΛ₀ hΛ hlt hle
-      exact e5_step (p := sFace Λ₀) (n := sFace Λ) hg (hleaf _ _ hg) hβ hsrc)
+      exact e5_step (p := sFace Λ₀) (n := sFace Λ) hg (line_leaf hR1 hβ hΛ₀ hg) hβ hsrc)
 
 /-- The end of the selected-leaf line: `G(99999/100000, 101/50, c(101/50))`, `c = 1/10 + 3309/100000`. -/
-theorem e5_end (hleaf : LineLeaf) (hβ : (51/100 : ℝ) ≤ HeckeZeroSupremum.beta) :
+theorem e5_end (hR1 : SelectedRootEnergy sK) (hβ : (51/100 : ℝ) ≤ HeckeZeroSupremum.beta) :
     GlobalSource (99999/100000) (101/50) (1/10 + 3/50 * (5143/2000 - 101/50)) := by
-  have h := e5_sources hleaf hβ (101/50) ⟨le_rfl, by norm_num⟩
+  have h := e5_sources hR1 hβ (101/50) ⟨le_rfl, by norm_num⟩
   simpa only [sB, sCap] using h
 
 end

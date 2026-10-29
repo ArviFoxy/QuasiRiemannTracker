@@ -1,0 +1,5 @@
+weights (0,)       k=1  worst forcing ratio 0.860  at zeros 0.7563+0.2042i
+weights (0,)       k=2  worst forcing ratio 1.196  at zeros 0.7582-2.4614i, 0.7984+0.2044i
+weights (0,)       k=3  worst forcing ratio 1.406  at zeros 0.7500+2.7293i, 0.7605-2.6717i, 0.7994+0.2313i
+weights (0, 1)     k=1  worst forcing ratio 0.861  at zeros 0.7562+0.2041i
+weights (0, 1)     k=2  worst forcing ratio 1.191  at zeros 0.7562-2.4624i, 0.7981+0.2036i

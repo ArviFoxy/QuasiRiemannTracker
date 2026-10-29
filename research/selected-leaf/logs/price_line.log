@@ -1,0 +1,6 @@
+physical face: (0.99999, 2.00542)
+count face (0.99999, 2.20000, cap 0.0894): global theta* = 0.87386587  -6.47e-06  binding newTop d=0.45 p=0.50 mC
+count face (0.99999, 2.10000, cap 0.0991): global theta* = 0.87381889  -5.35e-05  binding newTop d=0.43 p=0.50 capC
+count face (0.99999, 2.05000, cap 0.1085): global theta* = 0.87371954  -1.53e-04  binding newTop d=0.43 p=0.50 capC
+count face (0.99999, 2.02000, cap 0.1205): global theta* = 0.87369209  -1.80e-04  binding newTop d=0.56 p=0.50 old
+count face (0.99999, 2.00542, cap 0.1380): global theta* = 0.87369209  -1.80e-04  binding newTop d=0.56 p=0.50 old

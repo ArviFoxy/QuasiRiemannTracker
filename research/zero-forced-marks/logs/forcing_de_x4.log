@@ -1,0 +1,10 @@
+x1=4 weights (0,)       k=1  worst forcing ratio 0.8499  zeros 0.740-0.495i
+x1=4 weights (0,)       k=2  worst forcing ratio 0.3366  zeros 0.740+0.460i, 0.740-0.460i
+x1=4 weights (0,)       k=3  worst forcing ratio 0.2958  zeros 0.800-0.336i, 0.740+0.392i, 0.740-0.728i
+x1=4 weights (0,)       k=4  worst forcing ratio 0.2985  zeros 0.786-0.496i, 0.743-0.860i, 0.740+0.385i, 0.747-0.273i
+x1=4 weights (0,)       k=6  worst forcing ratio 0.2653  zeros 0.786+0.303i, 0.789-0.307i, 0.773-0.760i, 0.765-0.339i, 0.759+0.209i, 0.776+0.692i
+x1=4 weights (0, 1, 2)  k=1  worst forcing ratio 0.8541  zeros 0.740-0.494i
+x1=4 weights (0, 1, 2)  k=2  worst forcing ratio 0.3369  zeros 0.740-0.460i, 0.740+0.460i
+x1=4 weights (0, 1, 2)  k=3  worst forcing ratio 0.2987  zeros 0.740+0.391i, 0.740-0.727i, 0.800-0.337i
+x1=4 weights (0, 1, 2)  k=4  worst forcing ratio 0.4534  zeros 0.750+1.124i, 0.769+0.810i, 0.748+0.392i, 0.769+0.512i
+x1=4 weights (0, 1, 2)  k=6  worst forcing ratio 0.3363  zeros 0.782-1.016i, 0.757-0.573i, 0.767-0.377i, 0.768+0.389i, 0.755-0.625i, 0.772-0.103i

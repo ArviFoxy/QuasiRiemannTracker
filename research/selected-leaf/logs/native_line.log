@@ -1,0 +1,16 @@
+K=0.7500  native line ends at L=2.57156 with cap c=0.16032  (stops: refPos)
+    L=3.0000  cap=0.07698  a=1.00e-05
+K=0.5010  native line ends at L=2.00542 with cap c=0.13796  (stops: principal)
+    L=3.0000  cap=0.06713  a=3.35e-06
+    L=2.5715  cap=0.07476  a=5.87e-06
+    L=2.4000  cap=0.07972  a=8.40e-06
+    L=2.2000  cap=0.08944  a=1.69e-05
+    L=2.1000  cap=0.09908  a=3.43e-05
+    L=2.0500  cap=0.10849  a=7.05e-05
+K=0.5001  native line ends at L=2.00400 with cap c=0.13543  (stops: principal)
+    L=3.0000  cap=0.06710  a=3.33e-06
+    L=2.5715  cap=0.07470  a=5.84e-06
+    L=2.4000  cap=0.07963  a=8.34e-06
+    L=2.2000  cap=0.08925  a=1.67e-05
+    L=2.1000  cap=0.09873  a=3.34e-05
+    L=2.0500  cap=0.10783  a=6.70e-05

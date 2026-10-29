@@ -1,0 +1,8 @@
+130 faces; face 0 = [0.99999, 2.5715, 0.1397]  last = [0.96232839, 1.9265, 0.1]
+s=0.000  E=0.999990  active face 0
+s=0.020  E=0.948560  active face 0
+s=0.040  E=0.897786  active face 22
+s=0.050  E=0.873643  active face 42
+s=0.060  E=0.850582  active face 65
+s=0.080  E=0.808286  active face 119
+s=0.100  E=0.769678  active face 129

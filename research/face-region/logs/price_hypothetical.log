@@ -1,0 +1,4 @@
+baseline (Return/Constants.lean faces)                                 least certifiable theta: 2184681/2500000 = 8738724/10^7 = 0.8738724 with h = 1005557/1250000 (= 0.804446; floor ceiling 0.8044457)
+numeratorCap 63/1000 alone                                             least certifiable theta: 2184681/2500000 = 8738724/10^7 = 0.8738724 with h = 1005557/1250000 (= 0.804446; floor ceiling 0.8044457)
+hypothetical: physical capacity s_CS(0.8512), numeratorCap 3/50        least certifiable theta: 436933/500000 = 8738660/10^7 = 0.8738660 with h = 8043857/10000000 (= 0.804386; floor ceiling 0.8043858)
+hypothetical: physical capacity s_CS(0.8512), numeratorCap 63/1000     least certifiable theta: 4369047/5000000 = 8738094/10^7 = 0.8738094 with h = 8038559/10000000 (= 0.803856; floor ceiling 0.8038560)

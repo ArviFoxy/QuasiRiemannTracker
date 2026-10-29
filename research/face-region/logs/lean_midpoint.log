@@ -1,0 +1,5 @@
+'QRH.FaceRegion.tsum_cs' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QRH.FaceRegion.energy_sum_cs' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QRH.FaceRegion.midpoint_at' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QRH.FaceRegion.midpoint_source' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QRH.FaceRegion.balanced_no_gain' depends on axioms: [propext, Classical.choice, Quot.sound]

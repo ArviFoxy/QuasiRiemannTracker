@@ -55,9 +55,17 @@ excluded from the formal statement). Then `n = q` is supported, primary, coprime
 `g(q, 1) ≠ 0`; `q ≡ 1 (mod 4)` gives `ε(·, q) = 1`; and `χ_q(D) = ε(q, D) χ_D(q) = q^{(p−1)/6} mod D`, a primitive
 sixth root of unity. Hence `ζ₆^{2m+s} = 1`, i.e. `6 ∣ 2m + s`. ∎
 
-For order ℓ the same proof gives `ℓ ∣ 2m + s` (septic: cost ≥ 7). Formalisation: planned (`Rigidity.lean`), from the
-three library lemmas, Mathlib's Dirichlet theorem (`Nat.setOf_prime_and_eq_mod_infinite`) and the prime-power
-non-vanishing lemmas.
+For order ℓ the same proof gives `ℓ ∣ 2m + s` (septic: cost ≥ 7).
+
+**Formalised (m = 1) [L]:** `QRH.ArviNewpowers.Rigidity.no_cheaper_transfer` in
+`research/lean/arvi_newpowers/Rigidity.lean` (dev tree `Submissions/arvi_newpowers/Rigidity.lean`), axioms
+`propext, Classical.choice, Quot.sound`. Statement: for a supported primary prime `D` of prime norm `p`, if
+`sexticGauss (D n) 1 = c · sexticGauss D 1 · sexticGauss n (D^s)` for every supported primary `n` coprime to `D`,
+then `6 ∣ 2 + s`. The test modulus in the proof is `n = −q` with `q` a rational prime, `q ≡ 11 (mod 12)`, `−q` a
+primitive root mod `p` (Mathlib's Dirichlet theorem `Nat.forall_exists_prime_gt_and_modEq`); along the way:
+`prime_natCast_of_mod_three` (rational primes `≡ 2 mod 3` stay prime in `ℤ[ω]`), `absNorm_natCast`
+(`N((m)) = m²`), `orderOf_mk_natCast`, `six_dvd_sub_one`. The general-`m` and general-`E` versions (R, R′ below)
+follow the same proof; their formalisation needs the prime-power Gauss sum at `h = D^{m−1}` and is not done.
 
 **Theorem R′ (no cheaper dilation of any kind).** Let `D` be a split supported primary prime, `m ≥ 1`, and `E` a
 supported primary element (any element, not only a power of `D`), `c ∈ ℂ`. If

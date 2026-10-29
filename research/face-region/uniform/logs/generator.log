@@ -1,0 +1,5 @@
+mu=6e-05 h0=0.00025 A=0.42 D=100 band=0.0002 qlo=0.5015: 3000 samples, 0 fail
+ worst: P10=+6.1e-01 P11=+1.0e+00 P12=+1.9e+00 C0=+2.2e-02 C00=+1.7e-02 C01=+2.0e-02 C02=+1.3e-02 N=+7.8e-02 V12=+2.1e-05 V10=+2.6e-05 q_floor=+1.5e-03 q_upper=+8.0e-04 H_lower=+7.8e-02 ret_cap=+1.1e-03 ref_upper=+1.2e-01 principal=+2.4e-03 second_ref=+8.2e-02 second_diag=+4.2e-02
+mu=6e-05 h0=0.0005 A=0.42 D=100 band=0.0002 qlo=0.5015: 3000 samples, 1 fail
+ worst: P10=+6.1e-01 P11=+1.0e+00 P12=+1.9e+00 C0=+2.2e-02 C00=+1.7e-02 C01=+2.0e-02 C02=+1.3e-02 N=+7.8e-02 V12=-2.3e-06 V10=-2.4e-06 q_floor=+1.3e-03 q_upper=+8.7e-04 H_lower=+7.8e-02 ret_cap=+1.1e-03 ref_upper=+1.2e-01 principal=+2.4e-03 second_ref=+8.2e-02 second_diag=+4.2e-02
+  fail (2.5345, 0.999013, 0.7319, 0.000486, 'V10', -2.421407571673482e-06)

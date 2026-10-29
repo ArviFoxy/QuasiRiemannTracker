@@ -1,4 +1,4 @@
-# D8b: a certificate-free density chain (blueprint)
+# D8b: the ODE energy region estimate as one uniform proof (blueprint)
 
 Goal: replace the 129 per-step certificate files (6.2 MB) with
 - generic lemmas, proved once, that derive every gate of one density step from closed-form scalar
@@ -159,6 +159,49 @@ These are delegated: `Submissions/arvi_uniform_chain/Gates1D.lean`, agent in pro
 Fully uniform variant (no list): prove each scalar condition for all Λ on the curve by one-variable
 arguments in Λ. With the reductions above, every condition is an explicit inequality in (B₀, Λ₀, s₀, h, A, D).
 
+## 6. Semigroup form: one generator lemma instead of steps
+
+The proof needs no list of steps. The ODE's flow is an evolution family (moving a face from Λ₁ to Λ₂ and
+then to Λ₃ is the same as moving it from Λ₁ to Λ₃). So the proof is:
+
+1. **Generator lemma (proved once).** For every face (B₀, Λ₀) in a band around the η-curve, every slope
+   s₀ ≥ σ(B₀, Λ₀) + μ and every step 0 < h ≤ h₀, one density step with the fixed selection (A, D) satisfies
+   `HybridGatesM`. Its proof is §2 with *uniform* constants: P/C/N have margins of order 1e-2 to 1; V and the
+   density gates have margins of order μ.
+2. **Curve lemma (proved once).** The explicit η-curve is concave and satisfies dB/dΛ ≥ σ + μ, so every
+   chord is at least σ at the parent plus μ. It stays in the band.
+3. **Semigroup law.** One induction. The statement is for every Λ ∈ [Λ_end, Λ₀],
+   `GlobalSource (B_η(Λ)) Λ (1/10)`.
+
+**Numerical check of the generator lemma [`uniform/generator.py`, `logs/generator.log`].** Setting:
+- μ = 6e-5, A = 0.42, D = 100;
+- faces anywhere within ±2e-4 in B of the η = 1e-4 curve, with q ∈ [0.5015, 0.7495];
+- slopes in [σ + μ, σ + μ + 2e-4], and steps h ∈ (0, h₀].
+
+| h₀ | samples | failures | worst V12 / V10 |
+|---|---|---|---|
+| 2.5e-4 | 3000 | 0 | +2.1e-5 / +2.6e-5 |
+| 5e-4 | 3000 | 1 | V10 = −2.4e-6 at one face off the curve |
+
+So h₀ = 2.5e-4 is the safe choice. The number of steps then appears only inside the induction.
+
+**Why the steps cannot be few with this step theorem [numerical].**
+- The optimal discrete step is implicit Euler: the chain's slopes equal σ at the child to 1.9e-6.
+- The local loss per step is first order in h. A step of size h lowers its own density threshold by about
+  h/A, and the excess range costs h·D·v.
+- So accuracy η needs about 1/η steps.
+- One big step breaks the floor q ≥ 1/2 for h ≳ 0.4 even with A → ∞.
+
+**Arvi's curve iteration (new math, D8d).** Iterate on convex energy region estimates instead of single faces.
+- The density loss in a step comes from the term (L₀ − L)v of the LOW identity, the child's excess h·v over a
+  single-face parent.
+- With a *convex parent estimate* this becomes the gap between the child and the parent curve, which is
+  second order near tangency.
+- That would allow large iterates: a model estimate is about 20 instead of about 1300 for the same accuracy.
+- The limit, the ODE estimate, would not change.
+- It needs a generalized density step: Sil's engine with a family of parent faces, each sub-configuration
+  using the face that admits it.
+
 ## 5. Files (`uniform/`)
 
 | file | content |
@@ -169,3 +212,4 @@ arguments in Λ. With the reductions above, every condition is an explicit inequ
 | `conditions.py` | scalar conditions (spec of the Lean lemmas); grids in w and numerical derivatives are still to be replaced by exact bounds |
 | `pipeline3.py` | all steps of the η-curve chain with one (A, D) |
 | `endface.py` | the last steps near the floor |
+| `generator.py` | the generator lemma over a band of faces, slopes and steps (`logs/generator.log`) |

@@ -167,50 +167,37 @@ Proposed stages (each one shrinks the certificates):
 A pure engineering alternative, with no new mathematics: make the 12 one-variable gates reflective, as
 `return-tuning/` did for the return guards. Each step becomes its rationals plus `decide +kernel`.
 
-## 6. Vocabulary: the energy region and its face body
+## 6. Vocabulary (Arvi's naming)
 
-- **Energy region 𝒜.** The configurations (m₁, m₂, s) in the box s ≤ cap at which the energy bound
-  actually holds. Its complement in the box is the **obstruction set** 𝒪.
-- **Face.** A face (Λ, B) certifies the half-space m₁ + m₂ + Λs ≤ B (Lean `GlobalSource B Λ cap`).
-- **Face body.** 𝓕 = {(Λ, B) : the face is valid} [derived]. Its properties:
-  - It is closed under weakening (Λ up, B down).
-  - It is convex: a convex combination of two valid lines lies below their maximum on [0, cap]. So its
-    half-space is covered by the two original faces. The upper edges m_i ≤ B·M are automatic.
-- **Face curve.** The upper boundary of 𝓕,
+- **Energy region.** The configurations (m₁, m₂, s) in the box s ≤ cap at which the energy bound holds.
+- **Arvi Zone 𝒜*.** The optimal energy region: the true one, well defined but unknown. Its complement in the
+  box is the obstruction set.
+- **Energy region estimate.** Any region that we *prove* is contained in the Arvi Zone.
+  - A single face (Λ, B), Lean `GlobalSource B Λ cap`, proves the half-space m₁ + m₂ + Λs ≤ B.
+  - Faces are a convex way to describe an estimate: a family of faces proves the union of its half-spaces.
+    Its boundary E(s) = sup (B − Λs) is the Legendre transform of the face curve Λ ↦ B(Λ).
+  - Valid faces form a convex set, closed under weakening, because a convex combination of two valid lines
+    lies below their maximum [derived].
+  - The best face curve is B*(Λ) = inf over the obstruction set of (m₁ + m₂ + Λs).
+- **The estimates so far, inner approximations of the Arvi Zone:**
 
-      B*(Λ) = inf_{(m₁,m₂,s) ∈ 𝒪} (m₁ + m₂ + Λs),
+      chain (130 faces)  ⊂  ODE estimate (§2, the method's limit)  ⊂  Arvi Zone  ⊆  outer limit
 
-  i.e. the support function of the obstruction set in the direction (1, 1, Λ). It is concave and
-  nondecreasing.
-- **Legendre duality.** The certified envelope is the Legendre transform of the face curve:
-  E(s) = sup_Λ (B(Λ) − Λs).
-- **Face system.** Any collection of valid faces. It certifies the union of its half-spaces. In the
-  primal picture the faces are supporting half-planes of the obstruction set, which they cut out as an
-  intersection of the complementary half-planes.
-
-**Hierarchy (inner approximations of the true face curve).**
-
-    B_chain(Λ)  ≤  B_∞(Λ)  ≤  B*(Λ)  ≤  B_outer(Λ)
-
-- **B_chain**: the 130 faces, a polygonal face system.
-- **B_∞**: this method's limit (§2). It is the boundary of the set of faces reachable by density steps.
-  - It is a control problem: the step rule allows the directions (−1, −s) with s ≥ σ(B, Λ), plus weakening.
-  - The optimal control always takes the minimal slope, so the boundary solves dB/dΛ = σ.
-- **B***: the truth; unknown, but well defined.
-- **B_outer**: limits from obstructions.
-  - If near-principal rows survive `initialKeep`, the configurations with m₁ + m₂ + s > 1 are obstructed,
-    and B_outer ≡ 1 for Λ ≥ 1 (the ideal face (1, 1)) [heuristic].
-  - Welch-type moment lower bounds could make an outer limit rigorous [idea, D7].
-
-**Two limits of what any face system can see.**
-1. Faces see only the convex hull of the obstruction set.
-2. Faces depend only on m₁ + m₂. The Cauchy–Schwarz rule (§1 of `../D8_NOTES.md`) already gives the true
-   region asymmetric points. The complete dual object is the body of asymmetric faces
-   λ₁m₁ + λ₂m₂ + Λs ≤ B, of which 𝓕 is the symmetric slice.
+  - The ODE estimate is the boundary of what density steps can reach. It is a control problem: the step
+    rule allows the directions (−1, −s) with s ≥ σ(B, Λ), plus weakening. Its optimal control always takes
+    the minimal slope, so the boundary solves dB/dΛ = σ.
+  - Outer limit: if near-principal rows survive `initialKeep`, the configurations with m₁ + m₂ + s > 1 are
+    obstructed, and B* ≤ 1 for Λ ≥ 1 [heuristic]. Welch-type moment lower bounds could make an outer limit
+    rigorous [idea, D7].
+- **Two limits of face descriptions.**
+  1. Faces see only the convex hull of the obstruction set.
+  2. Our faces depend only on m₁ + m₂, while the Cauchy–Schwarz rule (`../D8_NOTES.md` §1) already gives
+     the Arvi Zone asymmetric points. The complete description uses asymmetric faces
+     λ₁m₁ + λ₂m₂ + Λs ≤ B.
 
 ## 7. A discretisation-free proof
 
-**Goal.** A theorem whose statement has no grid:
+**Goal.** The ODE energy region estimate as one theorem whose statement has no grid:
 
     ∀ Λ ∈ [Λ_end, Λ₀],  GlobalSource (B_η(Λ)) Λ (1/10),
 

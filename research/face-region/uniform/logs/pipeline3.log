@@ -1,0 +1,4 @@
+eta=0.0001 h=0.0005 A=0.42 D=100: 1289 steps to Lam=1.9270, 0 fail, m0<0 at 0 steps
+fails (first 5): []
+worst: P10=+6.07e-01 P11=+1.03e+00 P12=+1.93e+00 C0=+2.16e-02 C00=+1.67e-02 C01=+2.02e-02 C02=+1.30e-02 N=+7.71e-02 V12=+2.55e-05 V10=+2.62e-05 q_floor=+7.47e-05 q_upper=+9.61e-04 H_lower=+7.78e-02 ret_cap=+1.06e-03 ref_upper=+1.22e-01 principal=+2.36e-03 second_ref=+8.16e-02 second_diag=+4.17e-02
+end face: Lam=1.9270 B=0.96243668

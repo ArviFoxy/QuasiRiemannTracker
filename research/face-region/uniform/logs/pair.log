@@ -1,0 +1,5 @@
+step   1: full gate min 1.287e-06 | pair min over nu 1.287e-06 | pair at nu=q(v) min 1.287e-06
+step  41: full gate min 1.989e-07 | pair min over nu 1.989e-07 | pair at nu=q(v) min 1.989e-07
+step  81: full gate min 3.971e-07 | pair min over nu 3.971e-07 | pair at nu=q(v) min 3.971e-07
+step 121: full gate min 8.787e-07 | pair min over nu 8.787e-07 | pair at nu=q(v) min 8.787e-07
+step 129: full gate min 2.765e-08 | pair min over nu 2.765e-08 | pair at nu=q(v) min 2.765e-08

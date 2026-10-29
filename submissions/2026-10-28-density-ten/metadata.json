@@ -1,0 +1,64 @@
+{
+  "title": "Ten cumulative improvements to Dirichlet nonvanishing at 0.87394434464",
+  "authors": [
+    {
+      "name": "SovereignSteak",
+      "url": "https://github.com/SovereignSteak"
+    }
+  ],
+  "description": "Ten successive exact improvements were recorded before new Lean verification, from tracker PR91's 0.873945166 to 2731076077/3125000000 = 0.87394434464. The final construction uses 255 count-source steps and 314 physical-source steps, both with Lambda decrement 1/1600, LOW reserve 1/1000000, physical numerator slot cap 61/1000 and return reserve 1/500000000 above row fee 1/1000000000. The floor-row auxiliary reserve is reduced from 1/200 to 1/250 with matched geometry and transport proofs; the small-conductor cutoff remains 1/200. Count and physical chains start at tracker #86's final and boot sources respectively. The return height is 8059999999/10000000000. The all-moduli Dirichlet conclusion excludes the principal pole and remains conditional on the preprint 7/8 theorem and inherited analytic machinery. All required modified lemmas are included under separate namespaces, with only merged dependencies. Builds on OpenAI, Hailey Collet, Sil, ArviFoxy, Jacob Sussman and Rohan Arun, including the prior wider-density work in tracker #89/90/91. Research, certificate generation and formalization were substantially AI-assisted by OpenAI Codex. Inherited authorship and licenses are retained.",
+  "license": "Apache-2.0; inherited notices and dependency licenses retained.",
+  "builds_on": [
+    "openai-baseline",
+    "hailey-collet-1252270103",
+    "sil-fourth-power-20261025",
+    "arvi-repeated-marks-on-sil-face-20261025",
+    "sil-density-split-20261026",
+    "density-split-fine-chain"
+  ],
+  "dependencies": [
+    "openai-baseline",
+    "hailey-collet-1252270103",
+    "arvi-repeated-marks-on-sil-face-20261025",
+    "sil-density-split-20261026",
+    "density-split-fine-chain"
+  ],
+  "references": [
+    {
+      "label": "Ten-round research claim",
+      "url": "https://github.com/rohanarun/quasi-rh-hillclimb/issues/37"
+    },
+    {
+      "label": "Hailey Collet: finite ordinary-source machinery",
+      "url": "https://github.com/GTimG/QuasiRiemannTracker/pull/69"
+    },
+    {
+      "label": "Sil: fourth-power source",
+      "url": "https://github.com/GTimG/QuasiRiemannTracker/pull/74"
+    },
+    {
+      "label": "ArviFoxy: all-shift physical return",
+      "url": "https://github.com/GTimG/QuasiRiemannTracker/pull/76"
+    },
+    {
+      "label": "Sil: density-split bootstrap",
+      "url": "https://github.com/GTimG/QuasiRiemannTracker/pull/83"
+    },
+    {
+      "label": "Jacob Sussman: exact fine density chain",
+      "url": "https://github.com/GTimG/QuasiRiemannTracker/pull/86"
+    },
+    {
+      "label": "Wider density theorem and separate physical source",
+      "url": "https://github.com/GTimG/QuasiRiemannTracker/pull/89"
+    },
+    {
+      "label": "Previous refined density chain",
+      "url": "https://github.com/GTimG/QuasiRiemannTracker/pull/90"
+    },
+    {
+      "label": "Previous four-round endpoint and LOW reserve argument",
+      "url": "https://github.com/GTimG/QuasiRiemannTracker/pull/91"
+    }
+  ]
+}

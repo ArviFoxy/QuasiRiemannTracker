@@ -1,0 +1,22 @@
+eta=0.0001 mu=5e-05 q_stop=0.5005 deg=6 shift=2e-07 h0=0.0001 A=0.38 D=100; L in [1.927600, 2.571500]
+  beta(Lb) = 0.9999898950 ; end face (L, B) = (1.92760000, 0.96248628)
+  P10          min +6.120e-01  at L=2.5715 h=1e-04
+  P11          min +1.049e+00  at L=2.5715 h=1e-04
+  P12          min +1.940e+00  at L=1.9280 h=1e-04
+  C0           min +2.173e-02  at L=2.5715 h=1e-04
+  C00          min +1.669e-02  at L=2.5715 h=1e-04
+  C01          min +2.016e-02  at L=2.5715 h=1e-04
+  C02          min +1.299e-02  at L=2.5715 h=1e-04
+  N            min +7.900e-02  at L=1.9280 h=1e-04
+  q_floor      min +5.706e-04  at L=1.9280 h=1e-04
+  q_upper      min +7.004e-04  at L=2.5715 h=1e-07
+  H_lower      min +7.995e-02  at L=2.5715 h=1e-04
+  ret_cap      min +9.554e-04  at L=1.9280 h=1e-04
+  ref_upper    min +1.233e-01  at L=2.5715 h=1e-04
+  principal    min +4.155e-03  at L=2.5715 h=1e-04
+  second_ref   min +8.337e-02  at L=2.5715 h=1e-04
+  second_diag  min +4.272e-02  at L=2.5715 h=1e-07
+  m0           min +7.059e-05  at L=2.5097 h=1e-04
+  nodip        min +2.366e-02  at L=1.9280 h=1e-04
+  r            min +3.854e-05  at L=1.9714 h=1e-04
+  order        min +6.184e-01  at L=2.5715 h=1e-04

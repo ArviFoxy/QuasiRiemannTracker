@@ -1,0 +1,35 @@
+eta=0.0001 mu=5e-05 q_stop=0.5005 deg=5 shift=1e-08: L in [1.927529, 2.571500]
+  fit error max |beta - (eta-curve - shift)| = 6.49e-07 ; beta - eta-curve in [-2.62e-07, 0.00e+00]
+  beta(Lb) = 0.999990639 (boot B = 0.99999, need <=)
+  concavity: max beta'' = -6.551e-02 (need < 0)
+  ODE inequality: min [beta' - sigma(beta) - mu] = 5.984e-06 at L=2.4821
+  slope window: beta' in [0.02721, 0.08307]; max |beta''| = 0.128
+  end face: L=1.92752872 beta=0.96248110 (eta-curve 0.96248062)
+eta=0.0001 mu=5e-05 q_stop=0.5005 deg=6 shift=1e-08: L in [1.927529, 2.571500]
+  fit error max |beta - (eta-curve - shift)| = 9.51e-08 ; beta - eta-curve in [-6.93e-08, 0.00e+00]
+  beta(Lb) = 0.999990085 (boot B = 0.99999, need <=)
+  concavity: max beta'' = -6.664e-02 (need < 0)
+  ODE inequality: min [beta' - sigma(beta) - mu] = 1.051e-05 at L=2.5121
+  slope window: beta' in [0.02718, 0.08311]; max |beta''| = 0.129
+  end face: L=1.92752872 beta=0.96248054 (eta-curve 0.96248062)
+eta=0.0001 mu=5e-05 q_stop=0.5005 deg=7 shift=1e-08: L in [1.927529, 2.571500]
+  fit error max |beta - (eta-curve - shift)| = 1.49e-08 ; beta - eta-curve in [-6.03e-09, 0.00e+00]
+  beta(Lb) = 0.999990005 (boot B = 0.99999, need <=)
+  concavity: max beta'' = -6.635e-02 (need < 0)
+  ODE inequality: min [beta' - sigma(beta) - mu] = 1.092e-05 at L=2.5401
+  slope window: beta' in [0.02717, 0.08310]; max |beta''| = 0.129
+  end face: L=1.92752872 beta=0.96248062 (eta-curve 0.96248062)
+eta=0.0001 mu=5e-05 q_stop=0.5005 deg=8 shift=1e-08: L in [1.927529, 2.571500]
+  fit error max |beta - (eta-curve - shift)| = 2.31e-09 ; beta - eta-curve in [-1.67e-09, 0.00e+00]
+  beta(Lb) = 0.999989992 (boot B = 0.99999, need <=)
+  concavity: max beta'' = -6.642e-02 (need < 0)
+  ODE inequality: min [beta' - sigma(beta) - mu] = 1.057e-05 at L=2.5689
+  slope window: beta' in [0.02717, 0.08310]; max |beta''| = 0.129
+  end face: L=1.92752872 beta=0.96248061 (eta-curve 0.96248062)
+eta=0.0001 mu=5e-05 q_stop=0.5005 deg=10 shift=1e-08: L in [1.927529, 2.571500]
+  fit error max |beta - (eta-curve - shift)| = 5.92e-11 ; beta - eta-curve in [-4.27e-11, 0.00e+00]
+  beta(Lb) = 0.999989990 (boot B = 0.99999, need <=)
+  concavity: max beta'' = -6.641e-02 (need < 0)
+  ODE inequality: min [beta' - sigma(beta) - mu] = 1.025e-05 at L=2.5715
+  slope window: beta' in [0.02717, 0.08310]; max |beta''| = 0.129
+  end face: L=1.92752872 beta=0.96248061 (eta-curve 0.96248062)

@@ -1912,3 +1912,18 @@ slot; `mixed-slots/`).
   count holds for a ≥ 13/25 after a numeral fork. In our step the q > 1/2 gate is used only for `0 < dens` and for
   PR 76's gain lemmas, whose `1/2 ≤ ν` serves only `0 < ν`; the gain's `22/23 ≤ B` is the ν = 3/4 value of
   `B ≥ (10 − 6ν)/(12.5 − 9ν)` (`xiP_le_BQ`; `offQ_bounds` needs `B ≥ 10/(15 − 6ν)`). Pricing floors 0.45/0.40 next.
+
+## 2026-10-29 (later) — PR #94 verified upstream; sextic identity rigidity in Lean
+
+- **PR #94 (arvi-density, θ = 43693617/50000000 = 0.87387234) PASSES upstream verification**: admission run 40808476836
+  on head e5a82f72, report `status = PASS` at 04:15:43 UTC, kernels Lean default + nanoda + con-ron, axioms
+  `propext, Classical.choice, Quot.sound`, target `QRH.canonical_bound`; archived by the bot on `admission-records`
+  (commit 39572aaf). The first head (bd2cbd83) failed admission with "Rational must be normalized" (the declared
+  bound 87387234/100000000 had gcd 2); fixed by stating the reduced fraction in `Candidate.bound` (the challenge is
+  generated from the declaration) and by the reflective marked-gate certificates (`Cert/Reflect.lean`,
+  `density/gen_reflect.py`): 1.8 MB olean per chain step instead of about 100 MB. Waiting for the maintainer's merge.
+- **Rigidity of twist-free sextic transfers, formalised** (`lean/arvi_newpowers/Rigidity.lean`):
+  `no_cheaper_transfer_general` — for every block `Dᵐ` and every dilation `Dˢ F` (`N(F)` prime to `12 N(D)`), a
+  twist-free transfer identity forces `6 ∣ 2m + s`. No sextic identity of transfer type is cheaper than Sil's `D⁴`.
+  Notes, local Stickelberger classification (only Hasse–Davenport beyond conjugate pairs), geometric origin, and the
+  septic comparison (cost 7, no Hasse–Davenport): `septic/README.md`.

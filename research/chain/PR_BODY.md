@@ -1,5 +1,5 @@
 QRH-Result: arvi-density
-QRH-Bound: 87387234/100000000
+QRH-Bound: 43693617/50000000
 QRH-Decimal: 0.87387234
 
 Metadata: `submissions/2026-10-29-arvi-density/metadata.json`.

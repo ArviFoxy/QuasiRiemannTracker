@@ -21,7 +21,7 @@ local notation "O" => ActualEisensteinCubic.O
 
 /-- **Radial energy of a root class** by its core energy. -/
 theorem root_radial_energy (F : O → ℂ) (keep : O → Prop) (Φ : 𝓢(ℝ,ℂ)) (K : ℝ)
-    (hΦ : ∀ x, 0 ≤ (Φ x).re) (g : O) (cores : Finset O)
+    (hΦ : ∀ z : O, 0 ≤ (Φ (‖eisEmbedding z‖^2/K)).re) (g : O) (cores : Finset O)
     (hcover : ∀ z, keep z → Φ (‖eisEmbedding z‖^2/K) ≠ 0 → ∃ u ∈ cores, z = u * g^6) :
     radialEnergy F keep Φ K ≤
       QuadraticInitialBound.diagonalControl Φ * ∑ u ∈ cores, ‖F (u * g^6)‖^2 := by
@@ -63,7 +63,7 @@ theorem root_radial_energy (F : O → ℂ) (keep : O → Prop) (Φ : 𝓢(ℝ,�
 
 /-- **The root-class energy of an ordinary polynomial under a selected norm bound.** -/
 theorem root_radial_energy_norm (F : O → ℂ) (keep : O → Prop) (Φ : 𝓢(ℝ,ℂ)) (K : ℝ)
-    (hΦ : ∀ x, 0 ≤ (Φ x).re) (g : O) (cores : Finset O)
+    (hΦ : ∀ z : O, 0 ≤ (Φ (‖eisEmbedding z‖^2/K)).re) (g : O) (cores : Finset O)
     (hcover : ∀ z, keep z → Φ (‖eisEmbedding z‖^2/K) ≠ 0 → ∃ u ∈ cores, z = u * g^6)
     (q : OrdPoly) (hF : ∀ u ∈ cores, F (u * g^6) = q.eval u)
     (Y δ Kn Xmax X : ℝ) (hnorm : SelectedAllSourceNormBound cores Y δ Kn Xmax) (hX1 : 1 ≤ X)

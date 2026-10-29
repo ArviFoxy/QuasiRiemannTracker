@@ -42,15 +42,12 @@ theorem annulus_test_bound : ∃ La : ℝ, 1 ≤ La ∧
   · exact (hCj 0 x).trans ((le_max_left _ _).trans (le_max_right _ _))
   · exact (hCj 1 x).trans ((le_max_right _ _).trans (le_max_right _ _))
 
-/-- **The reflected class bound.** -/
-theorem reflected_class (epsilon Cscale xi L : ℝ) (hepsilon : 0 < epsilon) (hscale : 0 < Cscale)
-    (hxi : 0 < xi) :
-    ∃ n : ℕ, ∃ S : Finset (ℕ×ℕ), ∃ C D La : ℝ, 0 < C ∧ 0 < D ∧ 1 ≤ La ∧ (0,0) ∈ S ∧
-      ∀ᶠ Z : ℝ in atTop, 1 < Z ∧
+/-- The reflected class bound at one base `Z` (the content of `reflected_class`). -/
+def ReflectedClassAt (n : ℕ) (S : Finset (ℕ×ℕ)) (C D La epsilon Cscale xi L Z : ℝ) : Prop :=
       ∀ (cores : Finset O) (Y δ Kn Xmax Xe : ℝ), 0 ≤ Y → 0 ≤ δ → δ ≤ 1 →
         SelectedAllSourceNormBound cores Y δ Kn Xmax →
       ∀ (ε : ℝ) (hε : 0 < ε) (η : Character) (m g : O) (hm : m ≠ 0) (hmLam : λ₀ ∣ m)
-        (hm2 : (2:O) ∣ m) (keep : O → Prop) (Φ : 𝓢(ℝ,ℂ)) (K : ℝ), (∀ x, 0 ≤ (Φ x).re) → 0 < K →
+        (hm2 : (2:O) ∣ m) (keep : O → Prop) (Φ : 𝓢(ℝ,ℂ)) (K : ℝ), (∀ z : O, 0 ≤ (Φ (‖eisEmbedding z‖^2/K)).re) → 0 < K →
         (∀ z, keep z → Φ (‖eisEmbedding z‖^2/K) ≠ 0 → ∃ u ∈ cores, z = u * g^6) →
         (∀ u ∈ cores, u * g^6 ≠ 0) →
       ∀ (Wlong Wshort : 𝓢(ℝ,ℂ)), Function.support (Wlong:ℝ→ℂ) ⊆ Set.Icc (1/4) (9/4) →
@@ -78,13 +75,20 @@ theorem reflected_class (epsilon Cscale xi L : ℝ) (hepsilon : 0 < epsilon) (hs
             Z^(-2*(0:ℝ)) *
             (diagonalControl Φ * (2 * Kn * (Xe + Y)) *
               ((idealDivisorConstant ε hε * Xe^ε)^(1 + Fintype.card ι) *
-                (128 * (9/4) * L₂^2 * ∏ i, ms i))) := by
+                (128 * (9/4) * L₂^2 * ∏ i, ms i)))
+
+/-- **The reflected class bound.** -/
+theorem reflected_class (epsilon Cscale xi L : ℝ) (hepsilon : 0 < epsilon) (hscale : 0 < Cscale)
+    (hxi : 0 < xi) :
+    ∃ n : ℕ, ∃ S : Finset (ℕ×ℕ), ∃ C D La : ℝ, 0 < C ∧ 0 < D ∧ 1 ≤ La ∧ (0,0) ∈ S ∧
+      ∀ᶠ Z : ℝ in atTop, 1 < Z ∧ ReflectedClassAt n S C D La epsilon Cscale xi L Z := by
   obtain ⟨n, S, C, D, hC, hD, hS, h⟩ := reflected_root (1/4) (9/4) epsilon Cscale xi 0 L
     (by norm_num) (by norm_num) hepsilon hscale hxi 2 0 le_rfl
   obtain ⟨La, hLa1, hLa⟩ := annulus_test_bound
   refine ⟨n, S, C, D, La, hC, hD, hLa1, hS, ?_⟩
   filter_upwards [h] with Z hZ
   refine ⟨hZ.1, ?_⟩
+  unfold ReflectedClassAt
   intro cores Y δ Kn Xmax Xe hY hδ0 hδ1 hnorm ε hε η m g hm hmLam hm2 keep Φ K hΦ hK hcover hnz
     Wlong Wshort hsL hsS L₂ hL₂ ι _ pool β P t along bshort M Rcap B ms hB hms hχ hML hmod hRcap
     hcap hXe hXmax
@@ -143,7 +147,7 @@ theorem reflected_class (epsilon Cscale xi L : ℝ) (hepsilon : 0 < epsilon) (hs
       (Real.rpow_pos_of_pos hZ0 _) zero_le_one (by norm_num) hsa hss (hLa j) (hL₂ k) pool β P t B ms
       hB hms hXd hXmax
   have hh := hZ.2 η m hm hmLam hm2 keep Φ K Wlong Wshort hsL hsS ι pool β P t along bshort M E Rcap
-    hK (fun z => hΦ _) hχ hML hmod hE0 hRcap hcap hchildren
+    hK hΦ hχ hML hmod hE0 hRcap hcap hchildren
   have hss0 : Function.support (Wshort : ℝ → ℂ) ⊆ Set.Iic (9/4) := hsS.trans Set.Icc_subset_Iic_self
   have hshort := short_class cores Y δ Kn Xmax Xe hY hδ0 hδ1 hnorm ε hε η m g hm hmLam hm2 keep Φ K hΦ
     hcover hnz Wshort (Z^bshort) t (9/4) L₂ (Real.rpow_pos_of_pos hZ0 _) (by norm_num) hss0

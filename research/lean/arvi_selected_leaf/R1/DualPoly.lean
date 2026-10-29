@@ -156,7 +156,7 @@ theorem sep_eval (η : Character) (m u g : O) (hm : m ≠ 0) (hmLam : λ₀ ∣ 
 theorem separated_root_energy (cores : Finset O) (Y δ Kn Xmax X : ℝ) (hY : 0 ≤ Y)
     (hnorm : SelectedAllSourceNormBound cores Y δ Kn Xmax) (ε : ℝ) (hε : 0 < ε)
     (η : Character) (m g : O) (hm : m ≠ 0) (hmLam : λ₀ ∣ m) (hm2 : (2:O) ∣ m)
-    (keep : O → Prop) (Φ : 𝓢(ℝ,ℂ)) (K : ℝ) (hΦ : ∀ x, 0 ≤ (Φ x).re)
+    (keep : O → Prop) (Φ : 𝓢(ℝ,ℂ)) (K : ℝ) (hΦ : ∀ z : O, 0 ≤ (Φ (‖eisEmbedding z‖^2/K)).re)
     (hcover : ∀ z, keep z → Φ (‖eisEmbedding z‖^2/K) ≠ 0 → ∃ u ∈ cores, z = u * g^6)
     (hnz : ∀ u ∈ cores, u * g^6 ≠ 0)
     (W₁ W₂ : ℝ → ℂ) (D₁ D₂ ω₁ ω₂ b₁ b₂ : ℝ) (hD₁ : 0 < D₁) (hD₂ : 0 < D₂)

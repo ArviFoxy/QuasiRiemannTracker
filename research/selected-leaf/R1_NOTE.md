@@ -125,3 +125,32 @@ Z^bshort, ω_i)·P_i‖² ≤ E(1+|v|)^{2J}, for x ∈ [0, (M − along + ξ)₊
   (cf. `normPowerProfile_uniform_degree`).
 - The E5 leaf must also run the unselected branch: row-dependent lowest-amplitude deletion sets, union over
   2^{#slots} choices (fixed before Z), parent contract.
+
+## 4. Lean plan for R1 (`SelectedRootEnergy K`, `research/lean/arvi_selected_leaf/R1Statement.lean`)
+
+Done so far [Lean, built]:
+- `Leaf.lean`: `e5_priced_source`, the leaf from R1 + parent;
+- `Curve.lean`: `e5_sources`, all faces of the line from R1.
+
+R1 itself, by files:
+1. **RootRows**: energy over `keep ∧ heavy` = Σ_r Σ_{cores u} (row weight)·‖psr(u·g(r)⁶)‖², by
+   `tsum_sixth_decomposition` (baseline `Detector/SixthDecomposition.lean`). Re Φ ≤ diagonal control;
+   rows with Φ ≠ 0 have |z|² ≤ bΦ·U.
+2. **RowOrdinary**: at root r every factor is an ordinary polynomial Σ_I c(I)·idealRowHom(u)(I) with
+   coefficients common to the cores:
+   - rowWeight η m 1 (u g(r)⁶) t I = [idealCoeff η I·idealRowHom(m⁶ g(r)⁶) I·N(I)^{it}]·idealRowHom u I
+     (`idealRowHom_argument_mul`);
+   - this covers both plain sums and every slot.
+3. **DirectRoot**: Σ_{u∈cores} ‖plain₁·plain₂·∏slots‖² ≤ selectedNorm·mass. The inputs:
+   - PR 93 `ordinaryPolynomial_energy`, `ordinaryPolynomial_mul`, `idealConvolution_mass_small_power`;
+   - PR 93's norm `FineCanonicalFromNorm.actual_norm NaturalUniformNear.natural_selected_cell_norm`,
+     applied per root with T := the heavy block D and δ := K.
+4. **ReflectedRoot**: `UniformOriginalComparison.actual_original_comparison` with:
+   - ι := cores, χ i := the row character (`exists_row_character_radical`), with
+     N(χ.mod) ≤ C·N(u)·N(rad r) ≤ C·Z^{M−5ρ};
+   - G := the long plain profile twisted by the height, P i := short plain·slots;
+   - E from step 3's machinery.
+   Use it only when M − 5ρ < 2·ℓX₁.
+5. **RootSum**: Σ_r min(direct, reflected) ≤ C·Z^{M + selExcess + ε}. Use dyadic shells of N(r) and an
+   ideal count; the exponent arithmetic is the 'dual5' model.
+6. **R1Proof**: quantifier and constant assembly into `SelectedRootEnergy K`.

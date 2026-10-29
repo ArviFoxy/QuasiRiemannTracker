@@ -154,3 +154,46 @@ principal gate L > 2 + 4.5a then binds.
   norm, but only through its HIGH count, so the natural-state bridging exists in Lean.
 - Still to check in Lean: the coefficient ℓ² mass of the product polynomial (divisor bound), the subset
   selection (2^{|T|} cores, fixed before Z), and that Sil's root-chain provider is generic in the price.
+
+## 2026-10-29 · E5b. The sixth-root sum breaks the selected leaf unless the plain sum is dualized
+
+**Problem [derived].** The packed leaf's rows are z = u·r⁶ (u sixth-free). PR 93's selected norm is per root:
+for the cores u at root r (norm ≤ Y_r = Z^{M−6ρ}, ρ = log_Z N(r)) it gives X + Y_r^{1−δ}X^δ, X the source
+length. The diagonal X does not decay in r and there are ≈ Z^ρ roots of size ρ, so summing over roots gives
+Z^{P+s+M/6}: selected price (P + s − 5M/6)₊, not (P + s − M)₊. This is sharp for arbitrary coefficients: one
+small core u with |P(u)|² ≈ X is repeated at Z^{M/6} roots. PR 93 only uses the norm for **counts**, which decay
+per root ((H/N(r)⁶)^R, R ≥ 1/4, `FineDetectorCount.natural_root_count_of_uniform_free_counts`), so it never
+meets this.
+- With the diluted price, the selected branch has effective κ = 5/6. That is exactly the baseline unmarked
+  count at ν = 1/2 (κ_u = 10/(15 − 6ν) = 5/6): E5 without new input gains nothing.
+- Rescue routes considered:
+  - R1: dualize the plain sums (I-side Poisson) inside the norm.
+  - R2: per-root parent contracts at M − 6ρ (needs punctured or masked contracts down the whole chain).
+  - R3: root-capped contracts plus count reassembly at the return.
+  - Splitting roots at τ, with 3/4-deletion for big roots, fails: the K-native line needs κ ≤ K on those rows.
+
+**Model [numerical, `selected-leaf/root_ledger.py`].** For each root ρ, the selected exponent is
+ρ + max(X_eff, (1−δ)y + δX_eff), with y = M − 6ρ. X_eff is P + s (no structure), or uses a pointwise
+Pólya–Vinogradov bound on the plain sums ('pv'), or the plain sums dualized inside the norm,
+X_eff = Σ min(x_i, y − x_i) + s ('dual'). The scan covers the whole cube-free side geometry along the
+K = 0.501 native line, L = 2.6 → 2.05:
+
+| X_eff | worst price − u | where |
+|---|---|---|
+| plain | +0.161 | S ≈ 0.004, t = 0, x₁ = x₂ ≈ 0.495 |
+| pv | +0.029 (≈ 1/36) | the same |
+| dual | ≤ 0 | (deletion branch at equality: the K-native ledger) |
+
+The small-S, t = 0, balanced-plain corner kills every variant except the dual: there P ≈ M, and only a
+dual shorter than the row count lets Y_r dominate at the medium roots (y ≈ 0.8P). Dualizing **one** plain sum
+(the longer) gives the same exponent: the dilution is (M − 2 max x_i)₊/6 ≤ (M − P)/6.
+
+**R1 sketch [derived; to formalize].** For a sixth-free core u the row character is χ_{D'}·λ·[coprime]. Here
+χ_{D'} is primitive mod the squarefree D' (the primes of m⁶Vu with exponent ≢ 0 mod 6), λ is a function
+mod 36 (primary normalization) and the coprimality runs over the fixed primes of mV.
+- Poisson on O (`Poisson/EisensteinLattice.actual_eisenstein_periodic_poisson`) together with
+  g(χ, ξ) = χ̄(ξ)g(χ, 1) and |g(χ, 1)|² = N(D') rewrites the smooth sum of length X as
+  (g/N(D'))·Σ_ξ χ̄(ξ)G(|ξ|²/N(D')), whose effective length is N(D')/X.
+- Conjugating and using reciprocity puts the dual in the same family idealRowHom(u)(·).
+- A dyadic split of N(D') and a Mellin separation on Re s = 0 pull the row dependence out as a unimodular
+  factor. PR 93's norm then applies to the sources ξ·I₂·I_slots, with a divisor-bound ℓ² mass.

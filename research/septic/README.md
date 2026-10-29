@@ -29,3 +29,32 @@ Status tags: **[L]** Lean theorem in the library; **[T]** published theorem (ref
    conductor-uniform source theorem (R2 lemma T), or the squared-block source (R2 §3).
 
 (Sections 1–5 below: definitions, proofs or references, computations.)
+
+## 1. Rigidity of twist-free transfers (sextic case; the proof works verbatim for any order ℓ)
+
+Notation of the library: `O = ℤ[ω]`, `χ_n(x) = idealRowHom x (span n)`, `g(n, h) = sexticGauss n h`,
+`ε(a, b) = sexticReciprocityPhase a b`.
+
+**Theorem R (no cheaper transfer).** Let `D` be a supported primary prime, `m ≥ 1`, `s ≥ 0`, `c ∈ ℂ`. Suppose
+`g(Dᵐ n, h) = c · g(Dᵐ, h) · g(n, Dˢ h)` for every supported primary `n` coprime to `D` and every `h`.
+Then `6 ∣ 2m + s`. In particular the scale cost `2m + s` of a twist-free transfer is a positive multiple of 6;
+Sil's `D⁴` (`m = 1, s = 4`) and the squared block `D²` (`m = 2, s = 2`) are optimal, and no identity of this shape
+with smaller cost exists.
+
+*Proof.* For `n` as above:
+* CRT [L `sexticGauss_coprime_product`]: `g(Dᵐn, h) = χ_{Dᵐ}(n) χ_n(Dᵐ) g(Dᵐ, h) g(n, h)`;
+* reciprocity [L `idealRowHom_primary_reciprocity`]: `χ_{Dᵐ}(n) = ε(Dᵐ, n) χ_n(Dᵐ)`;
+* dilation [L `sexticGauss_unit_scale`]: `g(n, Dˢh) = χ_n(D)^{−s} g(n, h)`.
+So the hypothesis reads `(ε(Dᵐ, n) χ_n(D)^{2m+s} − c) · g(Dᵐ, h) g(n, h) = 0` for all `h`. At `h = D^{m−1}`,
+`g(Dᵐ, D^{m−1}) ≠ 0` (prime-power table) and `g(n, D^{m−1}) = χ_n(D)^{1−m} g(n, 1)`.
+(i) `n = 1`: `χ_1 = 1`, `ε = 1`, `g(1, ·) = 1`, so `c = 1`.
+(ii) By Dirichlet's theorem take a rational prime `q ≡ 1 (mod 12)` that is a primitive root modulo `p = N(D)`
+(`D` split; for `D` inert the residue field is `F_{p²}` and one takes `q` generating `F_{p²}^×/F_p^×`-part of the
+sextic character — for inert `D` the sextic symbol is trivial on `F_p^×`, so this case needs `n` non-rational and is
+excluded from the formal statement). Then `n = q` is supported, primary, coprime to `D`, squarefree (`q = π π̄`), so
+`g(q, 1) ≠ 0`; `q ≡ 1 (mod 4)` gives `ε(·, q) = 1`; and `χ_q(D) = ε(q, D) χ_D(q) = q^{(p−1)/6} mod D`, a primitive
+sixth root of unity. Hence `ζ₆^{2m+s} = 1`, i.e. `6 ∣ 2m + s`. ∎
+
+For order ℓ the same proof gives `ℓ ∣ 2m + s` (septic: cost ≥ 7). Formalisation: planned (`Rigidity.lean`), from the
+three library lemmas, Mathlib's Dirichlet theorem (`Nat.setOf_prime_and_eq_mod_infinite`) and the prime-power
+non-vanishing lemmas.

@@ -167,7 +167,97 @@ Proposed stages (each one shrinks the certificates):
 A pure engineering alternative, with no new mathematics: make the 12 one-variable gates reflective, as
 `return-tuning/` did for the return guards. Each step becomes its rationals plus `decide +kernel`.
 
-## 6. Files
+## 6. Vocabulary: the energy region and its face body
+
+- **Energy region 𝒜.** The configurations (m₁, m₂, s) in the box s ≤ cap at which the energy bound
+  actually holds. Its complement in the box is the **obstruction set** 𝒪.
+- **Face.** A face (Λ, B) certifies the half-space m₁ + m₂ + Λs ≤ B (Lean `GlobalSource B Λ cap`).
+- **Face body.** 𝓕 = {(Λ, B) : the face is valid} [derived]. Its properties:
+  - It is closed under weakening (Λ up, B down).
+  - It is convex: a convex combination of two valid lines lies below their maximum on [0, cap]. So its
+    half-space is covered by the two original faces. The upper edges m_i ≤ B·M are automatic.
+- **Face curve.** The upper boundary of 𝓕,
+
+      B*(Λ) = inf_{(m₁,m₂,s) ∈ 𝒪} (m₁ + m₂ + Λs),
+
+  i.e. the support function of the obstruction set in the direction (1, 1, Λ). It is concave and
+  nondecreasing.
+- **Legendre duality.** The certified envelope is the Legendre transform of the face curve:
+  E(s) = sup_Λ (B(Λ) − Λs).
+- **Face system.** Any collection of valid faces. It certifies the union of its half-spaces. In the
+  primal picture the faces are supporting half-planes of the obstruction set, which they cut out as an
+  intersection of the complementary half-planes.
+
+**Hierarchy (inner approximations of the true face curve).**
+
+    B_chain(Λ)  ≤  B_∞(Λ)  ≤  B*(Λ)  ≤  B_outer(Λ)
+
+- **B_chain**: the 130 faces, a polygonal face system.
+- **B_∞**: this method's limit (§2). It is the boundary of the set of faces reachable by density steps.
+  - It is a control problem: the step rule allows the directions (−1, −s) with s ≥ σ(B, Λ), plus weakening.
+  - The optimal control always takes the minimal slope, so the boundary solves dB/dΛ = σ.
+- **B***: the truth; unknown, but well defined.
+- **B_outer**: limits from obstructions.
+  - If near-principal rows survive `initialKeep`, the configurations with m₁ + m₂ + s > 1 are obstructed,
+    and B_outer ≡ 1 for Λ ≥ 1 (the ideal face (1, 1)) [heuristic].
+  - Welch-type moment lower bounds could make an outer limit rigorous [idea, D7].
+
+**Two limits of what any face system can see.**
+1. Faces see only the convex hull of the obstruction set.
+2. Faces depend only on m₁ + m₂. The Cauchy–Schwarz rule (§1 of `../D8_NOTES.md`) already gives the true
+   region asymmetric points. The complete dual object is the body of asymmetric faces
+   λ₁m₁ + λ₂m₂ + Λs ≤ B, of which 𝓕 is the symmetric slice.
+
+## 7. A discretisation-free proof
+
+**Goal.** A theorem whose statement has no grid:
+
+    ∀ Λ ∈ [Λ_end, Λ₀],  GlobalSource (B_η(Λ)) Λ (1/10),
+
+where B_η is an explicit curve. The steps live only inside the proof, as an induction.
+
+**Ingredients.**
+1. **The curve.** Lower the target by η (κ → κ − η). The Bernoulli structure survives, so the curve is
+   still explicit. Parametrized by r = B/Λ:
+   - Λ(r) = 1/((1 − r)(C + 𝒢_η(r))), B(r) = r·Λ(r), with 𝒢_η elementary (rational and log).
+   - No power series and no radius of convergence are needed.
+   - If a future gate change destroyed the closed form, Mathlib's Picard–Lindelöf existence theorem and
+     the mean value theorem would do the same job.
+2. **A uniform step lemma.** From any face on the curve, one density step of any size h ≤ h₀(η) along the
+   curve satisfies `HybridGatesM`.
+   - This is the real work.
+   - The reductions of §4 bring the HIGH gate down to one function of v.
+   - The 12 other gates become endpoint checks.
+   - The choice D ∝ 1/h keeps both the selection dip and the q-loss O(h) [derived].
+3. **Induction.** For a target Λ take N steps of size (Λ₀ − Λ)/N ≤ h₀. The proof does not grow with N.
+
+**Feasibility [numerical, `continuum/margin_curve.py`, `logs/margin_*.log`; all 14 gates of `chain2`,
+ν-range mode, (A, D) optimized].** Slack is chord slope minus least admissible slope, at
+Λ = 2.45, 2.20, 2.00, 1.95:
+
+| curve | h | slack |
+|---|---|---|
+| exact (η = 0) | 0.005 | −2.6e-4 … −1.7e-4 (fails) |
+| exact (η = 0) | 0.001 | −5.2e-5 … −3.4e-5 (fails, deficit ∝ h) |
+| η = 2e-4 | 0.001 | +7.4e-5 … +1.4e-4 |
+| η = 5e-5 | 0.0005 | +5.6e-6 … +2.6e-5 |
+
+- The exact curve cannot be followed by finite steps. Each step costs about 0.05·h of slope, while the
+  chord of the concave curve gains less.
+- Any margin η > 0 works with h ≈ 10η.
+- Cost at the chain's end (Λ = 1.9265): B_η − B_chain = +8.4e-5 (η = 5e-5) and +3.2e-5 (η = 2e-4). A
+  uniform proof with η = 5e-5 would end *above* today's 129-step chain.
+- Reaching the exact curve itself would need an ε-continuity lemma for `GlobalSource`. Its definition is
+  `∀ ε > 0, ∃ mesh > 0, …` (Collet `Record12518109Existence/UniformSource.lean:32`). Weakening is free, but
+  closedness under limits is not immediate. θ does not need it.
+
+Figure: `continuum/fig/face_systems.png` (`fig_face_systems.py`).
+- (a) The face body with the chain, the continuum curve, the targets (κ, κ) and the outer limit.
+- (b) The envelopes against the ideal and scaled-ideal lines. The envelope crosses (22/23)(1 − s) and
+  (7/8)(1 − s) at the two ends of the contact range.
+- (c) The discretisation gap, at most 1.1e-4.
+
+## 8. Files
 
 | file | content |
 |---|---|

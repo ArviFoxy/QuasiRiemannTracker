@@ -65,7 +65,15 @@ then `6 ∣ 2 + s`. The test modulus in the proof is `n = −q` with `q` a ratio
 primitive root mod `p` (Mathlib's Dirichlet theorem `Nat.forall_exists_prime_gt_and_modEq`); along the way:
 `prime_natCast_of_mod_three` (rational primes `≡ 2 mod 3` stay prime in `ℤ[ω]`), `absNorm_natCast`
 (`N((m)) = m²`), `orderOf_mk_natCast`, `six_dvd_sub_one`. The general-`m` and general-`E` versions (R, R′ below)
-follow the same proof; their formalisation needs the prime-power Gauss sum at `h = D^{m−1}` and is not done.
+follow the same proof.
+
+**Formalised (all blocks, all dilations) [L]:** `QRH.ArviNewpowers.Rigidity.no_cheaper_transfer_general`: for a
+supported primary prime `D` of prime norm `p`, `m ≥ 1`, any supported primary `F` with `N(F)` prime to `12 p`, if
+`g(Dᵐ n, D^{m−1}) = c · g(Dᵐ, D^{m−1}) · g(n, Dˢ F D^{m−1})` for every supported primary `n` prime to `D F`, then
+`6 ∣ 2m + s`. So no block and no dilation element — any cofactor `F` coprime to `D D̄` — gives a twist-free transfer
+of scale cost below 6. Extra ingredients: `block_gauss_ne_zero` (`g(Dᵐ, D^{m−1}) ≠ 0`, from the library's
+prime-power evaluation), `exists_test_prime_general` (Dirichlet with a third congruence `q ≡ −1 mod N(F)`, which
+makes `χ_{−q}(F) = 1`). Axioms `propext, Classical.choice, Quot.sound`; 599 lines.
 
 **Theorem R′ (no cheaper dilation of any kind).** Let `D` be a split supported primary prime, `m ≥ 1`, and `E` a
 supported primary element (any element, not only a power of `D`), `c ∈ ℂ`. If

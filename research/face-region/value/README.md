@@ -125,8 +125,10 @@ corresponds to q = 2/3, i.e. a count with no HIGH loss for σ ≥ 5/6.
    - The family here is the sextic Hecke family. Its large sieve is full-strength up to length H, and better
      than trivial beyond (`max(1, (1+5r)/6)`, `UnmarkedDensity.unmarked_count_bound`). Whether a Huxley-type
      large-values estimate holds for it is open.
-   - A cheap lead to check first: the baseline's count is `Endpoint.balancedCutoff δ y` at the endpoint
-     y = 1/2. The same formula at y = 0.6 would give ρ(1/2) = 0.567 instead of 0.583. What pins y ≤ 1/2?
+   - There is no free slack in today's unmarked count. It is the exact three-line optimum of Collet's count at
+     p = 0: the return's count at p = 0 reproduces it at every δ [numerical]. The crossing t = 5/(5 − 2δ) is the
+     three-line balance (`unmarkedCutoff_eq`). Improving it needs better lines, i.e. new moment or
+     large-values input for the dictionary.
 2. **Raise the slot cap to 0.12.** This doubles the gain of any stronger shape. It is free for a zero-density
    HIGH count (no facets). For the marked count it needs facet (1,1).
 3. **Not worth it:** continuing past the floor q = 1/2, finer steps, the physical query alone.

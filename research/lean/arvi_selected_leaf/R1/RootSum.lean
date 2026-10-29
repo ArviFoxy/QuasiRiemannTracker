@@ -135,5 +135,66 @@ theorem root_sixth_sum : ∃ C : ℝ, 0 < C ∧ ∀ (R : Finset HeckeInverseAmpl
   rw [Real.rpow_neg hN.le, div_eq_mul_inv]
   norm_cast
 
+theorem min_max_le (a b q : ℝ) (ha : 0 ≤ a) (hb : 0 ≤ b) (hq : 0 ≤ q) :
+    min a (b * max 1 q) ≤ b + min a (b * q) := by
+  rcases le_total 1 q with h | h
+  · rw [max_eq_right h]
+    linarith
+  · rw [max_eq_left h, mul_one]
+    have h1 : min a b ≤ b := min_le_right _ _
+    have h2 : 0 ≤ min a (b*q) := le_min ha (mul_nonneg hb hq)
+    linarith
+
+/-- **The sum over root classes.** A per-class bound `A₀ (Y₀ + B N^{-6} + min(Dd, Rr·max(1, Q N^{-5})))` sums to
+`A₀ ((Y₀ + Rr) ζ B^{(1+η)/6} + C B + ζ Dd^{1-θ} (Rr Q)^θ)`, `θ = (1+η)/5`. -/
+theorem root_class_sum : ∃ C₆ : ℝ, 0 < C₆ ∧
+    ∀ (A₀ Dd Rr Q Y₀ B η : ℝ), 0 ≤ A₀ → 0 ≤ Dd → 0 ≤ Rr → 0 ≤ Q → 0 ≤ Y₀ → 0 ≤ B → 0 < η → η ≤ 4 →
+    ∀ (R : Finset HeckeInverseAmplification.NonzeroIdeal) (f : HeckeInverseAmplification.NonzeroIdeal → ℝ),
+      (∀ r ∈ R, rootNorm r ^ (6:ℝ) ≤ B) →
+      (∀ r ∈ R, f r ≤ A₀ * (Y₀ + B * rootNorm r ^ (-(6:ℝ)) +
+        min Dd (Rr * max 1 (Q * rootNorm r ^ (-(5:ℝ)))))) →
+      ∑ r ∈ R, f r ≤ A₀ * ((Y₀ + Rr) * (rootZeta (1+η) * B^((1+η)/6)) + C₆ * B +
+        rootZeta (1+η) * (Dd^(1-(1+η)/5) * (Rr*Q)^((1+η)/5))) := by
+  obtain ⟨C₆, hC₆, h6⟩ := root_sixth_sum
+  refine ⟨C₆, hC₆, ?_⟩
+  intro A₀ Dd Rr Q Y₀ B η hA hDd hRr hQ hY₀ hB hη hη4 R f hR hf
+  have hterm : ∀ r ∈ R, f r ≤ A₀ * ((Y₀ + Rr) + B * rootNorm r ^ (-(6:ℝ)) +
+      min Dd ((Rr*Q) * rootNorm r ^ (-(5:ℝ)))) := by
+    intro r hr
+    refine (hf r hr).trans (mul_le_mul_of_nonneg_left ?_ hA)
+    have hN := rootNorm_pos r
+    have hq : 0 ≤ Q * rootNorm r ^ (-(5:ℝ)) := mul_nonneg hQ (Real.rpow_nonneg hN.le _)
+    have hm := min_max_le Dd Rr (Q * rootNorm r ^ (-(5:ℝ))) hDd hRr hq
+    rw [← mul_assoc] at hm
+    linarith
+  have hcount : (R.card : ℝ) ≤ rootZeta (1+η) * B^((1+η)/6) := by
+    have hX0 : 0 ≤ B^((1:ℝ)/6) := Real.rpow_nonneg hB _
+    have h := root_count η (B^((1:ℝ)/6)) hη hX0 R (by
+      intro r hr
+      have hN := rootNorm_pos r
+      have h1 := hR r hr
+      calc rootNorm r = (rootNorm r ^ (6:ℝ))^((1:ℝ)/6) := by
+            rw [← Real.rpow_mul hN.le]; norm_num
+        _ ≤ B^((1:ℝ)/6) := Real.rpow_le_rpow (Real.rpow_nonneg hN.le _) h1 (by norm_num))
+    rw [← Real.rpow_mul hB] at h
+    convert h using 3
+    ring
+  have hsix := h6 R B hB
+  have hmin := root_min_sum Dd (Rr*Q) η hDd (mul_nonneg hRr hQ) hη hη4 R
+  calc ∑ r ∈ R, f r ≤ ∑ r ∈ R, A₀ * ((Y₀ + Rr) + B * rootNorm r ^ (-(6:ℝ)) +
+          min Dd ((Rr*Q) * rootNorm r ^ (-(5:ℝ)))) := Finset.sum_le_sum hterm
+    _ = A₀ * ((R.card : ℝ) * (Y₀ + Rr) + ∑ r ∈ R, B * rootNorm r ^ (-(6:ℝ)) +
+          ∑ r ∈ R, min Dd ((Rr*Q) * rootNorm r ^ (-(5:ℝ)))) := by
+        rw [← Finset.mul_sum, Finset.sum_add_distrib, Finset.sum_add_distrib]
+        simp only [Finset.sum_const, nsmul_eq_mul]
+    _ ≤ A₀ * ((Y₀ + Rr) * (rootZeta (1+η) * B^((1+η)/6)) + C₆ * B +
+          rootZeta (1+η) * (Dd^(1-(1+η)/5) * (Rr*Q)^((1+η)/5))) := by
+        apply mul_le_mul_of_nonneg_left _ hA
+        have hYR : 0 ≤ Y₀ + Rr := by linarith
+        have h1 : (R.card : ℝ) * (Y₀ + Rr) ≤ (Y₀ + Rr) * (rootZeta (1+η) * B^((1+η)/6)) := by
+          rw [mul_comm]
+          exact mul_le_mul_of_nonneg_left hcount hYR
+        linarith
+
 end
 end QRH.ArviSelectedLeaf.R1

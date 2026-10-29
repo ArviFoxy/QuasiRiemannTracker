@@ -57,10 +57,25 @@ theorem dyadPoly_normLe (η : Character) (m g : O) (W : ℝ → ℂ) (D ω b : �
   have h := (mem_idealBall (b*D) I).mp hI
   exact ⟨h.1, h.2.trans (le_max_right _ _)⟩
 
-/-- Mass of a dyadic polynomial: at most `128·max(1,bD)·L²/D`. -/
+/-- At most `128 H` nonzero ideals have norm at most `H`. -/
+theorem ideal_card_le (s : Finset (Ideal O)) (H : ℝ) (hH : 0 ≤ H) (hpos : ∀ I ∈ s, I ≠ ⊥)
+    (hN : ∀ I ∈ s, (Ideal.absNorm I : ℝ) ≤ H) : (s.card : ℝ) ≤ 128 * H := by
+  rcases le_or_gt 1 H with h1 | h1
+  · exact DescentFiberCost.finite_ideal_count_real s H h1 hpos hN
+  · have hempty : s = ∅ := by
+      apply Finset.eq_empty_of_forall_notMem
+      intro I hI
+      have h1' : (1:ℝ) ≤ Ideal.absNorm I := by
+        exact_mod_cast Nat.one_le_iff_ne_zero.mpr (Ideal.absNorm_eq_zero_iff.not.mpr (hpos I hI))
+      linarith [hN I hI]
+    rw [hempty]
+    simp only [Finset.card_empty, Nat.cast_zero]
+    positivity
+
+/-- Mass of a dyadic polynomial: at most `128·b·L²`. -/
 theorem dyadPoly_mass_le (η : Character) (m g : O) (W : ℝ → ℂ) (D ω b L : ℝ) (hD : 0 < D)
-    (hW : ∀ x, ‖W x‖ ≤ L) :
-    (dyadPoly η m g W D ω b).mass ≤ 128 * max 1 (b*D) * L^2 / D := by
+    (hb : 0 ≤ b) (hW : ∀ x, ‖W x‖ ≤ L) :
+    (dyadPoly η m g W D ω b).mass ≤ 128 * b * L^2 := by
   have hL : 0 ≤ L := (norm_nonneg _).trans (hW 0)
   have hDn : ‖(D : ℂ)^(-(1/2 : ℂ))‖ = D^(-(1/2:ℝ)) := by
     rw [Complex.norm_cpow_eq_rpow_re_of_pos hD]
@@ -95,16 +110,16 @@ theorem dyadPoly_mass_le (η : Character) (m g : O) (W : ℝ → ℂ) (D ω b L 
           rw [hDsq]
           exact mul_le_mul_of_nonneg_left (pow_le_pow_left₀ hprod0 hprod 2) (by positivity)
       _ = L^2/D := by ring
-  have hcard : ((idealBall (b*D)).card : ℝ) ≤ 128 * max 1 (b*D) :=
-    DescentFiberCost.finite_ideal_count_real (idealBall (b*D)) (max 1 (b*D)) (le_max_left _ _)
+  have hcard : ((idealBall (b*D)).card : ℝ) ≤ 128 * (b*D) :=
+    ideal_card_le (idealBall (b*D)) (b*D) (mul_nonneg hb hD.le)
       (fun I hI => ((mem_idealBall (b*D) I).mp hI).1)
-      (fun I hI => ((mem_idealBall (b*D) I).mp hI).2.trans (le_max_right _ _))
+      (fun I hI => ((mem_idealBall (b*D) I).mp hI).2)
   calc (dyadPoly η m g W D ω b).mass
       ≤ ∑ _I : (idealBall (b*D) : Finset (Ideal O)), L^2/D := Finset.sum_le_sum fun I _ => hterm I
     _ = ((idealBall (b*D)).card : ℝ) * (L^2/D) := by
         rw [Finset.sum_const, Finset.card_univ, Fintype.card_coe, nsmul_eq_mul]
-    _ ≤ 128 * max 1 (b*D) * (L^2/D) := mul_le_mul_of_nonneg_right hcard (by positivity)
-    _ = _ := by ring
+    _ ≤ 128 * (b*D) * (L^2/D) := mul_le_mul_of_nonneg_right hcard (by positivity)
+    _ = _ := by field_simp
 
 variable {ι : Type*} [Fintype ι]
 

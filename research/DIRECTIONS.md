@@ -21,6 +21,7 @@ Evidence tags:
 | D8 | **Arvi Zone (long-standing goal):** the optimal energy region (where the energy bounds truly hold). Characterize it, and prove energy region estimates without face iteration | ODE estimate solved exactly; vocabulary in `face-region/CONTINUUM.md` §6 | inner estimates: chain ⊂ ODE estimate ⊂ Arvi Zone ⊆ outer limit [derived]; the ODE estimate is the method's limit and has an exact solution | D8b uniform proof; D8c outer limit; D8d curve iteration |
 | D8a | Cauchy–Schwarz convexification | **rule proved in Lean; the current proof gains 0; needs new math** | `arvi_face_region/Midpoint.lean`: `energy_sum_cs`, `midpoint_source`, `balanced_no_gain` (standard axioms only, rebuilt by the lead) [Lean]; every face evaluation (count, numerator, density steps) binds at equal plain lengths [Lean file:line in `face-region/README.md`]; the count witness certifies one plain block per row, and the numerator is one packet to the 4th power [Lean] | T8′: two different numerator packets per row, which would let the numerator bind unbalanced: up to −6.3e-5 if numeratorCap can also be raised to 63/1000, −6.4e-6 if not [numerical, hypothetical] |
 | D8b | ODE energy region estimate as one uniform proof | **solved analytically; Lean in progress** (`face-region/CONTINUUM.md`, `UNIFORM_STEP.md`) | the slope is σ = (B − κ)/(Λ − κ) with κ(q) = 4(5−3q)/(25−18q), equal to `ode2` to 2e-14. Faces pursue the scaled ideal face (κ, κ). The envelope is E(s) = κ(q(s))(1 − s). Exact solution: 1/(Λ − B) − 𝒢(B/Λ) = const, with 𝒢 elementary. The floor face is in closed form [derived; checked numerically]. On the chain region, `high_marked` reduces exactly to one function of v (reductions P, N) [numerical, about 2·10⁵ samples] | stage 1 of the uniform-proof plan: one-variable gates → scalar conditions; then P/N as lemmas |
+| D8f | Value map: what the return can use from a bigger shape | **done** (`face-region/value/`) | the return reads one slot-profile point per (δ, p); the whole window is worth −1.8e-4 to the current return, today's continuous shape −1.36e-6; the limit is the HIGH count (κ + 0.013 or zero-density A ≲ 2.226 crosses the bar), not the steps or the floor (past the floor ≤ −3.1e-6) [numerical, global check] | T6 via the HIGH count; raise the slot cap to 0.12 |
 | D8c | Properties of the true region: monotone, convex balanced slice, the ideal line P + s ≤ 1 | idea | heuristics [derived] | state precisely; prove what can be proven |
 | D8d | Curve iteration (Arvi): iterate convex energy region estimates instead of single faces | idea, needs new math | the step's density loss is the child's excess over its parent: h·v for a single face, but second order for a convex parent curve; a model estimate gives about 20 iterates instead of about 1300 for the same accuracy, with the same limit [derived, rough] | generalize Sil's density step to a family of parent faces |
 | D9 | Density floor below 1/2 | explored (task 144) | see `replan/floor.md` | revisit together with D6 |
@@ -58,7 +59,10 @@ the current library prove" but "which new theorem would pay, how much, and how p
   of the return box, so the true gain is larger [numerical].
 - **T6 (D6), firing patterns.** Large-values estimates for the sextic family that use the structure of
   the set where the bank fires (higher moments of the bank's Gram matrix, Guth–Maynard style).
-  Not yet priced.
+  **Priced through the density step's HIGH count** (`face-region/value/README.md`) [numerical]: a
+  zero-density exponent A ≲ 2.226 for the natural dictionary on σ ∈ [3/4, 7/8] crosses the bar (today: unmarked
+  A ≈ 2.29–2.37, marked count ≈ 2.25 in κ); A ≤ 2.21 reaches the cap-1/10 ceiling −6.3e-5; with slot cap 0.12,
+  up to −1.8e-4 (the current return's ceiling).
 - **T8 (D8), face region.** A consumer interface for asymmetric faces (D8a, no new analysis needed), then
   the continuum characterization of the method's limit, then properties of the true region.
 

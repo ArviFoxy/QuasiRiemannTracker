@@ -1,0 +1,9 @@
+  dh1114: L=2.5000 B=0.999990 q=0.7136
+  dh1114: L=2.4000 B=0.999990 q=0.6660
+  dh1114: L=2.3000 B=0.999990 q=0.6210
+  dh1114: L=2.2000 B=0.999990 q=0.5784
+  dh1114: L=2.1000 B=0.993270 q=0.5436
+  dh1114: L=2.0000 B=0.984103 q=0.5117
+  dh1114: L=1.9623 B=0.980486 q=0.5000
+zero density: dh1114         count face (B=0.980486, L=1.96228, cap=0.100)  global theta*=0.87380931  -6.30e-05  binding newTop d=0.43 p=0.50 capC
+zero density: dh1114, cap 0.12 count face (B=0.980486, L=1.96228, cap=0.120)  global theta*=0.87372786  -1.44e-04  binding newTop d=0.45 p=0.50 C-0

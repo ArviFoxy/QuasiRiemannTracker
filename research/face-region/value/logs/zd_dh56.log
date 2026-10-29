@@ -1,0 +1,9 @@
+  dh56: L=2.5000 B=0.999990 q=0.7136
+  dh56: L=2.4000 B=0.999990 q=0.6660
+  dh56: L=2.3000 B=0.998997 q=0.6220
+  dh56: L=2.2000 B=0.995469 q=0.5825
+  dh56: L=2.1000 B=0.988518 q=0.5476
+  dh56: L=2.0000 B=0.979810 q=0.5151
+  dh56: L=1.9521 B=0.975419 q=0.5000
+zero density: dh56           count face (B=0.975419, L=1.95214, cap=0.100)  global theta*=0.87380931  -6.30e-05  binding newTop d=0.43 p=0.50 capC
+zero density: dh56, cap 0.12 count face (B=0.975419, L=1.95214, cap=0.120)  global theta*=0.87376526  -1.07e-04  binding newTop d=0.45 p=0.50 C-0

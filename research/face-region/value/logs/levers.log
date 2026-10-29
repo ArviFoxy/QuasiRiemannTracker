@@ -1,0 +1,17 @@
+(a) kappa + dk  (boot (0.99999, 2.5715), stop at q = 1/2)
+  dk=0.000  q=1/2 at L=1.92607  count face (B=0.962394, L=1.92607) C    witness m=0.3917 z=0.0929  theta*=0.8738709968  -1.343e-06
+  dk=0.005  q=1/2 at L=1.93019  count face (B=0.964450, L=1.93019) C    witness m=0.3911 z=0.0945  theta*=0.8738509559  -2.138e-05
+  dk=0.010  q=1/2 at L=1.93427  count face (B=0.966492, L=1.93427) C    witness m=0.3904 z=0.0960  theta*=0.8738329987  -3.934e-05
+  dk=0.020  q=1/2 at L=1.94236  count face (B=0.970534, L=1.94236) C    witness m=0.3892 z=0.0989  theta*=0.8738020255  -7.031e-05
+(b) boot face (0.99999, Lb): native line continued to Lb
+  Lb=2.5715  q=1/2 at L=1.92607  count face (B=0.962394, L=1.92607) C    witness m=0.3917 z=0.0929  theta*=0.8738709968  -1.343e-06
+  Lb=2.5000  q=1/2 at L=1.92915  count face (B=0.963932, L=1.92915) C    witness m=0.3912 z=0.0941  theta*=0.8738528692  -1.947e-05
+  Lb=2.4000  q=1/2 at L=1.93571  count face (B=0.967209, L=1.93571) C    witness m=0.3902 z=0.0965  theta*=0.8738274656  -4.487e-05
+  Lb=2.3000  q=1/2 at L=1.94533  count face (B=0.976472, L=1.99533) C    witness m=0.3888 z=0.0997  theta*=0.8737957616  -7.658e-05
+  Lb=2.2000  q=1/2 at L=1.95874  count face (B=0.978718, L=1.95874) capC witness m=0.3869 z=0.1000  theta*=0.8738093173  -6.302e-05
+(c) ODE past the floor (same kappa(q)), stop at q_stop
+  q_stop=0.50  at L=1.92607  count face (B=0.962394, L=1.92607) C    witness m=0.3917 z=0.0929  theta*=0.8738709968  -1.343e-06
+  q_stop=0.48  at L=1.86368  count face (B=0.957078, L=1.86368) C    witness m=0.3917 z=0.0932  theta*=0.8738673492  -4.991e-06
+  q_stop=0.45  at L=1.76711  count face (B=0.948350, L=1.76711) C    witness m=0.3921 z=0.0929  theta*=0.8738652710  -7.069e-06
+  q_stop=0.42  at L=1.66697  count face (B=0.948337, L=1.76697) C    witness m=0.3921 z=0.0929  theta*=0.8738652716  -7.068e-06
+  q_stop=0.40  at L=1.59824  count face (B=0.951230, L=1.79824) C    witness m=0.3919 z=0.0931  theta*=0.8738654041  -6.936e-06

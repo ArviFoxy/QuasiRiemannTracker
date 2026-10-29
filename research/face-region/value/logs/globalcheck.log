@@ -1,0 +1,4 @@
+merged count face                global theta* = 0.87387229  binding: edge=newTop delta=0.450 p=0.500 branch=mC
+count face B + 0.01, cap 0.11    global theta* = 0.87380005  binding: edge=newTop delta=0.450 p=0.500 branch=C-0
+count face B = 1, cap 0.12       global theta* = 0.87374102  binding: edge=newTop delta=0.560 p=0.500 branch=old
+lever (b) Lb = 2.3 face          global theta* = 0.87382987  binding: edge=newTop delta=0.430 p=0.500 branch=capC

@@ -1,0 +1,2 @@
+boot Lb = 2.400              count face (B=0.967209, L=1.93571, cap=0.100)  global theta*=0.87382745  -4.49e-05  binding newTop d=0.45 p=0.50 C-0
+boot Lb = 2.400, cap 0.12    count face (B=0.967209, L=1.93571, cap=0.120)  global theta*=0.87382745  -4.49e-05  binding newTop d=0.45 p=0.50 C-0

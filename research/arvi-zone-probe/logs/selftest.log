@@ -1,0 +1,23 @@
+PASS symbol table == independent direct computation (mismatches=0)
+PASS multiplicative in the row element
+PASS (w^6/P)_6 in {0,1}
+PASS cubic reciprocity on primary primes (pairs=763, violations=0)
+PASS ideal exponent table consistent
+PASS ideal count ~ 0.302*x (count=119, ratio=0.297)
+PASS ideal counts by norm = sum_{d|n} chi_-3(d) (mismatching norms=0)
+PASS w^6 removed
+PASS 2^3*lambda^2*w^6 removed
+PASS random z kept
+PASS pi_7 * w^6 kept (cond 7 does not divide 72)
+PASS c0-twisted: z=c0^5*w^6 removed when eta=(c0/.)_6
+PASS lattice count ~ (2pi/sqrt3) B (count=7266)
+PASS sampled rows inside the ball
+PASS cond_norm(2) = 576
+PASS cond_norm(3) = 1296
+PASS cond_norm(-1) = 16
+PASS cond_norm(w) = 27
+PASS cond_norm(1) = cond_norm(2^6) = cond_norm(lambda^6) = 1
+PASS cond_norm(6) = N(72) = 5184 (the maximum 2,lambda-part)
+PASS 2,lambda-exponents bounded by (3, 4) and invariant under z -> z*w^6 (bad bound 0, bad invariance 0)
+PASS removed rows <=> q6 = 1, and then N(f) divides N(72) (violations 0)
+ALL PASS

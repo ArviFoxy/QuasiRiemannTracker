@@ -1,0 +1,101 @@
+# m2_alignment  2026-10-29 18:31:20
+== (i) functional-equation threshold, Z = 3e+03: |A(z)|^2/X for A = sum_I (z/I)_6 W(N I / X), against delta = 3 N(f) / (4 pi^2 X) ==
+   rows sampled with N(z) <= 2K: 2400; kept: 2369.  N(f) = q6 * 4^f2 * 3^flam (toy.cond_norm, local class field theory, checked against discriminants in selftest.py).
+   2,lambda-part of the conductor N(f)/q6 over kept rows: min 1, quartiles 144 / 432 / 1296, max 5184  (N(72) = 5184)
+   profile: Schwartz-type flat-top (the kind the Lean statement uses)
+           delta in |          all kept rows |      2,lambda-part = 1 |   2,lambda-part >= 500   (mean |A|^2/X, pairs (row, X))
+         0 ..  0.001 |     4.132e-04 (   126) |     7.548e-04 (    27) |             - (     0)
+     0.001 ..  0.003 |     4.404e-03 (   200) |     5.807e-03 (    32) |     3.320e-03 (    15)
+     0.003 ..   0.01 |     1.596e-02 (   431) |     1.888e-02 (    34) |     8.028e-03 (    48)
+      0.01 ..   0.03 |     4.543e-02 (   779) |     3.640e-02 (    32) |     4.050e-02 (   132)
+      0.03 ..    0.1 |     9.204e-02 (  1278) |     9.991e-02 (    34) |     6.514e-02 (   312)
+       0.1 ..    0.3 |     2.643e-01 (  1690) |     1.906e-01 (    32) |     2.870e-01 (   553)
+       0.3 ..      1 |     2.858e-01 (  2465) |     2.996e-01 (    34) |     2.779e-01 (   907)
+         1 ..      3 |     3.619e-01 (  2268) |     2.999e-01 (    31) |     3.517e-01 (   847)
+         3 ..     10 |     4.295e-01 (  2455) |     3.144e-01 (    33) |     4.527e-01 (   907)
+        10 ..     30 |     4.049e-01 (  2246) |     4.647e-01 (    25) |     4.041e-01 (   847)
+        30 ..    inf |     3.956e-01 (  9752) |     3.210e-01 (    16) |     4.117e-01 (  4202)
+   (binned by X/q6 >= 30 alone, i.e. ignoring the 2,lambda-part: mean 0.207 over 6446 pairs -- NOT dead, because N(f)/q6 reaches 5184)
+   profile: polynomial bump (4(y-1/4)(9/4-y)/4)^6, only C^5 -- display only
+           delta in |          all kept rows |      2,lambda-part = 1 |   2,lambda-part >= 500   (mean |A|^2/X, pairs (row, X))
+         0 ..  0.001 |     5.646e-06 (   126) |     2.574e-05 (    27) |             - (     0)
+     0.001 ..  0.003 |     3.372e-04 (   200) |     1.527e-03 (    32) |     4.645e-07 (    15)
+     0.003 ..   0.01 |     5.668e-03 (   431) |     1.297e-02 (    34) |     1.801e-04 (    48)
+      0.01 ..   0.03 |     4.080e-02 (   779) |     5.089e-02 (    32) |     2.615e-02 (   132)
+      0.03 ..    0.1 |     1.002e-01 (  1278) |     7.090e-02 (    34) |     1.126e-01 (   312)
+       0.1 ..    0.3 |     1.155e-01 (  1690) |     9.469e-02 (    32) |     1.220e-01 (   553)
+       0.3 ..      1 |     1.273e-01 (  2465) |     1.360e-01 (    34) |     1.302e-01 (   907)
+         1 ..      3 |     1.278e-01 (  2268) |     1.505e-01 (    31) |     1.230e-01 (   847)
+         3 ..     10 |     1.475e-01 (  2455) |     1.152e-01 (    33) |     1.526e-01 (   907)
+        10 ..     30 |     1.445e-01 (  2246) |     1.613e-01 (    25) |     1.491e-01 (   847)
+        30 ..    inf |     1.421e-01 (  9752) |     1.244e-01 (    16) |     1.471e-01 (  4202)
+   (binned by X/q6 >= 30 alone, i.e. ignoring the 2,lambda-part: mean 0.099 over 6446 pairs -- NOT dead, because N(f)/q6 reaches 5184)
+   => alive (|A|^2/X ~ 0.1-0.4, the diagonal size) for delta >~ 1; collapsing for delta <~ 0.3, whatever the 2,lambda-part: rigorous consequence of the functional equation (dual length < 1).
+
+== (i-b) typical rows: ALL 732 lattice rows with N(z) <= 2K, K = Z = 1e+02; 648 kept; Phi-weighted mean of |A|^2/X, single plain polynomial, Schwartz-type profile ==
+   median of the true conductor norm N(f) over kept rows: 1.68e+04 = 168 K   (K = 1e+02)
+        X/K          X |  mean |A|^2/X | delta at median N(f)
+          1        100 |    3.9720e-01 |                 12.8
+         10      1e+03 |    3.1577e-01 |                 1.28
+        100      1e+04 |    2.1534e-01 |                0.128
+        300      3e+04 |    6.2662e-02 |               0.0427
+      1e+03      1e+05 |    2.3571e-02 |               0.0128
+      3e+03      3e+05 |    8.4594e-03 |              0.00427
+      1e+04      1e+06 |    1.6798e-03 |              0.00128
+      3e+04      3e+06 |    8.5337e-05 |             0.000427
+   => the typical kept row is alive up to X ~ N(f) (here ~ 10^2 K, because the 2,lambda-part multiplies q6 by a median factor ~ 4e2) and collapses beyond it;
+      at accessible Z the constant N(f)/K postpones the dead regime to m_j - 1 >~ log(N(f)/K * 30)/log Z; asymptotically Z^delta beats every constant.
+
+== (ii) one row: best admissible data per row;  Z = 1e+05, base config m=(0.5,0.5) ==
+   trivial size T = 1.000e+05, allowed per-row size K = 1.000e+05
+   mean over rows and params:               0.281
+   median over rows of best-over-params:      3.585
+   max over rows of best-over-params:        34.858   (= 3.49e-04 K, = 3.49e-04 T)
+
+== (ii) one row: best admissible data per row;  Z = 1e+05, base config m=(0.75,0.75) ==
+   trivial size T = 3.162e+07, allowed per-row size K = 1.000e+05
+   mean over rows and params:               0.306
+   median over rows of best-over-params:      3.958
+   max over rows of best-over-params:        71.749   (= 7.17e-04 K, = 2.27e-06 T)
+
+== (ii) one row: best admissible data per row;  Z = 1e+05, base config m=(0.4,0.4) w=(0.3) ==
+   trivial size T = 3.162e+05, allowed per-row size K = 1.000e+05
+   mean over rows and params:               0.016
+   median over rows of best-over-params:      0.227
+   max over rows of best-over-params:         2.899   (= 2.90e-05 K, = 9.17e-06 T)
+
+== (iii) many rows: sum of the K^u largest row energies (Phi may select any set of norm values), Z = 1e+05, m=(0.75,0.75) ==
+       u   #rows K^u   sum of top K^u energies (est.)       / K
+    0.00         1.0                            12.39     0.000
+    0.10         3.2                            39.17     0.000
+    0.20        10.0                           123.87     0.001
+    0.40       100.0                          1238.70     0.012
+    0.60      1000.0                          8494.03     0.085
+    0.80     10000.0                         43846.13     0.438
+    0.90     31622.8                         86253.45     0.863
+    1.00    100000.0                        147913.29     1.479
+
+== (iii) many rows: sum of the K^u largest row energies (Phi may select any set of norm values), Z = 1e+05, m=(0.4,0.4) w=(0.3) ==
+       u   #rows K^u   sum of top K^u energies (est.)       / K
+    0.00         1.0                             1.68     0.000
+    0.10         3.2                             5.32     0.000
+    0.20        10.0                            16.83     0.000
+    0.40       100.0                           168.31     0.002
+    0.60      1000.0                          1049.85     0.010
+    0.80     10000.0                          4826.84     0.048
+    0.90     31622.8                          8617.95     0.086
+    1.00    100000.0                         13472.11     0.135
+
+== (iv) the adversary's knobs in RegionAffineAt / UnitRegionSource and whether they can align phases with a kept row ==
+ knob                          quantifier position                    effect on the coefficient vector a_n (n = I1 I2 P1..Pk)            alignment with kept rows?
+ t, height, v_i                inside, real, polynomially penalised   multiplies a_n by N(n)^{it} and (N(P)/D)^{i v}: smooth in N(.)       no  (the rows are finite-order characters; a smooth phase cannot imitate them)
+ theta_i                       inside, finite group Char(M,H)         trivial on the pool (identity class)                                  no  (inert)
+ w_i <= mesh, sigma_i = 33/50  inside / fixed                         lengths of slots; sigma only a smooth weight (N/D)^(-sigma)           no
+ profiles p (2 Schwartz fns)   inside, control^2 allowed              smooth weight in N(I)/X on all ideals                                 no
+ X1, X2 > 0                    inside                                 lengths; with X > q the sum is negligible (dual length q/X < 1)       no (helps the prover)
+ Phi (Re >= 0, sup-norm only)  inside                                 selects rows by NORM value N(z); weights in [0,1] arbitrary            selects rows, creates no correlation: E is monotone in Phi
+ eta, eta0, Q, rayModulus, H   OUTSIDE the exists-C (fixed, Z-free)   fixed finite-conductor twists                                         only with rows whose primitive character has conductor | Q0 = internalQ  -> exactly the rows initialKeep removes
+ alpha (number of slots)       OUTSIDE                                bounded number of slots k                                              no
+ => the only rows that a fixed finite-conductor datum can align with are the FixedInducingRow ones, and they are excluded from the sum.
+
+# time 367s

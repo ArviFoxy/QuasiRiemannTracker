@@ -1,0 +1,60 @@
+# grid.py: M = 1, a in [0.30, 1.50] step 0.05 (25 values), s in [0, 0.30] step 0.025 (13 values) -> 325 points x 3 splits x 5 mechanisms
+points rejected on the symmetric slice (m1 = m2): 0
+points rejected on ANY of the 3 splits:            0
+  M1 degenerate rows           rejects 0 grid points (symmetric slice)
+  M2 alignment / duality       rejects 0 grid points (symmetric slice)
+  M3 diagonal term             rejects 0 grid points (symmetric slice)
+  M4 small-scale numerics      rejects 0 grid points (symmetric slice)
+  M5 frame / Welch             rejects 0 grid points (symmetric slice)
+grid points with toy-model numerics nearby (M4 evidence): 21
+
+per-s outer boundary a_out(s) = largest a such that all grid points up to it are NOT rejected (cap = 1.50 = edge of the window):
+  s = 0.000:  a_out(sym) = 1.50+   a_out(any split) = 1.50+
+  s = 0.025:  a_out(sym) = 1.50+   a_out(any split) = 1.50+
+  s = 0.050:  a_out(sym) = 1.50+   a_out(any split) = 1.50+
+  s = 0.075:  a_out(sym) = 1.50+   a_out(any split) = 1.50+
+  s = 0.100:  a_out(sym) = 1.50+   a_out(any split) = 1.50+
+  s = 0.125:  a_out(sym) = 1.50+   a_out(any split) = 1.50+
+  s = 0.150:  a_out(sym) = 1.50+   a_out(any split) = 1.50+
+  s = 0.175:  a_out(sym) = 1.50+   a_out(any split) = 1.50+
+  s = 0.200:  a_out(sym) = 1.50+   a_out(any split) = 1.50+
+  s = 0.225:  a_out(sym) = 1.50+   a_out(any split) = 1.50+
+  s = 0.250:  a_out(sym) = 1.50+   a_out(any split) = 1.50+
+  s = 0.275:  a_out(sym) = 1.50+   a_out(any split) = 1.50+
+  s = 0.300:  a_out(sym) = 1.50+   a_out(any split) = 1.50+
+
+evidence notes at three sample points (mechanism -> reason):
+  (s=0.0, a=1.0)
+     M1 degenerate rows         sym: no kept row has a pole: principal rows are removed by initialKeep, kept low-conductor rows cancel
+     M2 alignment / duality     sym: no admissible alignment with a kept row (see KNOBS)
+     M3 diagonal term           sym: diagonal exponent 0.0 (E_diag = K * O(Z^eps))
+     M4 small-scale numerics    sym: worst fitted kappa +0.029+-0.009 (m=(0.5,0.5), Z 1e+03-3e+06)
+     M5 frame / Welch           sym: Welch-extremal vectors are not admissible (rigid, smooth coefficients); best admissible Rayleigh quotient ~ K
+  (s=0.3, a=0.3)
+     M1 degenerate rows         sym: no kept row has a pole: principal rows are removed by initialKeep, kept low-conductor rows cancel
+     M2 alignment / duality     sym: no admissible alignment with a kept row (see KNOBS)
+     M3 diagonal term           sym: diagonal exponent 0.0 (E_diag = K * O(Z^eps))
+     M4 small-scale numerics    sym: worst fitted kappa +0.002+-0.033 (m=(0.15,0.15) w=(0.3), Z 1e+05-1e+12)
+     M5 frame / Welch           sym: Welch-extremal vectors are not admissible (rigid, smooth coefficients); best admissible Rayleigh quotient ~ K
+  (s=0.3, a=1.5)
+     M1 degenerate rows         sym: no kept row has a pole: principal rows are removed by initialKeep, kept low-conductor rows cancel
+     M2 alignment / duality     sym: no admissible alignment with a kept row (see KNOBS)
+     M3 diagonal term           sym: diagonal exponent 0.0 (E_diag = K * O(Z^eps))
+     M4 small-scale numerics    sym: worst fitted kappa -0.008+-0.082 (m=(0.75,0.75) w=(0.3), Z 3e+04-3e+06)
+     M5 frame / Welch           sym: Welch-extremal vectors are not admissible (rigid, smooth coefficients); best admissible Rayleigh quotient ~ K
+
+figure fig/outer.png written; counts {None: 325}
+control figure written; counts {None: 107, 'M1': 218}; its boundary is  a + s = 1 - 1/6 = 5/6
+  control s = 0.000: a_out = 0.80
+  control s = 0.025: a_out = 0.80
+  control s = 0.050: a_out = 0.75
+  control s = 0.075: a_out = 0.75
+  control s = 0.100: a_out = 0.70
+  control s = 0.125: a_out = 0.70
+  control s = 0.150: a_out = 0.65
+  control s = 0.175: a_out = 0.65
+  control s = 0.200: a_out = 0.60
+  control s = 0.225: a_out = 0.60
+  control s = 0.250: a_out = 0.55
+  control s = 0.275: a_out = 0.55
+  control s = 0.300: a_out = 0.50

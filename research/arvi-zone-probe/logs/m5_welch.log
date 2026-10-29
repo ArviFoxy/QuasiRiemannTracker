@@ -1,0 +1,32 @@
+# m5_welch  2026-10-29 17:17:49
+lambda_max(G) >= max(K_eff, n_cols)  is the (rigorous) Welch / large-sieve sharpness for FREE coefficients.
+r_rigid / r_best: Rayleigh quotients a^* G a / a^* a of the coefficient vectors the Lean statement allows (smooth in N(.), twist t).
+-- Z = 1000: rows 7266, kept K_eff = 5297, removed rows = 150
+   ideal columns (plain polynomial of length X = Z^m):
+       m  n_cols | Welch bound lambda_max |  r_rigid r_best(|t|<=3) r_best(|t|<=300) | r_rigid +principal rows
+    0.30       4 |        5297       4883 |   4699.9         4856.4           4840.9 |                  4846.6
+    0.50      18 |        5297       5251 |   4932.8         5112.9           5111.7 |                  5088.7
+    0.70      77 |        5297       6814 |   4884.2         4971.9           4971.3 |                  5102.3
+    1.00     597 |        5297      10936 |   4584.5         4916.2           5041.7 |                  5624.7
+    1.30    4802 |        5297      31700 |   3807.0         4563.3           5064.8 |                 11497.7
+    1.50   19120 |       19120      74775 |   2318.0         4306.5           5049.9 |                 32921.1
+   prime columns (slot polynomial, W(N P/D) (N P/D)^(-sigma+iv)):
+       w    n_P | Welch bound lambda_max |  r_rigid r_best(|v|<=3) r_best(|v|<=300) | r_rigid +principal rows
+    0.50      6 |        5297       5176 |   5133.2         5226.1           5226.1 |                  5289.8
+    0.70     24 |        5297       6035 |   5172.9         5208.1           5266.7 |                  5343.9
+    0.90     72 |        5297       6629 |   5190.3         5347.6           5465.3 |                  5407.9
+
+-- Z = 3000: rows 21762, kept K_eff = 16139, removed rows = 192
+   ideal columns (plain polynomial of length X = Z^m):
+       m  n_cols | Welch bound lambda_max |  r_rigid r_best(|t|<=3) r_best(|t|<=300) | r_rigid +principal rows
+    0.50      31 |       16139      16100 |  15092.3        15327.6          15292.5 |                 15323.5
+    0.80     366 |       16139      23820 |  14825.1        15203.5          15214.4 |                 15676.3
+    1.00    1814 |       16139      36965 |  13862.3        14888.4          15240.8 |                 17885.7
+    1.20    8999 |       16139      80310 |  12318.7        14429.9          15280.3 |                 32216.0
+   prime columns (slot polynomial, W(N P/D) (N P/D)^(-sigma+iv)):
+       w    n_P | Welch bound lambda_max |  r_rigid r_best(|v|<=3) r_best(|v|<=300) | r_rigid +principal rows
+    0.30      4 |       16139      15266 |  15056.9        15282.4          15282.4 |                 15242.9
+    0.50     14 |       16139      16076 |  15996.4        16022.5          16020.0 |                 16200.8
+    0.80     89 |       16139      18418 |  15834.6        16193.4          16312.0 |                 16163.8
+
+# time 421s

@@ -1,0 +1,41 @@
+# m4_adversary  2026-10-29 17:25:22
+mean_row at the baseline datum, the maximum over 120 random admissible data, and the median over the 120; one fixed row sample per Z.
+Z=   1e+04 m=(0.5,0.5)                      baseline=  0.3459  max=  0.5335  median=  0.2610  max/base= 1.54   best datum: t=-118 v=() flat=(0.12,0.25) xs=(0.88,0.84)
+Z=   1e+04 m=(0.75,0.75)                    baseline=  0.3292  max=  0.5791  median=  0.2642  max/base= 1.76   best datum: t=+143 v=() flat=(0.12,0.50) xs=(1.13,1.09)
+Z=   1e+04 m=(0.75,0)                       baseline=  0.3994  max=  0.6351  median=  0.3255  max/base= 1.59   best datum: t=+0 v=() flat=(0.16,0.29) xs=(1.45,0.73)
+Z=   1e+04 m=(0.4,0.4) w=(0.3)              baseline=  0.0465  max=  0.0688  median=  0.0229  max/base= 1.48   best datum: t=+0 v=(-70,) flat=(0.13,0.18) xs=(0.76,0.74)
+Z=   1e+04 m=(0.25,0.25) w=(0.3)            baseline=  0.0734  max=  0.0925  median=  0.0264  max/base= 1.26   best datum: t=-118 v=(90,) flat=(0.16,0.10) xs=(1.27,1.39)
+Z=   1e+04 m=(0,0) w=(0.3)                  baseline=  0.1243  max=  0.2067  median=  0.0569  max/base= 1.66   best datum: t=+15 v=(-296,) flat=(0.37,0.11) xs=(0.84,0.77)
+Z=   1e+04 m=(0.4,0.4) w=(0.15,0.15)        baseline=  0.0334  max=  0.0471  median=  0.0166  max/base= 1.41   best datum: t=+0 v=(-69, 238) flat=(0.14,0.19) xs=(0.84,0.87)
+Z=   1e+05 m=(0.5,0.5)                      baseline=  0.3184  max=  0.5091  median=  0.2632  max/base= 1.60   best datum: t=+143 v=() flat=(0.13,0.39) xs=(1.21,1.28)
+Z=   1e+05 m=(0.75,0.75)                    baseline=  0.3238  max=  0.5747  median=  0.2768  max/base= 1.77   best datum: t=+273 v=() flat=(0.12,0.21) xs=(1.00,1.23)
+Z=   1e+05 m=(0.75,0)                       baseline=  0.3975  max=  0.6401  median=  0.3284  max/base= 1.61   best datum: t=+178 v=() flat=(0.16,0.23) xs=(1.30,0.73)
+Z=   1e+05 m=(0.4,0.4) w=(0.3)              baseline=  0.0221  max=  0.0472  median=  0.0141  max/base= 2.13   best datum: t=-246 v=(0,) flat=(0.12,0.13) xs=(1.20,1.46)
+Z=   1e+05 m=(0.25,0.25) w=(0.3)            baseline=  0.0196  max=  0.0607  median=  0.0122  max/base= 3.09   best datum: t=-107 v=(0,) flat=(0.13,0.14) xs=(1.42,1.23)
+Z=   1e+05 m=(0,0) w=(0.3)                  baseline=  0.0738  max=  0.1581  median=  0.0504  max/base= 2.14   best datum: t=-149 v=(-86,) flat=(0.13,0.19) xs=(0.73,0.80)
+Z=   1e+05 m=(0.4,0.4) w=(0.15,0.15)        baseline=  0.0352  max=  0.0568  median=  0.0180  max/base= 1.62   best datum: t=+154 v=(244, 184) flat=(0.14,0.27) xs=(1.22,1.26)
+Z=   1e+06 m=(0.5,0.5)                      baseline=  0.3639  max=  0.5163  median=  0.2761  max/base= 1.42   best datum: t=-173 v=() flat=(0.12,0.35) xs=(1.44,1.24)
+Z=   1e+06 m=(0.75,0.75)                    baseline=  0.2996  max=  0.6203  median=  0.2879  max/base= 2.07   best datum: t=-59 v=() flat=(0.13,0.33) xs=(1.29,1.07)
+Z=   1e+06 m=(0.75,0)                       baseline=  0.3816  max=  0.6686  median=  0.3262  max/base= 1.75   best datum: t=-33 v=() flat=(0.10,0.18) xs=(0.87,0.74)
+Z=   1e+06 m=(0.4,0.4) w=(0.3)              baseline=  0.0319  max=  0.0659  median=  0.0176  max/base= 2.07   best datum: t=+39 v=(46,) flat=(0.12,0.10) xs=(1.26,1.08)
+Z=   1e+06 m=(0.25,0.25) w=(0.3)            baseline=  0.0228  max=  0.0412  median=  0.0158  max/base= 1.81   best datum: t=+0 v=(42,) flat=(0.12,0.12) xs=(0.73,0.96)
+Z=   1e+06 m=(0,0) w=(0.3)                  baseline=  0.0909  max=  0.1875  median=  0.0670  max/base= 2.06   best datum: t=-138 v=(-254,) flat=(0.32,0.12) xs=(0.86,0.73)
+Z=   1e+06 m=(0.4,0.4) w=(0.15,0.15)        baseline=  0.0092  max=  0.0138  median=  0.0058  max/base= 1.50   best datum: t=+106 v=(259, -133) flat=(0.10,0.30) xs=(1.03,0.82)
+Z=   1e+07 m=(0.5,0.5)                      baseline=  0.3663  max=  0.5305  median=  0.2492  max/base= 1.45   best datum: t=+0 v=() flat=(0.10,0.45) xs=(1.35,1.39)
+Z=   1e+07 m=(0.75,0.75)                    baseline=  0.3491  max=  0.6386  median=  0.3101  max/base= 1.83   best datum: t=+33 v=() flat=(0.12,0.18) xs=(0.80,1.05)
+Z=   1e+07 m=(0.75,0)                       baseline=  0.3949  max=  0.6244  median=  0.3439  max/base= 1.58   best datum: t=-264 v=() flat=(0.18,0.29) xs=(0.93,0.73)
+Z=   1e+07 m=(0.4,0.4) w=(0.3)              baseline=  0.0318  max=  0.0588  median=  0.0198  max/base= 1.85   best datum: t=-272 v=(0,) flat=(0.11,0.25) xs=(1.08,1.10)
+Z=   1e+07 m=(0.25,0.25) w=(0.3)            baseline=  0.0286  max=  0.0418  median=  0.0171  max/base= 1.46   best datum: t=-242 v=(0,) flat=(0.16,0.13) xs=(1.49,1.40)
+Z=   1e+07 m=(0,0) w=(0.3)                  baseline=  0.0841  max=  0.1661  median=  0.0566  max/base= 1.98   best datum: t=-147 v=(0,) flat=(0.21,0.21) xs=(0.75,0.74)
+Z=   1e+07 m=(0.4,0.4) w=(0.15,0.15)        baseline=  0.0246  max=  0.0676  median=  0.0087  max/base= 2.75   best datum: t=-40 v=(-148, 266) flat=(0.11,0.22) xs=(1.18,1.47)
+
+growth exponent in Z of the OPTIMISED energy (max over data) and of the baseline:
+  m=(0.5,0.5)                        kappa(max over data) = -0.000   kappa(baseline) = +0.013
+  m=(0.75,0.75)                      kappa(max over data) = +0.016   kappa(baseline) = +0.004
+  m=(0.75,0)                         kappa(max over data) = -0.000   kappa(baseline) = -0.003
+  m=(0.4,0.4) w=(0.3)                kappa(max over data) = -0.006   kappa(baseline) = -0.034
+  m=(0.25,0.25) w=(0.3)              kappa(max over data) = -0.120   kappa(baseline) = -0.116
+  m=(0,0) w=(0.3)                    kappa(max over data) = -0.021   kappa(baseline) = -0.042
+  m=(0.4,0.4) w=(0.15,0.15)          kappa(max over data) = -0.014   kappa(baseline) = -0.098
+# (the t-scan that used to follow was moved to m4_tscan.py -> logs/m4_tscan.log)
+# time 1301s

@@ -1,0 +1,14 @@
+nu=3/4: gate(1,0) = 0, gate(1,2) = 0 at s = sigma (exact)
+nu=1/2: gate(1,0) = 0, gate(1,2) = 0 at s = sigma (exact)
+nu=5/8: gate(1,0) = 0, gate(1,2) = 0 at s = sigma (exact)
+max |closed form - ode2.s0_inst| at 33 chain faces: 2.04e-14
+ Lam      B_chain      B_continuum  diff
+2.5715  0.99999000  0.99999000  +0.00e+00
+2.5665  0.99985125  0.99985285  +1.60e-06
+2.4115  0.99410510  0.99414673  +4.16e-05
+2.2515  0.98567114  0.98574018  +6.90e-05
+2.0915  0.97513177  0.97521906  +8.73e-05
+1.9315  0.96274515  0.96284423  +9.91e-05
+1.9265  0.96232839  0.96242947  +1.01e-04
+continuum reaches the floor q = 1/2 at Lam = 1.926072, B = 0.96239387
+max |E(s_k) - kappa(q_k)(1 - s_k)| over the discrete chain: 2.63e-06 (discretisation)

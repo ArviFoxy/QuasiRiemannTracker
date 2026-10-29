@@ -113,5 +113,8 @@ unbalanced configuration.
 
 ## 7. Next
 
-- D8b: the continuum ODE of the density chain, i.e. the method's limit.
+- D8b is solved analytically in the method's limit: `face-region/CONTINUUM.md`. The faces pursue the
+  scaled ideal face (κ, κ), the envelope is E(s) = κ(q(s))(1 − s), and the ODE has an exact solution.
+  That note also gives the uniform-proof plan.
 - D8a′: a numerator design with an unbalanced binding configuration, and the origin of numeratorCap.
+- D8c: an outer limit for the true region from Welch-type moment lower bounds (idea from D7).

@@ -1,0 +1,6 @@
+facet 0 (i,j)=(0,0): max dphi/dp = +3.605e-01   max phi'' = +2.274e-09   max endpoint violation = 0.00e+00
+facet 1 (i,j)=(0,1): max dphi/dp = +3.606e-01   max phi'' = +2.274e-09   max endpoint violation = 0.00e+00
+facet 2 (i,j)=(0,2): max dphi/dp = +3.497e-01   max phi'' = -4.923e-04   max endpoint violation = 0.00e+00
+facet 3 (i,j)=(1,0): max dphi/dp = -3.012e-02   max phi'' = +1.873e-01   max endpoint violation = 0.00e+00
+facet 4 (i,j)=(1,1): max dphi/dp = -2.786e-02   max phi'' = +1.746e-01   max endpoint violation = 0.00e+00
+facet 5 (i,j)=(1,2): max dphi/dp = -2.672e-02   max phi'' = +1.859e-01   max endpoint violation = 0.00e+00

@@ -213,3 +213,23 @@ What is left for R1:
 Even with the weaker dual length that the engine gives (root primes in the redundant set:
 y_dual = M − 5ρ), the ledger scan passes along the whole K = 0.501 line. The worst case is the deletion branch
 at equality; the selected branch has margin ≈ 0.003.
+
+**E5 in Lean, first layers [Lean, built; `research/lean/arvi_selected_leaf/`].**
+- `Price.lean`: `selExcess`, `selPrice`, `maxPrice`, `e5Price K = max(K·deletionNeed, selExcess)`, all as Sil
+  `Price`s.
+- `Gates.lean`: `E5Gates` (Sil's native gates with 3/4 → K), `e5Data`, `e5_ledger`, `stepGates_of_e5`.
+  The selected branch of the ledger needs nothing beyond the principal gate L > 2 + 9a/2.
+- `Step.lean`: `e5_step`, i.e. Sil's generic `cubefree_step` with the generic root-chain provider. The only
+  input is the leaf `E5Leaf` (the packed source at `e5Price` from the parent face).
+- `Curve.lean`: the line c(Λ) = 1/10 + (3/50)(5143/2000 − Λ), a = 1/250, K = 501/1000, steps ≤ 1e-5, from
+  the merged native end (2.5715, 1/10) down to Λ = 101/50 (cap ≈ 0.133). `e5_sources` proves every face
+  given `LineLeaf`.
+- `R1Statement.lean`: `SelectedRootEnergy K`, the precise analytic input. On rows with
+  Z^{K w(D)} ≤ ∏_D ‖normalizedSlot‖², the energy is ≤ Z^{M + selExcess + ε}.
+
+**Value of the line [numerical, `selected-leaf/cap_scan.py`].** Physical face at L = 2.02 or 2.05:
+- count face (0.99999, 2.1, cap ≥ 0.12): θ* = 0.87369209 (−1.80e-4, the return's ceiling);
+- count face (0.99999, 2.2, cap 0.12): θ* = 0.87377159 (−1.0e-4);
+- count face (0.99999, 2.2, cap 0.10): −6.3e-5.
+
+The Lean line reaches cap 0.128 at L = 2.1.

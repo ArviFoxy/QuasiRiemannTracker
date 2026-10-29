@@ -1,0 +1,7 @@
+floor 0.50: theta0 = 0.873868954  gap -3.685e-05   C(L=1.9248,B=0.962413)  P(L=2.2477,B=0.985640)
+  raise B_P by x: 5e-05:-4.19e-07 0.0001:-8.37e-07 0.00025:-2.09e-06 0.0005:-4.18e-06 0.001:-5.35e-06 0.002:-5.35e-06   (dtheta/dB at 5e-5: -8.380e-03)
+  raise B_C by x: 5e-05:-3.64e-07 0.0001:-7.25e-07 0.00025:-1.81e-06 0.0005:-3.62e-06 0.001:-7.25e-06 0.002:-1.45e-05   (dtheta/dB at 5e-5: -7.280e-03)
+  [return-side, exact] base 0.873868954
+    E exponent                             slope 2.0830e-01 per unit  -> size to move the gap to zero: -1.769e-04   (sign: can worsen by)
+    return count R (all improved branches) slope 1.2563e-01 per unit  -> size to move the gap to zero: -2.933e-04   (sign: can worsen by)
+    capacity C_N                           slope 2.3385e-02 per unit  -> size to move the gap to zero: -1.576e-03   (sign: can worsen by)

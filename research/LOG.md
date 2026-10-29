@@ -1887,3 +1887,28 @@ slot; `mixed-slots/`).
   `Return.dirichlet_of_sources (hC : β ≥ 51/100 → count face) (hP : … → physical face) … : L(χ,s) ≠ 0` for Re s > θ,
   axioms clean. Cross-checks: role split 0.8739549, floor-0.60 chain 0.8739464 (= lemmaW). Pipeline complete; waiting for
   the optimized marked chain (T-A).
+
+## 2026-10-29 — upstream check, PR 93 vs our marked leaf, floor below 1/2
+
+- **Upstream (fetched 00:20 UTC).** PR 90 merged (SovereignSteak, 0.8739461): the record. Open: #89 0.8739465
+  (density range a ≥ 3/4, floor q ∈ [1/2, 3/4], 15 transitions), #91 0.873945166 (finer chains), #92 "conditional"
+  0.87394434, **#93 (Joseph Bebel) 0.87393379** — depends on our PR 76 (`arvi-repeated-marks-on-sil-face-20261025`);
+  HIGH price `g = νP − kM + (k − 17/200)s + (ν − k + 17/200)·(s − M/10)⁺` from a three-word joint
+  zero-detector/slot-amplitude count `J(ν, δ) = 3(1−δ)(1−ν)/(3 − ν − 2δ)` (amplitude cutoff 1001/2000), adaptive
+  version `k(ν) − c(q)`, `c(q) = min(9/100, k(q) − 10011/20000)` down to a cut 29/50, zero-density wrapper at a ≥ 157/200.
+- **Model comparison (`newpowers/combo/`, T-A's ODE + exact return).** PR 93's saving alone: 0.8739427 (fixed price,
+  floor 0.65), 0.8739187 (adaptive, floor 0.58). Ours alone: 0.873940 (0.65), 0.8738987 (0.58), **0.8738710 (0.50)**.
+  max(ours, PR 93) per ν = ours exactly at 0.58 and 0.50: PR 93's count is larger only at high ν, which does not bind
+  near the floor. K = 16 copies and parent cap 0.12: no change (the gain is capped by the K- and cap-free facet
+  (inverse cap, plain B/λ) at p = 1/2). Using a later chain face for the gain: no gain (≤ 2e-4 change in the cap).
+- **Exact chain design (`density/design_chain.py`).** Float optimum (T-A `chain2.best_step`) → A = n/10⁶, D = n/500,
+  B = largest n/10⁸ that certifies with `gen_hybrid --marked` (exact); ≈ 8 s per step; certified slopes within 1e-6
+  of the model. Floor-1/2 chain from PR 86's boot face, ΔL = 1/200: running (`chain/steps_f050_dL200.json`).
+  One step certificate (≈ 280 KB, B denominators 10⁸) compiles in 2 min.
+- **The 3/4 is not Lemma 2.1's limit.** Collet's `actual_maxima_bin_count` (Cycle61/Density/ActualMaximaCount) gives
+  `#rows ≤ C(1+height)^J U^{unmarkedDensity(2b−1)+…}` for every bin `51/100 < b ≤ 7/8`; the a ≥ 3/4 sits only in the
+  wrappers `OrdinaryRange{Partition, SmallHeight, Uniform, Density}`, whose proofs use it only through
+  `beta_lower_of_nonempty_bin (51/100 < a)` and `51/100 < bufferValue` (from `a − e < b`, e < 1/1000). So the natural
+  count holds for a ≥ 13/25 after a numeral fork. In our step the q > 1/2 gate is used only for `0 < dens` and for
+  PR 76's gain lemmas, whose `1/2 ≤ ν` serves only `0 < ν`; the gain's `22/23 ≤ B` is the ν = 3/4 value of
+  `B ≥ (10 − 6ν)/(12.5 − 9ν)` (`xiP_le_BQ`; `offQ_bounds` needs `B ≥ 10/(15 − 6ν)`). Pricing floors 0.45/0.40 next.

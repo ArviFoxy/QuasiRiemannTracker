@@ -54,9 +54,11 @@ from math import comb
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 TPL = os.path.join(HERE, 'return86_tpl')
+TPL5 = os.path.join(HERE, 'return86_tpl5')    # five-branch Formulas/Facts (`--branches five`)
 ETA = Fr(1, 10 ** 7)                      # the `1/10000000` of Formulas.lean
-LEAN_BRANCH = {'old': '.old', 'C': '.C', 'capP': '.capP'}
-CANDS = ['old', 'C', 'capP']              # greedy order = PR 86's CountBranch order
+LEAN_BRANCH = {'old': '.old', 'C': '.C', 'capP': '.capP', 'capC': '.capC', 'weakC7': '.weakC7'}
+CANDS = ['old', 'C', 'capP']              # greedy order = PR 86's CountBranch order (`--branches five` appends capC, weakC7)
+BRANCHES = 'pr86'                         # 'pr86': PR 86's three branches; 'five': + PR 76's capC and weakC7
 ROW_DEGS = (2, 3)                         # Sil's rows are all certified in degrees (2,3)
 EDGES = ['oldSmall', 'oldSwitch', 'newSwitch', 'newTop']
 MAX_ROWS_PER_FILE = 16                    # an edge with more rows is spread over Edge_<edge>_1, _2, ...
@@ -270,11 +272,15 @@ class Params:
                 ('newSwitch', self.dm, self.new_capacity(self.dm)), ('newTop', self.dp, self.new_capacity(self.dp))]
 
     def face(self, cand):
-        return (self.cB, self.cL, self.cCap) if cand == 'C' else (self.pB, self.pL, self.pCap)
+        if cand in ('C', 'capC'):
+            return (self.cB, self.cL, self.cCap)
+        if cand == 'weakC7':                      # PR 76's weakened count face: B - 7/4000
+            return (self.cB - Fr(7, 4000), self.cL, self.cCap)
+        return (self.pB, self.pL, self.pCap)
 
 
 def branch_polys(P, cand):
-    """polynomials of Formulas.lean for the branch `cand` ('old' | 'C' | 'capP'), as dicts in (δ, p)"""
+    """polynomials of Formulas.lean for the branch `cand` ('old' | 'C' | 'capC' | 'weakC7' | 'capP'), as dicts in (δ, p)"""
     V = sub(const(Fr(5, 6)), DEL)
     if cand == 'old':
         k3 = 3 * P.kappa
@@ -284,7 +290,7 @@ def branch_polys(P, cand):
         N = add(mul(sub(const(1), DEL), J), smul(Fr(1, 2), mul(mul(DEL, oldC), V)))
         return dict(J=J, N=N)
     B, L, cap = P.face(cand)
-    capped = cand == 'capP'
+    capped = cand in ('capP', 'capC')
     Zc = cap - ETA
     if capped:
         D = sub(const(3), PP)
@@ -587,7 +593,7 @@ def extract_cover(edge_path, win_path):
         if 'axis' in s:
             fix(s['lo']); fix(s['hi'])
         else:
-            s['cand'] = {'old': 'old', 'C': 'C', 'capP': 'capP'}[s['cand']]
+            s['cand'] = {'old': 'old', 'C': 'C', 'capP': 'capP', 'capC': 'capC', 'weakC7': 'weakC7'}[s['cand']]
     for s in out.values():
         fix(s)
     return dict(edges=out)
@@ -699,7 +705,8 @@ STATIC = ['Formulas', 'Facts', 'Geometry', 'Conductor', 'CountAdmission', 'Count
 
 def emit_static(out, P):
     for nm in STATIC:
-        text = open(os.path.join(TPL, nm + '.lean'), encoding='utf-8').read()
+        five = BRANCHES == 'five' and nm in ('Formulas', 'Facts')
+        text = open(os.path.join(TPL5 if five else TPL, nm + '.lean'), encoding='utf-8').read()
         blocks, body = split_header(text)
         if nm == 'FinalRows':      # the only constant inside a copied module
             old = ' have h2 : reserve = (1/100000000:ℝ) := rfl\n'
@@ -708,7 +715,9 @@ def emit_static(out, P):
             body = body.replace(old, f' have h2 : reserve = ({lit}:ℝ) := rfl\n')
         body = retoken(body, out)
         out.write(f'{nm}.lean', blocks, body,
-                  f'module prefix and namespaces renamed to {out.pkg}.Return and {out.ns}.Return'
+                  ('the branches `capC` (capped count face) and `weakC7` (count face with B - 7/4000) of PR 76\'s '
+                   'FinalReturn restored; ' if five else '')
+                  + f'module prefix and namespaces renamed to {out.pkg}.Return and {out.ns}.Return'
                   + (f'; the reserve literal of `FinalRows.reserve_le` follows Constants.lean' if nm == 'FinalRows' else '')
                   + ' (no other change).')
 
@@ -1099,7 +1108,13 @@ def main():
     ap.add_argument('--receipts', action='store_true')
     ap.add_argument('--find-theta', nargs=2, metavar=('LO', 'HI'))
     ap.add_argument('--extract-cover', nargs=3, metavar=('EDGECERT', 'WINDOWS', 'OUT'))
+    ap.add_argument('--branches', choices=['pr86', 'five'], default='pr86',
+                    help="count branches: PR 86's {old, C, capP}, or 'five' = + PR 76's capC and weakC7")
     a = ap.parse_args()
+    global BRANCHES
+    BRANCHES = a.branches
+    if BRANCHES == 'five':
+        CANDS[:] = ['old', 'C', 'capP', 'capC', 'weakC7']
 
     if a.extract_cover:
         spec = extract_cover(a.extract_cover[0], a.extract_cover[1])

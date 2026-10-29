@@ -1,1 +1,12 @@
 gain 1 floor 0.50 boot 1 dfac 1.000: theta0=0.873868954 gap=-3.685e-05 (C L=1.9248 s0=0.0833; P L=2.248)
+  count exponent R lowered everywhere by dR = -0.00518   (dtheta/dR = 6.790e-03)
+  step slope s0 smaller by -12.545 %   (dtheta per 1% = 3.131e-06)
+  packed-envelope rate 6 -> 6.1649   (dtheta per 0.01 = 2.548e-06)
+  native barrier / start face L0 lowered by -0.1513 (rel -5.88 %)   (dtheta per 0.001 = 2.919e-07)
+  repeated-mark gain scaled to 0.665 of its Lean value reaches the bar   (points ['1.00:0.87386895', '0.90:0.87388090', '0.80:0.87389263', '0.70:0.87390270', '0.67:0.87390544', '0.67:0.87390580'])
+  physical face B_P (at L_P=2.248) raised by -0.00440   (dtheta/dB_P = -8.370e-03)
+  count face B_C (at L_C=1.9248) raised by -0.00436   (dtheta/dB_C = -7.250e-03)
+  [return-side, exact] base 0.873868954
+    E exponent                             slope 2.0830e-01 per unit  -> needed -1.769e-04  (theta at needed: 0.873912791)
+    return count R (all improved branches) slope 1.2563e-01 per unit  -> needed -2.933e-04  (theta at needed: 0.873912837)
+    capacity C_N                           slope 2.3385e-02 per unit  -> needed -1.576e-03  (theta at needed: 0.873912688)

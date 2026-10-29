@@ -71,8 +71,8 @@ def split_search(faces, kw, c_cands=None, p_cands=None, verbose=False, guess=0.8
     return best, log
 
 
-def run_scenario(gain, floor, boot, dfac, dL=0.005, tag='', nu_mode='q', K=8, ret=None, verbose=False, shift=0.0):
-    cfg = C2.Cfg(gain=gain, floor=floor, boot=bool(boot), dfac=dfac, dL=dL, nu_mode=nu_mode, K=K, shift=shift)
+def run_scenario(gain, floor, boot, dfac, dL=0.005, tag='', nu_mode='q', K=8, ret=None, verbose=False, shift=0.0, eps=1e-6):
+    cfg = C2.Cfg(gain=gain, floor=floor, boot=bool(boot), dfac=dfac, dL=dL, nu_mode=nu_mode, K=K, shift=shift, eps=eps)
     name = cfg.name() + tag
     fn = os.path.join(LOGS, 'c2_%s.json' % name)
     t0 = time.time()

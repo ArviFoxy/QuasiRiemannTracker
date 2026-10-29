@@ -1,1 +1,18 @@
 gain 1 floor 0.55 boot 1 dfac 1.000: theta0=0.873883297 gap=-2.250e-05 (C L=2.0738 s0=0.0730; P L=2.248)
+  count exponent R lowered everywhere by dR = -0.00428   (dtheta/dR = 4.262e-03)
+  step slope s0 smaller by -10.103 %   (dtheta per 1% = 2.020e-06)
+  packed-envelope rate 6 -> 6.0976   (dtheta per 0.01 = 2.132e-06)
+  native barrier / start face L0 lowered by -0.0887 (rel -3.45 %)   (dtheta per 0.001 = 1.774e-07)
+  repeated-mark gain scaled to 0.684 of its Lean value reaches the bar   (points ['1.00:0.87388330', '0.90:0.87389067', '0.80:0.87389778', '0.70:0.87390470', '0.68:0.87390578'])
+Traceback (most recent call last):
+  File "/home/user/QuasiRiemannTracker/research/newpowers/ta/levers2.py", line 122, in <module>
+  File "/home/user/QuasiRiemannTracker/research/newpowers/ta/levers2.py", line 91, in main
+    return t0
+         ^^^^
+  File "/home/user/QuasiRiemannTracker/research/newpowers/ta/levers2.py", line 30, in solve
+    x = g / sl
+             ^
+  File "/home/user/QuasiRiemannTracker/research/newpowers/ta/levers2.py", line 90, in fP
+    if not x:
+           ^^
+TypeError: 'NoneType' object is not subscriptable

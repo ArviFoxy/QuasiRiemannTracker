@@ -1,0 +1,300 @@
+{
+ "edges": {
+  "oldSmall": {
+   "cand": "old",
+   "name": "row001"
+  },
+  "oldSwitch": {
+   "axis": "d",
+   "mid": "3/8",
+   "lo": {
+    "cand": "old",
+    "name": "row002"
+   },
+   "hi": {
+    "cand": "old",
+    "name": "row003"
+   }
+  },
+  "newSwitch": {
+   "axis": "d",
+   "mid": "3/8",
+   "lo": {
+    "cand": "old",
+    "name": "row004"
+   },
+   "hi": {
+    "cand": "old",
+    "name": "row005"
+   }
+  },
+  "newTop": {
+   "axis": "d",
+   "mid": "3/8",
+   "lo": {
+    "axis": "p",
+    "mid": "1/4",
+    "lo": {
+     "cand": "old",
+     "name": "row006"
+    },
+    "hi": {
+     "axis": "d",
+     "mid": "3/16",
+     "lo": {
+      "cand": "old",
+      "name": "row007"
+     },
+     "hi": {
+      "axis": "p",
+      "mid": "3/8",
+      "lo": {
+       "cand": "old",
+       "name": "row008"
+      },
+      "hi": {
+       "axis": "d",
+       "mid": "9/32",
+       "lo": {
+        "cand": "old",
+        "name": "row009"
+       },
+       "hi": {
+        "axis": "p",
+        "mid": "7/16",
+        "lo": {
+         "cand": "capP",
+         "name": "row010"
+        },
+        "hi": {
+         "axis": "d",
+         "mid": "21/64",
+         "lo": {
+          "cand": "capP",
+          "name": "row011"
+         },
+         "hi": {
+          "cand": "capC",
+          "name": "row012"
+         }
+        }
+       }
+      }
+     }
+    }
+   },
+   "hi": {
+    "axis": "p",
+    "mid": "1/4",
+    "lo": {
+     "cand": "old",
+     "name": "row013"
+    },
+    "hi": {
+     "axis": "d",
+     "mid": "9/16",
+     "lo": {
+      "axis": "p",
+      "mid": "3/8",
+      "lo": {
+       "cand": "old",
+       "name": "row014"
+      },
+      "hi": {
+       "axis": "d",
+       "mid": "15/32",
+       "lo": {
+        "axis": "p",
+        "mid": "7/16",
+        "lo": {
+         "axis": "d",
+         "mid": "27/64",
+         "lo": {
+          "axis": "p",
+          "mid": "13/32",
+          "lo": {
+           "cand": "capP",
+           "name": "row015"
+          },
+          "hi": {
+           "axis": "d",
+           "mid": "51/128",
+           "lo": {
+            "cand": "capP",
+            "name": "row016"
+           },
+           "hi": {
+            "cand": "capP",
+            "name": "row017"
+           }
+          }
+         },
+         "hi": {
+          "cand": "C",
+          "name": "row018"
+         }
+        },
+        "hi": {
+         "axis": "d",
+         "mid": "27/64",
+         "lo": {
+          "axis": "p",
+          "mid": "15/32",
+          "lo": {
+           "axis": "d",
+           "mid": "51/128",
+           "lo": {
+            "cand": "capC",
+            "name": "row019"
+           },
+           "hi": {
+            "cand": "weakC7",
+            "name": "row020"
+           }
+          },
+          "hi": {
+           "axis": "d",
+           "mid": "51/128",
+           "lo": {
+            "cand": "capC",
+            "name": "row021"
+           },
+           "hi": {
+            "cand": "weakC7",
+            "name": "row022"
+           }
+          }
+         },
+         "hi": {
+          "axis": "p",
+          "mid": "15/32",
+          "lo": {
+           "cand": "C",
+           "name": "row023"
+          },
+          "hi": {
+           "axis": "d",
+           "mid": "57/128",
+           "lo": {
+            "cand": "C",
+            "name": "row024"
+           },
+           "hi": {
+            "axis": "p",
+            "mid": "31/64",
+            "lo": {
+             "cand": "C",
+             "name": "row025"
+            },
+            "hi": {
+             "axis": "d",
+             "mid": "117/256",
+             "lo": {
+              "axis": "p",
+              "mid": "63/128",
+              "lo": {
+               "cand": "C",
+               "name": "row026"
+              },
+              "hi": {
+               "axis": "d",
+               "mid": "231/512",
+               "lo": {
+                "axis": "p",
+                "mid": "127/256",
+                "lo": {
+                 "cand": "C",
+                 "name": "row027"
+                },
+                "hi": {
+                 "axis": "d",
+                 "mid": "459/1024",
+                 "lo": {
+                  "cand": "C",
+                  "name": "row028"
+                 },
+                 "hi": {
+                  "cand": "C",
+                  "name": "row029"
+                 }
+                }
+               },
+               "hi": {
+                "cand": "C",
+                "name": "row030"
+               }
+              }
+             },
+             "hi": {
+              "cand": "C",
+              "name": "row031"
+             }
+            }
+           }
+          }
+         }
+        }
+       },
+       "hi": {
+        "axis": "p",
+        "mid": "7/16",
+        "lo": {
+         "cand": "old",
+         "name": "row032"
+        },
+        "hi": {
+         "axis": "d",
+         "mid": "33/64",
+         "lo": {
+          "cand": "C",
+          "name": "row033"
+         },
+         "hi": {
+          "axis": "p",
+          "mid": "15/32",
+          "lo": {
+           "cand": "old",
+           "name": "row034"
+          },
+          "hi": {
+           "axis": "d",
+           "mid": "69/128",
+           "lo": {
+            "cand": "C",
+            "name": "row035"
+           },
+           "hi": {
+            "axis": "p",
+            "mid": "31/64",
+            "lo": {
+             "cand": "old",
+             "name": "row036"
+            },
+            "hi": {
+             "axis": "d",
+             "mid": "141/256",
+             "lo": {
+              "cand": "capP",
+              "name": "row037"
+             },
+             "hi": {
+              "cand": "old",
+              "name": "row038"
+             }
+            }
+           }
+          }
+         }
+        }
+       }
+      }
+     },
+     "hi": {
+      "cand": "old",
+      "name": "row039"
+     }
+    }
+   }
+  }
+ }
+}

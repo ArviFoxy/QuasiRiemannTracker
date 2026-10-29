@@ -24,8 +24,10 @@ def solve(fun, g, x1, tol=2e-8, maxit=5):
     t0 = fun(0.0)
     t1 = fun(x1)
     sl = (t0 - t1) / x1
-    x = g / sl
     pts = [(0.0, t0), (x1, t1)]
+    if abs(sl) < 1e-9:                       # lever has no effect (role not binding)
+        return float('inf'), sl, pts
+    x = g / sl
     for _ in range(maxit):
         tx = fun(x)
         pts.append((x, tx))

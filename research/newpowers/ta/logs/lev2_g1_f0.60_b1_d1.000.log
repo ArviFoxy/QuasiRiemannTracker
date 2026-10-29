@@ -1,1 +1,15 @@
 gain 1 floor 0.60 boot 1 dfac 1.000: theta0=0.873908202 gap=+2.402e-06 (C L=2.2129 s0=0.0626; P L=2.308)
+  count exponent R lowered everywhere by dR = 0.00108   (dtheta/dR = 2.227e-03)
+  step slope s0 smaller by 2.362 %   (dtheta per 1% = 1.017e-06)
+  packed-envelope rate 6 -> 5.9870   (dtheta per 0.01 = 1.850e-06)
+  native barrier / start face L0 lowered by 0.0163 (rel 0.63 %)   (dtheta per 0.001 = 1.494e-07)
+  repeated-mark gain scaled to 1.088 of its Lean value reaches the bar   (points ['1.00:0.87390820', '0.90:0.87391113', '1.08:0.87390597', '1.09:0.87390581'])
+Traceback (most recent call last):
+  File "/home/user/QuasiRiemannTracker/research/newpowers/ta/levers2.py", line 122, in <module>
+  File "/home/user/QuasiRiemannTracker/research/newpowers/ta/levers2.py", line 91, in main
+    return t0
+         ^^^^
+  File "/home/user/QuasiRiemannTracker/research/newpowers/ta/levers2.py", line 27, in solve
+    pts = [(0.0, t0), (x1, t1)]
+        ^^^^^^
+ZeroDivisionError: float division by zero

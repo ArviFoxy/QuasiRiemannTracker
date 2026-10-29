@@ -197,3 +197,19 @@ mod 36 (primary normalization) and the coprimality runs over the fixed primes of
 - Conjugating and using reciprocity puts the dual in the same family idealRowHom(u)(·).
 - A dyadic split of N(D') and a Mellin separation on Re s = 0 pull the row dependence out as a unimodular
   factor. PR 93's norm then applies to the sources ξ·I₂·I_slots, with a divisor-bound ℓ² mass.
+
+**E5b continued: R1 in the library [Lean, read].** The I-side dualization R1 needs is in the baseline:
+- `actual_original_twisted_reflection` (any non-principal `Character`);
+- the full energy engine `UniformOriginalComparison.actual_original_comparison`: reflection, Möbius/Euler
+  corrections, separation of the conductor-dependent dual weight, and the discarded part;
+- the leaf polynomial as poly·poly·slots of the row character: `positiveSlotRow_eq_product` /
+  `positiveSlotRow_eq_polynomials`;
+- the radical conductor bound `exists_row_character_radical`.
+
+What is left for R1:
+- bound the engine's separated energies E with PR 93's per-root selected norm;
+- the root decomposition and the root sum.
+
+Even with the weaker dual length that the engine gives (root primes in the redundant set:
+y_dual = M − 5ρ), the ledger scan passes along the whole K = 0.501 line. The worst case is the deletion branch
+at equality; the selected branch has margin ≈ 0.003.

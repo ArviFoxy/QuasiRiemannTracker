@@ -38,6 +38,29 @@ So steps 1–6 below collapse into one library theorem. Divisors D cost nothing:
 L₁N(d) but coefficient 1/N(d), so its large-sieve bound is ≤ the d = 1 term. Per root r, S is the fixed bad
 primes plus the primes of r, and Σ_{D,H} 1/√(N(D)N(H)) ≤ Z^{ε}.
 
+## 0c. The whole reflected energy engine exists (found 2026-10-29)
+
+`Moments/UniformOriginalComparison.actual_original_comparison` takes rows i with χ_i.residue ≠ 1 and
+N(χ_i.mod) ≤ C·Z^M, and an arbitrary row factor P_i. It bounds
+
+  Σ_i ‖poly(χ_i, G_i, Z^along)·poly(χ_i, W_short, Z^bshort, ω_i)·P_i‖²
+    ≤ C·Rcap^ε·S²·(1 + 2·max(0, M − along + ξ)·log Z)·E  +  D·Rcap^{2ε}·S²·Z^{−2·saving}·Σ_i‖poly(W_short)·P_i‖².
+
+E is any uniform bound on the separated energies Σ_i ‖poly(χ_i, annulus_j, e^x, −2πv)·poly(χ_i, W_short_k,
+Z^bshort, ω_i)·P_i‖² ≤ E(1+|v|)^{2J}, for x ∈ [0, (M − along + ξ)₊ log Z]. It is built from:
+- `actual_natural_retained_energy`;
+- `actual_retained_uniform_energy` (the separation, via `actual_independent_choices`);
+- `actual_retained_weighted_energy` (Möbius and Euler corrections; Rcap^ε loss);
+- the retained-reflection approximation.
+
+**R1 plan.**
+- Split rows by root r (ρ = log_Z N(r)). By `exists_row_character_radical`, N(χ_w.mod) ≤ C·N(rad w)
+  ≤ C·Z^{M−5ρ}.
+- Roots with M − 5ρ ≥ 2x₁: PR 93's norm on the original polynomial.
+- Other roots: `actual_original_comparison` with M_r = M − 5ρ, E from PR 93's norm.
+- Sum over roots. The exponent is the 'dual5' model, which passes the ledger with margin ≈ 0.003 at the worst
+  geometry (`root_ledger.py` notes; journal E5b).
+
 ## 1. Proof chain (original sketch; steps 1–6 are now one library call)
 
 1. **Row factorization.** For a source n coprime to 6 and primary (λ² | n − 1), with the row's supported

@@ -1,0 +1,25 @@
+A  cubic CRT  g3(ab,h) = chi_a(b)^2 chi_b(a)^2 g3(a,h) g3(b,h)
+  CRT (unit-twisted generators): 234/234 pass
+  cubic reciprocity chi_a(b)^2 = chi_b(a)^2 (primary): 234/234 pass
+B  dilation g3(n,E h) = chi_n(E)^-2 g3(n,h)
+  dilation: 200/200 pass
+C/H  g3(D^m n, D^(m-1) H) = c * g3(D^m, D^(m-1) H) * g3(n, D^s D^(m-1) H): constant c over n  <=>  2m+s = 0 mod 3
+  m=1  s=-1..6 :   .  tw* EX* tw* tw* EX* tw* tw*     (EX = constant ratio, tw = twisted; * = as predicted)
+  m=2  s=-1..6 : EX* tw* tw* EX* tw* tw* EX* tw*     (EX = constant ratio, tw = twisted; * = as predicted)
+  exact cells: {(1, 1): [0], (1, 4): [0], (2, -1): [0], (2, 2): [0], (2, 5): [0]}  all as predicted: True
+C' twist-free cubic transfer g3(Dn,h) = g3(D,h) g3(n,Dh), primary D,n (split and inert D, h arbitrary incl. D|h)
+  D^1 transfer exact (constant = 1): 342/342 pass
+D  pool g3(u,p^3 h) = 1_{p not| u} g3(u,h)  for v_p(u) <= 2 ; v_p(u) = 3 fails
+  pool, v_p(u) in {0,1,2}: 173/173 pass
+  pool, v_p(u) = 3: identity fails for some sampled h in 7/7 cases (expected: all)
+E  cubic squared block g3(D^2 n, D H') = g3(D^2, D H') g3(n, H')   (D not| H')
+  cubic squared block, residual undilated: 150/150 pass
+F  g6(a,h)/sqrtN = (h/a)_2 mu(a) alpha(a) G(a) conj(g3(a,h)/sqrtN),  G = conj(chi_a(4)) Gamma(a)
+  HD decomposition with the quadratic factor (h/a)_2: 360/360 pass
+  F' gamma1*gamma2 = mu*alpha*G: 120/120;  gamma2^3 = mu*alpha: 120/120;  gamma4*gamma2 = 1 (cubic row: no Mobius): 120/120
+G  sextic: g6(Dn,h) = (n/D)_2 g6(D,h) g6(n,Dh)  (quadratic twist (n/D)_2 = chi_D(n)^3 left by the cubic dilation D^1)
+  sextic D^1 = quadratic-twisted: 256/256 pass
+  twist (n/D)_2 trivial in 117/256 cases (so D^1 is NOT twist-free in the sextic polynomial)
+
+SUMMARY: {'A': True, "A'": True, 'B': True, 'C/H': True, "C'": True, 'D': True, 'E': True, 'F': True, 'G': True}
+exit 0

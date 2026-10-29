@@ -1,0 +1,1006 @@
+<title>Sextic Filter Bank</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap">
+<style>
+/* Layout: one reading column (~66ch); figures are instrument panels in the same column, two-up only where a comparison needs it */
+:root {
+  --mode: light;
+  --bg: #f3f4f7;
+  --panel: #ffffff;
+  --ink: #14161b;
+  --ink-2: #464b58;
+  --muted: #737989;
+  --rule: #dadde5;
+  --grid: #eceef3;
+  --accent: #3442c0;
+  --accent-wash: rgba(52, 66, 192, 0.10);
+  --on-accent: #ffffff;
+  --s1: #2a78d6;
+  --s2: #eb6834;
+  --f-display: "Newsreader", "Iowan Old Style", Georgia, serif;
+  --f-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --mode: dark; --bg: #0e1015; --panel: #161921; --ink: #e8eaf1; --ink-2: #b4b9c7; --muted: #858b9b;
+    --rule: #2a2e39; --grid: #1e222b; --accent: #9ba6ff; --accent-wash: rgba(155, 166, 255, 0.14);
+    --on-accent: #0e1015; --s1: #3987e5; --s2: #d95926; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --mode: dark; --bg: #0e1015; --panel: #161921; --ink: #e8eaf1; --ink-2: #b4b9c7; --muted: #858b9b;
+  --rule: #2a2e39; --grid: #1e222b; --accent: #9ba6ff; --accent-wash: rgba(155, 166, 255, 0.14);
+  --on-accent: #0e1015; --s1: #3987e5; --s2: #d95926; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--ink);
+  font: 16px/1.62 var(--f-body);
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 0 56px;
+}
+.wrap { max-width: 760px; margin: 0 auto; }
+header { padding-block: 44px 26px; border-bottom: 1px solid var(--rule); }
+.eyebrow { font: 500 13px/1.4 var(--f-mono); letter-spacing: 0.02em; color: var(--muted); margin: 0 0 14px; }
+h1 { font-family: var(--f-display); font-weight: 500; font-size: clamp(38px, 8vw, 60px); line-height: 1.02; letter-spacing: -0.015em; margin: 0 0 16px; text-wrap: balance; }
+.lede { color: var(--ink-2); font-size: 17px; max-width: 64ch; margin: 0 0 18px; }
+nav.map { display: flex; flex-wrap: wrap; gap: 4px 14px; font: 13px/1.5 var(--f-mono); }
+nav.map a { color: var(--ink-2); text-decoration: none; border-bottom: 1px solid var(--rule); }
+nav.map a:hover, nav.map a:focus-visible { color: var(--accent); border-color: var(--accent); }
+section { padding-block: 40px 4px; border-bottom: 1px solid var(--rule); }
+section:last-of-type { border-bottom: 0; }
+.secno { font: 500 12px var(--f-mono); letter-spacing: 0.08em; color: var(--accent); text-transform: uppercase; margin: 0 0 6px; }
+h2 { font-family: var(--f-display); font-weight: 500; font-size: clamp(26px, 5vw, 32px); line-height: 1.15; margin: 0 0 14px; text-wrap: balance; }
+p { max-width: 66ch; margin: 0 0 14px; }
+em.v { font-family: var(--f-display); font-style: italic; font-size: 1.08em; }
+code, .m { font-family: var(--f-mono); font-size: 0.86em; }
+.eq { font-family: var(--f-display); font-size: clamp(19px, 4.4vw, 23px); text-align: center; margin: 18px 0 20px; color: var(--ink); }
+figure.panel { margin: 22px 0 30px; background: var(--panel); border: 1px solid var(--rule); border-radius: 10px; padding: 14px; }
+.controls { display: flex; flex-wrap: wrap; gap: 6px 8px; align-items: center; margin: 0 0 12px; }
+.controls .lab { font: 13px var(--f-mono); color: var(--muted); margin-right: 4px; }
+.chip { font: 500 13px var(--f-mono); padding: 5px 10px; border-radius: 999px; border: 1px solid var(--rule); background: transparent; color: var(--ink-2); cursor: pointer; line-height: 1.3; }
+.chip:hover { border-color: var(--muted); color: var(--ink); }
+.chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.chip:focus-visible, input[type="range"]:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+canvas { display: block; width: 100%; touch-action: manipulation; }
+.svgbox { width: 100%; }
+.svgbox svg { display: block; width: 100%; height: auto; overflow: visible; }
+.pair { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.pair > div { min-width: 0; }
+.pair .sub { font: 13px var(--f-mono); color: var(--muted); margin: 0 0 6px; }
+@media (max-width: 560px) { .pair { grid-template-columns: 1fr; } }
+figcaption { font-size: 14px; color: var(--ink-2); margin-top: 12px; line-height: 1.55; max-width: 70ch; }
+.lean { display: block; margin-top: 8px; font: 12px/1.5 var(--f-mono); color: var(--muted); }
+.readout { font: 13px/1.6 var(--f-mono); font-variant-numeric: tabular-nums; color: var(--ink-2); margin-top: 10px; overflow-x: auto; }
+.readout b { color: var(--ink); font-weight: 500; }
+.readout table { border-collapse: collapse; }
+.readout td { padding: 1px 14px 1px 0; white-space: nowrap; vertical-align: top; }
+.legend { display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: center; font: 12px var(--f-mono); color: var(--ink-2); margin-top: 10px; }
+.sw { display: inline-block; width: 11px; height: 11px; border-radius: 50%; vertical-align: -1px; margin-right: 5px; }
+.sw.ring { background: transparent !important; border: 1.5px solid var(--muted); }
+.slider { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font: 13px var(--f-mono); color: var(--ink-2); }
+.slider input { flex: 1 1 180px; accent-color: var(--accent); }
+#tip { position: fixed; z-index: 20; pointer-events: none; background: var(--panel); color: var(--ink); border: 1px solid var(--rule); border-radius: 8px; padding: 7px 10px; font: 12px/1.45 var(--f-mono); box-shadow: 0 6px 20px rgba(0,0,0,0.14); max-width: 260px; }
+.flow { max-width: 470px; margin: 0 auto; color: var(--ink); }
+.note { font-size: 14px; color: var(--muted); }
+footer { padding-block: 28px 0; font-size: 13px; color: var(--muted); }
+footer p { max-width: 72ch; }
+</style>
+
+<div class="wrap">
+<header>
+  <p class="eyebrow">θ = 0.87387234 · all-moduli Dirichlet nonvanishing</p>
+  <h1>Sextic Filter Bank</h1>
+  <p class="lede">The proof hunts a hypothetical zero with a bank of filters built from sixth-order characters on the hexagonal lattice ℤ[ω]. This page draws the pieces: the lattice and its finite tori, the two kinds of waves that live on them, Gauss sums as DFT coefficients, the D⁴ transfer, frame bounds, and the 130 faces of the density chain. The pictures are computed live from the definitions; the faces are the exact numbers of the merged chain.</p>
+  <nav class="map" aria-label="Sections">
+    <a href="#lattice">1 Lattice</a><a href="#waves">2 Waves</a><a href="#gauss">3 Gauss sums</a><a href="#transfer">4 Transfer</a><a href="#combs">5 Combs</a><a href="#frames">6 Frames</a><a href="#faces">7 Faces</a><a href="#zero">8 The zero</a>
+  </nav>
+</header>
+
+<section id="lattice">
+  <p class="secno">1 · Lattice</p>
+  <h2>The lattice and its tori</h2>
+  <p>All the arithmetic lives in ℤ[ω], with ω = e<sup>2πi/3</sup>: the hexagonal lattice in the complex plane. The norm N(a + bω) = a² − ab + b² is the squared length. Multiplying by a lattice point <em class="v">s</em> rotates the plane by arg <em class="v">s</em> and scales it by √N(<em class="v">s</em>), so <em class="v">s</em>ℤ[ω] is a rotated, coarser copy of the same lattice.</p>
+  <p>The quotient ℤ[ω]/(<em class="v">s</em>) is a finite torus: the lattice folded into one cell of <em class="v">s</em>ℤ[ω]. It has exactly N(<em class="v">s</em>) points. This is the signal space; every DFT below runs over one of these tori.</p>
+  <figure class="panel">
+    <div class="controls" role="group" aria-label="Choose the modulus">
+      <span class="lab">modulus π</span>
+      <span id="pi-chips" style="display:contents"></span>
+    </div>
+    <div class="controls">
+      <button class="chip" id="wind" type="button" aria-pressed="false">show 0, 1, 2, … winding</button>
+    </div>
+    <canvas id="c-lattice" role="img" aria-label="The hexagonal lattice with the period lattice of the chosen prime and one torus cell shaded"></canvas>
+    <figcaption>Small dots: ℤ[ω]. Rings: the period lattice πℤ[ω]. Shaded: one cell, the torus ℤ[ω]/(π), with its N(π) points filled. Dashed: neighbouring cells, which are glued to it. For prime N(π) = <em class="v">p</em> the torus is cyclic: the integers 0, 1, 2, … each step by +1 and wrap around, visiting every point once, like a line winding around a doughnut.</figcaption>
+  </figure>
+</section>
+
+<section id="waves">
+  <p class="secno">2 · Waves</p>
+  <h2>Two kinds of waves</h2>
+  <p>Signals on a torus come in two natural families. The additive characters ψ<sub>h</sub>(x) = e(Tr(hx / π√−3)) are plane waves, one for each frequency h. The frequencies live on the same lattice, read modulo π.</p>
+  <p>The sextic residue symbol χ<sub>π</sub>(x) = (x/π)₆ is a multiplicative character: χ(xy) = χ(x)χ(y). It takes the six values e<sup>2πik/6</sup> and vanishes at 0. It is not a wave. On the torus it looks like a spread-spectrum code.</p>
+  <figure class="panel">
+    <div class="controls" role="group" aria-label="Choose the frequency">
+      <span class="lab">frequency h</span>
+      <span id="h-chips" style="display:contents"></span>
+    </div>
+    <div class="pair">
+      <div><p class="sub">plane wave ψ<sub>h</sub></p><canvas id="c-wave" role="img" aria-label="Plane wave on the torus, coloured by phase"></canvas></div>
+      <div><p class="sub">sextic code χ<sub>π</sub></p><canvas id="c-code" role="img" aria-label="Sextic residue symbol on the torus, six colours for six values"></canvas></div>
+    </div>
+    <div class="legend" id="legend-six"></div>
+    <figcaption>Colour is phase. The wave panel shows the plane wave for the chosen h, drawn continuously across the cell (faint) and sampled at the torus points. The code panel shows the sextic character, one colour per sixth root of unity, with a ring at 0. Changing h changes the wave; the code stays fixed.</figcaption>
+  </figure>
+</section>
+
+<section id="gauss">
+  <p class="secno">3 · Gauss sums</p>
+  <h2>Gauss sums are DFT coefficients</h2>
+  <p>The Gauss sum g(π, h) = Σ<sub>x</sub> χ<sub>π</sub>(x) ψ<sub>h</sub>(x) is the inner product of the code with a plane wave, i.e. the DFT of χ<sub>π</sub> at frequency h. In the Lean library it is <code>sexticGauss</code>. Each term is a unit phasor, so g is the end point of a walk of <em class="v">p</em> − 1 unit steps. For every frequency off the period lattice, the walk ends at distance exactly √<em class="v">p</em>.</p>
+  <figure class="panel">
+    <canvas id="c-walk" role="img" aria-label="Phasor walk whose end point is the Gauss sum, on a circle of radius root p"></canvas>
+    <div class="readout" id="walk-read"></div>
+    <figcaption>Head-to-tail sum of the terms χ(x)ψ<sub>h</sub>(x), x = 1, …, <em class="v">p</em> − 1, each segment coloured by its phase. Dashed circle: radius √<em class="v">p</em>. Arrow: g(π, h). Use the π and h choices above.</figcaption>
+  </figure>
+  <p>Doing this for every frequency gives the spectrum of the code. It is flat, it vanishes exactly on the period lattice, and its phase pattern is the code again, conjugated: g(π, h) = χ̄<sub>π</sub>(h)·g(π, 1). A multiplicative character is an eigenfunction of dilation x ↦ ax, and the DFT turns dilation by a into dilation by a⁻¹.</p>
+  <figure class="panel">
+    <canvas id="c-spec" role="img" aria-label="Spectrum of the sextic code over the frequency lattice: flat magnitude, zeros on the period lattice"></canvas>
+    <div class="readout" id="spec-read"></div>
+    <figcaption>Each dot is a frequency h near the origin. Colour = arg g(π, h); every dot has the same size because |g| = √<em class="v">p</em>. Rings: frequencies in πℤ[ω], where g = 0. The colour pattern repeats with the period lattice: the spectrum is itself a copy of the code.</figcaption>
+  </figure>
+</section>
+
+<section id="transfer">
+  <p class="secno">4 · Transfer</p>
+  <h2>Good–Thomas, and the transfer</h2>
+  <p>For a modulus <em class="v">s</em> = D·n with coprime parts, the Chinese remainder theorem splits the torus: ℤ[ω]/(Dn) ≅ ℤ[ω]/(D) × ℤ[ω]/(n). Under the index map x = a·n + b·D the plane waves factor, and the code factors up to one constant phase. So the DFT factors with no twiddle factors: the prime-factor (Good–Thomas) FFT.</p>
+  <p>The constant phase is χ<sub>D</sub>(n)·χ<sub>n</sub>(D). Sextic reciprocity gives χ<sub>D</sub>(n) = ±χ<sub>n</sub>(D). The leftover χ<sub>n</sub>(D)² becomes a dilation of the frequency by D⁴, because χ⁶ = 1 makes D⁻² act like D⁴. The result is the transfer identity:</p>
+  <p class="eq">g(Dn, h) = ± g(D, h) · g(n, D⁴h)</p>
+  <p>The prime D leaves the modulus and comes back as a dilation of the frequency.</p>
+  <figure class="panel">
+    <div class="controls" role="group" aria-label="Choose n">
+      <span class="lab">D = 2+3ω, n</span>
+      <span id="n-chips" style="display:contents"></span>
+    </div>
+    <canvas id="c-crt" role="img" aria-label="The sextic code of the composite torus laid out as a separable two-dimensional array"></canvas>
+    <div class="readout" id="crt-read"></div>
+    <figcaption>The code of ℤ[ω]/(Dn) laid out by the index map: rows a mod D, columns b mod n. Each row is the column code shifted by a constant hue, so the array is separable (row code × column code × one constant phase). The numbers check the transfer identity at the frequency h chosen in section 2, with the left side summed directly over all N(D)·N(n) points.<span class="lean">Lean: sexticGauss_coprime_product, fourth_power (GaussTransfer.lean), selected_row_fourth_one (FourthTransfer.lean)</span></figcaption>
+  </figure>
+  <p>Geometrically, h ↦ D⁴h is a similarity: a rotation by 4·arg D and a magnification by N(D)², which is 49 for N(D) = 7. In the proof D runs over a whole slot of primes, so the parent's frequency window is spread over a window N(D)⁴ times larger in area.</p>
+  <figure class="panel">
+    <div class="pair">
+      <div><p class="sub">parent window</p><canvas id="c-par" role="img" aria-label="The 42 parent frequencies with norm at most 12"></canvas></div>
+      <div><p class="sub">after k ↦ D⁴k</p><canvas id="c-push" role="img" aria-label="The parent frequencies mapped by D to the fourth for two primes of norm 7, inside a large disc"></canvas></div>
+    </div>
+    <div class="legend" id="legend-push"></div>
+    <figcaption>The parent window holds 42 frequencies with 0 &lt; N(k) ≤ 12. The second panel shows them after k ↦ D⁴k for the two primes of norm 7. Each prime gives a rotated, 49× magnified copy. Together they are samples of one residual signal on two sparse lattices, inside a disc that holds about 104,000 lattice frequencies. The transfer bounds these samples by the residual's energy on the whole disc. That is the frequency half of the scale cost c = 6: 4 from the dilation, 2 from the smaller moduli.</figcaption>
+  </figure>
+</section>
+
+<section id="combs">
+  <p class="secno">5 · Combs</p>
+  <h2>Combs from squared primes</h2>
+  <p>If the modulus is a squared prime D², the code χ<sub>D²</sub> = χ<sub>D</sub>² depends only on x mod D: it has a shorter period than its torus. Its spectrum is therefore a comb. It is zero except at frequencies divisible by D exactly once, where the normalized atom 𝔤 = g/√N has height √N(D) instead of 1. Same energy, concentrated on a fraction 1/N(D) of the frequencies.</p>
+  <p>That sparsity is where a doubled block would get its extra room (e = 2 in our ledger model). The identity is in Lean; the ledger value is not yet.</p>
+  <figure class="panel">
+    <div class="pair">
+      <div><p class="sub">prime modulus D</p><canvas id="c-flat" role="img" aria-label="Flat spectrum of the prime modulus"></canvas></div>
+      <div><p class="sub">squared modulus D²</p><canvas id="c-comb" role="img" aria-label="Comb spectrum of the squared modulus"></canvas></div>
+    </div>
+    <div class="readout" id="comb-read"></div>
+    <figcaption>Dot area ∝ |𝔤(·, h)|², on the same scale in both panels, for D = 2+3ω and 0 &lt; N(h) ≤ 84; colour is phase. Prime modulus: flat, with holes on Dℤ[ω]. Squared modulus: a comb on the frequencies with D ∥ h, each tooth √7 times taller, and the same average energy over a full period.<span class="lean">Lean: square_row, square_twist (Collision/SquareGauss.lean)</span></figcaption>
+  </figure>
+</section>
+
+<section id="frames">
+  <p class="secno">6 · Frames</p>
+  <h2>Frame bounds</h2>
+  <p>Every density step has to bound the energy of a synthesized signal S(h) = Σ<sub>u</sub> b<sub>u</sub> 𝔤(u, h) over a frequency window, with one atom 𝔤(u, ·) per modulus u. A bound ‖S‖² ≤ C·‖b‖² is an upper frame (Bessel) bound for this dictionary; number theorists call it a large-sieve inequality.</p>
+  <p>Whether the bound is good depends on coherence: how much atoms with different moduli correlate on the window. The product of the atoms for u and u′ is periodic with period lattice uu′ℤ[ω], whose cell holds about Q² points. Once the window holds many such cells, the atoms are nearly orthogonal.</p>
+  <figure class="panel">
+    <div class="slider"><label for="win">window N(h) ≤</label><input id="win" type="range" min="0" max="6" step="1" value="2"><b id="win-val" class="m"></b></div>
+    <canvas id="c-gram" role="img" aria-label="Gram matrix of 26 normalized Gauss-sum atoms over a frequency window"></canvas>
+    <div class="readout" id="gram-read"></div>
+    <figcaption>The 26 atoms for the prime moduli with N(u) ≤ 109, sorted by norm (Q ≈ 109, Q² ≈ 11,900). Cell (u, u′) shows |⟨𝔤(u,·), 𝔤(u′,·)⟩| averaged over the window; the diagonal is 1 − 1/N(u). Small windows: visible off-diagonal coherence. Windows larger than Q²: an almost orthonormal system, the diagonal regime.</figcaption>
+  </figure>
+</section>
+
+<section id="faces">
+  <p class="secno">7 · Faces</p>
+  <h2>What a face is</h2>
+  <p>A face G(B, Λ, cap) is a proven frame bound with an explicit region of validity. Take plain polynomials of total length P and slot (prime-amplifier) polynomials of total length s, over a family of size U<sup>M</sup>. The face says the energy of their product is at most U<sup>M+ε</sup>, the diagonal order, whenever</p>
+  <p class="eq">P + Λ·s ≤ B·M,   s ≤ cap·M</p>
+  <p>Divide by M. In the plane of slot length s and plain length P, each face is the region under a line with height B at s = 0 and slope −Λ. Slot components are charged Λ times their nominal length; a smaller Λ means the amplifier behaves more like its nominal bandwidth. Everything under some face is proven, so the proven region is everything under the upper envelope of the lines.</p>
+  <figure class="panel">
+    <div class="slider"><label for="step">step k</label><input id="step" type="range" min="1" max="129" step="1" value="64"><b id="step-val" class="m"></b></div>
+    <div class="controls" style="margin-top:8px">
+      <button class="chip" id="zoom" type="button" aria-pressed="false">zoom into the fan</button>
+    </div>
+    <div class="svgbox" id="s-faces" role="img" aria-label="The 130 faces of the density chain as lines in the plane of slot length and plain length, with their upper envelope"></div>
+    <div class="readout" id="faces-read"></div>
+    <figcaption>All 130 faces of the merged chain, from PR 86's boot face G(0.99999, 2.5715, 0.1397) to the count face G(0.96233, 1.9265, 0.1), coloured from early (light) to late (dark). Each line stops at its cap. Bold: the envelope; shaded: the proven region. Orange and blue: the parent and new face of step k. Tap or click anywhere to test a point.<span class="lean">Lean: SourceFace.Admissible (m₁ + m₂ + lam·s ≤ B·M), UnitFaceSource</span></figcaption>
+  </figure>
+  <p>A density step adds a slightly flatter line: Λ drops by 1/200 and B drops a little. The new line crosses its parent at s₀ = (B₀ − B)/(Λ₀ − Λ) and is higher beyond it. That sliver is the step's new territory. It is too thin to see at full scale, so here it is under a magnifier: height above the parent face.</p>
+  <figure class="panel">
+    <div class="svgbox" id="s-mag" role="img" aria-label="The new territory of one density step: a thin triangle above the parent face, beyond the crossing point"></div>
+    <figcaption>The step chosen above, magnified. Horizontal axis: slot length s. Vertical axis: how far the new face lies above its parent. The shaded triangle, from the crossing s₀ to the cap, is the defect the step has to pay for. The LOW gate pays with the transfer (room e, removed width r, scale cost c); the HIGH rows are counted with zero-density estimates.<span class="lean">Lean: cross, ds_defect_aux, ds_low_aux (Density/StepGates.lean)</span></figcaption>
+  </figure>
+  <p>How far a step can push is set by the density cut q, which separates LOW rows (weak slots, deleted) from HIGH rows (counted). The LOW gate caps it at q ≤ 0.999·Λ₀/(6B₀ − Λ₀), the transfer constants e = 1, c = 6, r = 1 written out. In the (Λ, B) plane every face is a point, and each value of q is a line through the origin, B = Λ·(1 + 0.999/q)/6. A face can still descend at cut q only while it lies below that line.</p>
+  <figure class="panel">
+    <div class="pair">
+      <div><p class="sub">faces as points (Λ, B)</p><div class="svgbox" id="s-dual" role="img" aria-label="The faces as points in the Lambda B plane, between the q equals three quarters and q equals one half lines"></div></div>
+      <div><p class="sub">density cut per step</p><div class="svgbox" id="s-q" role="img" aria-label="Range of the density cut q for each step, between the floor one half and the cap three quarters"></div></div>
+    </div>
+    <figcaption>Faces as points: each dot is a face, and the fan shows where the LOW gate allows exactly q = 3/4, 0.70, …, 1/2. The chain starts on the q = 3/4 line (Λ = 18B/7 at the boot face) and ends on the q = 1/2 line (Λ = 2.0019·B at the count face). Density cut per step: the range of q(v) over the allowed excess widths v, which must stay between the floor 1/2 and the cap 3/4. The last step bottoms out at q = 0.500001. The floor is what ends the chain.<span class="lean">Lean: dens (Source/HybridGates.lean), dsDens_overshoot</span></figcaption>
+  </figure>
+  <p>This is why new identities matter. With transfer constants (e, c, r) the lines become B = Λ·(r + e/q)/c, ignoring the 0.999. More room e or a smaller cost c makes them steeper, so the same floor reaches further left: c = 3 would allow Λ down to about B, and e = 2 down to about 1.2·B. Both are ledger-model numbers; neither transfer is available in Lean.</p>
+</section>
+
+<section id="zero">
+  <p class="secno">8 · The zero</p>
+  <h2>Where the zero comes in</h2>
+  <p>Nothing above mentions a zero: the faces are unconditional theorems. The zero enters only in the last stage, the return. There the probe, built from this sextic family and matched to the character χ, is computed in two ways.</p>
+  <figure class="panel">
+    <svg class="flow" viewBox="0 0 360 430" role="img" aria-label="Flow: a hypothetical zero, the probe, two evaluations, and the contradiction">
+      <defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs>
+      <g fill="none" stroke="currentColor" stroke-width="1.2">
+        <rect x="60" y="10" width="240" height="54" rx="8"/>
+        <rect x="60" y="112" width="240" height="54" rx="8"/>
+        <rect x="8" y="232" width="164" height="78" rx="8"/>
+        <rect x="188" y="232" width="164" height="78" rx="8"/>
+        <rect x="60" y="364" width="240" height="54" rx="8" style="stroke: var(--accent)"/>
+        <line x1="180" y1="64" x2="180" y2="110" marker-end="url(#ah)"/>
+        <line x1="150" y1="166" x2="96" y2="230" marker-end="url(#ah)"/>
+        <line x1="210" y1="166" x2="264" y2="230" marker-end="url(#ah)"/>
+        <line x1="90" y1="310" x2="150" y2="362" marker-end="url(#ah)"/>
+        <line x1="270" y1="310" x2="210" y2="362" marker-end="url(#ah)"/>
+      </g>
+      <g fill="currentColor" font-family="IBM Plex Sans, system-ui, sans-serif" font-size="13" text-anchor="middle">
+        <text x="180" y="33">hypothetical zero ρ of L(s, χ)</text>
+        <text x="180" y="52" style="fill:var(--ink-2)" font-size="12">with Re ρ &gt; θ</text>
+        <text x="180" y="135">probe: sextic filter bank</text>
+        <text x="180" y="154" style="fill:var(--ink-2)" font-size="12">slots matched to χ</text>
+        <text x="90" y="256">Mellin side</text>
+        <text x="90" y="276" style="fill:var(--ink-2)" font-size="12">contour shift: the pole</text>
+        <text x="90" y="292" style="fill:var(--ink-2)" font-size="12">of 1/L at ρ gives a residue</text>
+        <text x="270" y="256">Fourier side</text>
+        <text x="270" y="276" style="fill:var(--ink-2)" font-size="12">Poisson + faces bound</text>
+        <text x="270" y="292" style="fill:var(--ink-2)" font-size="12">the same quantity</text>
+        <text x="180" y="387" style="fill: var(--accent)">the two clash if Re ρ &gt; θ</text>
+        <text x="180" y="406" style="fill:var(--ink-2)" font-size="12">so no such zero exists</text>
+      </g>
+      <g style="fill:var(--muted)" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="11">
+        <text x="188" y="92">builds</text>
+        <text x="58" y="206" text-anchor="middle">evaluate as</text>
+        <text x="58" y="219" text-anchor="middle">integral</text>
+        <text x="302" y="206" text-anchor="middle">evaluate as</text>
+        <text x="302" y="219" text-anchor="middle">correlation</text>
+        <text x="112" y="346" text-anchor="end">grows with Re ρ</text>
+        <text x="250" y="346">capped by θ</text>
+      </g>
+    </svg>
+    <figcaption>The return, schematically. The residue grows with Re ρ. The face-based bound does not depend on ρ. θ is the largest real part at which the bound still wins.</figcaption>
+  </figure>
+  <p>In LTI terms, L(s, χ) is the transfer function of a causal system with impulse response χ(n) in log-time u = log n. Its inverse 1/L has impulse response μ(n)χ(n), and a zero with Re ρ &gt; θ is a pole of the inverse: past θ the inverse filter is unstable, and its response grows like x<sup>Re ρ</sup>. The Mellin side sees that growth as the residue; the Fourier side, through the faces, says the same quantity cannot grow that fast.</p>
+</section>
+
+<footer>
+  <p>Definitions and identities: OpenAI baseline <code>Detector/Physical.lean</code> (<code>sexticGauss</code>), Sil's <code>GaussTransfer.lean</code> and <code>FourthTransfer.lean</code>, <code>SourceFace.Admissible</code>, <code>HybridGates.dens</code>, <code>StepGates.ds_low_aux</code>. Faces: the 129 steps of the merged arvi-density chain (PR 94, θ = 43693617/50000000). The Gauss sums, Gram matrix and identity checks are computed in your browser from the definitions.</p>
+</footer>
+</div>
+<div id="tip" role="tooltip" hidden></div>
+
+<script>
+(() => {
+"use strict";
+const CHAIN = {"faces":[[0.99999,2.5715,0.1397],[0.99985125,2.5665,0.1],[0.99970932,2.5615,0.1],[0.99956424,2.5565,0.1],[0.99941605,2.5515,0.1],[0.99926477,2.5465,0.1],[0.99911043,2.5415,0.1],[0.99895305,2.5365,0.1],[0.99879267,2.5315,0.1],[0.99862931,2.5265,0.1],[0.998463,2.5215,0.1],[0.99829376,2.5165,0.1],[0.99812162,2.5115,0.1],[0.99794661,2.5065,0.1],[0.99776875,2.5015,0.1],[0.99758806,2.4965,0.1],[0.99740457,2.4915,0.1],[0.9972183,2.4865,0.1],[0.99702927,2.4815,0.1],[0.99683751,2.4765,0.1],[0.99664303,2.4715,0.1],[0.99644586,2.4665,0.1],[0.99624602,2.4615,0.1],[0.99604353,2.4565,0.1],[0.99583841,2.4515,0.1],[0.99563068,2.4465,0.1],[0.99542036,2.4415,0.1],[0.99520747,2.4365,0.1],[0.99499203,2.4315,0.1],[0.99477405,2.4265,0.1],[0.99455356,2.4215,0.1],[0.99433057,2.4165,0.1],[0.9941051,2.4115,0.1],[0.99387717,2.4065,0.1],[0.99364679,2.4015,0.1],[0.99341398,2.3965,0.1],[0.99317876,2.3915,0.1],[0.99294114,2.3865,0.1],[0.99270114,2.3815,0.1],[0.99245877,2.3765,0.1],[0.99221405,2.3715,0.1],[0.991967,2.3665,0.1],[0.99171763,2.3615,0.1],[0.99146595,2.3565,0.1],[0.99121198,2.3515,0.1],[0.99095573,2.3465,0.1],[0.99069721,2.3415,0.1],[0.99043644,2.3365,0.1],[0.99017344,2.3315,0.1],[0.98990821,2.3265,0.1],[0.98964077,2.3215,0.1],[0.98937113,2.3165,0.1],[0.98909931,2.3115,0.1],[0.98882531,2.3065,0.1],[0.98854915,2.3015,0.1],[0.98827084,2.2965,0.1],[0.98799039,2.2915,0.1],[0.98770781,2.2865,0.1],[0.98742312,2.2815,0.1],[0.98713632,2.2765,0.1],[0.98684743,2.2715,0.1],[0.98655646,2.2665,0.1],[0.98626341,2.2615,0.1],[0.9859683,2.2565,0.1],[0.98567114,2.2515,0.1],[0.98537194,2.2465,0.1],[0.98507071,2.2415,0.1],[0.98476745,2.2365,0.1],[0.98446218,2.2315,0.1],[0.98415491,2.2265,0.1],[0.98384564,2.2215,0.1],[0.98353439,2.2165,0.1],[0.98322116,2.2115,0.1],[0.98290597,2.2065,0.1],[0.98258882,2.2015,0.1],[0.98226972,2.1965,0.1],[0.98194868,2.1915,0.1],[0.9816257,2.1865,0.1],[0.9813008,2.1815,0.1],[0.98097398,2.1765,0.1],[0.98064525,2.1715,0.1],[0.98031462,2.1665,0.1],[0.97998209,2.1615,0.1],[0.97964768,2.1565,0.1],[0.97931139,2.1515,0.1],[0.97897322,2.1465,0.1],[0.97863319,2.1415,0.1],[0.9782913,2.1365,0.1],[0.97794756,2.1315,0.1],[0.97760197,2.1265,0.1],[0.97725455,2.1215,0.1],[0.9769053,2.1165,0.1],[0.97655422,2.1115,0.1],[0.97620132,2.1065,0.1],[0.97584661,2.1015,0.1],[0.97549009,2.0965,0.1],[0.97513177,2.0915,0.1],[0.97477166,2.0865,0.1],[0.97440976,2.0815,0.1],[0.97404607,2.0765,0.1],[0.97368061,2.0715,0.1],[0.97331337,2.0665,0.1],[0.97294437,2.0615,0.1],[0.9725736,2.0565,0.1],[0.97220108,2.0515,0.1],[0.9718268,2.0465,0.1],[0.97145078,2.0415,0.1],[0.97107302,2.0365,0.1],[0.97069352,2.0315,0.1],[0.97031229,2.0265,0.1],[0.96992933,2.0215,0.1],[0.96954464,2.0165,0.1],[0.96915823,2.0115,0.1],[0.96877011,2.0065,0.1],[0.96838028,2.0015,0.1],[0.96798874,1.9965,0.1],[0.9675955,1.9915,0.1],[0.96720056,1.9865,0.1],[0.96680393,1.9815,0.1],[0.9664056,1.9765,0.1],[0.96600559,1.9715,0.1],[0.96560389,1.9665,0.1],[0.96520051,1.9615,0.1],[0.96479546,1.9565,0.1],[0.96438873,1.9515,0.1],[0.96398033,1.9465,0.1],[0.96357027,1.9415,0.1],[0.96315854,1.9365,0.1],[0.96274515,1.9315,0.1],[0.96232839,1.9265,0.1]],"steps":[[0.02775,0.747614,0.681505,0.07225],[0.028386,0.745214,0.68284,0.071614],[0.029016,0.742887,0.679125,0.070984],[0.029638,0.740528,0.678265,0.070362],[0.030256,0.7382,0.676699,0.069744],[0.030868,0.735902,0.671575,0.069132],[0.031476,0.733593,0.670051,0.068524],[0.032076,0.731293,0.668524,0.067924],[0.032672,0.728981,0.667686,0.067328],[0.033262,0.726699,0.666151,0.066738],[0.033848,0.724426,0.663231,0.066152],[0.034428,0.722162,0.661712,0.065572],[0.035002,0.719907,0.660192,0.064998],[0.035572,0.717681,0.655215,0.064428],[0.036138,0.715443,0.653735,0.063862],[0.036698,0.713193,0.65293,0.063302],[0.037254,0.710972,0.651441,0.062746],[0.037806,0.708799,0.645812,0.062194],[0.038352,0.706554,0.647115,0.061648],[0.038896,0.704338,0.646294,0.061104],[0.039434,0.70215,0.644811,0.060566],[0.039968,0.700009,0.639332,0.060032],[0.040498,0.697797,0.640546,0.059502],[0.041024,0.695671,0.635089,0.058976],[0.041546,0.693476,0.636312,0.058454],[0.042064,0.691365,0.630878,0.057936],[0.042578,0.689204,0.630133,0.057422],[0.043088,0.687051,0.629364,0.056912],[0.043596,0.684924,0.627941,0.056404],[0.044098,0.682824,0.623219,0.055902],[0.044598,0.680712,0.621832,0.055402],[0.045094,0.678588,0.62109,0.054906],[0.045586,0.676471,0.620324,0.054414],[0.046076,0.6744,0.616999,0.053924],[0.046562,0.672316,0.614306,0.053438],[0.047044,0.670221,0.613575,0.052956],[0.047524,0.668151,0.6122,0.052476],[0.048,0.666088,0.609545,0.052],[0.048474,0.664033,0.606893,0.051526],[0.048944,0.661983,0.605546,0.051056],[0.04941,0.659922,0.604817,0.05059],[0.049874,0.657886,0.603462,0.050126],[0.050336,0.655837,0.602705,0.049664],[0.050794,0.653815,0.601342,0.049206],[0.05125,0.651798,0.59998,0.04875],[0.051704,0.649769,0.599188,0.048296],[0.052154,0.647765,0.597818,0.047846],[0.0526,0.645768,0.596446,0.0474],[0.053046,0.643776,0.595077,0.046954],[0.053488,0.641772,0.594244,0.046512],[0.053928,0.639793,0.592867,0.046072],[0.054364,0.63782,0.591489,0.045636],[0.0548,0.635853,0.590114,0.0452],[0.055232,0.633892,0.587678,0.044768],[0.055662,0.631936,0.586314,0.044338],[0.05609,0.629987,0.584952,0.04391],[0.056516,0.628043,0.583589,0.043484],[0.056938,0.626105,0.582225,0.043062],[0.05736,0.624173,0.579845,0.04264],[0.057778,0.622246,0.578494,0.042222],[0.058194,0.620325,0.577144,0.041806],[0.05861,0.618409,0.575796,0.04139],[0.059022,0.616499,0.574446,0.040978],[0.059432,0.614595,0.573097,0.040568],[0.05984,0.612695,0.570782,0.04016],[0.060246,0.610802,0.569445,0.039754],[0.060652,0.608913,0.56811,0.039348],[0.061054,0.60703,0.566774,0.038946],[0.061454,0.605169,0.563069,0.038546],[0.061854,0.603313,0.559297,0.038146],[0.06225,0.601429,0.558508,0.03775],[0.062646,0.599566,0.556235,0.037354],[0.063038,0.597708,0.553963,0.036962],[0.06343,0.595856,0.551697,0.03657],[0.06382,0.593991,0.550943,0.03618],[0.064208,0.592149,0.549694,0.035792],[0.064596,0.590311,0.548447,0.035404],[0.06498,0.588478,0.547196,0.03502],[0.065364,0.586634,0.546404,0.034636],[0.065746,0.584811,0.545149,0.034254],[0.066126,0.582992,0.543893,0.033874],[0.066506,0.581179,0.542638,0.033494],[0.066882,0.57937,0.541381,0.033118],[0.067258,0.577566,0.540125,0.032742],[0.067634,0.575767,0.538871,0.032366],[0.068006,0.573972,0.537615,0.031994],[0.068378,0.572181,0.536359,0.031622],[0.068748,0.570396,0.535103,0.031252],[0.069118,0.568614,0.533849,0.030882],[0.069484,0.566854,0.531379,0.030516],[0.06985,0.565144,0.524943,0.03015],[0.070216,0.563345,0.524665,0.029784],[0.07058,0.56155,0.52434,0.02942],[0.070942,0.559774,0.523562,0.029058],[0.071304,0.557987,0.523971,0.028696],[0.071664,0.556236,0.522751,0.028336],[0.072022,0.55449,0.52153,0.027978],[0.07238,0.552748,0.52031,0.02762],[0.072738,0.55101,0.519091,0.027262],[0.073092,0.549276,0.51787,0.026908],[0.073448,0.547547,0.516651,0.026552],[0.0738,0.545821,0.51543,0.0262],[0.074154,0.5441,0.514212,0.025846],[0.074504,0.542383,0.512991,0.025496],[0.074856,0.540669,0.511773,0.025144],[0.075204,0.539006,0.506657,0.024796],[0.075552,0.537301,0.503972,0.024448],[0.0759,0.535584,0.503211,0.0241],[0.076246,0.533886,0.502073,0.023754],[0.076592,0.532192,0.500936,0.023408],[0.076938,0.530236,0.51565,0.023062],[0.077282,0.528551,0.514576,0.022718],[0.077624,0.526869,0.513483,0.022376],[0.077966,0.525192,0.512056,0.022034],[0.078308,0.523518,0.510631,0.021692],[0.078648,0.521848,0.508576,0.021352],[0.078988,0.520182,0.506516,0.021012],[0.079326,0.518519,0.504789,0.020674],[0.079666,0.51686,0.502731,0.020334],[0.080002,0.515205,0.501016,0.019998],[0.08034,0.513535,0.50077,0.01966],[0.080676,0.511869,0.500668,0.019324],[0.08101,0.510189,0.501606,0.01899],[0.081346,0.508529,0.500822,0.018654],[0.08168,0.506855,0.500815,0.01832],[0.082012,0.505183,0.501006,0.017988],[0.082346,0.503533,0.500226,0.017654],[0.082678,0.501868,0.500515,0.017322],[0.083352,0.500467,0.500001,0.016648]]};
+const SQ3 = Math.sqrt(3), TAU = 2 * Math.PI;
+
+// ---------- Eisenstein integers a + b·ω ----------
+const E = {
+  mul: ([a, b], [c, d]) => [a * c - b * d, a * d + b * c - b * d],
+  add: ([a, b], [c, d]) => [a + c, b + d],
+  norm: ([a, b]) => a * a - a * b + b * b,
+  conj: ([a, b]) => [a - b, -b],
+  cx: ([a, b]) => [a - b / 2, (b * SQ3) / 2],
+  pow(x, k) { let r = [1, 0]; for (let i = 0; i < k; i++) r = E.mul(r, x); return r; },
+};
+const UNIT = [[1, 0], [1, 1], [0, 1], [-1, 0], [-1, -1], [0, -1]]; // e^{2πik/6}, k = 0..5
+const mod = (a, m) => ((a % m) + m) % m;
+function modpow(b, e, m) { let r = 1; b = mod(b, m); while (e > 0) { if (e & 1) r = (r * b) % m; b = (b * b) % m; e >>= 1; } return r; }
+const isPrime = (n) => { if (n < 2) return false; for (let d = 2; d * d <= n; d++) if (n % d === 0) return false; return true; };
+
+function makePrime(pi) {
+  const p = E.norm(pi), [a, b] = pi;
+  const r = mod(-a * modpow(b, p - 2, p), p);            // ω ↦ r in ℤ[ω]/(π) ≅ F_p
+  const img = UNIT.map(([u, v]) => mod(u + v * r, p));
+  const table = new Int8Array(p);                        // sextic class of each residue
+  table[0] = -1;
+  for (let z = 1; z < p; z++) table[z] = img.indexOf(modpow(z, (p - 1) / 6, p));
+  const red = ([c, d]) => mod(c + d * r, p);
+  return { pi, p, r, red, table, chiK: (x) => table[red(x)] };
+}
+const PRIMES = [];
+for (let p = 7; p <= 109; p++) {
+  if (!isPrime(p) || p % 3 !== 1) continue;
+  const here = [];
+  for (let a = -15; a <= 15; a++) for (let b = -15; b <= 15; b++)
+    if (E.norm([a, b]) === p && mod(a, 3) === 2 && mod(b, 3) === 0) here.push([a, b]);
+  for (const f of here) PRIMES.push(makePrime(f));      // primary π and its conjugate
+}
+const primeOf = (a, b) => PRIMES.find((f) => f.pi[0] === a && f.pi[1] === b);
+
+// Tr(h·z / (s·√−3)) for complex h, z, s given as [re, im]
+function trC(h, z, s) {
+  const nr = h[0] * z[0] - h[1] * z[1], ni = h[0] * z[1] + h[1] * z[0];
+  const dr = -SQ3 * s[1], di = SQ3 * s[0], dd = dr * dr + di * di;
+  return 2 * (nr * dr + ni * di) / dd;
+}
+const tr = (h, x, s) => trC(E.cx(h), E.cx(x), E.cx(s));
+// Gauss sum over a modulus given by its prime factors (distinct, or one prime twice)
+function gauss(factors, h) {
+  let s = [1, 0], N = 1;
+  for (const f of factors) { s = E.mul(s, f.pi); N *= f.p; }
+  const hc = E.cx(h), sc = E.cx(s);
+  let re = 0, im = 0;
+  for (let x = 1; x < N; x++) {
+    let k = 0, zero = false;
+    for (const f of factors) { const kk = f.table[x % f.p]; if (kk < 0) { zero = true; break; } k += kk; }
+    if (zero) continue;
+    const t = trC(hc, [x, 0], sc) + k / 6;
+    re += Math.cos(TAU * t); im += Math.sin(TAU * t);
+  }
+  return [re, im];
+}
+function ballPoints(Nmax, withZero = false) {
+  const out = [], bmax = Math.floor(Math.sqrt((4 * Nmax) / 3));
+  for (let b = -bmax; b <= bmax; b++) {
+    const disc = Nmax - 0.75 * b * b; if (disc < 0) continue;
+    const r = Math.sqrt(disc);
+    for (let a = Math.ceil(b / 2 - r - 1e-9); a <= Math.floor(b / 2 + r + 1e-9); a++) {
+      const n = E.norm([a, b]); if (n > Nmax || (n === 0 && !withZero)) continue;
+      out.push([a, b]);
+    }
+  }
+  return out;
+}
+
+// ---------- formatting ----------
+const minus = (s) => String(s).replace(/-/g, "−");
+function fmtE([a, b]) {
+  if (b === 0) return minus(a);
+  const bb = Math.abs(b) === 1 ? "ω" : Math.abs(b) + "ω";
+  if (a === 0) return (b < 0 ? "−" : "") + bb;
+  return minus(a) + (b > 0 ? "+" : "−") + bb;
+}
+const fx = (x, d = 4) => minus((Math.abs(x) < 0.5 * 10 ** -d ? 0 : x).toFixed(d));
+const fC = ([re, im], d = 4) => `${fx(re, d)} ${im < 0 ? "−" : "+"} ${Math.abs(im).toFixed(d)}i`;
+const absC = ([re, im]) => Math.hypot(re, im);
+const SUP = { "-": "⁻", "+": "", 0: "⁰", 1: "¹", 2: "²", 3: "³", 4: "⁴", 5: "⁵", 6: "⁶", 7: "⁷", 8: "⁸", 9: "⁹" };
+const sci = (x) => { if (x === 0) return "0"; const [m, e] = x.toExponential(1).split("e"); return `${m}×10${[...e].map((c) => SUP[c]).join("")}`; };
+
+// ---------- theme & colour ----------
+const rootEl = document.documentElement;
+const tok = (n) => getComputedStyle(rootEl).getPropertyValue(n).trim();
+const dark = () => tok("--mode") === "dark";
+function oklch(L, C, H, a = 1) {
+  const h = (H * Math.PI) / 180, A = C * Math.cos(h), B = C * Math.sin(h);
+  const l = (L + 0.3963377774 * A + 0.2158037573 * B) ** 3;
+  const m = (L - 0.1055613458 * A - 0.0638541728 * B) ** 3;
+  const s = (L - 0.0894841775 * A - 1.291485548 * B) ** 3;
+  const f = (x) => { x = Math.max(0, Math.min(1, x)); return Math.round(255 * (x <= 0.0031308 ? 12.92 * x : 1.055 * x ** (1 / 2.4) - 0.055)); };
+  return `rgba(${f(4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s)},${f(-1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s)},${f(-0.0041960863 * l - 0.7034186147 * m + 1.707614701 * s)},${a})`;
+}
+const phase = (t, a = 1) => oklch(dark() ? 0.75 : 0.63, dark() ? 0.125 : 0.15, 28 + 360 * mod(t, 1), a);
+const seq = (u) => (dark() ? oklch(0.42 + 0.46 * u, 0.12, 275) : oklch(0.84 - 0.5 * u, 0.13, 275)); // early → late
+const heat = (v) => (dark() ? oklch(0.2 + 0.68 * v, 0.02 + 0.12 * v, 275) : oklch(0.985 - 0.62 * v, 0.02 + 0.14 * v, 275));
+
+// ---------- tooltip ----------
+const tip = document.getElementById("tip");
+function showTip(html, x, y) {
+  tip.innerHTML = html; tip.hidden = false;
+  const r = tip.getBoundingClientRect();
+  let tx = x + 14, ty = y + 14;
+  if (tx + r.width > window.innerWidth - 8) tx = x - r.width - 14;
+  if (ty + r.height > window.innerHeight - 8) ty = y - r.height - 14;
+  tip.style.left = Math.max(8, tx) + "px"; tip.style.top = Math.max(8, ty) + "px";
+}
+const hideTip = () => { tip.hidden = true; };
+
+// ---------- figure plumbing ----------
+const figs = [];
+function canvasFig(id, aspect, draw) {
+  const c = document.getElementById(id);
+  const fig = { kind: "canvas", el: c, aspect, draw, items: [] };
+  const hover = (e) => {
+    const rect = c.getBoundingClientRect(), mx = e.clientX - rect.left, my = e.clientY - rect.top;
+    let best = null, bd = Infinity;
+    for (const it of fig.items) {
+      const d = it.cell ? (mx >= it.x && mx < it.x + it.w && my >= it.y && my < it.y + it.h ? 0 : Infinity) : Math.hypot(it.x - mx, it.y - my);
+      if (d < Math.max(9, (it.r || 0) + 4) && d < bd) { bd = d; best = it; }
+    }
+    best ? showTip(best.html, e.clientX, e.clientY) : hideTip();
+  };
+  c.addEventListener("pointermove", hover);
+  c.addEventListener("pointerdown", hover);
+  c.addEventListener("pointerleave", (e) => { if (e.pointerType !== "touch") hideTip(); });
+  figs.push(fig);
+  return fig;
+}
+function svgFig(id, draw) { const fig = { kind: "svg", el: document.getElementById(id), draw }; figs.push(fig); return fig; }
+function render(fig) {
+  const w = fig.el.clientWidth; if (!w) return;
+  if (fig.kind === "svg") { fig.draw(fig.el, w); return; }
+  const aspect = typeof fig.aspect === "function" ? fig.aspect(w) : fig.aspect;
+  const h = Math.round(w * aspect), dpr = Math.min(2.5, window.devicePixelRatio || 1);
+  fig.el.style.height = h + "px";
+  fig.el.width = Math.round(w * dpr); fig.el.height = Math.round(h * dpr);
+  const ctx = fig.el.getContext("2d");
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, w, h);
+  fig.items = [];
+  fig.draw(ctx, w, h, fig);
+}
+const renderAll = () => figs.forEach(render);
+// world → pixel view fitted to a box
+function view(w, h, xmin, xmax, ymin, ymax, pad = 10) {
+  const sc = Math.min((w - 2 * pad) / (xmax - xmin), (h - 2 * pad) / (ymax - ymin));
+  const cx = (xmin + xmax) / 2, cy = (ymin + ymax) / 2;
+  return { sc, P: ([x, y]) => [w / 2 + (x - cx) * sc, h / 2 - (y - cy) * sc], W: ([px, py]) => [cx + (px - w / 2) / sc, cy - (py - h / 2) / sc] };
+}
+const dot = (ctx, [x, y], r, fill, ring) => {
+  ctx.beginPath(); ctx.arc(x, y, r, 0, TAU);
+  if (fill) { ctx.fillStyle = fill; ctx.fill(); }
+  if (ring) { ctx.lineWidth = ring.w || 1.5; ctx.strokeStyle = ring.c; ctx.stroke(); }
+};
+
+// ---------- shared state ----------
+const MODS = [[2, 3], [-1, 3], [5, 3], [5, 6], [-4, 3]].map(([a, b]) => primeOf(a, b));
+const FREQS = [[1, 0], [0, 1], [2, 0], [1, -1], [3, 1], [4, 2]];
+const state = { pi: MODS[2], h: FREQS[0], wind: false, n: primeOf(-1, 3), zoom: false, step: 64, test: null, win: 2 };
+const D7 = primeOf(2, 3), D7b = primeOf(-1, -3);
+
+function chips(hostId, list, label, isOn, onPick) {
+  const host = document.getElementById(hostId);
+  host.innerHTML = "";
+  list.forEach((item) => {
+    const b = document.createElement("button");
+    b.type = "button"; b.className = "chip"; b.textContent = label(item);
+    b.setAttribute("aria-pressed", String(isOn(item)));
+    b.addEventListener("click", () => { onPick(item); [...host.children].forEach((c, i) => c.setAttribute("aria-pressed", String(isOn(list[i])))); });
+    host.appendChild(b);
+  });
+}
+
+// cell of ℤ[ω]/(π): lattice points u·π + v·πω with 0 ≤ u, v < 1
+const cellCache = new Map();
+function cellOf(f) {
+  if (cellCache.has(f.p * 1000 + f.pi[0])) return cellCache.get(f.p * 1000 + f.pi[0]);
+  const e1 = E.cx(f.pi), e2 = E.cx(E.mul(f.pi, [0, 1])), det = e1[0] * e2[1] - e2[0] * e1[1];
+  const pts = [], R = Math.ceil(2 * Math.sqrt(f.p)) + 3;
+  for (let a = -R; a <= R; a++) for (let b = -R; b <= R; b++) {
+    const [x, y] = E.cx([a, b]);
+    const u = (x * e2[1] - e2[0] * y) / det, v = (e1[0] * y - e1[1] * x) / det;
+    if (u > -1e-9 && u < 1 - 1e-9 && v > -1e-9 && v < 1 - 1e-9) pts.push({ e: [a, b], z: [x, y], res: f.red([a, b]) });
+  }
+  const corners = [[0, 0], e1, [e1[0] + e2[0], e1[1] + e2[1]], e2];
+  const out = { pts, corners, e1, e2 };
+  cellCache.set(f.p * 1000 + f.pi[0], out);
+  return out;
+}
+const bbox = (pts) => { const xs = pts.map((p) => p[0]), ys = pts.map((p) => p[1]); return [Math.min(...xs), Math.max(...xs), Math.min(...ys), Math.max(...ys)]; };
+function polyPath(ctx, V, pts) { ctx.beginPath(); pts.forEach((p, i) => { const q = V.P(p); i ? ctx.lineTo(q[0], q[1]) : ctx.moveTo(q[0], q[1]); }); ctx.closePath(); }
+
+// ---------- 1. lattice and torus ----------
+canvasFig("c-lattice", (w) => (w < 520 ? 0.95 : 0.7), (ctx, w, h, fig) => {
+  const f = state.pi, C = cellOf(f);
+  const [x0, x1, y0, y1] = bbox(C.corners);
+  const mx = (x1 - x0) * 0.75, my = (y1 - y0) * 0.75;
+  const V = view(w, h, x0 - mx, x1 + mx, y0 - my, y1 + my, 6);
+  const ink2 = tok("--ink-2"), muted = tok("--muted"), acc = tok("--accent"), panel = tok("--panel");
+  // neighbouring cells
+  ctx.setLineDash([4, 4]); ctx.strokeStyle = muted; ctx.lineWidth = 1;
+  for (let i = -1; i <= 1; i++) for (let j = -1; j <= 1; j++) {
+    if (!i && !j) continue;
+    const off = [i * C.e1[0] + j * C.e2[0], i * C.e1[1] + j * C.e2[1]];
+    polyPath(ctx, V, C.corners.map((c) => [c[0] + off[0], c[1] + off[1]])); ctx.stroke();
+  }
+  ctx.setLineDash([]);
+  // main cell
+  polyPath(ctx, V, C.corners); ctx.fillStyle = tok("--accent-wash"); ctx.fill(); ctx.strokeStyle = acc; ctx.lineWidth = 1.5; ctx.stroke();
+  // base lattice and period lattice
+  const [vx0, vy1] = V.W([0, 0]), [vx1, vy0] = V.W([w, h]);
+  const R = Math.ceil(Math.max(Math.abs(vx0), Math.abs(vx1), Math.abs(vy0), Math.abs(vy1)) * 1.3) + 2;
+  const r0 = Math.max(1.6, Math.min(3, V.sc * 0.09));
+  for (let a = -R; a <= R; a++) for (let b = -R; b <= R; b++) {
+    const q = V.P(E.cx([a, b]));
+    if (q[0] < -5 || q[0] > w + 5 || q[1] < -5 || q[1] > h + 5) continue;
+    dot(ctx, q, r0, ink2);
+  }
+  const S = Math.ceil(R / Math.sqrt(f.p)) + 2;
+  for (let a = -S; a <= S; a++) for (let b = -S; b <= S; b++) {
+    const q = V.P(E.cx(E.mul([a, b], f.pi)));
+    if (q[0] < -9 || q[0] > w + 9 || q[1] < -9 || q[1] > h + 9) continue;
+    dot(ctx, q, r0 + 4, null, { c: acc, w: 1.6 });
+  }
+  // winding of the integers
+  const rep = new Map(C.pts.map((p) => [p.res, p]));
+  if (state.wind) {
+    ctx.strokeStyle = acc; ctx.lineWidth = 1.4;
+    for (let z = 0; z < f.p; z++) {
+      const a = rep.get(z).z, b = [a[0] + 1, a[1]];
+      const pa = V.P(a), pb = V.P(b);
+      ctx.beginPath(); ctx.moveTo(pa[0], pa[1]); ctx.lineTo(pb[0], pb[1]); ctx.stroke();
+    }
+  }
+  // torus points
+  for (const p of C.pts) {
+    const q = V.P(p.z);
+    dot(ctx, q, r0 + 2.4, acc, { c: panel, w: 1.5 });
+    fig.items.push({ x: q[0], y: q[1], r: r0 + 3, html: `x = ${fmtE(p.e)}<br>N(x) = ${E.norm(p.e)}<br>x ≡ ${p.res} (mod π)` });
+    if (state.wind && f.p <= 37) {
+      ctx.fillStyle = tok("--ink"); ctx.font = `500 ${f.p > 19 ? 10 : 11}px ${tok("--f-mono")}`;
+      ctx.textAlign = "center"; ctx.textBaseline = "bottom"; ctx.fillText(String(p.res), q[0], q[1] - r0 - 3);
+    }
+  }
+  const label = `π = ${fmtE(f.pi)}   N(π) = ${f.p} points`;
+  ctx.font = `500 12px ${tok("--f-mono")}`; ctx.textAlign = "left"; ctx.textBaseline = "top";
+  ctx.fillStyle = tok("--panel"); ctx.fillRect(2, 2, ctx.measureText(label).width + 14, 22);
+  ctx.fillStyle = tok("--ink"); ctx.fillText(label, 8, 7);
+});
+
+// ---------- 2. waves ----------
+function cellAspect() {
+  const [x0, x1, y0, y1] = bbox(cellOf(state.pi).corners);
+  return Math.max(0.45, Math.min(1.3, (y1 - y0) / (x1 - x0)));
+}
+function cellView(w, h) {
+  const C = cellOf(state.pi), [x0, x1, y0, y1] = bbox(C.corners);
+  const m = Math.max(x1 - x0, y1 - y0) * 0.06;
+  return { C, V: view(w, h, x0 - m, x1 + m, y0 - m, y1 + m, 4) };
+}
+canvasFig("c-wave", () => cellAspect(), (ctx, w, h, fig) => {
+  const f = state.pi, { C, V } = cellView(w, h), hc = E.cx(state.h), sc = E.cx(f.pi);
+  ctx.save(); polyPath(ctx, V, C.corners); ctx.clip();
+  const step = 4;
+  for (let px = 0; px < w; px += step) for (let py = 0; py < h; py += step) {
+    ctx.fillStyle = phase(trC(hc, V.W([px + step / 2, py + step / 2]), sc), 0.3);
+    ctx.fillRect(px, py, step, step);
+  }
+  ctx.restore();
+  polyPath(ctx, V, C.corners); ctx.strokeStyle = tok("--muted"); ctx.lineWidth = 1; ctx.stroke();
+  const r = Math.max(4, Math.min(9, V.sc * 0.2)), panel = tok("--panel");
+  for (const p of C.pts) {
+    const t = tr(state.h, p.e, f.pi), q = V.P(p.z);
+    dot(ctx, q, r, phase(t), { c: panel, w: 2 });
+    fig.items.push({ x: q[0], y: q[1], r, html: `x = ${fmtE(p.e)}<br>ψ<sub>h</sub>(x) = e(${fx(mod(t, 1), 3)})` });
+  }
+});
+canvasFig("c-code", () => cellAspect(), (ctx, w, h, fig) => {
+  const f = state.pi, { C, V } = cellView(w, h);
+  polyPath(ctx, V, C.corners); ctx.fillStyle = tok("--accent-wash"); ctx.fill(); ctx.strokeStyle = tok("--muted"); ctx.lineWidth = 1; ctx.stroke();
+  const r = Math.max(4, Math.min(9, V.sc * 0.2)), panel = tok("--panel");
+  for (const p of C.pts) {
+    const k = f.chiK(p.e), q = V.P(p.z);
+    if (k < 0) { dot(ctx, q, r - 1, null, { c: tok("--muted"), w: 1.6 }); fig.items.push({ x: q[0], y: q[1], r, html: "x ≡ 0: χ(x) = 0" }); continue; }
+    dot(ctx, q, r, phase(k / 6), { c: panel, w: 2 });
+    fig.items.push({ x: q[0], y: q[1], r, html: `x = ${fmtE(p.e)}<br>χ<sub>π</sub>(x) = ζ<sup>${k}</sup>, ζ = e<sup>iπ/3</sup>` });
+  }
+});
+function legendSix() {
+  const el = document.getElementById("legend-six");
+  const labels = ["1", "ζ", "ζ² = ω", "ζ³ = −1", "ζ⁴ = ω²", "ζ⁵"];
+  el.innerHTML = labels.map((l, k) => `<span><span class="sw" style="background:${phase(k / 6)}"></span>${l}</span>`).join("") +
+    `<span><span class="sw ring"></span>0</span><span class="note">ζ = e<sup>iπ/3</sup>; the wave uses the same colour wheel continuously</span>`;
+}
+
+// ---------- 3. phasor walk and spectrum ----------
+canvasFig("c-walk", (w) => (w < 520 ? 1 : 0.62), (ctx, w, h) => {
+  const f = state.pi, pts = [[0, 0]], cols = [];
+  let re = 0, im = 0;
+  for (let x = 1; x < f.p; x++) {
+    const k = f.table[x]; const t = tr(state.h, [x, 0], f.pi) + k / 6;
+    re += Math.cos(TAU * t); im += Math.sin(TAU * t); pts.push([re, im]); cols.push(t);
+  }
+  const rad = Math.sqrt(f.p);
+  const xs = pts.map((p) => p[0]).concat([-rad, rad]), ys = pts.map((p) => p[1]).concat([-rad, rad]);
+  const V = view(w, h, Math.min(...xs), Math.max(...xs), Math.min(...ys), Math.max(...ys), 18);
+  const o = V.P([0, 0]);
+  ctx.strokeStyle = tok("--grid"); ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(0, o[1]); ctx.lineTo(w, o[1]); ctx.moveTo(o[0], 0); ctx.lineTo(o[0], h); ctx.stroke();
+  ctx.setLineDash([5, 4]); ctx.strokeStyle = tok("--muted"); ctx.beginPath(); ctx.arc(o[0], o[1], rad * V.sc, 0, TAU); ctx.stroke(); ctx.setLineDash([]);
+  ctx.lineWidth = 2.2; ctx.lineCap = "round";
+  for (let i = 1; i < pts.length; i++) {
+    const a = V.P(pts[i - 1]), b = V.P(pts[i]);
+    ctx.strokeStyle = phase(cols[i - 1]); ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.stroke();
+  }
+  const end = V.P(pts[pts.length - 1]);
+  const acc = tok("--accent");
+  ctx.strokeStyle = acc; ctx.lineWidth = 2.4; ctx.beginPath(); ctx.moveTo(o[0], o[1]); ctx.lineTo(end[0], end[1]); ctx.stroke();
+  const ang = Math.atan2(end[1] - o[1], end[0] - o[0]);
+  if (Math.hypot(end[0] - o[0], end[1] - o[1]) > 8) {
+    ctx.fillStyle = acc; ctx.beginPath(); ctx.moveTo(end[0], end[1]);
+    ctx.lineTo(end[0] - 10 * Math.cos(ang - 0.4), end[1] - 10 * Math.sin(ang - 0.4));
+    ctx.lineTo(end[0] - 10 * Math.cos(ang + 0.4), end[1] - 10 * Math.sin(ang + 0.4)); ctx.closePath(); ctx.fill();
+  }
+  dot(ctx, o, 3, tok("--ink"));
+  const g = [re, im], inLattice = f.chiK(state.h) < 0;
+  document.getElementById("walk-read").innerHTML =
+    `π = ${fmtE(f.pi)}, h = ${fmtE(state.h)}: <b>g(π, h) = ${fC(g)}</b>, |g| = ${fx(absC(g), 6)}, √p = ${fx(rad, 6)}` +
+    (inLattice ? "<br>h lies in πℤ[ω]: the walk closes up and g = 0." : "");
+});
+canvasFig("c-spec", 1, (ctx, w, h, fig) => {
+  const f = state.pi, Nmax = Math.max(36, 3.2 * f.p), pts = ballPoints(Nmax, true);
+  const lim = Math.sqrt(Nmax) * 1.04;
+  const V = view(w, h, -lim, lim, -lim, lim, 8);
+  const g1 = gauss([f], [1, 0]), r = Math.max(3.2, Math.min(9, V.sc * 0.36)), panel = tok("--panel");
+  let devAbs = 0, devConj = 0, zeros = 0;
+  for (const e of pts) {
+    const q = V.P(E.cx(e)), k = f.chiK(e), g = gauss([f], e);
+    if (k < 0) {
+      zeros++; devAbs = Math.max(devAbs, absC(g));
+      dot(ctx, q, r - 1, null, { c: tok("--muted"), w: 1.6 });
+      fig.items.push({ x: q[0], y: q[1], r, html: `h = ${fmtE(e)} ∈ πℤ[ω]<br>g = 0` });
+      continue;
+    }
+    devAbs = Math.max(devAbs, Math.abs(absC(g) - Math.sqrt(f.p)));
+    const ph = -TAU * k / 6, pred = [g1[0] * Math.cos(ph) - g1[1] * Math.sin(ph), g1[0] * Math.sin(ph) + g1[1] * Math.cos(ph)];
+    devConj = Math.max(devConj, absC([g[0] - pred[0], g[1] - pred[1]]));
+    const t = Math.atan2(g[1], g[0]) / TAU;
+    dot(ctx, q, r, phase(t), { c: panel, w: 1.5 });
+    fig.items.push({ x: q[0], y: q[1], r, html: `h = ${fmtE(e)}, N(h) = ${E.norm(e)}<br>g(π,h) = ${fC(g, 3)}<br>|g| = ${fx(absC(g), 4)}` });
+  }
+  document.getElementById("spec-read").innerHTML =
+    `${pts.length} frequencies with N(h) ≤ ${Math.floor(Nmax)}, ${zeros} of them in πℤ[ω]<br>` +
+    `max over h ∉ πℤ[ω] of | |g(π,h)| − √p | = <b>${sci(devAbs)}</b><br>` +
+    `max of |g(π,h) − χ̄<sub>π</sub>(h)·g(π,1)| = <b>${sci(devConj)}</b>`;
+});
+
+// ---------- 4. Good–Thomas and the transfer ----------
+canvasFig("c-crt", (w) => { const pn = state.n.p, pd = D7.p; const cs = Math.min(26, (w - 30) / pn); return (cs * pd + 26) / w; }, (ctx, w, h, fig) => {
+  const D = D7, n = state.n, cs = Math.min(26, (w - 30) / n.p), x0 = 26, y0 = 22;
+  ctx.font = `11px ${tok("--f-mono")}`; ctx.fillStyle = tok("--muted"); ctx.textAlign = "center"; ctx.textBaseline = "middle";
+  for (let b = 0; b < n.p; b++) if (cs >= 14 || b % 5 === 0) ctx.fillText(String(b), x0 + (b + 0.5) * cs, y0 - 10);
+  for (let a = 0; a < D.p; a++) ctx.fillText(String(a), x0 - 13, y0 + (a + 0.5) * cs);
+  const panel = tok("--panel");
+  for (let a = 0; a < D.p; a++) for (let b = 0; b < n.p; b++) {
+    const x = E.add(E.mul([a, 0], n.pi), E.mul([b, 0], D.pi));
+    const k1 = D.chiK(x), k2 = n.chiK(x), px = x0 + b * cs, py = y0 + a * cs;
+    ctx.fillStyle = k1 < 0 || k2 < 0 ? tok("--grid") : phase((k1 + k2) / 6);
+    ctx.fillRect(px, py, cs, cs); ctx.strokeStyle = panel; ctx.lineWidth = 1.5; ctx.strokeRect(px, py, cs, cs);
+    fig.items.push({ cell: true, x: px, y: py, w: cs, h: cs, html: `a = ${a}, b = ${b}<br>x = a·n + b·D = ${fmtE(x)}<br>χ<sub>Dn</sub>(x) = ${k1 < 0 || k2 < 0 ? "0" : "ζ<sup>" + mod(k1 + k2, 6) + "</sup>"}` });
+  }
+  ctx.textAlign = "left"; ctx.fillStyle = tok("--muted"); ctx.fillText("b →", 2, 8); ctx.fillText("a", 4, y0 + 6);
+  // identity check at the current frequency
+  const hh = state.h, lhs = gauss([D, n], hh);
+  const ke = mod(D.chiK(n.pi) - n.chiK(D.pi), 6), eps = ke === 0 ? 1 : ke === 3 ? -1 : NaN;
+  const gD = gauss([D], hh), gn = gauss([n], E.mul(E.pow(D.pi, 4), hh));
+  const rhs = [eps * (gD[0] * gn[0] - gD[1] * gn[1]), eps * (gD[0] * gn[1] + gD[1] * gn[0])];
+  document.getElementById("crt-read").innerHTML = `<table>
+    <tr><td>D = ${fmtE(D.pi)}, n = ${fmtE(n.pi)}, h = ${fmtE(hh)}</td><td></td></tr>
+    <tr><td>g(Dn, h), ${D.p * n.p} terms</td><td><b>${fC(lhs)}</b></td></tr>
+    <tr><td>ε = χ<sub>D</sub>(n)/χ<sub>n</sub>(D)</td><td><b>${eps === 1 ? "+1" : eps === -1 ? "−1" : "ζ^" + ke}</b></td></tr>
+    <tr><td>ε · g(D, h) · g(n, D⁴h)</td><td><b>${fC(rhs)}</b></td></tr>
+    <tr><td>difference</td><td><b>${sci(absC([lhs[0] - rhs[0], lhs[1] - rhs[1]]))}</b></td></tr></table>`;
+});
+const PAR = ballPoints(12);
+canvasFig("c-par", 1, (ctx, w, h, fig) => {
+  const lim = Math.sqrt(12) * 1.18, V = view(w, h, -lim, lim, -lim, lim, 6);
+  ctx.strokeStyle = tok("--accent"); ctx.setLineDash([4, 4]); ctx.lineWidth = 1.2;
+  const o = V.P([0, 0]); ctx.beginPath(); ctx.arc(o[0], o[1], Math.sqrt(12) * V.sc, 0, TAU); ctx.stroke(); ctx.setLineDash([]);
+  dot(ctx, o, 2.5, tok("--muted"));
+  const ink = tok("--ink-2"), panel = tok("--panel");
+  for (const k of PAR) { const q = V.P(E.cx(k)); dot(ctx, q, 5, ink, { c: panel, w: 1.5 }); fig.items.push({ x: q[0], y: q[1], r: 5, html: `k = ${fmtE(k)}, N(k) = ${E.norm(k)}` }); }
+});
+canvasFig("c-push", 1, (ctx, w, h, fig) => {
+  const R = 49 * Math.sqrt(12), lim = R * 1.06, V = view(w, h, -lim, lim, -lim, lim, 6), o = V.P([0, 0]);
+  ctx.fillStyle = tok("--grid"); ctx.beginPath(); ctx.arc(o[0], o[1], R * V.sc, 0, TAU); ctx.fill();
+  ctx.strokeStyle = tok("--rule"); ctx.lineWidth = 1; ctx.stroke();
+  ctx.strokeStyle = tok("--accent"); ctx.lineWidth = 1.4; ctx.beginPath(); ctx.arc(o[0], o[1], Math.max(2.5, Math.sqrt(12) * V.sc), 0, TAU); ctx.stroke();
+  ctx.fillStyle = tok("--muted"); ctx.font = `11px ${tok("--f-mono")}`; ctx.textAlign = "left"; ctx.textBaseline = "bottom";
+  ctx.fillText("≈104,000 lattice points", 8, h - 6);
+  const cols = [tok("--s1"), tok("--s2")], panel = tok("--panel");
+  [D7, D7b].forEach((D, i) => {
+    const D4 = E.pow(D.pi, 4);
+    for (const k of PAR) {
+      const z = E.mul(D4, k), q = V.P(E.cx(z));
+      dot(ctx, q, 4, cols[i], { c: panel, w: 1.5 });
+      fig.items.push({ x: q[0], y: q[1], r: 4, html: `D = ${fmtE(D.pi)}, k = ${fmtE(k)}<br>D⁴k = ${fmtE(z)}<br>N(D⁴k) = ${E.norm(z)}` });
+    }
+  });
+});
+function legendPush() {
+  document.getElementById("legend-push").innerHTML =
+    `<span><span class="sw" style="background:${tok("--s1")}"></span>D = 2+3ω</span>` +
+    `<span><span class="sw" style="background:${tok("--s2")}"></span>D = −1−3ω (its conjugate)</span>` +
+    `<span><span class="sw ring" style="border-color:${tok("--accent")}"></span>parent window, to scale</span>`;
+}
+
+// ---------- 5. combs ----------
+const COMB_PTS = ballPoints(84);
+function combFig(id, squared) {
+  canvasFig(id, 1, (ctx, w, h, fig) => {
+    const lim = Math.sqrt(84) * 1.05, V = view(w, h, -lim, lim, -lim, lim, 6);
+    const base = Math.max(2.2, Math.min(3.6, V.sc * 0.2)), panel = tok("--panel"), muted = tok("--muted");
+    let energy = 0, support = 0;
+    for (const e of COMB_PTS) {
+      const g = squared ? gauss([D7, D7], e) : gauss([D7], e), a = absC(g) / (squared ? 7 : Math.sqrt(7));
+      energy += a * a; const q = V.P(E.cx(e));
+      if (a < 1e-9) { dot(ctx, q, 1.4, muted); fig.items.push({ x: q[0], y: q[1], r: 3, html: `h = ${fmtE(e)}<br>𝔤 = 0` }); continue; }
+      support++;
+      dot(ctx, q, base * a, phase(Math.atan2(g[1], g[0]) / TAU), { c: panel, w: 1.2 });
+      fig.items.push({ x: q[0], y: q[1], r: base * a, html: `h = ${fmtE(e)}<br>|𝔤| = ${fx(a, 4)}` });
+    }
+    if (squared) {
+      let ef = 0, ec = 0, nf = 0, nc = 0;
+      for (let x = 0; x < 49; x++) {
+        const a = absC(gauss([D7], [x, 0])) / Math.sqrt(7), b = absC(gauss([D7, D7], [x, 0])) / 7;
+        ef += a * a; ec += b * b; if (a > 1e-9) nf++; if (b > 1e-9) nc++;
+      }
+      document.getElementById("comb-read").innerHTML =
+        `over one full period (the 49 frequency classes mod D²):<br>prime modulus: ${nf} of 49 nonzero, mean |𝔤|² = <b>${fx(ef / 49, 4)}</b><br>` +
+        `squared modulus: ${nc} of 49 nonzero, mean |𝔤|² = <b>${fx(ec / 49, 4)}</b> (both 6/7 = ${fx(6 / 7, 4)})`;
+    }
+  });
+}
+combFig("c-flat", false); combFig("c-comb", true);
+
+// ---------- 6. Gram matrix ----------
+const WINS = [30, 100, 300, 1000, 3000, 10000, 30000];
+const ATOMS = [...PRIMES].sort((x, y) => x.p - y.p || x.pi[0] - y.pi[0]).map((f) => {
+  const g1 = gauss([f], [1, 0]), ph = Math.atan2(g1[1], g1[0]);
+  const cs = [], sn = [];
+  for (let k = 0; k < 6; k++) { cs.push(Math.cos(ph - TAU * k / 6)); sn.push(Math.sin(ph - TAU * k / 6)); }
+  return { f, cs, sn };
+});
+const gramCache = new Map();
+function gram(Hn) {
+  if (gramCache.has(Hn)) return gramCache.get(Hn);
+  const K = ATOMS.length, gr = new Float64Array(K * K), gi = new Float64Array(K * K);
+  const vr = new Float64Array(K), vi = new Float64Array(K), on = new Uint8Array(K);
+  const pts = ballPoints(Hn);
+  for (const e of pts) {
+    for (let i = 0; i < K; i++) {
+      const A = ATOMS[i], k = A.f.table[A.f.red(e)];
+      if (k < 0) { on[i] = 0; continue; }
+      on[i] = 1; vr[i] = A.cs[k]; vi[i] = A.sn[k];       // 𝔤 = χ̄(h)·g(π,1)/√p
+    }
+    for (let i = 0; i < K; i++) { if (!on[i]) continue;
+      for (let j = i; j < K; j++) { if (!on[j]) continue;
+        gr[i * K + j] += vr[i] * vr[j] + vi[i] * vi[j]; gi[i * K + j] += vi[i] * vr[j] - vr[i] * vi[j]; } }
+  }
+  const M = new Float64Array(K * K);
+  for (let i = 0; i < K; i++) for (let j = i; j < K; j++) { const v = Math.hypot(gr[i * K + j], gi[i * K + j]) / pts.length; M[i * K + j] = v; M[j * K + i] = v; }
+  const out = { M, K, n: pts.length };
+  gramCache.set(Hn, out);
+  return out;
+}
+canvasFig("c-gram", (w) => (w + 40) / w * 0.86, (ctx, w, h, fig) => {
+  const Hn = WINS[state.win], G = gram(Hn), K = G.K;
+  const left = 34, top = 6, size = Math.min(w - left - 54, h - top - 34), cs = size / K;
+  const panel = tok("--panel");
+  let maxOff = 0, sumOff = 0;
+  for (let i = 0; i < K; i++) for (let j = 0; j < K; j++) {
+    const v = G.M[i * K + j]; if (i !== j) { maxOff = Math.max(maxOff, v); sumOff += v; }
+    const px = left + j * cs, py = top + i * cs;
+    ctx.fillStyle = heat(Math.min(1, v)); ctx.fillRect(px, py, cs, cs);
+    ctx.strokeStyle = panel; ctx.lineWidth = 1; ctx.strokeRect(px, py, cs, cs);
+    fig.items.push({ cell: true, x: px, y: py, w: cs, h: cs, html: `u = ${fmtE(ATOMS[i].f.pi)} (N ${ATOMS[i].f.p})<br>u′ = ${fmtE(ATOMS[j].f.pi)} (N ${ATOMS[j].f.p})<br>|⟨𝔤,𝔤′⟩| = ${fx(v, 3)}` });
+  }
+  ctx.fillStyle = tok("--muted"); ctx.font = `10px ${tok("--f-mono")}`; ctx.textBaseline = "middle"; ctx.textAlign = "right";
+  for (let i = 0; i < K; i += 2) ctx.fillText(String(ATOMS[i].f.p), left - 4, top + (i + 1) * cs);
+  ctx.textAlign = "center"; ctx.textBaseline = "top";
+  for (let j = 0; j < K; j += 2) ctx.fillText(String(ATOMS[j].f.p), left + (j + 1) * cs, top + size + 4);
+  ctx.textAlign = "left"; ctx.fillText("N(u′) →", left, top + size + 18);
+  // colour bar
+  const bx = left + size + 16, bh = size;
+  for (let y = 0; y < bh; y++) { ctx.fillStyle = heat(1 - y / bh); ctx.fillRect(bx, top + y, 12, 1.5); }
+  ctx.textAlign = "left"; ctx.textBaseline = "middle"; ctx.fillStyle = tok("--muted");
+  ctx.fillText("1", bx + 16, top + 4); ctx.fillText("0", bx + 16, top + bh - 4);
+  document.getElementById("win-val").textContent = Hn.toLocaleString("en-US");
+  document.getElementById("gram-read").innerHTML =
+    `${G.n.toLocaleString("en-US")} frequencies, window / Q² ≈ ${fx(Hn / 11881, 2)}<br>` +
+    `largest off-diagonal coherence <b>${fx(maxOff, 3)}</b>, mean <b>${fx(sumOff / (K * K - K), 3)}</b>`;
+});
+document.getElementById("win").addEventListener("input", (e) => { state.win = +e.target.value; render(figs.find((f) => f.el.id === "c-gram")); });
+
+// ---------- 7. faces ----------
+const F = CHAIN.faces, ST = CHAIN.steps, NF = F.length;
+const line = (k, s) => F[k][0] - F[k][1] * s;
+function envelope(s) { let best = -Infinity, arg = -1; for (let k = 0; k < NF; k++) if (s <= F[k][2] + 1e-12) { const v = line(k, s); if (v > best) { best = v; arg = k; } } return [best, arg]; }
+const pal = () => ({ ink: tok("--ink"), ink2: tok("--ink-2"), muted: tok("--muted"), grid: tok("--grid"), acc: tok("--accent"),
+  wash: tok("--accent-wash"), s2: tok("--s2"), panel: tok("--panel"), mono: tok("--f-mono").replace(/"/g, "'"), body: tok("--f-body").replace(/"/g, "'") });
+function axes(W, H, m, xs, ys, xticks, yticks, xlab, ylab, fmtX, fmtY) {
+  const K = pal();
+  let out = "";
+  const X = (x) => m.l + ((x - xs[0]) / (xs[1] - xs[0])) * (W - m.l - m.r);
+  const Y = (y) => m.t + (1 - (y - ys[0]) / (ys[1] - ys[0])) * (H - m.t - m.b);
+  for (const t of yticks) out += `<line x1="${m.l}" x2="${W - m.r}" y1="${Y(t)}" y2="${Y(t)}" stroke="${K.grid}"/>` +
+    `<text x="${m.l - 6}" y="${Y(t) + 4}" text-anchor="end" fill="${K.muted}" font-size="11" font-family="${K.mono}">${fmtY(t)}</text>`;
+  for (const t of xticks) out += `<line y1="${m.t}" y2="${H - m.b}" x1="${X(t)}" x2="${X(t)}" stroke="${K.grid}"/>` +
+    `<text x="${X(t)}" y="${H - m.b + 16}" text-anchor="middle" fill="${K.muted}" font-size="11" font-family="${K.mono}">${fmtX(t)}</text>`;
+  out += `<line x1="${m.l}" x2="${W - m.r}" y1="${H - m.b}" y2="${H - m.b}" stroke="${K.muted}"/>`;
+  out += `<text x="${(m.l + W - m.r) / 2}" y="${H - 6}" text-anchor="middle" style="fill:${K.ink2}" font-size="12" font-family="${K.body}">${xlab}</text>`;
+  out += `<text transform="translate(12 ${(m.t + H - m.b) / 2}) rotate(-90)" text-anchor="middle" style="fill:${K.ink2}" font-size="12" font-family="${K.body}">${ylab}</text>`;
+  return { out, X, Y };
+}
+const range = (a, b, d) => { const r = []; for (let x = a; x <= b + 1e-9; x += d) r.push(+x.toFixed(6)); return r; };
+function facesSVG(el, W) {
+  const K = pal();
+  const H = Math.round(Math.max(300, Math.min(460, W * 0.68)));
+  const m = { l: 52, r: 14, t: 12, b: 42 };
+  const xs = state.zoom ? [0.02, 0.105] : [0, 0.145], ys = state.zoom ? [0.72, 0.87] : [0.6, 1.01];
+  const A = axes(W, H, m, xs, ys, state.zoom ? range(0.02, 0.1, 0.02) : range(0, 0.14, 0.02), state.zoom ? range(0.72, 0.86, 0.02) : range(0.6, 1.0, 0.1),
+    "slot length s / M", "plain length P / M", (t) => t.toFixed(2), (t) => t.toFixed(2));
+  const { X, Y } = A;
+  let s = `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg"><defs><clipPath id="clipF"><rect x="${m.l}" y="${m.t}" width="${W - m.l - m.r}" height="${H - m.t - m.b}"/></clipPath></defs>` + A.out;
+  // envelope and proven region
+  const ss = [], N = 240; for (let i = 0; i <= N; i++) ss.push((0.1397 * i) / N);
+  const env = ss.map((x) => [x, envelope(x)[0]]);
+  const envPath = env.map(([x, y], i) => `${i ? "L" : "M"}${X(x).toFixed(1)},${Y(y).toFixed(1)}`).join("");
+  s += `<g clip-path="url(#clipF)"><path d="${envPath}L${X(0.1397)},${Y(ys[0])}L${X(0)},${Y(ys[0])}Z" fill="${K.wash}" stroke="none"/>`;
+  for (let k = 0; k < NF; k++) {
+    const c = F[k][2];
+    s += `<line x1="${X(0)}" y1="${Y(line(k, 0))}" x2="${X(c)}" y2="${Y(line(k, c))}" stroke="${seq(k / (NF - 1))}" stroke-width="1"/>`;
+  }
+  s += `<path d="${envPath}" fill="none" stroke="${K.ink}" stroke-width="2"/>`;
+  const k = state.step, s0 = ST[k - 1][0];
+  s += `<line x1="${X(0)}" y1="${Y(line(k - 1, 0))}" x2="${X(F[k - 1][2])}" y2="${Y(line(k - 1, F[k - 1][2]))}" stroke="${K.s2}" stroke-width="2.2"/>`;
+  s += `<line x1="${X(0)}" y1="${Y(line(k, 0))}" x2="${X(F[k][2])}" y2="${Y(line(k, F[k][2]))}" stroke="${K.acc}" stroke-width="2.2"/>`;
+  s += `<line x1="${X(s0)}" x2="${X(s0)}" y1="${m.t}" y2="${H - m.b}" stroke="${K.acc}" stroke-dasharray="3 4"/>`;
+  s += `<circle cx="${X(s0)}" cy="${Y(line(k, s0))}" r="4.5" fill="${K.acc}" stroke="${K.panel}" stroke-width="2"/>`;
+  if (state.test) {
+    const [tx, ty] = state.test;
+    s += `<circle cx="${X(tx)}" cy="${Y(ty)}" r="6" fill="none" stroke="${K.ink}" stroke-width="2"/><circle cx="${X(tx)}" cy="${Y(ty)}" r="1.8" fill="${K.ink}"/>`;
+  }
+  s += `</g>`;
+  // labels for the named faces
+  const lab = (kk, text, dy) => { const c = F[kk][2]; const xx = Math.min(X(c), W - m.r - 4), yy = Y(line(kk, c)); return (yy > m.t && yy < H - m.b) ? `<text x="${xx - 4}" y="${yy + dy}" text-anchor="end" style="fill:${K.ink2}" font-size="11" font-family="${K.mono}">${text}</text>` : ""; };
+  s += lab(0, "boot face", 14);
+  { const c = F[NF - 1][2], yy = Y(line(NF - 1, c)), xx = X(c);
+    if (yy > m.t && yy < H - m.b) s += xx + 76 < W - m.r
+      ? `<text x="${xx + 6}" y="${yy + 4}" fill="${K.ink2}" font-size="11" font-family="${K.mono}">count face</text>`
+      : `<text x="${xx - 6}" y="${yy - 9}" text-anchor="end" fill="${K.ink2}" font-size="11" font-family="${K.mono}">count face</text>`; }
+  s += `<text x="${X(s0) + 6}" y="${m.t + 12}" fill="${K.acc}" font-size="11" font-family="${K.mono}">s₀</text>`;
+  s += `</svg>`;
+  el.innerHTML = s;
+  const svg = el.firstChild;
+  const toData = (e) => { const r = svg.getBoundingClientRect(), px = ((e.clientX - r.left) / r.width) * W, py = ((e.clientY - r.top) / r.height) * H;
+    return [xs[0] + ((px - m.l) / (W - m.l - m.r)) * (xs[1] - xs[0]), ys[0] + (1 - (py - m.t) / (H - m.t - m.b)) * (ys[1] - ys[0])]; };
+  svg.addEventListener("pointermove", (e) => {
+    const [x, y] = toData(e); if (x < xs[0] || x > xs[1] || y < ys[0] || y > ys[1]) return hideTip();
+    let best = -1, bd = Infinity;
+    for (let q = 0; q < NF; q++) if (x <= F[q][2]) { const d = Math.abs(line(q, x) - y); if (d < bd) { bd = d; best = q; } }
+    if (best < 0) return hideTip();
+    const px = (bd / (ys[1] - ys[0])) * (H - m.t - m.b);
+    if (px > 10) return hideTip();
+    showTip(`face ${best}${best === 0 ? " (boot)" : best === 64 ? " (physical)" : best === NF - 1 ? " (count)" : ""}<br>B = ${F[best][0]}<br>Λ = ${F[best][1]}<br>cap = ${F[best][2]}`, e.clientX, e.clientY);
+  });
+  svg.addEventListener("pointerleave", (e) => { if (e.pointerType !== "touch") hideTip(); });
+  svg.addEventListener("click", (e) => { const p = toData(e); if (p[0] >= xs[0] && p[0] <= xs[1] && p[1] >= ys[0] && p[1] <= ys[1]) { state.test = p; render(facesFig); } });
+  // readout
+  const [B0, L0] = F[k - 1], [B1, L1] = F[k];
+  let read = `step ${k}: parent G(${B0}, ${L0}) → new G(${B1}, ${L1}), crossing s₀ = <b>${s0.toFixed(4)}</b>, density cut q ∈ [${ST[k - 1][2].toFixed(3)}, ${ST[k - 1][1].toFixed(3)}]`;
+  if (state.test) {
+    const [tx, ty] = state.test, ok = [];
+    for (let q = 0; q < NF; q++) if (tx <= F[q][2] + 1e-12 && ty <= line(q, tx)) ok.push(q);
+    const [ev, arg] = envelope(tx);
+    read += `<br>test point s = ${tx.toFixed(4)}, P = ${ty.toFixed(4)}: ` + (ok.length
+      ? `<b>proven</b> by ${ok.length} face${ok.length > 1 ? "s" : ""} (faces ${ok[0]}–${ok[ok.length - 1]}${ok.length < ok[ok.length - 1] - ok[0] + 1 ? ", not all in between" : ""}); best face ${arg}, margin ${(ev - ty).toFixed(4)}`
+      : arg < 0 ? `<b>not covered</b>: beyond every cap` : `<b>not proven</b>: ${(ty - ev).toFixed(4)} above the envelope (best face ${arg})`);
+  }
+  document.getElementById("faces-read").innerHTML = read;
+}
+const facesFig = svgFig("s-faces", facesSVG);
+svgFig("s-mag", (el, W) => {
+  const K = pal();
+  const k = state.step, [B0, L0] = F[k - 1], [B1, L1, c1] = F[k], s0 = ST[k - 1][0];
+  const dl = L0 - L1, top = dl * (c1 - s0);
+  const H = Math.round(Math.max(220, Math.min(300, W * 0.42)));
+  const m = { l: 64, r: 16, t: 14, b: 42 };
+  const xs = [Math.max(0, s0 - 0.6 * (c1 - s0)), c1 + 0.004], ys = [-0.55 * top, 1.25 * top];
+  const yt = [0, top / 2, top].map((v) => +v.toPrecision(3));
+  const A = axes(W, H, m, xs, ys, range(0, 0.14, 0.02).filter((t) => t >= xs[0] && t <= xs[1]), yt, "slot length s / M", "above parent", (t) => t.toFixed(2), (t) => (t === 0 ? "0" : t.toExponential(1).replace("e-", "e−")));
+  const { X, Y } = A, diff = (s) => (B1 - B0) + dl * s;
+  let s = `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">` + A.out;
+  s += `<path d="M${X(s0)},${Y(0)}L${X(c1)},${Y(diff(c1))}L${X(c1)},${Y(0)}Z" fill="${K.wash}" stroke="none"/>`;
+  s += `<line x1="${X(xs[0])}" x2="${X(xs[1])}" y1="${Y(0)}" y2="${Y(0)}" stroke="${K.s2}" stroke-width="2.2"/>`;
+  s += `<line x1="${X(xs[0])}" y1="${Y(diff(xs[0]))}" x2="${X(c1)}" y2="${Y(diff(c1))}" stroke="${K.acc}" stroke-width="2.2"/>`;
+  s += `<circle cx="${X(s0)}" cy="${Y(0)}" r="4.5" fill="${K.acc}" stroke="${K.panel}" stroke-width="2"/>`;
+  s += `<text x="${X(s0) + 8}" y="${Y(0) + 17}" fill="${K.acc}" font-size="11" font-family="${K.mono}">s₀ = ${s0.toFixed(4)}</text>`;
+  s += `<text x="${X(xs[0]) + 6}" y="${Y(0) - 7}" fill="${K.s2}" font-size="11" font-family="${K.mono}">parent face ${k - 1}</text>`;
+  s += `<text x="${X(c1) - 6}" y="${Y(diff(c1)) - 8}" text-anchor="end" fill="${K.acc}" font-size="11" font-family="${K.mono}">new face ${k}: +${top.toExponential(2).replace("e-", "e−")} at the cap</text>`;
+  s += `</svg>`;
+  el.innerHTML = s;
+});
+document.getElementById("step").addEventListener("input", (e) => {
+  state.step = +e.target.value; document.getElementById("step-val").textContent = state.step;
+  figs.filter((f) => f.el.id === "s-faces" || f.el.id === "s-mag" || f.el.id === "s-dual" || f.el.id === "s-q").forEach(render);
+});
+document.getElementById("zoom").addEventListener("click", (e) => { state.zoom = !state.zoom; e.currentTarget.setAttribute("aria-pressed", String(state.zoom)); render(facesFig); });
+svgFig("s-dual", (el, W) => {
+  const K = pal();
+  const H = Math.round(Math.max(260, Math.min(360, W * 0.9)));
+  const m = { l: 52, r: 14, t: 26, b: 42 }, xs = [1.86, 2.64], ys = [0.85, 1.03];
+  const A = axes(W, H, m, xs, ys, range(1.9, 2.6, 0.1), range(0.85, 1.0, 0.05), "Λ (slot price)", "B (budget)", (t) => t.toFixed(1), (t) => t.toFixed(2));
+  const { X, Y } = A;
+  let s = `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg"><defs><clipPath id="clipD"><rect x="${m.l}" y="${m.t}" width="${W - m.l - m.r}" height="${H - m.t - m.b}"/></clipPath></defs>` + A.out + `<g clip-path="url(#clipD)">`;
+  const qs = [0.75, 0.7, 0.65, 0.6, 0.55, 0.5], labs = [];
+  for (const q of qs) {
+    const sl = (1 + 0.999 / q) / 6, x0 = xs[0], x1 = xs[1];
+    const strong = q === 0.75 || q === 0.5;
+    s += `<line x1="${X(x0)}" y1="${Y(sl * x0)}" x2="${X(x1)}" y2="${Y(sl * x1)}" stroke="${strong ? "${K.ink2}" : "${K.muted}"}" stroke-width="${strong ? 1.6 : 1}" stroke-dasharray="${strong ? "" : "4 4"}"/>`;
+    labs.push([Math.min(X(Math.min(xs[1], ys[1] / sl)), W - m.r - 10), q]);
+  }
+  F.forEach(([B, L], i) => { s += `<circle cx="${X(L)}" cy="${Y(B)}" r="${i === 0 || i === 64 || i === NF - 1 ? 4.5 : 2.6}" fill="${seq(i / (NF - 1))}" stroke="${K.panel}" stroke-width="1"/>`; });
+  const kk = state.step; s += `<circle cx="${X(F[kk][1])}" cy="${Y(F[kk][0])}" r="6" fill="none" stroke="${K.acc}" stroke-width="2"/>`;
+  s += `</g>`;
+  labs.forEach(([x, q]) => { if (q === 0.75 || q === 0.5 || W > 300) s += `<text x="${x}" y="${m.t - 8}" text-anchor="middle" fill="${q === 0.75 || q === 0.5 ? K.ink : K.muted}" font-size="10.5" font-family="${K.mono}">${q === 0.75 ? "q=¾" : q === 0.5 ? "q=½" : q.toFixed(2)}</text>`; });
+  s += `<text x="${X(F[0][1]) - 8}" y="${Y(F[0][0]) + 16}" text-anchor="end" style="fill:${K.ink2}" font-size="11" font-family="${K.mono}">boot</text>`;
+  s += `<text x="${X(F[NF - 1][1]) + 8}" y="${Y(F[NF - 1][0]) + 4}" style="fill:${K.ink2}" font-size="11" font-family="${K.mono}">count</text>`;
+  s += `</svg>`;
+  el.innerHTML = s;
+  const svg = el.firstChild;
+  svg.addEventListener("pointermove", (e) => {
+    const r = svg.getBoundingClientRect(), px = ((e.clientX - r.left) / r.width) * W, py = ((e.clientY - r.top) / r.height) * H;
+    let best = -1, bd = 12;
+    F.forEach(([B, L], i) => { const d = Math.hypot(X(L) - px, Y(B) - py); if (d < bd) { bd = d; best = i; } });
+    if (best < 0) return hideTip();
+    const [B, L] = F[best];
+    showTip(`face ${best}<br>Λ = ${L}, B = ${B}<br>LOW-gate cap q ≤ ${(0.999 * L / (6 * B - L)).toFixed(4)}`, e.clientX, e.clientY);
+  });
+  svg.addEventListener("pointerleave", (e) => { if (e.pointerType !== "touch") hideTip(); });
+});
+svgFig("s-q", (el, W) => {
+  const K = pal();
+  const H = Math.round(Math.max(260, Math.min(360, W * 0.9)));
+  const m = { l: 52, r: 12, t: 26, b: 42 }, xs = [0, 130], ys = [0.47, 0.78];
+  const A = axes(W, H, m, xs, ys, [1, 32, 64, 96, 129], [0.5, 0.6, 0.7, 0.75], "step k", "density cut q", (t) => String(t), (t) => t.toFixed(2));
+  const { X, Y } = A;
+  let s = `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">` + A.out;
+  s += `<line x1="${m.l}" x2="${W - m.r}" y1="${Y(0.75)}" y2="${Y(0.75)}" stroke="${K.ink2}" stroke-width="1.4"/>`;
+  s += `<line x1="${m.l}" x2="${W - m.r}" y1="${Y(0.5)}" y2="${Y(0.5)}" stroke="${K.ink2}" stroke-width="1.4"/>`;
+  s += `<text x="${W - m.r}" y="${Y(0.75) - 6}" text-anchor="end" style="fill:${K.ink2}" font-size="11" font-family="${K.mono}">cap ¾</text>`;
+  s += `<text x="${W - m.r}" y="${Y(0.5) + 15}" text-anchor="end" style="fill:${K.ink2}" font-size="11" font-family="${K.mono}">floor ½</text>`;
+  const bw = Math.max(1, ((W - m.l - m.r) / 130) * 0.62);
+  ST.forEach(([s0, qmax, qmin], i) => {
+    const kk = i + 1, on = kk === state.step;
+    s += `<line x1="${X(kk)}" x2="${X(kk)}" y1="${Y(qmax)}" y2="${Y(qmin)}" stroke="${on ? "${K.s2}" : seq(kk / 129)}" stroke-width="${on ? 3 : bw}" stroke-linecap="round"/>`;
+  });
+  s += `</svg>`;
+  el.innerHTML = s;
+  const svg = el.firstChild;
+  svg.addEventListener("pointermove", (e) => {
+    const r = svg.getBoundingClientRect(), px = ((e.clientX - r.left) / r.width) * W;
+    const kk = Math.round(xs[0] + ((px - m.l) / (W - m.l - m.r)) * (xs[1] - xs[0]));
+    if (kk < 1 || kk > 129) return hideTip();
+    const [s0, qmax, qmin] = ST[kk - 1];
+    showTip(`step ${kk}<br>q(v) ∈ [${qmin.toFixed(6)}, ${qmax.toFixed(6)}]`, e.clientX, e.clientY);
+  });
+  svg.addEventListener("pointerleave", (e) => { if (e.pointerType !== "touch") hideTip(); });
+});
+
+// ---------- wiring ----------
+function refreshPi() { ["c-lattice", "c-wave", "c-code", "c-walk", "c-spec"].forEach((id) => render(figs.find((f) => f.el.id === id))); }
+chips("pi-chips", MODS, (f) => `${fmtE(f.pi)} · N ${f.p}`, (f) => f === state.pi, (f) => { state.pi = f; refreshPi(); });
+chips("h-chips", FREQS, (h) => fmtE(h), (h) => h === state.h, (h) => { state.h = h; ["c-wave", "c-walk", "c-crt"].forEach((id) => render(figs.find((f) => f.el.id === id))); });
+chips("n-chips", [primeOf(-1, 3), primeOf(5, 3), primeOf(5, 6)], (f) => `${fmtE(f.pi)} · N ${f.p}`, (f) => f === state.n, (f) => { state.n = f; render(figs.find((x) => x.el.id === "c-crt")); });
+document.getElementById("wind").addEventListener("click", (e) => { state.wind = !state.wind; e.currentTarget.setAttribute("aria-pressed", String(state.wind)); render(figs[0]); });
+document.getElementById("step-val").textContent = state.step;
+
+document.addEventListener("pointerdown", (e) => { if (!e.target.closest("canvas, .svgbox")) hideTip(); });
+function legends() { legendSix(); legendPush(); }
+function all() { legends(); renderAll(); }
+let rt = null;
+const ro = new ResizeObserver(() => { clearTimeout(rt); rt = setTimeout(renderAll, 60); });
+figs.forEach((f) => ro.observe(f.el.parentElement));
+window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", all);
+new MutationObserver(all).observe(rootEl, { attributes: true, attributeFilter: ["data-theme"] });
+all();
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(all);
+})();
+</script>

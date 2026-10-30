@@ -62,8 +62,11 @@ Computed with `worth.py` and `density_past2.py`, the float model of the newTop r
    Re s > β ≤ 7/8, and η = 1/3 comes from Heath-Brown–Patterson. Open steps:
    - a sextic (or quadratic × cubic) version;
    - (smooth × prime) vectors, since the face's plain factors are not w-rough;
-   - a check of Lemma 9.2 and D₁;
    - Lean (the metaplectic stack).
+
+   Reach: it acts on the faces' prime slots (Sil's √A reference), not on P1. P1 is a joint
+   quadratic-row × cubic-slot norm, and for a single row the D–R sieve is in its B > A regime, where it does not
+   help. The faces also need the native step's K ≥ 1/2 wall moved, so target 0 alone does not reach the bar.
 1. **A structured sextic large sieve at the short reference.** It should be diagonal up to B ≤ A^{2/3} for
    smooth × prime vectors. Route: #96's graded inverse theorem, whose excess sits on correlations with (m₀/n)₆ for
    small m₀, plus a lemma that smooth factors kill those correlations (Pólya–Vinogradov). Paper theorem; not in

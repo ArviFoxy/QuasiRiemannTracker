@@ -414,3 +414,35 @@ below 0.87336 with less than the whole paper?
   of a new probe layer: a multi-month formalization, and only if the paper is right.
 - Standalone pieces could be formalized as verification of the paper with no θ gain yet: GS1 (the graded inverse
   theorem, a self-contained large-sieve statement) and the non-polar vanishing.
+
+## 2026-10-30 · Sub-square-root selection and higher moments in the return
+
+**Sub-square-root joint count [numerical model; `subroot/word_count.py`].**
+- Model: PR 93's three-word minimax (r ≤ 1, m ≤ 1/2, r + m ≥ 1, envelope g(w) − νw) at the binding point, where
+  ν = δ_sel = 0.452.
+- Count by choice of selected-norm exponent g:
+
+  | g | count |
+  |---|---|
+  | ideal fixed point (as if PR 93's norm held at δ < 1/2) | **0.548** |
+  | one amplification against the true sextic sieve Θ₆ | 0.715 |
+  | plain Θ₆ | 0.747 |
+
+  The return's count there is ≈ 0.602–0.607.
+- So the ideal norm would gain a lot (Δcount ≈ −0.055). But the selected norm would have to be about 75% of the way
+  from Θ₆ to the ideal: for −5e-5, an effective slope ≈ 0.23 at rows of slope 0.452.
+- One-step amplification is far too weak, and the iteration diverges below 1/2. What is needed is a large-values
+  theorem below the N^(3/4) threshold for sextic families, i.e. Guth–Maynard class.
+- **Open problem (new math, long).** A sub-3/4 large-values estimate for the sextic row family strong enough to put
+  the joint count below 0.606 at ν = 0.452.
+
+**Label line υ < 1/2 [derived].** Dead. The packet's normalisation Y^(υ−1) and the polynomial's mean square Y^(1−2υ)
+cancel exactly.
+
+**Higher moments in the physical row [Lean, read; derived].**
+- The count's weights 3/4 and 1/4 come from Hölder (4/3, 4) against Σ|S|⁴|Q|² ≤ U^(1+ε), which is exactly the
+  physical face (`InitialAffineAt` with `physicalFace`).
+- A sixth-moment face, Σ|S|⁶|Q|² ≤ U^(M6), would give weights 5/6 and 1/6. That wins iff M6 < 3/2 − R/2 ≈ 1.197.
+  At M6 = 1.1 it would be worth about −2.6e-3.
+- The plain sextic sieve gives M6 ≈ 1.75 (S of length U^0.567). So it needs a new face family for cubes of the row
+  polynomial. **Open problem (new math).**

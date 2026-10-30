@@ -1346,8 +1346,9 @@ the trivial bound).
     coefficients are only partly known (Bröker–Hoffstein, arXiv 1312.0568).
   - The Chinta–Friedberg–Hoffstein conjecture ties squared sextic theta coefficients to cubic Gauss sums.
   - No spectral large sieve for the 6-fold cover is available.
-- *Multiple Dirichlet series.* The Kubota series is GL(2)-like (two Γ-factors). The second moment of its quadratic
-  twists is therefore of affine type D̃4, whose group is infinite, so the series has only partial continuation.
+- *Multiple Dirichlet series.* The Kubota series is GL(2)-like with respect to quadratic twists (twist conductor
+  N(k)²). So the second moment of its quadratic twists is an affine multiple Dirichlet series, with an infinite
+  group and only partial continuation. The exact type is computed in the next entry (two double bonds, not D̃4).
   Even for GL(2) quadratic twists, unconditional results give only log savings (Li, Invent. 2024); the power-saving
   asymptotics of Soundararajan–Young assume GRH.
 - *Dispersion (Dunn–Radziwiłł).* It works for prime vectors at the cubic family's balanced range, but not past the
@@ -1372,3 +1373,32 @@ the trivial bound).
   - So B2 needs the core saving at η ≥ 0.1717 (#97 bar) or 0.1782 (#98 bar), while P1 needs only η ≈ 0.008 or
     ≈ 0.017.
   - Same estimate, a 10–20× stronger saving: a proof of P1 would not by itself move the long word. [derived]
+
+**(X) as a multiple Dirichlet series: the "2" is a double bond [derived; numerical check of the group].**
+- Z(s₁, s₂, w) = Σ_k L(s₁, θ_P⊗χ_k)·conj(L(s̄₂, θ_{P′}⊗χ_k))·N(k)^{−w} carries three functional equations. In
+  centred coordinates x_i = s_i − 1/2, y = w − 1/2:
+  - the Kubota FE in n, whose twist conductor is N(k)² (#96 N1): x₁ ↦ −x₁, y ↦ y + 2x₁;
+  - the same in m: x₂ ↦ −x₂, y ↦ y + 2x₂;
+  - quadratic Poisson in k (FE of L(w, χ_{nm})): x_i ↦ x_i + y, y ↦ −y.
+- Cartan matrix [[2,0,−1],[0,2,−1],[−2,−2,2]]: determinant 0, so the type is **affine**. It is a rank-3 diagram
+  with two double bonds, the imaginary root is δ = α₁ + α₂ + 2α₃, and the group is infinite (more than 200
+  elements after 12 steps).
+- With GL(1)-like twists (shift y + x_i) the same three equations give A3: determinant 4 and the group S4 of order
+  24. That is the classical second moment of quadratic Dirichlet L-functions, which has power-saving asymptotics.
+  The first moment Σ_k L(s, θ_P⊗χ_k)N(k)^{−w} is of type B2/C2 (determinant 2), finite.
+- So the conductor exponent 2 of a quadratic twist of the cubic theta series is exactly what makes the moment
+  affine. This is the same position as the fourth moment of quadratic Dirichlet L-functions (affine D̃4):
+  - power savings are known over function fields (Bucur–Diaconu; Florea);
+  - over number fields they are open unconditionally (Shen assumes GRH; Li gets log savings).
+  The obstacle there is growth control of the series near w = 1, past its continuation by Bochner's tube theorem.
+- What (X) would need on this route [derived]:
+  - the corrected affine series, i.e. its p-parts, so that all three functional equations hold;
+  - polynomial growth in a neighbourhood of (x₁, x₂, y) = (0, 0, 1/2 − ε₀) inside the Tits cone x₁ + x₂ + 2y > 0;
+  - polynomial dependence on P, P′ and the sieving parameters.
+- Sieving the squarefree conditions with a cut A costs:
+  - k: tail ≲ KN·K^ε/A;
+  - n: tail needs A ≥ L^{(1+η)/4}.
+  So ε₀ ≈ 0.05–0.1 suffices, not ε₀ → 0.
+- **Verdict.** P1 is an instance of the "affine moment" problem over a number field. It is as hard as the
+  number-field fourth moment of quadratic Dirichlet L-functions with a power saving. [open; classification
+  settled]

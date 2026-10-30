@@ -236,7 +236,8 @@ The Lean line reaches cap 0.128 at L = 2.1.
 
 ## 2026-10-30 · R1 in Lean, the E5 retune and the fresh look
 
-**R1 [Lean, building; `research/lean/arvi_selected_leaf/R1/`].** The analytic input of the selected leaf,
+**R1 [Lean, proved; `research/lean/arvi_selected_leaf/R1/`].** `selectedRootEnergy K : SelectedRootEnergy K` for
+`K ∈ [0.500001, 3/4]` (`R1/Cap.lean`), axioms `propext, Classical.choice, Quot.sound`. The analytic input of the selected leaf,
 `SelectedRootEnergy K` for every cut `K ∈ [0.500001, 3/4]`, is proved by:
 - **Root split.** The heavy-row energy splits exactly over sixth-root classes (`RootSplit`).
 - **Direct route per class.** PR 93's selected norm (`ClassBound.direct_class`).

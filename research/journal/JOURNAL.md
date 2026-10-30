@@ -894,9 +894,10 @@ Type II/III analysis, so this per-row quasi-GRH does not obviously substitute fo
   **B ≤ A^{(1+3ρ)/(2−3ρ)} ≈ A^{1/2 + 9ρ/4}**, i.e. it breaks the √-barrier by 9ρ/4.
 
 **Translation into our atom [derived].**
-- A diagonal threshold A^{1/2+κ} turns the slot cost 2 into 2/(1 + 4κ).
-- The master target c = 1.9936 needs κ ≈ 8e-4, so **ρ ≳ 3.6e-4**. The proved ρ < 1e-4 is worth at most ≈ 4e-6,
-  even if it transferred to all three places.
+- A diagonal threshold A^{1/2+κ} turns the slot cost 2 into 1/(1/2 + κ) = 2/(1 + 2κ) (heuristic: each word's 2
+  is taken to be the √-barrier).
+- The master target c = 1.9936 needs κ ≈ 1.6e-3, so **ρ ≳ 7.1e-4**. The proved ρ < 1e-4 gives c ≥ 1.9991, worth at
+  most ≈ 3e-6 even if it transferred to all three places.
 - Remark 8.1 says ρ(ε) = 11ε/12 − 12ε² is acceptable in the Type-I estimate (Prop 8.1). With ε near 0.038 that is
   ρ ≈ 0.0175 (slot cost ≈ 1.85), but the propositions are stated only for ε < 1/10000. Whether larger ε survives
   the other error terms is unchecked.
@@ -918,5 +919,5 @@ Type II/III analysis, so this per-row quasi-GRH does not obviously substitute fo
 
 **Verdict.** This is the first literature-backed mechanism that breaks the √-barrier for theta-uncorrelated
 w-rough vectors, which is exactly the master parameter. The proved size (ρ < 1e-4, under GRH, cubic family only)
-is about 10× short of the bar. Getting there needs obstacles 1–3 solved on paper, then 4. Recorded as the leading
+is about 7× short of the bar. Getting there needs obstacles 1–3 solved on paper, then 4. Recorded as the leading
 long-term route to the slot-cost atom; nothing bankable now.

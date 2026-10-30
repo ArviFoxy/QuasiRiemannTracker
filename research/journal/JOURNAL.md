@@ -1455,3 +1455,55 @@ search].**
 - The negative coordinate needed to cancel the other point's positive one always costs at least as much growth.
 - So the parabolic route fails for (X), as it does for the GL(2) analogue. This is consistent with only log
   savings being known there (Li; Shen–Stucky). [dead end recorded]
+
+## 2026-10-30 · BDFKK (explicit RIP past the square-root bottleneck) against our walls
+
+**What BDFKK do [read; arXiv 1008.4535, Duke 2011].**
+- They build explicit p × N matrices with RIP of order k = p^{1/2+ε₀}. Columns are chirps u_{a,b}(x) =
+  e_p(ax² + bx)/√p, with (a, b) in **designed** sets:
+  - A is tiny (|A| = p^α, α = 1/(8m²)), with reciprocal sums 1/(a − a_j) non-degenerate (2.4);
+  - B is a digit set Freiman-isomorphic to a cube, so every large subset has small additive energy (2.5).
+- Step 1 (Lemma 1): flat RIP plus coherence µ ≤ 1/k gives RIP. Flat RIP means |⟨Σ_{J₁}u, Σ_{J₂}u⟩| ≤ δk for
+  disjoint J₁, J₂.
+- Step 2 (Lemma 2): at k = √p, every coherence is an exact Gauss sum, of modulus 1/√p with phase
+  e_p(−(b₁−b₂)²/(4(a₁−a₂))). The flat sum becomes bilinear forms e_p(2c·b₁b₂) over the slices of B, with one
+  form per pair (a₁, a₂).
+- Step 3: if those forms do not cancel beyond √, Balog–Szemerédi–Gowers gives a large subset of B with large
+  additive energy, contradicting (2.5). Bourgain's sum-product theorem C, Σ_b E(A, bA) ≪ (·)^{−c₀}|A|³|B| with
+  c₀ = 1/10430, supplies the cancellation.
+- The gain is ε₁ = c₀γ/20 − 43α/m, about 10⁻⁶ or less (Mixon's explicit value is of order 10⁻²⁸).
+
+**The match [derived].**
+- The faces' K-wall *is* a square-root bottleneck. The selected rows W (size ≈ B^{1−δ}) sit in the sextic
+  dictionary φ_z = (χ_z(I))_{N(I)≤X}.
+  - For δ > 1/2, |W| < √(dimension) and coherence-type arguments (amplify and reflect) suffice.
+  - For δ < 1/2 we need RIP-type near-orthogonality of W past √. At δ = 0.48, X = B^{0.96}: |W| = B^{0.52} =
+    n^{0.54}, a margin of 0.04 beyond √n.
+- The coherences depend only on the quotient character: ⟨φ_z, φ_{z′}⟩ = F(z/z′) with F(w) = Σ_{N(I)≤X} χ_w(I).
+  So the flat-RIP sum is Σ_w F(w)·r_{Ω₁/Ω₂}(w), exactly BDFKK's and Guth–Maynard's shape.
+
+**Why it does not transfer [derived].**
+1. *Coherence.*
+   - Chirps have exact Gauss-sum coherence (modulus 1/√p, explicit phase).
+   - Our F(w) is an incomplete sum at its self-dual length (X ≈ √N(w)), with no uniform bound (Pólya–Vinogradov
+     is trivial; Burgess saves only B^{0.125}).
+   - Its Poisson form carries sextic Gauss sums g(χ_{zz′⁵}), whose Patterson bias is the known obstruction.
+2. *Index sets.*
+   - BDFKK design A and B to have no additive structure.
+   - Our W is a large-value set of a short prime polynomial, so it is given, not designed. The relevant structure
+     is the multiplicative energy of W modulo sixth powers, for which there is no bound.
+   - Guth–Maynard is the large-value-set analogue (they bound the additive energy of W by another large-value
+     argument). It needs a short kernel dual, which fails here (journal: "conductors multiply").
+3. *Strength.*
+   - BDFKK's ε₀ is about 10⁻⁶ or smaller. The K-wall needs 0.04 past √ (and the selected norm within B^{0.015}
+     of its fixed point).
+   - Even a successful transfer at BDFKK strength would be worth ~0 in θ. The same holds for P1: a
+     sum-product-strength η ~ 10⁻⁶ gives Δθ ~ 10⁻⁹.
+
+**Verdict.** BDFKK confirms the diagnosis (our walls are square-root bottlenecks, broken only through additive
+structure of the index set), but not a route. A transfer would need, in order:
+- a Gauss-sum-bias subtraction for the quotient-character coherences;
+- a multiplicative-energy bound for large-value sets of short prime polynomials in the sextic family;
+- a sum-product input for sextic Gauss-sum phases over such sets that is orders of magnitude stronger than c₀ =
+  1/10430.
+[read; derived; dead end at the needed strength]

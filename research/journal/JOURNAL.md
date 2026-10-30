@@ -335,7 +335,19 @@ margin < 1/200): θ = 0.87338366, −2.83e-5. Not enough on its own; 2.17e-5 sho
 | 9/100 + 1e-4 | −1.66e-5 |
 | 3/4 − 1e-4 | −1.00e-5 |
 
-Origin of these constants: trace running.
+**Correction [Lean, read; trace of ReturnD/PhysicalDirect].** 13/75 and 9/100 are not independent knobs. They are r − 1/6
+and r − 1/4 with r = 17/50, the baseline's frequency exponent, and they enter only as r(h − d). That vanishes at the binding
+edge d = dp = h. The scan above moved them separately, which no proof allows. [dead]
+
+The row is the physical numerator's error exponent against the signal:
+- Hölder 4/3, 4 against the diagonal fourth moment gives (3/4)d·count + d/4;
+- the face's slot capacity gives −δpC/2;
+- the main-slot supremum gives δpℓ;
+- slot weights, the label line υ = 1/2 and the Mellin weight give −ℓ/2, −y/2 and δ/2.
+
+So the only live levers at the binding row are the count R, C(dp) through (B, Λ), and h through the floor margin.
+One open idea [unverified]: use a lower w-line than υ = 1/2 for the slot rows, as the floor estimate already does. It
+needs the row-growth bound below Re w = 1/2.
 
 **PR #96 (liqsweep, paper claim 1049/1250 = 0.8392, no Lean).**
 - It keeps OpenAI's continuation criterion with a new probe: a sextic and a cubic Poisson slot with Gauss-sum

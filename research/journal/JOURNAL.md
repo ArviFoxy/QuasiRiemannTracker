@@ -704,7 +704,7 @@ carry the new gate, which is a large Lean project. Payoff scale: the physical sl
 
   | atom | now | needed |
   |---|---|---|
-  | long slope | 5/6 | 0.83280 (−0.064%) |
+  | long slope | 5/6 | 0.83280 (−0.064%) [correction: with the pivot at t = 1 the bar needs 0.8283, λ = 0.1717] |
   | slot cost in the inverse word | 2 | 1.9882 |
   | Λ in the count face alone | 2 | 1.9767 |
   | Λ in the count and physical faces | 2 | ≈ 1.987 |
@@ -808,7 +808,7 @@ research result (θ = 0.87338228), so a future lever only needs its own 2.03e-5:
   806/1000.
 
 **What this changes.** Any new lever is now priced from 0.87338228. The single-atom table of the second fresh look
-applies as stated: long slope 0.83280, inverse slot cost 1.9882, Λ ≈ 1.987 in both faces, p_max 0.4934, fibre
+applies as stated: long slope 0.83280 (corrected later: 0.8283 with the pivot at t = 1), inverse slot cost 1.9882, Λ ≈ 1.987 in both faces, p_max 0.4934, fibre
 margin 0.00147. Each is a hard problem (B2, P1, Sil's reference plus the square-root cut, sharp, no forced
 correlation).
 

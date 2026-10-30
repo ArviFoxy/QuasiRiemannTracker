@@ -12,7 +12,7 @@ becomes θ ≤ **0.8733321435**. Evidence tags as in `../journal/JOURNAL.md` (en
 - Every route to the bar needs one of three open problems:
   - **P1**, the θ-biased quadratic sieve: inverse slot cost 1.9882 alone suffices. This is the cheapest single
     route.
-  - **B2**, twisted Chowla (rate-6 deletion): long slope 0.8328.
+  - **B2**, twisted Chowla (rate-6 deletion): long slope 0.8283 (pivot at t = 1, saving λ = 0.1717).
   - **The faces' two walls:** the √A reference (target 0/1) and K ≥ 1/2.
 - All three are the Kummer-twist rates (2 for slots, 6 for deletion and packing) meeting the Gauss-sum bias
   (journal: "Map of walls by Kummer rate").
@@ -62,7 +62,7 @@ Computed with `worth.py` and `density_past2.py`, the float model of the newTop r
 | atom | now | needed (#97 bar) | needed (#98 bar) | problem |
 |---|---|---|---|---|
 | **slot cost in all three places** (inverse word, count face, physical face; `slotcost.py`) | 2 | **1.9936** | **1.9844** | the √-barrier for prime vectors in the sextic large sieve |
-| long slope | 5/6 | 0.83280 | 0.82180 | B2 (twisted Chowla); pinned: a Möbius sieve past the family size with saving (D/U)^λ, λ ≥ 0.1717 (#98 bar: 0.1782; deletion gives 1/6) |
+| long slope (pivot at t = 1) | 5/6 | 0.82830 | 0.82180 | B2 (twisted Chowla); pinned: a Möbius sieve past the family size with saving (D/U)^λ, λ ≥ 0.1717 (#98 bar: 0.1782; deletion gives 1/6) |
 | slot cost in the inverse word | 2 | 1.9882 | 1.9709 | P1 (theta dilates against quadratic rows); pinned: cross-moment (X), saving Z^{0.001} at the #97 bar |
 | Λ in the count and physical faces | 2.005 | ≈ 1.987 | Sil's reference plus the square-root cut |
 | p_max | 1/2 | 0.4934 | sharp |

@@ -57,7 +57,7 @@ the current library prove" but "which new theorem would pay, how much, and how p
 - **T3 (D3), cubic detector.** A zero detector whose rows are cubic: a signal identity giving 1/L with cubic
   Gauss sums, or an automorphic object other than θ₃. If c = 3: θ ≈ 0.873917, and that is only the floor
   of the return box, so the true gain is larger [numerical].
-- **T6 (D6), firing patterns.** Large-values estimates for the sextic family that use the structure of
+- **T6 (D6), firing patterns.** [Pricing obsolete: it predates PR #97; the count is a zero-density calculator and Guth–Maynard-type large values buy nothing there (journal 2026-10-30). The live form of T6 is the K-wall RIP program, `lean/arvi_rip/`.] Large-values estimates for the sextic family that use the structure of
   the set where the bank fires (higher moments of the bank's Gram matrix, Guth–Maynard style).
   **Priced through the density step's HIGH count** (`face-region/value/README.md`) [numerical]: a
   zero-density exponent A ≲ 2.226 for the natural dictionary on σ ∈ [3/4, 7/8] crosses the bar (today: unmarked

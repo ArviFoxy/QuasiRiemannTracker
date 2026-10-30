@@ -1507,3 +1507,38 @@ structure of the index set), but not a route. A transfer would need, in order:
 - a sum-product input for sextic Gauss-sum phases over such sets that is orders of magnitude stronger than c₀ =
   1/10430.
 [read; derived; dead end at the needed strength]
+
+## 2026-10-30 · Literature recheck (Oct 2026) and the K-wall corner as a slot-cost statement
+
+**Literature, October 2026 [read; web search].**
+- No power-saving second moment of quadratic twists of a GL(2) (or metaplectic) form has appeared. Li
+  (arXiv 2208.07343) is still the unconditional asymptotic. Chen–Lin (2603.21739) treats derivatives of
+  quadratic twists, and 2608.25812 the family of characters to one modulus (power saving under Selberg's
+  eigenvalue conjecture). So P1/(X) stays at the edge.
+- Guth–Maynard has been extended to all characters to one modulus: Chen–Gupta–Li (arXiv 2507.08296), giving
+  N(σ, q, T) ≪ (qT)^{7(1−σ)/3+ε}. Their key step is a bound for sums over affine maps with a GCD twist. It
+  uses the full character group (χχ̄′ is again a character mod q), which our thin sextic family lacks.
+  Cossaboom (2609.27715) carries GM to GL(2) in the t-aspect. Neither touches thin families of varying moduli.
+
+**A pointwise rule does not move the K-wall [numerical; `$SCRATCH/kwall/pvbeta.py`].**
+- The bootstrap half-plane gives, for a smooth sum of length X twisted by a row of conductor Y,
+  |S|²/X ≤ Y^ε·min(X, Y/X)^{2β−1}. (Mellin, shift to Re s = β or 1 − β, convexity in between.) This is
+  25% better in the exponent than Pólya–Vinogradov.
+- Rule tested: that bound on both plain sums, with the selected norm on the slots only, per root
+  (2β−1)m + max(s, (1−δ+γ)y + δs), m = Σ min(x_i, y − x_i). Against the dual norm
+  max(m + s, (1−δ+γ)y + δ(m + s)) it loses (2β − 1 − δ)m in the binding regime.
+- The ledger agrees: at K = 0.48, L ∈ {2.3, 2.05} and γ ∈ {1/6, 0.05, 0.02} the worst geometry is identical
+  with and without the rule. [dead]
+
+**Where the K-wall binds [numerical; same scan].**
+- The worst geometry is M = 1 (the t = 0 corner) with both plain sums just below √(conductor)
+  (x₁ = x₂ ≈ 0.467) and a slot sliver s ≈ 0.028. At this corner:
+  - the parent face fails by [(6 − 2L₀)u + (L₀ − L)S]/L₀, which is O(step);
+  - the selected price there is γ − δ(1 − X_eff) with X_eff ≈ 0.962, hence γ ≤ 0.018.
+- At that point the selected rows only need the full-family classical bound max(L, B) = B, because
+  B^{(1−δ+γ)+δX_eff} ≤ B iff γ ≤ δ(1 − X_eff). So a direct structured face (smooth × smooth × short prime
+  slots, slot cost below 2 at P + ΛS ≈ 1) would make the selected norm unnecessary at the corner.
+- **Reading.** The K-wall and the faces' slot cost are one atom seen from two mechanisms: amplify–reflect at
+  δ < 1/2, or a structured sextic sieve with prime slots costing Λ < 2. The smooth part alone needs a
+  Lindelöf-on-average fourth moment of the sextic family at X_eff ≈ 0.96 (Θ₆ gives excess 0.154 there).
+  [derived; reclassification, no new route]

@@ -1874,3 +1874,33 @@ The literature has it only in two cases:
 1. D1, prime pool only. Heath-Brown–Patterson plus the phase-survival lemma (L3).
 2. The K-wall, which needs an inverse theorem on the full family plus bias delocalization.
 3. D4, which needs the full structured sieve for long plain products.
+
+## 2026-10-30 · The thin family's sixth-moment deficit is the functional equation (probe C)
+
+**Question (Arvi).** Why does the thin sextic family's sixth moment of plain sums sit 5–13% *below* the random
+multiplicative model, rather than above it as a bias or N-term would?
+
+**Answer [numerical; `rip/moments_probe/probeC.py`, README "Probe C"].**
+- **Smooth weights, B = 3·10⁴:** the model's M6 grows monotonically in m (2.19 → 9.11 for m = 0.2 → 0.8). The
+  actual M6 rises to ≈ 5.1 at m ≈ 0.4–0.5 and then *falls* (4.30 at 0.7, 3.77 at 0.8), roughly symmetric under
+  m ↔ 1 − m.
+- **Mechanism.** For N > √(conductor), Poisson writes S_u as a dual sum of length N(u)/N. So the normalized moments
+  of genuine characters follow min(m, 1 − m), while random multiplicative functions have no functional equation.
+  Check: actual(0.7) = 4.30 against model(0.3) = 4.22.
+- **At the self-dual point** the deficit is a stable constant factor: 0.865, 0.777, 0.782 at B = 3·10⁴, 10⁵,
+  3·10⁵.
+- **Below 1/2** (the D4 packet length 0.43) the family matches the model within ≈ 5–10%.
+- **Prime rows** carry a stronger deficit than composite rows for m ≥ 0.45 (≈ 0.72–0.76 against 0.79–0.82 at
+  m = 1/2). Mechanism open.
+- **The sharp cutoff** is not the cause: with smooth weights the deficit is *larger* at m = 0.7 (0.56 against
+  0.77 for the sharp annulus).
+
+**Reading [derived].**
+- The right comparison model for the sextic family is "random multiplicative *with* functional equation". For
+  moments, that means the multiplicative model at length min(N, N(u)/N), which is the reflection rule of the K-wall
+  closure seen numerically.
+- The deficit buys no exponent (a constant factor at m = 1/2, reflection beyond).
+- It confirms that the family's only structure visible in plain-sum moments is Poisson self-duality: no N-term,
+  no bias, no extra correlations.
+- For D4 the relevant regime (m ≈ 0.43 < 1/2) is random-multiplicative, i.e. Lindelöf on average with
+  multiplicative-model constants.

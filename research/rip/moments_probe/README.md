@@ -337,3 +337,38 @@ bash run_B_batch.sh                                  # ~25 min (B_main 6 min, B_
 python3 -I summarize_A.py; python3 -I analyzeA.py results/A_true_lin_K20000_np10.npz --pairs
 python3 -I tables_B.py results/B_main.json results/B_mext.json results/B_mlong.json; python3 -I compact_B.py results/B_main.json
 ```
+
+## Probe C (follow-up): why the thin family sits *below* the multiplicative model
+
+Script `probeC.py`; logs and JSON in `logsC/`. Weighted sums S_u = Σ_n w(N(n)/N)χ_u(n), with smooth
+w = exp(−(log t)²/(2·0.3²)) on [e^{−1}, e], or the sharp annulus [1, 2). The multiplicative surrogate has i.i.d.
+μ₆ values at prime ideals and the same coprimality mask. Moments are normalized by (Σw²)^{k/2}, using 4 surrogate
+replicas. Rows are split into prime, composite and inert-factor classes.
+
+**M6 actual / multiplicative surrogate, all rows, smooth weight:**
+
+| m | 0.2 | 0.25 | 0.3 | 0.4 | 0.45 | 0.5 | 0.55 | 0.6 | 0.7 | 0.75 | 0.8 |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| B = 3·10⁴ | 2.25/2.19 | 3.61/3.48 | 4.60/4.22 | 5.09/5.15 | – | 5.16/5.97 | – | 4.64/6.85 | 4.30/7.65 | 3.89/8.73 | 3.77/9.11 |
+| B = 10⁵ | – | – | – | 5.54/5.40 | 5.71/5.98 | 5.12/6.59 | 5.86/7.02 | 4.88/7.80 | – | – | – |
+| B = 3·10⁵ | – | – | – | 5.59/6.00 | 6.02/6.67 | 5.72/7.31 | 6.46/8.19 | 5.55/9.07 | – | – | – |
+
+**Findings.**
+- **Mechanism: the functional equation.** The surrogate's M6 grows monotonically with the log-length. The actual
+  M6 saturates near the self-dual length m = 1/2 and falls beyond it, roughly symmetric under m ↔ 1 − m on
+  [0.25, 0.75] (e.g. 4.60 at 0.3 and 4.30 at 0.7).
+  - For m > 1/2, Poisson summation makes S_u a dual sum of length N(u)/N, so its normalized moments follow the
+    dual length: actual(0.7) = 4.30 against surrogate(0.3) = 4.22.
+  - The random multiplicative model has no functional equation and overestimates for m > 1/2.
+  - At m = 0.2 against 0.8 the dual weight's shape (a 2D Hankel transform with tails) breaks the exact symmetry.
+- **Self-dual point:** a stable constant factor, ratio 0.865 → 0.777 → 0.782 at B = 3·10⁴, 10⁵, 3·10⁵. It is
+  not an exponent effect.
+- **Below 1/2** (m ≤ 0.4, the D4 packet regime): ratio ≈ 0.93–1.09, i.e. random multiplicative behaviour.
+- **Sharp versus smooth cutoff:** sharp weights show a smaller deficit (0.77 against 0.56 at m = 0.7). The sharp
+  annulus's dual has slowly decaying oscillatory tails, i.e. more effective terms. So the cutoff is not the cause
+  (the smooth deficit is larger).
+- **Row classes:**
+  - Prime rows show a stronger deficit than composite rows for m ≥ 0.45, consistently at B = 10⁵ and 3·10⁵:
+    0.76/0.79 and 0.72/0.82 at m = 0.5; 0.60/0.64 and 0.53/0.66 at m = 0.6. Mechanism of this difference open.
+  - Rows with an inert prime factor are too few (464 at B = 3·10⁴) and too noisy to conclude, though χ_{(q)} is
+    trivial on rational sources for inert q.

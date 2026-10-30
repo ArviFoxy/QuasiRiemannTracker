@@ -462,3 +462,21 @@ cancel exactly.
      count below 0.606 at ν = 0.452 (ideal: 0.548, i.e. up to Δcount −0.055).
   2. The B1/B2 bottlenecks of the baseline's count: no known approach.
   3. A switch to the #96 architecture: multi-month formalization.
+
+**Collet's count combined with PR 93's three words [derived; Lean, read].**
+- Collet's fibers (`common_witness_count_bound`) are (r, m) with r + m ≥ t. On each fiber the bounds are: inverse
+  marked (r ∈ [23/37, 1)), no-slot inverse (the long exponent for r ≥ 1), and plain via the face (m ∈ [mLo, mHi]).
+- The face amplifies the marked slots with effective slope δ/Λ ≈ 0.2254. PR 93's minimax with that slope gives
+  J(0.452, 0.2254) = 0.6072, about equal to Collet's count.
+- At the binding fiber (r ≈ 0.76, m ≈ 0.38, r + m ≈ 1.14):
+  - PR 93's 2m word, face-amplified, is exactly Collet's plain bound;
+  - its r word (if the face applied to the inverse piece) equals Collet's inverse bound, both ≈ 0.602;
+  - its r + m word gives 0.625.
+- Same worst fiber, same value, so the per-fiber minimum gains nothing. [dead]
+
+**Literature [read].**
+- Guth–Maynard (arXiv 2405.20552): large values below N^(3/4) in the t-aspect.
+- Chen–Gupta–Li (arXiv 2507.08296): the q-aspect for all characters mod q, (qT)^(7(1−σ)/3), via sums over affine maps
+  with a GCD twist.
+- Neither covers a thin fixed-order family of varying modulus, such as our sextic rows. Carrying the method there is
+  open research.

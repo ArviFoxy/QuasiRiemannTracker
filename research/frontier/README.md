@@ -46,6 +46,7 @@ Computed with `worth.py` and `density_past2.py`, the float model of the newTop r
 
 | atom | now | needed | problem |
 |---|---|---|---|
+| **slot cost in all three places** (inverse word, count face, physical face; `slotcost.py`) | 2 | **1.9936** | the √-barrier for prime vectors in the sextic large sieve |
 | long slope | 5/6 | 0.83280 | B2 (twisted Chowla) |
 | slot cost in the inverse word | 2 | 1.9882 | P1 (theta dilates against quadratic rows) |
 | Λ in the count and physical faces | 2.005 | ≈ 1.987 | Sil's reference plus the square-root cut |

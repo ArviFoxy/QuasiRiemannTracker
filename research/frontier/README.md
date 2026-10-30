@@ -102,3 +102,8 @@ quadratic twists of θ₃ ⊗ ψ_P. Nearest results:
 
 Neither covers twists of θ₃.
 
+Nearest tool found later: **#96's K-chart** (journal, "#96's K-chart is the nearest tool to P1"). The functional
+equation of the cubic Kubota series at a fixed index shortens a quadratically twisted cubic Kubota sum to its dual
+length, and then the quadratic large sieve applies. That is the move P1 needs, to shorten N = KL before the sieve.
+It comes from an unrefereed preprint and is under evaluation.
+

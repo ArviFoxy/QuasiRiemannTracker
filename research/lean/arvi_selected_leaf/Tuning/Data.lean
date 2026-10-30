@@ -1,5 +1,5 @@
-import Submissions.arvi_return_tuning.Guards
-import Submissions.arvi_density.Return.Constants
+import Submissions.arvi_selected_leaf.Tuning.Guards
+import Submissions.arvi_selected_leaf.Return.Constants
 
 /-!
 # The return's data over `ℚ`
@@ -8,6 +8,10 @@ Only the base constants are literals: the count face, the physical face, `c` (`t
 the reserve, the numerator cap and the switch `dm`. Everything else (`theta, ell, y, kappa`, the four
 conductor edges and their capacities, the branch data) is computed from them by the same formulas as
 `Constants.lean` and `Formulas.lean`; the `cast_*` lemmas identify each with its real counterpart.
+
+Current values (E5 retune, design 2 of `research/fresh-look/REPORT.md`): `theta = 43670599/50000000`
+(`c = 6329401/50000000`), `h = 8001361/10^7`; the count face and the physical face are both
+`(99999/100000, 401/200, 13399/100000)` with physical cap `3/25` and numerator cap `3/40`.
 -/
 
 set_option autoImplicit false
@@ -18,16 +22,16 @@ open QRH.ArviDensity.Return
 
 /-! ### Base constants (the literals of `Constants.lean`) -/
 
-def cQ : ℚ := 6306383 / 50000000
-def hQ : ℚ := 8044451 / 10000000
+def cQ : ℚ := 6329401 / 50000000
+def hQ : ℚ := 8001361 / 10000000
 def reserveQ : ℚ := 1 / 100000000
-def countBQ : ℚ := 96232839 / 100000000
-def countLQ : ℚ := 3853 / 2000
-def countCapQ : ℚ := 9999 / 100000
-def physBQ : ℚ := 49283557 / 50000000
-def physLQ : ℚ := 4503 / 2000
-def physCapQ : ℚ := 31 / 500
-def numCapQ : ℚ := 3 / 50
+def countBQ : ℚ := 99999 / 100000
+def countLQ : ℚ := 401 / 200
+def countCapQ : ℚ := 13399 / 100000
+def physBQ : ℚ := 99999 / 100000
+def physLQ : ℚ := 401 / 200
+def physCapQ : ℚ := 3 / 25
+def numCapQ : ℚ := 3 / 40
 def dmQ : ℚ := 19 / 25
 
 /-! ### Derived constants -/

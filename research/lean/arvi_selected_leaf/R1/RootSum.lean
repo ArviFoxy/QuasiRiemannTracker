@@ -6,7 +6,7 @@ The sum over sixth roots.
 `ζ(5θ) a^{1-θ} b^θ` for `θ > 1/5` (interpolation `min a b ≤ a^{1-θ} b^θ`).
 -/
 import Submissions.arvi_selected_leaf.R1.RootSplit
-import Candidate.Local.Qrh.JointDetector.FineDetectorCount
+import Submissions.arvi_selected_leaf.JointDetector.FineDetectorCount
 
 set_option autoImplicit false
 namespace QRH.ArviSelectedLeaf.R1

@@ -7,7 +7,7 @@ again ordinary polynomials on the product sources with the ideal convolution of 
 divisor factor `D_ε X^ε` per multiplication (`idealConvolution_mass_small_power`). The selected energy of an
 ordinary polynomial is at most the selected norm times its mass (`ordinaryPolynomial_energy`).
 -/
-import Candidate.Local.Qrh.JointDetector.FineDetectorWords
+import Submissions.arvi_selected_leaf.JointDetector.FineDetectorWords
 
 set_option autoImplicit false
 namespace QRH.ArviSelectedLeaf.R1

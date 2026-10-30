@@ -4,10 +4,10 @@ re-instantiated with the final constants of the repeated-mark graph. -/
 cap `numeratorCap = 3/50`; the certificate reserve `1/10^8` is weakened to the generic `rowFee = 1/10^9`. -/
 /- Modified by ArviFoxy (2026-10-28): module prefix and namespaces renamed to Submissions.arvi_density.Return and QRH.ArviDensity.Return; the reserve literal of `FinalRows.reserve_le` follows Constants.lean (no other change). -/
 /- Modified by ArviFoxy (2026-10-29): forked into Submissions.arvi_return_tuning, namespace QRH.ArviDensity.Return.Tuning, over the reflective windows and edge covers of this package (`w.toAdmitted` written as `ReturnCountWindow.toAdmitted w`). -/
-import Submissions.arvi_return_tuning.EdgeCertificates
-import Submissions.arvi_density.Return.Conductor
+import Submissions.arvi_selected_leaf.Tuning.EdgeCertificates
+import Submissions.arvi_selected_leaf.Return.Conductor
 import Submissions.arvi_density.ReturnD.Schedule
-import Submissions.arvi_density.Return.TransportInstances
+import Submissions.arvi_selected_leaf.Return.TransportInstances
 set_option autoImplicit false
 set_option maxHeartbeats 200000
 namespace QRH.ArviDensity.Return.Tuning

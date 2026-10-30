@@ -1,4 +1,4 @@
-import Submissions.arvi_return_tuning.FinalEnvelopeBounds
+import Submissions.arvi_selected_leaf.Tuning.FinalEnvelopeBounds
 
 /-!
 # The four conductor edges, certified by kernel-computed covers
@@ -16,7 +16,7 @@ namespace QRH.ArviDensity.Return.Tuning.FinalEdges
 
 open QRH.Record1252270103Return QRH.ArviDensity.Return QRH.ArviReturnTuning
 
-/-- Bisection fuel (the deepest box of the cover is 23 bisections deep). -/
+/-- Bisection fuel (the deepest box of the cover is 17 bisections deep). -/
 abbrev depth : ℕ := 30
 
 theorem cover_oldSmall : coverOK .oldSmall winsQ depth 0 (3 / 4) 0 (1 / 2) = true := by decide +kernel

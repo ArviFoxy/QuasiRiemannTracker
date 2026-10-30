@@ -1,5 +1,5 @@
-import Submissions.arvi_return_tuning.RowsQ
-import Submissions.arvi_density.Return.CountWindow
+import Submissions.arvi_selected_leaf.Tuning.RowsQ
+import Submissions.arvi_selected_leaf.Return.CountWindow
 
 /-!
 # Windows from rational data, and the kernel-computed edge cover

@@ -3,8 +3,8 @@ re-instantiated with the final constants of the repeated-mark graph. -/
 /- Modified by Sil (2026-10-26): every window face is restricted from one of the two global faces; the separate physical window face is dropped -/
 /- Modified by ArviFoxy (2026-10-28): module prefix and namespaces renamed to Submissions.arvi_density.Return and QRH.ArviDensity.Return (no other change). -/
 /- Modified by ArviFoxy (2026-10-29): forked into Submissions.arvi_return_tuning, namespace QRH.ArviDensity.Return.Tuning, over the reflective windows and edge covers of this package (`w.toAdmitted` written as `ReturnCountWindow.toAdmitted w`). -/
-import Submissions.arvi_return_tuning.FinalWindows
-import Submissions.arvi_density.Return.WindowSources
+import Submissions.arvi_selected_leaf.Tuning.FinalWindows
+import Submissions.arvi_selected_leaf.Return.WindowSources
 import Submissions.hailey_collet_1252270103.Record1252270103Return.CountScheme
 set_option autoImplicit false
 set_option maxHeartbeats 200000

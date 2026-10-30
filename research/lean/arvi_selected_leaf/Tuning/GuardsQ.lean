@@ -1,4 +1,4 @@
-import Submissions.arvi_return_tuning.Poly2
+import Submissions.arvi_selected_leaf.Tuning.Poly2
 
 /-!
 # The admission guards and row margins of the return as computable polynomials
@@ -6,7 +6,7 @@ import Submissions.arvi_return_tuning.Poly2
 `BranchQ` is the rational data of one count branch: a face `(B, Λ, cap)` and whether the plain curve is
 read on its capped piece. `BranchQ.guard b j` is the `j`-th guard of `Formulas.lean`'s `admissionGuard`
 as a polynomial in `(δ, p)`, built from the same pieces (`D, A, C0, Z, U, J, N, T, RN, MN, DJ` and the
-`p`-derivatives). The return's global constants (`m_minus = 377/1000`, `s_minus = 3/100`,
+`p`-derivatives). The return's global constants (`m_minus = 3/10`, `s_minus = 27/1000`,
 `naturalK = 9/2`, the buffer `1/10^7`) enter as the rational literals of `Constants.lean`.
 -/
 
@@ -18,8 +18,8 @@ open Q2
 
 /-- The buffer `1/10000000` of `Formulas.lean`. -/
 def etaQ : ℚ := 1 / 10000000
-def mMinusQ : ℚ := 377 / 1000
-def sMinusQ : ℚ := 3 / 100
+def mMinusQ : ℚ := 3 / 10
+def sMinusQ : ℚ := 27 / 1000
 def naturalKQ : ℚ := 9 / 2
 def naturalMQ : ℚ := (1 - naturalKQ * sMinusQ) / 2
 

@@ -4,9 +4,9 @@ theorems (Collet's intermediate return) are removed. -/
 /- Modified by Sil (2026-10-26): physical face cap `3/50 ≤ 31/500` of P; instances at theta = 174799/200000; single mesh for the windows -/
 /- Modified by ArviFoxy (2026-10-28): module prefix and namespaces renamed to Submissions.arvi_density.Return and QRH.ArviDensity.Return (no other change). -/
 /- Modified by ArviFoxy (2026-10-29): forked into Submissions.arvi_return_tuning, namespace QRH.ArviDensity.Return.Tuning, over the reflective windows and edge covers of this package (`w.toAdmitted` written as `ReturnCountWindow.toAdmitted w`). -/
-import Submissions.arvi_return_tuning.FinalSchedule
+import Submissions.arvi_selected_leaf.Tuning.FinalSchedule
 import Submissions.arvi_density.ReturnD.PhysicalDirect.ChosenSource
-import Submissions.arvi_density.Return.EndpointFromNumerator
+import Submissions.arvi_selected_leaf.Return.EndpointFromNumerator
 set_option autoImplicit false
 set_option maxHeartbeats 200000
 namespace QRH.ArviDensity.Return.Tuning

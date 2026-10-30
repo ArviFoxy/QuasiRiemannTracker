@@ -3,8 +3,8 @@ re-instantiated with the final constants of the repeated-mark graph. -/
 /- Modified by Sil (2026-10-26): namespace QRH.SilDensitySplit.Return.FinalEdges; three branches -/
 /- Modified by ArviFoxy (2026-10-28): module prefix and namespaces renamed to Submissions.arvi_density.Return and QRH.ArviDensity.Return (no other change). -/
 /- Modified by ArviFoxy (2026-10-29): forked into Submissions.arvi_return_tuning, namespace QRH.ArviDensity.Return.Tuning, over the reflective windows and edge covers of this package (`w.toAdmitted` written as `ReturnCountWindow.toAdmitted w`). -/
-import Submissions.arvi_return_tuning.FinalScheme
-import Submissions.arvi_density.Return.Facts
+import Submissions.arvi_selected_leaf.Tuning.FinalScheme
+import Submissions.arvi_selected_leaf.Return.Facts
 set_option autoImplicit false
 set_option maxHeartbeats 200000
 namespace QRH.ArviDensity.Return.Tuning.FinalEdges

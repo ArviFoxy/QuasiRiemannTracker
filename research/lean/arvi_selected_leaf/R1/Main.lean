@@ -10,10 +10,10 @@ The classes are summed with the root zeta series and the interpolation of minima
 exponent arithmetic (`bracket_bound`) gives `Z^{M + selExcess + ε}`.
 -/
 import Submissions.arvi_selected_leaf.R1.Arith
-import Candidate.Local.Qrh.JointDetector.FineCanonicalFromNorm
-import Candidate.Local.Qrh.JointDetector.NaturalUniformNear
+import Submissions.arvi_selected_leaf.JointDetector.FineCanonicalFromNorm
+import Submissions.arvi_selected_leaf.JointDetector.NaturalUniformNear
 import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Dictionary.InverseUniformScale
-import Candidate.Local.Qrh.JointDetector.RefinedSupplier
+import Submissions.arvi_selected_leaf.JointDetector.RefinedSupplier
 
 set_option autoImplicit false
 namespace QRH.ArviSelectedLeaf

@@ -1,5 +1,5 @@
-import Submissions.arvi_return_tuning.GuardsQ
-import Submissions.arvi_density.Return.Formulas
+import Submissions.arvi_selected_leaf.Tuning.GuardsQ
+import Submissions.arvi_selected_leaf.Return.Formulas
 
 /-!
 # One parametric admission lemma for every face

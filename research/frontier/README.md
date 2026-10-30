@@ -14,7 +14,7 @@ Computed with `worth.py` and `density_past2.py`, the float model of the newTop r
 
 | input | Δθ |
 |---|---|
-| banked engineering: h = 0.81 (fork the 119 ReturnD modules for `BoundsN`) and the line to Λ = 2001/1000 | −2.83e-5 (exact) |
+| banked engineering: h = 0.81 (fork the 119 ReturnD modules for `BoundsN`, +15.7 min summed build) and the line to Λ = 2001/1000 | −2.83e-5 (exact) |
 | long slope 5/6 → 0.8226 (the B2 long Möbius moment) | −5.4e-5 |
 | face at Λ = 1.97 / 1.9 (B = 0.99999) | −5.1e-5 / −1.6e-4 |
 | trading B for Λ past 2 at slope s0 | pays iff s0 < 0.089 |

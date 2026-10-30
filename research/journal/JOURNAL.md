@@ -480,3 +480,18 @@ cancel exactly.
   with a GCD twist.
 - Neither covers a thin fixed-order family of varying modulus, such as our sextic rows. Carrying the method there is
   open research.
+
+**The three walls at the binding point [derived].**
+- With the banked −2.83e-5, the remaining 2.2e-5 needs only ≈ 2% in one parameter: the plain count's effective
+  selection slope δ/Λ ≈ 0.2254 → 0.23, i.e. a face with Λ ≈ 1.97 in the plain count.
+  - P(m) = 1 − 2δm − 2δx(B − 2m)/Λ, with ∂P/∂(1/Λ) = −0.1085 at m ≈ 0.38.
+  - The count moves by 0.24 ΔP, about −3.1e-5 in θ.
+- Every way to that 2% meets one of three walls:
+  1. **Principal gate.** L > 2 + 9a/2 in the native step caps every face line at Λ ≈ 2 (slot cost 2), and the
+     overshoot gate meets it there for K ≥ 1/2.
+  2. **Square-root barrier.** Any selected norm, selected face or R1 needs slope > 1/2; the binding slots have
+     slope 0.452.
+  3. **Sextic amplification.** It fixes the long-word slope at 5/6.
+- Plan for the most promising wall (2): `subroot/README.md`. It is a Guth–Maynard-type bound for the thin sextic row
+  family. By sextic reciprocity the trace method's kernels become Heath-Brown-type sums over moduli, where #96's
+  graded inverse theorem would play the role of additive energy.

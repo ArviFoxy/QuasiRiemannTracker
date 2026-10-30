@@ -63,3 +63,14 @@ Computed with `worth.py` and `density_past2.py`, the float model of the newTop r
    inequality, and it has not been priced.
 3. **A face-proving method outside Sil's packing.** Selected rows already reach the ideal face (PR 93's selected
    norm); the loss sits on unselected rows. Unpriced.
+
+## P1 route (2026-10-30)
+
+P1 follows from a fourth-moment asymptotic for the matrix of twisted theta central values S(k, P): with random
+sizes, Tr((SS*)²) ≈ KLN²(K + L), which gives ‖S‖²_op < N². The tool would be a multiple Dirichlet series for
+quadratic twists of θ₃ ⊗ ψ_P. Nearest results:
+- Dunn, arXiv 2403.13151: fixed cubic cusp form, coefficients over primes;
+- arXiv 2607.27131: second moments of cubic L-functions over Q(√−3).
+
+Neither covers twists of θ₃.
+

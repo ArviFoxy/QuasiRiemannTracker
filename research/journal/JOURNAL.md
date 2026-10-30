@@ -766,3 +766,25 @@ the bias.
   from h = 0.8097 (needs the 119-module ReturnD fork).
 - The remaining 2.0e-5 needs one of the hard problems.
 - No PR is possible at the 5e-5 rule without new mathematics.
+
+**P1: the route the literature suggests [read; derived].**
+- P1 asks for ‖S‖²_op ≤ N^{2−η} for the K × L matrix of twisted theta central values S(k, P) (N = KL). The bound
+  ‖S‖⁴_op ≤ Tr((SS*)²) reduces it to a fourth-moment (Schatten-4) asymptotic. With "random" sizes,
+  Tr((SS*)²) ≈ KLN²(K + L), which gives ‖S‖²_op ≲ N^{3/2}max(K, L)^{1/2} < N². That is the earlier rounds'
+  "SM + MM" (single-mark F_P ≤ N^{2−η}, mixed moments ≤ N^{4−2η}).
+- The natural tool for such moments of quadratic twists of θ₃ ⊗ ψ_P is a multiple Dirichlet series in (s, w).
+- Recent results:
+  - Dunn, arXiv 2403.13151 (ANT 2025): power saving for coefficients of a fixed cubic metaplectic **cusp** form over
+    primes, via a bilinear large sieve with kernel ρ_f.
+  - arXiv 2607.27131 (2026): power-saving second moments of cubic L-functions over Q(√−3), via multiple Dirichlet
+    series.
+  - arXiv 2608.25812: twisted modular second moments, via a Kloosterman large sieve.
+
+  None treats quadratic twists of the cubic **theta** series, so P1 stays open. A paper proof would be a research
+  project (multiple Dirichlet series for twisted θ₃); a Lean proof is far beyond reach.
+
+**Decision.** No new-math route to the next bar is short. I will bank the engineering limit in Lean as a verified
+research result (θ = 0.87338228), so a future lever only needs its own 2.03e-5:
+1. the selected-leaf line to Λ = 2.0001 at K = 0.500001 and a = 1e-5;
+2. the ReturnD fork with `floor_margin` ≤ 1/1000 and h-box ≥ 0.81;
+3. the return retuned at h = 0.8097.

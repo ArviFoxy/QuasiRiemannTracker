@@ -1,6 +1,8 @@
 # Sub-square-root selection for the sextic row family (thread SR)
 
-Status: problem statement and plan [derived / read]. Nothing here is proved.
+Status: **closed** [numerical, model]. A Guth–Maynard-strength bound for the sextic rows would give count 0.6199 at the
+binding point, worse than the return's 0.6072 (`zd_calibration.py`; journal 2026-10-30, "zero-density calculator").
+The plan below needs large values beyond Guth–Maynard. Nothing here is proved.
 
 ## 1. Why this is the next lever
 

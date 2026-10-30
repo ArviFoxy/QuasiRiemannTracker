@@ -495,3 +495,44 @@ cancel exactly.
 - Plan for the most promising wall (2): `subroot/README.md`. It is a Guth–Maynard-type bound for the thin sextic row
   family. By sextic reciprocity the trace method's kernels become Heath-Brown-type sums over moduli, where #96's
   graded inverse theorem would play the role of additive energy.
+
+## 2026-10-30 · The three-word count is a zero-density calculator; Guth–Maynard buys nothing here
+
+**Calibration [numerical, model; `subroot/zd_calibration.py`].** PR 93's three-word minimax with t-aspect large-value
+inputs (ν = 2σ − 1, words of length N = T^w) reproduces the known zero-density exponents A(σ) = count/(1 − σ):
+
+| input | model | literature |
+|---|---|---|
+| mean value T + N | 2.3547 at σ = 0.726 | Ingham 3/(2 − σ) = 2.3548 |
+| Huxley N²V⁻² + TN⁴V⁻⁶ | 2.1425 at σ = 0.8 | 3/(3σ − 1) = 2.1429 |
+| Guth–Maynard N²V⁻² + N^(18/5)V⁻⁴ + TN^(12/5)V⁻⁴ | 2.3075 / 2.2624 / 2.1425 at σ = 0.7 / 0.726 / 0.8 | 15/(3 + 5σ) = 30/13 / 2.2624 / 2.1429 |
+
+**Price of a Guth–Maynard transplant [numerical, model].**
+- At the binding point σ = (1 + ν)/2 = 0.726, GM gives count 0.6199 (A = 2.262).
+- The return already has 0.6072 (A = 2.215). The bar needs ≤ 0.6063, and DH would give 0.548.
+- Word by word at the binding fiber (r ≈ 0.76, m ≈ 0.38, t ≈ 1.14):
+
+  | word | GM | the return |
+  |---|---|---|
+  | r | 0.617 | inverse 0.602 |
+  | 2m | 0.617 | plain 0.602 |
+  | r + m | 0.625 | long 0.601 |
+
+  Adding GM's bounds lowers no word there, so the maximum does not move.
+- **Why.** The slot amplification lengthens the inverse word to x + (1 − x)r ≈ 0.88. At that length the mean value
+  theorem beats GM, which only helps short words.
+- **Verdict.** Sub-square-root selection would need large values beyond Guth–Maynard: beyond the state of the art for ζ
+  itself at σ = 0.726 with N ≈ T^0.88, where nothing known beats the mean value theorem. Thread SR is **[dead]** as a
+  route to the bar. The return's count is already past the ζ analogue because of the prime-slot structure (the
+  inverse amplification and the face), not because of large-value technology.
+
+**Wall 1 traced [Lean, read; `CubeFree/RootParameters.lean`, `StepData.lean`].**
+- The "principal" gate L > 2 + 9a/2 is not about principal characters. It is the first gap of Sil's centered root
+  reference (CF (7.1)–(7.2)), needed only on the high branch P + S + 3u > 5/6.
+  - The reference exponent l must satisfy l > (3/2)(P + S + 3u − 5/6), to pay the excess with α = 2/3.
+  - It must also satisfy l < (P − S − 1/2)/2, to fit inside the plain part.
+  - The gap is 1 − P − 2S − 9u/2. On the face P + LS ≤ B it becomes (1 − B) + (L − 2)S − 9u/2.
+- At the binding plain length P = 2m ≈ 0.76, the end face's slot (B − P)/Λ = 0.1197 sits at the gate's (1 − P)/2 = 0.12.
+- A saving rate α = 1 instead of 2/3 would turn the gate into P + 3S + 6u < 7/6, which is looser for P > 2/3.
+- But a line below Λ ≈ 2 also needs the overshoot gate, K < Λ/(6B − Λ) (≈ 0.489 for Λ = 1.97), and K < 1/2 is
+  wall 2. So two new estimates for ≈ −3e-5. [not pursued]

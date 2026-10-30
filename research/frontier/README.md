@@ -55,6 +55,15 @@ Computed with `worth.py` and `density_past2.py`, the float model of the newTop r
 
 ## Open new-math targets, in order of plausibility
 
+0. **Break the √-barrier for prime slots with Dunn–Radziwiłł's dispersion** (journal 2026-10-30, "Dunn–Radziwiłł's
+   corrected cubic large sieve"). Their Props 8.1 and 9.2, read with sharper bookkeeping, make the **cubic**
+   large sieve diagonal for smooth prime vectors up to B ≈ A^{3/5}. That means a cost ≈ 1.67 per unit of slot
+   width; the bar needs only 1.9936. Their GRH can be replaced by the bootstrap's zero-free half-plane
+   Re s > β ≤ 7/8, and η = 1/3 comes from Heath-Brown–Patterson. Open steps:
+   - a sextic (or quadratic × cubic) version;
+   - (smooth × prime) vectors, since the face's plain factors are not w-rough;
+   - a check of Lemma 9.2 and D₁;
+   - Lean (the metaplectic stack).
 1. **A structured sextic large sieve at the short reference.** It should be diagonal up to B ≤ A^{2/3} for
    smooth × prime vectors. Route: #96's graded inverse theorem, whose excess sits on correlations with (m₀/n)₆ for
    small m₀, plus a lemma that smooth factors kill those correlations (Pólya–Vinogradov). Paper theorem; not in

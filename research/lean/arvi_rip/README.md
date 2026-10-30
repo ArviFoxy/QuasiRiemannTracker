@@ -17,7 +17,10 @@ language in which a beyond-√ argument has to be written, starting with the cla
 |---|---|
 | `Coherence.lean` | `gershgorin_rip`: unit columns of coherence μ satisfy the RIP on every support S with constant μ(\|S\| − 1). `frame_potential_ge` and `welch`: the Welch bound N² ≤ n(N + N(N − 1)μ²), via the frame-potential identity `gram_frame_frobenius`. `coherence_order_barrier`: once N ≥ 2n, a coherence certificate (k − 1)μ ≤ δ forces k ≤ 1 + δ√(2n). This is the square-root barrier: coherence alone never certifies order beyond ≈ √n. |
 
-Planned next: `FlatRIP.lean`, BDFKK's Lemma 3 (flat RIP of order k ⇒ RIP of order 2sk with constant
-44 s δ log k). Every known beyond-√ construction goes through it.
+| `FlatRIP.lean` | BDFKK's Lemma 3 in fixed-support form. `flat_rip_on`: if every bilinear sum of disjoint flat combinations on W satisfies \|⟨Σ_{J₁}u, Σ_{J₂}u⟩\| ≤ δ√(\|J₁\|\|J₂\|) (`FlatOn u W δ`), then \|‖Σ a_z u_z‖² − ‖a‖²\| ≤ 32 δ (T + 2^{−T}√\|W\|)² ‖a‖² for every T. With 2^T ≥ √\|W\| the constant is 32 δ (T + 1)², so polylog. The steps are: `cube_vertex` (an affine map on [0,1]^s attains its maximal norm at a vertex), then `flat_cube`; `flat_dyadic` (telescoping dyadic pieces with a Chebyshev count per level); `flat_nonneg`; `flat_complex` (four nonnegative parts); and `avg_identity` with `count_split` (each off-diagonal pair is split by exactly a quarter of the subsets of W). |
 
-Build: `lake env lean Submissions/arvi_rip/Coherence.lean` (about 11 s on a warm cache).
+Every known explicit beyond-√ RIP construction goes through `flat_rip_on`. What remains, and is open, is the
+flat bilinear estimate itself for our dictionary (the sextic characters on a large-value set W at the
+self-dual length), with δ ≪ 1/log² once |W| exceeds √(dimension).
+
+Build: `lake env lean Submissions/arvi_rip/Coherence.lean` (≈ 11 s) and `.../FlatRIP.lean` (≈ 13 s), on a warm cache.

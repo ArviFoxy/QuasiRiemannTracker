@@ -310,3 +310,41 @@ improves it (literature note of 2026-10-24).
 - Trace where PR 93's near estimate uses δ > 1/2.
 - Price a sub-square-root selected norm.
 - Test whether the joint count reaches 2pδ ≈ 0.45.
+
+## 2026-10-30 · The square-root barrier is a fixed point; #96 as a source of ideas
+
+**Sub-square-root selection is dead with this method [Lean, read; trace of JointDetector/].**
+- PR 93's selected norm uses δ > 1/2 in exactly one mechanism, the contraction of `squarefree_selected_norm`.
+  - Each amplify-and-reflect round maps the exponent of the row term as e ↦ 2δ − 1 + ρe, with ρ = (1 − δ)/δ.
+  - The fixed point δ gives Y^(1−δ) L^δ, and the iteration converges to it iff ρ < 1, i.e. iff δ > 1/2
+    (`Contraction.ratio_lt_one`, `uniform_depth`, `SelectedContraction`, `SelectedNormIteration`).
+- Below 1/2 the fixed point repels. The best bound, with no rounds, is L + Y^((1−δ²)/δ) L^δ, never better than the
+  trivial min(LY, L + Y²). So the selected norm does not degrade gracefully below 1/2; it breaks. [dead]
+- The joint count J(ν, δ) = 3(1−δ)(1−ν)/(3 − ν − 2δ) is smooth through 1/2. Its cutoff comes from the norm alone.
+- Independently, the native step's principal gate L > 2 + 9a/2 caps every face line at Λ ≈ 2. So K < 1/2 would buy
+  at most ≈ −7e-6 even with a working norm. [dead]
+
+**Banked levers [numerical, exact].** Line to Λ = 2001/1000 with h = 0.81 (needs the transport box widened, floor
+margin < 1/200): θ = 0.87338366, −2.83e-5. Not enough on its own; 2.17e-5 short of the bar.
+
+**Row constants [numerical, exact; `fresh-look/scripts/const_sens.py`].**
+
+| change | Δθ |
+|---|---|
+| 13/75 − 1/7500 | −2.22e-5 |
+| 9/100 + 1e-4 | −1.66e-5 |
+| 3/4 − 1e-4 | −1.00e-5 |
+
+Origin of these constants: trace running.
+
+**PR #96 (liqsweep, paper claim 1049/1250 = 0.8392, no Lean).**
+- It keeps OpenAI's continuation criterion with a new probe: a sextic and a cubic Poisson slot with Gauss-sum
+  amplifiers, a Hecke target twisted by the angular character, and a copy sieve.
+- The 13/15 floor of OpenAI's architecture (Lean, #53) does not apply to it; its own floor in the same exponent model
+  is 35/48.
+- At 0.8392 every estimate but the square-factor tail closes with large margins (remainder 0.049, non-polar 0.119,
+  Poisson rows ≥ 0.039). The tail closes with 4.25e-6.
+- The baseline Lean library already has the cubic Kubota machinery (`Eisenstein/`, `kubota_mul`,
+  `globalKubotaKernel`).
+- Idea: a simplified two-slot probe at a modest target (B ≈ 0.86–0.87) might close with classical inputs only.
+  Analyses running: the constraint system with classical inputs, and the Lean inventory.

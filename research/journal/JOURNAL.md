@@ -1235,3 +1235,29 @@ whole frontier.
   - Poisson at modulus L²·n′m′ produces the same form over h ≲ L²K.
   So the bootstrap's pointwise prime-sum savings and the large sieve's averaging do not combine here. [dead end
   recorded]
+
+## 2026-10-30 · Upstream PR #98 takes the engineering limit (θ = 0.8733821435)
+
+**What it is [read; git, `upstream/pr98`, head 72682aa1].**
+- Author: Joseph Bebel (author of PR 93). Opened after #97 merged.
+- Theorem: all-moduli Dirichlet nonvanishing for Re s > 1746764287/2000000000 = **0.8733821435**, i.e. −2.98e-5
+  against #97 and 1.37e-7 below our bank (0.87338228).
+- Method: the same three moves as our bank, done independently and slightly further.
+  - "Generic native-line induction" on #97's selected-leaf source: the faces end at Λ = 200001/100000 = 2.00001
+    (ours: 2.0001).
+  - The physical-return geometry widened, as in our ReturnD fork.
+  - Five windows instead of our three:
+    `[C 9/25..49/100 p≥0], [C 9/25..57/100 p≥3/8], [capP 1/16384..3273/8192 p≥3/8], [capP 9/32..3/8 p≥5/16],
+    [C 45/128..3/8 p≥15/32]`.
+  - Constants: h = 0.809686724723; count face (0.99999, 2.00001, cap 0.1342894); physical face (0.99999, 2.00001,
+    cap 3/25).
+- Status: open upstream, not merged; upstream main is still e02df3d2 (#97).
+
+**Consequences.**
+- Our bank is superseded, by 1.4e-7. It stays as an independent check that the engineering limit is ≈ −2.98e-5
+  (our float estimate of the limit was 0.87338197).
+- If #98 merges, the 5e-5 rule moves the bar to θ ≤ **0.8733321435**. Then the whole 5e-5 must come from new math
+  on top of the engineering limit, for example (from `frontier/slotcost.py`):
+  - slot cost ≈ 1.984 in all three places, or
+  - long slope ≈ 0.8226.
+- Until it merges, the bar measured from #97 stays at 0.87336198.

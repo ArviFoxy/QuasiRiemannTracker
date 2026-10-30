@@ -102,6 +102,18 @@ quadratic twists of θ₃ ⊗ ψ_P. Nearest results:
 
 Neither covers twists of θ₃.
 
+**P1 pinned down (deep-dive, 2026-10-30).** For the application's smooth slot weights, a Schur argument reduces
+P1 to one estimate:
+
+  (X)  |Σ_{k squarefree, N(k)≤K} S(k, P)·S(k, P′)‾| ≤ K·N·L^{−η}  for P ≠ P′,  η ≈ 0.0076.
+
+That is a saving of only Z^{0.001} over the trivial bound. Notes:
+- The n = m diagonal is ≈ KL, because (n/PP′)₃ cancels.
+- Quadratic Poisson maps the k-sum (length K) to an h-sum of length N²/K and back, so the form is self-dual and
+  every positivity step loses.
+- There is no polar term to subtract: the twisted Kubota series is entire for χ_k ≠ 1.
+- Square rows must be excluded, since they carry the pole.
+
 Nearest tool found later: **#96's K-chart** (journal, "#96's K-chart is the nearest tool to P1"). The functional
 equation of the cubic Kubota series at a fixed index shortens a quadratically twisted cubic Kubota sum to its dual
 length, and then the quadratic large sieve applies. That is the move P1 needs, to shorten N = KL before the sieve.

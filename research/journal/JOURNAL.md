@@ -2511,3 +2511,24 @@ The models:
   row vector as the slot that selects W.
 - Its growth law is open: there are three points, and Θ₆ caps it at B^{1/6}.
 - (LS off V) has to put this low-frequency span into V, next to the twisted thetas.
+
+## 2026-10-30 · No anti-self-dual row class: the reciprocity sign is cancelled by χ_z(−1) [numerical; closes an idea]
+
+**Idea.** At L = B, Poisson gives G_off(z, z′) ≈ s(z, z′)·χ_{z′}(−1)·g̃(z)·conj g̃(z′)·conj G_dual(z, z′), with
+s(z, z′) = (z′/z)₆·conj (z/z′)₆. Suppose the effective sign s·χ_{z′}(−1) were −1 on every pair of a row class. Then
+the class Gram would be anti-self-dual: its off-diagonal spectrum would be symmetric about 0, and G ≥ 0 would cap
+its top at about twice the diagonal. That class would have no excess at the balanced point.
+
+**Test [`rip/theta/theta_classes.py`, log `theta_classes_B30000.log`, B = L = 3·10⁴].** Rows are grouped by their
+primary generator mod 4, giving 12 classes = (Z[ω]/4)^×.
+- s(z, z′) takes only the values ±1, and it is constant on every pair of classes (21194 pairs). Inside six classes it
+  is −1: (1,2), (1,3), (2,1), (2,3), (3,1), (3,2).
+- χ_z(−1) = −1 on exactly those six classes and +1 on the other six. So the effective sign is +1 inside every class:
+  the family is self-dual class by class.
+- This matches the per-class spectra:
+  - the off-diagonal λ_max + λ_min is +0.19 to +0.20 in every class, against +0.17 to +0.18 for random phases on the
+    same zero pattern and +0.18 for Marchenko–Pastur, with no symmetry in the "anti" classes;
+  - the theta excess is +0.11 to +0.14 in every class.
+
+**Reading.** The supplementary law for −1 cancels the reciprocity sign, so there is no anti-self-dual sub-family to
+exploit. [dead]

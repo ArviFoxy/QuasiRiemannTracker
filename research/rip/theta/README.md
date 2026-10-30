@@ -18,6 +18,7 @@ be small.
 | `theta_models.py B L [seeds] [P0,...]` | top singular values of E against models with the same zero pattern: random symbols (RSYM), random multiplicative rows (RMM), exact small primes (EXACT), randomly conjugated row characters (RCHAR, reciprocity broken) |
 | `theta_locate.py B L` | top of E after projecting the rows off the block span or the twisted-theta span, or dropping small/large sources |
 | `theta_reciprocity.py B L [seed]` | theta excess in RCHAR, with its own Gauss sums |
+| `theta_classes.py B L [sample]` | reciprocity sign s(z, z′) and χ_z(−1) by row class mod 4; per-class spectra and theta excess (no anti-self-dual class) |
 
 All scripts build E and the row Gauss sums through `theta_core.py`.
 

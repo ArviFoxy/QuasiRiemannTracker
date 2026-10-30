@@ -845,3 +845,39 @@ correlation).
   trivial bound, and Halász needs savings below polylog.
 - Burgess at m = 0.376 saves at most q^{0.016}. The witness needs N^{0.274}, so the zero-free-region bound is far
   stronger.
+
+## 2026-10-30 · One master parameter: the slot cost 2
+
+**Model [numerical; `frontier/slotcost.py`, the LP game plus the newTop row; it reproduces the Lean bank
+0.87338228 exactly].**
+- Write c for the price of slot width:
+  - in the inverse word: r + cΣw ≤ 1, so I(r) = 1 − δr − (2δp/c)(1 − r);
+  - in both faces: Λ = c·(2.0001/2).
+- θ* against c, at the banked design:
+
+  | c | all three places | inverse word only |
+  |---|---|---|
+  | 1.995 | −1.60e-5 | −8.4e-6 |
+  | 1.992 | **−2.56e-5** | −1.35e-5 |
+  | 1.990 | −3.20e-5 | −1.69e-5 |
+  | 1.985 | −4.81e-5 | −2.55e-5 |
+  | 1.980 | −6.43e-5 | −3.41e-5 |
+
+- So **c ≈ 1.9936 in all three places reaches the bar**. That is a 0.32% saving on the price of prime slots. The
+  inverse word alone needs 1.9882, as in the single-atom table.
+
+**Why one parameter [derived].**
+- At F1 the inverse and plain words balance at r = 2m whatever c is. In both words the slot term is the only place
+  where prime polynomials meet the sextic large sieve.
+- With c = 1 both words become 1 − δ (density hypothesis). The long word then matters only because t* > 1.
+- In both places the 2 is the large sieve's √-barrier for prime vectors. Smooth-weighted prime vectors avoid the
+  main Gauss-sum bias: Heath-Brown–Patterson give Σ_P g̃(P)W(P/X) ≪ X^{5/6+ε}. But after reflection the slot
+  becomes a character sum in the dual variable (P1), and there the N-term returns.
+- The literature (2026) has no unconditional refinement. Dunn–Radziwiłł's "cubic large sieve with correction
+  term" (Annals 2024) needs GRH, and arXiv 2607.07911 proves only non-orthogonality.
+
+**Per-row levels [Lean, read; `Transport/HighApproximation`].** Each row u carries its own family
+(`rayCubeFamily M H hH u`) and its own discretized zero maximum a_u = 51/100 + e·grid(u). The count at depth d is
+the number of rows whose rightmost zero lies at (1 + d)/2. So at the binding (d ≈ 0.43–0.45) every counted row's
+family is zero-free right of ≈ 0.72. The GRH that Dunn–Radziwiłł need is for other L-functions, the ones in their
+Type II/III analysis, so this per-row quasi-GRH does not obviously substitute for it. [open question, not pursued]

@@ -1363,6 +1363,12 @@ the trivial bound).
   rows, and applies the quadratic sieve to the reflected cubic-theta columns. So c > 0 is that sieve's balanced
   point.
 - Deletion needs H = UV⁶ ≥ D^{1+c}. Running it at H = D^{1−c′} would need the theta–quadratic sieve slightly past
-  its balanced point, with a power saving against its N-term. That is P1's estimate with slot width 0. The needed c′
-  is 6.4e-4 for the #97 bar and 0.0138 for the #98 bar. This confirms in the code that atoms 1 and 2 share one root
-  (LOG 2026-10-24): B2-by-deletion and P1 are the same core estimate. [read; derived]
+  its balanced point, with a power saving against its N-term. That is P1's type of estimate with slot width 0.
+  This confirms in the code that atoms 1 and 2 share one root (LOG 2026-10-24).
+- **The strengths differ, though [derived].**
+  - Suppose the complete family obeys Σ_{w≤H}|M_w(D)|² ≪ D^{1−η}H^η for H ≤ D, i.e. an N-term saving (H/D)^η.
+  - With V copies at H = UV⁶ = D^{1−c′}, deletion gives U^{1/6}D^{5/6}·D^{c′(1/6 − η)}. That beats plain deletion
+    iff η > 1/6, and optimizing gives λ = max(1/6, η). This is the "never combine" rule again.
+  - So B2 needs the core saving at η ≥ 0.1717 (#97 bar) or 0.1782 (#98 bar), while P1 needs only η ≈ 0.008 or
+    ≈ 0.017.
+  - Same estimate, a 10–20× stronger saving: a proof of P1 would not by itself move the long word. [derived]

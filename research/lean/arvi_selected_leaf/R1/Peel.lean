@@ -113,7 +113,7 @@ theorem ord_of_cap (K : ℝ) (h : SelectedRootEnergyCap K) : SelectedRootEnergyO
           Z^(st.rowWidth + selExcess (length Z X₁ + length Z X₂) (∑ i ∈ T, w i) st.rowWidth + ε) := by
           apply mul_le_mul_of_nonneg_right _ hZp
           apply mul_le_mul_of_nonneg_right _ hR0
-          nlinarith
+          exact le_mul_of_one_le_right hC.le hcpow
       _ = _ := by ring
   · rw [not_le] at hcap
     obtain ⟨T', hT'T, hlow, hup⟩ := R1.exists_sub_weight w mesh (Mcap + 1) (by linarith) hwm T hcap

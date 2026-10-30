@@ -1,0 +1,4 @@
+[setup] B=400000 R=112881 nS=2512 nI=810 maxsrc=6244 rough=0 (1.5s)
+[actual] done (26.8s)
+[surrogate] K=24 rows=112881 (232.9s)
+saved logsP/run_4e5.npz (264.8s)

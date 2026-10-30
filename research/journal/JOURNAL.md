@@ -2052,3 +2052,39 @@ D1.
 - So the engineering frontier is now fully taken upstream, and any further gain must come from the K-wall or
   another new-math input (the master conjecture, frontier README).
 - New bar against the best open PR: θ ≤ 0.8733319666.
+
+## 2026-10-30 · Prime versus composite rows: a coprimality-mask effect (fresh look; correction to probe C)
+
+Report: `rip/moments_probe/PRIMEROWS.md` (scripts `primerows_*.py`, logs `logsP/`; raw runs in
+`$SCRATCH/logsP_npz`, regenerable with fixed seeds).
+
+**Mechanism [numerical + derived].**
+- **The deficit is the functional equation with the full conductor.**
+  - For primary n, χ_u(n) = χ_u(−1)λ_u(n), where λ_u is a Hecke character of conductor u·(1−ω)^c. The exponent c
+    is fixed by k = ((N(u) − 1)/6) mod 6 (c = 0 if k = 0, c = 1 if k = 3, c = 2 otherwise), so the dual length is
+    3^c·N(u)/N.
+  - Poisson over Z[ω] reproduces |S_u| from its dual to 1.8·10⁻³.
+  - The deficit is ordered by c (at m = 0.45, B = 1.6·10⁶: ratio 0.79 / 0.82 / 1.00 for c = 0 / 1 / 2).
+  - From m ≈ 0.6 on, the random model applied to the dual sum matches the actual M6 to 6–13%.
+- **The prime/composite gap comes from the coprimality mask, not from prime moduli.**
+  - Composite rows usually contain a small prime q (7 or 13 in 46% of them). Masking q lowers the multiplicative
+    surrogate's normalized sixth moment (asymptotically by (1 + 4/q + 1/q²)/(1 − 1/q)²). The actual sum follows its
+    shorter dual for m > 1/2, where the mask costs only ≈ 0.90.
+  - Decisive tests: a mask transplant (prime rows given composite rows' masks move to the composite ratio: shift
+    +0.037 ± 0.007 in log at m = 0.5, positive at 22 of 23 points with m ≥ 0.45), and an artificial mask at π₇
+    (it reproduces the genuine π₇·π′ rows within 0.06 ± 0.07).
+
+**Corrections to probe C.**
+- The 4-replica surrogate for the prime class at B = 3·10⁵ was 8–12% high for m ≥ 0.5. The prime ratios there are
+  0.775 / 0.750 / 0.595, not 0.719 / 0.693 / 0.530.
+- There is no prime/composite gap for m ≤ 0.45.
+
+**Open.**
+- A residual −0.09 ± 0.03 at m = 0.6.
+- The dip at exactly m = 1/2 (below both the direct and the dual random-model predictions) has no analytic account
+  yet. A CFKRS-type formula was not attempted.
+
+**Reading for the program [derived].**
+- Nothing structural about prime moduli, so no "prime-row dictionary" lever.
+- The c-ordering confirms that the only structure in plain-sum moments is Poisson self-duality with the exact
+  conductor, including the ramified factor at 1 − ω. That is the same statement as the reflection rule.

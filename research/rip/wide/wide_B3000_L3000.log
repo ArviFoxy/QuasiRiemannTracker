@@ -1,0 +1,50 @@
+B=3000 L=3000 rows R=848 sources S=778; slot primes 6 (norm in [30,60]); 1/sqrt(S)=0.0359
+coherence over all pairs: max 0.1440  rms 0.0359  (sqrt(S)*max = 4.02)
+
+== random row sets (baseline) and slot-selected row sets W = top |T| ==
+random  dens=0.25      |W|=  212  mu_W=0.1213 (x sqrt S 3.38)  sqrt-barrier 1/mu_W=8
+    degree 1 kernel rho^1: lambda in [0.241, 2.318]   Gershgorin bound 25.604
+    degree 2 kernel rho^2: lambda in [0.942, 1.064]   Gershgorin bound 3.107
+    degree 3 kernel rho^3: lambda in [0.996, 1.004]   Gershgorin bound 0.377
+    degree 4 kernel rho^4: lambda in [1.000, 1.000]   Gershgorin bound 0.046
+    ReLU kernel: lambda in [0.192, 34.085] (diag 0.5);  high-pass (degree>=2, normalized): [0.975, 1.122]
+slot    dens=0.25      |W|=  212  mu_W=0.1260 (x sqrt S 3.51)  sqrt-barrier 1/mu_W=8
+    degree 1 kernel rho^1: lambda in [0.231, 2.319]   Gershgorin bound 26.582
+    degree 2 kernel rho^2: lambda in [0.938, 1.065]   Gershgorin bound 3.349
+    degree 3 kernel rho^3: lambda in [0.996, 1.004]   Gershgorin bound 0.422
+    degree 4 kernel rho^4: lambda in [1.000, 1.000]   Gershgorin bound 0.053
+    ReLU kernel: lambda in [0.194, 34.122] (diag 0.5);  high-pass (degree>=2, normalized): [0.973, 1.126]
+random  dens=0.10      |W|=   84  mu_W=0.1119 (x sqrt S 3.12)  sqrt-barrier 1/mu_W=9
+    degree 1 kernel rho^1: lambda in [0.482, 1.709]   Gershgorin bound 9.287
+    degree 2 kernel rho^2: lambda in [0.966, 1.036]   Gershgorin bound 1.039
+    degree 3 kernel rho^3: lambda in [0.998, 1.002]   Gershgorin bound 0.116
+    degree 4 kernel rho^4: lambda in [1.000, 1.000]   Gershgorin bound 0.013
+    ReLU kernel: lambda in [0.247, 13.709] (diag 0.5);  high-pass (degree>=2, normalized): [0.984, 1.047]
+slot    dens=0.10      |W|=   84  mu_W=0.1177 (x sqrt S 3.28)  sqrt-barrier 1/mu_W=8
+    degree 1 kernel rho^1: lambda in [0.461, 1.811]   Gershgorin bound 9.768
+    degree 2 kernel rho^2: lambda in [0.960, 1.039]   Gershgorin bound 1.150
+    degree 3 kernel rho^3: lambda in [0.996, 1.003]   Gershgorin bound 0.135
+    degree 4 kernel rho^4: lambda in [1.000, 1.000]   Gershgorin bound 0.016
+    ReLU kernel: lambda in [0.239, 13.750] (diag 0.5);  high-pass (degree>=2, normalized): [0.981, 1.055]
+    sampled degree-2 features (m=3000): max entry error 0.074, lambda in [0.705, 1.330]
+    sampled degree-3 features (m=3000): max entry error 0.124, lambda in [0.684, 1.352]
+    sampled ReLU features (m=3000): high-pass lambda in [-2.720, 3.928]
+random  dens=0.05      |W|=   42  mu_W=0.1214 (x sqrt S 3.39)  sqrt-barrier 1/mu_W=8
+    degree 1 kernel rho^1: lambda in [0.638, 1.453]   Gershgorin bound 4.978
+    degree 2 kernel rho^2: lambda in [0.977, 1.024]   Gershgorin bound 0.604
+    degree 3 kernel rho^3: lambda in [0.998, 1.002]   Gershgorin bound 0.073
+    degree 4 kernel rho^4: lambda in [1.000, 1.000]   Gershgorin bound 0.009
+    ReLU kernel: lambda in [0.268, 7.030] (diag 0.5);  high-pass (degree>=2, normalized): [0.988, 1.023]
+slot    dens=0.05      |W|=   42  mu_W=0.1119 (x sqrt S 3.12)  sqrt-barrier 1/mu_W=9
+    degree 1 kernel rho^1: lambda in [0.607, 1.528]   Gershgorin bound 4.589
+    degree 2 kernel rho^2: lambda in [0.969, 1.028]   Gershgorin bound 0.514
+    degree 3 kernel rho^3: lambda in [0.998, 1.002]   Gershgorin bound 0.057
+    degree 4 kernel rho^4: lambda in [1.000, 1.000]   Gershgorin bound 0.006
+    ReLU kernel: lambda in [0.268, 7.038] (diag 0.5);  high-pass (degree>=2, normalized): [0.988, 1.027]
+
+== transfer: count certificates for the large-value sets of the plain sum a = 1 (normalized) ==
+  |<a,x_z>|: rms 0.0319  max 0.0723   (1/sqrt(S) = 0.0359)
+  top    5 rows (min |<a,x>| = 0.0666 = 1.86/sqrt S): certificates by degree 1,2,3 = 246, 5.1e+04, 1.14e+07   [true |W| = 5]
+  top   20 rows (min |<a,x>| = 0.0567 = 1.58/sqrt S): certificates by degree 1,2,3 = 411, 9.85e+04, 3.02e+07   [true |W| = 20]
+  top   80 rows (min |<a,x>| = 0.0484 = 1.35/sqrt S): certificates by degree 1,2,3 = 736, 1.88e+05, 7.76e+07   [true |W| = 80]
+  top  320 rows (min |<a,x>| = 0.0318 = 0.89/sqrt S): certificates by degree 1,2,3 = 2.65e+03, 1.06e+06, 9.68e+08   [true |W| = 320]

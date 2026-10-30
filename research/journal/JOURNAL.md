@@ -1701,6 +1701,13 @@ unbiased randomization can beat the mean dictionary:
 So the design target is not a random perturbation of our dictionary. The independence has to come from the
 arithmetic itself.
 
+**Correction (same day, after Arvi's review).** The list above only covers randomizations of the *same*
+atoms (thinned, re-phased or sub-selected sextic characters), whose mean is the sextic dictionary. That is
+not the proposal. Arvi's proposal is a dictionary of *different* atoms: wide, not localized in frequency (as
+ReLU features on a sphere are), whose RIP is proved by exhibiting a positive measure of good operators, tied
+to the sextic rows by coherence bounds. Nothing above rules that out. The sentence "random-dictionary designs
+set aside" in the foundations audit was wrong and is withdrawn; the direction is open (RIP (4)).
+
 **The random multiplicative model reproduces the fixed point exactly [derived].**
 - Model each row as a random completely multiplicative function f_z with f_z(p) i.i.d. uniform on μ₆
   (Frobenius data at distinct primes are independent coordinates, the CRT heuristic). Then the rows u_z are
@@ -2095,7 +2102,7 @@ Arvi asked which "established" facts behind decisions were not formal. Status af
 
 | fact (decision it drove) | status |
 |---|---|
-| Randomizing the sextic dictionary is Jensen-neutral (random-dictionary designs set aside) | **Lean**: `arvi_rip/Thinning.lean` (`thin_avg`, `avg_bound_ge`, `thinning_pays_back`, `closure_payback`) |
+| Thinning or re-phasing the sextic atoms themselves is energy-neutral. (This drove nothing valid: it does not touch dictionaries of different atoms, and the "set aside" reading is withdrawn; see the correction under RIP (3).) | **Lean**: `arvi_rip/Thinning.lean` (`thin_avg`, `avg_bound_ge`, `thinning_pays_back`, `closure_payback`) |
 | Random dictionaries do have RIP beyond √ | Lean: `arvi_rip/RandomRIP.lean` |
 | D1 by row splitting is the K-wall | Lean: `arvi_primeface/RowSplit.lean` |
 | D1 by dispersion needs only the plain eighth moment (plus Huxley) | Lean: `arvi_primeface/Dispersion.lean` (Huxley as a hypothesis) |
@@ -2113,3 +2120,90 @@ Arvi asked which "established" facts behind decisions were not formal. Status af
   matrix Chernoff (used only as evidence for random row sets), Heath-Brown–Patterson, and D–R's propositions.
 - **Numerical findings** (Marchenko–Pastur, the moments, the prime pool, the prime rows) are tagged [numerical]
   and are not used as proof inputs anywhere.
+
+## 2026-10-30 · RIP program (4): a dictionary of different atoms — wide random features with RIP by counting measure
+
+**Arvi's correction.** RIP (3) randomized the *same* atoms (thinning, phases), which proves nothing about the
+proposal. The proposal is a dictionary built on different principles, from atoms that are not localized in
+frequency (ReLU features on a sphere have a wide arc-cosine kernel). Its RIP is shown by exhibiting a positive
+measure of good operators, and coherence bounds tie it to the sextic rows. "Set aside" is withdrawn.
+
+**Construction.**
+- A degree-ℓ feature is a product of ℓ Rademacher projections, feat_w(x) = ∏_{i<ℓ} ⟨w_i, x⟩ with w_i ∈ {±1}^d.
+- These are the polynomial (Maclaurin) pieces of wide dot-product kernels. ReLU's kernel is a positive mixture
+  of them: Σ b_ℓ t^ℓ, with b₀ = 1/2π, b₁ = 1/4 and b₂ = 1/4π.
+- The data are the rows' unit vectors x_z = χ_z|_sources/‖·‖. Any separated data would do.
+
+**Formal [Lean: `lean/arvi_rip/WideFeatures.lean`, built, about 13 s; only propext, Classical.choice and Quot.sound].**
+- `sum_feat_mul_conj`: averaged over all parameters, the features reproduce ⟨x, y⟩^ℓ exactly. So coherence μ
+  becomes μ^ℓ.
+- `sum_pi_single`, `sum_pi_pair_eq_zero`, `sum_norm_sq_sum_pi` and `card_filter_le_sum_div`: variance over
+  independent draws, and Chebyshev, in counting form.
+- **`exists_wide_rip`.** Assume unit data x_z (N points) with pairwise coherence ≤ μ and ℓ¹ norms ≤ C, and
+  4N²C^{4ℓ} < mε². Then a positive counting measure of m-feature operators exists (the bad choices are fewer
+  than all choices). Its feature vectors satisfy
+  |‖Σ_{z∈S} c_z u_z‖² − ‖c‖²| ≤ (ε + (μ^ℓ + ε)(|S| − 1))‖c‖² on every support S.
+  So the order is ≈ μ^{−ℓ}, against ≈ μ^{−1} for coherence certificates on the raw data
+  (`coherence_order_barrier`).
+- `count_le_of_rip`: RIP on S plus |⟪b, u_z⟫| ≥ τ on S gives |S|τ² ≤ (1 + δ)‖b‖².
+- `mixture_ge_min`: a mixture of degrees never certifies a smaller count than its best single degree.
+
+**Numerics [`rip/wide/wide_probe.py`, log `wide_B3000_L3000.log`; B = L = 3000, R = 848 rows, S = 778 sources].**
+- Coherence: the maximum over all pairs is 4.0/√S. Within slot-selected sets it is 3.1–3.5/√S. Slot selection
+  does not inflate it at this scale.
+- Slot-selected W of 212 rows (density 0.25). The raw √-barrier is 1/μ_W ≈ 8 rows.
+
+  | kernel | λ range on W |
+  |---|---|
+  | raw Gram (degree 1) | [0.23, 2.32] (Marchenko–Pastur, not RIP) |
+  | degree 2 | [0.94, 1.065] |
+  | degree 3 | [0.996, 1.004] |
+  | ReLU high-pass, normalized | [0.97, 1.13] |
+
+  The values are the same on random W. So the wide dictionary has RIP far beyond √ on the actual adversarial
+  row sets. With m = 3000 sampled features the degree-2 operator has λ in [0.71, 1.33]: sampling noise at this
+  m, which shrinks as 1/√m.
+
+**What it does and does not yet buy [derived].**
+- The zero supplies a *degree-1* statistic: |⟨a, x_z⟩| ≥ v. Through degree ℓ the count certificate is
+  λ_max(ρ_W^{∘ℓ})/v^{2ℓ}, and mixtures cannot beat the best degree (`mixture_ge_min`).
+- At the measured large values (v ≈ 1.4–1.9/√S), degrees 2 and 3 certify 10²–10⁵ times more than degree 1
+  (log, last block).
+- The degree ≥ 2 part was never the obstruction. Θ₆(2x) = 2x for x ≥ 1, so the full-family sieve already makes
+  ρ_W^{∘2} diagonal up to B^ε on every W. At the K-wall corner x = 0.96 the excess is 0.013.
+- The K-wall therefore sits entirely in the degree-1 part: the linear detector.
+- This first construction is correct and does what random features do, but it acts on a part we already control.
+
+**What the next construction has to do (open).** The randomness must reach the degree-1 part. Any dictionary
+whose atoms are functions of the row's character vector alone has the sextic Gram as its degree-1 part. Two ways
+out remain:
+- (a) atoms that use other data of the row (Frobenius data outside the sources, the Archimedean factor n^{−it} in
+  (z, t) space, Gauss sums);
+- (b) a different detection step, in which a zero forces higher-degree statistics with tensor norms, e.g. products
+  of *different* detectors.
+
+An Opus fresh look on exactly this question is running (`rip/wide/FRESH_LOOK.md`).
+
+## 2026-10-30 · Plain eighth moment: proof strategies (fresh look; agent-derived, not formal)
+
+Source: `rip/eighth/STRATEGIES.md`, with `strat_exponents.py` and `strat_tail.py`. Target: Σ_z|X₁X₂|⁴ ≪ Z^{1+2η}N²
+with plain sums of total length Z^μ. D1 by dispersion needs η = 0 on μ ∈ [0.75, 0.87].
+
+- **Prop. 0 [checked: nonnegative sum].** The target forces |X₁X₂(z)|² ≤ Z^{1/2+η}N on every row. So the recorded
+  "max/mean ≤ Z^{1/2}" obstacle constrains every proof, not just Hölder's. With the zero-free half-plane
+  κ = 0.747 this pointwise bound holds only for μ ≤ 0.670. At μ = 1 the target is the eighth moment of L(½, χ_z),
+  which implies |L(½, χ_z)| ≪ Z^{1/8}, beyond Weyl.
+- **S1, sorting rows by their rightmost zero [agent-derived].**
+  - Uses Littlewood's local Lindelöf bound, the family zero count and the plain fourth moment.
+  - Proves the target for μ ≤ 1/3 (de Faveri: 1/4).
+  - Gives η(0.93) = 0.340 (de Faveri: 0.442; Hölder: 0.347).
+- **Barrier [agent-derived, model].**
+  - The round-9 lattice adversary at spacing μ/2 meets every current input and has η = 0.338 at μ = 0.93.
+  - It has η > 0 for every μ > 1/2, even with counts at density-hypothesis strength.
+  - So no combination of today's inputs (used through lengths only) proves η = 0 past μ = 1/2.
+- **Consequence.** D1 by dispersion needs a new kind of input: a joint plain–zero count beyond the density
+  hypothesis. The agent recommends deprioritizing D1-by-dispersion. Agreed until such an input appears.
+- **Next lemmas, if pursued.**
+  - P₄: Patterson asymptotics over 4-fold plain products. This is the S2 recursion's missing piece and needs
+    type-A₄ multiple Dirichlet series.
+  - Or the D4 sixth moment with ε₆ ≤ 0.153 (S3).

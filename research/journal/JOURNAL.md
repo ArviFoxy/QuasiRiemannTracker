@@ -811,3 +811,37 @@ research result (θ = 0.87338228), so a future lever only needs its own 2.03e-5:
 applies as stated: long slope 0.83280, inverse slot cost 1.9882, Λ ≈ 1.987 in both faces, p_max 0.4934, fibre
 margin 0.00147. Each is a hard problem (B2, P1, Sil's reference plus the square-root cut, sharp, no forced
 correlation).
+
+## 2026-10-30 · What a witness says, and why the long word is a deletion amplifier
+
+**The witness [Lean, read; baseline `Hecke/DetectorWitnessRows`, `DetectorSaturation.actual_saturation`].**
+- The detector gives one dyadic pair (Möbius block of length U^r, plain block of length U^m) whose product block
+  is ≥ 1/polylog at the zero (`exists_dyadic_zero_witness`).
+- `simultaneous_upper` bounds each block by the zero-free region to the right of a + 2e (the `zeroMaximum`
+  hypothesis): ‖block‖² ≤ U^{(2a−1)·length + ε}. With the product lower bound this forces **both blocks to be
+  saturated**: ‖M‖² ≥ U^{(2a−1)r − 2ε} and ‖S‖² ≥ U^{(2a−1)m − 2ε}. It also forces m ≤ 1/2 + 75ε.
+- So F2 = (t, 0) only says "a zero exists and the Möbius block at the cutoff is saturated". That is what a pole of
+  1/L does at every scale unless nearby zeros cancel it. F1 says, in addition, that a block of the L-function's
+  head (length t/3) is saturated, which is a genuine large-value event.
+- Closed form at Λ = 2, B = 1, p = 1/2, long slope 5/6: F1(t) = 1 − δ/2 − δt/3 and F2(t) = 1/6 + (5/6 − δ)t, so
+  t* = (5 − 3δ)/(5 − 4δ). At δ = 0.426 this gives t* = 1.1293, matching the LP game.
+
+**The long word's 5/6 is a deletion amplifier [Lean, read; `InverseAmplificationFamily`, `RawMoment`].**
+- Row u becomes u·π⁶ for primes π of norm ≈ V. Since (n/π)₆⁶ = 1, the character χ_{uπ⁶} is χ_u with the prime π
+  deleted (`amplified_prime_mask`). By `prime_column`, M_u(D) = M_{uπ⁶}(D) − χ_u(π)N(π)^{−1/2}M_{uπ⁶}(D/π), and
+  the second term cannot carry the spike.
+- `RawMoment` is diagonal for all rows of norm ≤ H once H ≥ D^{1+c}. Take H = UV⁶ = D. That gives V copies of each
+  row for a family of size V⁶, so Σ_u|M_u(D)|² ≲ U^{1/6}D^{5/6} and the word is (1 + 5r)/6 − δr.
+- The loss V⁵ is intrinsic to deletion: the copies χ_{uπ⁶} ≈ χ_u are not mutually orthogonal, so only the dilution
+  inside the full family of norm ≤ H makes the bound work.
+
+**Why the known tools do not touch r > 1 [derived].**
+- Slots do not help even at the ideal cost 1. A Ramaré-type split μ·ω_V = −(prime slot)·(shorter Möbius) keeps the
+  total length at r > 1.
+- Dualizing in the rows (reciprocity, then Poisson) turns the off-diagonal into the dual family's off-diagonal
+  scaled by U/D, and the N-term reappears. This is P1's "any positivity step re-creates the N term" in the Möbius
+  setting. Twisted Chowla (B2) is the honest name for it.
+- Pretentiousness (Halász) is blind at polynomial scale. A saturated plain block saves only N^{0.274} over the
+  trivial bound, and Halász needs savings below polylog.
+- Burgess at m = 0.376 saves at most q^{0.016}. The witness needs N^{0.274}, so the zero-free-region bound is far
+  stronger.

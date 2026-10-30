@@ -1904,3 +1904,19 @@ multiplicative model, rather than above it as a bias or N-term would?
   no bias, no extra correlations.
 - For D4 the relevant regime (m ≈ 0.43 < 1/2) is random-multiplicative, i.e. Lindelöf on average with
   multiplicative-model constants.
+
+## 2026-10-30 · D1 (L2) numerics: quadratic twists kill the Patterson bias at primes
+
+`rip/l2_probe/` (README, log). Normalized cubic Gauss sums over primary split primes, X = 10⁶ (78,462 primes),
+12 values of k up to N(k) ≈ 4600 [numerical]:
+- **Untwisted:** Σ g̃(π) carries the Heath-Brown–Patterson main term (19.9σ, local slope 0.754).
+- **Cubic parameter shift:** Σ g̃(k, π) keeps a main term scaling like N(k)^{−1/6}, matching |τ(k)| for the cubic
+  theta coefficients at squarefree k.
+- **Parameter k²:** Σ g̃(k², π) has none, because theta coefficients vanish at squares.
+- **Quadratic twists:** Σ g̃(π)(k/π)₂, and D1's dual combination Σ g̃(π)(k/π)₂ conj (k/π)₃, are random-walk size
+  (0.1–2.3σ), with no main term and no visible N(k) growth.
+
+**Reading [derived].**
+- (L2)'s premise holds numerically: in D1's dual, the prime pool sees no Patterson bias, and the truth is
+  square-root cancellation (Λ → 1) against the provable Heath-Brown–Patterson X^{5/6} (Λ = 5/3).
+- What remains is the proof of (L2) uniformly in k, and (L3).

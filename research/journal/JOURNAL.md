@@ -577,3 +577,52 @@ physical slot capacity C = (2y − (2 − B)d)/Λ.
   exceeds Z^M once len > 2M/3.
 - So GS1 cannot give a diagonal face at our lengths. A sub-2 face has to use the smooth structure of the two plain
   factors (Poisson, reflection), as Sil's step does, with a cheaper cost for selected width than 6.
+
+## 2026-10-30 · Faces past Λ = 2: the root reference is the wall, and its 2 = 3/2 + 1/2
+
+**Density-type continuation [numerical, float model; scratch `worth/density_past2.py`].**
+- At the end face, dθ/dB = −0.0161 and dθ/dΛ = +0.00144. So trading B for Λ past 2 pays iff the slope
+  s0 = dB/dΛ is below **0.089**.
+- Examples ignoring the reference gate:
+
+  | s0 | Λ | Δθ |
+  |---|---|---|
+  | 0.06 | 1.9 | −5.3e-5 |
+  | 0.04 | 1.9 | −8.9e-5 |
+  | 0.08 | 1.9 | −1.7e-5 |
+  | 0.12 | 1.9 | +5.6e-5 |
+
+- #94's density chain did pass Λ = 2 (step 120: (0.9656, 1.9665), cap 0.1) at s0 ≈ 0.08. Density steps have no
+  overshoot barrier.
+
+**The reference gate caps every face of Sil's machinery at P + 2S ≤ 1 [Lean, read; derived].**
+- The gate is evaluated at the worst slot width S = cap: B < 1 − (2 − Λ)·cap − 9u/2 (`ReferenceAt`, density
+  `principal`). Its slope is the cap, 0.12–0.134, above the break-even 0.089.
+- Equivalently, the union of admissible faces lies in {P + 2S ≤ 1}. At the count's plain 0.76 that gives S ≤ 0.12,
+  and at the physical plain 0.865 it gives S ≤ 0.0675. The end face is already at 0.1197 and 0.0673.
+- So neither density steps nor K < 1/2 move the return without a better reference. Wall 1 proper is the reference.
+
+**Anatomy of the 2 (`mixed-step/SIL_LEDGER_TRACE.md`, re-read) [Lean, read].**
+- Reference interval (`FourthPower/MixedLedger.lean`):
+  - lower = (3/2)(P + s + 7d/3 − 5R/6), from the exceptional component (16KW⁴)^{5/6}/W with saving (2/3)l;
+  - upper = (P − s − R/2 − d)/2, from the short reference's conductor R + d;
+  - width = R − P − 2s − 4d. So 2 = 3/2 + 1/2 per unit live width (and 4 = 7/2 + 1/2 per unit selected width).
+- The rate 2/3 is a worst case, not a parameter. `MixedInnerExceptionalBlock.scalar_common_saving` gives
+  (cd)^{−1/3}·min((c/x)^α, (d/x)^α) ≤ x^{−2/3} for any α ≥ 2/3, with equality at c = d = x (both common divisors
+  maximal), where α does not enter. The FP range 2/3 ≤ α < 4/5 therefore buys nothing, and Sil's cube-free fork
+  takes α_e < 2/3.
+- With a saving rate α′ the interval is nonempty iff (5/3 − α′/2)R > (2 − α′)P + (2 + α′)S:
+
+  | α′ | slot at plain 0.76 | slot at plain 0.865 |
+  |---|---|---|
+  | 2/3 (today) | 0.120 | 0.0675 |
+  | 3/4 | 0.124 | 0.0765 |
+  | 4/5 | 0.127 | 0.082 |
+
+  The selected cost would also drop (7/2 → (1/α′)(7/3)), which lowers the overshoot fixed point.
+
+**New-math target (precise).** A better bound for the inner exceptional block when the common divisors C, E of the
+fourth-power transfer have norm ≈ L/prefixNorm, i.e. an effective saving rate above 2/3 in the worst configuration.
+At α′ = 3/4 the physical slot alone moves as far as a face at Λ ≈ 1.76 would. That is a sub-2 face from improving one
+lemma of Sil's machinery, with no classical-frontier input. Next: read the FP block (`MixedInnerExceptional*`) and
+find which estimate produces (N C·N E)^{−1/3}.

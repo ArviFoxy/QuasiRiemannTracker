@@ -1402,3 +1402,12 @@ the trivial bound).
 - **Verdict.** P1 is an instance of the "affine moment" problem over a number field. It is as hard as the
   number-field fourth moment of quadratic Dirichlet L-functions with a power saving. [open; classification
   settled]
+- **Literature check [read; web].**
+  - Shen–Stucky (arXiv 2402.01497, 2024) prove the number-field fourth moment of quadratic Dirichlet
+    L-functions unconditionally, but with error O(X(log X)^{6+ε}) against a main term of size X(log X)^{10}: a
+    log saving. Their "four main terms" are the shifted-moment terms. They write that improving the error "would
+    need additional ideas".
+  - Power savings for an affine moment exist only over function fields: Diaconu–Paşol–Popa (type D₄^{(1)}),
+    Bucur–Diaconu, Florea.
+  - (X) needs a power saving, L^{−η} = Z^{−0.001}, in an affine moment over Q(ω). That lies beyond the 2026 state
+    of the art for the simplest affine case. The classification stands.

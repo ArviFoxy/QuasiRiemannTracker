@@ -918,7 +918,16 @@ Type II/III analysis, so this per-row quasi-GRH does not obviously substitute fo
 2. **The slot sequence is not in C_η with η ≤ 1/4.** For smooth prime slots c_P = W(P), the sequence is
    β = W·g̃‾. Axiom (3.2) then asks for twisted cubic Gauss sums over primes ≪ B^{3/4}. Heath-Brown–Patterson give
    only B^{5/6} (η = 1/3); the untwisted sum is excluded from (3.2) and has Patterson's B^{5/6} main term.
-   [open: a Type-II estimate for cubic Gauss sums beating 5/6 for non-trivial twists]
+   - **Softening [derived, unchecked].** In Prop 9.2, η appears only in the term X^ε B^{2+2η}. Against the
+     diagonal AB that term costs nothing for B ≤ A^{1/(1+2η)}, i.e. B ≤ A^{0.6} at η = 1/3, and our regime is
+     B ≈ A^{1/2+κ}. The twists that arise are dual variables with N(k) ≤ B²/A = A^{2κ}, so a polynomial loss in
+     N(k) is harmless. If η ≤ 1/4 is only a convenience, Heath-Brown–Patterson suffice and smooth prime vectors
+     enter unconditionally.
+   - Then, for the **cubic** family, Props 8.1 and 9.2 would give, inside the bootstrap, a diagonal large sieve for
+     smooth prime vectors up to A^{1/2 + 9ρ/4}. ρ is limited by Prop 8.1's error terms, which allow up to ≈ 1/20
+     (slot cost ≈ 1.8). That is far more than the bar needs, if everything holds. **To verify before any further
+     investment:** whether Prop 9.2's proof uses η ≤ 1/4 anywhere else, and how ρ propagates from Prop 8.1 into
+     Prop 9.2.
 3. **The family is wrong.** Our slot costs live in the sextic large sieve (faces, Sil's √A reference) and in the
    quadratic-row/cubic-theta matrix of P1 (inverse word). A sextic or hybrid analogue of Prop 9.2 is needed; the
    sextic theta function has no explicit coefficients (Kazhdan–Patterson).

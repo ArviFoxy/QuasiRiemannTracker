@@ -68,6 +68,29 @@ Computed with `worth.py` and `density_past2.py`, the float model of the newTop r
 | p_max | 1/2 | 0.4934 | sharp |
 | fibre margin | 0 | 0.00147 | no correlation between cutoffs is forced |
 
+## Fresh look 2 (2026-10-30, late): the leading new-math line
+
+- **D1, a face proved outside Sil's packing** (`../fresh-look/second/directions.md`). The target: the twisted
+  fourth moment Σ_z|X₁X₂Q|² with a zero-forced prime pool Q is diagonal at prime cost Λ. Prices: Λ = 1.82 gives
+  −3e-4, 5/3 gives −4.9e-4, 1.97 gives −5e-5. It bypasses the K-wall and the root reference: both belong to the
+  native induction, not to the moment.
+  - First brick in Lean: the quadratic Davenport–Hasse relation, which makes sextic Gauss sums at primes conjugate
+    cubic ones times a Hecke factor (`../lean/arvi_primeface/`).
+  - The ledger reduces to (L2), Heath-Brown–Patterson twisted by quadratic characters uniformly in the twist,
+    and (L3), survival of the prime phase under Type-I plain coefficients (journal, "D1").
+  - Numerology: Heath-Brown–Patterson in both prime variables of the dual pair sum gives Λ = 5/3.
+- **Numerics agree that the truth is far from every wall** (journal, "D2 and D4 numerics"):
+  - fixed-index cross-correlations (X_fix) decay like K^{−1/2};
+  - the thin family's plain sixth moment has no congruence N-term;
+  - the sextic Gram matrix is Marchenko–Pastur on slot-selected rows.
+
+  All are instances of one structured large sieve: theta-uncorrelated vectors are generic for the sextic
+  dictionary. D1 needs the smallest piece of it (prime pools).
+- **Pricing rules from the same run:**
+  - a count theorem valid only below slot slope 1/2 is capped at −7.6e-5, unless paired with PR 93's joint count
+    J = 1 − ν above 1/2;
+  - the amplitude-class corner reduces to round 10's wall.
+
 ## Open new-math targets, in order of plausibility
 
 0. **Break the √-barrier for prime slots with Dunn–Radziwiłł's dispersion** (journal 2026-10-30, "Dunn–Radziwiłł's

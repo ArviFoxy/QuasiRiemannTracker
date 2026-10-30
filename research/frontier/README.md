@@ -1,10 +1,14 @@
 # Frontier after the selected-leaf PR (#97, θ = 0.87341198)
 
-Next bar: θ ≤ 0.87336198. Evidence tags as in `../journal/JOURNAL.md` (entries of 2026-10-30).
+Next bar: θ ≤ 0.87336198 (5e-5 below #97). If the open upstream PR #98 (Bebel, θ = 0.8733821435) merges, the bar
+becomes θ ≤ **0.8733321435**. Evidence tags as in `../journal/JOURNAL.md` (entries of 2026-10-30).
 
 **Position (2026-10-30, end of day).**
 - **Banked in Lean:** θ = 0.87338228 (`../lean/arvi_bank/`). That is −2.97e-5 against #97 and 2.03e-5 short of the
   bar. No library-only lever remains.
+- **Upstream PR #98** (Joseph Bebel, open) proves θ = 0.8733821435 with the same three engineering moves (line to
+  Λ = 2.00001, widened return geometry, five windows). It beats the bank by 1.4e-7. Once it merges, the
+  engineering limit is taken and the full 5e-5 must come from new math (right-hand column below).
 - Every route to the bar needs one of three open problems:
   - **P1**, the θ-biased quadratic sieve: inverse slot cost 1.9882 alone suffices. This is the cheapest single
     route.
@@ -55,11 +59,11 @@ Computed with `worth.py` and `density_past2.py`, the float model of the newTop r
 
 ## Single atoms that reach the bar from the engineering limit (second fresh look, LP game)
 
-| atom | now | needed | problem |
-|---|---|---|---|
-| **slot cost in all three places** (inverse word, count face, physical face; `slotcost.py`) | 2 | **1.9936** | the √-barrier for prime vectors in the sextic large sieve |
-| long slope | 5/6 | 0.83280 | B2 (twisted Chowla); pinned: a Möbius sieve past the family size with saving (D/U)^λ, λ ≥ 0.1717 (deletion gives 1/6) |
-| slot cost in the inverse word | 2 | 1.9882 | P1 (theta dilates against quadratic rows); pinned: cross-moment (X), saving Z^{0.001} |
+| atom | now | needed (#97 bar) | needed (#98 bar) | problem |
+|---|---|---|---|---|
+| **slot cost in all three places** (inverse word, count face, physical face; `slotcost.py`) | 2 | **1.9936** | **1.9844** | the √-barrier for prime vectors in the sextic large sieve |
+| long slope | 5/6 | 0.83280 | 0.82180 | B2 (twisted Chowla); pinned: a Möbius sieve past the family size with saving (D/U)^λ, λ ≥ 0.1717 (#98 bar: 0.1782; deletion gives 1/6) |
+| slot cost in the inverse word | 2 | 1.9882 | 1.9709 | P1 (theta dilates against quadratic rows); pinned: cross-moment (X), saving Z^{0.001} at the #97 bar |
 | Λ in the count and physical faces | 2.005 | ≈ 1.987 | Sil's reference plus the square-root cut |
 | p_max | 1/2 | 0.4934 | sharp |
 | fibre margin | 0 | 0.00147 | no correlation between cutoffs is forced |
@@ -85,6 +89,10 @@ Computed with `worth.py` and `density_past2.py`, the float model of the newTop r
 2. **The square-root cut in the leaf.** Either a selected bound for slot rows at slope just below 1/2, or a HIGH
    count with κ(1/2) > 0.902. The count-side version is beyond Guth–Maynard, but the leaf needs a different
    inequality, and it has not been priced.
+   - **Barrier [Lean, built; `../lean/arvi_kwall/`].** Below slope 1/2, PR 93's amplify-and-reflect rules allow
+     B^{7/6} at the balanced point L = B, even from the optimal sextic sieve Θ₆. A slope just below 1/2 therefore
+     needs a direct operator-norm bound on the large-value rows at L = B, i.e. Guth–Maynard for the sextic family
+     at the reflection's self-dual point.
 3. **A face-proving method outside Sil's packing.** Selected rows already reach the ideal face (PR 93's selected
    norm); the loss sits on unselected rows. At the binding the slot slope is 2pδ ≈ 0.43 < 1/2, so every binding
    row is unselected. This target is therefore the face problem itself (the Λ row of the atom table), not a

@@ -2184,6 +2184,18 @@ out remain:
 
 An Opus fresh look on exactly this question is running (`rip/wide/FRESH_LOOK.md`).
 
+**Product designs, formally [Lean: `lean/arvi_rip/TensorAmplify.lean`].**
+- `tensor_ge_amplified`: pairing the rows with other data, x_z ⊗ y_z, and detecting with a ⊗ e is amplification
+  by w_z = ⟨e, y_z⟩.
+- What is new is only the certificate. Gershgorin for the product needs pointwise coherence μ_xμ_y on pairs
+  inside W.
+- With square-root pointwise coherence of both factors, this rule would beat the K-wall. At δ = 0.45 the
+  exponent is (1 − 2δ)(1 − δ) ≈ 0.05 against the closure's 1/6.
+- Unconditionally, Burgess gives μ_x = B^{−1/8} for the plain sums at L = B, and nothing pointwise is known for
+  short prime slots.
+- So for product designs, the "bounded coherence" half is the binding input: a coherence bound for pairs inside
+  the selected set.
+
 ## 2026-10-30 · Plain eighth moment: proof strategies (fresh look; agent-derived, not formal)
 
 Source: `rip/eighth/STRATEGIES.md`, with `strat_exponents.py` and `strat_tail.py`. Target: Σ_z|X₁X₂|⁴ ≪ Z^{1+2η}N²

@@ -688,3 +688,40 @@ carry the new gate, which is a large Lean project. Payoff scale: the physical sl
 - **Conclusion.** A face past Λ = 2 needs K < 1/2 or κ(1/2) > 0.902 (both a square-root-barrier problem), and in
   addition a relaxed reference (target 2). A sub-2 face from outside Sil's framework (a new face-proving method)
   remains open and unpriced. [Face thread: double wall within the framework]
+
+## 2026-10-30 · Fresh look (second run): the count is a two-fibre game; the architecture limit is 0.87338197
+
+**Report [numerical, LP model validated against N/J to 8e-10; agent scratch `fresh3/`, re-checked where cited].**
+- **The count is a max–min game with two binding fibres.** It is F1 = (r, m) = (0.753, 0.376), where inverse equals
+  plain, against the long fibre F2 = (t, 0), at one cutoff t* = 1.129 (δ* = 0.426 at the banked design). The LP dual
+  weights are inverse 0.50, plain 0.25 and long 0.26.
+- **The binding point is forced.** Edge slacks are oldSmall 0.11, oldSwitch 7.9e-3, newSwitch 1.2e-2 and
+  newTop 5.6e-8; the windows lose nothing. Correction to 2026-10-30 "binding": θ*(h) has an interior minimum at
+  h ≈ 0.8097 (0.87338197); no other edge binds there.
+- **The architecture limit is 0.87338197–0.87338228**, i.e. −2.97e-5. It needs h = 0.8097, the `BoundsN` h-box
+  widened, `floor_margin` 1/200 → ≤ 1/1000, and the line to Λ = 2.0001. The bar is still 2.0e-5 below it.
+- **Single atoms that would reach the bar from the architecture limit:**
+
+  | atom | now | needed |
+  |---|---|---|
+  | long slope | 5/6 | 0.83280 (−0.064%) |
+  | slot cost in the inverse word | 2 | 1.9882 |
+  | Λ in the count face alone | 2 | 1.9767 |
+  | Λ in the count and physical faces | 2 | ≈ 1.987 |
+  | p_max | 1/2 | 0.4934 |
+  | fibre margin κ (r + m ≥ t + κ, or r ≤ t − κ) | 0 | 0.00147 |
+
+**Assessment [Lean, read; derived].**
+- **p_max = 1/2 is sharp.** The slot amplitude cap q ≤ δ/2 is the zero's own explicit-formula contribution
+  D^{a−1/2} (E3). No tightening without more zeros. [dead]
+- **Multi-cutoff decoupling (the agent's lead 1) is weak.** Each witness at cutoff t is a pair of saturated blocks
+  at one frequency: an inverse (Möbius) block with r ∈ [t − 1/2, t] and a plain block with m ∈ [0, 1/2], r + m ≥ t
+  (`Hecke/DetectorRawFiber`, `DetectorSupportedWitness.fiber_lengths`). At two cutoffs the inverse blocks lie on
+  different dyadic ranges of the Möbius sum, so nothing forces a correlation. With independent witnesses
+  min(V(t₁), V(t₂)) ≥ V(t*). [weak; not pursued]
+- **Long slope.** −0.064% is tiny, but the needed gain sits at the length barrier of the long Möbius moment (a power
+  beyond H ≈ D for Möbius twisted by sextic symbols). That is classical (twisted Chowla). [hard]
+- **The slot cost 2 also appears in the inverse word.** `Moments.inverse_marked` needs r + 2Σw < 1 and
+  2r + 8Σw < 3. These come from OpenAI's `InverseMarkedReferenceFiberEnergy.fiber_reference_energy`, not from
+  Sil's reference. The ideal cost is 1, and 1.9882 would reach the bar with the banked engineering. **Next: trace
+  this 2.**

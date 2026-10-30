@@ -1297,3 +1297,20 @@ The two exchange rates are intrinsic:
 ‖(χ_z(I))_{z∈W, N(I)≤B}‖² ≤ B^{1+o(1)} for W the large-value set of a prime polynomial at slope δ < 1/2. That is
 Guth–Maynard's problem (the top singular value of the restricted matrix) for the thin sextic family, exactly at
 the self-dual point of the reflection. [barrier proved; target restated]
+
+**Why Guth–Maynard does not transfer as is [read; GM arXiv 2405.20552 §2, §4–7; derived].**
+- GM bound the top singular value of M_{t,n} = n^{it} on a large-value set through tr((M*M)³). They then apply
+  Poisson to the kernel Σ_{n~N} n^{i(t−t′)}. That kernel has conductor |t − t′| ≤ T, so near GM's critical length
+  N = T^{1/(1+δ)} its dual has length T/N = N^δ, which is short. The rest of the argument (the transform R on the
+  dual, the energy of W, equidistribution over affine maps) lives on that short dual.
+- Chen–Gupta–Li (all characters to one modulus q) have the same feature: χχ̄′ is again a character mod q, so the
+  kernel conductor equals the family size.
+- In our thin sextic family the kernel Σ_{N(I)≤B} χ_z(I)·conj(χ_{z′}(I)) = Σ_I (I/zz′⁵)₆ has conductor
+  N(zz′) ≈ B², because the moduli multiply. At the balanced length L = B it sits exactly at its self-dual point,
+  and Poisson returns a dual of length B.
+- So the sextic analogue of GM at the K-wall is GM at the self-dual point of the kernel. GM's own theorem at
+  T = N² improves the classical N^{3/2} only to N^{7/5} at V = N^{3/4}, and that already uses the t-aspect's
+  additive structure (differences of frequencies), which a family of varying moduli lacks.
+- **Verdict.** The K-wall needs a large-values idea for thin families of varying moduli. That is beyond GM and
+  Chen–Gupta–Li; it is the same "conductors multiply" obstruction that makes the thin family's large sieve stop
+  at √. [open; recorded as the precise form of the faces' second wall]

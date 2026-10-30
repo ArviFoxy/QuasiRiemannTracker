@@ -1737,3 +1737,46 @@ arithmetic itself.
    theorem: i.i.d. Steinhaus rows conditioned on a slot statistic have selected norm at the fixed point.
 2. Look for an arithmetic family whose rows *are* independent at the needed scale, for example rows indexed
    by products over disjoint prime sets, where CRT is exact. Price whether the faces can run on such a family.
+
+## 2026-10-30 · Fresh look 2: new-math directions for −3e-4, and three pricing rules
+
+Report and models: `fresh-look/second/` (`directions.md`; `models/` and `base_models/` run in place). All prices
+come from the float model of the newTop row, which reproduces #97 and the bank [numerical, first order].
+
+**Ranked directions [conjecture; prices numerical].**
+
+| rank | direction | −3e-4 needs | −5e-5 needs |
+|---|---|---|---|
+| D1 | a face proved outside Sil's packing: the twisted fourth moment Σ_z\|X₁X₂Q\|² with a zero-forced prime pool Q, diagonal at prime cost Λ | Λ ≤ 1.82 (5/3: −4.9e-4) | Λ ≤ 1.97 |
+| D2 | P1 in its weakest form: a power saving K^{−η₀} in (X) for *fixed* P ≠ P′ (a moment with no main term), giving the joint extension e | η₀ ≈ 0.01 (e ≈ 2.4e-3) | η₀ ≈ 7e-4 |
+| D4 | sixth moment of the thin family: window ε₆ or packet μ₆ (thin families have no forced congruence N-term) | ε₆ ≈ 0.10 / μ₆ ≤ 1.144 | 0.115 / 1.152 |
+| D3 | sub-√ joint count | slope 0.33 | 0.41 |
+| D5–D7 | zero-configuration rigidity; B2 via theta; function-field laboratory | — | — |
+
+**Pricing rules [numerical].**
+- **R1.** The landscape is flat from δ* = 0.453 to 0.5. A count theorem valid only below slot slope 1/2 is worth
+  at most −7.6e-5, unless it is paired with PR 93's DH-strength joint count J = 1 − ν above 1/2 (in the library,
+  unused today), which restores the full −3e-4 for ΔR = 0.0024. "Just below 1/2" is worth nothing in the count.
+- **R2.** The binding is a corner in the amplitude class p. A count drop for p ≥ p₀ is worth ≈ 4.1e-3·(1/2 − p₀),
+  but the corner's adversary is round 10's: near-critical frequencies above the slot band keep the slots saturated
+  while the Möbius blocks go unsaturated.
+- **R3.** The e-lever is about 5× weaker at the selected-leaf binding than in `newpowers/R3_return.md`.
+
+**Lead's evaluation [derived].**
+- **D1 is the K-wall corner seen from the moment side.** The journal entry "K-wall corner as a slot-cost statement"
+  already found that a structured face with prime slots costing Λ < 2 makes the selected norm unnecessary there.
+  D1 adds two things:
+  - the claim that a direct theorem avoids both of Sil's walls (they belong to the inductive native step, not to
+    the moment);
+  - a concrete reduction: Davenport–Hasse with the quadratic character turns sextic Gauss sums at primes into
+    conjugate cubic ones times a Hecke-character factor, where Heath-Brown–Patterson and Dunn–Radziwiłł dispersion
+    apply.
+
+  The crux is the risk the report names: dispersion in the prime pool must be done *before* the smooth factors
+  are reflected, or the pool's N(P)² conductor reopens the dead zone (natural face 6κ ≈ 4.5). So D1 is target 0
+  plus target 1 of the frontier, with an explicit order of operations to test. Adopted as the main new-math line
+  next to the RIP program.
+- D2 and D4 have cheap numerical first steps that were never run: single cross-correlations at fixed indices, and
+  the packet sixth moment. Delegated to numerics.
+- Recorded as dead or capped: random slot sub-selection (Jensen; same as RIP (3)), pointwise higher-Hölder per-row
+  bounds, and decorrelating bad rows from the packet.

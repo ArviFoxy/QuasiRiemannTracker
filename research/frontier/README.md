@@ -86,7 +86,11 @@ Computed with `worth.py` and `density_past2.py`, the float model of the newTop r
    count with κ(1/2) > 0.902. The count-side version is beyond Guth–Maynard, but the leaf needs a different
    inequality, and it has not been priced.
 3. **A face-proving method outside Sil's packing.** Selected rows already reach the ideal face (PR 93's selected
-   norm); the loss sits on unselected rows. Unpriced.
+   norm); the loss sits on unselected rows. At the binding the slot slope is 2pδ ≈ 0.43 < 1/2, so every binding
+   row is unselected. This target is therefore the face problem itself (the Λ row of the atom table), not a
+   separate lever.
+
+Write-up of target 0's mechanism: `DR_PRIME_SIEVE.md`.
 
 ## P1 route (2026-10-30)
 

@@ -2001,3 +2001,25 @@ technology:
   - the K-wall dilution;
   - a dispersion in which the plain sums are reflected before Cauchy–Schwarz (D–R §9-style, with the
     plain-variable theta main terms subtracted).
+
+## 2026-10-30 · D1 dispersion in Lean, and the plain eighth moment is numerically Lindelöf
+
+**Lean [built; `lean/arvi_primeface/Dispersion.lean`, standard axioms, ≈ 8 s].**
+- `dispersion`: for row weights b ≥ 0, a pool Q = Σ_P a_Pψ_P with unimodular ψ_P, and a large sieve over the
+  twists ψ_P conj ψ_{P′} (P ≠ P′) with constant Δ:
+  Σ_z b|Q|² ≤ ‖a‖²·(Σ_z b + √(Δ Σ_z b²)).
+- The proof: expansion (`pool_expand`); the diagonal equals Σ b by unimodularity; the off-diagonal by
+  Cauchy–Schwarz over the pairs and the large-sieve hypothesis.
+- For D1, b = Φ|A|² and Δ ≪ Z + P₀⁴ (Huxley over Q(ω), classical, left as a hypothesis).
+
+**Numerics [`rip/eighth/`].**
+- κ₈ = mean|X₁X₂|⁴/(mean|X₁X₂|²)² is 5–7.4 for μ = 0.6–1.0 and B = 3·10⁴ … 3·10⁵, against N-term sizes up to 10⁶.
+- It grows slowly with B, below the random multiplicative model past μ ≈ 0.8.
+
+**Consequence [derived].** D1 now rests on exactly two inputs:
+- Huxley's large sieve (classical);
+- the plain eighth moment Σ_z|X₁X₂|⁴ ≪ Z^{1+ε}‖c‖⁴ for total length ≤ Z (numerically true; open).
+
+The face would then be diagonal for every pool with P₀⁴ ≤ Z and no face condition, worth more than the
+Λ = 5/3 price (−4.9e-4). The eighth moment is the same kind of statement as D4: Lindelöf on average for plain
+products past the row count in a thin family, where the general sextic sieve loses Z^{0.88}.

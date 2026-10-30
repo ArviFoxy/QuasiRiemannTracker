@@ -1,0 +1,15 @@
+B=30000 R=8474 sources=186 (0.8s)
+  B=30000 mu=0.60  (N1N2)^2/R=27.8  kappa8 act=4.954  mult=4.766±0.144  ratio=1.039
+  B=30000 mu=0.80  (N1N2)^2/R=1719.1  kappa8 act=5.588  mult=5.871±0.164  ratio=0.952
+  B=30000 mu=0.93  (N1N2)^2/R=25081.7  kappa8 act=6.058  mult=7.498±0.426  ratio=0.808
+  B=30000 mu=1.00  (N1N2)^2/R=106207.2  kappa8 act=6.021  mult=7.591±0.578  ratio=0.793
+B=100000 R=28210 sources=342 (3.3s)
+  B=100000 mu=0.60  (N1N2)^2/R=35.4  kappa8 act=5.178  mult=5.368±0.226  ratio=0.965
+  B=100000 mu=0.80  (N1N2)^2/R=3544.8  kappa8 act=6.695  mult=6.992±0.293  ratio=0.958
+  B=100000 mu=0.93  (N1N2)^2/R=70728.9  kappa8 act=6.756  mult=7.882±0.271  ratio=0.857
+  B=100000 mu=1.00  (N1N2)^2/R=354484.2  kappa8 act=6.156  mult=8.631±0.478  ratio=0.713
+B=300000 R=84672 sources=596 (13.2s)
+  B=300000 mu=0.60  (N1N2)^2/R=44.1  kappa8 act=5.784  mult=5.891±0.097  ratio=0.982
+  B=300000 mu=0.80  (N1N2)^2/R=6849.4  kappa8 act=6.753  mult=7.500±0.095  ratio=0.900
+  B=300000 mu=0.93  (N1N2)^2/R=181846.8  kappa8 act=7.444  mult=9.009±0.282  ratio=0.826
+  B=300000 mu=1.00  (N1N2)^2/R=1062925.2  kappa8 act=7.121  mult=10.301±0.523  ratio=0.691

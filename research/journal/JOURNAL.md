@@ -360,3 +360,57 @@ needs the row-growth bound below Re w = 1/2.
   `globalKubotaKernel`).
 - Idea: a simplified two-slot probe at a modest target (B ≈ 0.86–0.87) might close with classical inputs only.
   Analyses running: the constraint system with classical inputs, and the Lean inventory.
+
+## 2026-10-30 · What #96 can teach us (T96)
+
+**Question.** Can the two-slot sextic–cubic probe of #96 (paper claim 0.8392, no Lean) give a Lean-verified bound
+below 0.87336 with less than the whole paper?
+
+**Constraint system [numerical, re-derived; `pr96/CONSTRAINTS.md`].**
+- It reproduces the paper's binding numbers exactly (x* = 940749/4e6, E = 313583/4e6) and the ladder of the paper's
+  own ablation script.
+- Closing points at the paper's geometry:
+
+  | estimate | closes at |
+  |---|---|
+  | true-size row | .770 |
+  | remainder (D) | .784 |
+  | direct row | .799 |
+  | Poisson rows | ≈ .800 |
+  | e = 1 cells | .804 |
+  | copy cells (needs a half-plane ≤ .8924 for four L-functions mod 12; OpenAI's 7/8 suffices) | .822 |
+  | square-factor tail | .839, the only one that binds |
+
+- The tail with weaker inputs:
+
+  | inputs | B |
+  |---|---|
+  | de Faveri's sieve and its chart only | **.8791** |
+  | + Voronoi chart dpx | .8656 |
+  | + graded inverse theorem GS1 | .8652 |
+  | + both | .8547 |
+  | + block sieve and r1ext (the paper) | .8392 |
+
+- Without the structural theorems the Patterson part only gives B = 1. These are the non-polar vanishing (via the
+  Weyl element of the twisted cubic series), the K-chart, the tree form, cube-full absorption, and the layer and
+  non-core calculus. The non-polar vanishing is indispensable.
+
+**Lean inventory [read; `pr96/LEAN_INVENTORY.md`].**
+- Available:
+  - the criterion with free θ (Collet);
+  - sextic and cubic Poisson over Z[ω], symbols, reciprocity and Gauss sums;
+  - the cubic, quadratic and hybrid sieves, and a sextic sieve at de Faveri strength (Sil, in #76);
+  - partial cubic Kubota theory (residual function automorphy, Patterson's coefficients).
+- Missing:
+  - the whole probe layer (OpenAI's one-slot analogue is ≈ 264k lines);
+  - Hecke characters with ∞-type for the angular twist;
+  - the cubic-slot Voronoi split;
+  - zero-density estimates.
+
+**Verdict.**
+- There is no cheap transplant into our architecture. Our binding sits in the return's count, at the square-root
+  barrier and the slot-cost-2 wall, where #96's tools do not act.
+- A Lean version of #96 below 0.8733 needs most of its new mathematics (structural machinery plus dpx or GS1) on top
+  of a new probe layer: a multi-month formalization, and only if the paper is right.
+- Standalone pieces could be formalized as verification of the paper with no θ gain yet: GS1 (the graded inverse
+  theorem, a self-contained large-sieve statement) and the non-polar vanishing.

@@ -2326,6 +2326,8 @@ diagonal-unitary step, not the Poisson/reciprocity factorization.
 - *Products* never beat plain Gershgorin. With the detection cap |W|w² ≤ 1 + mμ_y,
   U_prod = (1 + mμ_xμ_y)/w² ≥ (m + 1)(1 + mμ_xμ_y)/(1 + mμ_y) ≥ 1 + mμ_x = U_plain, since the middle term decreases in
   μ_y. This sharpens `TensorAmplify`: the coherence that matters is the rows' own, inside W.
+  [Lean: `lean/arvi_rip/ProductCertificate.lean`, `product_certificate_ge_plain`, with the detection cap from
+  `bessel_of_gershgorin`.]
 - *Row Gauss sums.* After Poisson in the moduli, the pair phase is g̃(z)·conj g̃(z′) times a reciprocity sign
   s(z, z′) (Hilbert symbols at 2 and 3, so O(1) classes). The g̃(z) form a diagonal unitary, which changes no
   restricted norm and no spectral moment on W. So Gauss sums add no randomness, and at L ≈ B the off-diagonal Gram

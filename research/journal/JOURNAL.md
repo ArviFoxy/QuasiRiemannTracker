@@ -1261,3 +1261,39 @@ whole frontier.
   - slot cost ≈ 1.984 in all three places, or
   - long slope ≈ 0.8226.
 - Until it merges, the bar measured from #97 stays at 0.87336198.
+
+## 2026-10-30 · The K ≥ 1/2 wall is a closure property of amplify-and-reflect [Lean, built]
+
+**Question.** Is the faces' second wall (selected leaf only at K > 1/2) an artefact of PR 93's weak start L + B²?
+The baseline also has the optimal sextic sieve Θ₆ (Sil's `SieveOptimal`, de Faveri's Θ_n).
+
+**Numerics [numerical; `$SCRATCH/kwall/closure.py`].** Closure of the three rules on a grid in log_B scale. A is
+amplification at slope δ; R is reflection n(x) ≤ max(x, x − 1 + n(2 − x)).
+
+| δ | start | n(0) | n(1) |
+|---|---|---|---|
+| 0.45 | L + B² | 1.100 | 1.550 |
+| 0.45 | Θ₆ | 0.717 | 1.167 |
+| 0.495 | L + B² | 1.010 | 1.505 |
+| 0.495 | Θ₆ | 0.672 | 1.167 |
+| 0.51 | either | 0.4905 | 1.0005 |
+
+The fixed point is n(0) = 1 − δ, n(1) = 1. Θ₆ cuts the loss below 1/2 from a full factor B to B^{1/6}, but it
+does not remove it. The jump at δ = 1/2 stays.
+
+**Theorem [Lean, built; `lean/arvi_kwall/Closure.lean`].**
+- For 1/3 ≤ δ < 1/2, the function n*(x) = max(x, 7/6 + δ(x − 1) + (1 − 2δ)·max(x − 1, 0)) obeys all three rules
+  and has n*(1) = 7/6 (`nstar_rules`).
+- Hence no proof from the rules gets below B^{7/6} at the balanced point (`no_balanced_bound_below`). The fixed
+  point is not derivable (`fixed_point_not_derivable`).
+- Axioms: propext, Classical.choice, Quot.sound.
+
+**Mechanism.** One amplify–reflect cycle 1 → y → 2 − y → 1 changes the balanced-point bound by (1 − 2δ)(y − 1).
+The two exchange rates are intrinsic:
+- amplification gains δ per unit of width, by the definition of selection;
+- reflection costs 1 per unit, the √(length ratio) of Poisson.
+
+**Consequence.** The K-wall needs a direct estimate on the selected rows at L = B. In operator-norm form:
+‖(χ_z(I))_{z∈W, N(I)≤B}‖² ≤ B^{1+o(1)} for W the large-value set of a prime polynomial at slope δ < 1/2. That is
+Guth–Maynard's problem (the top singular value of the restricted matrix) for the thin sextic family, exactly at
+the self-dual point of the reflection. [barrier proved; target restated]

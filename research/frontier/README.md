@@ -68,6 +68,35 @@ Computed with `worth.py` and `density_past2.py`, the float model of the newTop r
 | p_max | 1/2 | 0.4934 | sharp |
 | fibre margin | 0 | 0.00147 | no correlation between cutoffs is forced |
 
+## The master conjecture (2026-10-30, night): one statement behind every new-math route
+
+**(MC) Structured sextic sieve.** In the thin sextic family over Z[ω] (rows z, N(z) ~ Z), vectors built from
+theta-uncorrelated factors (plain sums, prime pools with non-Patterson phases, and their products) are
+*generic*: their large-sieve energies sit at the diagonal (Lindelöf on average, no N-term). The Gauss-bias excess
+of the general sextic sieve lives only on the theta-type span.
+
+| route | what it needs from (MC) | reduction | numerics |
+|---|---|---|---|
+| K-wall (faces' K ≥ 1/2) | dilution of the selected norm on slot-selected rows of slope ≤ 1/2 | `lean/arvi_kwall/Dilution.lean` | Gram is Marchenko–Pastur; slot-selected rows look random (RIP (2)) |
+| D1, prime-pool face, row splitting | the same dilution; PR 93 covers slope > 1/2 at Λ = 1 | `lean/arvi_primeface/RowSplit.lean` | F/D = 1.00 ± 0.02 past both face lines; worst case Λ ≤ 1.07 (`rip/prime_pool/`) |
+| D1, dispersion | the plain **eighth** moment Σ\|X₁X₂\|⁴ ≪ Z^{1+ε}‖c‖⁴ at total length ≤ Z; Huxley's large sieve over the twists (classical) | `lean/arvi_primeface/Dispersion.lean` | κ₈ = 5–7.4 against N-term sizes up to 10⁶ (`rip/eighth/`) |
+| D4, sixth moment | plain sixth moment past the row count | – | M₆ = O(1) up to N³/R = 10⁷ (`rip/moments_probe/`) |
+| D2, P1's weakest form | fixed-index cross-correlations of twisted theta columns | – | decay K^{−1/2} (`rip/moments_probe/`) |
+
+- **Known cases:**
+  - quadratic family, all vectors (Heath-Brown);
+  - cubic family, prime vectors up to A^{3/5} (Dunn–Radziwiłł);
+  - thin cubic and quartic families, character-sum moments, under GRH only (Gao–Zhao, arXiv 2508.14534).
+- **Not available to us:** the bootstrap's half-plane does not replace GRH (it loses N^{0.75k}).
+- **Structural leads:**
+  - Davenport–Hasse makes sextic Gauss sums at squarefree arguments conjugate cubic ones times Hecke factors
+    (`lean/arvi_primeface/Duplication.lean`).
+  - In physical space χ₆ = χ₂·χ̄₃, so the sextic dictionary is the Hadamard product of the quadratic dictionary
+    (Heath-Brown: diagonal for all vectors) and the conjugate cubic one. The product family over pairs (z, z′) is
+    diagonal, and the sextic family is its diagonal: a thin-subset (RIP) question again.
+- **The truth is far from every wall; the obstruction is proof.** The cleanest single target is the plain eighth
+  moment: with Huxley it gives the prime-pool face with no face condition at all.
+
 ## Fresh look 2 (2026-10-30, late): the leading new-math line
 
 - **D1, a face proved outside Sil's packing** (`../fresh-look/second/directions.md`). The target: the twisted

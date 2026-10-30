@@ -1314,3 +1314,43 @@ the self-dual point of the reflection. [barrier proved; target restated]
 - **Verdict.** The K-wall needs a large-values idea for thin families of varying moduli. That is beyond GM and
   Chen–Gupta–Li; it is the same "conductors multiply" obstruction that makes the thin family's large sieve stop
   at √. [open; recorded as the precise form of the faces' second wall]
+
+## 2026-10-30 · One shape for all three walls: non-concentration at a self-dual point
+
+**Common form [derived].** Each remaining wall asks that a structured vector put only a power-small share of its
+mass on a structured subspace, exactly where a Poisson map is an involution (so positivity on either side returns
+the trivial bound).
+
+| wall | vector | subspace | self-dual map |
+|---|---|---|---|
+| P1 / (X) | slot-summed theta g̃·A (length N = KL) | span of the K quadratic characters | quadratic Poisson in k (K ↔ N²/K), factor exactly 1 since N = KL |
+| B2 (via deletion) | μ on n ~ D | span of the H sextic characters of the complete family, H = D^{1−c′} | Poisson in w at H = D |
+| faces' K-wall | sources of length B | selected rows' characters | the kernel Σ_I (I/zz′⁵)₆ at length B, conductor B² |
+
+- In P1 the quadratic step is an isometry up to the factor N (every vector v has ‖Φ*v‖² ≈ N‖v‖², because the K
+  rows are nearly orthogonal with N > K). So all room must come from the cubic step: the residual of c_P
+  (c_P = conj(g̃)·Φ*S_P, minus its (·/P)₃ part) must put at most L^{−2η} of its mass on the slot span
+  {(·/P′)₃}.
+- In B2, for the complete family below the self-dual point, the D-term of the large sieve is reached only by
+  character-like vectors (a = conj(χ_{w₀})). For generic vectors the rank argument gives the diagonal HD: Φ is
+  H × D of rank H with flat spectrum. The Poisson dual's own diagonal D² is not a lower bound, since the dual
+  off-diagonal cancels it for random vectors. So "Möbius is not character-like in mean square" is exactly the
+  missing statement (twisted Chowla).
+- The needed c′ is tiny: c′ = 6.4e-4 for the #97 bar and 0.0138 for the #98 bar (long slope 5(1 − c′)/6).
+
+**Tools that work at self-dual points, and why none applies yet [read; web; derived].**
+- *Spectral (Kuznetsov).* For the cubic cover of GL(2) over Q(ω) a Kuznetsov formula exists: Livné–Patterson,
+  extended by Louvel. Dunn (arXiv 2403.13151, ANT 2025) uses it for prime sums of a fixed cubic cusp form past the
+  2/3 bottleneck. The theta functions are the exceptional spectrum, and they carry the Patterson bias.
+  - P1 mixes quadratic rows with cubic theta coefficients, so it lives on the 6-fold cover. There the sextic theta
+    coefficients are only partly known (Bröker–Hoffstein, arXiv 1312.0568).
+  - The Chinta–Friedberg–Hoffstein conjecture ties squared sextic theta coefficients to cubic Gauss sums.
+  - No spectral large sieve for the 6-fold cover is available.
+- *Multiple Dirichlet series.* The Kubota series is GL(2)-like (two Γ-factors). The second moment of its quadratic
+  twists is therefore of affine type D̃4, whose group is infinite, so the series has only partial continuation.
+  Even for GL(2) quadratic twists, unconditional results give only log savings (Li, Invent. 2024); the power-saving
+  asymptotics of Soundararajan–Young assume GRH.
+- *Dispersion (Dunn–Radziwiłł).* It works for prime vectors at the cubic family's balanced range, but not past the
+  family size (P1, B2).
+- **Verdict.** Each wall needs a power saving at a self-dual point for a structured vector. No 2026 tool supplies
+  one in the metaplectic (cubic/sextic) setting. [open; the three walls are one problem in three costumes]

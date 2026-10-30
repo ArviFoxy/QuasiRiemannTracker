@@ -1120,3 +1120,12 @@ needs 2pδ > 1/2, while the binding has 2pδ ≈ 0.43. No library-only lever rem
 **Upstream [read; git].** PR #97 (arvi-selected-leaf, θ = 43670599/50000000 = 0.87341198) is **merged** into
 GTimG/QuasiRiemannTracker main as merge commit e02df3d2 (2026-10-30 08:47 +0100). There are no PRs past #97. The
 standing record is therefore ours, and the next bar is unchanged at θ ≤ 0.87336198.
+
+**Open question noted [read; `JointDetector/SelectedNormIteration.lean`].**
+- PR 93's reflection step (`squarefree_family_all_to_long`) turns an all-source selected-norm bound
+  K(Y + B^q Y^δ) into a long-source exponent q + 2δ − 1. The contraction (1 − δ)/δ < 1 then needs δ > 1/2.
+- Heuristically, amplifying by a slot helps only while the amplified length stays in the sieve's diagonal regime,
+  and for general sextic vectors that regime stops at √U. If the 1/2 in the contraction is that √-threshold, a
+  sieve past √ for the amplified vector would also lower the faces' second wall (K ≥ 1/2).
+- But the amplified vector is F·S (general × prime), not purely prime, so DR_PRIME_SIEVE does not apply as stated.
+  [hypothesis, unpriced]

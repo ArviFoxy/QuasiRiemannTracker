@@ -446,3 +446,19 @@ cancel exactly.
   At M6 = 1.1 it would be worth about −2.6e-3.
 - The plain sextic sieve gives M6 ≈ 1.75 (S of length U^0.567). So it needs a new face family for cubes of the row
   polynomial. **Open problem (new math).**
+
+**Smaller checks [numerical / read].**
+- Physical cap raised to the face's cap 13399/100000 (capP branch): the exact pipeline fails even at the bottom of the
+  search window. The capP guards need the smaller cap. [dead]
+- Upstream #97 is our selected-leaf PR, now open.
+- Upstream #95 (Bebel, 0.87383570): a large generated set of source chains (restart, curved, adaptive) and six
+  return variants for the density-chain architecture. Its κ-feedback is the one our return already has. No ingredient
+  adds to the selected-leaf line. [no transplant]
+
+**State of the next bar (θ ≤ 0.87336198).**
+- Library and engineering levers top out at −2.83e-5: transport box to h = 0.81 plus the line to 2001/1000.
+- The remaining ≥ 2.2e-5 needs new mathematics. Candidates, in order of quantified payoff:
+  1. A large-values bound for the sextic row family below the N^(3/4) threshold, strong enough to put PR 93's joint
+     count below 0.606 at ν = 0.452 (ideal: 0.548, i.e. up to Δcount −0.055).
+  2. The B1/B2 bottlenecks of the baseline's count: no known approach.
+  3. A switch to the #96 architecture: multi-month formalization.

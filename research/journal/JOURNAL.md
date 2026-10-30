@@ -1129,3 +1129,21 @@ standing record is therefore ours, and the next bar is unchanged at θ ≤ 0.873
   sieve past √ for the amplified vector would also lower the faces' second wall (K ≥ 1/2).
 - But the amplified vector is F·S (general × prime), not purely prime, so DR_PRIME_SIEVE does not apply as stated.
   [hypothesis, unpriced]
+
+## 2026-10-30 · #96's K-chart is the nearest tool to P1 [read; #96 paper ch. 6 §"The K-chart", Thm dpx, Prop dpx]
+
+- **#96 already does "subtract the bias".** Its cubic slot vector is split exactly, by a Voronoi formula, as
+  u₂ = u_P + u_D: the Patterson part carries the residues (the θ-bias) and the remainder goes to the sextic and
+  cubic sieves. The Patterson part's square-factor tail is #96's binding estimate.
+- **The K-chart (its "dpx", worth 0.8791 → 0.8656 in #96's own tail model).** One Cauchy–Schwarz between two
+  factors:
+  1. the slot factor on the sparse family {e²a′}, by Poisson in a′ followed by "twisted Lindelöf on average" for
+     Hecke L-values, Σ_{N(ν)≤H}|L(½ + ε + it, ψξ_ν)|² ≪ Δ₆(H, (HE)^{1/2}) (approximate functional equation plus de
+     Faveri's sixth-order sieve);
+  2. the K-factor: the functional equation of the cubic Kubota series at index e² turns a quadratically twisted
+     cubic Kubota sum into one of dual length R_e = H′/E², and then the quadratic large sieve (Goldmakher–Louvel)
+     applies.
+- **Relevance.** P1's columns g̃(n)(n/P)₃‾ against rows χ_k are quadratic twists of cubic Kubota sums at index P.
+  The K-chart's second factor is exactly the move P1 lacks: shorten the long n-sum (N = KL > K) by the Kubota
+  functional equation before using the quadratic sieve. Passed to the P1 deep-dive agent to evaluate.
+- Caveat: #96 is an unrefereed preprint, and the K-chart lives in its two-slot architecture.

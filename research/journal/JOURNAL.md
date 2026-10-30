@@ -1068,3 +1068,15 @@ large sieves: Dunn–Radziwiłł for the faces' prime slots (target 0) and a θ-
 - **Target 0 alone is worth ≈ 0.** The faces stop at 6KB/(1 + K) → 2B anyway (journal: "target 2 alone moves the
   native end only from 2.005 to about 2.003"). So the cheapest single route to the bar is still P1 (inverse word
   alone at 1.9882).
+
+**Where D–R's GRH really bites [read; de Faveri–Dunn–Hoffstein arXiv 2607.07911 §2.2].**
+- In D–R Theorem 1.4 (the *lower* bound), GRH rules out poles of ψ^{(3)}(a, s) coming from zeros of ζ_K(3s − 2)
+  when the contour moves to Re s ≥ 5/6 + ε.
+- Under the bootstrap's half-plane (zeros of ζ_K only at Re ≤ 7/8), that contour could only reach
+  Re s > (2 + 7/8)/3 ≈ 0.958, which would ruin an asymptotic with main term U^{5/6}.
+- Our chain (Prop 8.1 → Prop 9.2, upper bounds only) meets ζ_K only through the Möbius sum over c in (8.2), which
+  is bounded directly, and through the exact Voronoi formula (Prop 5.3); I found no ψ^{(3)} contour shift in that
+  chain. [to double-check line by line before relying on it]
+- dFDH's own unconditional input (2.9) is Lindelöf on average in the twist, Σ_{N(a)≤A}|ψ^{(3)}(a, 1 + ε + it)|² ≪
+  A^{1+ε}(1 + |t|)^R, via Zagier-regularized Rankin–Selberg. That is a candidate tool for P1's single-mark piece
+  (twisted theta central values on average). [not yet examined]

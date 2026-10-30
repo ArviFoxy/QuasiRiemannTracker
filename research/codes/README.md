@@ -1,6 +1,6 @@
 # Codes and radar sequences (D7)
 
-- `radar_sequences.md`: treatise, with evidence tags [T]/[D]/[F]/[O]/[U] (a Sonnet agent, task 154).
+- `radar_sequences.md`: treatise, with evidence tags [T]/[D]/[F]/[O]/[U] (an agent, task 154).
 - `sources.md`: 70 sources, each marked with how much of it was read.
 
 ## Lead's verification (2026-10-29)

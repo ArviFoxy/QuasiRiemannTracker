@@ -59,7 +59,7 @@ phases 1–5). The branch keeps the history; nothing more goes into it.
 **Decision gate after B:** if a lever worth ≥ 1.05e-5 on top of track A is provable, implement it
 (track C) together with A; otherwise report the best reachable value and stop before Lean work beyond A1.
 
-**Track A — engineering (needed in every scenario that reaches the bar; Sonnet implements):**
+**Track A — engineering (needed in every scenario that reaches the bar; an agent implements):**
 - **A1 step generator.** A Python generator for density-step certificate files in PR 86's format
   (`Source/HybridK15_NN.lean`: every gate of `HybridGates` cleared to a polynomial ratio, exact-rational
   Bernstein boxes), validated by regenerating PR 86's steps; floor as a parameter.
@@ -75,8 +75,8 @@ phases 1–5). The branch keeps the history; nothing more goes into it.
   (`sil-density-split-20261026`, PR 86's id), metadata fields only as allowed; admission budget 12 h
   replay, 30 min per module, 24 GiB. Rewrite `mixed-step/package/make_submission.py` accordingly.
 
-**Execution.** Analysis and research: Sonnet/Haiku agents, reports into this folder. Implementation:
-one Sonnet agent per item with a written brief; one Lean process at a time; I review, integrate and
+**Execution.** Analysis and research: agents, reports into this folder. Implementation:
+one agent per item with a written brief; one Lean process at a time; I review, integrate and
 commit. No PR without Arvi's OK.
 
 ## 4. Results of track B (2026-10-28)

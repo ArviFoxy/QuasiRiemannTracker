@@ -265,3 +265,48 @@ E5 face at Λ = 101/50, against the merged 0.87387234.
 - The final theorem no longer needs the density chain, a large cut of the import closure.
 
 The Lean retune and the line extension are in progress.
+
+## 2026-10-30 · The selected-leaf PR, and where the next 5e-5 must come from
+
+**PR [Lean, standard axioms].** arvi-selected-leaf proves β ≤ 43670599/50000000 = 0.87341198, 4.60e-4 below #94.
+The final theorem imports no density chain (4486 modules in the closure). Branch `submission-arvi-selected-leaf` on
+the fork; body `selected-leaf/PR_BODY.md`, figure `selected-leaf/faces.png`. Next bar: **θ ≤ 0.87336198**.
+
+**Binding [numerical, exact mirror].**
+- The binding point is the newTop edge, uncapped count branch, at δ* ≈ 0.452, p = 1/2.
+- A drop of E by ΔE at fixed θ moves θ by about 0.2 ΔE.
+- The count v ≈ 0.602 balances three constraints [derived]:
+  - inverse 1 − δ(x + (1−x)r);
+  - face plain 1 − 2δm − 2δx(B − 2m)/Λ;
+  - long 1 − δ + (5/6 − δ)(t − 1).
+- So dv = −0.48 Δ_inverse − 0.28 Δ_long − 0.24 Δ_plain, and the bar needs Δv ≈ −0.00042.
+
+**Engineering levers [numerical, exact].** h scan at Λ = 401/200:
+
+| h | θ |
+|---|---|
+| 0.806 | 0.87339298 |
+| 0.810 | 0.87338966 |
+| 0.815 | 0.87339900 |
+
+- θ is not monotone in h; past 0.81 another edge binds.
+- Going past h = 0.806 needs a larger transport box, and `BoundsN` reaches all 119 ReturnD modules.
+- Best ≈ −2.2e-5, or ≈ −2.8e-5 with the 2′ line extension. **[dead]** for the bar on its own.
+
+**Faces are saturated [derived].** The end face dominates every face of both lines: same B, least Λ, largest
+cap. So no combination of the proven faces lowers the plain count.
+
+**The square-root barrier, twice [Lean, read].**
+- PR 93's selected norm needs δ ≥ 1/2 + gap, in the near estimate (`cell_sector_norm`). The amplification step
+  itself (`uniform_slot_crossing`) works for every δ ∈ [0, 1].
+- PR 93's joint count needs 2pδ > 1/2, and the binding point has 2pδ = 0.452.
+- K < 1/2 would let the selected-leaf line pass Λ = 2B, since the deletion gate is 6KB/(1+K).
+  K = 0.48 gives Λ ≈ 1.95, worth ≈ −8e-5 at the Λ sensitivity, if the R1 price allows.
+
+**Long exponent.** The 5/6 is the baseline's sextic amplification (Lemma 17.6, P = (H/U)^{1/6}). No known result
+improves it (literature note of 2026-10-24).
+
+**Next.**
+- Trace where PR 93's near estimate uses δ > 1/2.
+- Price a sub-square-root selected norm.
+- Test whether the joint count reaches 2pδ ≈ 0.45.

@@ -167,7 +167,7 @@ Only if tracks A1–A3 (lowered floor, role split, regenerated return) are execu
 | reuse | `Second/*` (18.9k lines), `Density/*`, root chain, `diag_supply`, `contrary_raw_side_provider` | generic in `StepGates` **[I: not compiled]** |
 | closure | PR 86's 7813 files / 70.3 MiB + new files; caps 16384 files / 128 MiB (`process.md` §2.2, §4) | fits |
 
-Effort: 1–2 days of Sonnet implementation plus Lean runs (one at a time) on top of A1–A3; a full replay of the closure is the unknown (12 h budget). Risk: moderate (copy-edit of ledger proofs, no new mathematics). Value: −1.3e-6.
+Effort: 1–2 days of agent implementation plus Lean runs (one at a time) on top of A1–A3; a full replay of the closure is the unknown (12 h budget). Risk: moderate (copy-edit of ledger proofs, no new mathematics). Value: −1.3e-6.
 
 ---------------------------------------------------------------------------------------------------
 

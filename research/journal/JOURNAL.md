@@ -634,7 +634,8 @@ find which estimate produces (N C·N E)^{−1/3}.
   - (a) l + (R + d)/2 + S ≤ (4/5)R;
   - (b) R + d + 2l − P + S ≤ R/2.
 - These are exactly the thresholds where the cross terms of Θ₆(A, B) = A + B + A^{5/6}B^{1/3} + A^{1/3}B^{5/6} stay
-  below A = Z^R: A^{5/6}B^{1/3} ≤ A ⟺ B ≤ A^{1/2}, and A^{1/3}B^{5/6} ≤ A ⟺ B ≤ A^{4/5}.
+  below A = Z^R: A^{5/6}B^{1/3} ≤ A ⟺ B ≤ A^{1/2}, and A^{1/3}B^{5/6} ≤ A ⟺ B ≤ A^{4/5}. [inferred from the match;
+  the finite bound that consumes (a) and (b), `MixedFirstReferenceEnergy` hbound, is not traced yet]
 - de Faveri (arXiv 2610.04045, Thm 1.1) proves Θ_n(A, B) ≪ (AB)^ε(A + B + A^{1−1/n}B^{2/n} + A^{2/n}B^{1−1/n}) and
   conjectures it optimal. Optimality is proved for n = 3, 4 by Gauss-sum (metaplectic) biases (Dunn–Radziwiłł;
   de Faveri–Dunn–Hoffstein). So R/2 and 4R/5 are sharp **for general coefficients**.

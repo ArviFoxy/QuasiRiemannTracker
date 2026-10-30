@@ -994,3 +994,54 @@ target 1 into "D–R's dispersion for (smooth × prime) vectors in the sextic fa
   X^{3/4} bias conjectured. This supports the pattern "bias X^{1/2+1/n}", i.e. X^{2/3} expected for sextic.
 - So target 0 needs, at minimum, a sextic or hybrid (quadratic × cubic) Type-I estimate with level uniformity. That
   is open research.
+
+## 2026-10-30 · Fresh look 3 (count game): no new word; the slot cost is a row-inflation rate
+
+**Report [agent; numbers re-checked against the closed form].**
+- At δ = 0.426: s₀ = (5 − 3δ)/(15 − 12δ) = 0.37642, t* = 3s₀ = 1.12925, I(2s₀) = P(s₀) = L(3s₀) = 0.62665. Dual
+  weights: I 0.494, P 0.247, L 0.258.
+- For −1.7e-4 in the count:
+
+  | change | needed |
+  |---|---|
+  | inverse slot cost alone | Λ_I = 1.9871 |
+  | plain face alone | Λ_P = 1.9745 |
+  | long slope | 0.83275 |
+  | I and P together | 1.9913 |
+
+  These agree with the full-θ* model (`slotcost.py`: 1.9882 for the inverse word, 1.9936 in all three places,
+  the physical face included).
+
+**What it adds [derived; the identity checked].**
+- **Slot cost = row-inflation rate.** χ_{uP²} = χ_u·(·/P)₃, since (·/P)₆² = (·/P)₃. A cubic slot of width w acts
+  like inflating the row family by U^{2w}: rate 2.
+- On the same scale:
+
+  | row twist | effect | rate |
+  |---|---|---|
+  | u ↦ uP⁶ | deletion (the long word) | 6 |
+  | u ↦ uP³ | quadratic twist | 3 |
+  | u ↦ uP² | cubic twist (the slots) | 2 |
+  | u ↦ uP | sextic twist | 1, the ideal |
+
+  So the master parameter is the exchange rate of a Kummer twist, which explains why it is exactly 2 in both the
+  inverse and the plain word.
+- A rate-6 mixed word on M_r·B_m returns exactly L(r + m), so F1 already sits on the L-line. A mixed word helps
+  only at an exchange rate below 6. Enlarging the deletion ball to make room for slots never pays:
+  ∂count/∂v = 5 − 6δ/Λ > 0, even at Λ = 1.
+- Its "T1": treat the cubic-θ bias as a finite-rank term. Twisted multiplicativity g̃(n)(n/P)₃‾ = g̃(nP)/g̃(P)
+  aligns every slot twist with one residual direction (Patterson's residue at 5/6), so subtract it and look for a
+  power saving in the remainder. P1 with η ≈ 0.0076 then gives Λ_I ≈ 1.987. This is the same correction-term idea
+  as the Dunn–Radziwiłł thread, aimed at P1. [speculative]
+- Dead ends it checked:
+  - extra saturated heights per row (nothing forces companions; the tails come from Re = 1/2 zeros);
+  - a zero-density budget;
+  - sharp-cutoff slots;
+  - plain blocks (m ≤ 1/(1 + δ) = 0.70, not binding);
+  - Zhang/Polymath smooth moduli;
+  - Euler-product moments (circular).
+- Its "rigid progression of extremal zeros" picture of the adversary is a heuristic model. I have not checked it.
+
+**Verdict.** No new provable word. The fresh look agrees that the cheap lever is the shared rate-2 slot cost
+(I and P, 74% of the dual weight), and that L is locked behind twisted Chowla. Both live leads are correction-term
+large sieves: Dunn–Radziwiłł for the faces' prime slots (target 0) and a θ-bias subtraction for P1 (T1).

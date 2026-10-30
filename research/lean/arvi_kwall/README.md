@@ -31,3 +31,15 @@ selected norm, rows of norm ≈ B selected at slope δ) they read:
   (1 − 2δ)(y − 1). That is a gain only if δ > 1/2.
 - So moving the wall needs a new direct estimate for the selected rows at L = B: a Guth–Maynard-type operator-norm
   bound on a large-value set of the sextic family. Neither a better start nor more rounds can do it.
+
+## Dilution.lean (RIP program)
+
+- `fixed_point_of_dilution`: the diluted initial bound n(x) ≤ max(1, x, Θ₆(x) − δ) plus amplification gives
+  n(x) ≤ 1 − δ + δx on [0, 1] for every δ ≥ 1/6.
+- `kwall_is_dilution`: for δ ∈ [1/3, 1/2) both statements hold at once:
+  - the undiluted rules admit n(1) = 7/6;
+  - the diluted bound forces n(1) ≤ 1.
+
+  So the whole K-wall is the gap between Θ₆ and its dilution on thin row sets.
+- Numerics in `../../rip/`: the sextic Gram matrix follows Marchenko–Pastur, and slot large-value sets behave like
+  random subsets. So the dilution holds empirically.

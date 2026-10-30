@@ -1080,3 +1080,8 @@ large sieves: Dunn–Radziwiłł for the faces' prime slots (target 0) and a θ-
 - dFDH's own unconditional input (2.9) is Lindelöf on average in the twist, Σ_{N(a)≤A}|ψ^{(3)}(a, 1 + ε + it)|² ≪
   A^{1+ε}(1 + |t|)^R, via Zagier-regularized Rankin–Selberg. That is a candidate tool for P1's single-mark piece
   (twisted theta central values on average). [not yet examined]
+
+**Housekeeping [derived].** Task 145 (per-class combination with PR 93's joint count, −1.4e-5 to −1.7e-5 against
+the old 0.87387 baseline) is obsolete. It acted on the density steps' HIGH count. The banked line's end face is set
+by native steps, whose overshoot gate 6KB/(1 + K) at K ≥ 1/2 sits at 2B. In the return's count the joint count
+needs 2pδ > 1/2, while the binding has 2pδ ≈ 0.43. No library-only lever remains on top of the bank.

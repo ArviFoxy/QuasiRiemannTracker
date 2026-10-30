@@ -1354,3 +1354,15 @@ the trivial bound).
   family size (P1, B2).
 - **Verdict.** Each wall needs a power saving at a self-dual point for a structured vector. No 2026 tool supplies
   one in the metaplectic (cubic/sextic) setting. [open; the three walls are one problem in three costumes]
+
+**B2 via deletion just past the self-dual point [Lean, read; `Hecke/InverseAmplificationRaw.RawMoment`,
+`Dictionary/InverseRawReference.raw_reference_large`].**
+- `RawMoment` gives Σ_{rows of norm ≤ H}‖inverse polynomial at length D‖² ≤ C·H·(HD)^κ for any row set, under the
+  gate D^{1+c} ≤ H with c > 0 fixed. The constants depend on c.
+- The proof reflects the rows (Poisson over the family of norm ≤ H), expands into canonical squares over the dual
+  rows, and applies the quadratic sieve to the reflected cubic-theta columns. So c > 0 is that sieve's balanced
+  point.
+- Deletion needs H = UV⁶ ≥ D^{1+c}. Running it at H = D^{1−c′} would need the theta–quadratic sieve slightly past
+  its balanced point, with a power saving against its N-term. That is P1's estimate with slot width 0. The needed c′
+  is 6.4e-4 for the #97 bar and 0.0138 for the #98 bar. This confirms in the code that atoms 1 and 2 share one root
+  (LOG 2026-10-24): B2-by-deletion and P1 are the same core estimate. [read; derived]

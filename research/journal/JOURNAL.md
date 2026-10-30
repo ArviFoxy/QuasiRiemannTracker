@@ -938,3 +938,41 @@ Type II/III analysis, so this per-row quasi-GRH does not obviously substitute fo
 w-rough vectors, which is exactly the master parameter. The proved size (ρ < 1e-4, under GRH, cubic family only)
 is about 7× short of the bar. Getting there needs obstacles 1–3 solved on paper, then 4. Recorded as the leading
 long-term route to the slot-cost atom; nothing bankable now.
+
+**Sharper reading of D–R §9 [derived from the paper's proofs; paper-level, unchecked against every step].**
+- **η ≤ 1/4 is only a convenience.** In Prop 9.2 it is used once ("since η ≤ 1/4 we have AB^{2η} ≤ X", line
+  ≈ 3575 of the text), and that holds for every η ≤ 1/2.
+- The dual h-sum is bounded through axiom (3.2). That is the X^ε B^{2+2η} term, i.e. B^{8/3} at η = 1/3.
+- **ρ is bookkeeping.** The binding cross-term error (AB)^{2/3−ρ}B comes from Prop 8.1's large-C error. The proof
+  of Prop 8.1 actually gives U^{3/4}N(r)^{−1/4}, and in the cross term that is **(AB)^{7/12}·B**, i.e. ρ = 1/12.
+  The other Type-I error gives B^{29/12}A^{−1/12}.
+- **Result for smooth prime vectors c_P = W(P) (β = W·g̃‾, η = 1/3 from Heath-Brown–Patterson), π = γ = 1,
+  w ~ B.** Against the diagonal AB:
+
+  | term | diagonal while |
+  |---|---|
+  | B^{8/3} | B ≤ A^{3/5} |
+  | (AB)^{7/12}B | B ≤ A^{5/7} |
+  | B^{29/12}A^{−1/12} | B ≤ A^{13/17} |
+  | A^{1/6}B^{5/3} | B ≤ A^{5/4} |
+  | A^{2/3}B^{5/3}/w^{9/10} | always |
+  | theta main term A^{2/3}B^{4/3}/log²B (Patterson's prime bias) | B ≤ A |
+  | (1 + B²/A)^{−1000}X² | B ≥ A^{1/2+ε} |
+
+  So **the cubic large sieve is diagonal for smooth prime vectors up to B ≈ A^{3/5}**, against A^{1/2} for general
+  vectors.
+- Under the bootstrap's quasi-GRH(7/8) instead of RH, the two Type-I errors become (AB)^{0.615}B and
+  A^{−0.052}B^{2.448}. Those are diagonal up to A^{0.627} and A^{0.727}, so the A^{3/5} threshold stands.
+- If Heath-Brown–Patterson's twisted prime sums lose N(h)^c in the twist, the threshold becomes
+  (1 + 2c)/(5/3 + 4c): 0.571 at c = 1/6, still past 1/2.
+- In slot-cost terms: cost 1/0.6 ≈ 1.67 for **purely prime, cubic** slots.
+
+**Why it is not yet our atom.**
+- (i) The face's vector is plain × prime, with P₁ and P₂ not w-rough, and D–R's framework needs w-rough squarefree
+  support. That is the "smooth × prime" sieve of target 1 in `frontier/README.md`.
+- (ii) Our families are sextic (faces) and quadratic-row/cubic-theta (P1), not cubic.
+- (iii) Still unchecked: Lemma 9.2 and the D₁ term; the exact twist uniformity in Heath-Brown–Patterson.
+- (iv) The whole metaplectic stack is absent from Lean.
+
+Still, this is the first concrete evidence that **the √-barrier is not intrinsic for prime vectors**. It turns
+target 1 into "D–R's dispersion for (smooth × prime) vectors in the sextic family".

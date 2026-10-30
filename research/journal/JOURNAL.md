@@ -1085,3 +1085,34 @@ large sieves: Dunn–Radziwiłł for the faces' prime slots (target 0) and a θ-
 the old 0.87387 baseline) is obsolete. It acted on the density steps' HIGH count. The banked line's end face is set
 by native steps, whose overshoot gate 6KB/(1 + K) at K ≥ 1/2 sits at 2B. In the return's count the joint count
 needs 2pδ > 1/2, while the binding has 2pδ ≈ 0.43. No library-only lever remains on top of the bank.
+
+## 2026-10-30 · The plain word as a moment problem: F1 forces |L(1/2+it)| ≥ U^{0.080} on a window
+
+**Derivation [derived; contour shift].**
+- The F1 witness has the plain block B_m (length U^m, m = s₀ = t*/3 = 0.3764) saturated at the zero: normalized
+  |B| ≥ U^{m(a−1/2)}, i.e. the unnormalized block is ≥ 1 at Re s = a.
+- Write B_m(a + it₀) as a Mellin integral of L(a + it₀ + w), with the block's smooth weight transform in w, and
+  move to Re = 1/2 (no pole for a non-principal character). This gives
+  ∫|L(1/2 + iτ)||Ŵ(1/2 − a + i(τ − t₀))|dτ ≥ U^{m(a−1/2)} = **U^{δm/2} = U^{0.0802}** at δ = 0.426.
+- So F1 rows carry a large value of L on the critical line, averaged over an O(1) window. Fresh look 3 reported
+  the same picture.
+- Moment counting gives R ≤ U^{1 + ε_{2k} − kδm}, where ε_{2k} is the excess of the 2k-th moment
+  Σ_u ∫_window |L|^{2k} over U¹:
+
+  | 2k | Lindelöf on average gives | beats the LP count 0.62665 iff ε_{2k} < |
+  |---|---|---|
+  | 4 | 0.679 | −0.053 (impossible) |
+  | 6 | 0.519 | **0.108** |
+  | 8 | 0.359 | **0.268** |
+
+  At δ = 0.452 the thresholds are 0.118 and 0.290.
+
+**What we can prove [derived].**
+- Each counted row has its own zero-free region right of (1 + δ)/2, so |L(1/2 + it)|² ≤ U^{δ/2+ε}. Combined with
+  a diagonal fourth moment (the face with no slots, p₁ = p₂ = 1/2) this gives ε₆ ≤ δ/2 = 0.213 and ε₈ ≤ δ = 0.426.
+  Both are about twice what is needed.
+- The global bootstrap half-plane (β ≈ 0.873) is weaker: |L|² ≤ U^{β−1/2} = U^{0.373}.
+- The face with slots (the P word) is the "fourth moment + amplifier" version, and it is what the count uses.
+- So the plain word improves iff there is a **sextic-family sixth moment with excess < 0.108**, or an eighth moment
+  with excess < 0.268, at the binding window. Nothing in the literature gives the second moment of the cubic
+  family cleanly. [open; recorded as the moment form of the P wall]

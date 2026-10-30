@@ -980,3 +980,17 @@ long-term route to the slot-cost atom; nothing bankable now.
 
 Still, this is the first concrete evidence that **the √-barrier is not intrinsic for prime vectors**. It turns
 target 1 into "D–R's dispersion for (smooth × prime) vectors in the sextic family".
+
+**Sextic extension: literature [read; web].**
+- de Faveri, arXiv 2610.04045 (Thm 1.1): Θ_n(A, B) ≪ (AB)^ε(A + B + A^{1−1/n}B^{2/n} + A^{2/n}B^{1−1/n}), expected
+  optimal. For n = 6 this is diagonal exactly up to B = A^{1/2}, for general vectors. That is the √-barrier our
+  faces inherit.
+- Its zero-density corollary gives 1 − δ_6(0.7265) = 0.762 for the sextic family, far above our extremal count
+  0.607. Not an input.
+- Sextic theta series on the 6-fold cover of GL2 (Brøker–Hoffstein, arXiv 1312.0568): τ(π)², τ(π²) and τ(π⁴) are
+  computed, partly only conjecturally. So a sextic level-aspect Voronoi formula, which D–R §5 needs, is not
+  available off the shelf.
+- Quartic analogue (Lin, arXiv 2306.11875): Gauss sums over primes ≪ X^{5/6+ε} + X^{3/4+ε}|ℓ|^{3/2+ε}, with an
+  X^{3/4} bias conjectured. This supports the pattern "bias X^{1/2+1/n}", i.e. X^{2/3} expected for sextic.
+- So target 0 needs, at minimum, a sextic or hybrid (quadratic × cubic) Type-I estimate with level uniformity. That
+  is open research.

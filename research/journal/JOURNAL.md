@@ -1780,3 +1780,45 @@ come from the float model of the newTop row, which reproduces #97 and the bank [
   the packet sixth moment. Delegated to numerics.
 - Recorded as dead or capped: random slot sub-selection (Jensen; same as RIP (3)), pointwise higher-Hölder per-row
   bounds, and decorrelating bad rows from the packet.
+
+## 2026-10-30 · D1 (direct prime-pool face): first brick in Lean, and the ledger's exact sub-lemmas
+
+**Lean [built; `lean/arvi_primeface/Duplication.lean`, standard axioms, ≈ 8 s].**
+- `chi_four_mul_jacobiSum_self`: χ(4)·J(χ, χ) = J(χ, η) over any finite field of odd characteristic. The proof
+  counts #{x : x(1 − x) = b} = 1 + η(1 − 4b) via x ↦ 2x − 1, then reindexes c = 4b.
+- `gaussSum_duplication`: χ(4)·g(χ)g(χη) = g(χ²)g(η).
+- `sextic_duplication`: for χ³ = η, χ(4)·g(χ)g(χ⁴) = g(χ²)g(χ³).
+- Numerically checked for p ≤ 109 (`fresh-look/second/checks/hd_check.py`). This is D1's reduction: at primes,
+  g̃₆ = χ̄(4)·(J(χ², χ²)/√p)·conj(g̃₃)·g̃₂.
+
+**Numerology of Λ [derived, heuristic].**
+- Expand |Q|² in the face Σ_z|X₁X₂Q|². The pairs P = P′ give ‖a‖² × (plain fourth moment), which is diagonal up
+  to m₁ + m₂ ≤ 1 (Lemma 18.1).
+- The pairs P ≠ P′ are twisted plain fourth moments T(PP′⁵) = Σ_z (PP′⁵/z)₆|X₁X₂(z)|², with twist conductor
+  N(PP′) ≈ P₀² = Z^{2s}. Against the diagonal they must save P₀ on average, i.e. N(h)^{1/2} in conductor terms.
+- Reflection pays the twist's conductor in the dual length (the dead zone). That is Sil's Λ = 2: budget 2s for
+  the conductor P₀².
+- If, after Poisson in z, each prime variable enters the dual through a Gauss-sum phase g̃₆(P)(k/P)₆, then summing
+  over P with Heath-Brown–Patterson's P₀^{5/6} instead of the trivial P₀ in *both* variables turns the budget 2s
+  into (5/3)s. That gives **Λ = 5/3**, the same numerology as Dunn–Radziwiłł's cubic threshold A^{3/5}, and
+  Δθ ≈ −4.9e-4.
+
+**The ledger reduces to three statements [conjecture; order of operations as fresh look 2 prescribes: Poisson in
+z first, the plain sums kept as Type-I coefficients, no reflection of the plain sums].**
+- **(L1) Davenport–Hasse at primes.** [Lean, done.]
+- **(L2) Heath-Brown–Patterson twisted by quadratic characters, uniformly.**
+  Σ_{N(π)≤X} g̃₃(π)·(k/π)₂·λ(π) ≪ X^{5/6+ε}·N(k)^{c} for Hecke characters λ of bounded conductor and
+  N(k) ≤ Z^{0.8}.
+  - Route: Vaughan's identity. The Type-I sums are Σ_n g̃₃(n)(k/n)₂: the twisted cubic Kubota series, entire for
+    k ≠ □ (P1 deep-dive), bounded by convexity in N(k). The Type-II sums go through the cubic large sieve, which
+    is blind to a quadratic twist.
+  - With a loss N(k)^c the threshold becomes (1 + 2c)/(5/3 + 4c), still past 1/2 for c ≤ 1/6.
+  - Note: (L2) is a *first*-moment statement about the same twisted theta coefficients whose *second* moment is P1.
+- **(L3) Phase survival.** In the dual after Poisson in z, the plain factors appear as Type-I coefficients
+  (smooth, length Z^{m₁+m₂}) multiplying the pair (P, P′). Their own Gauss-sum factors g̃₆(n) at composite n
+  (sextic theta coefficients, Patterson bias n^{2/3}) must not cancel the prime phase. The risk named in fresh
+  look 2 (main-term interaction, Patterson's A^{2/3}B^{4/3}) lives here.
+- **Go/no-go:** carry (L3) through D–R §9's error terms with c from (L2), and solve for s_max(m₁ + m₂) on the
+  window [0.75, 0.87]. Continue only if (1 − m₁ − m₂)/s_max ≤ 1.85.
+- Numerics running in parallel: `rip/prime_pool/` (empirical Λ for zero-aligned, random and Patterson-biased
+  pools) and `rip/moments_probe/` (D2's fixed-index cross-correlations; D4's packet sixth moment).

@@ -1,0 +1,6 @@
+B=100000 L=100000  R=28210 rows  S=25936 sources  11511 row primes   tables in 72s
+sextic E      : [4.949 4.751 4.623 4.427]   (502s)
+masked random : [3.99  3.987 3.975 3.973]   (1584s)
+masked random : [3.992 3.983 3.981 3.978]   (2544s)
+RCHAR         : [3.993 3.987 3.983 3.981]   (3654s)
+MP edge (no mask) 4.174

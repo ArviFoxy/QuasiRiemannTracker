@@ -1,0 +1,21 @@
+B=10000 L=10000  R=2816 rows  S=2610 sources   built in 1.4s
+  |G(z,1)|: min 1.000 max 1.000   (built 5.9s)
+  source |G(x,1)|: min 1.000 max 1.000
+top s^2/S: [4.261 4.109 4.093 4.025 4.007 3.992]
+random phases, profile N^-1/2: r_src = 0.935 +- 0.014
+variant              r_src    overlap with top right singular vectors #0..#5 (random level 0.020)
+  G       * chi(u0)  0.914    [0.059 0.02  0.056 0.031 0.022 0.   ]
+  G       * chi(u1)  0.926    [0.03  0.061 0.018 0.034 0.029 0.023]
+  G       * chi(u2)  0.926    [0.03  0.061 0.018 0.034 0.029 0.023]
+  G       * chi(u3)  0.941    [0.018 0.022 0.033 0.011 0.016 0.026]
+  G       * chi(u4)  0.943    [0.03  0.033 0.019 0.001 0.029 0.01 ]
+  G       * chi(u5)  0.943    [0.03  0.033 0.019 0.001 0.029 0.01 ]
+  conj G  * chi(u0)  1.077    [0.014 0.006 0.007 0.017 0.006 0.017]
+  conj G  * chi(u1)  1.044    [0.027 0.014 0.01  0.008 0.015 0.004]
+  conj G  * chi(u2)  1.044    [0.027 0.014 0.01  0.008 0.015 0.004]
+  conj G  * chi(u3)  1.080    [0.015 0.007 0.024 0.029 0.019 0.005]
+  conj G  * chi(u4)  1.063    [0.011 0.032 0.021 0.014 0.017 0.021]
+  conj G  * chi(u5)  1.063    [0.011 0.032 0.021 0.014 0.017 0.021]
+twists N(h) <=   1: span dim  12; top right vector mass in span 0.105 (random span 0.079); top off span [4.236 4.081 4.075 4.011], off random span [4.244 4.106 4.081 4.014]
+twists N(h) <=  30: span dim 144; top right vector mass in span 0.315 (random span 0.243); top off span [4.013 3.962 3.917 3.892], off random span [4.106 3.989 3.957 3.913]
+twists N(h) <= 100: span dim 492; top right vector mass in span 0.499 (random span 0.426); top off span [3.652 3.599 3.597 3.57 ], off random span [3.776 3.665 3.643 3.624]

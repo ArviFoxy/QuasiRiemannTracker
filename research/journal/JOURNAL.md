@@ -2532,3 +2532,48 @@ primary generator mod 4, giving 12 classes = (Z[ω]/4)^×.
 
 **Reading.** The supplementary law for −1 cancels the reciprocity sign, so there is no anti-self-dual sub-family to
 exploit. [dead]
+
+## 2026-10-30 · The low-frequency outlier grows like a B^{1/6} spike, and it is neither theta
+
+**Numerics [`rip/theta/theta_top_free.py` (matrix-free, E stored as int8 codes), `theta_srcspike.py`,
+`theta_primepool.py`; logs `theta_top_free_B100000.log`, `theta_srcspike_B10000.log`, `theta_primepool_B10000.log`].**
+Top singular value s²/S at B = L, against random phases on E's exact zero pattern:
+
+| B | sextic | masked random | RCHAR | excess | implied BBP spike θ |
+|---|---|---|---|---|---|
+| 3·10³ | 4.061 | ≈ 3.93 | – | +3.4% | 1.44 |
+| 10⁴ | 4.261 | 3.95 | 3.94 | +7.8% | 1.74 |
+| 3·10⁴ | 4.550 | 3.99 | – | +14% | 2.08 |
+| 10⁵ | 4.949 | 3.990, 3.992 | 3.993 | +24% | 2.57 |
+
+- θ is read off the rank-one spiked-Wishart outlier formula λ/λ_edge = (√θ + 1/√θ)²/4, with aspect ratio ≈ 1. Its local
+  slopes d log θ / d log B are 0.154, 0.165 and 0.176, close to 1/6.
+- So the outlier behaves like a spike of strength ∝ B^{1/6}: Θ₆'s excess rate. At accessible sizes it is the dominant
+  non-random structure. Its constant is far larger than the conj G theta's (whose Rayleigh excess is only +0.22 at
+  3·10⁴).
+- RCHAR, the same family with reciprocity broken, sits at the random level even at 10⁵.
+
+**What it is not (10⁴).**
+- Not the row theta: the top vector's overlap with conj G·χ(u)·profile is ≤ 0.01.
+- Not a single source theta. The source vectors G(x)χ_x(u)N(x)^{−1/2} and their conjugates have Rayleigh excess
+  +0.11 to +0.15 (conj) or none (G), and overlaps with the top right vectors of 0.006 to 0.061 (random level 0.020).
+- Only partly the span of twisted source thetas G(x)χ_x(h)χ_x(u)N(x)^{−1/2}, N(h) ≤ 30 (dimension 144):
+  - the top vector has mass 0.315 there, against 0.243 for a random span of the same dimension;
+  - projecting it off lowers the top to 4.013, against 4.106 for a random span.
+- Not a prime pool. Flat or N^{−1/2}-weighted pools of small primes have r = 0.95 to 0.99 (random pools 0.90 to
+  0.95), and overlaps with the top left vector ≤ 0.10.
+- Where it is: the low-frequency row span χ_u(m)χ_u(u₀), N(m) ≤ 100, as before. The top block combination loads on
+  conjugate pairs of small split primes (norms 7, 13, 31, 37) with specific phases.
+
+**Reading.**
+- At these sizes the extremal structure of the full-family sextic sieve is this low-frequency, reciprocity-driven
+  spike. It grows at Θ₆'s rate. Xu–Sang's Gauss-sum vectors attain the same exponent with a smaller constant.
+- Mechanism open. Candidate [conjecture]: a corner main term of the double Dirichlet series Σ (u/n)₆ N(u)^{−w}N(n)^{−s},
+  where the two theta polar lines (one per Poisson direction) meet. That would explain why it is neither the row
+  theta nor the source theta, why it needs reciprocity, and why it lives on low frequencies.
+- For the K-wall:
+  - it is flat, so it dilutes on random thin row sets;
+  - the slot-selected W is cut out by low-frequency functions of the rows (short prime sums), so whether it dilutes
+    on W is a real question. The fresh look's W-numerics (B ≤ 12000, sextic within ±4% of RMM-S) show nothing yet,
+    but there the spike is just above threshold (θ ≈ 1.4–1.8).
+  - Next check: selected norms on slot-selected W against RCHAR-W at B = 3·10⁴ to 10⁵.

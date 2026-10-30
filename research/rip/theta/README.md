@@ -18,6 +18,9 @@ be small.
 | `theta_models.py B L [seeds] [P0,...]` | top singular values of E against models with the same zero pattern: random symbols (RSYM), random multiplicative rows (RMM), exact small primes (EXACT), randomly conjugated row characters (RCHAR, reciprocity broken) |
 | `theta_locate.py B L` | top of E after projecting the rows off the block span or the twisted-theta span, or dropping small/large sources |
 | `theta_reciprocity.py B L [seed]` | theta excess in RCHAR, with its own Gauss sums |
+| `theta_top_free.py B L [k]` | matrix-free top of E (int8 codes, chunked Lanczos) against masked random phases and RCHAR, for B up to 10⁵ |
+| `theta_srcspike.py B L` | source-side theta vectors G(x)χ_x(u)N(x)^{−1/2}: energy, overlap with the top right vectors, twisted source-theta span |
+| `theta_primepool.py B L` | prime-pool row vectors: energy and overlap with the top left vector |
 | `theta_classes.py B L [sample]` | reciprocity sign s(z, z′) and χ_z(−1) by row class mod 4; per-class spectra and theta excess (no anti-self-dual class) |
 
 All scripts build E and the row Gauss sums through `theta_core.py`.
@@ -35,6 +38,9 @@ All scripts build E and the row Gauss sums through `theta_core.py`.
   - Every model without reciprocity sits at the random level: random symbols, random multiplicative rows, exact
     small primes, and randomly conjugated row characters (whose rows are still characters).
   - Breaking reciprocity also removes most of the theta spike (`theta_reciprocity_B10000.log`).
+  - It grows like a B^{1/6} spike: +24% at B = 10⁵, with implied spike strength 1.44, 1.74, 2.08, 2.57 at
+    3·10³, 10⁴, 3·10⁴, 10⁵. RCHAR stays at the random level at 10⁵ (`theta_top_free_B100000.log`). It is neither
+    the row theta, the source theta nor a prime pool (`theta_srcspike`, `theta_primepool`).
 - **Both parts are flat** (unimodular on coprime rows), so both dilute on thin row sets.
 - **Only conj G carries the excess.** Plain rows show a deficit (r = 0.85–0.93 against 0.946). G and the Gauss-sum
   powers conj G², G², conj G³ are neutral (0.90–0.98) (`theta_powers_B30000.log`).

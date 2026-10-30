@@ -1920,3 +1920,34 @@ multiplicative model, rather than above it as a bias or N-term would?
 - (L2)'s premise holds numerically: in D1's dual, the prime pool sees no Patterson bias, and the truth is
   square-root cancellation (Λ → 1) against the provable Heath-Brown–Patterson X^{5/6} (Λ = 5/3).
 - What remains is the proof of (L2) uniformly in k, and (L3).
+
+## 2026-10-30 · D1 numerics: the prime-pool face holds far past both lines (Λ_emp ≤ 1.1)
+
+`rip/prime_pool/` (README; `results/results_tables.md`). Delegated run, B = 3·10³ … 10⁷; the lead re-ran
+`ppsanity.py`, and all checks pass. Measured F = Σ_z |X₁X₂Q|² against the exact diagonal D, and against Dcop,
+which drops rows killed by small primes of the coefficient support [numerical].
+
+- **Nothing happens at either face line.**
+  - F/Dcop = 1.00 ± 0.02 out to total length T = 2m + s = 1.25, beyond both m₁ + m₂ + 1.82s = 1 and
+    m₁ + m₂ + 2s = 1.
+  - All 140 log-slopes d ln(F/Dcop)/d ln B over B = 5·10⁴ … 10⁷ are within 2σ of 0 (max 0.005).
+  - Empirical bound: Λ_emp < 1.1 / 0.9 / 0.7 / 0.4 for m = 0.25 / 0.30 / 0.35 / 0.40.
+- **Weight variants.** These are behaviour classes, not scenarios to price.
+  - Zero-aligned (t = 0, 5, 20), random-phase and smooth-weight pools: all at the diagonal. a_P = 1 and t = 5
+    show only a slight deficit switching on at T ≈ 1.
+  - Patterson-aligned pools (conjugate sextic Gauss sums, the Θ₆ extremal) on their own: a *bounded* +2–8% plateau
+    once P₀² > B, a function of P₀²/B only, not growing with B. Its onset reads Λ ≈ 1.9 (2% threshold) or 1.6 (4%).
+    The plain factors do not add to it.
+- **Worst case over all pool weights** (sup probe): random-matrix law (1 + √(n/R_eff))². Λ_adv = 1.07 / 0.61 /
+  0.41 / 0.29 for m = 0 / 0.25 / 0.35 / 0.40. This is an upper envelope for every zero-forced class.
+- **Caveats.**
+  - The plain sums have only 4–253 terms and the pools ≤ 186 prime ideals.
+  - Zero-forced *row* selection is not reproduced; only the sup probe covers row-dependent alignment.
+  - Single-prime pools only.
+
+**Reading [derived].** D1's statement is numerically true with a huge margin: the face behaves like the ideal
+face (Λ ≈ 1). The only Λ ≈ 2 feature is the Patterson-aligned pool's bounded few-percent bias, which is exactly
+what the D–R corrected sieve subtracts as a main term. The obstruction to D1, as for D2 and D4, is proof
+technology:
+- (L2), Heath-Brown–Patterson twisted by quadratic characters, has its premise confirmed in `rip/l2_probe/`;
+- (L3) is phase survival.

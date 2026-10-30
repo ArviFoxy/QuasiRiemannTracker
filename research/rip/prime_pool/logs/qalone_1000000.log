@@ -1,0 +1,6 @@
+B=1000000 R=282248
+s=0.50 P0=  1000.0 n= 136 P0^2/B=   1.00 | ones 1.000 rand0 1.001 rand1 0.999 rand2 0.997 rand3 1.001 t5 0.999 t20 0.999 gsimple 1.006 gcanon 0.999 gsimple_c 1.000 gcanon_c 1.001 ang1 0.998 ang-1 1.001 ang3 1.002 ang-3 1.001 gc_sign 1.000 | SE~0.002
+s=0.55 P0=  1995.3 n= 248 P0^2/B=   3.98 | ones 1.000 rand0 0.999 rand1 1.000 rand2 1.003 rand3 1.001 t5 0.998 t20 1.003 gsimple 1.028 gcanon 0.987 gsimple_c 0.997 gcanon_c 1.001 ang1 0.999 ang-1 1.002 ang3 0.996 ang-3 0.998 gc_sign 0.993 | SE~0.002
+s=0.60 P0=  3981.1 n= 444 P0^2/B=  15.85 | ones 1.003 rand0 1.000 rand1 1.000 rand2 1.000 rand3 0.997 t5 1.000 t20 0.999 gsimple 1.035 gcanon 1.022 gsimple_c 1.003 gcanon_c 1.004 ang1 0.997 ang-1 1.003 ang3 1.003 ang-3 0.999 gc_sign 1.024 | SE~0.002
+s=0.65 P0=  7943.3 n= 842 P0^2/B=  63.10 | ones 0.992 rand0 1.001 rand1 1.000 rand2 0.999 rand3 0.999 t5 0.998 t20 0.999 gsimple 1.064 gcanon 1.023 gsimple_c 1.001 gcanon_c 0.998 ang1 1.002 ang-1 1.003 ang3 1.003 ang-3 0.999 gc_sign 1.021 | SE~0.002
+s=0.70 P0= 15848.9 n=1568 P0^2/B= 251.19 | ones 0.997 rand0 0.999 rand1 0.995 rand2 0.999 rand3 1.002 t5 0.999 t20 0.999 gsimple 1.053 gcanon 1.039 gsimple_c 1.001 gcanon_c 1.001 ang1 0.999 ang-1 1.003 ang3 0.999 ang-3 0.997 gc_sign 1.037 | SE~0.002

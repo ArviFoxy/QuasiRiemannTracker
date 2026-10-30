@@ -1,0 +1,6 @@
+[   0.8s] B=2000000  rows R=564506 (R/B=0.2823, log_B R=0.9128)  max #prime factors J=6
+[   0.8s] sources: 276 plain (N<=685), 370 total columns; pools: {0.1: 2, 0.15: 2, 0.2: 4, 0.25: 8, 0.3: 14, 0.35: 26, 0.4: 52, 0.45: 94}
+[  20.1s] symbol table (181042, 370)
+[  38.4s] F accumulated
+[  55.5s] D computed; total 55.5s
+[  55.5s] wrote /home/user/QuasiRiemannTracker/research/rip/prime_pool/results/grid_2000000.json

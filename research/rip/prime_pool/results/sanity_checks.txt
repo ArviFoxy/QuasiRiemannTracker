@@ -1,0 +1,32 @@
+PASS vectorised symbols == zomega.Prime.sym on 2220 random (split ideal, element) pairs
+PASS inert symbol table == zomega.Prime(q).sym (q=5,11)
+PASS multiplicativity (n1 n2 / pi)_6
+PASS primary_generator: norm p, primary, in the right ideal
+PASS rows: count 848 == brute-force count 848 (zfamily-style enumeration of distinct prime ideals)
+PASS rows: multiset of norms identical
+PASS rows: product of prime-ideal norms == N(row element)
+     (R=848, R/B=0.2827; enumeration 0.5s)
+PASS triple products primary (asserted inside conv_matrix); 60 distinct ideals m
+PASS X1 X2 Q(z) == sum_m c_m chi_z(m)  (12 random rows, chi_z(m) from zomega.Prime.sym of the product element); max err 3.97e-15
+     sum|c|^2 = 21.7626 ; sum d^2 * sum|a|^2 = 21.7626 (equal up to P | k collisions)
+PASS rho_m analytic vs exact coprime fraction: ratio exact/rho in [0.9937, 0.9997], mean 0.9972
+     D = 18455 ; Dcop (analytic rho) = 17036 ; ratio 0.9231
+PASS Dcop exact (signature grouping) 16991 vs analytic 17036: ratio 0.9974
+PASS Gauss sums |g~|=1 (err 4.4e-16) and canon = conj((c/P)_6) simple with c=-b (err 8.9e-16)
+ALL PASS
+PASS vectorised symbols == zomega.Prime.sym on 2220 random (split ideal, element) pairs
+PASS inert symbol table == zomega.Prime(q).sym (q=5,11)
+PASS multiplicativity (n1 n2 / pi)_6
+PASS primary_generator: norm p, primary, in the right ideal
+PASS rows: count 1695 == brute-force count 1695 (zfamily-style enumeration of distinct prime ideals)
+PASS rows: multiset of norms identical
+PASS rows: product of prime-ideal norms == N(row element)
+     (R=1695, R/B=0.2825; enumeration 1.7s)
+PASS triple products primary (asserted inside conv_matrix); 126 distinct ideals m
+PASS X1 X2 Q(z) == sum_m c_m chi_z(m)  (12 random rows, chi_z(m) from zomega.Prime.sym of the product element); max err 1.01e-14
+     sum|c|^2 = 33.6634 ; sum d^2 * sum|a|^2 = 33.6634 (equal up to P | k collisions)
+PASS rho_m analytic vs exact coprime fraction: ratio exact/rho in [0.9938, 1.0035], mean 0.9996
+     D = 57059 ; Dcop (analytic rho) = 51960 ; ratio 0.9106
+PASS Dcop exact (signature grouping) 52011 vs analytic 51960: ratio 1.0010
+PASS Gauss sums |g~|=1 (err 4.4e-16) and canon = conj((c/P)_6) simple with c=-b (err 8.9e-16)
+ALL PASS

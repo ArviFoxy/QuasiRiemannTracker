@@ -1,0 +1,35 @@
+B=3000 R=848  m=0.35 s=0.40  plain terms 7  pool 6
+plain  distinct ideals m:     162 (R=848, ratio 0.19) | F_product=480503  F_direct=480503  rel.diff 1.2e-16
+       D=4.8336e+05  Dcop=4.2291e+05 | F/D=0.9941  F/Dcop=1.1362 | random-phase same support: F/Dcop = 1.0022 +- 0.0298 (60 draws) ; random-sign: 0.9996 +- 0.0410
+smooth distinct ideals m:     162 (R=848, ratio 0.19) | F_product=43528.7  F_direct=43528.7  rel.diff 0.0e+00
+       D=43153  Dcop=38557 | F/D=1.0087  F/Dcop=1.1289 | random-phase same support: F/Dcop = 0.9963 +- 0.0310 (60 draws) ; random-sign: 0.9971 +- 0.0357
+B=3000 R=848  m=0.40 s=0.45  plain terms 9  pool 10
+plain  distinct ideals m:     440 (R=848, ratio 0.52) | F_product=1.28545e+06  F_direct=1.28545e+06  rel.diff 0.0e+00
+       D=1.3314e+06  Dcop=1.1744e+06 | F/D=0.9655  F/Dcop=1.0945 | random-phase same support: F/Dcop = 1.0002 +- 0.0341 (60 draws) ; random-sign: 1.0029 +- 0.0376
+smooth distinct ideals m:     440 (R=848, ratio 0.52) | F_product=163373  F_direct=163373  rel.diff 0.0e+00
+       D=1.7757e+05  Dcop=1.5819e+05 | F/D=0.9200  F/Dcop=1.0328 | random-phase same support: F/Dcop = 1.0039 +- 0.0401 (60 draws) ; random-sign: 0.9963 +- 0.0363
+B=12000 R=3376  m=0.35 s=0.40  plain terms 10  pool 10
+plain  distinct ideals m:     540 (R=3376, ratio 0.16) | F_product=5.8953e+06  F_direct=5.8953e+06  rel.diff 1.6e-16
+       D=6.5494e+06  Dcop=5.8077e+06 | F/D=0.9001  F/Dcop=1.0151 | random-phase same support: F/Dcop = 0.9991 +- 0.0155 (60 draws) ; random-sign: 1.0005 +- 0.0136
+smooth distinct ideals m:     540 (R=3376, ratio 0.16) | F_product=768640  F_direct=768640  rel.diff 1.5e-16
+       D=8.4269e+05  Dcop=7.5174e+05 | F/D=0.9121  F/Dcop=1.0225 | random-phase same support: F/Dcop = 1.0004 +- 0.0192 (60 draws) ; random-sign: 1.0028 +- 0.0153
+B=12000 R=3376  m=0.40 s=0.45  plain terms 16  pool 12
+plain  distinct ideals m:    1560 (R=3376, ratio 0.46) | F_product=1.80236e+07  F_direct=1.80236e+07  rel.diff 0.0e+00
+       D=2.1876e+07  Dcop=1.9313e+07 | F/D=0.8239  F/Dcop=0.9332 | random-phase same support: F/Dcop = 0.9974 +- 0.0179 (60 draws) ; random-sign: 1.0003 +- 0.0167
+smooth distinct ideals m:    1560 (R=3376, ratio 0.46) | F_product=2.42949e+06  F_direct=2.42949e+06  rel.diff 0.0e+00
+       D=2.9287e+06  Dcop=2.5949e+06 | F/D=0.8295  F/Dcop=0.9363 | random-phase same support: F/Dcop = 0.9985 +- 0.0195 (60 draws) ; random-sign: 0.9951 +- 0.0204
+B=50000 R=14103  m=0.35 s=0.40  plain terms 18  pool 14
+plain  distinct ideals m:    2310 (R=14103, ratio 0.16) | F_product=1.16404e+08  F_direct=1.16404e+08  rel.diff 1.3e-16
+       D=1.3308e+08  Dcop=1.185e+08 | F/D=0.8747  F/Dcop=0.9823 | random-phase same support: F/Dcop = 1.0008 +- 0.0089 (60 draws) ; random-sign: 1.0000 +- 0.0084
+smooth distinct ideals m:    2310 (R=14103, ratio 0.16) | F_product=1.35003e+07  F_direct=1.35003e+07  rel.diff 1.4e-16
+       D=1.5177e+07  Dcop=1.3462e+07 | F/D=0.8895  F/Dcop=1.0029 | random-phase same support: F/Dcop = 1.0002 +- 0.0075 (60 draws) ; random-sign: 0.9995 +- 0.0091
+B=50000 R=14103  m=0.40 s=0.45  plain terms 30  pool 22
+plain  distinct ideals m:    9460 (R=14103, ratio 0.67) | F_product=5.51594e+08  F_direct=5.51594e+08  rel.diff 2.2e-16
+       D=6.2984e+08  Dcop=5.5801e+08 | F/D=0.8758  F/Dcop=0.9885 | random-phase same support: F/Dcop = 1.0014 +- 0.0081 (60 draws) ; random-sign: 1.0014 +- 0.0084
+smooth distinct ideals m:    9460 (R=14103, ratio 0.67) | F_product=6.96473e+07  F_direct=6.96473e+07  rel.diff 4.3e-16
+       D=7.8235e+07  Dcop=6.8835e+07 | F/D=0.8902  F/Dcop=1.0118 | random-phase same support: F/Dcop = 1.0010 +- 0.0081 (60 draws) ; random-sign: 0.9998 +- 0.0080
+B=200000 R=56470  m=0.35 s=0.40  plain terms 28  pool 22
+plain  distinct ideals m:    8162 (R=56470, ratio 0.14) | F_product=2.00906e+09  F_direct=2.00906e+09  rel.diff 3.6e-16
+       D=2.2362e+09  Dcop=1.97e+09 | F/D=0.8984  F/Dcop=1.0198 | random-phase same support: F/Dcop = 1.0009 +- 0.0043 (60 draws) ; random-sign: 0.9994 +- 0.0043
+smooth distinct ideals m:    8162 (R=56470, ratio 0.14) | F_product=2.45462e+08  F_direct=2.45462e+08  rel.diff 4.9e-16
+       D=2.7884e+08  Dcop=2.4549e+08 | F/D=0.8803  F/Dcop=0.9999 | random-phase same support: F/Dcop = 0.9997 +- 0.0043 (60 draws) ; random-sign: 1.0009 +- 0.0046

@@ -1,0 +1,2 @@
+B=400000 R=112881
+s=0.80 P0= 30314.3 n=2820 P0^2/B=2297.40 | ones 1.001 rand0 1.007 rand1 0.999 rand2 1.000 rand3 0.999 t5 1.000 t20 0.997 gsimple 1.084 gcanon 1.046 gsimple_c 1.006 gcanon_c 1.001 ang1 1.004 ang-1 1.005 ang3 0.996 ang-3 1.001 gc_sign 1.042 | SE~0.003

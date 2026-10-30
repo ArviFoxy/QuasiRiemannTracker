@@ -1116,3 +1116,7 @@ needs 2pδ > 1/2, while the binding has 2pδ ≈ 0.43. No library-only lever rem
 - So the plain word improves iff there is a **sextic-family sixth moment with excess < 0.108**, or an eighth moment
   with excess < 0.268, at the binding window. Nothing in the literature gives the second moment of the cubic
   family cleanly. [open; recorded as the moment form of the P wall]
+
+**Upstream [read; git].** PR #97 (arvi-selected-leaf, θ = 43670599/50000000 = 0.87341198) is **merged** into
+GTimG/QuasiRiemannTracker main as merge commit e02df3d2 (2026-10-30 08:47 +0100). There are no PRs past #97. The
+standing record is therefore ours, and the next bar is unchanged at θ ≤ 0.87336198.

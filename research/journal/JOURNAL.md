@@ -881,3 +881,42 @@ correlation).
 the number of rows whose rightmost zero lies at (1 + d)/2. So at the binding (d ≈ 0.43–0.45) every counted row's
 family is zero-free right of ≈ 0.72. The GRH that Dunn–Radziwiłł need is for other L-functions, the ones in their
 Type II/III analysis, so this per-row quasi-GRH does not obviously substitute for it. [open question, not pursued]
+
+## 2026-10-30 · Dunn–Radziwiłł's corrected cubic large sieve as a route to the slot cost
+
+**What the paper proves [read; arXiv 2109.07463v3, Thm 1.4, Props 8.1, 9.1, 9.2, Def 3.1].**
+- Assume GRH for Hecke L-functions over Q(ω). Take sequences β in C_η(B, w): squarefree, w-rough, and satisfying
+  the cancellation axiom (3.2), i.e. ≪ (B/N(u))^{1/2+η+ε} against every non-trivial twist (b/|b|)^ℓ (k/b)₃ N(b)^{it}.
+  For these, Prop 9.2 bounds the cubic large sieve for c_b = β_b g̃(b), minus an explicit theta main term, by
+  A^{2/3}B^{5/3}/w^{9/10} + X^ε B^{2+2η} + (AB)^{2/3−ρ}B + X^ε B^{29/12}A^{−1/12} + A^{1/6+ε}B^{5/3},
+  provided B² ≫ A^{1+ε}. Here 0 < η ≤ 1/4 and ρ = ρ(ε) < 1/10000.
+- Against the diagonal AB (with ‖β‖² ≍ B), the binding term is (AB)^{2/3−ρ}B. The sieve is therefore diagonal up to
+  **B ≤ A^{(1+3ρ)/(2−3ρ)} ≈ A^{1/2 + 9ρ/4}**, i.e. it breaks the √-barrier by 9ρ/4.
+
+**Translation into our atom [derived].**
+- A diagonal threshold A^{1/2+κ} turns the slot cost 2 into 2/(1 + 4κ).
+- The master target c = 1.9936 needs κ ≈ 8e-4, so **ρ ≳ 3.6e-4**. The proved ρ < 1e-4 is worth at most ≈ 4e-6,
+  even if it transferred to all three places.
+- Remark 8.1 says ρ(ε) = 11ε/12 − 12ε² is acceptable in the Type-I estimate (Prop 8.1). With ε near 0.038 that is
+  ρ ≈ 0.0175 (slot cost ≈ 1.85), but the propositions are stated only for ε < 1/10000. Whether larger ε survives
+  the other error terms is unchecked.
+
+**Obstacles, in order.**
+1. **GRH.** It enters in Prop 8.1 to impose squarefreeness by Möbius inversion, and in Lemmas 6.1/6.2 to put
+   w-rough indicators in C_η. Inside our continuation argument every Hecke L-function over Q(√−3) is zero-free
+   right of β ≤ 7/8, which gives Möbius sums ≪ D^{β+ε}. A first look says the Prop 8.1 step only needs some power
+   saving there. [plausible, unchecked]
+2. **The slot sequence is not in C_η with η ≤ 1/4.** For smooth prime slots c_P = W(P), the sequence is
+   β = W·g̃‾. Axiom (3.2) then asks for twisted cubic Gauss sums over primes ≪ B^{3/4}. Heath-Brown–Patterson give
+   only B^{5/6} (η = 1/3); the untwisted sum is excluded from (3.2) and has Patterson's B^{5/6} main term.
+   [open: a Type-II estimate for cubic Gauss sums beating 5/6 for non-trivial twists]
+3. **The family is wrong.** Our slot costs live in the sextic large sieve (faces, Sil's √A reference) and in the
+   quadratic-row/cubic-theta matrix of P1 (inverse word). A sextic or hybrid analogue of Prop 9.2 is needed; the
+   sextic theta function has no explicit coefficients (Kazhdan–Patterson).
+4. **Lean.** Metaplectic theta and Kubota series, level-aspect Voronoi for cubic Gauss sums, Heath-Brown's
+   recursive sieve. The baseline has only partial cubic Kubota theory.
+
+**Verdict.** This is the first literature-backed mechanism that breaks the √-barrier for theta-uncorrelated
+w-rough vectors, which is exactly the master parameter. The proved size (ρ < 1e-4, under GRH, cubic family only)
+is about 10× short of the bar. Getting there needs obstacles 1–3 solved on paper, then 4. Recorded as the leading
+long-term route to the slot-cost atom; nothing bankable now.

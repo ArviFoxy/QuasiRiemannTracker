@@ -662,3 +662,29 @@ find which estimate produces (N C·N E)^{−1/3}.
 GS1 is a paper theorem (#96, not in Lean). Either target also needs the native or density machinery forked to
 carry the new gate, which is a large Lean project. Payoff scale: the physical slot 0.0675 → 0.08–0.11, i.e. a
 Λ-equivalent of 1.2–1.7, i.e. −1e-4 to −5e-4 if the steps can reach those faces.
+
+**Exceptional block traced (agent report, re-checked where cited) [Lean, read; agent's algebra marked D].**
+- **No large sieve is involved.** The sizes are exact finite-field Gauss correlations (baseline `Local`, `Unequal`,
+  `Partition`) plus the sextic-remainder row count (θ = 1/6, `ChildRows:67`). The 5/6 is 1 − θ and is not
+  tradable. The local saving per prime satisfies `localSaving` ≥ (c + d)/3 (baseline `SecondLedger:36,42`).
+- **The 2/3 is sharp for the lemma, not for the method.** The extremal configuration is C = E squarefree with every
+  common prime of type c = d = 1. There the chain discards a second forcing factor f^{−1/3}
+  (`forcing_third_ge_one`, `MixedInnerExceptionalLedger:141`). Keeping it gives a per-prime saving
+  ≥ (3/8)(c + d) [D], with equality only at (2, 2), i.e. rate 3/4. A generalized forcing count for v_P(A) = 2k
+  might reach rate α < 4/5 [I].
+- **But this is the FP version (PR 76's `FourthPower/`).** The cube-free fork that proves our native line has
+  α < 2/3 by structure (`CubeFree/RootParameters.lean`: "cube-free columns forbid FP's α ≥ 2/3"; WP-J principal
+  ledger). Target 1 therefore does not apply to the current line. It would apply to an FP-based step, which is weaker
+  overall (PR 76 ended near (0.968, 2.91)).
+
+**Past Λ = 2 inside Sil's framework there are two walls, not one [derived].**
+- **Native steps.** The overshoot gives Λ > 6KB/(1 + K) = 2.0027B at K = 0.501. The 6 is the sixth-power packing
+  cost of selected width ("c = 6 confirmed", `mixed-step/`), independent of the reference. So target 2 alone moves the
+  native end only from 2.005 to about 2.003.
+- **Density steps.** `face-region/CONTINUUM.md` gives σ = (B − κ)/(Λ − κ) with κ(q) = 4(5 − 3q)/(25 − 18q) and
+  q = 0.999Λ/(6B − Λ). At the end face q = 0.501, κ = 0.8753, σ = **0.110**, above the break-even 0.089. So
+  density continuation loses even without the reference gate. It would pay iff the HIGH count gave κ > 0.902 at
+  q ≈ 1/2.
+- **Conclusion.** A face past Λ = 2 needs K < 1/2 or κ(1/2) > 0.902 (both a square-root-barrier problem), and in
+  addition a relaxed reference (target 2). A sub-2 face from outside Sil's framework (a new face-proving method)
+  remains open and unpriced. [Face thread: double wall within the framework]

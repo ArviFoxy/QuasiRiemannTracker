@@ -1222,3 +1222,16 @@ whole frontier.
     mod u ≤ U (size U², diagonal for D ≤ U²) loses the factor U.
   - Deletion is the full Kummer content (fresh look 3).
   - So λ > 1/6 needs Möbius cancellation against the dual sextic sums: twisted Chowla. [open]
+
+**(X) after the Kubota functional equation [derived].**
+- The functional equation at index P shortens the n-sum from N to K. The root number ε(k, P) is a sextic character
+  of k mod P, so the slot sum becomes A*(k, n′) = Σ_P α_P (k/P)₆ (P/n′)₃‾. That is a prime sum of a Hecke character
+  of conductor ≲ K⁴, so the bootstrap gives |A*| ≪ L^{β₀−1/2} = L^{3/8} pointwise, against the trivial L^{1/2}.
+- But A* depends on k, which blocks the quadratic sieve. Cauchy–Schwarz over P returns to Σ_P Σ_k|Y_P(k)|² ≈ LK²,
+  i.e. N² after renormalizing. The pointwise saving is in sup norm, and the sieve needs L², where the sup bound is
+  worse than the average by L^{3/4}.
+- The cross form C*(P, P′) = Σ_k (k/PP′⁵)₆ Y_P(k)Ȳ_{P′}(k). Its inner k-sums have modulus ≈ L²K² and length K.
+  - Burgess saves Z^{0.044} per (n′, m′) pair, but the triangle inequality over K² pairs loses more.
+  - Poisson at modulus L²·n′m′ produces the same form over h ≲ L²K.
+  So the bootstrap's pointwise prime-sum savings and the large sieve's averaging do not combine here. [dead end
+  recorded]

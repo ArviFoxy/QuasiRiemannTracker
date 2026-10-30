@@ -1660,3 +1660,80 @@ for tiny gains. The K-wall is RIP of the sextic dictionary on a large-value row 
 - Our W is deterministic. Its selection depends on z only through z mod (slot primes), by reciprocity.
 - The bridge from random to large-value sets is the decorrelation of the twisted forms M*D_mM for m ≠ 1, a product
   of slot primes. The numerics say it holds; the proof is open.
+
+## 2026-10-30 · RIP program (3): randomized dictionaries — random RIP beyond √ in Lean, and what transfers to the sextic dictionary
+
+**Arvi's direction.** An explicit RIP dictionary is hard to build, but a random one provably has RIP. So design
+a randomized dictionary, and bound both its coherence and its RIP.
+
+**Formal result [Lean, built; `lean/arvi_rip/Hoeffding.lean`, `RandomRIP.lean`; standard axioms, ≈ 9 s each].**
+- `card_cond_le`: Hoeffding's inequality in counting form, conditional on the entries outside a set. The
+  coefficients may depend on the frozen entries. There is no measure theory: probability is counting over sign
+  patterns.
+- `exists_rip_sign_explicit`: if 2(N + 1)^{2k}·exp(−δ²n/4) < 1, some n × N sign matrix has unit columns whose
+  flat sums are ≤ δ√(|J₁||J₂|) for all disjoint J₁, J₂ of size ≤ k. Through `flat_rip_on` it then has RIP on
+  every support of size ≤ k, with constant 32δ(T + 2^{−T}√k)².
+- So k ≈ δ²n/(8 log(N + 1)), linear in n, while every coherence certificate stops at k ≲ √n
+  (`coherence_order_barrier`). Pairs of singletons give the coherence bound δ from the same theorem.
+- The proof uses randomness at exactly one point:
+  - `card_bad_le`: given the J₂ columns, the flat sum is a Rademacher sum in the J₁ entries. Its variance is
+    |J₁|·‖Σ_{J₂}u‖²/n.
+  - `flat_of_not_bad`: that variance is controlled by strong induction on |J₁| + |J₂|. Flat RIP on the smaller
+    pairs inside J₂ gives ‖Σ_{J₂}u‖² ≤ 2|J₂| through `flat_rip_on`. This avoids chaos bounds entirely.
+  - A union bound over (N + 1)^{2k} pairs finishes.
+
+**Randomizing the sextic dictionary itself is Jensen-neutral [derived].** Detection pins the mean of any
+randomized dictionary to the sextic one, because the slot must stay large on the zero rows. The energies the
+leaf needs (Σ_{z∈W}|A(z)|², and counts) are linear in the row measure and convex in the source vector. So no
+unbiased randomization can beat the mean dictionary:
+- **Random row thinning F_ω (density ρ = B^{−δ₀}).**
+  - Matrix Chernoff dilutes rigorously: ‖M_{F_ω}‖² ≤ ρB^{Θ₆} + L·log.
+  - But energy over W = (1/ρ)·E_ω[energy over W ∩ F_ω], so the dilution is paid back. In the closure,
+    n(1) = max(1, 7/6 − δ₀) + δ₀ ≥ 7/6 for every δ₀.
+- **Random sparse sources from a long range L₀ (density ν).**
+  - The random partial dictionary has RIP far beyond √, inherited from the full system over L₀ (the
+    Rudelson–Vershynin type theorem for bounded orthonormal systems).
+  - But E‖a_ω‖² = ‖a‖²/ν cancels the dilution. Detection then needs L₀ ≥ |W|·B, which is exactly
+    Halász–Montgomery.
+- **Random slot bands or amplifiers.** E_ω|T_ω|^{2k} is a deterministic majorant of 1_W, i.e. the full pool.
+- **Random signs or unitaries on rows or sources.** These leave the Gram unchanged, or destroy detection.
+
+So the design target is not a random perturbation of our dictionary. The independence has to come from the
+arithmetic itself.
+
+**The random multiplicative model reproduces the fixed point exactly [derived].**
+- Model each row as a random completely multiplicative function f_z with f_z(p) i.i.d. uniform on μ₆
+  (Frobenius data at distinct primes are independent coordinates, the CRT heuristic). Then the rows u_z are
+  i.i.d. isotropic vectors, E[u_z u_z*] = I on the sources.
+- Slot selection |Σ_q c_q f_z(q)| ≥ V tilts only the slot coordinates. Conditionally:
+  - E[u_z | selected] is supported on the sources built from slot primes alone, giving a low-rank mean;
+  - the rest stays isotropic and independent.
+- Matrix Chernoff on the independent part plus the rank-one mean gives ‖M_W‖² ≈ max(L, |W|·(slot energy))
+  = B^{max(x, 1−δ+δx)}. That is precisely the closure's fixed point, for every δ, including δ < 1/2.
+- This matches RIP (2): slot-selected W is spectrally random to ~2% at B = 3000. So the K-wall is exactly the
+  gap between the sextic family and its random multiplicative model on slot-selected rows.
+
+**What transfers, and the exact open step [derived].**
+- `flat_of_not_bad` is deterministic. Its induction and the union bound carry over to any dictionary for
+  which, for every pair, a large flat sum together with an admissible J₂ norm is "rare".
+- For a fixed deterministic W there is no probability to count over. The arithmetic analogue of the union
+  bound is a moment bound over all pairs of subsets of W, i.e. high moments tr(G_W^{2p}) with p ≈ log|W|.
+  Guth–Maynard reach p = 3 by other means.
+- In the multiplicative model the J₁ part is a multiplicative chaos, not a bounded Rademacher sum. Its tails
+  are only exp(−t^{2/d}) for degree d (hypercontractivity), so the model proof needs matrix Chernoff (as
+  above) rather than flat RIP plus a union bound.
+- The rigorous gap: row-independence for a deterministic family of B rows needs equidistribution of z
+  (norm ≤ B) in residue classes modulo N(m)·N(x)N(x′), which exceeds B. That is the self-dual wall in CRT
+  form, the same object as the open core of RIP (1) (decorrelation of M*D_mM).
+- **Verdict.**
+  - The randomized-dictionary program gives a clean formal theorem: random dictionaries pass √ through our
+    flat-RIP pipeline.
+  - It also gives an exact random model whose prediction is the K-wall's fixed point.
+  - What remains is a pseudo-randomness theorem for the sextic family against slot-coset tests.
+  [Lean, built; derived]
+
+**Next steps.**
+1. Formalize matrix Chernoff in the finite counting style of `card_cond_le`, then the multiplicative-model
+   theorem: i.i.d. Steinhaus rows conditioned on a slot statistic have selected norm at the fixed point.
+2. Look for an arithmetic family whose rows *are* independent at the needed scale, for example rows indexed
+   by products over disjoint prime sets, where CRT is exact. Price whether the faces can run on such a family.

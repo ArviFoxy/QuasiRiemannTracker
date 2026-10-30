@@ -626,3 +626,38 @@ fourth-power transfer have norm ≈ L/prefixNorm, i.e. an effective saving rate 
 At α′ = 3/4 the physical slot alone moves as far as a face at Λ ≈ 1.76 would. That is a sub-2 face from improving one
 lemma of Sil's machinery, with no classical-frontier input. Next: read the FP block (`MixedInnerExceptional*`) and
 find which estimate produces (N C·N E)^{−1/3}.
+
+**The other half: the short reference is the optimal sextic large sieve at its diagonal [Lean, read; derived].**
+- `MixedFirstReferenceActualCaps.centered_reference_gates` feeds the short-reference energy
+  (`MixedFirstActualReference.uniform_actual_reference`: one plain side ≤ Z^l, energy ≤ N(η)K·Z^ε, i.e. diagonal).
+  It needs two conditions:
+  - (a) l + (R + d)/2 + S ≤ (4/5)R;
+  - (b) R + d + 2l − P + S ≤ R/2.
+- These are exactly the thresholds where the cross terms of Θ₆(A, B) = A + B + A^{5/6}B^{1/3} + A^{1/3}B^{5/6} stay
+  below A = Z^R: A^{5/6}B^{1/3} ≤ A ⟺ B ≤ A^{1/2}, and A^{1/3}B^{5/6} ≤ A ⟺ B ≤ A^{4/5}.
+- de Faveri (arXiv 2610.04045, Thm 1.1) proves Θ_n(A, B) ≪ (AB)^ε(A + B + A^{1−1/n}B^{2/n} + A^{2/n}B^{1−1/n}) and
+  conjectures it optimal. Optimality is proved for n = 3, 4 by Gauss-sum (metaplectic) biases (Dunn–Radziwiłł;
+  de Faveri–Dunn–Hoffstein). So R/2 and 4R/5 are sharp **for general coefficients**.
+- If the threshold in (b) were γR, the gate would read P + 2S < (3/4 + γ/2)R. Gate (a) reads P + (5/3)S < (31/30)R
+  today, or < (19/18)R with 5/6 in place of 4/5.
+
+  | thresholds | slot at plain 0.76 | slot at plain 0.865 |
+  |---|---|---|
+  | (1/2, 4/5) today | 0.120 | 0.0675 |
+  | (2/3, 5/6), the GS1 terms without blocks | 0.162 | 0.109 |
+
+- #96's graded inverse theorem (Thm D6SF) says the excess over A + B comes only from blocks: correlations of β with
+  (m₀/n₁)₆ for N m₀ ≤ K₀. Its non-block terms are A^{1/6}B and A^{2/3}B^{1/2}, i.e. thresholds 5/6 and 2/3.
+- The short reference's β is smooth × slot primes (the row's Gauss sum is a unimodular row factor after Poisson,
+  as in R1). Its correlation with (m₀/·)₆ is a smooth or prime sum twisted by a small-modulus character, which is
+  small unless m₀ is trivial [heuristic].
+
+**Two independent new-math targets now define the face region beyond P + 2S ≤ 1.**
+1. The exceptional block's saving rate (2/3, the worst case of maximal common divisors). An agent is tracing its
+   origin.
+2. A structured sextic large sieve at the short reference: diagonal up to B ≤ A^{2/3} for smooth × prime vectors,
+   e.g. GS1 plus a no-block lemma.
+
+GS1 is a paper theorem (#96, not in Lean). Either target also needs the native or density machinery forked to
+carry the new gate, which is a large Lean project. Payoff scale: the physical slot 0.0675 → 0.08–0.11, i.e. a
+Λ-equivalent of 1.2–1.7, i.e. −1e-4 to −5e-4 if the steps can reach those faces.

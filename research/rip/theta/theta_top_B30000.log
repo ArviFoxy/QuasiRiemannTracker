@@ -1,0 +1,23 @@
+B=30000 L=30000  R=8474 rows  S=7768 sources   built in 34.1s
+  |G(z,1)|: min 1.000 max 1.000   (built 68.8s)
+top singular^2/S: [4.55  4.334 4.292 4.205 4.201 4.156]  MP edge 4.180
+  #0 s^2/S=4.550   corr(|u|^2, N z)=-0.02 corr(|v|^2, N x)=-0.30   IPR rows 2.1 sources 2.4
+     mass ratio on multiples (1 = neutral): p=7 rows 0.76 src 0.79; p=13 rows 0.91 src 0.86; p=19 rows 1.00 src 0.86; p=31 rows 0.90 src 0.95; p=37 rows 0.93 src 0.90; p=43 rows 0.97 src 0.97
+     row overlap with chi_z(m) for small m (random ~ 0.011): (-4, -3):0.108, (-1, 3):0.108, (2, 0):0.099, (2, 3):0.086
+     row overlap with unit twists chi_z(u): [0.073 0.028 0.028 0.062 0.024 0.024]
+     source overlap with (x/pi)^e for small pi (random ~ 0.011): (x/pi_13)^2:0.021, (x/pi_13)^2:0.021, (x/pi_37)^3:0.017, (x/pi_37)^3:0.017
+  #1 s^2/S=4.334   corr(|u|^2, N z)=-0.03 corr(|v|^2, N x)=-0.13   IPR rows 2.5 sources 2.1
+     mass ratio on multiples (1 = neutral): p=7 rows 0.76 src 0.82; p=13 rows 0.89 src 0.84; p=19 rows 0.94 src 0.90; p=31 rows 0.92 src 0.94; p=37 rows 0.91 src 0.89; p=43 rows 0.97 src 1.02
+     row overlap with chi_z(m) for small m (random ~ 0.011): (-1, -3):0.023, (2, 3):0.023, (2, 0):0.020, (5, 0):0.016
+     row overlap with unit twists chi_z(u): [0.01  0.023 0.023 0.007 0.043 0.043]
+     source overlap with (x/pi)^e for small pi (random ~ 0.011): (x/pi_7)^3:0.020, (x/pi_7)^3:0.020, (x/pi_19)^3:0.019, (x/pi_19)^3:0.019
+  #2 s^2/S=4.292   corr(|u|^2, N z)=-0.00 corr(|v|^2, N x)=-0.18   IPR rows 2.6 sources 2.1
+     mass ratio on multiples (1 = neutral): p=7 rows 0.76 src 0.82; p=13 rows 0.93 src 0.90; p=19 rows 0.86 src 0.96; p=31 rows 0.97 src 0.90; p=37 rows 0.95 src 0.94; p=43 rows 0.92 src 1.11
+     row overlap with chi_z(m) for small m (random ~ 0.011): (-1, 3):0.061, (-4, -3):0.061, (2, -3):0.044, (2, 0):0.043
+     row overlap with unit twists chi_z(u): [0.016 0.023 0.023 0.025 0.008 0.008]
+     source overlap with (x/pi)^e for small pi (random ~ 0.011): (x/pi_37)^2:0.025, (x/pi_37)^2:0.025, (x/pi_37)^3:0.019, (x/pi_37)^3:0.019
+  #3 s^2/S=4.205   corr(|u|^2, N z)=-0.04 corr(|v|^2, N x)=-0.11   IPR rows 2.0 sources 2.0
+     mass ratio on multiples (1 = neutral): p=7 rows 0.83 src 0.80; p=13 rows 0.90 src 0.87; p=19 rows 0.91 src 0.80; p=31 rows 0.94 src 0.94; p=37 rows 0.88 src 0.92; p=43 rows 0.97 src 1.08
+     row overlap with chi_z(m) for small m (random ~ 0.011): (2, 0):0.037, (2, 3):0.035, (-1, -3):0.035, (-4, -3):0.029
+     row overlap with unit twists chi_z(u): [0.003 0.029 0.029 0.    0.036 0.036]
+     source overlap with (x/pi)^e for small pi (random ~ 0.011): (x/pi_7)^3:0.019, (x/pi_7)^3:0.019, (x/pi_13)^3:0.016, (x/pi_13)^3:0.016

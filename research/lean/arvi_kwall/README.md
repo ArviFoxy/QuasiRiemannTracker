@@ -43,3 +43,16 @@ selected norm, rows of norm ≈ B selected at slope δ) they read:
   So the whole K-wall is the gap between Θ₆ and its dilution on thin row sets.
 - Numerics in `../../rip/`: the sextic Gram matrix follows Marchenko–Pastur, and slot large-value sets behave like
   random subsets. So the dilution holds empirically.
+
+## FlatDilution.lean (Arvi's "replace M by an operator with the RIP we need")
+
+- `norm_restrict_le`: write the row vector y = Ma as y = Σ_j c_j θ_j + r, with k flat row vectors
+  (|θ_j(z)|² ≤ c/R). Then on **every** row subset W:
+  ‖y|_W‖ ≤ √(k c |W|/R)·‖c‖ + ‖r‖, where the last norm is over all rows.
+- Take θ_j to be the theta row vectors conj G(z,1)·profile. The Gauss sums of squarefree moduli are unimodular, so
+  these vectors are flat. Take r = (I − P_V)Ma. Then
+  Σ_{z∈W} |⟨a, χ_z⟩|² ≤ (√(k c |W|/R)·‖P_V M‖ + ‖(I − P_V)M‖)²·‖a‖².
+- The theta excess is diluted by |W|/R on every thin set. What remains is the large sieve for the operator
+  (I − P_V)M on the **full** family. No thin-set argument and no condition on the detector are needed.
+- So the K-wall reduces to the full-family statement ‖(I − P_V)M‖² ≲ (R + S)·B^ε for a low-dimensional theta span
+  V (journal, "large sieve off V").

@@ -2196,3 +2196,112 @@ with plain sums of total length Z^μ. D1 by dispersion needs η = 0 on μ ∈ [0
   - P₄: Patterson asymptotics over 4-fold plain products. This is the S2 recursion's missing piece and needs
     type-A₄ multiple Dirichlet series.
   - Or the D4 sixth moment with ε₆ ≤ 0.153 (S3).
+
+## 2026-10-30 · Replacing M: the large sieve off the theta span V
+
+**Arvi's question.** We do not need RIP for the character matrix M. We need *some* operator that still lets the
+proof go through and has the RIP we need. Think of it coordinate-free.
+
+**Coordinate-free reduction [Lean: `lean/arvi_kwall/FlatDilution.lean`, `norm_restrict_le`, standard axioms].**
+- Write the row vector y = Ma as Σ_j c_j θ_j + r, with k flat row vectors (|θ_j(z)|² ≤ c/R). Then on every row
+  set W: ‖y|_W‖ ≤ √(k c |W|/R)·‖c‖ + ‖r‖, with the last norm over all rows.
+- With θ_j = conj G(z,1)·profile, the Gauss sums of the squarefree moduli, which are unimodular and hence flat,
+  this gives
+  Σ_{z∈W} |⟨a, χ_z⟩|² ≤ (√(k c |W|/R)·‖P_V M‖ + ‖(I − P_V)M‖)²·‖a‖².
+- So M′ = (I − P_V)M is the replacement operator.
+  - The theta excess is diluted by |W|/R on every thin row set, for free.
+  - What remains is a **full-family** bound for M′. No thin-set RIP and no condition on the detector are needed.
+- Target: **(LS off V)** ‖(I − P_V)M‖² ≲ (R + S)·B^ε at the balanced point, for a low-dimensional V. With it, the
+  K-wall falls (`arvi_kwall/Dilution.lean`: dilution at δ ≥ 1/6 gives the fixed point).
+
+**What V is [read: Xu–Sang, arXiv 2610.17675 (Oct 2026); Dunn–Radziwiłł 2109.07463].**
+- Xu–Sang prove a lower bound matching de Faveri's sextic sieve, A + B + A^{5/6}B^{1/3} + A^{1/3}B^{5/6} (at
+  balance Q^{7/6}). The excess is attained by Gauss-sum vectors on the moduli side,
+  λ_b ∝ W(N b/L)(N b/L)^{−1/2}·conj G(b,1).
+- Their Prop. 3.1: the energy of these vectors is
+  C·I(U)²·q^{5/6}L^{−2/3}·Ω(d, e) + O((q/L)(1 + X^{1/12}) + D), with I(U) = ∫U(t)t^{−5/6}dt.
+  - The main term is a **rank-one** form in the radial profile U, with one direction per twist class (d, e)
+    and weights decaying in d.
+  - Profiles with I(U) = 0 have only the error term.
+- This is the sextic analogue of Dunn–Radziwiłł's corrected cubic sieve: diagonal plus the rank-one bias
+  A^{2/3}|Σ_b β_b N(b)^{−1/6}|² plus error, proved up to B = A^{3/5} for their vector class (`frontier/DR_PRIME_SIEVE.md`).
+- So V = span of the theta row vectors conj G(z,1)·χ_z(u)·(N z/B)^{−5/6}·(N z/B)^{−1/2}, over a few small twists.
+  It is low-dimensional and flat.
+
+**Numerics [`rip/theta/theta_span.py`, `theta_profile.py`; logs `theta_B*.log`].** Here r = ‖Eᵀc‖²/(S‖c‖²),
+and the baseline is a random-phase vector with the same profile.
+
+| B = L | rows R / sources S | theta r (conj G·χ(u₀)) | random-phase r | excess | top singular²/S | off V (rank 1) | MP edge |
+|---|---|---|---|---|---|---|---|
+| 3000 | 848 / 778 | 1.093 | 0.943 ± 0.025 | +16% (6 sd) | 4.061 | 4.056 | 4.178 |
+| 10000 | 2816 / 2610 | 1.133 | 0.958 ± 0.016 | +18% (11 sd) | 4.261 | 4.261 | 4.156 |
+| 30000 | 8474 / 7768 | 1.177 | 0.949 ± 0.010 | +24% (23 sd) | 4.550 | 4.550 | 4.180 |
+
+- **The excess is rank one in the profile (B = 10⁴, `theta_profile.py`).**
+
+  | profile | I(U) | excess over random phases |
+  |---|---|---|
+  | t^{−5/6} | ≠ 0 | +18% (9.7 sd) |
+  | flat | ≠ 0 | +20% (13 sd) |
+  | linear, centred | 0 | −4.8% (−4.2 sd) |
+  | cosine, centred | 0 | +3.0% (1.9 sd) |
+
+  This is Xu–Sang's main-term structure, visible at small size.
+- Conjugation and twist matter. conj G variants sit +5–24% above baseline; G variants sit −10–0% below.
+- Twisted theta vectors conj G(z)·χ_z(m)·χ_z(u) for small m also carry excess, +11–13% at B = 10⁴, decaying with
+  N(m). These are Xu–Sang's twist classes (d, e) with weights Ω(d, e). Plain small-modulus vectors χ_z(m) on
+  their own carry none (r within ±4% of baseline).
+- **A second structure at the top of the spectrum.**
+  - At B = 3·10⁴ the top singular²/S is 4.55, against the Marchenko–Pastur edge 4.18. This is +9%, far beyond
+    Tracy–Widom size. At B = 10⁴ it is +2.5%.
+  - It is not theta: overlap with the theta direction is ≤ 0.01, and with the 420-dimensional twisted-theta span
+    it sits at the random level.
+  - It overlaps the block span: the 420 row vectors χ_z(m)·χ_z(u), N(m) ≤ 100, i.e. small-modulus sextic
+    characters on the rows (#96's GS1 blocks).
+    - At B = 10⁴ the top singular vector has 35% of its mass there, against 15% at random.
+    - The block span's compressed top eigenvalue is 2.57, against 1.86 for a random span of the same dimension.
+    - The top block combination overlaps the top singular vector at 0.50.
+  - At B = 3·10⁴ the top singular vector correlates with single χ_z(m) (N(m) = 4, 7) at about 0.1, ten times the
+    random level. Its right vector leans to small sources (corr(|v|², N x) = −0.30).
+  - At B = 3·10⁴ the top singular vector has 26% of its mass in the block span (5% at random). The block span's
+    compressed top eigenvalue is 2.46, against 1.43 for a random span. That is +72%, up from +38% at 10⁴, so the
+    structure grows. The top block combination is a near-uniform sum Σ_m χ_z(m) over small split primes m of
+    norm 7–43: a short prime-pool row vector.
+  - Block vectors are flat too (|χ_z(m)| = 1 on coprime rows), so they also dilute under `norm_restrict_le`.
+    V = theta span ⊕ block span keeps the reduction intact, at dimension k = O(#small m).
+- The theta direction is *not* the top of the spectrum. Its overlap with the top singular vectors is ≤ 0.06, and
+  removing it (or 12 twist variants) changes the top singular value by < 1.5%. At these sizes the top is the
+  Marchenko–Pastur bulk edge. The excess constant is small: the B^{1/6} growth (+16% → +18%) means the theta
+  direction would reach the bulk edge only near B ~ 10¹⁰⁺.
+- **Detectors.** Their projections onto the source-side theta direction E^T c/‖·‖ are 1.5–3× the random level,
+  and fall with B. At B = 10⁴: plain 0.038, smooth plain 0.060, prime pool 0.029, random 1/√S = 0.020. The
+  plain sum's theta part is the Patterson bias, ~L^{−1/6} relative, and contributes only A^{5/6}·‖a‖², below the
+  diagonal.
+
+**Why (LS off V) is hard: the balanced point is self-dual [derived, heuristic].**
+- Poisson in the moduli turns the source Gram into
+  S(x, x′) ≈ (B/q)·G(x)·conj G(x′)·c(x, x′)·Σ_k conj χ_k(x)·χ_k(x′)·ŵ(kB/q), with q ≈ N(xx′).
+  This is a dual large sieve over moduli k ≲ L²/B, applied to the Gauss-twisted vector a·G.
+- At L = B the dual family has the same size B. The balanced problem maps to itself (the fixed point of the
+  Heath-Brown/de Faveri recursion), conjugated by the unitary D_G.
+- **Theta part.** The dual moduli k = k₀j⁶ act like χ_{k₀} on the sources. Summing ŵ(k₀j⁶B/q) over j gives
+  ≈ (q/(k₀B))^{1/6}, which is separable in x and x′. That is one rank-one term per small k₀, with weight
+  N(k₀)^{−1/6}: the theta main term above (the eighth-moment fresh look also traced de Faveri's Z^{5/6}L^{1/3} to
+  these dual rows).
+- **Off V.** The generic dual rows give a balanced sieve for a·G again, so the recursion returns to itself.
+- A proof has to break the self-duality: use structure of the twisted class {a·G : a ⊥ V}.
+  - At the second level the relevant bias is G·G = G². At primes, G₆² = J̃·G₃ (g(χ)² = J(χ,χ)g(χ²)): a Jacobi-sum
+    Hecke character times a **cubic** Gauss sum.
+  - So the sextic recursion couples to the cubic theta function at its second step [heuristic]. Davenport–Hasse
+    for the quadratic factor is in Lean (`arvi_primeface/Duplication.lean`).
+- **Structural route.** V is the residual spectrum (the theta function) of the metaplectic 6-fold cover.
+  "Off V" is the cuspidal plus continuous spectrum. (LS off V) would follow from a Deshouillers–Iwaniec-type
+  spectral large sieve for metaplectic cusp forms. That is new math, with a clear statement.
+
+**Status.**
+- Reduction: formal.
+- V: theta part identified from the literature and confirmed numerically: rank one in the profile, flat, growing
+  like B^{1/6} with a small constant. A second, block-type part (small-modulus row characters, flat) shows up at
+  the top of the spectrum at B = 3·10⁴. Its mechanism is still open (logs `theta_top*.log`, `theta_topspan*.log`).
+- (LS off V): open, and the single statement the K-wall now needs.
+- Numerically it holds trivially at accessible sizes, where everything is Marchenko–Pastur.

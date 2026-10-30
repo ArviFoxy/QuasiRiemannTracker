@@ -1,0 +1,35 @@
+B=30000 L=30000  R=8474 rows  S=7768 sources   built in 13.7s
+  |G(z,1)|: min 1.000 max 1.000   (built 47.0s)
+  top singular^2/S: [4.55  4.334 4.292 4.205 4.201]   MP edge 4.180
+
+== dual energy ratio r(c) = |E^T c|^2/(S|c|^2) on the moduli side (random c -> 1) ==
+  random-phase rows, same profile: mean 0.949  sd 0.010  max 0.968
+  conj G * chi(u0) r = 1.177   overlap with top singular vector 0.009, with top-5 span 0.026
+  conj G * chi(u1) r = 1.180   overlap with top singular vector 0.007, with top-5 span 0.016
+  conj G * chi(u2) r = 1.180   overlap with top singular vector 0.007, with top-5 span 0.016
+  conj G * chi(u3) r = 1.159   overlap with top singular vector 0.003, with top-5 span 0.027
+  conj G * chi(u4) r = 1.174   overlap with top singular vector 0.002, with top-5 span 0.030
+  conj G * chi(u5) r = 1.174   overlap with top singular vector 0.002, with top-5 span 0.030
+  G * chi(u0)      r = 0.969   overlap with top singular vector 0.006, with top-5 span 0.045
+  G * chi(u1)      r = 0.937   overlap with top singular vector 0.014, with top-5 span 0.035
+  G * chi(u2)      r = 0.937   overlap with top singular vector 0.014, with top-5 span 0.035
+  G * chi(u3)      r = 0.926   overlap with top singular vector 0.005, with top-5 span 0.034
+  G * chi(u4)      r = 0.935   overlap with top singular vector 0.016, with top-5 span 0.037
+  G * chi(u5)      r = 0.935   overlap with top singular vector 0.016, with top-5 span 0.037
+  strongest theta variant: conj G * chi(u1) (r = 1.180)
+
+== Gram of theta vectors across radial profiles (bumps on [1,2]) ==
+  normalized Gram eigenvalues: [2.477 1.811 1.526 1.146 0.828]
+  baseline (random phases, same bumps): [2.062 1.817 1.534 1.158 0.819]
+  top eigenvector vs I(U)-weights: |cos| = 0.981
+
+== detectors: projection onto the source-side theta direction f = E^T c / |E^T c| ==
+  plain sum (all ones)   |<a,f>|/|a| = 0.0351   (random level 1/sqrt S = 0.0113)   energy |Ea|^2/(R|a|^2) = 0.816
+  plain, smooth weight   |<a,f>|/|a| = 0.0682   (random level 1/sqrt S = 0.0113)   energy |Ea|^2/(R|a|^2) = 0.859
+  prime pool             |<a,f>|/|a| = 0.0189   (random level 1/sqrt S = 0.0113)   energy |Ea|^2/(R|a|^2) = 0.941
+  random +-1             |<a,f>|/|a| = 0.0126   (random level 1/sqrt S = 0.0113)   energy |Ea|^2/(R|a|^2) = 0.949
+
+== large sieve off V: top singular^2/S of E with the theta row direction removed ==
+  full: 4.550   off V (rank 1): 4.550   MP edge 4.180
+  off V (12 twist variants): 4.547
+done in 269.1s

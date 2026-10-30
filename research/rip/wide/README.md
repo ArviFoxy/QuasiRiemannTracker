@@ -24,4 +24,7 @@ log `wide_B3000_L3000.log` (R = 848 rows, S = 778 sources). It measures:
   values, degrees 2 and 3 certify 10²–10⁵ times more than degree 1.
 - Degree ≥ 2 is already diagonal from the full-family sieve at length ≥ B², since Θ₆(2x) = 2x for x ≥ 1.
 - So the K-wall sits in the degree-1 part, and the next construction must put its randomness there (journal,
-  RIP (4)). `FRESH_LOOK.md` (in progress) collects designs for that.
+  RIP (4)). `FRESH_LOOK.md` (agent report) collects designs for that. Its scripts are `wide_tests.py` (typicality of
+  slot-selected W against random multiplicative and i.i.d. Schur models, centered fourth moments, 4-cycles) and
+  `wide_tables.py` (its tables), with results in `wide_B*_s*.json`. The certificate it recommends, the centered
+  fourth moment, is `../../lean/arvi_rip/FourthMoment.lean`.

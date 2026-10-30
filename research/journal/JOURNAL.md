@@ -2159,7 +2159,7 @@ out remain:
 - (b) a different detection step, in which a zero forces higher-degree statistics with tensor norms, e.g. products
   of *different* detectors.
 
-An Opus fresh look on exactly this question is running (`rip/wide/FRESH_LOOK.md`).
+A fresh look on exactly this question: entry "RIP (4) fresh look" below (`rip/wide/FRESH_LOOK.md`).
 
 **Product designs, formally [Lean: `lean/arvi_rip/TensorAmplify.lean`].**
 - `tensor_ge_amplified`: pairing the rows with other data, x_z ⊗ y_z, and detecting with a ⊗ e is amplification
@@ -2305,3 +2305,77 @@ and the baseline is a random-phase vector with the same profile.
   the top of the spectrum at B = 3·10⁴. Its mechanism is still open (logs `theta_top*.log`, `theta_topspan*.log`).
 - (LS off V): open, and the single statement the K-wall now needs.
 - Numerically it holds trivially at accessible sizes, where everything is Marchenko–Pastur.
+
+## 2026-10-30 · RIP (4) fresh look: what a random dictionary transfers, and the centered fourth moment (M₄)
+
+Agent report `rip/wide/FRESH_LOOK.md` (scripts `wide_tests.py`, `wide_tables.py`; results `wide_B*_s*.json`). The
+certificate is in Lean; the rest is the agent's derivation. I re-checked the product inequality and the
+diagonal-unitary step, not the Poisson/reciprocity factorization.
+
+**How a random dictionary D can be tied to the sextic rows on W [agent-derived, elementary].**
+- *Cross-coherence* (D incoherent with the rows) carries nothing. The standard basis has the minimal cross-coherence
+  S^{−1/2} with every flat family, including one whose rows are all equal.
+- *Factorization* M_W = A·Y_W with ‖A‖ ≤ c is the same as G_W ≼ c²·Y_W*Y_W (Douglas). For a model whose rows are
+  independent given the slot data, Y's Gram concentrates at I + Λ_W, so this is the diluted-bias statement of RIP (1).
+  The dual-frame bound of the previous entry is of this type (A = P_W Q^{−1/2}, Y = Q^{1/2}M). It is a
+  reformulation, exact as Q → P_W, and useful only through the choice of Q.
+- *Gram mixtures* E_ω M_ω M_ω* = G go the right way under Jensen (‖G_W‖ ≤ E‖M_{ω,W}‖²). But if the rows are
+  independent across z, the off-diagonal Gram is the Gram of the mean rows, and the randomness drops out.
+- *Products* never beat plain Gershgorin. With the detection cap |W|w² ≤ 1 + mμ_y,
+  U_prod = (1 + mμ_xμ_y)/w² ≥ (m + 1)(1 + mμ_xμ_y)/(1 + mμ_y) ≥ 1 + mμ_x = U_plain, since the middle term decreases in
+  μ_y. This sharpens `TensorAmplify`: the coherence that matters is the rows' own, inside W.
+- *Row Gauss sums.* After Poisson in the moduli, the pair phase is g̃(z)·conj g̃(z′) times a reciprocity sign
+  s(z, z′) (Hilbert symbols at 2 and 3, so O(1) classes). The g̃(z) form a diagonal unitary, which changes no
+  restricted norm and no spectral moment on W. So Gauss sums add no randomness, and at L ≈ B the off-diagonal Gram
+  on each class is ± its own dual: the reflection's self-duality as a matrix identity.
+
+**What does transfer: a centered moment of fixed order [Lean: `lean/arvi_rip/FourthMoment.lean`].**
+`fourth_moment_rip`: for any vectors u_z on a support S and any coefficients c,
+
+  |‖Σ c_z u_z‖² − Σ |c_z|²‖u_z‖²| ≤ (tr O⁴)^{1/4}·Σ |c_z|²,
+
+where O is the off-diagonal Gram on S and tr O⁴ = Σ_{z₁,z₃} |Σ_{z₂} O(z₁, z₂)O(z₂, z₃)|².
+- In the random model tr O⁴ ≈ 2|S|³L² (unnormalized rows of length L), so the certificate is o(L) up to |S| ≈ L^{2/3}.
+  In the K-wall, |W| = B^{1−δ}, so it covers every δ > 1/3: the whole barrier range of `arvi_kwall`.
+- Lower orders: mean-square coherence (order 2) is exactly the √-barrier. Uncentered traces tr(G_W^p) ≤ C|W|L^p give
+  γ = (1 − δ)/p and need p ≈ 35 to reach γ ≈ 0.015.
+
+**The missing inequality (M₄) [conjecture].** For the slot-selected W at slope δ ∈ (1/3, 1/2) and L ≤ B^{1+o(1)},
+
+  Σ_{z₁,z₃∈W} |Σ_{z₂∈W∖{z₁,z₃}} G(z₁, z₂)G(z₂, z₃)|² ≤ B^{4γ}L⁴.
+
+- With `fourth_moment_rip` it gives ‖G_W‖ ≤ L(1 + B^γ), the selected norm the leaf needs (γ ≲ 0.015 at the corner).
+- It splits into two parts:
+  - (M₄a) row mean-square coherence on W, from the backtracking walks: Σ_{z′∈W} |G(z, z′)|² ≲ B^{2γ}L²|W|^{−1/2}.
+  - (M₄b) the non-backtracking 4-cycles, which must cancel by B^{1/2−δ−γ} per step beyond square-root coherence:
+    B^{0.13} in total at δ = 0.452.
+- Square-root pointwise coherence (GRH strength) gives (M₄) only for δ ≥ 0.485.
+- Fourier form: an order-4 multiplicative energy of Ŵ(r) = Σ_{z∈W} χ_z(r) on source ratios. This is the centered,
+  order-4 analogue of Guth–Maynard's energy bound, in the multiplicative group, for a thin family with multiplying
+  conductors. Nothing of that strength is known.
+- The centered moment is not monotone in the row weights (G_W − D_W is indefinite). So the amplifier majorant
+  1_W ≤ |T|^{2k}/V^{2k} cannot be inserted, which is why amplify–reflect (monotone, uncentered) stalls. A proof must
+  use W itself.
+
+**Numerics [numerical; B = 3000 and 12000; |W| = B^{0.42}–B^{0.67}; slots of 4–20 primes].**
+- tr(E_W⁴) is 0.93–1.6 times 2|W|³/S². Sextic/model is 0.77–1.08: the excess is the slot spike, which the model
+  shares.
+- Row mean-square coherence on W has mean (0.96–1.24)·|W|/S and maximum ≤ 2|W|/S.
+- The 4-cycles cancel to 0.08–1.4% of their no-cancellation size. They are model-like at B = 12000. They are about 2×
+  the model (2–2.6σ) only with 14 slot primes at B = 3000.
+- The top eigenvalue is within ±4% of the slot-conditioned multiplicative model. An i.i.d. random Schur multiplier
+  sits 1.6–4% below every multiplicative model, so wide i.i.d. modulations are not a safe comparison class.
+- Caveat: B ≤ 12000 cannot tell a B^{−0.13} saving from a constant, and these slots are wide (s ≈ 0.4–0.6, against
+  0.03 at the corner).
+
+**Design D1, the dictionary's role.** The slot-conditioned random multiplicative dictionary keeps the slot and
+divisor values exact and draws every other prime value as an independent sixth root of unity per row. It satisfies
+the fourth-moment bound in the model with margin B^{3δ−1}, by a walk count plus Markov in counting style. It is not
+a step in the chain: it calibrates (M₄) and shows the certificate is sharp for model-typical W.
+
+**Reading.**
+- The transfer lemmas close the coherence-type ties. They do not close the factorization (dual-frame) route, which is
+  a reformulation. Whether some Q chosen without knowing W gives λ_max(P_W Q^{−1} P_W)·λ_max(M*QM) below the closure
+  is open.
+- The K-wall now has two concrete sufficient statements: (LS off V) for the full family (previous entry), or (M₄) on
+  W. Both sit at the self-dual point L = B, where Poisson maps each to itself.

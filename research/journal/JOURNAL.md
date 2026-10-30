@@ -1190,3 +1190,14 @@ standing record is therefore ours, and the next bar is unchanged at θ ≤ 0.873
 squarefree quadratic twists, needing only a Z^{0.001} saving over the trivial bound. Every tool in hand (polar
 subtraction, D–R's corrected sieve, the K-chart, the bootstrap) misses it. It is the cleanest open target in the
 whole frontier.
+
+**(X), literature and first attempts [web; derived].**
+- An extended search (2025–2026) finds nothing on mixed or second moments of quadratic twists of the cubic theta
+  function or the Kubota series. The nearest are quadratic-character theta-function moments (arXiv 2503.05269) and
+  quadratic twists of modular L-functions (arXiv 2208.07343).
+- Burgess on the k-sum. Each (n, m) term Σ_{k≤K}(k/nm)₂ (modulus nm ≍ N² = Z^{1.742}, length K = Z^{0.742}) has a
+  Burgess saving of Z^{0.044}. Summing |·| over the N² pairs loses Z^{0.83}, so cancellation in (n, m) is
+  indispensable.
+- Quadratic Poisson is an involution between the k-side (length K) and the h-side (length N²/K). Both sides'
+  diagonals are small (KL and NL, because (n/PP′)₃ cancels), and the off-diagonal maps to itself. So (X) is a
+  genuinely self-dual bilinear problem in two index-twisted cubic theta sequences. [open]

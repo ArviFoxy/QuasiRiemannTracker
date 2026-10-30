@@ -1411,3 +1411,32 @@ the trivial bound).
     Bucur–Diaconu, Florea.
   - (X) needs a power saving, L^{−η} = Z^{−0.001}, in an affine moment over Q(ω). That lies beyond the 2026 state
     of the art for the simplest affine case. The classification stands.
+
+## 2026-10-30 · How much selected norm the leaf needs below K = 1/2 (the K-wall quantified)
+
+**Question.** The closure barrier (`lean/arvi_kwall/`) shows that below slope 1/2 the selected norm can only be
+proved up to an excess γ = 1/6 over its fixed point (Θ₆ start). Does the leaf really need γ ≈ 0, or does a weaker
+norm price a native step at K < 1/2?
+
+**Model [numerical; `$SCRATCH/kwall/ledger_gamma*.py` on `selected-leaf/root_ledger.py`].**
+- The selected-norm term per root becomes max(X, (1 − δ + γ)y + δX).
+- Each geometry may also take the parent face on all rows, at price deletionNeed (slots deleted at the trivial
+  cost 1), keeping the better of the two prices.
+- The scan runs along the native lines K = 0.48 and 0.49.
+
+| what | result |
+|---|---|
+| selected norm alone, γ = 1/6 | fails by 0.164 at the tiny-slot balanced split (x₁ = x₂ ≈ 0.495, S → 0) |
+| best of norm and parent face, no selected norm at all | fails by O(1e-6–1e-5) at the t = 0 corner |
+| best of norm and parent face, γ = 0.02–0.06 | fails by +3e-7 to +4.5e-6 at S ≈ 0.03–0.10, x ≈ (0.40–0.47) each |
+| γ = 0 (fixed point) | passes with margin ≈ 2.5e-3 |
+
+**Reading.**
+- The parent face covers the tiny-slot corner. It cannot cover the t = 0 corner, where the selection pays its 6u
+  row cost (M = 1 − 6u), so there the selected norm must carry the price.
+- At that corner the effective source length is X_eff ≈ 0.96·y. The tolerance is γ ≲ 0.015 at δ = 0.48: the
+  selected norm at length B^{0.96} must be ≤ B^{0.996}.
+- For comparison, the full family has Θ₆(0.96) = 1.153 and the Θ₆ closure gives 1.148.
+- So the leaf below 1/2 needs a near-fixed-point selected norm next to the balanced point, beating the full
+  family by B^{0.157}. The Θ₆ closure is about 11× too weak. This confirms the K-wall at full strength: it is a
+  Guth–Maynard-type estimate, and the parent face only relieves the tiny-slot corner. [numerical model; derived]

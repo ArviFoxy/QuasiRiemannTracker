@@ -233,3 +233,34 @@ at equality; the selected branch has margin ≈ 0.003.
 - count face (0.99999, 2.2, cap 0.10): −6.3e-5.
 
 The Lean line reaches cap 0.128 at L = 2.1.
+
+## 2026-10-30 · R1 in Lean, the E5 retune and the fresh look
+
+**R1 [Lean, building; `research/lean/arvi_selected_leaf/R1/`].** The analytic input of the selected leaf,
+`SelectedRootEnergy K` for every cut `K ∈ [0.500001, 3/4]`, is proved by:
+- **Root split.** The heavy-row energy splits exactly over sixth-root classes (`RootSplit`).
+- **Direct route per class.** PR 93's selected norm (`ClassBound.direct_class`).
+- **Reflected route per class.** The baseline's reflected radial engine with the radical row character, whose
+  conductor is ≲ N(u)N(g) = Z^M N(r)^{-5} (`Reflected`, `ReflectedClass`). The separated energies are bounded
+  by the same norm.
+- **Root sum.** ζ_K(1+η) plus the interpolation min(a,b) ≤ a^{1-θ}b^θ (`RootSum.root_class_sum`).
+- **Exponent arithmetic.** Done in `Arith.bracket_bound`.
+- **Reductions.** To X₂ ≤ X₁ (`Swap`) and to slot weight ≤ Mcap + 1 (`Peel`), the latter at no exponent cost.
+
+The proof actually gives the slightly stronger price (P + s + (M − 2ℓ₁)₊/5 − M)₊, with ℓ₁ the longer length.
+
+Compile time: the per-base core `Body.cap_body` takes 32 s. An earlier version took 7 min because of
+`nlinarith`/`linarith` in a context of ~150 hypotheses and `set` over the large goal. Rule now in memory: small
+lemmas, `linarith only`, no `set` on big goals.
+
+**E5 retune [numerical, exact mirror; `research/return-tuning/E5_RETUNE.md`].** θ = 0.87350266 from the
+E5 face at Λ = 101/50, against the merged 0.87387234.
+
+**Fresh look [numerical, exact mirror; `research/fresh-look/REPORT.md`].**
+- Freeing the natural join and the plain floor of the count return (sMinus 3/100 → 27/1000, mMinus
+  377/1000 → 3/10) gives θ = 0.87343238.
+- Extending the E5 line to Λ = 401/200 (a = 1/1000) gives 0.87341198.
+- The transport floor margin 1/200 → 1/1000 gives 0.87339298 (moderate Lean).
+- The final theorem no longer needs the density chain, a large cut of the import closure.
+
+The Lean retune and the line extension are in progress.

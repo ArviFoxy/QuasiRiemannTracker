@@ -2088,3 +2088,28 @@ Report: `rip/moments_probe/PRIMEROWS.md` (scripts `primerows_*.py`, logs `logsP/
 - Nothing structural about prime moduli, so no "prime-row dictionary" lever.
 - The c-ordering confirms that the only structure in plain-sum moments is Poisson self-duality with the exact
   conductor, including the ramified factor at 1 − ω. That is the same statement as the reflection rule.
+
+## 2026-10-30 · Foundations audit: decision-driving facts now in Lean
+
+Arvi asked which "established" facts behind decisions were not formal. Status after this pass:
+
+| fact (decision it drove) | status |
+|---|---|
+| Randomizing the sextic dictionary is Jensen-neutral (random-dictionary designs set aside) | **Lean**: `arvi_rip/Thinning.lean` (`thin_avg`, `avg_bound_ge`, `thinning_pays_back`, `closure_payback`) |
+| Random dictionaries do have RIP beyond √ | Lean: `arvi_rip/RandomRIP.lean` |
+| D1 by row splitting is the K-wall | Lean: `arvi_primeface/RowSplit.lean` |
+| D1 by dispersion needs only the plain eighth moment (plus Huxley) | Lean: `arvi_primeface/Dispersion.lean` (Huxley as a hypothesis) |
+| Hölder and interpolation routes lose against the trivial bound; the pointwise bootstrap rule loses (2β−1−δ)m | **Lean**: `arvi_primeface/Dismissed.lean` |
+| Label line υ = 1/2 is optimal at the binding (T96 idea closed) | **Lean**: `arvi_primeface/Exponents.lean` (`label_line_optimal`, `label_pointwise_worse`) |
+| D–R prime vectors are diagonal exactly to B = A^{3/5}, slot cost 5/3 (target 0, D1 numerology) | **Lean**, the threshold arithmetic only: `dr_diagonal_iff` (D–R's propositions themselves are external) |
+| K-wall corner needs γ ≤ δ(1 − X_eff) | **Lean**: `kwall_corner` |
+| Quadratic Davenport–Hasse (D1's first reduction) | Lean: `arvi_primeface/Duplication.lean` |
+| K-wall barrier and its exact reduction to dilution | Lean: `arvi_kwall/` |
+
+**Still not formal (with reasons).**
+- **The pricing models** (Δθ as a function of Λ, the slot costs, the long slope, e): float re-implementations of the
+  Lean certificate chains. Certifying a price means building the chain, which is done only for submissions.
+- **External theorems used as inputs:** de Faveri's Θ₆, Huxley's large sieve (an explicit hypothesis where used),
+  matrix Chernoff (used only as evidence for random row sets), Heath-Brown–Patterson, and D–R's propositions.
+- **Numerical findings** (Marchenko–Pastur, the moments, the prime pool, the prime rows) are tagged [numerical]
+  and are not used as proof inputs anywhere.

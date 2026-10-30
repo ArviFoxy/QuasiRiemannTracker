@@ -1542,3 +1542,28 @@ structure of the index set), but not a route. A transfer would need, in order:
   δ < 1/2, or a structured sextic sieve with prime slots costing Λ < 2. The smooth part alone needs a
   Lindelöf-on-average fourth moment of the sextic family at X_eff ≈ 0.96 (Θ₆ gives excess 0.154 there).
   [derived; reclassification, no new route]
+
+## 2026-10-30 · The label line υ = 1/2 is optimal at the binding (closes an open idea from T96)
+
+**Setting [read; Collet's return paper `first-return.tex` (FR10–FR13), `foundations.tex` (195)–(197)].**
+- The physical numerator is a triple Mellin integral in (s, w, z), evaluated on (β + e, 1/2, 17/50). The −y/2 in
+  E_κ = 1/2 + 13h/75 − y/2 − ℓ/2 − 9d/100 + δ/2 + δp(ℓ − C/2) + (3/4)dR* comes from the label length Y = Z^y on
+  Re w = 1/2.
+- The Euler-product remainder H is ≪ q_u^ε on the whole box Re w ≥ −1/100, Re(s + w) ≥ 1 + ε₁ (paper (197)), so
+  the line could legally move down to Re w ≈ 1 − β. The w-variable also carries the row L-function L(w, ψ_u), of
+  conductor q_u ≈ Z^d.
+
+**Price on a line Re w = υ [derived].**
+- Hölder (4/3, 4) with the family fourth moment:
+  - for υ < 1/2 the functional equation gives Σ_u|L(υ)|⁴ ≈ Z^{d + 4(1/2−υ)d};
+  - the exponent is (3/4)dR + d/4 + (1/2 − υ)d + υy, which against υ = 1/2 changes by (1/2 − υ)(d − y);
+  - for υ > 1/2 it is (3/4)dR + d/4 + υy, worse by (υ − 1/2)y.
+- So υ = 1/2 is optimal iff d > y. At the binding edge newTop d = h ≈ 0.81 > y ≈ 0.47, a lower line loses
+  0.34 per unit of (1/2 − υ). For floor rows (d < y) the lower line wins, which is why the floor estimate uses
+  it.
+- Pointwise bootstrap convexity instead, with log|L(υ)| ≤ (β − υ)d/2 on [1 − β, β]: the exponent is
+  dR + (β − υ)d/2 + υy, with slope y − d/2 = +0.065, so it does prefer a low line. But at υ = 1/2 it is already
+  ≈ 0.09d above Hölder. At υ = 1 − β it gives 0.854 against Hölder's 0.806 at υ = 1/2 (exponents in log_Z, at
+  R = 0.607). A mixture cannot help, because Hölder rises at rate d − y = 0.34 while the pointwise bound falls at
+  only 0.065.
+- **Verdict.** The label line is not a lever at the binding. [dead; closes the T96-era open idea]

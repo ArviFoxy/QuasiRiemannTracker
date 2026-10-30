@@ -2451,3 +2451,63 @@ At B = L = 3·10⁴ (R = 8474 rows, S = 7768 sources), r = ‖Eᵀc‖²/(S‖c�
     detectors like the leaf's should satisfy it [heuristic].
 - **The K-wall itself is unchanged.** In this picture the spikes are flat rank-one pieces and dilute on thin W.
   What is left is the generic off-diagonal part at the self-dual point: the fresh look's (M₄).
+
+## 2026-10-30 · The top of the sextic spectrum is a reciprocity effect on low-frequency rows (not theta, not the mask)
+
+**Question.** The top singular value of the sextic matrix sat above the Marchenko–Pastur edge: +2.5% at B = 10⁴ and
++9% at 3·10⁴ (the "block structure"; mechanism open). Is it the coprimality mask, generic multiplicativity,
+small-prime structure, or arithmetic?
+
+**Numerics [`rip/theta/theta_mask.py`, `theta_models.py`, `theta_locate.py`, `theta_reciprocity.py`; logs
+`theta_mask_B*.log`, `theta_models_B10000.log`, `theta_locate_B10000.log`, `theta_reciprocity_B10000.log`].**
+The table gives the top singular value s²/S at B = L. Every model keeps E's zero pattern (shared primes) exactly.
+
+| B | sextic | i.i.d. phases | RSYM | RMM | EXACT(30), EXACT(300) | RCHAR |
+|---|---|---|---|---|---|---|
+| 3000 | 4.061 | 3.926 | 3.923 | 3.936 | – | – |
+| 10⁴ | 4.261 | 3.931–3.984 | 3.939–3.944 | 3.941–3.951 | 3.933–3.954 | 3.945–3.950 |
+| 3·10⁴ | 4.550 | 3.987–3.995 | – | – | – | – |
+
+The models:
+- RSYM: an independent uniform symbol for every pair (row prime, source prime). This is bi-multiplicative, but has no
+  reciprocity and no character structure.
+- RMM: independent random multiplicative rows.
+- EXACT(P₀): RMM with the true values at source primes of norm ≤ P₀, so each row is periodic in z modulo those primes.
+- RCHAR: the true symbols, with each row prime's character conjugated at random. Every row is still a genuine
+  character of the source mod z, but reciprocity fails.
+
+**Reading.**
+- **The right baseline is masked.** The mask lowers the random edge (4.14 → 3.95 at 10⁴). Against it the sextic top
+  is +3.4%, +7.8% and +14% at 3·10³, 10⁴ and 3·10⁴, so the excess grows.
+- **It is reciprocity.** Every model without reciprocity sits at the random level. That includes RCHAR, whose rows are
+  all genuine characters.
+- **Where it lives (10⁴).**
+  - Projecting the rows off the block span {χ_z(m)χ_z(u) : N(m) ≤ 100} (dimension 156) brings the top to 3.926, the
+    random level.
+  - Off the twisted-theta span of the same dimension it only falls to 4.123, which is what any subspace that size
+    removes (−0.12 for Marchenko–Pastur with 156 fewer rows).
+  - So the excess lives on low-frequency row directions: characters of z of small conductor. The top combination is
+    a short prime-pool row vector (`theta_topspan_B30000.log`).
+- **The small-prime mass deficit of the top vectors is the mask.** Rows and sources divisible by 7, 13 or 19 carry
+  less mass, and masked random vectors show the same.
+- **Breaking reciprocity also removes most of the theta spike.** RCHAR's theta vectors, built from its own Gauss sums,
+  have r = 0.98–1.01 against 0.943 ± 0.024 for random phases. The sextic's conj G has 1.09–1.13 against ≈ 0.95.
+
+**Mechanism [derived].**
+- In the Poisson dual the pair factor is χ_z(z′)·conj χ_{z′}(z).
+- Under reciprocity it is a sign s(z, z′), constant on O(1) classes. The dual atoms then add coherently, giving the
+  multiplicity spikes (theta) and a coherent low-frequency part.
+- Without reciprocity it is a varying sixth root of unity. The dual is then Schur-multiplied by a random-like phase
+  matrix, and both effects go away.
+
+**Consequences.**
+- Every deviation of the sextic sieve from random-matrix behaviour seen so far is a reciprocity (self-duality)
+  effect: the theta spikes and the low-frequency top.
+- Random models without reciprocity (RSYM, RMM) capture neither. On slot-selected W at B ≤ 12000 the fresh look still
+  found the sextic within ±4% of RMM-S, so neither effect shows on W at accessible sizes.
+- The low-frequency excess is flat (row characters are unimodular on coprime rows). At B = 10⁴ it spans
+  dimension 150–450. On a random thin W it dilutes like the theta part.
+- Whether it also dilutes on a slot-selected W is open. Its top combination is a short prime pool, the same kind of
+  row vector as the slot that selects W.
+- Its growth law is open: there are three points, and Θ₆ caps it at B^{1/6}.
+- (LS off V) has to put this low-frequency span into V, next to the twisted thetas.

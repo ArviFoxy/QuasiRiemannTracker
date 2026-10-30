@@ -1,0 +1,8 @@
+B=30000 L=30000  R=8474 rows  S=7768 sources   built in 16.5s
+  |G(z,1)|: min 1.000 max 1.000   (built 48.5s)
+zero entries: 0.049 of the matrix; MP edge (no mask) 4.180
+sextic E:        top s^2/S [4.55  4.334 4.292 4.205 4.201]   mass ratio on multiples: p=7 rows 0.76 src 0.79; p=13 rows 0.91 src 0.86; p=19 rows 1.00 src 0.86
+masked random 0: top s^2/S [3.987 3.979 3.974 3.966 3.959]   mass ratio on multiples: p=7 rows 0.80 src 0.79; p=13 rows 0.84 src 0.88; p=19 rows 0.87 src 0.84
+masked random 1: top s^2/S [3.995 3.981 3.97  3.961 3.953]   mass ratio on multiples: p=7 rows 0.79 src 0.77; p=13 rows 0.89 src 0.86; p=19 rows 0.85 src 0.85
+unmasked random:  top s^2/S [4.165 4.16  4.149 4.14  4.129]
+masked random top: mean 3.991 sd 0.004

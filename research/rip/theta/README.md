@@ -14,6 +14,10 @@ be small.
 | `theta_topspan.py B L` | overlap of the top singular vectors with the twisted-theta and block spans; compressed spectra |
 | `theta_twists.py B L [per_bin] [bins]` | excess of twisted thetas conj G·χ_z(u)·χ_z(m) as a function of N(m), against conjugate and plain twists and random phases |
 | `theta_powers.py B L` | which row vectors carry the excess: plain, conj G, G, and Gauss-sum powers |
+| `theta_mask.py B L [seeds]` | top singular values of E against random phases with E's exact zero pattern (the right baseline) |
+| `theta_models.py B L [seeds] [P0,...]` | top singular values of E against models with the same zero pattern: random symbols (RSYM), random multiplicative rows (RMM), exact small primes (EXACT), randomly conjugated row characters (RCHAR, reciprocity broken) |
+| `theta_locate.py B L` | top of E after projecting the rows off the block span or the twisted-theta span, or dropping small/large sources |
+| `theta_reciprocity.py B L [seed]` | theta excess in RCHAR, with its own Gauss sums |
 
 All scripts build E and the row Gauss sums through `theta_core.py`.
 
@@ -23,10 +27,13 @@ All scripts build E and the row Gauss sums through `theta_core.py`.
   - It is rank one in the profile: +18–20% when I(U) ≠ 0, and −5%…+3% when I(U) = 0. This matches Xu–Sang's
     Gauss-Gram main term, arXiv 2610.17675.
   - It is not the top of the spectrum: removing V changes the top singular value by < 0.1%.
-- **Block structure.** The top of the spectrum exceeds the Marchenko–Pastur edge by +2.5% (B = 10⁴) and +9%
-  (B = 3·10⁴). It sits partly in the span of small-modulus row characters χ_z(m), N(m) ≤ 100: 26–35% of the top
-  vector's mass, and the compressed top is +38% / +72% over a random span. The top block combination is a short
-  prime-pool row vector Σ_m χ_z(m). Mechanism open.
+- **Block structure = reciprocity.** Against the right baseline (random phases with E's zero pattern), the top of
+  the spectrum is +3.4%, +7.8% and +14% at B = 3·10³, 10⁴ and 3·10⁴.
+  - It lives on low-frequency rows: projecting off the block span χ_z(m)χ_z(u), N(m) ≤ 100, removes it. The top
+    block combination is a short prime pool Σ_m χ_z(m).
+  - Every model without reciprocity sits at the random level: random symbols, random multiplicative rows, exact
+    small primes, and randomly conjugated row characters (whose rows are still characters).
+  - Breaking reciprocity also removes most of the theta spike (`theta_reciprocity_B10000.log`).
 - **Both parts are flat** (unimodular on coprime rows), so both dilute on thin row sets.
 - **Only conj G carries the excess.** Plain rows show a deficit (r = 0.85–0.93 against 0.946). G and the Gauss-sum
   powers conj G², G², conj G³ are neutral (0.90–0.98) (`theta_powers_B30000.log`).

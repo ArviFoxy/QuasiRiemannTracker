@@ -1,0 +1,6 @@
+B=10000 L=10000  R=2816 rows  S=2610 sources   built in 1.8s
+  |G(z,1)|: min 1.000 max 1.000   (built 5.6s)
+RCHAR random phases 0.943 +- 0.024
+RCHAR conj G2 (its own Gauss sums) per unit twist: [0.996 0.979 0.979 0.991 1.007 1.007]
+RCHAR G2: [0.993 0.955 0.942 0.966 0.982 0.916]
+sextic conj G: [1.133 1.116 1.116 1.09  1.122 1.122]

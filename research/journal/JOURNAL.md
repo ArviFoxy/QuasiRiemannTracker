@@ -1201,3 +1201,24 @@ whole frontier.
 - Quadratic Poisson is an involution between the k-side (length K) and the h-side (length N²/K). Both sides'
   diagonals are small (KL and NL, because (n/PP′)₃ cancels), and the off-diagonal maps to itself. So (X) is a
   genuinely self-dual bilinear problem in two index-twisted cubic theta sequences. [open]
+
+## 2026-10-30 · B2 pinned: a Möbius sieve past the family size with saving (D/U)^λ, λ ≥ 0.1717
+
+**Derivation [derived; numerical check inline].**
+- The long word is count ≤ E(r) − δr, where U^{E(r)} bounds the Möbius mean value Σ_{N(u)≤U}|M_u(D)|²
+  (normalized, D = U^r).
+- The sixth-power deletion amplifier gives E = (1 + 5r)/6, i.e. U·(D/U)^{5/6}. That is a saving λ = 1/6 against the
+  large sieve's N-term D.
+- Suppose a Möbius sieve past the family size saves (D/H)^λ over the N-term on a family of size H < D. Amplify to
+  H = U^h. The exponent is (5h + 1)/6 + (r − h)(1 − λ), with derivative λ − 1/6 in h. So:
+  - λ < 1/6: amplify fully (h = r), which gives back deletion;
+  - λ > 1/6: do not amplify at all (h = 1), which gives E = 1 + (r − 1)(1 − λ).
+  The two mechanisms never combine.
+- The bar needs the envelope at r = t* = 1.129 lowered by 6.5e-4, i.e. **λ ≥ 0.1717** against deletion's 0.1667.
+- Equivalent statement (B2): Σ_{N(u)≤U}|Σ_{n~D} μ(n)χ_u(n)|² ≪ U·(D/U)^{0.8283}·D (unnormalized), for D = U^{1.129}.
+  That is a 3% better exponent than deletion.
+- Known methods:
+  - The thin sextic family (U rows) cannot borrow Barban–Davenport–Halberstam: embedding it in all Hecke characters
+    mod u ≤ U (size U², diagonal for D ≤ U²) loses the factor U.
+  - Deletion is the full Kummer content (fresh look 3).
+  - So λ > 1/6 needs Möbius cancellation against the dual sextic sums: twisted Chowla. [open]

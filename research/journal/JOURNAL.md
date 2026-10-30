@@ -1620,3 +1620,43 @@ for tiny gains. The K-wall is RIP of the sextic dictionary on a large-value row 
     Gauss-sum bias of the source.
   - A function-field or random-model check, and a proof for the twisted forms with m ≠ 1, are the next steps.
   [conjecture with mechanism; reduces the K-wall to a decorrelation estimate]
+
+## 2026-10-30 · RIP program (2): the sextic Gram matrix is Marchenko–Pastur; slot large-value sets behave like random sets
+
+**Experiment [numerical; `rip/zfamily.py`, `rip/mp_check.py`].**
+- Exact sextic residue symbols over Z[ω]:
+  - rows: squarefree ideals z with N(z) ∈ [B, 2B], coprime to 6;
+  - sources: primary x with squarefree N(x) ≤ L.
+- Row Gram matrix G = EEᴴ with E[z, x] = (x/z)₆. All values below are top eigenvalues divided by the mean diagonal
+  (≈ the number of sources S).
+
+| B, L | rows / S | full family | MP edge | ρ = 1/2: random / slot large-value / MP | ρ ≈ 0.05: random / slot / MP |
+|---|---|---|---|---|---|
+| 3000, 6000 | 0.57 | 3.155 | 3.087 | 2.340 / 2.337 / 2.357 | 1.340 / 1.318 / 1.365 |
+| 3000, 3000 | 1.15 | 4.270 | 4.287 | 3.015 / 3.036 / 3.087 | 1.484 / 1.471 / 1.533 |
+| 3000, 12000 | 0.29 | 2.442 | 2.356 | 1.900 / 1.934 / 1.900 | 1.251 / 1.236 / 1.252 |
+| 1500, 3000 (slot norm 120–240) | 0.58 | 2.994 | 3.097 | 2.303 / 2.329 / 2.363 | 1.325 / 1.401 / 1.366 |
+
+- Sets aligned with the top eigenvector (adversarial, not large-value sets) are higher: 2.885 against MP 2.357 at
+  B = 3000, ρ = 1/2.
+
+**Reading.**
+- At these scales the sextic dictionary is spectrally a random matrix. The top eigenvalue sits at the
+  Marchenko–Pastur edge (1 + √(R/S))². A rank-one Gauss-sum bias is not visible: the top five eigenvalues are
+  within 3% of each other.
+- At L = 4B the full family is 3.6% above MP. This may be the bias starting to show and should be watched at
+  larger B.
+- Large-value sets of a short prime (slot) polynomial, which is the selection the leaf actually uses, behave like
+  random subsets to within about 2%.
+- Hence, empirically, ‖M_W‖² ≈ L(1 + √(|W|/L))², which is L(1 + o(1)) for |W| = o(L). That is RIP far beyond √,
+  and the K-wall is a property of the proof method, not of the truth. [numerical; strong evidence for the
+  diluted-bias conjecture of RIP (1)]
+
+**What is provable now [derived].**
+- For a random row subset W of density ρ, matrix Chernoff gives
+  E‖Σ_{z∈W} u_z u_z*‖ ≤ ρ‖M‖² + C·L·log(dim) ≤ ρB^{7/6} + C·L·log.
+- With ρ = B^{−δ} this is ≤ L·O(log) once δ > 1/6. So for random thin row sets the selected norm reaches the fixed
+  point beyond √, using only Θ₆.
+- Our W is deterministic. Its selection depends on z only through z mod (slot primes), by reciprocity.
+- The bridge from random to large-value sets is the decorrelation of the twisted forms M*D_mM for m ≠ 1, a product
+  of slot primes. The numerics say it holds; the proof is open.

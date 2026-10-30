@@ -1,0 +1,25 @@
+[    0.0s] primes P (smallest 10): [(7, -1, -3), (7, 2, 3), (13, -4, -3), (13, -1, 3), (19, 2, -3), (19, 5, 3), (31, -1, -6), (31, 5, 6), (37, -7, -3), (37, -4, 3)]
+[    0.0s] K_max=20000, window X_max = cscale*K*N(P)_max = 2960000
+[    5.4s] columns (primary split-squarefree, 1 < N <= 2960000): 767816;  rows (1 < N <= 20000): 5184
+  prime Gauss sums: 106976 summed, 213952 total, max |g~_raw - snapped| = 9.85e-06
+[  232.1s] prime Gauss sums done (max snap 9.9e-06)
+[  293.3s] Phi (5184, 767816) built in 60.8s (3980 MB)
+[  295.9s] K=   250 R=   66 cols=   9584  G_PP/(R D_P): mean 0.756 [0.697,0.814]   rho mean 0.1051 rms*sqrt(R) 0.982
+[  296.0s] K=   350 R=   90 cols=  13426  G_PP/(R D_P): mean 0.749 [0.697,0.810]   rho mean 0.1067 rms*sqrt(R) 1.131
+[  296.1s] K=   491 R=  128 cols=  18836  G_PP/(R D_P): mean 0.808 [0.741,0.872]   rho mean 0.1017 rms*sqrt(R) 1.266
+[  296.3s] K=   687 R=  176 cols=  26372  G_PP/(R D_P): mean 0.828 [0.765,0.915]   rho mean 0.0763 rms*sqrt(R) 1.095
+[  296.5s] K=   963 R=  246 cols=  36962  G_PP/(R D_P): mean 0.831 [0.737,0.966]   rho mean 0.0609 rms*sqrt(R) 1.088
+[  296.8s] K=  1349 R=  350 cols=  51770  G_PP/(R D_P): mean 0.851 [0.778,1.005]   rho mean 0.0473 rms*sqrt(R) 0.984
+[  297.3s] K=  1889 R=  486 cols=  72522  G_PP/(R D_P): mean 0.854 [0.802,0.940]   rho mean 0.0441 rms*sqrt(R) 1.080
+[  298.6s] K=  2647 R=  680 cols= 101616  G_PP/(R D_P): mean 0.870 [0.814,0.904]   rho mean 0.0352 rms*sqrt(R) 0.992
+[  300.1s] K=  3707 R=  962 cols= 142298  G_PP/(R D_P): mean 0.879 [0.838,0.911]   rho mean 0.0265 rms*sqrt(R) 0.959
+[  303.9s] K=  5194 R= 1348 cols= 199392  G_PP/(R D_P): mean 0.879 [0.829,0.908]   rho mean 0.0223 rms*sqrt(R) 0.936
+[  310.0s] K=  7275 R= 1884 cols= 279276  G_PP/(R D_P): mean 0.878 [0.843,0.912]   rho mean 0.0192 rms*sqrt(R) 0.988
+[  319.2s] K= 10192 R= 2656 cols= 391262  G_PP/(R D_P): mean 0.885 [0.867,0.897]   rho mean 0.0197 rms*sqrt(R) 1.147
+[  334.4s] K= 14277 R= 3690 cols= 548106  G_PP/(R D_P): mean 0.888 [0.877,0.899]   rho mean 0.0174 rms*sqrt(R) 1.246
+[  371.3s] K= 20000 R= 5184 cols= 767816  G_PP/(R D_P): mean 0.896 [0.887,0.906]   rho mean 0.0145 rms*sqrt(R) 1.209
+[  371.3s] saved results/A_true_lin_c4_K20000_np10.npz
+
+real	6m13.373s
+user	11m39.600s
+sys	0m32.500s

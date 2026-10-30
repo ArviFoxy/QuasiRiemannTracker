@@ -1,0 +1,52 @@
+[    0.4s] B=192000: 32584 prime ideals (norm <= 384000)
+[    0.4s] B=192000: 54202 rows (squarefree, N(u) in [B,2B], prime to 6)   [0.282 B]   (0.4s)
+[    0.4s] B=192000: 182 source elements in union of windows; m=0.43: N=187.0 C=48, m=0.5: N=438.2 C=116
+[    3.0s] B=192000: symbol table (32584, 182) (3.0s)
+[    3.7s] B=192000: diagonals done (3.7s)
+[   18.8s] B=192000: done (18.8s)
+
+--- M4 = sum_u |S_u|^4 / (R N^2);  actual vs multiplicative surrogate (mean of 12), iid-phase surrogate, exact diagonal T/N^2 (no coprimality mask), full Dirichlet family mod q ~ R
+      B     m       N     C      R  N^2/R |  actual (se)     |  mult  (sd/rep) |   iid  | T/N^2  |  full  | actual/mult |   z   | excess*R/N^2
+ 192000  0.43   187.0    48  54202     0.65 |   0.1172 (0.0011) |   0.1207 (0.0011) |  0.1181 |   0.1341 |     2.92 |     0.970 | -3.07 | -5.54e-03
+ 192000  0.50   438.2   116  54202     3.54 |   0.1299 (0.0013) |   0.1308 (0.0009) |  0.1265 |   0.1453 |     5.57 |     0.993 | -0.68 | -2.50e-04
+
+--- M6 = sum_u |S_u|^6 / (R N^3);  actual vs multiplicative surrogate (mean of 12), iid-phase surrogate, exact diagonal T/N^3 (no coprimality mask), full Dirichlet family mod q ~ R
+      B     m       N     C      R  N^3/R |  actual (se)     |  mult  (sd/rep) |   iid  | T/N^3  |  full  | actual/mult |   z   | excess*R/N^3
+ 192000  0.43   187.0    48  54202   120.63 |   0.0850 (0.0015) |   0.0910 (0.0017) |  0.0853 |   0.1065 |   129.21 |     0.935 | -3.79 | -4.93e-05
+ 192000  0.50   438.2   116  54202  1552.16 |   0.1015 (0.0019) |   0.1050 (0.0014) |  0.0953 |   0.1235 |  1554.51 |     0.967 | -1.79 | -2.23e-06
+[   19.7s] B=384000: 61550 prime ideals (norm <= 768000)
+[   19.8s] B=384000: 108368 rows (squarefree, N(u) in [B,2B], prime to 6)   [0.282 B]   (0.9s)
+[   19.8s] B=384000: 250 source elements in union of windows; m=0.43: N=251.9 C=64, m=0.5: N=619.7 C=152
+[   25.8s] B=384000: symbol table (61550, 250) (7.0s)
+[   27.9s] B=384000: diagonals done (9.1s)
+[   57.3s] B=384000: done (38.4s)
+
+--- M4 = sum_u |S_u|^4 / (R N^2);  actual vs multiplicative surrogate (mean of 12), iid-phase surrogate, exact diagonal T/N^2 (no coprimality mask), full Dirichlet family mod q ~ R
+      B     m       N     C      R  N^2/R |  actual (se)     |  mult  (sd/rep) |   iid  | T/N^2  |  full  | actual/mult |   z   | excess*R/N^2
+ 384000  0.43   251.9    64 108368     0.59 |   0.1200 (0.0009) |   0.1200 (0.0008) |  0.1160 |   0.1329 |     2.97 |     1.000 | +0.01 | +1.58e-05
+ 384000  0.50   619.7   152 108368     3.54 |   0.1088 (0.0008) |   0.1128 (0.0009) |  0.1096 |   0.1235 |     5.69 |     0.964 | -5.06 | -1.15e-03
+
+--- M6 = sum_u |S_u|^6 / (R N^3);  actual vs multiplicative surrogate (mean of 12), iid-phase surrogate, exact diagonal T/N^3 (no coprimality mask), full Dirichlet family mod q ~ R
+      B     m       N     C      R  N^3/R |  actual (se)     |  mult  (sd/rep) |   iid  | T/N^3  |  full  | actual/mult |   z   | excess*R/N^3
+ 384000  0.43   251.9    64 108368   147.53 |   0.0912 (0.0013) |   0.0919 (0.0012) |  0.0833 |   0.1068 |   157.63 |     0.992 | -0.52 | -4.68e-06
+ 384000  0.50   619.7   152 108368  2195.82 |   0.0774 (0.0011) |   0.0833 (0.0015) |  0.0766 |   0.0955 |  2209.90 |     0.929 | -5.13 | -2.68e-06
+
+=== all ===
+
+--- M4 = sum_u |S_u|^4 / (R N^2);  actual vs multiplicative surrogate (mean of 12), iid-phase surrogate, exact diagonal T/N^2 (no coprimality mask), full Dirichlet family mod q ~ R
+      B     m       N     C      R  N^2/R |  actual (se)     |  mult  (sd/rep) |   iid  | T/N^2  |  full  | actual/mult |   z   | excess*R/N^2
+ 192000  0.43   187.0    48  54202     0.65 |   0.1172 (0.0011) |   0.1207 (0.0011) |  0.1181 |   0.1341 |     2.92 |     0.970 | -3.07 | -5.54e-03
+ 192000  0.50   438.2   116  54202     3.54 |   0.1299 (0.0013) |   0.1308 (0.0009) |  0.1265 |   0.1453 |     5.57 |     0.993 | -0.68 | -2.50e-04
+ 384000  0.43   251.9    64 108368     0.59 |   0.1200 (0.0009) |   0.1200 (0.0008) |  0.1160 |   0.1329 |     2.97 |     1.000 | +0.01 | +1.58e-05
+ 384000  0.50   619.7   152 108368     3.54 |   0.1088 (0.0008) |   0.1128 (0.0009) |  0.1096 |   0.1235 |     5.69 |     0.964 | -5.06 | -1.15e-03
+
+--- M6 = sum_u |S_u|^6 / (R N^3);  actual vs multiplicative surrogate (mean of 12), iid-phase surrogate, exact diagonal T/N^3 (no coprimality mask), full Dirichlet family mod q ~ R
+      B     m       N     C      R  N^3/R |  actual (se)     |  mult  (sd/rep) |   iid  | T/N^3  |  full  | actual/mult |   z   | excess*R/N^3
+ 192000  0.43   187.0    48  54202   120.63 |   0.0850 (0.0015) |   0.0910 (0.0017) |  0.0853 |   0.1065 |   129.21 |     0.935 | -3.79 | -4.93e-05
+ 192000  0.50   438.2   116  54202  1552.16 |   0.1015 (0.0019) |   0.1050 (0.0014) |  0.0953 |   0.1235 |  1554.51 |     0.967 | -1.79 | -2.23e-06
+ 384000  0.43   251.9    64 108368   147.53 |   0.0912 (0.0013) |   0.0919 (0.0012) |  0.0833 |   0.1068 |   157.63 |     0.992 | -0.52 | -4.68e-06
+ 384000  0.50   619.7   152 108368  2195.82 |   0.0774 (0.0011) |   0.0833 (0.0015) |  0.0766 |   0.0955 |  2209.90 |     0.929 | -5.13 | -2.68e-06
+
+real	0m57.639s
+user	1m57.392s
+sys	0m1.703s

@@ -1,0 +1,12 @@
+=== A_randphasesym_lin_K20000_np10: --kmax 20000 --nprimes 10 --w lin --gmode randphasesym --nrep 10
+real	3m56.594s
+user	3m55.701s
+sys	1m26.594s
+=== A_randcubesym_lin_K20000_np10: --kmax 20000 --nprimes 10 --w lin --gmode randcubesym --nrep 10
+real	3m45.262s
+user	4m41.028s
+sys	1m12.135s
+=== A_true_lin_K50000_np10: --kmax 50000 --kmin 500 --ngrid 16 --nprimes 10 --w lin --gmode true
+real	4m49.545s
+user	7m5.112s
+sys	1m22.818s

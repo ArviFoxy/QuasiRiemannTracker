@@ -1,0 +1,12 @@
+=== B_zfam_big: --B 192000 384000 --m 0.43 0.5 --nrep 12 --seed 22 --sources zfamily
+real	0m57.639s
+user	1m57.392s
+sys	0m1.703s
+=== B_odd_big: --B 192000 --m 0.43 0.5 --nrep 12 --seed 21 --sources odd
+real	0m14.010s
+user	0m39.507s
+sys	0m0.973s
+=== B_nosq_big: --B 192000 384000 --m 0.43 0.5 --nrep 12 --seed 22 --sources nosq
+real	0m57.407s
+user	2m45.644s
+sys	0m4.084s

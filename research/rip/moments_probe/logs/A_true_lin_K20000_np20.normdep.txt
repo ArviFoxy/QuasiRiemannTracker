@@ -1,0 +1,10 @@
+====================================================================================================
+results/A_true_lin_K20000_np20.npz : dependence on N(P) N(P'), pairs sorted by the product; mean zeta^2 over K >= 700 (random: 1)
+   N(P)N(P') in [49, 469]  (38 pairs)   mean zeta^2 = 1.085   (conj pairs among them: 3)
+   N(P)N(P') in [469, 949]  (38 pairs)   mean zeta^2 = 0.981   (conj pairs among them: 0)
+   N(P)N(P') in [949, 1849]  (38 pairs)   mean zeta^2 = 1.138   (conj pairs among them: 3)
+   N(P)N(P') in [1891, 2923]  (38 pairs)   mean zeta^2 = 1.230   (conj pairs among them: 0)
+   N(P)N(P') in [2923, 6241]  (38 pairs)   mean zeta^2 = 1.259   (conj pairs among them: 4)
+   corr(log N(P)N(P'), log zeta^2) = +0.153;  slope of log zeta^2 vs log(N(P)N(P')) = +0.088
+   diagonal ratio G_PP/(R D_P) averaged over the fit range, per P (norm): 7:0.926 7:0.926 13:0.881 13:0.881 19:0.897 19:0.897 31:0.911 31:0.911 37:0.916 37:0.916 43:0.895 43:0.895 61:0.903 61:0.903 67:0.901 67:0.901 73:0.902 73:0.902 79:0.886 79:0.886
+   slope of log(diag ratio) vs log N(P): -0.005

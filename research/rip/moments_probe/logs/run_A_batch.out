@@ -1,0 +1,32 @@
+=== A_true_lin_K20000_np10: --kmax 20000 --nprimes 10 --w lin --gmode true
+real	0m40.433s
+user	1m19.792s
+sys	0m10.296s
+=== A_true_lin_K20000_np20: --kmax 20000 --nprimes 20 --w lin --gmode true
+real	1m58.328s
+user	4m14.383s
+sys	0m22.388s
+=== A_true_sq_K20000_np10: --kmax 20000 --nprimes 10 --w sq --gmode true
+real	0m46.997s
+user	1m20.410s
+sys	0m10.771s
+=== A_true_bump_K20000_np10: --kmax 20000 --nprimes 10 --w bump --gmode true
+real	0m48.753s
+user	1m20.404s
+sys	0m12.309s
+=== A_true_lin_c025_K20000_np10: --kmax 20000 --nprimes 10 --w lin --gmode true --cscale 0.25
+real	0m10.146s
+user	0m13.901s
+sys	0m2.987s
+=== A_true_lin_c4_K20000_np10: --kmax 20000 --nprimes 10 --w lin --gmode true --cscale 4
+real	6m13.373s
+user	11m39.600s
+sys	0m32.500s
+=== A_randphase_lin_K20000_np10: --kmax 20000 --nprimes 10 --w lin --gmode randphase --nrep 10
+real	2m56.880s
+user	4m13.383s
+sys	0m59.389s
+=== A_randcube_lin_K20000_np10: --kmax 20000 --nprimes 10 --w lin --gmode randcube --nrep 10
+real	2m53.943s
+user	5m17.889s
+sys	1m5.037s

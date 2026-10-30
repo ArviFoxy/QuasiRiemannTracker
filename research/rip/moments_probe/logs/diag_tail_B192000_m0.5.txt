@@ -1,0 +1,29 @@
+R 54202 C 176 N 438.2
+mean |S|^2/N: actual 0.3804 mult 0.3780
+M4: actual 0.3008 mult 0.3065 ; M6: actual 0.3658 mult 0.4002
+bin of |S|^2/N        frac actual  frac mult  | share of sum|S|^6: actual  mult
+[ 0.00, 0.25)      0.4895      0.4976     |  0.0042   0.0038
+[ 0.25, 0.50)      0.2514      0.2491     |  0.0370   0.0333
+[ 0.50, 1.00)      0.1829      0.1775     |  0.1897   0.1696
+[ 1.00, 1.50)      0.0534      0.0534     |  0.2594   0.2422
+[ 1.50, 2.00)      0.0158      0.0145     |  0.2241   0.1860
+[ 2.00, 3.00)      0.0063      0.0069     |  0.2113   0.2314
+[ 3.00, 4.00)      0.0007      0.0008     |  0.0676   0.0774
+[ 4.00, 6.00)      0.0000      0.0002     |  0.0067   0.0563
+[ 6.00, 8.00)      0.0000      0.0000     |  0.0000   0.0000
+[ 8.00,12.00)      0.0000      0.0000     |  0.0000   0.0000
+[12.00,20.00)      0.0000      0.0000     |  0.0000   0.0000
+[20.00,1000000000.00)      0.0000      0.0000     |  0.0000   0.0000
+max |S|^2/N: actual 4.06  mult 5.31
+by number of prime factors (M6 actual / mult):
+  k=1 rows  15246  M6 actual 0.4517 mult 0.5119 ratio 0.882 | M2 actual 0.4082 mult 0.4070
+  k=2 rows  25672  M6 actual 0.3670 mult 0.4008 ratio 0.916 | M2 actual 0.3835 mult 0.3803
+  k=3 rows  11796  M6 actual 0.2796 mult 0.2797 ratio 0.999 | M2 actual 0.3484 mult 0.3458
+  k=4 rows   1467  M6 actual 0.1510 mult 0.2035 ratio 0.742 | M2 actual 0.2957 mult 0.2996
+by smallest prime norm:
+  smallest N in [1,10) rows  12719  M6 actual 0.2554 mult 0.2603 ratio 0.981
+  smallest N in [10,30) rows  10451  M6 actual 0.3466 mult 0.3367 ratio 1.029
+  smallest N in [30,100) rows   7830  M6 actual 0.3913 mult 0.4381 ratio 0.893
+  smallest N in [100,1000) rows   7956  M6 actual 0.3779 mult 0.4562 ratio 0.828
+  smallest N in [1000,1000000000) rows  15246  M6 actual 0.4517 mult 0.5119 ratio 0.882
+rows with only inert primes (S real): 24

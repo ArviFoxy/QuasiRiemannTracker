@@ -1,0 +1,32 @@
+====================================================================================================
+null calibration: 10 replicas of results/A_randphase_lin_K20000_np10_r*.npz
+   (K>=700); each entry: mean +- sd over replicas
+   class  n_pairs  eta(mean rho)    eta(rms rho)     eta vs R      mean zeta (fit range)    zeta at K_max
+   conj       5    0.447 +- 0.146    0.467 +- 0.135    0.445 +- 0.146    0.951 +- 0.058     0.940 +- 0.198
+   diff      40    0.494 +- 0.042    0.498 +- 0.042    0.493 +- 0.042    0.966 +- 0.037     0.946 +- 0.071
+   all       45    0.489 +- 0.035    0.494 +- 0.034    0.487 +- 0.035    0.966 +- 0.036     0.948 +- 0.058
+   diagonal ratio G_PP/(R D_P) at K_max: 0.959 +- 0.003;  slope in log K over fit range: -0.002
+====================================================================================================
+null calibration: 10 replicas of results/A_randcube_lin_K20000_np10_r*.npz
+   (K>=700); each entry: mean +- sd over replicas
+   class  n_pairs  eta(mean rho)    eta(rms rho)     eta vs R      mean zeta (fit range)    zeta at K_max
+   conj       5    0.503 +- 0.170    0.515 +- 0.164    0.501 +- 0.169    0.929 +- 0.135     0.902 +- 0.222
+   diff      40    0.514 +- 0.025    0.509 +- 0.022    0.512 +- 0.025    0.996 +- 0.058     0.993 +- 0.082
+   all       45    0.514 +- 0.023    0.511 +- 0.022    0.512 +- 0.022    0.992 +- 0.051     0.986 +- 0.080
+   diagonal ratio G_PP/(R D_P) at K_max: 0.957 +- 0.004;  slope in log K over fit range: -0.002
+====================================================================================================
+null calibration: 10 replicas of results/A_randphasesym_lin_K20000_np10_r*.npz
+   (K>=700); each entry: mean +- sd over replicas
+   class  n_pairs  eta(mean rho)    eta(rms rho)     eta vs R      mean zeta (fit range)    zeta at K_max
+   conj       5    0.524 +- 0.105    0.521 +- 0.091    0.522 +- 0.104    1.359 +- 0.136     1.251 +- 0.291
+   diff      40    0.481 +- 0.069    0.488 +- 0.068    0.479 +- 0.069    0.989 +- 0.039     0.984 +- 0.113
+   all       45    0.488 +- 0.058    0.495 +- 0.053    0.486 +- 0.058    1.041 +- 0.047     1.021 +- 0.112
+   diagonal ratio G_PP/(R D_P) at K_max: 0.957 +- 0.006;  slope in log K over fit range: -0.007
+====================================================================================================
+null calibration: 10 replicas of results/A_randcubesym_lin_K20000_np10_r*.npz
+   (K>=700); each entry: mean +- sd over replicas
+   class  n_pairs  eta(mean rho)    eta(rms rho)     eta vs R      mean zeta (fit range)    zeta at K_max
+   conj       5    0.475 +- 0.116    0.464 +- 0.120    0.473 +- 0.116    1.260 +- 0.137     1.334 +- 0.253
+   diff      40    0.524 +- 0.052    0.525 +- 0.050    0.522 +- 0.052    1.002 +- 0.071     0.979 +- 0.087
+   all       45    0.518 +- 0.052    0.517 +- 0.053    0.516 +- 0.052    1.039 +- 0.065     1.028 +- 0.078
+   diagonal ratio G_PP/(R D_P) at K_max: 0.956 +- 0.005;  slope in log K over fit range: -0.006

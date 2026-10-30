@@ -1822,3 +1822,55 @@ z first, the plain sums kept as Type-I coefficients, no reflection of the plain 
   window [0.75, 0.87]. Continue only if (1 − m₁ − m₂)/s_max ≤ 1.85.
 - Numerics running in parallel: `rip/prime_pool/` (empirical Λ for zero-aligned, random and Patterson-biased
   pools) and `rip/moments_probe/` (D2's fixed-index cross-correlations; D4's packet sixth moment).
+
+## 2026-10-30 · D2 and D4 numerics: fixed-index cross-correlations are random-like; the thin family's sixth moment has no N-term
+
+Scripts, logs and tables: `rip/moments_probe/` (README). Delegated run; the lead re-ran the self-test
+(`test_probeB.py`: brute force equals the pipeline, multiplicativity, exact T4/T6 counts).
+
+**D2: fixed-index cross-correlations [numerical].**
+- Setup: S(k, P) = Σ_n g̃₃(n)(n/k)₂ conj((n/P)₃)W(N(n)/(K·N(P))), over the 10 or 20 smallest split primes, with
+  K ≤ 2·10⁴ (one run to 5·10⁴), at the self-dual point N = K·N(P).
+- Diagonal: G_PP ≈ 0.93·R(K)·ΣW², with no N-term, also at N/4 and 4N.
+- Off-diagonal: ρ_{PP′} = |G_{PP′}|/√(G_PP G_P′P′) ≈ 0.94·R(K)^{−1/2}. Fitted η = 0.52–0.57 for every pair class,
+  with 95% intervals inside [0.43, 0.64]; random surrogates give 0.49–0.52.
+- Across 90 pairs, ζ² follows Exp(1), with no outlier pairs and no outlier eigenvalue. The dependence on
+  N(P)N(P′) has exponent 0.05 ± 0.07.
+- The conjugate pairs carry the exact √2 from S(k̄, P) = conj S(k, P̄).
+- **Reading.** (X_fix) holds numerically with η₀ ≈ 1/2, against the η₀ ≈ 0.01 that −3e-4 needs. The obstruction to
+  D2 is provability (affine type), not truth.
+
+**D4: sixth moment of short plain sums in the thin sextic family [numerical].**
+- M₆ = Σ_u|S_u|⁶/(R N³) stays between 0.09 and 0.59 for m ≤ 0.8, up to N³/R ≈ 10⁷ (B ≤ 1.5·10⁶).
+- The full Dirichlet family mod q ≈ R, run through the same code, gives M₆ ≈ N³/q + O(1): 11, 19, 190 and 3105
+  for the four values of m.
+- Fitted N-term coefficient for the thin family: −1.5e-5 (m = 0.5) and −6.5e-5 (m = 0.43), against 1 for the
+  full family. The log-slopes relative to the multiplicative surrogate are +0.007 ± 0.006 and −0.012 ± 0.006,
+  where an N-term would give +0.29 and +0.50.
+- The thin family even sits 5–13% *below* the random multiplicative surrogate for m ≥ 0.43, with the deficit in
+  the extreme tail. Mechanism unknown; it has the opposite sign of an N-term.
+- **Reading.** The thin family is Lindelöf on average for plain sums (ε₆ ≈ 0 within ≈ 0.02, against the 0.10
+  that −3e-4 needs). The congruence N-term, which is genuine for full families, is absent, as fresh look 2
+  predicted.
+
+**Synthesis: one statement behind the K-wall, D1 and D4 [derived].** Every numerical probe says the same thing:
+- the sextic Gram matrix is Marchenko–Pastur (RIP (2));
+- slot-selected rows are random-like (RIP (2));
+- fixed-index cross-correlations are random-like (D2);
+- plain products show no N-term (D4).
+
+All of these are instances of one structured large sieve: vectors orthogonal to the theta-bias span (plain
+products, prime pools with non-Patterson phases, and their products) are generic for the sextic dictionary, i.e.
+‖Ma‖² ≪ (R + ‖a‖-weighted N-term only on the bias span)·‖a‖².
+- The K-wall's dilution needs it at L ≈ B^{0.96} on slot-selected rows.
+- D1 needs it for plain × plain × prime at total length B^{0.75–0.87} with the prime cost 5/3.
+- D4 needs it for plain³ beyond the row count.
+
+The literature has it only in two cases:
+- the quadratic family, all vectors (Heath-Brown's quadratic large sieve);
+- the cubic family, prime vectors up to A^{3/5} (Dunn–Radziwiłł).
+
+**Program consequence.** Rank the proof attempts by how much of this one statement each needs:
+1. D1, prime pool only. Heath-Brown–Patterson plus the phase-survival lemma (L3).
+2. The K-wall, which needs an inverse theorem on the full family plus bias delocalization.
+3. D4, which needs the full structured sieve for long plain products.

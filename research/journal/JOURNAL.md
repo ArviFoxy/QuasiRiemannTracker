@@ -1147,3 +1147,46 @@ standing record is therefore ours, and the next bar is unchanged at θ ≤ 0.873
   The K-chart's second factor is exactly the move P1 lacks: shorten the long n-sum (N = KL > K) by the Kubota
   functional equation before using the quadratic sieve. Passed to the P1 deep-dive agent to evaluate.
 - Caveat: #96 is an unrefereed preprint, and the K-chart lives in its two-slot architecture.
+
+## 2026-10-30 · P1 deep-dive: no bias to subtract; P1 reduces to one cross-correlation estimate (X)
+
+**Report [agent; key steps re-checked; exponents in powers of Z: K = 0.742, N = 0.871, L = 0.129].**
+- **The θ-bias subtraction (fresh look 3's T1) finds nothing to subtract** [standard]. For squarefree k ≠ 1,
+  S(k, P) = Σ_n g̃(P; n)χ_k(n)W is the index-P Kubota series twisted by a sextic ξ with ξ³ = χ_k ≠ 1. That series is
+  entire (Patterson's cube criterion; also #96 Thm N1(a)). So no finite-rank polar term exists in rows k ≠ 1.
+- **Caveats on the P1 statement.**
+  - Square rows k = j² carry the Kubota pole. They contribute K^{1/2}N^{5/3}|Ξ|², where Ξ = Σ_P a(P)N(P)^{−2/3}g̃(P)^∓.
+    That exceeds N² unless the slot prime sum Σ_P W₁ψg̃^∓ = L^s has s ≤ 0.353, and Heath-Brown gives only s ≤ 5/6.
+    **So P1 must be stated for squarefree rows**, with squares handled separately; they are only √K rows.
+  - After μ² = Σ_{d²|k}μ(d) and Poisson in k, the h = □ "dual diagonal" has size ≈ √K|Σ_n c(n)e_n|²M_K. The bootstrap
+    gives M_K ≪ K^{−(1−β₀)/2} = K^{−1/16}. With biased slot weights (ψ cubic or trivial, s = 5/6) this term sits
+    Z^{0.077} above target. Since the total is ≤ N^{2+ε}, the h ≠ □ terms must cancel it. It is a Poisson artefact
+    that positivity cannot see.
+- **Reduction (Schur) [proved].** P1 for smooth α follows from
+  **(X)**: |Σ_k μ²(k)W(N(k)/K) S(k, P)·S(k, P′)‾| ≤ K·N·L^{−η} for P ≠ P′ (on average over P′).
+  - The diagonal is ≈ KN.
+  - The trivial bound (Cauchy–Schwarz plus Lindelöf on average) is KN.
+  - The heuristic truth is K^{1/2}N.
+  - The needed saving is only L^η = Z^{0.001}.
+  - (X) is a twisted second-moment cross-correlation of two different index-P Kubota series over squarefree
+    quadratic twists, at the critical point and in the unbalanced range N = KL > K. Status: unknown, plausible by
+    random-matrix and toy numerics, not false.
+- **Dunn–Radziwiłł transposed** (rows = slots P, β = Σ b_kχ_k): B/A = K, outside DR's improved range
+  B ≤ A^{5/7}. [proved]
+- **#96's K-chart.**
+  - It is Frobenius-type: one functional equation per (k, P), then Cauchy–Schwarz jointly. For the slot-summed P1
+    it gives ‖S‖_F² ≲ N^{2+ε}. That improves the rigorous Frobenius bound from L·N² to N², but it does not beat the
+    N-term.
+  - For a single mark, Thm N1 (index conductor N(m)¹, twist conductor N(a)²) shortens the n-sum from N to K. The
+    quadratic sieve then gives F_P ≲ KN, at an extra K^{0.083} cost for the Möbius contour shift at β₀ = 7/8.
+- **Conductor check (mine).**
+  - The agent saw a conflict between N1's index conductor N(m)¹ and DR Prop 5.3's dual length N(r)²/X.
+  - DR's dual coefficients are supported on r | ν, with φ(r) weights ((5.75)–(5.76)). Their effective length is
+    therefore N(r)/X, which agrees with N1.
+  - So I read no error in #96 here, but this is unverified numerically: the agent's toy test up to N = 3000 was
+    inconclusive.
+
+**Verdict.** P1 is now pinned to one estimate, (X): cross-moments of two different index-P Kubota series over
+squarefree quadratic twists, needing only a Z^{0.001} saving over the trivial bound. Every tool in hand (polar
+subtraction, D–R's corrected sieve, the K-chart, the bootstrap) misses it. It is the cleanest open target in the
+whole frontier.

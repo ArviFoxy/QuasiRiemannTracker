@@ -971,7 +971,11 @@ long-term route to the slot-cost atom; nothing bankable now.
 - (i) The face's vector is plain × prime, with P₁ and P₂ not w-rough, and D–R's framework needs w-rough squarefree
   support. That is the "smooth × prime" sieve of target 1 in `frontier/README.md`.
 - (ii) Our families are sextic (faces) and quadratic-row/cubic-theta (P1), not cubic.
-- (iii) Still unchecked: Lemma 9.2 and the D₁ term; the exact twist uniformity in Heath-Brown–Patterson.
+- (iii) Checked since: D₁ (9.37) carries only the diagonal X^{1+ε}(1 + (B²/A)^{−1000}) and w-terms; D₂ (9.40)
+  carries AB^{2η} + B^{2+2η}; T (9.18) carries A^{1/6}B^{5/3}. No hidden (AB)^{2/3} term. Lemma 9.2 only serves
+  Prop 9.1 (squarefree moduli), and Prop 9.2's form (all a) is the one rows need. Still unchecked: the twist
+  uniformity in Heath-Brown–Patterson, and whether Prop 8.1's stated U^{5/6−ρ} is weaker than its proof only for
+  convenience (the displayed bounds (8.6), (8.9) give U^{3/4}N(r)^{−1/4}).
 - (iv) The whole metaplectic stack is absent from Lean.
 
 Still, this is the first concrete evidence that **the √-barrier is not intrinsic for prime vectors**. It turns

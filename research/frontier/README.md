@@ -2,6 +2,17 @@
 
 Next bar: θ ≤ 0.87336198. Evidence tags as in `../journal/JOURNAL.md` (entries of 2026-10-30).
 
+**Position (2026-10-30, end of day).**
+- **Banked in Lean:** θ = 0.87338228 (`../lean/arvi_bank/`). That is −2.97e-5 against #97 and 2.03e-5 short of the
+  bar. No library-only lever remains.
+- Every route to the bar needs one of three open problems:
+  - **P1**, the θ-biased quadratic sieve: inverse slot cost 1.9882 alone suffices. This is the cheapest single
+    route.
+  - **B2**, twisted Chowla (rate-6 deletion): long slope 0.8328.
+  - **The faces' two walls:** the √A reference (target 0/1) and K ≥ 1/2.
+- All three are the Kummer-twist rates (2 for slots, 6 for deletion and packing) meeting the Gauss-sum bias
+  (journal: "Map of walls by Kummer rate").
+
 ## Where the bound binds
 
 The return binds on the newTop edge, uncapped count branch, at δ ≈ 0.452 (zeros at real part 0.726) and p = 1/2.

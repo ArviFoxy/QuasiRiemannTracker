@@ -1045,3 +1045,26 @@ target 1 into "D–R's dispersion for (smooth × prime) vectors in the sextic fa
 **Verdict.** No new provable word. The fresh look agrees that the cheap lever is the shared rate-2 slot cost
 (I and P, 74% of the dual weight), and that L is locked behind twisted Chowla. Both live leads are correction-term
 large sieves: Dunn–Radziwiłł for the faces' prime slots (target 0) and a θ-bias subtraction for P1 (T1).
+
+**Consistency with round 6 [read; `probe-redesign/README.md`].**
+- Round 6 found that "the coherence of marks and their cost are one factor". The twisted multiplicativity
+  a₀(pn′) = a₀(p)a₀(n′)χ_{n′}(p)⁴ makes the signals add, and it is also what puts p² into the reflection
+  conductor.
+- A rate-1 (sextic) slot "twists the signal to 1/L(s, ηχ_p²)" and kills it (round 6, item 4).
+- So the rate-2 slot cost is the price of coherence. The idea "use sextic slots" is closed. [dead]
+
+**Map of walls by Kummer rate [derived].**
+
+| wall | rate | open problem |
+|---|---|---|
+| inverse word (weight 0.49) | 2, after reflection | P1 (θ-biased columns in the quadratic sieve) |
+| plain word / faces (0.25 + physical) | 2, at Sil's √A reference | target 0/1 |
+| | 6 (packing), with K ≥ 1/2 (native step's overshoot 6KB/(1 + K) ≥ 2B) | sub-√ selection or a sub-6 packing |
+| long word (0.26) | 6 (deletion) | B2, twisted Chowla |
+
+- Rate 6 sits behind both the long word and the faces' second wall. A Möbius-specific amplifier below rate 6 would
+  move both. The fresh look argues that rate 6 is the whole Kummer content of copies, so no copy amplifier does
+  better.
+- **Target 0 alone is worth ≈ 0.** The faces stop at 6KB/(1 + K) → 2B anyway (journal: "target 2 alone moves the
+  native end only from 2.005 to about 2.003"). So the cheapest single route to the bar is still P1 (inverse word
+  alone at 1.9882).

@@ -1440,3 +1440,18 @@ norm price a native step at K < 1/2?
 - So the leaf below 1/2 needs a near-fixed-point selected norm next to the balanced point, beating the full
   family by B^{0.157}. The Θ₆ closure is about 11× too weak. This confirms the K-wall at full strength: it is a
   Guth–Maynard-type estimate, and the parent face only relieves the tiny-slot corner. [numerical model; derived]
+
+**(X) by parabolic continuation and Bochner's tube theorem: does not reach the centre [derived; numerical
+search].**
+- The idea: each pair {σ₁, σ₃} or {σ₂, σ₃} generates a finite group of type B2. So Z(s₁, s₂, w) continues along
+  each parabolic while the other variable stays in absolute convergence, with polynomial growth N(m)^{A} in the
+  frozen twist. Convex hulls (Bochner) of the two tube regions might then cover (x₁, x₂, y) = (0, 0, 1/2 − ε₀),
+  which is all (X) needs.
+- The growth enters only through the w-reflection, N(m)^{max(0,−y)}. Moving x₁ left uses the Kubota reflection
+  y ↦ y + 2x₁, so A(x₁, y) ≈ max(0, c·(−x₁) − y) with slope c = 2.
+- A search over all two-point convex combinations of points in R₁ = {x₂ > 1/2 + A(x₁, y)} and in R₂ (the
+  symmetric region) finds no reach of (0, 0, y₀) for y₀ ∈ {0.5, 0.45, 0.3}. This holds for c = 2 and even for
+  c = 1 or 1.5.
+- The negative coordinate needed to cancel the other point's positive one always costs at least as much growth.
+- So the parabolic route fails for (X), as it does for the GL(2) analogue. This is consistent with only log
+  savings being known there (Li; Shen–Stucky). [dead end recorded]

@@ -725,3 +725,29 @@ carry the new gate, which is a large Lean project. Payoff scale: the physical sl
   2r + 8Σw < 3. These come from OpenAI's `InverseMarkedReferenceFiberEnergy.fiber_reference_energy`, not from
   Sil's reference. The ideal cost is 1, and 1.9882 would reach the bar with the banked engineering. **Next: trace
   this 2.**
+
+**The inverse word's slot cost 2 is P1 [Lean, read].**
+- The chain is `Moments.inverse_marked` ← `InverseMarkedReferenceFiberEnergy.fiber_reference_energy` ←
+  `deleted_source_energy` ← `padded_source_energy` ← `original_source_energy` (`InverseMarkedReferenceSourceEnergy`)
+  ← `Inversion/InitialResidualUniformEnergy` ← … ← `InitialRetainedWindow`. The two conditions enter there as
+  `CanonicalMargins` (`Descent/Basic.lean`: c ≤ F − M − Q − z and c ≤ 4F − 3M − 6z), consumed by the reflected-short
+  estimates (`Inversion/ReflectedShort*`, `ShortCanonicalNormalization`).
+- That is OpenAI's marked inverse moment, which `P1_PROBLEM.md` (2026-10-25) states in self-contained form. After
+  reflection the columns are cubic theta coefficients times slot sums, c(n) = g̃(n)·Σ_P a(P)N(P)^{−1/2}(n/P)₃‾. A slot
+  cost below 2 needs these theta dilates to be nearly orthogonal to the quadratic row space beyond N = K. Rounds 7–9
+  reduced this to "block decoupling", which is numerically true but unproven.
+- So this atom is P1: Patterson/Kummer structure again.
+
+**Every single atom that would reach the bar is a known hard problem.**
+
+| atom | problem |
+|---|---|
+| long slope | B2: twisted Chowla for Möbius |
+| inverse slot cost | P1: theta coefficients against quadratic rows |
+| face Λ | Sil's reference (Θ₆ diagonal at √A, exceptional rate 2/3) together with the square-root cut |
+| p_max | sharp (the zero's own explicit-formula term) |
+| fibre margin | no correlation is forced between witnesses at different cutoffs |
+
+The common thread is the Gauss-sum (metaplectic) bias that makes the cubic and sextic large sieves sharp for general
+vectors. Every route needs a structured statement: these specific vectors (theta dilates, slot words, Möbius) avoid
+the bias.

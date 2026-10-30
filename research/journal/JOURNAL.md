@@ -1567,3 +1567,56 @@ structure of the index set), but not a route. A transfer would need, in order:
   R = 0.607). A mixture cannot help, because Hölder rises at rate d − y = 0.34 while the pointwise bound falls at
   only 0.065.
 - **Verdict.** The label line is not a lever at the binding. [dead; closes the T96-era open idea]
+
+## 2026-10-30 · RIP program (1): formal foundation, and the K-wall reduced to a diluted-bias statement
+
+**Program.** Arvi's direction: attack the square-root barrier as an RIP problem and formalize every step, even
+for tiny gains. The K-wall is RIP of the sextic dictionary on a large-value row set W, with |W| = B^{1−δ},
+δ < 1/2, beyond √(dimension).
+
+**Formal foundation [Lean, built; `lean/arvi_rip/`; no sorry, standard axioms].**
+- `Coherence.lean`:
+  - `gershgorin_rip`: coherence μ gives RIP with constant μ(|S| − 1);
+  - `welch`: N² ≤ n(N + N(N − 1)μ²);
+  - `coherence_order_barrier`: with N ≥ 2n, a coherence certificate has k ≤ 1 + δ√(2n). This is the √-barrier
+    for coherence methods, stated formally.
+- `FlatRIP.lean`, `flat_rip_on` (BDFKK Lemma 3, fixed support): flat bilinear sums ≤ δ√(|J₁||J₂|) on W give
+  |‖Σa_z u_z‖² − ‖a‖²| ≤ 32δ(T + 2^{−T}√|W|)²‖a‖². Every beyond-√ construction passes through this reduction.
+
+**Which rules cannot move the closure [numerical; `$SCRATCH/kwall/closure4.py`, `closure_dr.py`].**
+- Adding the trivial Frobenius rule n(x) ≤ x + 1 − δ leaves n(1) = 7/6. The Lean barrier is not an artefact of
+  omitting trivial bounds.
+- A corrected initial bound that is diagonal up to x = X₀ moves n(1) as follows:
+
+  | X₀ | n(1) |
+  |---|---|
+  | 0.6 (Dunn–Radziwiłł's proven range for prime vectors) | 7/6, unchanged |
+  | 5/7 | 1.149 |
+  | 0.96 | 1.021 |
+
+**The mechanism that does break it: dilution of a low-rank bias [numerical + derived].**
+- If the excess of the sextic sieve on a thin row set shrinks with the density, i.e. n_W(x) ≤ max(1, x, Θ₆(x) − δ),
+  then the closure is exactly the fixed point. At δ = 0.45, 0.48 and 0.49 it gives n(1) = 1 and n(0.96) = 1 − δ + 0.96δ.
+- The derivation is short: at x = 1, max(1, 1, 7/6 − δ) = 1 for δ ≥ 1/6; then one amplification step down to
+  0.96. So the whole K-wall reduces to that diluted bound.
+- **Why it should hold.**
+  - The Θ₆ excess comes from the Gauss-sum bias. Sources correlated with ε̄_n are mapped by M to theta-type row
+    vectors of uniform magnitude.
+  - If M is near-isometric off a low-dimensional bias span V, then for a ∈ C^S:
+    ‖M_W a‖² ≤ 2‖M P_{V⊥} a‖² + 2 Σ_{z∈W} |M P_V a(z)|² ≲ (L + B)‖a‖² + (|W|/|F|) B^{7/6}‖a‖².
+  - This is beyond √ for every δ > 1/6.
+- **What is not enough.**
+  - #96's graded inverse theorem (thm:D6SF, cor:GS1) has the right shape: the excess lies on correlations with
+    (m₀/·)₆ for small m₀, and it allows subsets of sources.
+  - But its residual B + A^{1/6}B + A^{2/3}B^{1/2} multiplies the full ‖β‖² and carries excess ≈ 0.15 at x = 0.96.
+    It does not dilute.
+  - Dunn–Radziwiłł's corrected cubic sieve is diagonal + rank-one bias + error, but only up to B = A^{3/5}.
+- **Exact open statement.**
+  - Write 1_W ≤ |T(χ_z)|^{2k}/V^{2k}, with T the selecting slot polynomial, and keep |T|^{2k} on the row side as
+    a twist via reciprocity: χ_z(qq′⁵) = (z/qq′⁵)₆.
+  - The diagonal q = q′ gives exactly (|W|/|F|) × (full sieve), which is the dilution.
+  - The K-wall therefore follows from the decorrelation of the twisted forms
+    Σ_z ψ_m(z)|A(χ_z)|² (m = qq′⁵ ≠ sixth power) from their mean: the slot's large values must not align with the
+    Gauss-sum bias of the source.
+  - A function-field or random-model check, and a proof for the twisted forms with m ≠ 1, are the next steps.
+  [conjecture with mechanism; reduces the K-wall to a decorrelation estimate]

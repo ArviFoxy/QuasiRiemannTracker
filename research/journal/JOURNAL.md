@@ -751,3 +751,18 @@ carry the new gate, which is a large Lean project. Payoff scale: the physical sl
 The common thread is the Gauss-sum (metaplectic) bias that makes the cubic and sextic large sieves sharp for general
 vectors. Every route needs a structured statement: these specific vectors (theta dilates, slot words, Möbius) avoid
 the bias.
+
+**Literature check, 2026 [read, web search].**
+- de Faveri–Dunn–Hoffstein, arXiv 2607.07911 (July 2026): the cubic and quartic large sieves are unconditionally
+  non-orthogonal, and the obstruction is the Gauss-sum bias.
+- de Faveri, arXiv 2610.04045 (Oct 2026): the optimal Θ_n.
+- No result was found on structured vectors (Möbius, prime-supported, theta dilates) beating the bias or the length
+  barrier for thin cubic or sextic families.
+- So all three remaining targets are open research problems (B2, P1, a structured Θ₆ at the short reference). Of
+  these, P1 has the strongest support: block decoupling is numerically true (rounds 7–9).
+
+**State of the next bar.**
+- Banked engineering reaches 0.87338228: −7.4e-6 from extending the line to Λ = 2.0001 (no fork), and the rest
+  from h = 0.8097 (needs the 119-module ReturnD fork).
+- The remaining 2.0e-5 needs one of the hard problems.
+- No PR is possible at the 5e-5 rule without new mathematics.

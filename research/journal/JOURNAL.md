@@ -788,3 +788,26 @@ research result (θ = 0.87338228), so a future lever only needs its own 2.03e-5:
 1. the selected-leaf line to Λ = 2.0001 at K = 0.500001 and a = 1e-5;
 2. the ReturnD fork with `floor_margin` ≤ 1/1000 and h-box ≥ 0.81;
 3. the return retuned at h = 0.8097.
+
+## 2026-10-30 · The engineering limit is banked in Lean: θ = 43669114/50000000 = 0.87338228
+
+**Result [Lean, built; `lean/arvi_bank/`].** `QRH.ArviBank.beta_le_theta : β ≤ 43669114/50000000` and
+`dirichlet_nonvanishing_bank` (`L(χ, s) ≠ 0` for Re s > 0.87338228). Both depend only on `propext`,
+`Classical.choice` and `Quot.sound`; there is no `sorry`, `admit`, `axiom` or `native_decide` in the package.
+- Δθ = −2.97e-5 against #97. That is not a PR under the 5e-5 rule. The bar 0.87336198 is 2.03e-5 further down.
+- It has three parts:
+  1. the selected-leaf line continued to Λ = 20001/10000 (K = 500001/1000000, a = 1/100000, step 1/400000000);
+  2. the 119-module transport fork with `BoundsN` h < 81/100 and floor margin 1/1000 (was 806/1000 and 1/200);
+  3. the return retuned at c = 6330886/50000000, h = 8097/10000, faces (99999/100000, 20001/10000, 33571/250000)
+     and three new windows.
+- It is the exact mirror of the float model's architecture limit (0.87338197–0.87338228, "Fresh look (second
+  run)"). So the model and the Lean pipeline agree to the last digit at the limit.
+- Build: 150 modules, per-module times summing to 17.5 min (slowest: `Tuning.EdgeCertificates` 33 s). On a cold
+  container the first build is dominated by I/O (≈ 10 min loading Mathlib's .olean files at 15–20 MB/s).
+- One fix was needed: the transport has a second copy of `h_interval` in its `Transport` namespace, which still read
+  806/1000.
+
+**What this changes.** Any new lever is now priced from 0.87338228. The single-atom table of the second fresh look
+applies as stated: long slope 0.83280, inverse slot cost 1.9882, Λ ≈ 1.987 in both faces, p_max 0.4934, fibre
+margin 0.00147. Each is a hard problem (B2, P1, Sil's reference plus the square-root cut, sharp, no forced
+correlation).

@@ -15,7 +15,7 @@ Computed with `worth.py` and `density_past2.py`, the float model of the newTop r
 | input | Δθ |
 |---|---|
 | banked engineering: line to Λ = 2.0001 (no fork) | −7.4e-6 |
-| banked engineering: h = 0.8097 with `floor_margin` ≤ 1/1000 (fork the 119 ReturnD modules for `BoundsN`, +15.7 min summed build), with the line | −2.97e-5 in total (0.87338228, exact mirror) |
+| banked engineering: h = 0.8097 with `floor_margin` ≤ 1/1000 (fork the 119 ReturnD modules for `BoundsN`), with the line | −2.97e-5 in total: **0.87338228, built in Lean** (`../lean/arvi_bank/`, 150 modules, 17.5 min summed) |
 | long slope 5/6 → 0.8226 (the B2 long Möbius moment) | −5.4e-5 |
 | face at Λ = 1.97 / 1.9 (B = 0.99999) | −5.1e-5 / −1.6e-4 |
 | trading B for Λ past 2 at slope s0 | pays iff s0 < 0.089 |

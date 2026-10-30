@@ -1951,3 +1951,53 @@ what the D–R corrected sieve subtracts as a main term. The obstruction to D1, 
 technology:
 - (L2), Heath-Brown–Patterson twisted by quadratic characters, has its premise confirmed in `rip/l2_probe/`;
 - (L3) is phase survival.
+
+## 2026-10-30 · Attempting D1's proofs: (L2) is classical in averaged form; (L3) reduces to the K-wall or to a plain eighth moment
+
+**(L2), corrected [derived].**
+- As first stated, (L2) asked for Heath-Brown–Patterson for Σ_P g̃₃(P)(k/P)₂ uniformly in N(k) ≤ Z^{0.8}. In D1's
+  dual, the twist r = r(n, n′, h, P′) has N(r) ≈ Z^{1.7}, while the pool has length P₀ = Z^{0.03–0.14}.
+  Heath-Brown–Patterson's Type-I sums (the twisted Kubota series by convexity) give nothing once the conductor
+  far exceeds the length, and Burgess needs length ≥ conductor^{1/4}. Individual prime sums are out of reach.
+- What a dispersion argument needs is the *average* over twists after Cauchy–Schwarz. That is classical:
+  Huxley's large sieve over Q(ω), in dual form with the primes P as moduli, Σ_r |Σ_P a_P (r/P)₆|² ≪
+  (#r + P₀²)‖a‖². Unimodular Gauss-sum weights g̃₆(P) are absorbed into a_P.
+- So the averaged (L2) holds unconditionally, with square-root cancellation on average, which is better than
+  Heath-Brown–Patterson's 5/6.
+
+**(L3) reduction 1, row splitting [Lean, built; `lean/arvi_primeface/RowSplit.lean`].**
+- Split the rows by |Q(z)|² ≈ ‖a‖²P₀^σ.
+- Classes with σ > 1/2 are exactly PR 93's selected norm at slope σ. At its fixed point max(μ, 1 − σ + σμ),
+  every class is harmless on the *ideal* face μ + s ≤ 1 (`class_le_of_fixPt`).
+- Classes with σ ≤ 1/2 are the K-wall. With only the full-family bound they carry the excess σs ≤ s/2
+  (`low_class_excess_le`).
+- So **every row-splitting proof of D1 is the K-wall**. With the K-wall's fixed point at all slopes, the face
+  comes out at Λ = 1 (`ideal_face_of_fixPt`). Without it, one is back at PR #97's leaf, with K = 1/2 and Λ = 2.
+- This corrects fresh look 2: D1 bypasses the K-wall only through a proof that does not split rows.
+
+**(L3) reduction 2, dispersion without row splitting [derived].**
+- Expand |Q|²:
+  F = ‖a‖²Σ_z Φ|A|² + Σ_{P≠P′} a_P ā_{P′} T(PP′⁵), with T(h) = Σ_z Φ|A(z)|²ψ_h(z).
+- For distinct ordered pairs, the characters ψ_{PP′⁵} = (·/P)₆(·/P′)₆⁵ are distinct primitive characters of
+  conductor PP′. So Huxley's large sieve over these twists gives
+  Σ_{P≠P′}|T(PP′⁵)|² ≪ (Z + P₀⁴)·Σ_z Φ²|A(z)|⁴, and by Cauchy–Schwarz
+  **F ≤ ‖a‖²·[Σ_z Φ|A|² + C·√((Z + P₀⁴)·Σ_z Φ²|A|⁴)]** for every pool with P₀⁴ ≤ Z.
+- With the plain fourth moment diagonal (μ ≤ 1) and a plain **eighth** moment at Lindelöf-on-average strength,
+  Σ_z|A|⁴ ≪ Z^{1+ε}‖c‖⁴, this gives F ≪ Z^{1+ε}‖c‖²‖a‖² with no face condition at all. That matches the
+  prime-pool numerics (F/D ≈ 1 out to total length 1.25).
+- The eighth moment is the D4-type statement (thin-family moments of plain products past the row count without
+  an N-term). It is numerically true (D4 probes) and open. The general sextic sieve gives only Z^{1.883} at
+  2μ = 1.86, and trivial pointwise bounds lose N^{1/2}.
+- Hölder splits (Σ|A|^{2p′})^{1/p′}(Σ|Q|^{2p})^{1/p} lose N^{1/p} or worse: checked, no gain over trivial.
+
+**Status.**
+- D1 is not independent of the walls. Its two natural proofs reduce to the K-wall (row splitting) or to the
+  plain eighth moment (dispersion plus Huxley).
+- Both are instances of the structured large sieve for theta-uncorrelated vectors, which every numerical
+  probe supports.
+- The averaged (L2) is classical; the (L3) part is open in both forms.
+- Next proof targets, in order of size:
+  - the plain eighth moment past the row count;
+  - the K-wall dilution;
+  - a dispersion in which the plain sums are reflected before Cauchy–Schwarz (D–R §9-style, with the
+    plain-variable theta main terms subtracted).

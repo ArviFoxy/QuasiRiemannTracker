@@ -2304,6 +2304,8 @@ and the baseline is a random-phase vector with the same profile.
   like B^{1/6} with a small constant. A second, block-type part (small-modulus row characters, flat) shows up at
   the top of the spectrum at B = 3·10⁴. Its mechanism is still open (logs `theta_top*.log`, `theta_topspan*.log`).
 - (LS off V): open, and the single statement the K-wall now needs.
+- **Correction (entry "Where the theta excess lives" below).** V cannot be low-dimensional. Every twist m with
+  N(m) ≤ B^{1−6γ} carries its own excess, so the statement above with a few small twists is false asymptotically.
 - Numerically it holds trivially at accessible sizes, where everything is Marchenko–Pastur.
 
 ## 2026-10-30 · RIP (4) fresh look: what a random dictionary transfers, and the centered fourth moment (M₄)
@@ -2379,3 +2381,71 @@ a step in the chain: it calibrates (M₄) and shows the certificate is sharp for
   is open.
 - The K-wall now has two concrete sufficient statements: (LS off V) for the full family (previous entry), or (M₄) on
   W. Both sit at the self-dual point L = B, where Poisson maps each to itself.
+
+## 2026-10-30 · Where the theta excess lives: one Poisson spike per twist, so V is not low-dimensional (correction)
+
+**Numerics [`rip/theta/theta_twists.py`, `theta_powers.py`; logs `theta_twists_B30000.log`, `theta_powers_B30000.log`].**
+At B = L = 3·10⁴ (R = 8474 rows, S = 7768 sources), r = ‖Eᵀc‖²/(S‖c‖²), against random phases with the same profile
+(r = 0.946 ± 0.012).
+
+- **Only conj G carries an excess** (range over the six unit twists):
+
+  | row vector | r |
+  |---|---|
+  | plain | 0.85–0.93 (a deficit) |
+  | conj G | 1.16–1.18 |
+  | G | 0.93–0.97 |
+  | conj G², G², conj G³ | 0.90–0.98 |
+
+  The higher powers carry angular Hecke twists (Davenport–Hasse: g(χ)² = J(χ, χ)·g(χ²)). These kill the
+  Patterson pole.
+- **Twisted thetas conj G·χ_z(u)·χ_z(m)**, averaged over the six units, against random phases with the same twist.
+  There are 200 twists m in 16 log bins; the per-bin noise is ≈ 0.003.
+
+  | N(m) | excess |
+  |---|---|
+  | 1 (untwisted) | +0.221 |
+  | 7–34 | +0.093 to +0.105 |
+  | 34–2200 | +0.084 ± 0.005, flat |
+  | 2200–6250 | +0.067, +0.049 |
+  | 6250–30000 | +0.028, +0.010, −0.004 |
+
+  Conjugate twists conj G·conj χ_z(m) and plain twists χ_z(m) show none (within ±0.01). Over 2.5 decades the
+  excess does not decay like a power of N(m). It is a constant per twist, a little higher for the smallest twists,
+  and it ends near N(m) ≈ H = B²/L.
+
+**Mechanism [derived; matches the numbers].**
+- Poisson in the sources writes the off-diagonal row Gram at length L as a Gauss-conjugated Gram of the dual
+  dictionary {χ̄_z(h) : h ≲ H = B²/L}, up to bounded sign blocks (`rip/wide/FRESH_LOOK.md` §1.5).
+- The dual frequencies h = m·j⁶ all act on the rows as the same atom χ̄(m). So atom m has multiplicity
+  μ_m = #{j : N(m)N(j)⁶ ≲ H}, weighted by the dual cutoff.
+- conj G·χ(m) maps exactly onto atom m, and each aligned copy adds a fixed amount: +0.084 at this size.
+- m = 1 has three copies, j ∈ {1, √−3, 2}, with N(j)⁶ = 1, 729, 4096 against H = 3·10⁴. That is about 2.6 copies
+  after the cutoff, so 0.221 ≈ 2.6 × 0.084.
+- Twists with N(m) ≲ 34 keep part of the √−3 copy. Twists near H lose even the j = 1 copy.
+- Asymptotically μ_m ≈ c·(H/N(m))^{1/6}. At length X = B^x the m = 1 spike has norm (X/B)·R·μ₁ = B^{1/3+5x/6},
+  which is Θ₆'s term 1/3 + 5x/6. The other term, 5/6 + x/3, is the same spike from the Poisson in the rows
+  [heuristic].
+- So Θ₆'s excess is the spikes of repeated dual atoms. At L = B, twist m carries excess ≈ (B/N(m))^{1/6}.
+
+**Correction to "Replacing M".**
+- That entry took V to be a few small twists and called (LS off V) for such a V the single statement the K-wall
+  needs. Asymptotically that statement is false:
+  - every twist with N(m) ≤ B^{1−6γ} keeps an excess ≥ B^γ;
+  - the twists are nearly orthogonal, so removing B^{o(1)} of them leaves the rest.
+- The right V is span{conj G·χ(m) : N(m) ≤ B^{1−6γ}}, of dimension ≈ B^{1−6γ}.
+  - Then `norm_restrict_le` gives nothing for an adversarial detector, since k·c·|W|/R ≈ B^{1−6γ−δ} ≫ 1.
+  - Its weighted form needs the selected norm of the twist dictionary at lengths X ≤ H/729 with weights
+    (H/X)^{1/6}.
+  - The amplify–reflect closure n*(x) = 7/6 − δ(1 − x) supplies that only for twist lengths log_B X ≤ 0.52
+    (δ = 0.48, γ = 0.015). Longer twists are copies of the core problem at length B/N(j)⁶.
+- **What survives** [derived]:
+  - (LS off V) for this high-dimensional V. It is weaker than the old statement, and still at the balanced point.
+  - The detector condition ‖P_V M a‖² ≲ L·B^γ‖a‖² for the leaf's product vectors.
+- With both, no thin-set argument is needed at all: ‖P_W M a‖ ≤ ‖P_V M a‖ + ‖(I − P_V)M‖·‖a‖.
+- The detector condition is a large sieve over the twists at length B^{1−6γ} for the row vector conj G·profile·Ma.
+  - It is unbalanced (dual length B^{1+6γ}), not at the self-dual point.
+  - A detector aligns with a twist spike only through coefficients at norms ≲ (B^{1+6γ})^{1/5} ≈ B^{0.22}. Spread
+    detectors like the leaf's should satisfy it [heuristic].
+- **The K-wall itself is unchanged.** In this picture the spikes are flat rank-one pieces and dilute on thin W.
+  What is left is the generic off-diagonal part at the self-dual point: the fresh look's (M₄).

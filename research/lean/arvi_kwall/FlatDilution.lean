@@ -16,6 +16,10 @@ flat) and `r = (I − P_V) M a`. The excess carried by `V` is diluted by `|W|/R`
 and what is left is the large sieve OFF `V` on the full family: no restriction to `W` is needed
 for it. So RIP of `M` on thin row sets follows from the full-family bound for the operator
 `(I − P_V) M` (journal, "large sieve off V").
+
+The dilution factor is `k c |W| / R`, so this pays only for low-dimensional `V`. For the sextic family the theta
+excess is spread over every twist `conj G·χ_z(m)` with `N(m) ≤ B^{1−6γ}` (Poisson multiplicity), so `k` cannot be
+small; see the journal entry "Where the theta excess lives".
 -/
 
 namespace QRH.ArviKWall

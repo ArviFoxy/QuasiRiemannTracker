@@ -56,3 +56,9 @@ selected norm, rows of norm ≈ B selected at slope δ) they read:
   (I − P_V)M on the **full** family. No thin-set argument and no condition on the detector are needed.
 - So the K-wall reduces to the full-family statement ‖(I − P_V)M‖² ≲ (R + S)·B^ε for a low-dimensional theta span
   V (journal, "large sieve off V").
+- **Correction (journal, "Where the theta excess lives").** The theorem is right, but its hypothesis cannot be met
+  with small k.
+  - Every twisted theta conj G·χ_z(m) with N(m) ≤ B^{1−6γ} carries its own excess (Poisson multiplicity), so V needs
+    k ≈ B^{1−6γ}. Then √(k c |W|/R) ≫ 1.
+  - What survives: (LS off V) for that V, plus a detector condition ‖P_V M a‖ small for the leaf's vectors. With
+    those, no dilution is needed.

@@ -1,7 +1,9 @@
 # Frontier after the selected-leaf PR (#97, θ = 0.87341198)
 
-Next bar: θ ≤ 0.87336198 (5e-5 below #97). If the open upstream PR #98 (Bebel, θ = 0.8733821435) merges, the bar
-becomes θ ≤ **0.8733321435**. Evidence tags as in `../journal/JOURNAL.md` (entries of 2026-10-30).
+Next bar: θ ≤ 0.87336198 (5e-5 below #97). Open upstream PRs: #98 (Bebel, θ = 0.8733821435) and **#99** (Bebel,
+θ = 0.8733819666133, "positive-reserve-selected-gap": a selected-energy adapter for every fixed positive gap above
+1/2, i.e. the engineering limit K → 1/2⁺ that fresh look 2 priced at 0.87338197). Against the best open PR the bar
+is θ ≤ **0.8733319666**. Our bank (0.87338228) is 3.1e-7 above #99. Evidence tags as in `../journal/JOURNAL.md` (entries of 2026-10-30).
 
 **Position (2026-10-30, end of day).**
 - **Banked in Lean:** θ = 0.87338228 (`../lean/arvi_bank/`). That is −2.97e-5 against #97 and 2.03e-5 short of the

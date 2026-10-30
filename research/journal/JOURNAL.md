@@ -2040,3 +2040,15 @@ products past the row count in a thin family, where the general sextic sieve los
 **Verdict.** The plain eighth moment past the row count is not in the literature unconditionally. With GRH it
 would follow from Gao–Zhao-type methods; for us it remains the open core, now the cleanest single target behind
 D1.
+
+## 2026-10-30 · Upstream PR #99 takes the engineering limit (θ = 0.8733819666)
+
+[read: upstream refs/pull/99/head, submission `2026-10-30-positive-reserve-selected-gap`]
+- Joseph Bebel's #99 proves θ = 8733819666133/10¹³ = 0.8733819666. That is 1.8e-7 below #98 and 3.1e-7 below our
+  bank.
+- Mechanism (from its description): "a reserve-parametric fourth-power seed and a selected-energy adapter for every
+  fixed positive gap above one half". That is the selected leaf at K = 1/2 + gap for every gap > 0, i.e. the
+  engineering limit K → 1/2⁺ (fresh look 2's architecture limit 0.87338197).
+- So the engineering frontier is now fully taken upstream, and any further gain must come from the K-wall or
+  another new-math input (the master conjecture, frontier README).
+- New bar against the best open PR: θ ≤ 0.8733319666.

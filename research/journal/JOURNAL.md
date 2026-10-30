@@ -905,8 +905,16 @@ Type II/III analysis, so this per-row quasi-GRH does not obviously substitute fo
 **Obstacles, in order.**
 1. **GRH.** It enters in Prop 8.1 to impose squarefreeness by Möbius inversion, and in Lemmas 6.1/6.2 to put
    w-rough indicators in C_η. Inside our continuation argument every Hecke L-function over Q(√−3) is zero-free
-   right of β ≤ 7/8, which gives Möbius sums ≪ D^{β+ε}. A first look says the Prop 8.1 step only needs some power
-   saving there. [plausible, unchecked]
+   right of β ≤ 7/8, which gives Möbius sums ≪ D^{β+ε}.
+   - **Checked for Prop 8.1 [derived from the proof, paper-level sketch].** RH is used only on the Möbius sum over c
+     ~ C, twisted by (c/|c|)^{3ℓ}, at real part 1/2.
+   - Large C (C ≥ (UN(r))^{1/12}): quasi-GRH(7/8) costs C^{3/8}, so U^{1+ε}/C³ becomes U·C^{−21/8}. That is
+     U^{0.78}N(r)^{−0.22}, still below U^{5/6−ρ}N(r)^{−1/6−ρ} for ρ ≤ 0.05.
+   - Small C: E(C, U) ≪ U^{1/12}N(r)^{7/12} becomes U^{0.115}N(r)^{0.615}. The asymptotic then needs
+     U ≥ N(r)^{2.47} instead of N(r)^{7/3}.
+   - So **Prop 8.1 survives the bootstrap hypothesis**, and its large-C part even allows ρ up to ≈ 1/20. The small ρ
+     in the paper comes from bookkeeping (ε < 1/10000), not from this step.
+   - Lemmas 6.1/6.2 are not needed for slot vectors; obstacle 2 replaces them.
 2. **The slot sequence is not in C_η with η ≤ 1/4.** For smooth prime slots c_P = W(P), the sequence is
    β = W·g̃‾. Axiom (3.2) then asks for twisted cubic Gauss sums over primes ≪ B^{3/4}. Heath-Brown–Patterson give
    only B^{5/6} (η = 1/3); the untwisted sum is excluded from (3.2) and has Patterson's B^{5/6} main term.

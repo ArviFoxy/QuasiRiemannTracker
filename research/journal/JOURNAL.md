@@ -2023,3 +2023,20 @@ technology:
 The face would then be diagonal for every pool with P₀⁴ ≤ Z and no face condition, worth more than the
 Λ = 5/3 price (−4.9e-4). The eighth moment is the same kind of statement as D4: Lindelöf on average for plain
 products past the row count in a thin family, where the general sextic sieve loses Z^{0.88}.
+
+## 2026-10-30 · Literature check for the plain eighth moment (D1's remaining input)
+
+[read: web search, abstracts only]
+- **Gao–Zhao** (arXiv 2508.14534): shifted moments of cubic and quartic Dirichlet L-functions, with applications
+  to moments of cubic and quartic character sums. These are Lindelöf on average with no N-term for thin families,
+  but **under GRH**. Their earlier mean values of cubic and quartic characters (arXiv 1902.10987) reach moduli
+  only up to the length of the sum.
+- **The bootstrap's half-plane does not replace GRH here.** Shifting Perron to Re s = θ + ε (to the right of all
+  zeros, where Soundararajan-type bounds work) loses N^{k(2θ−1)} ≈ N^{0.75k} in the 2k-th moment of a character
+  sum. This is the pointwise-bootstrap dead end again.
+- **Sextic large sieves in the literature** (moments and one-level density of sextic Hecke L-functions; de Faveri)
+  are general-vector bounds with the Gauss-bias excess. None is a structured or thin-family Lindelöf statement.
+
+**Verdict.** The plain eighth moment past the row count is not in the literature unconditionally. With GRH it
+would follow from Gao–Zhao-type methods; for us it remains the open core, now the cleanest single target behind
+D1.

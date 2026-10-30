@@ -1682,31 +1682,11 @@ a randomized dictionary, and bound both its coherence and its RIP.
     pairs inside J₂ gives ‖Σ_{J₂}u‖² ≤ 2|J₂| through `flat_rip_on`. This avoids chaos bounds entirely.
   - A union bound over (N + 1)^{2k} pairs finishes.
 
-**Randomizing the sextic dictionary itself is Jensen-neutral [derived].** Detection pins the mean of any
-randomized dictionary to the sextic one, because the slot must stay large on the zero rows. The energies the
-leaf needs (Σ_{z∈W}|A(z)|², and counts) are linear in the row measure and convex in the source vector. So no
-unbiased randomization can beat the mean dictionary:
-- **Random row thinning F_ω (density ρ = B^{−δ₀}).**
-  - Matrix Chernoff dilutes rigorously: ‖M_{F_ω}‖² ≤ ρB^{Θ₆} + L·log.
-  - But energy over W = (1/ρ)·E_ω[energy over W ∩ F_ω], so the dilution is paid back. In the closure,
-    n(1) = max(1, 7/6 − δ₀) + δ₀ ≥ 7/6 for every δ₀.
-- **Random sparse sources from a long range L₀ (density ν).**
-  - The random partial dictionary has RIP far beyond √, inherited from the full system over L₀ (the
-    Rudelson–Vershynin type theorem for bounded orthonormal systems).
-  - But E‖a_ω‖² = ‖a‖²/ν cancels the dilution. Detection then needs L₀ ≥ |W|·B, which is exactly
-    Halász–Montgomery.
-- **Random slot bands or amplifiers.** E_ω|T_ω|^{2k} is a deterministic majorant of 1_W, i.e. the full pool.
-- **Random signs or unitaries on rows or sources.** These leave the Gram unchanged, or destroy detection.
-
-So the design target is not a random perturbation of our dictionary. The independence has to come from the
-arithmetic itself.
-
-**Correction (same day, after Arvi's review).** The list above only covers randomizations of the *same*
-atoms (thinned, re-phased or sub-selected sextic characters), whose mean is the sextic dictionary. That is
-not the proposal. Arvi's proposal is a dictionary of *different* atoms: wide, not localized in frequency (as
-ReLU features on a sphere are), whose RIP is proved by exhibiting a positive measure of good operators, tied
-to the sextic rows by coherence bounds. Nothing above rules that out. The sentence "random-dictionary designs
-set aside" in the foundations audit was wrong and is withdrawn; the direction is open (RIP (4)).
+**Removed (Arvi's review).** This entry used to analyse re-randomizations of the sextic atoms themselves
+(thinning rows, re-phasing, sub-selecting sources) and presented them as a test of randomized dictionaries.
+They are not randomized dictionaries in the intended sense and say nothing about the proposal, so that analysis
+and its Lean file are deleted. The proposal, a dictionary of different atoms with RIP by a positive measure of
+operators plus coherence bounds, is RIP program (4).
 
 **The random multiplicative model reproduces the fixed point exactly [derived].**
 - Model each row as a random completely multiplicative function f_z with f_z(p) i.i.d. uniform on μ₆
@@ -1785,8 +1765,7 @@ come from the float model of the newTop row, which reproduces #97 and the bank [
   next to the RIP program.
 - D2 and D4 have cheap numerical first steps that were never run: single cross-correlations at fixed indices, and
   the packet sixth moment. Delegated to numerics.
-- Recorded as dead or capped: random slot sub-selection (Jensen; same as RIP (3)), pointwise higher-Hölder per-row
-  bounds, and decorrelating bad rows from the packet.
+- Recorded as dead or capped: pointwise higher-Hölder per-row bounds, and decorrelating bad rows from the packet.
 
 ## 2026-10-30 · D1 (direct prime-pool face): first brick in Lean, and the ledger's exact sub-lemmas
 
@@ -2102,7 +2081,6 @@ Arvi asked which "established" facts behind decisions were not formal. Status af
 
 | fact (decision it drove) | status |
 |---|---|
-| Thinning or re-phasing the sextic atoms themselves is energy-neutral. (This drove nothing valid: it does not touch dictionaries of different atoms, and the "set aside" reading is withdrawn; see the correction under RIP (3).) | **Lean**: `arvi_rip/Thinning.lean` (`thin_avg`, `avg_bound_ge`, `thinning_pays_back`, `closure_payback`) |
 | Random dictionaries do have RIP beyond √ | Lean: `arvi_rip/RandomRIP.lean` |
 | D1 by row splitting is the K-wall | Lean: `arvi_primeface/RowSplit.lean` |
 | D1 by dispersion needs only the plain eighth moment (plus Huxley) | Lean: `arvi_primeface/Dispersion.lean` (Huxley as a hypothesis) |
@@ -2123,10 +2101,9 @@ Arvi asked which "established" facts behind decisions were not formal. Status af
 
 ## 2026-10-30 · RIP program (4): a dictionary of different atoms — wide random features with RIP by counting measure
 
-**Arvi's correction.** RIP (3) randomized the *same* atoms (thinning, phases), which proves nothing about the
-proposal. The proposal is a dictionary built on different principles, from atoms that are not localized in
-frequency (ReLU features on a sphere have a wide arc-cosine kernel). Its RIP is shown by exhibiting a positive
-measure of good operators, and coherence bounds tie it to the sextic rows. "Set aside" is withdrawn.
+**Arvi's direction.** Build a dictionary on different principles, from atoms that are not localized in
+frequency (ReLU features on a sphere have a wide arc-cosine kernel). Show its RIP by exhibiting a positive
+measure of good operators, and tie it to the sextic rows with coherence bounds.
 
 **Construction.**
 - A degree-ℓ feature is a product of ℓ Rademacher projections, feat_w(x) = ∏_{i<ℓ} ⟨w_i, x⟩ with w_i ∈ {±1}^d.

@@ -539,3 +539,41 @@ inputs (ν = 2σ − 1, words of length N = T^w) reproduces the known zero-densi
 - A saving rate α = 1 instead of 2/3 would turn the gate into P + 3S + 6u < 7/6, which is looser for P > 2/3.
 - But a line below Λ ≈ 2 also needs the overshoot gate, K < Λ/(6B − Λ) (≈ 0.489 for Λ = 1.97), and K < 1/2 is
   wall 2. So two new estimates for ≈ −3e-5. [not pursued]
+
+## 2026-10-30 · What each new input is worth; Λ = 2 is the method's limit, not the diagonal
+
+**Worth table [numerical, float model of the newTop row; `frontier/worth.py`, base reproduces 0.87341197].**
+
+| hypothetical input | Δθ |
+|---|---|
+| long slope 5/6 → 0.8313 / 0.8283 / 0.8226 | −1.0e-5 / −2.5e-5 / **−5.4e-5** |
+| long slope → 0.80 / 0.75 | −1.7e-4 / −4.4e-4 |
+| face Λ = 2.000 / **1.97** / 1.9 / 1.8 (B = 0.99999, the line's cap) | −7e-6 / **−5.1e-5** / −1.6e-4 / −3.3e-4 |
+
+The face is worth more than the plain-count sensitivity alone suggested (−3.1e-5 for Λ = 1.97): Λ also sets the
+physical slot capacity C = (2y − (2 − B)d)/Λ.
+
+**What a face asserts [Lean, read].**
+- `globalFace_admissible_iff`: (m₁, m₂, s) is admissible iff s ≤ cap·M and m₁ + m₂ + λs ≤ BM.
+- `InitialAffineAt`: the energy Σ'_z ‖positiveSlotRow z‖² Φ(‖z‖²/Z^M) is ≤ C·Z^{M+ε}, where `positiveSlotRow` =
+  (plain sum X₁)·(plain sum X₂)·∏ᵢ(prime pool at Z^{wᵢ}) (`InductionEnergy.energy`, `positive_squared_absolute`).
+  Each slot enters the row polynomial once.
+- So the diagonal limit is λ = 1: total length X₁ + X₂ + Σw ≤ M. That is the ideal face, i.e. PR 93's fixed
+  point on selected rows and the outer line P + s ≤ 1 of D8c.
+
+**Correction to "the three walls" [derived].**
+- Λ ≈ 2 is the fixed point of the native step's induction, not a diagonal barrier.
+  - Overshoot gives Λ > 6KB/(1 + K), and K ≥ 1/2 is the square-root cut of the selected branch.
+  - Sil's root reference gives P + 2S + 9u/2 < 1.
+- The 6 is the sextic-root cost of selected width ((6B₀ − L₀)u in the deletion need).
+- A face proved some other way, at Λ ≈ 1.97 with B ≈ 1 in the plain range 0.76–0.87 and slot range
+  0.06–0.12, would clear the bar alone. This is new math, but not a classical-frontier problem like B2.
+
+**GS1 does not supply it [read; #96 paper, `02_ch_arithmetic.tex`, Thm D6SF].**
+- The graded inverse theorem bounds the sextic large sieve with family c (N c ≤ A) and columns b (N b ~ B,
+  B ≤ A ≤ B²) by the diagonal, plus C Z^ε(B + A^{1/6}B + A^{2/3}B^{1/2} + A(K/K₀)^{1/6}), plus positive block
+  operators. The blocks carry the correlation of β with sextic symbols (m₀/n₁)₆ of small modulus.
+- For our slot words B = Z^{len}, A = Z^M with len ≈ 0.88M, and the term A^{2/3}B^{1/2} = Z^{(2/3 + len/2)M} already
+  exceeds Z^M once len > 2M/3.
+- So GS1 cannot give a diagonal face at our lengths. A sub-2 face has to use the smooth structure of the two plain
+  factors (Poisson, reflection), as Sil's step does, with a cheaper cost for selected width than 6.

@@ -2,74 +2,13 @@ QRH-Result: arvi-selected-leaf
 QRH-Bound: 43670599/50000000
 QRH-Decimal: 0.87341198
 
-Metadata: `submissions/2026-10-30-arvi-selected-leaf/metadata.json`.
+Dirichlet nonvanishing for Re(s) > 43670599/50000000 = 0.87341198, principal pole excluded. The current best is 0.87387234 (#94).
 
-Proves that every Dirichlet L-function L(s, χ), for every positive modulus, is nonzero for Re(s) > 43670599/50000000 = 0.87341198, excluding the principal pole. The current verified bound is 0.87387234 (#94), so this is 4.60e-4 lower.
+The new estimate is in `R1/`. On rows whose prime-slot block has mass at least Z^{K w(D)}, for K between 0.500001 and 3/4, the energy is split over sixth-root classes. Each class is bounded by the selected sextic norm of #93 and by the baseline's reflected radial engine. With this, the leaf of Sil's cube-free native step can use K = 501/1000 instead of 3/4, so the native line of faces continues down to G(99999/100000, 401/200, 13399/100000). Both lines are proved by induction along the line, with no list of steps and no density chain. arvi-density's return is retuned to that face (three windows).
 
-## What the proof does
+`JointDetector/` holds the 114 modules of #93 that the selected norm needs; only their import paths changed, because they live under `Candidate/` there. `Return/` holds the 14 modules of arvi-density's return that read its constants; only the imports and the constants changed. No existing submission is modified.
 
-1. **Selected root energy (R1), the new estimate.** `R1/`, theorem `selectedRootEnergy`.
-   - **Statement.** For every cut K ∈ [0.500001, 3/4], take the natural rows whose prime-slot block D has mass at least Z^{K·w(D)}. The energy of the packed polynomial on these rows is at most Z^{M + selExcess + ε}, where selExcess = (P + s + (M − P)₊/5 − M)₊.
-   - **Split.** The energy splits exactly over sixth-root classes z = u·g⁶.
-   - **Direct bound per class.** Joseph Bebel's selected all-source sextic norm (#93), applied to the row polynomial of the class.
-   - **Reflected bound per class.** The baseline's reflected radial engine, applied to the radical row character of the class. Its conductor is at most N(u)N(g) = Z^M·N(g)^{-5}.
-   - **Sum.** The classes are summed with the root zeta value and min(a, b) ≤ a^{1−t}b^t.
-2. **Selected leaf in Sil's native step.** `Price`, `Leaf`, `Step`, `Gates`.
-   - In Sil's cube-free native step (#83), the heavy rows of the leaf are priced by max(K·deletion need, selExcess) at K = 501/1000.
-   - The native gates hold with Sil's cut 3/4 replaced by K. The deletion gate moves from 6KB/(1+K) = 2.5714B to about 2.0027B.
-3. **Two lines of faces by continuous induction, with no step data.** `NativeStart`, `Curve`.
-   - **The native line.** One induction (`curve_induction`) proves every face (99999/100000, Λ, 3/50 + (80/2297)(93/25 − Λ)), from the fourth-power source G(99999/100000, 93/25, 3/50) of #76 down to Λ = 5143/2000.
-   - **The selected-leaf line.** A second induction continues with cap 1/10 + (3/50)(5143/2000 − Λ) down to Λ = 401/200.
-   - **The gates.** They are proven for every step of each line (steps of at most 1/100000 and 1/200000).
-   - **The end face** is G(99999/100000, 401/200, 13399/100000).
-4. **Return.** `Return/`, `Tuning/`.
-   - arvi-density's return, retuned so that the end face serves both the count and the physical queries.
-   - The natural join and the plain floor are freed: s_minus = 27/1000, m_minus = 3/10.
-   - Physical cap 3/25, numerator cap 3/40, h = 8001361/10000000.
-   - Three windows, certified by kernel evaluation.
-
-## No density chain
-
-The final theorem uses no face of any density chain. The following leave the import closure:
-- arvi-density's 129-step marked chain (`ChainF50`, `Density/*`, `Source/Hybrid*`);
-- Sil's density step;
-- density-split-fine-chain's `ChainK15`;
-- Collet's density lemmas.
-
-The closure has 4486 submission modules, against 4918 for arvi-density.
-
-## Package layout
-
-- **`JointDetector/`** holds the 114 modules of joint-detector-fine-chain (#93) that the selected norm needs, unchanged except for the module paths in their `import` lines. They live under `Candidate/` there and cannot be imported. Its notices and the Apache-2.0 text are in `JointDetector/Notices.lean`.
-- **`Return/`** holds the 14 modules of arvi-density's return that read its constants. They are unchanged except for the imports and the retuned `Constants.lean`. The rest of that return (`ReturnD/`, 119 modules) is imported from arvi-density unchanged, and no file of arvi-density is modified.
-
-## Compile time
-
-The 179 modules of this package have new module paths, so CI compiles all of them; the dependencies come from the build cache. Locally (lake, 4 cores, dependencies cached) they compile in 11 min 46 s wall-clock, with 31 min of summed module time:
-
-| part | modules | summed module time |
-|---|---|---|
-| `JointDetector/` (copied from #93) | 115 | 24 min |
-| `R1/` | 23 | 4.1 min |
-| `Tuning/` | 15 | 2.3 min |
-| `Return/` | 14 | 1.0 min |
-
-The remaining modules (leaf, gates, the two lines, the final theorem, notices, `Main`) are small.
-- **Slowest module:** #93's `NaturalOffDiagonalNorm`, 2 min 15 s in the parallel build, at about 7 GB.
-- **Slowest new modules:** `Tuning.FinalRows` (44 s) and `R1.Body` (30 s).
-- **Contention:** the parallel times include it. For example, `R1.Peel` takes 10 s on its own.
-
-## Local checks
-
-- **Build.** All 179 modules compile with the pinned toolchain (Lean v4.34.1, Mathlib `d13f23b7`). The build used the sources of the five dependencies, which are byte-identical to `main` for every module in the closure.
-- **Axioms.** `Candidate.bound` depends only on `propext`, `Classical.choice` and `Quot.sound`.
-- **Canonical wrapper.** The wrapper generated by `verifier/challenge.mjs` at `43670599/50000000` compiles against `Candidate.bound`.
-- **Repository checks.**
-  - `metadata.json` passes `verifier/submission-metadata.mjs`; the directory name and the PR declaration parse.
-  - `dependencyGraph` (`verifier/submission-dependencies.mjs`) resolves: 4487 modules compiled, 179 of them from this package.
-  - `node --test tests/*.test.mjs` passes (450 tests), and so does the agent-trace check.
-- **Changed files.** Every changed file is under `submissions/2026-10-30-arvi-selected-leaf/`.
-- **Not run locally:** lean4export, NanoDa and con-ron; they are left to the hosted check.
+Checked locally: the 179 modules build in about 12 minutes on 4 cores with the dependencies cached, `Candidate.bound` depends only on propext, Classical.choice and Quot.sound, the generated wrapper compiles, and the metadata, dependency graph and repository tests pass.
 
 ### Proof submission requirements
 

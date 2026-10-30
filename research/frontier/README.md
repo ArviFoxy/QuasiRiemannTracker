@@ -100,6 +100,9 @@ Computed with `worth.py` and `density_past2.py`, the float model of the newTop r
 
 Write-up of target 0's mechanism: `DR_PRIME_SIEVE.md`.
 
+**Decision (Arvi, 2026-10-30): no port of #96.** #96 is not formally verified, so we will not replace the ~205k-line
+probe stack because of it. Its ideas (the K-chart, GS1, the Voronoi split) may be borrowed inside our stack.
+
 ## P1 route (2026-10-30)
 
 P1 follows from a fourth-moment asymptotic for the matrix of twisted theta central values S(k, P): with random

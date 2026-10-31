@@ -3483,4 +3483,11 @@ phases), divided by the same for the masked random matrix. A value of 1 means no
   levels for the sextic and two for the cubic, times classes and twists. Obstacle 1 becomes a closure statement: the
   pull-back of each level's dual family is the next level's family.
 - **The two-sided conjecture's source family should include the higher levels** (kinds u²·(x/|x|)^l and (x/|x|)^l
-  besides u and plain). Otherwise growing spikes are left in it.
+  besides u and plain). Otherwise growing spikes are left in it. Done in Lean: `SourceSpike.lean`'s shapes now carry
+  a level (`levelFactor`, `idealAngle`).
+- **At 10⁵ the levels take a third of what was left** (`theta_twosided_grow.py` with `THETA_SRCLEV=1`, log
+  `theta_twosided_grow_srclev_B100000.log`). The levels go on the cells, and their (x/m)^{±1} twists on the classes mod 4
+  (dP 2304 → 4200). At (300, 100) E off both families is at 3.471 against the masked null's 3.413, i.e. **+1.7%**
+  (+2.6% without the levels). Random spans of the same dimensions give +16.0% (+18.6% before). So the structured
+  addition removes 35% of the remaining excess, while the extra dimensions alone account for about 14% of the random
+  spans' excess.

@@ -83,8 +83,9 @@ class-signed source theta times `(x/m)₆^{±1}`, and the plain `(x/m)₆^{±1}`
 - At 10⁵ the row family is a third of its relative size (13% of the rows, against 42%) and removes less: +10.3% at
   (300, 0). The source twists do the rest: +7.6% at (300, 30) and +2.6% at (300, 100), while random spans of the same
   dimensions stay at +19%. The sextic `(x/m)^{+1}` spikes lie outside every row family, so they must be removed on
-  the source side. The statement removes twists up to `C B^{1−qε}`, a positive fraction of the rows, so these runs
-  are consistent with it but do not test it at 10⁵.
+  the source side. With the Poisson levels in the source family as well (dimension 4200 against 2304) the remainder
+  at (300, 100) is +1.7%, and random spans of the same dimensions give +16%. The statement removes twists up to
+  `C B^{1−qε}`, a positive fraction of the rows, so these runs are consistent with it but do not test it at 10⁵.
 - The source spike is a residue: `E f(z)` is a partial sum of the sextic Kubota series at the index `z`, and its row
   image is one vector built over every scale of the sources (`research/journal`, "The block outlier is a residue").
   [numerical; identification with the theta coefficients heuristic]

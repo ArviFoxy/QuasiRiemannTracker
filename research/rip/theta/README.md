@@ -45,8 +45,10 @@ be small.
   the sextic matrix `u²(x/|x|)` ∝ conj g̃₃ (the conjugate cubic Gauss sum) and the angle `conj(x/|x|)`, with excess
   0.29 and 0.28 at 10⁵ against 2.24 for the theta itself, growing with B; for the cubic matrix `u²`. Up to angles
   `u³` is an angle, so the levels close up: three for the sextic, two for the cubic. The row side has almost none.
-  The row family captures 58–60% of their images (random 43%), so they belong in the source family. This is the
-  multi-level correction that the off-spike recursion needs (journal, "The Poisson levels").
+  The row family captures 58–60% of their images (random 43%), so they belong in the source family. Adding them
+  (`THETA_SRCLEV=1`) takes the 10⁵ remainder at (300, 100) from +2.6% to +1.7% over the masked null (random spans of
+  the same dimensions +16%). This is the multi-level correction that the off-spike recursion needs (journal, "The
+  Poisson levels").
 - **For the K-wall.** The twisted source spikes are flat on slot-selected rows (`theta_src_twisted_selected`). Beyond
   the two-sided spike-free conjecture itself, the new arithmetic input is a shifted-convolution bound for sextic
   theta coefficients at products (`../../frontier/README.md`).

@@ -3604,3 +3604,17 @@ g̃(x)χ_x(m):
   Grössencharacters is GRH-strength.
 - Next: fix the orientation with exact conventions (`theta_dualcore.py`'s Poisson formula), and check whether Sil's
   reference ledger can absorb a rank-one Patterson main term.
+
+**Correction (same day): the orientation is probably the unfavourable one [derived].** Take the spike orientation from
+the twisted-norms numerics: f_m = conj g̃·(class)·(x/m)^{+1} carries the spike. Then
+⟨v, f_m⟩ ∝ Σ g̃(sp) conj χ_{sp}(m), and g̃(s)χ_s(t) = g̃(t^{−1}, s) with t = m⁵p², so the s-sum is the Kubota series at
+the index t^{−1} ≡ m·p⁴ (mod sixth powers).
+- τ₆ does not vanish there, so every twist m ≤ L²/A correlates, weighted by τ₆(m p⁴). The "only m = 1" simplification
+  above does not hold.
+- The detector condition then needs cancellation in Σ_p a(p) g̃(p) conj χ_p(m) τ₆(m p⁴) over a pool much shorter than
+  the conductor m. That is GRH-strength for every m, not only for m = 1.
+- **A possible rescue.** In the zero-detection application the plain factors carry N(s)^{−it}, and the Patterson main
+  term of a smooth sum twisted by N(s)^{−it} is smaller by about 1/|t|. For the typical |t| (a power of the
+  conductor) that is a power saving.
+- Whether the reference's plain factors are t-twisted, and at which t the face binds, decides target 2. Not yet
+  checked.

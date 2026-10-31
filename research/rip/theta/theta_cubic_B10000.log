@@ -1,0 +1,13 @@
+B=10000 L=10000  R=2816 rows  S=2610 sources   built in 2.2s
+  |G(z,1)|: min 1.000 max 1.000   (built 9.0s)
+  |G3(z)|: min 1.000 max 1.000   (15s)
+r_H random phases: 0.953 +- 0.014
+r_H cubic theta G3 conj chi^2(u) prof (Lean conj): [3.321 3.303 3.303 3.321 3.303 3.303]
+r_H conjugate conj G3 chi^2(u) prof:               [0.793 0.845 0.845 0.793 0.845 0.845]
+full: [6.692 5.153 4.769 4.553]   MP edge 4.156
+N(m) <= 30 (7 twists, J = 2):
+  theta (Lean conj)  dim   42: [6.598 5.066 4.434 4.282]   MP edge 4.125
+  block, both conj   dim   78: [6.405 5.019 4.499 4.256]   MP edge 4.097
+  all                dim  120: [6.326 4.946 4.282 4.168]   MP edge 4.066
+  random             dim  120: [6.452 5.    4.616 4.425]   MP edge 4.066
+done in 422s

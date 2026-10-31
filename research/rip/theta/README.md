@@ -22,6 +22,7 @@ be small.
 | `theta_srcspike.py B L` | source-side theta vectors G(x)χ_x(u)N(x)^{−1/2}: energy, overlap with the top right vectors, twisted source-theta span |
 | `theta_primepool.py B L` | prime-pool row vectors: energy and overlap with the top left vector |
 | `theta_classes.py B L [sample]` | reciprocity sign s(z, z′) and χ_z(−1) by row class mod 4; per-class spectra and theta excess (no anti-self-dual class) |
+| `theta_offspan.py B L [M,...] [J]` | in the Lean statement's convention b* E E^H b (`../../lean/arvi_kwall/SexticSpikeFree.lean`): the theta G·conj χ(u)·profile against its conjugate; the top of E off the theta span (each conjugation), the block span (both conjugations), all of them, and a random span of the same dimension |
 
 All scripts build E and the row Gauss sums through `theta_core.py`.
 
@@ -42,6 +43,14 @@ All scripts build E and the row Gauss sums through `theta_core.py`.
     3·10³, 10⁴, 3·10⁴, 10⁵. RCHAR stays at the random level at 10⁵ (`theta_top_free_B100000.log`). It is neither
     the row theta, the source theta nor a prime pool (`theta_srcspike`, `theta_primepool`).
 - **Both parts are flat** (unimodular on coprime rows), so both dilute on thin row sets.
+- **Convention (correction to three scripts).** r = ‖Eᵀc‖²/(S‖c‖²) is the row Gram form b* E E^H b at b = conj c.
+  - So in the Lean form the excess is carried by G·conj χ(u), not conj G·χ(u): r_H = 1.09–1.13 against 0.93–0.98
+    (`theta_offspan_B10000.log`).
+  - `theta_span`, `theta_locate` and `theta_topspan` projected conj G·χ out of E E^H, the conjugation without the
+    excess.
+  - Re-run in the right convention, the findings above stand. The top vector's mass in the theta span is at the
+    random level (0.040 against 0.046), and the top outlier sits in the block span.
+  - The thetas are far below the bulk edge at these sizes, so removing either conjugation barely moves the top.
 - **Only conj G carries the excess.** Plain rows show a deficit (r = 0.85–0.93 against 0.946). G and the Gauss-sum
   powers conj G², G², conj G³ are neutral (0.90–0.98) (`theta_powers_B30000.log`).
 - **One spike per twist.** Every twisted theta conj G·χ_z(m) carries the same excess, +0.084 ± 0.005 for

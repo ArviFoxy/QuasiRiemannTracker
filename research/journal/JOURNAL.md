@@ -2577,3 +2577,102 @@ Top singular value s²/S at B = L, against random phases on E's exact zero patte
     on W is a real question. The fresh look's W-numerics (B ≤ 12000, sextic within ±4% of RMM-S) show nothing yet,
     but there the spike is just above threshold (θ ≈ 1.4–1.8).
   - Next check: selected norms on slot-selected W against RCHAR-W at B = 3·10⁴ to 10⁵.
+
+## 2026-10-31 · Fortified claims: four elementary Lean files behind the K-wall and RIP entries (agent; verified)
+
+**Lean [`lean/arvi_kwall/DualFrame.lean`, `AntiSelfDual.lean`, `SpikeFree.lean`, `TransferLemmas.lean`].**
+- All four are Mathlib only and check in about 10 s each on a warm cache.
+- I compiled them independently after the agent's report. Every printed theorem depends only on `propext`,
+  `Classical.choice` and `Quot.sound`.
+- There is no `sorry`, `admit`, `axiom` or `native_decide`, and the repo copies match the build tree.
+
+**DualFrame (the fresh look's Q-metric bound).**
+- `dual_frame_bound`: for Q positive definite, Σ_{z∈W} |y_z|² ≤ c_W(Q)·⟨y, Qy⟩, where
+  c_W(Q) = sup{⟨v, Q⁻¹v⟩ : v a unit vector supported on W}.
+- `dual_frame_large_sieve` is the same bound for y = Ma.
+- Q = 1 gives the trivial restriction bound (`cW_one_eq`, `dual_frame_large_sieve_one`).
+- It is an exact reformulation, so the choice of Q is the whole content. The numerical test of a wide-kernel Q at
+  B = 10⁴ is with the large-B agent.
+
+**AntiSelfDual (closes the "No anti-self-dual row class" idea formally).**
+- `two_d_bound`: suppose A = −U Ā Uᴴ (U unitary, Ā the entrywise conjugate) and D + A ⪰ 0 with 0 ≤ D ≤ d. Then
+  D + A ≼ 2d.
+- The constant is sharp (`two_d_bound_sharp`), and the "+" sign gives no cap (`plus_sign_no_cap`).
+- So an anti-self-dual row class would have capped the sextic row Gram at twice its diagonal. The numerics found
+  that χ_z(−1) cancels the reciprocity sign, so no such class exists.
+
+**SpikeFree (corrected large sieve, source side).**
+- `selected_of_corrected` is by restriction, and `off_spikes` gives the bound off the spikes.
+- `detector_condition` turns a small spike projection of a into the selected bound.
+- `detectorSpan_finrank_ge`: if a (k+1)-dimensional source subspace has energy ≥ Δ′ > Δ, the spike span has
+  dimension ≥ k + 1. This is the formal form of "V must be high-dimensional when many eigenvalues exceed Δ".
+
+**TransferLemmas.**
+- `douglas_easy` and `douglas_gram`: if X = AY and ‖A‖ ≤ c, then X*X ≼ c²Y*Y.
+- `gram_mixture_offdiag_avg`: over independent atom choices per row, the average off-diagonal Gram entry is the
+  Gram entry of the mean rows. So a randomized dictionary transfers only its mean.
+- `cross_coherence_no_information`: the identity dictionary has perfect RIP and flat cross-coherence with a flat
+  vector, while the dictionary of equal rows has none. So cross-coherence carries no RIP information.
+
+## 2026-10-31 · Random multiplicative dictionaries have RIP of order |S| ≪ m^{2/3} with probability ≥ 1/2 (Lean; agent, verified)
+
+**Lean [`lean/arvi_rip/RandomMultiplicative.lean`, namespace `QRH.ArviRIP`].**
+- The file is 1437 lines and checks in about 35 s.
+- I compiled it independently. Every printed theorem depends only on `propext`, `Classical.choice` and `Quot.sound`.
+- There is no `sorry`, `admit`, `axiom` or `native_decide`.
+
+**The model (RMM).**
+- Each row z gets an independent uniform assignment w_z : P → ℤ/6.
+- Sources are sets of primes n ⊆ P, i.e. squarefree products.
+- The atom is ψ_n(w_z) = ∏_{p∈n} ζ^{w_z(p)}, with ζ a primitive sixth root of unity.
+
+**The proof.**
+- Orthogonality, exactly: `sum_psi_mul_conj`. For four factors, `sum_psi_four`; exponent sums with |e| ≤ 4 < 6 are
+  separated.
+- The averaged centered fourth moment is a closed-walk count, exactly (`sum_fourth_moment`, `walkCount_eq`):
+  walkCount = s(s−1)(s−2)(s−3)·m + 2·s(s−1)(s−2)·m² + s(s−1)·E.
+  Here s = |S|, m = #sources, and E is the multiplicative energy of the sources.
+- Markov: `half_good`.
+- `rip_positive_measure`: at least half of all assignments give RIP on S with constant
+  (2(s⁴m + 2s³m² + s²E))^{1/4}.
+  - For sources with only trivial relations, E ≈ 2m². Then the relative constant is ≈ (4s³/m²)^{1/4}, so RIP holds
+    for |S| ≪ m^{2/3}.
+
+**Reading.**
+- This is the random-model calibration of (M₄) from the "RIP (4) fresh look" entry. The centered fourth moment
+  certifies RIP up to |S| ≈ m^{2/3}, past the √-barrier of coherence.
+- For the actual sextic rows, (M₄) on the selected W is still the open input.
+
+## 2026-10-31 · A Deshouillers–Iwaniec spectral large sieve on the sextic cover cannot give (LS off V) (agent report; literature IDs checked)
+
+**Report [`frontier/SPECTRAL_LARGE_SIEVE.md`].** The claims are marked [derived] or [heuristic] there. None is formal.
+- **Identification [derived].**
+  - Each twisted theta is the residue of Kubota's Eisenstein series on the 6-fold cover at s = 1 + 1/6, twisted by
+    z ↦ χ_z(m).
+  - It is rank one in the radial profile (Xu–Sang's I(U) is the Mellin transform at the pole) and lives in K-type 0.
+  - The excess exponent 1/n is the residual spectral parameter.
+  - Kazhdan–Patterson's τ₆(m p⁵) = 0 accounts for the conjugation tables.
+- **Obstacle [derived].**
+  - The sieve matrix has no cuspidal component. One Poisson step gives Gauss sums, which are Kloosterman sums with
+    one frequency 0, so Eisenstein Fourier coefficients. Kuznetsov needs two nonzero frequencies.
+  - Off V only the continuous spectrum remains, and a large sieve for it is equivalent to (LS off V).
+  - Self-duality at B = L is Kubota's s ↔ 2 − s.
+- **Size [heuristic].** A spectral large sieve of Deshouillers–Iwaniec quality has to pay for the whole cuspidal
+  spectrum. The best embedding found gives B^{3/2+ε} at B = L, worse than B^{7/6}.
+- **Literature (arXiv IDs checked).**
+  - de Faveri, "Optimal large sieve for fixed order characters", arXiv 2610.04045 (2 Oct 2026): every n ≥ 3, number
+    fields containing the n-th roots of unity, expected optimal in all ranges.
+  - Xu–Sang, "A matching lower bound for the sextic large sieve and structured prime moments", arXiv 2610.17675:
+    (AB)^{−ε}(A + B + A^{5/6}B^{1/3} + A^{1/3}B^{5/6}) for squarefree rows and columns.
+  - Dunn, "Metaplectic cusp forms and the large sieve", arXiv 2403.13151: circle method and Voronoi, no Kuznetsov.
+  - Cited by the report but not checked: Louvel's cubic Kuznetsov (Forum Math. 2014) and Pascadi (Forum Math. Pi 2026).
+- **Low-frequency outlier [speculative].** It is neither a first-order residual term nor continuous spectrum. If its
+  B^{1/6} growth is real, it is a second-order "corner" term.
+- **Lean stack.** OAI's Eisenstein directory covers the cubic cover only:
+  - Laplacian, Fredholm theory, and the resolvent with the theta projection as its residue at 8/9;
+  - Eisenstein series and their Gauss-sum Dirichlet series;
+  - Patterson's θ₃, sextic reciprocity, and Heath-Brown's cubic large sieve.
+
+  There is nothing for the 6-fold character and no Kuznetsov.
+- **Cheaper tests suggested.** T1: only angular frequency 0 carries the excess. T5: the off-V test on the cubic
+  family, where the excess is ≍ B^{1/3}. T5 is run in the next entry.

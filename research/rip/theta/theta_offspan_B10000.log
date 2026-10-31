@@ -1,0 +1,18 @@
+B=10000 L=10000  R=2816 rows  S=2610 sources   built in 1.1s
+  |G(z,1)|: min 1.000 max 1.000   (built 5.5s)
+r_H, random phases: 0.956 +- 0.024
+r_H, G conj chi(u) prof (Lean convention):  [1.133 1.116 1.116 1.09  1.122 1.122]
+r_H, conj G chi(u) prof (other conjugation): [0.946 0.928 0.928 0.983 0.932 0.932]
+full: [4.261 4.109 4.093 4.025]   MP edge 4.156
+N(m) <= 30 (7 twists, J = 2):
+  theta, Lean conjugation  (dim   84): [4.17  4.037 4.015 3.953]
+  theta, other conjugation (dim   84): [4.194 4.039 4.023 3.972]
+  block, both conjugations (dim  156): [3.995 3.955 3.928 3.884]
+  all                      (dim  324): [3.844 3.819 3.801 3.761]
+  random subspace          (dim  324): [3.944 3.834 3.809 3.783]
+N(m) <= 100 (27 twists, J = 2):
+  theta, Lean conjugation  (dim  324): [3.921 3.809 3.782 3.746]
+  theta, other conjugation (dim  324): [3.97  3.841 3.817 3.761]
+  block, both conjugations (dim  636): [3.541 3.515 3.483 3.472]
+  all                      (dim 1284): [2.963 2.942 2.908 2.903]
+  random subspace          (dim 1284): [3.041 3.013 2.969 2.935]

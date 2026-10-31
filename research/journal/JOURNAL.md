@@ -3193,6 +3193,14 @@ Same families as at 3·10⁴. V: row thetas and plain characters on classes mod 
   theta pairs with the theta coefficients on the sources, with the same scaling. But the rows fill one dyadic window
   `[B, 2B]`, while the sources fill every scale from 1 to L. The coherent build-up gives the source theta about ten
   times the energy, which matches the observed ratio (θ ≈ 2.1 against a row-theta excess of 0.22 at 3·10⁴).
-- **Not yet checked.** That the fixed row vector is `τ₆` itself rather than some other fixed vector. The earlier CFH
-  phase test (`u₀²` against cubic Gauss sums) was negative. With about 64% signal in `u₀` at 10⁴ and no explicit
-  form of `τ₆(p)²` to test against, that test is weak.
+- **Not checked, and not checkable directly at these sizes.** That the fixed row vector is `τ₆` itself rather than
+  some other fixed vector.
+  - At squarefree indices `τ₆` is not explicit, even conjecturally. Bröker–Hoffstein (Math. Comp. 85 (2016),
+    arXiv 1312.0568, Conj. 5.7) give `τ₆(π)²/τ₆(1) = ζ₆^{k(π)} g̃₃(π) 3^{l(π)} (1 − 3ζ₆)^{m(π)} (−2 + 3ζ₆)^{n(π)}`
+    for `|π| ≡ 1 mod 4` (norm-13 elements for `|π| ≡ 3 mod 4`), with `l ∈ {−1, 0}`, `m, n ∈ {0, 2}`, and no pattern
+    found for `k(π)`, `m` or `n`. CFH pin down only the square indices: `τ₆(p²) = 2 G₃(1, p)` up to a twelfth root of
+    unity and a power of 3.
+  - So the earlier negative phase test (`theta_cfh`: `u₀²` against cubic Gauss sums × classes mod 36) is explained.
+    The unknown sixth roots `ζ₆^{k(π)}` are not class functions, and such a span cannot see them.
+  - Computing `τ₆` independently is out of reach: Bröker–Hoffstein sum Gauss sums to norm 10⁸ to get `τ₆(π)` for
+    `N(π) < 900`, while our rows have norm 10⁴ and up. The tests above are the available evidence.

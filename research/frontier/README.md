@@ -217,6 +217,22 @@ cubic check, where the two thetas coincide.
   own spikes (twists, sources) handled with a genuine saving at each level. The open question is whether the
   two-sided projection supplies that.
 
+**The source spikes are residues, and that changes what Λ_src is (2026-10-31; numerical + heuristic, journal "The
+block outlier is a residue").**
+- The source theta's row image is one vector built coherently over every source scale. This fits the residue of
+  the sextic Kubota series in the source variable: `E f(z) ≈ L^{1/3} conj τ₆(z)`, with `τ₆` the sextic theta
+  coefficients.
+- A twisted source spike `f(x)(x/m)₆` has row image `z ↦ Φ(zm)`, and `Φ` is the same residue, so it is about
+  `L^{1/3} τ₆(zm)`.
+- **Cubic case.** Patterson's `τ₃` is a Gauss sum, hence twisted-multiplicative. Then `τ₃(zm)` factors into `τ₃(z)`,
+  `τ₃(m)` and residue symbols, and `Λ_src` is again a twist sieve, which the amplification step handles.
+- **Sextic case.** `τ₆` has no such factorization (no unique Whittaker model for n = 6 > r + 1). So `Λ_src` is a
+  bilinear form in sextic theta coefficients at products, `Σ_m |Σ_{z∈W} b_z τ₆(zm)|²`. That is a new object, not a
+  twist sieve.
+- Its natural tool is the automorphy of `θ₆` itself: detect `n ≡ 0 (mod z)` additively and use the theta
+  transformation at the cusps `a/z`. Whether the leftover twist after that step is quadratic (as for the cubic
+  theta, where it makes the quadratic large sieve sharp) is the next thing to check.
+
 ## Queued directions
 
 ### Q1. A product (tensor) RKHS for the dual frame, with a multiresolution that resolves W at its own coarse scale (queued 2026-10-31, Arvi)

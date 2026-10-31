@@ -4002,3 +4002,29 @@ would cap the method at γ ≥ 1/(n(n+1)).
   - The control at the smallest twists grows with the scale as the pole predicts: 13.7, 28.0 and 52.7 at
     L = 10⁴, 3·10⁴, 10⁵, about L^{0.59} against L^{2/3}.
   - So with weights falling in N(d), the dilated corrections are harmless for these vectors as well.
+
+## 2026-10-31 · Correction: the OpenAI baseline does formalize the cubic metaplectic theory
+
+[Lean, read: `openai_baseline/OAI/NumberTheory/DirichletL/Eisenstein/` (82 files, 53,369 lines) and `GaussSum/`]
+
+- **The entry "The Mellin rescue needs Patterson's continuation, which no Lean stack has" is wrong on its central
+  claim.** My grep searched for the words Kubota, Patterson and metaplectic. The baseline does not use those names,
+  but it formalizes the objects.
+- **What is there.**
+  - `Eisenstein/` (namespace `CubicEisenstein`, with `CubicKubota.levelThree`): the Kubota Eisenstein series on the
+    cubic cover over hyperbolic 3-space (`HyperbolicSpace`, `FundamentalDomain`, `CoordinateLaplacian`,
+    `GreenIdentity`).
+  - Its continuation, by a resolvent argument (`MeromorphicResolvent`, `FredholmAlternative`).
+  - The scattering coefficients and residues (`ScatteringCoefficients`, `ScatteringResidues`, `CuspResidues`).
+  - The residue's Fourier expansion: the cubic theta, `cubicResidualFunction`, `ResidualFourierExpansion`.
+  - Patterson's coefficients at squarefree × cube indices (`SquarefreeCoefficients`:
+    `infinityCoefficient_squarefree`, `sourceArithmeticResidue_squarefree_cube_support`).
+  - `GaussSum/BesselReflection`, `continuedBesselDirichlet_reflection`: a functional equation with the Gamma factors
+    Γ(s+1/3)Γ(s+2/3) ↔ Γ(4/3−s)Γ(5/3−s) of the cubic Kubota series.
+  - These are used by the baseline's inversion and moments (`Moments/FirstPoisson`, `Inversion/ReflectedArithmeticHeight`,
+    `GaussSum/ReflectionPool`, …). The sextic family reaches the cubic theta through Möbius absorption
+    (μ·conj g̃₆·α ∝ g̃₃).
+- **Consequence.** The "Lean barrier" paragraph and the frontier note are withdrawn. The real question is narrower:
+  which of the statements the faces program needs (the asymptotic for smooth twisted cubic Gauss-sum sums with
+  residue at 5/6, uniform in the twist and the weight, and the mean values over twists) follow from what the baseline
+  proves, and which need extensions (the sextic theta τ₆ is not covered by the cubic theory). Mapping that next.

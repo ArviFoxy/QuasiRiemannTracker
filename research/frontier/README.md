@@ -228,10 +228,12 @@ corrected (`CorrectedLargeSieve`), plus a detector condition for the vectors at 
   (A/B)·Σ_k mult(k)|⟨λ, w_k⟩|². So "diagonal past √A for smooth × prime vectors" is equivalent to their spike
   correlations being small. That is a statement about Gauss sums over smooth × prime moduli, not about the sieve.
 - Both forks (native or density machinery carrying the new gate) remain large Lean projects.
-- **Lean barrier (2026-10-31, journal "The Mellin rescue needs Patterson's continuation").** The rescue rests on the
-  asymptotic for smooth sums of twisted Gauss sums (Patterson: continuation of the Kubota series, residue = theta).
-  No local Lean stack has metaplectic Eisenstein series, and this item dominates the program's Lean cost. Only the
-  corrected recursion, as a reduction with the spike correlations as hypotheses, is formalizable now.
+- **Lean inputs (2026-10-31; corrected the same day).** The rescue rests on the asymptotic for smooth sums of twisted
+  Gauss sums (Patterson: continuation of the Kubota series, residue = theta). The OpenAI baseline formalizes the
+  cubic Kubota Eisenstein series, its continuation, the cubic theta and a reflection formula
+  (`OAI/.../Eisenstein/`, 53k lines; `GaussSum/BesselReflection`). An earlier note here said no stack had it; that
+  was wrong (journal, "Correction: the OpenAI baseline does formalize the cubic metaplectic theory"). What remains to
+  map: which needed statements follow from it, and what the sextic theta needs beyond it.
 - **Decision point before more K-wall work:** does the reference see plain-character blocks (#96's inverse theorem,
   classical detector) or Gauss-sum-twisted spikes (GRH-strength detector)? Journal, "The reference wall's detector
   condition". Without target 2 the K-wall buys nothing.

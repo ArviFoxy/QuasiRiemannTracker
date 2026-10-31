@@ -80,3 +80,15 @@ Each step lists de Faveri's statement, the corrected version, and the evidence.
   for the reference vectors (journal, "The reference wall's detector condition").
 - **Payoff.** It comes only with both walls and the Lean forks of the native or density machinery: −1e-4 to −5e-4
   (frontier, "Roadmap for the faces").
+
+## Lean route (2026-10-31)
+
+Sil's formal optimal sextic sieve (`FourthPower/Sieve*.lean`, about 6,100 lines; `optimal_bound`) is de Faveri's
+recursion. Its `step α = (12α − 7)/(6α − 1)` is the n = 6 case of 2 − (n−1)/(nα − 1). The corrected version is a fork:
+1. `SieveGrowthAlgebra.secondaryCoefficient`: carry the twist range M_tw, giving (2N/(M·M_tw))^{1/6}.
+2. Monotonicity: shift the twist range (A·M conserved).
+3. `SieveImprovement.step`: replace by 2 + γ − (1+γ)/α (arithmetic already in `OffSpikeIteration.lean`).
+4. `SievePoissonBound`: split the dual sum by kernel. The small-kernel part becomes the correction form, and the
+   large-kernel part is bounded as before.
+
+Step 4 is the analytic addition. Steps 1–3 are bookkeeping on proved code.

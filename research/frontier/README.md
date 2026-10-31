@@ -237,7 +237,11 @@ corrected (`CorrectedLargeSieve`), plus a detector condition for the vectors at 
     Mellin transform there, the source theta's excess at 10⁵ falls from +224% to +2.5% (control +153%).
   - So plain factors with I(U) = 0 weights are off every twisted spike. At height |t| ≫ 1 smooth weights give this
     automatically (W̃(s₀ − σ − it) decays). Target 2 then needs one Poisson step, the weight split, and error terms:
-    no GRH-strength input. Next: the face's actual reference weights.
+    no GRH-strength input.
+  - **Read (journal, "The face's reference, read").** The reference's plain weights are caller-supplied Schwartz
+    bumps with explicit height twists, so the weight design is available as the code stands. The energy step is
+    Sil's formal optimal sieve, which is de Faveri's recursion in Lean (`step α = (12α−7)/(6α−1)`). The corrected
+    sieve is a fork of it (`OFFSPIKE_PROOF_PLAN.md`, "Lean route").
 
 ## Open question: a power saving off both thetas
 

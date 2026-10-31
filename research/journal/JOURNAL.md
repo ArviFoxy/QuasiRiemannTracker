@@ -3745,3 +3745,46 @@ appear.
   | predicted | 2.580 | 2.011 | 1.486 | 1.158 | 1.043 | 1.011 | 1.003 |
 
   The excess follows |1/3 − it|^{−2} and is at the null from t ≈ 2. So the low-height slice is |t| ≲ 2.
+
+## 2026-10-31 · The face's reference, read: free Schwartz weights, explicit heights, and Sil's formal de Faveri recursion
+
+[Lean, read (agent report, citations spot-checked); the files are in Sil's `FourthPower/` directory of the
+repeated-marks submission and the OAI baseline's `DirichletL/Moments/`]
+
+**What the short reference estimates.** `uniform_actual_reference` (`MixedFirstActualReference.lean`) bounds a radial
+row energy (rows z ∈ ℤ[ω] weighted by Φ(‖z‖²/K), with Φ a caller-supplied Schwartz function) of a rectangle
+`heightRectangle`. That is a product of two plain sums and the slot primes.
+- **Weights.** Each plain term carries W_j(N n_j/X_j)·(N n_j/X_j)^{i(t_j + t)}. Here W_j ∈ 𝓢(ℝ, ℂ) is supported in
+  [a, b] (`normPowerProfile`), t_j are fields of the source, and t is the row height. Slot primes carry
+  N(p)^{i(t₀ + t)}.
+- **The weights are caller-supplied.** W₁, W₂ are fields of `Source`. The bound depends on them only through finitely
+  many Schwartz seminorms (`sourceControl`), and on Φ through sup|Φ|. Only a, b are fixed in advance.
+- **Heights are unconstrained** (polynomial cost 1 + |t| + V + ‖t₁‖ + ‖t₂‖). Height windows enter downstream, by
+  integration against a smooth compactly supported window.
+- **Poisson.** Only the long plain sum is reflected, per row, when √U < X. The Gauss sum is a unimodular
+  row-dependent scalar and is dropped, and the dual profile is the radial Fourier transform of the twisted W. The
+  short sum and the slots are never dualized.
+- **The energy step is Sil's formal optimal sextic sieve** (`OptimalBound`, proved as `optimal_bound` in
+  `SieveOptimal.lean`).
+
+**Sil's optimal sieve is de Faveri's recursion, in Lean.**
+- `SieveImprovement.step α = (12α − 7)/(6α − 1)` is exactly de Faveri's map 2 − (n−1)/(nα − 1) at n = 6. The fixed
+  point 7/6 and the contraction rate 5/6 are proved (`exponent_error_le`).
+- `SieveGrowthAlgebra.secondaryCoefficient N M = 2(2N/M)^{1/6} N^{1/6}` is the n-th-power multiplicity term, i.e.
+  the theta term.
+- The Poisson, gcd and coupling steps are `SievePairPoisson`, `SievePoissonBound`, `SievePoissonRecurrence`,
+  `SieveGcdNorm` and `SieveRayCoupling` (about 6,100 lines with the rest of `Sieve*`).
+
+**Consequences.**
+- **Target 2 in the face's own terms.** Choose the short factor's weight W₂ with zero Mellin transform at the pole. The
+  heights |t₂ + t| ≳ 2 need nothing (measured decay, previous entries). Then replace `OptimalBound` in the reference
+  energy by a corrected bound for such vectors: one Poisson step plus the spike-free remainder. The weight freedom
+  exists in the code as it stands.
+- **The off-spike corrected sieve has a formal starting point.** It is a fork of Sil's `Sieve*` with three changes:
+  - the secondary coefficient carries the twist range, (2N/(M·M_tw))^{1/6};
+  - monotonicity shifts the range, with A·M conserved;
+  - the step map becomes 2 + γ − (1+γ)/α (`OffSpikeIteration.lean`).
+
+  The analytic addition is the small-kernel split of the dual sum inside `SievePoissonBound`, with its correction
+  form.
+- Both are large Lean projects. Unlike the earlier picture, neither needs a classical open problem.

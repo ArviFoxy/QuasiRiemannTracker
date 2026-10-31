@@ -65,6 +65,14 @@ Each step lists de Faveri's statement, the corrected version, and the evidence.
    - The fixed point is 1 + γ. [Lean: `OffSpikeIteration.lean`, `balance`, `tendsto_iter`]
    - The base case (E₂) is trivial (Lemma 7.2, unchanged).
 
+## Target 2 needs only one step (2026-10-31)
+
+In the reference regime B ≤ A^{2/3} one Poisson step suffices. The source spikes are the dual's small-kernel rows,
+so removing them is a row restriction, and the rest of the dual is bounded by Sil's proved optimal sieve. This gives
+‖E_{A,B}λ‖² ≤ C(AB)^ε {A‖λ‖² + (A/B)Σ_{N(h) ≤ B²/A} w_h|⟨λ, f_h⟩|²} (journal, "Target 2 needs one corrected Poisson
+step"). This is a moderate fork of `SievePoissonBound` and `SieveDescent`. The recursion below is needed only for the
+K-wall.
+
 ## Form of the statement (2026-10-31)
 
 The recursion cannot prove a bound for vectors exactly orthogonal to a fixed spike span. Each Poisson step restricts

@@ -4108,3 +4108,28 @@ w_f/Δ.
 on Re s = 1/2, uniformly in twists. The baseline's cubic development (`OAI/.../Eisenstein/`, 53k lines) is the
 template; how much of it is generic in the order is the question for the mapping in progress. P1 and B2, after
 absorption, live in the cubic world the baseline already covers, but they are critical-line (moment) problems.
+
+## 2026-10-31 · Target 2 needs one corrected Poisson step, with the dual bounded by Sil's existing sieve
+
+[read: Sil's `SieveDescent` (`lambda_sixth_extraction`, `lambda_scale_descent`) and `SievePoissonSeries`; derived]
+
+- After one Poisson step in the rows, the original problem's source spikes are the dual frequencies whose
+  sixth-power-free kernel is ≤ μ. Removing them is a **row restriction** of the dual, which is an operator-level
+  statement. Only the top level is vector-level.
+- One step, sources B ≤ rows A, K = B²/A:
+  ‖E_{A,B}λ‖² ≤ C(AB)^ε { A‖λ‖² + (A/B)·‖E^{>μ}_{K,B}‖²·‖λ‖² + (A/B) Σ_{N(h) ≤ K, kernel ≤ μ} w_h |⟨λ, f_h⟩|² }.
+- Sil's descent restricted to kernels above μ gives ‖E^{>μ}_{K,B}‖² ≤ Σ_{D: K/N(D)⁶ > μ} θ(K/N(D)⁶, B). With his
+  proved bound θ(K′, B) ≤ B + K′^{7/6+ε} + B^{5/6}K′^{1/3} (K′ ≤ B), this is at most
+  (K/μ)^{1/6}·B + K^{7/6+ε} + B^{5/6}K^{1/3}.
+- Times A/B, the terms are A(B²/(Aμ))^{1/6} (the corrected theta term), A^{−1/6}B^{4/3} and A^{2/3}B^{1/2}. In the
+  reference regime B ≤ A^{2/3} the last two are ≤ A. With μ = K the first is A.
+- **So in the reference regime the sextic large sieve is the diagonal plus the spike part:**
+  ‖E_{A,B}λ‖² ≤ C(AB)^ε {A‖λ‖² + (A/B) Σ_{N(h) ≤ K} w_h |⟨λ, f_h⟩|²}, w_h ≈ (K/N(h))^{1/6}.
+  - This makes precise the earlier remark ("the √-barrier term is exactly the spike part").
+  - It is provable by a moderate fork of Sil's Poisson bound: keep the small-kernel frequencies as correlations, and
+    restrict the descent. No recursion is needed.
+- **Target 2 then splits into:**
+  1. this decomposition (Lean, Sil fork);
+  2. the spike part small for the reference vectors: a twist-aspect mean value of Mellin-zero sextic correlations up
+     to N(h) ≤ B²/A ≤ A^{1/3} (numerically at the null, entries above; the proof needs the 6-fold Kubota theory).
+- The K-wall (balanced point) still needs the full corrected recursion.

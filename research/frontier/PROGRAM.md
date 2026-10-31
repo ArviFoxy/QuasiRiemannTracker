@@ -5,8 +5,9 @@ inputs are of known type. Evidence tags as in `../journal/JOURNAL.md`.
 
 ## Goal and payoff
 
-A face past Λ = 2 in the count and physical faces. Λ ≈ 1.965 clears the bar θ ≤ 0.8733319666 (5e-5 below
-PR 99). The roadmap payoff with both walls moved is −1e-4 to −5e-4 (`README.md`, "Roadmap for the faces").
+A face past Λ = 2 in the count and physical faces. Λ ≈ 1.95–1.97 clears the bar θ ≤ 0.8733319666 (5e-5 below
+PR 99). The bar is −8.0e-5 against PR 97. The face table gives −5.1e-5 at Λ = 1.97 and −1.6e-4 at 1.9. The low
+end assumes no help from the banked engineering (−2.97e-5); the high end assumes it adds. The roadmap payoff with both walls moved is −1e-4 to −5e-4 (`README.md`, "Roadmap for the faces").
 
 Both walls must move:
 - the **K-wall** (K < 1/2), at slope ≈ 0.48 with excess γ ≈ 0.015;

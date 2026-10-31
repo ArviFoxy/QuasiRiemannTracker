@@ -24,6 +24,14 @@ outlier and the masked-null two-sided tests (journal, 2026-10-31).
     angular-twisted cubic, equivalently Möbius-signed sextic, sums), with square-root bounds. The Mellin rescue
     needs the polar asymptotic. That is missing even for n = 3; a concrete target is extending the reflection to
     conj θ₃ with its constant term. For n = 6 nothing beyond Möbius absorption exists.
+  - *Sizing (late evening).*
+    - The cubic polar Voronoi twin is not blocked: about 3k lines, of which about 1k is new (Mellin continuation
+      with one pole, the pole-crossing shift, the polar kernel).
+    - On paper the cubic twist-aspect rescue is already a theorem (David–de Faveri–Dunn–Stucky, Lemmas 6.6–6.7).
+    - The sextic one needs the 6-fold cover. A Rankin–Selberg square of θ₃ reaches the sextic series only through
+      ζ_K(3w − 1), i.e. a power saving would need RH for ζ_{ℚ(ω)}. Our own zero-free region gives a partial
+      X^{0.6245} instead of X^{1/2}.
+    - So the faces' sextic input is a paper-level project, before any Lean.
   - *Target 2* is one corrected Poisson step with the dual bounded by Sil's existing sieve.
   - *D1 by row splitting* needs no reference wall. It does need dilution at every slope in (0, 1/2]. The
     spike-rule recursion covers only δ > 7/36, and the low slopes are an open gap (journal, D1 entry and its

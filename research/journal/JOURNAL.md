@@ -3653,3 +3653,18 @@ the index t^{−1} ≡ m·p⁴ (mod sixth powers).
 - To decide: read which variable Sil's short reference (`MixedFirstActualReference`) sums over, and where the Gauss
   sum sits relative to the vector. Without target 2 the K-wall program buys nothing, so this check comes before any
   further K-wall work.
+- **Partly decided [derived, from the R1 entry of 2026-10-29].** R1's Poisson step moves the Gauss sum of the row
+  character to a unimodular *row* factor, which |·|² removes. So the vector entering the sieve is plain × plain ×
+  prime, with no Gauss sum.
+  - In E^H E = A·I + (A/B)Σ_k w_k w_k^H with w_k = β·conj χ(k), the spike part of λ is Σ_k |⟨conj β·λ, χ(k)⟩|²: plain
+    blocks (#96's form) for the Gauss-twisted vector conj β·λ.
+  - For plain-type λ this is the Patterson-bias case, so the classical reading needs the Gauss sum on the vector,
+    which R1 removes.
+- **Two rescues to price** (assuming the faces' short reference has R1's structure):
+  - (i) height twists N^{−it}, which shrink the Kubota main term by about 1/|t|;
+  - (ii) the profile: the theta excess is rank one in the radial profile and vanishes when the weight's Mellin
+    transform at the pole is zero (2026-10-30: +18–20% when I(U) ≠ 0, −5%…+3% when I(U) = 0). Splitting the plain
+    sums' weights into an I(U) = 0 part plus one explicit rank-one main term could leave the reference diagonal
+    up to a single correction.
+- Next: check (ii) numerically in the reference regime once a size is found where the source theta's excess is
+  visible, and read the face's reference weights.

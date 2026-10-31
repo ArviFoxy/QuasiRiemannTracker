@@ -5187,3 +5187,31 @@ the sextic family on balanced convolutions of smooth plain sums. Nothing in the 
   - a 2.5% doubled share (squared slots visible to zeros);
   - c ≤ 5.9 from a new block type.
   Each is new math, and neither is the K-wall's fourth moment.
+
+## 2026-10-31 · Re-pricing the remaining levers on the current design; T8′ is dead here; the corner is the 6u again
+
+[numerical: `worth.theta_star` variants (inline scripts, logged below); derived; summary table in
+`frontier/BAR_STATUS.md`]
+
+- **The end face's cap is not a lever.** At L = 2.0001 and 2.0007, θ* is unchanged for cap ∈ [0.134, 0.1666]. The
+  binding (δ = 0.426, p = 1/2) does not see it.
+- **The long slope.** θ* at L = 2.0001 for long-slope savings 0.16667, 0.16717, 0.16767, 0.16867, 0.17067 and
+  0.17737: 0.87338228, 0.87338012, 0.87337796, 0.87337364, 0.87336499, 0.87333591. That is ≈ 4.3e-6 per 0.001,
+  and the bar needs a saving of ≈ 0.178 (B2, as recorded on 2026-10-30).
+- **The numerator capacity.**
+  - In the model, C = min(numCap·d, (2y − (2 − B)d)/L). The face term binds at 0.05857, under numCap·d = 0.06073.
+  - Adding ΔC to the face term gives θ* − bar = +3.9e-5, +2.8e-5 and +5.1e-6 at ΔC = 0.0005, 0.001 and 0.002, and
+    −9.3e-6 at ΔC ≥ 0.0022, where the numerator cap binds. Raising numCap alone does nothing.
+- **T8′ (two numerator packets, Cauchy–Schwarz midpoint) is dead on this design [derived].**
+  - The midpoint rule gains only where the face envelope s*(P) is curved. On the old 130-face density chain it
+    was (+0.0034 at P = 0.8512).
+  - Along the native line B is fixed, so the capacity (B − P)/Λ is maximal at the end face for every P: one
+    linear face. The midpoint average of a linear function is the function.
+- **The K-wall corner is the 6u again [derived].**
+  - At the failing geometries the parent face prices the selected rows at the envelope M = 1 − 6u and misses the
+    budget u by (6B₀/L₀ − 1)u.
+  - Any deletion tier at cost κ′ imposes L₀(1 + κ′) > 6κ′B. So for Λ < 2 every row with mass ≥ Z^{0.48·w} must
+    be bounded by a norm, not deleted. A three-tier scheme (delete [Z^{κw}, Z^{w/2}) at cost 1/2) gives back
+    exactly the κ = 1/2 gate.
+  - The two obstructions at the native line, the overshoot gate and the corner, are both the ratio of Sil's
+    envelope coefficient 6 to the budget.

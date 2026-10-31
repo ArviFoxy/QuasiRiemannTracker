@@ -75,7 +75,7 @@ def divisors_of_sqfree(n, spf):
 
 print('order %d, sources N(b) <= %d, X1 = %.0f, X2 = %.0f; zero weights: Mellin zeros at %s' %
       (q, L, X1, X2, ', '.join('%.3f' % z for z in zeros)), flush=True)
-print('   twists N(m)      R      zz       zb       bz       bb      null', flush=True)
+print('   twists N(m)      R      zz       zb       bz       bb   mu*bb     null', flush=True)
 cols = None
 for Bz in Bzs:
     Tb = tc.build_tables(Bz, L, verbose=False)
@@ -98,17 +98,30 @@ for Bz in Bzs:
                     ds = np.array(divisors_of_sqfree(int(n), Tb.spf), dtype=float)
                     F[i] = np.sum(onto(w1, ds / X1) * onto(w2, (n / ds) / X2))
                 lam[k1 + k2] = F
-        cols = np.stack([lam[k] * np.conj(g) for k in ('zz', 'zb', 'bz', 'bb')], axis=1)
+        # Moebius block times plain block (the mollified detector's shape): sum_{d | n} mu(d) V0(d/X1) V0(n/(d X2))
+        def nfac(d):
+            k = 0
+            while d > 1:
+                p = int(Tb.spf[d]); d //= p; k += 1
+            return k
+        F = np.zeros(len(SN))
+        for i, n in enumerate(SN):
+            ds = divisors_of_sqfree(int(n), Tb.spf)
+            mus = np.array([(-1.0) ** nfac(d) for d in ds])
+            dd = np.array(ds, dtype=float)
+            F[i] = np.sum(mus * onto(V0, dd / X1) * onto(V0, (n / dd) / X2))
+        lam['mb'] = F
+        cols = np.stack([lam[k] * np.conj(g) for k in ('zz', 'zb', 'bz', 'bb', 'mb')], axis=1)
         nrm = np.sum(np.abs(cols) ** 2, axis=0)
         print('  convolution weights built (%.0fs); support fractions %s' %
-              (time.time() - t0, ', '.join('%.2f' % np.mean(lam[k] != 0) for k in ('zz', 'zb', 'bz', 'bb'))),
+              (time.time() - t0, ', '.join('%.2f' % np.mean(lam[k] != 0) for k in ('zz', 'zb', 'bz', 'bb', 'mb'))),
               flush=True)
     K = ck.Kernel(Tb.T, Tb.LOC, nthreads=nth)
     EV = K.forward(cols, mode=modeE)
     EN = K.forward(cols[:, :1], mode=1, seed=3)
     r = np.mean(np.abs(EV) ** 2, axis=0) / nrm
     rn = np.mean(np.abs(EN[:, 0]) ** 2) / nrm[0]
-    print('  [%6d,%6d] %5d  %7.3f  %7.3f  %7.3f  %7.3f  %7.3f   (%.0fs)'
-          % (Bz, 2 * Bz, Tb.R, r[0], r[1], r[2], r[3], rn, time.time() - t0), flush=True)
+    print('  [%6d,%6d] %5d  %7.3f  %7.3f  %7.3f  %7.3f  %7.3f  %7.3f   (%.0fs)'
+          % (Bz, 2 * Bz, Tb.R, r[0], r[1], r[2], r[3], r[4], rn, time.time() - t0), flush=True)
     del K, Tb
 print('done in %.0fs' % (time.time() - t0))

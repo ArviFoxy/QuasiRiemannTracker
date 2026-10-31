@@ -4304,3 +4304,63 @@ derived: the mechanism]
 - **Reading.** Two mechanisms remove the sextic source spike from a plain-type vector: a Mellin zero at the pole, or a
   Möbius (Liouville) sign. Only the second has a proof route in the baseline's existing Lean (pole-free reflection),
   but the faces' plain sums carry no sign.
+
+## 2026-10-31 · Mollified convolution shapes: the pole sits in the long factor
+
+[numerical; `theta_twist_meanvalue_conv.py` with a Möbius × plain column, logs
+`theta_twist_meanvalue_mollified_q{3,6}_X{100,1000}.log`]
+
+- **Test.** λ_b = Σ_{d | N(b)} μ(d)V₀(d/X₁)V₀(N(b)/(dX₂)) at L = 10⁵ (X₁X₂ = L), against the twisted source thetas.
+  R is measured per dyadic twist range. The null is ≈ 0.91–1.05. Sextic numbers use `THETA_CANON=1`.
+- **Cubic.**
+
+  | twists N(m) | plain × plain | μ short (X₁ = 100) × plain | μ long (X₁ = 1000) × plain | Mellin zero in the long factor | Mellin zero in the short factor |
+  |---|---|---|---|---|---|
+  | [256, 512] | 3.61 | 3.32 | 1.27 | 1.00 | 1.67 |
+  | [4096, 8192] | 2.36 | 2.26 | 1.13 | 0.95 | 1.36 |
+  | [65536, 131072] | 1.41 | 1.37 | 0.96 | 0.94 | 1.09 |
+
+- **Sextic, canonical.** Plain × plain is 1.08 / 1.11 / 1.03 in the same ranges (null 1.03 / 0.96 / 0.94). The
+  short-Möbius shape is 1.13 / 1.09 / 1.02 and the long-Möbius shape 0.79 / 0.88 / 0.93. A single plain V₀ is
+  1.68 / 1.73 / 1.40.
+- **Reading.** The pole lives in whichever factor is long. A Möbius sign or a Mellin zero removes the spike only
+  there. A mollifier block shorter than the plain block leaves the spike as it was.
+  - In the sextic family the bilinear shape alone removes most of the spike. The pole there is weaker: the single-sum
+    excess grows like X^{1/3} against the cubic X^{2/3}, so at factor length 10³ little is left.
+  - The K-wall's convolution vectors therefore need their design (zero or sign) in the long factor, which is free:
+    either factor can carry it.
+
+## 2026-10-31 · The cubic polar Voronoi formula: not blocked, about 3k lines of Lean
+
+[mapping of the baseline's Lean by an agent; spot-checked:
+- `fullFunction_horizontal_hasDerivAt` drops the constant through `.const_add`;
+- `sourceCuspBesselConstant = ![3π·cAR, 0, 0]`;
+- `fixedThetaTwist` vanishes off primary elements;
+- the multiplier algebra below.]
+
+- **Why the baseline differentiates.** Its Mellin shift (`completedT_mellin_shift`, GaussSum/BesselReflection) needs
+  an entire Mellin transform of the cusp profile. The undifferentiated profile is ~v^{2/3} at ∞, so that fails. ∂̄
+  kills the constant term v^{2/3}. The angular factor and the v⁻² of the reflection law are by-products of this
+  choice.
+- **Already in Lean.**
+  - Expansions with constants at the three cusp types (`sourceCusp_bessel_expansion`, constants 3π·cAR, 0, 0) and
+    arbitrary cusps through `three_cusp_decomposition`.
+  - The constant's value and nonvanishing (`constantArithmeticResidue_ne_zero`).
+  - Automorphy of θ, exponential decay of the undifferentiated series, and finite translations with the zero mode.
+  - Pole-crossing contour tools (`verticalIntegral_simple_pole`, the Gaussian-regulated shift).
+- **Observation (agent's derivation, not a Lean lemma).** The twisted total has no zero mode at ∞:
+  Σ_h w_h = φ(0) = `fixedThetaTwist` of a non-primary element = 0. So only the dual-cusp constants (v → 0)
+  contribute: one simple pole, with residue C₁ = conj(3π·cAR)·Σ_{h of type 0} w_h κ_h Q_h^{−2/3}.
+- **Missing.**
+  - Five templated twins of the ∂̄ chain: the plain reflection at a cusp datum; the polar profile as a Bessel series;
+    the polar Dirichlet series and Möbius inversion; the polar reflection algebra (s ↦ −s, no v⁻²).
+  - Three new pieces:
+    1. Mellin continuation with one simple pole. It must be reorganised around the total, because individual
+       profiles are not Mellin-entire.
+    2. A contour shift across the pole under the crude e^{2π|t|} bound, by Gaussian-damped pole subtraction.
+    3. The polar Voronoi kernel, with multiplier gammaMultiplier(w)/(w² − 1/36) =
+       Γ(w − 1/6)Γ(w + 1/6)/(Γ(5/6 − w)Γ(7/6 − w)). The identity is checked from the Lean definition. That this is
+       the right kernel is the agent's derivation.
+- **Size.** About 3k lines, of which about 1k is the three new pieces. Roughly 1–3 months at human pace.
+- **What it buys.** The cubic polar asymptotic Σ g̃₃(c)ψ(c)W(N(c)/X) = main term + dual sum, i.e. the cubic Mellin
+  rescue. The faces' sextic spikes need the 6-fold cover besides; the cubic twin is its template.

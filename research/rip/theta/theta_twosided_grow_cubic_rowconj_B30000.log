@@ -1,0 +1,6 @@
+B=30000 L=30000  R=8474 rows  S=7768 sources  3880 row primes   tables in 8s
+  Gauss sums from the cache gauss_B30000_L30000_q3.npz
+B=30000: R=8474 S=7768; order 3; 76 twists with N(m) <= 300   (9s)
+full top [8.979 6.479 5.725 5.513]   masked null [3.992 3.981 3.974 3.963]   MP edge 4.180   (16s)
+M=100 M'=0 betas [0.167]: dV 2112 (0.249 R), dP 432 (0.056 S)
+    off both [3.986 3.874 3.762 3.691]   masked null [3.353 3.348 3.336 3.332]   random spans [6.689 4.909 4.429 4.278]   MP edge 3.522   (117s)

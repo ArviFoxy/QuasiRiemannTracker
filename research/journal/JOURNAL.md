@@ -3100,4 +3100,32 @@ and logs in `rip/theta/README.md`]
 - With both thetas removed, the sextic top sits at the Marchenko–Pastur edge. With the row family alone it stays
   above. The source-theta family does more than a random source span of the same dimension.
 - This is numerical support for `TwoSidedSpikeFree` at one size. The runs at 10⁵ and 2·10⁵ (matrix-free) will
-  decide whether it persists.
+  decide whether it persists. (It does not with these fixed families; see "Two-sided at 10⁵ and 2·10⁵" below.)
+
+## 2026-10-31 · Two-sided at 10⁵ and 2·10⁵: the fixed families stay above the bulk edge
+
+[numerical; `rip/theta/theta_twosided_free.py`, logs `theta_twosided_free_B100000.log`, `theta_twosided_free_B200000.log`]
+
+Same families as at 3·10⁴. V: row thetas and plain characters on classes mod 36, two profiles, twists N(m) ≤ 30
+(dimension 1080). P: conj g̃ and g̃ times N^{−1/3} on cells mod 36 × parity (dimension 432). Top s²/S:
+
+| B = L | R / S | full | off V (edge) | off V and P (edge) | off V, random P | random spans |
+|---|---|---|---|---|---|---|
+| 3·10⁴ | 8474 / 7768 | 4.550 | 3.960 (3.903) | 3.773 (3.792) | 3.817 | 4.016 |
+| 10⁵ | 28210 / 25936 | 4.949 | 4.590 (4.092) | 4.442 (4.058) | 4.538 | 4.746 |
+| 2·10⁵ | 56470 / 51852 | 5.279 | 4.880 (4.135) | 4.756 (4.118) | 4.852 | 5.171 |
+
+- **The 3·10⁴ result does not persist.** Off both families the top is 9% above the edge at 10⁵ and 15% at 2·10⁵.
+  The ratio grows like B^{0.08}.
+- **Both families still carry signal.** V removes 0.20, 0.21 and 0.32 more than a random row span of its dimension;
+  P removes 0.04, 0.10 and 0.10 more than a random source span.
+- **The residual is not one spike.** The top four off both families are 4.442, 4.334, 4.219, 4.177 at 10⁵ and
+  4.756, 4.729, 4.487, 4.467 at 2·10⁵. They are spaced by about 0.1, against a Tracy–Widom scale λ S^{−2/3} ≈ 0.005.
+- **Reading.** The families are fixed while the spikes are not.
+  - Every twisted theta carries the same excess up to N(m) ≈ B²/L (`rip/theta/README.md`, "One spike per twist").
+  - The Lean statement removes twists up to C B^{1−qε} and the source images on log B dyadic windows.
+  - Here V holds 6 twists at every B and P has one global profile, so the share of the spikes they remove falls.
+  - The edge result at 3·10⁴ owed part of itself to V's share of the rows: 13% there, 3.8% and 1.9% here.
+- So these numbers neither confirm nor refute `TwoSidedSpikeFree`. They show that a fixed family is not enough, which
+  the conjecture allows. The next test grows both families with B (more twists on both sides, source windows), against
+  random spans of the same dimensions.

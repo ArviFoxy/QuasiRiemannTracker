@@ -48,16 +48,24 @@ shapes with the source as the modulus: `conj g̃(n) χ_n(m)^k`, `g̃(n) conj χ_
 * `selected_of_gradedTwoSided`: the selected bound `C B^{1+ε} + Λ_row + Λ_src` on any row set `W`. Here `Λ_src` is
   the Bessel constant of the source images on `W`; `spikeBessel_disjSum` adds the two families.
 
-## Numerical support for the corrected statement
+## Numerical tests of the corrected statement
 
-`theta_twosided.py` at `B = L = 3·10⁴`, removing the row family (thetas and plain characters on classes mod 36, plus
-twists `N(m) ≤ 30`; dimension 1080) and the source family (`conj g̃(x)`, `g̃(x)` times `N(x)^{−1/3}` on cells mod 36 ×
-parity; dimension 432) [numerical]:
-- the full top is 4.550, against an edge of 4.180;
-- off the row family only (the one-sided statement) it is 3.960, against 3.903;
-- off both families it is 3.773, below the edge 3.792;
-- off the row family plus a random source span it is 3.817;
-- off random spans of both dimensions it is 4.016.
+`theta_twosided.py` and `theta_twosided_free.py` remove fixed families. The row family holds the thetas and plain
+characters on classes mod 36, plus twists `N(m) ≤ 30` (dimension 1080). The source family holds `conj g̃(x)` and
+`g̃(x)` times `N(x)^{−1/3}` on cells mod 36 × parity (dimension 432). Top `s²/S`, with the Marchenko–Pastur edge of
+what is left in brackets [numerical]:
+
+| `B = L` | full | off rows only (one-sided) | off both | off rows, random source span | random spans |
+|---|---|---|---|---|---|
+| 3·10⁴ | 4.550 (4.180) | 3.960 (3.903) | 3.773 (3.792) | 3.817 | 4.016 |
+| 10⁵ | 4.949 (4.174) | 4.590 (4.092) | 4.442 (4.058) | 4.538 | 4.746 |
+| 2·10⁵ | 5.279 (4.176) | 4.880 (4.135) | 4.756 (4.118) | 4.852 | 5.171 |
+
+- At 3·10⁴ the top off both families sits at the edge. At 10⁵ and 2·10⁵ it is 9% and 15% above it.
+- Both families beat random spans of their dimension at every size.
+- The families are fixed, while the statement removes twists up to `C B^{1−qε}` and source images on `log B` windows.
+  Every twisted theta carries the same excess up to `N(m) ≈ B²/L` (`research/rip/theta/README.md`). So these runs
+  neither support nor refute the statement at large `B`.
 
 ## What the K-wall recursion needs now
 

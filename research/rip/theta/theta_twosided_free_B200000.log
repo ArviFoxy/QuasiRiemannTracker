@@ -1,0 +1,11 @@
+B=200000 L=200000  R=56470 rows  S=51852 sources  21617 row primes   tables in 255s
+  source Gauss sums (665s)
+  row Gauss sums: |G| in [1.000, 1.000]   (1910s)
+B=200000: R=56470 S=51852; V (M=30, J=2) dim 1080 (0.019 R); P (betas [0.3333333]) dim 432 (0.008 S); twists 6   (1985s)
+  E^H Q_V and E^H Q_V(random) done   (5297s)
+full top                        [5.279 4.975 4.912 4.648]   MP edge 4.176
+one-sided, off V                [4.88  4.849 4.644 4.519]   MP edge 4.135
+two-sided, off V and P          [4.756 4.729 4.487 4.467]   MP edge 4.118
+off V, random source span       [4.852 4.82  4.616 4.493]
+random spans, same dims         [5.171 4.879 4.816 4.56 ]
+done in 5769s

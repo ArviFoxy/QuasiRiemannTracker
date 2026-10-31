@@ -53,6 +53,8 @@ be small.
 | `theta_cubic_twosided.py B L [M] [J] [beta,...]` | the cubic family with both thetas removed: row thetas V(M) and the source-theta span (cubic Gauss sums of the sources on cells mod 4 × mod 9 × parity × N^{−β}); one-sided, two-sided and random-span tops; energies of the top pairs |
 | `theta_pairs.py B L k [ntop]` | one theta or two? Energies of the top singular pairs of E^k in the row-theta span (left) and the source-theta span (right), same spans for k = 1 and k = 2 |
 | `theta_cfh.py B L` | is the sextic outlier's row vector the sextic theta function? Modulus law of u₀ on prime rows, and its squared phase against cubic and sextic Gauss sums × classes (a Chinta–Friedberg–Hoffstein-type test) |
+| `theta_twosided.py B L [M] [J] [beta,...]` | the sextic family with both thetas removed (dense): row family V (thetas and plain characters on classes mod 36, twists N(m) ≤ M, J profiles) and source family P (conj g̃, g̃ times N^{−β} on cells mod 36 × parity); one-sided, two-sided and random-span tops |
+| `theta_twosided_free.py B L [M] [J] [beta,...] [threads]` | the same matrix-free (compiled kernel, E^H Q_V by a chunked pass), B up to 2·10⁵ |
 
 All scripts build E and the row Gauss sums through `theta_core.py`. The matrix-free scripts (`theta_top_free2`,
 `theta_selected_free`, `theta_outliers`) use `theta_core.build_tables`, which stops before the dense matrix and returns
@@ -92,6 +94,11 @@ the rows, the sources and the int8 symbol table (`build` starts from it and give
   row-theta content (0.06 against 0.05). That row vector looks random, and it is not visibly the sextic theta
   function (`theta_cfh`). Patterson's Gauss-sum theta for n = 3 against Kazhdan–Patterson non-uniqueness for n = 6;
   see the journal.
+- **Both thetas removed, fixed families** (`theta_twosided`, `theta_twosided_free`; V of dimension 1080 with twists
+  N(m) ≤ 30, P of dimension 432). Top s²/S off both families against the edge of what is left: 3.773 / 3.792 at
+  3·10⁴, 4.442 / 4.058 at 10⁵, 4.756 / 4.118 at 2·10⁵. Random spans of the same dimensions: 4.016, 4.746, 5.171.
+  Both families carry signal at every size, but fixed families do not reach the edge at large B, as expected from
+  one spike per twist (below). Families that grow with B are the next test.
 - **Exact Poisson self-duality** of the Gaussian primary-n Gram, to the 10⁻⁹ truncation level (`theta_poisson`).
   - The dual is the same family at a pair-dependent length 27 N(z)N(z′)/(4L), dilated by the unit type.
   - It carries a twelfth-root phase that is constant on classes mod 36, not mod 4.

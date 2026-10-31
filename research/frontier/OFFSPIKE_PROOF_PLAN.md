@@ -76,6 +76,31 @@ Each step lists de Faveri's statement, the corrected version, and the evidence.
    - The fixed point is 1 + γ. [Lean: `OffSpikeIteration.lean`, `balance`, `tendsto_iter`]
    - The base case (E₂) is trivial (Lemma 7.2, unchanged).
 
+## In Sil's form: the excess is the sixth-power multiplicity (2026-10-31)
+
+[derived from Sil's `SieveDescent.lambda_sixth_extraction` and `SievePoissonBound.coherent_weighted_bound`]
+
+- **Where the excess sits.**
+  - After Poisson, Sil's recursion bounds the dual sum by completed sieves λ(L, N) over rows V·K (gcd part times dual
+    frequency), then extracts sixth powers: λ(L, N) ≤ Σ_D θ(L/N(D)⁶, N).
+  - On sixth-power-free sources, a row R₀D⁶ has the same character as R₀. So the D ≠ 1 copies are repeated rows:
+    row R₀ counted w_{R₀} = #{D : N(R₀D⁶) ≤ L} ≈ (L/N R₀)^{1/6} times. That is the theta term, i.e. the spikes.
+- **Corrected step (an identity, no loss).** Keep the D = 1 copy, θ(L, N), for the recursion. Move the D ≠ 1
+  copies into the correction Σ_{R₀}(w_{R₀} − 1)|⟨λ′, χ_{R₀}⟩|². Pulled back through the Poisson identity, it is
+  Σ (w − 1)|⟨λ, f_{R₀}⟩|², with f = phase·conj χ (Sil's `pair_coupling` normal form).
+- **Level family.**
+  - The dual vector is λ·conj(phase)·N^{it}, up to class characters. Its own corrections pull back to
+    conj(phase)²·χ, and level j gives conj(phase)^j·χ_k.
+  - Since phase³ is an angle (a Hecke character ξ of infinity type), the family is
+    {conj(phase)^j·ξ^m·χ_k : j ∈ {0, 1, 2}, m ≥ 0}: three spiky types with accumulating angular twists. That
+    matches the "about 400 levels, mostly angular twists" count below.
+- **Fork points in Lean.**
+  - `lambda_sixth_extraction`: split D = 1 from D ≠ 1.
+  - `coherent_weighted_bound`: keep the D ≠ 1 rows as correlations instead of sieving them.
+  - The reference (one step, every dual frequency a correction, slot convolutions) is the special case where the
+    correlations are bounded pointwise by the bilinear form (journal, "The reference wall needs no metaplectic
+    input").
+
 ## Target 2 needs only one step (2026-10-31)
 
 In the reference regime B ≤ A^{2/3} one Poisson step suffices. The source spikes are the dual's small-kernel rows,

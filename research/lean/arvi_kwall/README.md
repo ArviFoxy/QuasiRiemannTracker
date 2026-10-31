@@ -137,5 +137,8 @@ Mathlib and `Closure.lean` only. It checks in about 10 s. Every theorem depends 
 - `nstar_violates_spike_rule`: for 7/36 < δ and 0 < ε < 1/6, the barrier function `nstar δ` breaks the sextic spike
   rule. That function obeys the three closure rules with n(1) = 7/6.
 - `sextic_spike_rule_forces`: the case q = 6.
+- `block_weight_le` and `blocks_weight_le`: the exponent count of the multiplicative recursion. A twist block of
+  size M ≤ C B^{1−qε} contributes at most C^{1+δ−1/q} B^{−ε(qδ−1−1/q)}. So the O(log B) dyadic blocks give η → 0
+  exactly when δ > 1/q + 1/q².
 - So the graded spike-free conjecture is genuinely new input, and it is enough to remove the 1/6 excess at the
   balanced point.

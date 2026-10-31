@@ -18,6 +18,12 @@ What this file proves:
   (`q = 6`) for every `7/36 < δ < 1/2` and `0 < ε < 1/6`. That function obeys the three closure rules with
   `n 1 = 7/6` for `1/3 ≤ δ < 1/2`. So the spike rule does not follow from the closure: it is new input, and it is
   enough to remove the `1/6` excess at the balanced point.
+- `block_weight_le`, `blocks_weight_le`: the exponent count of the multiplicative recursion.
+  - A twist block of size `M ≤ C B^{1−qε}` has weight `C B^{ε/q}(B/M)^{1/q}` and amplification factor `(M/B)^δ`.
+  - The product is at most `C^{1+δ−1/q} B^{−ε(qδ − 1 − 1/q)}`.
+  - Over the `O(log B)` dyadic blocks this gives `η → 0` exactly when `δ > 1/q + 1/q²`, which is `7/36` for the
+    sextic family.
+  - Then `selected_of_amplified` in `SexticSpikeFree.lean` closes the recursion.
 -/
 
 set_option autoImplicit false
@@ -81,8 +87,66 @@ theorem sextic_spike_rule_forces {n : ℝ → ℝ} {δ ε x : ℝ} (hδ : 7/36 <
     (hrule : n 1 ≤ max (1 + ε) (n x + (1 - x + ε) / 6)) : n 1 ≤ 1 + ε :=
   spike_rule_forces (by norm_num) hε (by nlinarith) hx hamp hrule
 
+/-- **The exponent count, one block.** With the graded weight `C B^{ε/q} (B/M)^{1/q}` and the amplification factor
+`(M/B)^δ`, a twist block of size `M ≤ C B^{1−qε}` contributes at most `C^{1+δ−1/q} B^{−ε(qδ − 1 − 1/q)}`. The exponent
+is negative exactly when `δ > 1/q + 1/q²`. -/
+theorem block_weight_le {q δ ε C B M : ℝ} (hq : 0 < q) (hδ : 1 / q < δ) (hC : 0 < C) (hB : 1 ≤ B)
+    (hM0 : 0 < M) (hM : M ≤ C * B ^ (1 - q * ε)) :
+    C * B ^ (ε / q) * (B / M) ^ (1 / q) * (M / B) ^ δ ≤
+      C ^ (1 + δ - 1 / q) * B ^ (-(ε * (q * δ - 1 - 1 / q))) := by
+  have hB0 : 0 < B := lt_of_lt_of_le one_pos hB
+  have hMB : 0 < M / B := div_pos hM0 hB0
+  have hd : 0 < δ - 1 / q := by linarith
+  -- `(B/M)^{1/q} (M/B)^δ = (M/B)^{δ − 1/q}`
+  have h1 : (B / M) ^ (1 / q) * (M / B) ^ δ = (M / B) ^ (δ - 1 / q) := by
+    rw [show B / M = (M / B)⁻¹ by rw [inv_div], Real.inv_rpow hMB.le, ← Real.rpow_neg hMB.le,
+      ← Real.rpow_add hMB]
+    ring_nf
+  -- `M/B ≤ C B^{−qε}`
+  have h2 : M / B ≤ C * B ^ (-(q * ε)) := by
+    rw [div_le_iff₀ hB0]
+    calc M ≤ C * B ^ (1 - q * ε) := hM
+      _ = C * B ^ (-(q * ε)) * B := by
+          rw [mul_assoc, ← Real.rpow_add_one hB0.ne']
+          ring_nf
+  have h3 : (M / B) ^ (δ - 1 / q) ≤ (C * B ^ (-(q * ε))) ^ (δ - 1 / q) :=
+    Real.rpow_le_rpow hMB.le h2 hd.le
+  have h4 : (C * B ^ (-(q * ε))) ^ (δ - 1 / q) = C ^ (δ - 1 / q) * B ^ (-(q * ε) * (δ - 1 / q)) := by
+    rw [Real.mul_rpow hC.le (Real.rpow_nonneg hB0.le _), ← Real.rpow_mul hB0.le]
+  calc C * B ^ (ε / q) * (B / M) ^ (1 / q) * (M / B) ^ δ
+      = C * B ^ (ε / q) * ((B / M) ^ (1 / q) * (M / B) ^ δ) := by ring
+    _ = C * B ^ (ε / q) * (M / B) ^ (δ - 1 / q) := by rw [h1]
+    _ ≤ C * B ^ (ε / q) * (C ^ (δ - 1 / q) * B ^ (-(q * ε) * (δ - 1 / q))) := by
+        rw [← h4]
+        exact mul_le_mul_of_nonneg_left h3 (by positivity)
+    _ = C ^ (1 + δ - 1 / q) * B ^ (-(ε * (q * δ - 1 - 1 / q))) := by
+        have hCe : C * C ^ (δ - 1 / q) = C ^ (1 + δ - 1 / q) := by
+          rw [show (1 + δ - 1 / q) = 1 + (δ - 1 / q) by ring, Real.rpow_add hC, Real.rpow_one]
+        have hBe : B ^ (ε / q) * B ^ (-(q * ε) * (δ - 1 / q)) = B ^ (-(ε * (q * δ - 1 - 1 / q))) := by
+          rw [← Real.rpow_add hB0]
+          congr 1
+          field_simp
+          ring
+        calc C * B ^ (ε / q) * (C ^ (δ - 1 / q) * B ^ (-(q * ε) * (δ - 1 / q)))
+            = (C * C ^ (δ - 1 / q)) * (B ^ (ε / q) * B ^ (-(q * ε) * (δ - 1 / q))) := by ring
+          _ = C ^ (1 + δ - 1 / q) * B ^ (-(ε * (q * δ - 1 - 1 / q))) := by rw [hCe, hBe]
+
+/-- **The exponent count, all blocks.** Summing the per-block bound over any finite family of blocks of sizes
+`M_r ≤ C B^{1−qε}` gives `η ≤ #blocks · C^{1+δ−1/q} B^{−ε(qδ − 1 − 1/q)}`. -/
+theorem blocks_weight_le {ι : Type*} (I : Finset ι) (Ms : ι → ℝ) {q δ ε C B : ℝ} (hq : 0 < q) (hδ : 1 / q < δ)
+    (hC : 0 < C) (hB : 1 ≤ B) (hM0 : ∀ r ∈ I, 0 < Ms r) (hM : ∀ r ∈ I, Ms r ≤ C * B ^ (1 - q * ε)) :
+    ∑ r ∈ I, C * B ^ (ε / q) * (B / Ms r) ^ (1 / q) * (Ms r / B) ^ δ ≤
+      (I.card : ℝ) * (C ^ (1 + δ - 1 / q) * B ^ (-(ε * (q * δ - 1 - 1 / q)))) := by
+  calc ∑ r ∈ I, C * B ^ (ε / q) * (B / Ms r) ^ (1 / q) * (Ms r / B) ^ δ
+      ≤ ∑ _r ∈ I, C ^ (1 + δ - 1 / q) * B ^ (-(ε * (q * δ - 1 - 1 / q))) :=
+        Finset.sum_le_sum fun r hr => block_weight_le hq hδ hC hB (hM0 r hr) (hM r hr)
+    _ = (I.card : ℝ) * (C ^ (1 + δ - 1 / q) * B ^ (-(ε * (q * δ - 1 - 1 / q)))) := by
+        rw [Finset.sum_const, nsmul_eq_mul]
+
 end QRH.ArviKWall
 
 #print axioms QRH.ArviKWall.spike_rule_forces
 #print axioms QRH.ArviKWall.nstar_violates_spike_rule
 #print axioms QRH.ArviKWall.sextic_spike_rule_forces
+#print axioms QRH.ArviKWall.block_weight_le
+#print axioms QRH.ArviKWall.blocks_weight_le

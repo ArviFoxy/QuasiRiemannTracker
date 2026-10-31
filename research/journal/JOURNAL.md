@@ -3417,6 +3417,21 @@ b ∼ B. The proof is a recursion:
    of a. The fix is the same corrected form for the row Gram, but the two corrections must combine into one two-sided
    statement.
 
+**Monotonicity makes local spikes (numerical, `rip/theta/theta_local_spikes.py`, log
+`theta_local_spikes_sextic_B30000.log`).** On a row z = ap, χ_{ap}(x) = χ_a(x)χ_p(x). So the image of f·conj χ_p at
+ap is the image of f at a (on x coprime to p): the (x/p)^{−1} twist of the source theta carries the theta of the
+smaller problem on the rows divisible by p.
+- At 3·10⁴ the (x/p)^{−1} twist has 2.4–4.5 times the null on the rows divisible by p, rising with N(p) = 7 … 79 as
+  the smaller problem's theta strengthens. On the other rows it has a deficit (0.73 at N(p) = 7, 0.98 at 79), and its
+  total energy is at the null.
+- The (x/p)^{+1} twist is uniform: the same ratio on both row sets.
+- So the −1 twists redistribute energy rather than adding it, and they do not raise the full operator norm. For the
+  corrected recursion this means monotonicity needs no new correction, as long as P is larger than the smaller
+  problem's theta excess.
+- Scaling: relative to the main theta, the local spike's excess is about N(p)^{−5/6}. It exceeds B^γ only for
+  N(p) ≤ B^{(1−6γ)/5}, and those are exactly the twists by p⁵ that the twist box N(m) ≤ B^{1−6γ} of
+  `TwoSidedSpikeFree` contains. [derived]
+
 **Assessment.**
 - This is the first route to (LS off V) with the right exponent. The recursion that proves the optimal sieve, with
   the spikes taken out at each Poisson step, has fixed point 1 + γ instead of 1 + 1/n.

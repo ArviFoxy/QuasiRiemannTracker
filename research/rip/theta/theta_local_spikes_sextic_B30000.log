@@ -1,0 +1,22 @@
+order 6, B = L = 30000: R=8474 S=7768; source theta |Ef|^2 / null over all rows: 2.133   (9s)
+  N(p) =   7 (1055 rows divisible):  (x/p)^-1: rows p|z 2.463, others 0.730;  (x/p)^+1: rows p|z 1.619, others 1.592;  untwisted theta on the same rows 1.977
+  N(p) =   7 (1055 rows divisible):  (x/p)^-1: rows p|z 2.665, others 0.730;  (x/p)^+1: rows p|z 1.637, others 1.596;  untwisted theta on the same rows 2.048
+  N(p) =  13 (604 rows divisible):  (x/p)^-1: rows p|z 2.754, others 0.873;  (x/p)^+1: rows p|z 1.510, others 1.469;  untwisted theta on the same rows 1.975
+  N(p) =  13 (604 rows divisible):  (x/p)^-1: rows p|z 2.854, others 0.876;  (x/p)^+1: rows p|z 1.501, others 1.474;  untwisted theta on the same rows 1.822
+  N(p) =  19 (424 rows divisible):  (x/p)^-1: rows p|z 2.449, others 0.888;  (x/p)^+1: rows p|z 1.405, others 1.467;  untwisted theta on the same rows 2.007
+  N(p) =  19 (424 rows divisible):  (x/p)^-1: rows p|z 2.396, others 0.899;  (x/p)^+1: rows p|z 1.501, others 1.462;  untwisted theta on the same rows 2.078
+  N(p) =  31 (261 rows divisible):  (x/p)^-1: rows p|z 2.471, others 0.919;  (x/p)^+1: rows p|z 1.302, others 1.371;  untwisted theta on the same rows 2.278
+  N(p) =  31 (261 rows divisible):  (x/p)^-1: rows p|z 2.463, others 0.934;  (x/p)^+1: rows p|z 1.395, others 1.383;  untwisted theta on the same rows 2.367
+  N(p) =  37 (226 rows divisible):  (x/p)^-1: rows p|z 2.683, others 0.924;  (x/p)^+1: rows p|z 1.092, others 1.355;  untwisted theta on the same rows 2.155
+  N(p) =  37 (226 rows divisible):  (x/p)^-1: rows p|z 2.764, others 0.931;  (x/p)^+1: rows p|z 1.237, others 1.378;  untwisted theta on the same rows 2.125
+  N(p) =  43 (197 rows divisible):  (x/p)^-1: rows p|z 3.247, others 0.926;  (x/p)^+1: rows p|z 1.251, others 1.352;  untwisted theta on the same rows 2.032
+  N(p) =  43 (197 rows divisible):  (x/p)^-1: rows p|z 2.893, others 0.921;  (x/p)^+1: rows p|z 1.253, others 1.334;  untwisted theta on the same rows 2.170
+  N(p) =  61 (135 rows divisible):  (x/p)^-1: rows p|z 3.701, others 0.939;  (x/p)^+1: rows p|z 1.140, others 1.303;  untwisted theta on the same rows 2.338
+  N(p) =  61 (135 rows divisible):  (x/p)^-1: rows p|z 3.347, others 0.946;  (x/p)^+1: rows p|z 1.065, others 1.289;  untwisted theta on the same rows 2.145
+  N(p) =  67 (128 rows divisible):  (x/p)^-1: rows p|z 3.642, others 0.949;  (x/p)^+1: rows p|z 1.034, others 1.271;  untwisted theta on the same rows 1.739
+  N(p) =  67 (128 rows divisible):  (x/p)^-1: rows p|z 3.751, others 0.958;  (x/p)^+1: rows p|z 1.008, others 1.266;  untwisted theta on the same rows 2.067
+  N(p) =  73 (117 rows divisible):  (x/p)^-1: rows p|z 3.701, others 0.959;  (x/p)^+1: rows p|z 1.322, others 1.261;  untwisted theta on the same rows 1.933
+  N(p) =  73 (117 rows divisible):  (x/p)^-1: rows p|z 3.715, others 0.953;  (x/p)^+1: rows p|z 1.307, others 1.254;  untwisted theta on the same rows 2.188
+  N(p) =  79 (105 rows divisible):  (x/p)^-1: rows p|z 3.361, others 0.986;  (x/p)^+1: rows p|z 1.324, others 1.243;  untwisted theta on the same rows 1.756
+  N(p) =  79 (105 rows divisible):  (x/p)^-1: rows p|z 4.536, others 0.982;  (x/p)^+1: rows p|z 1.431, others 1.242;  untwisted theta on the same rows 1.768
+done in 10s

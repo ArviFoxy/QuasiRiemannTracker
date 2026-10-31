@@ -5,6 +5,19 @@ h = 0.8097), at the banked native-line design: end face (B, Λ) = (0.99999, 2.00
 reproduces the bank, 0.87338228. Bar: θ ≤ 0.8733319666 (5e-5 below PR 99). The binding point is newTop, δ = 0.426,
 p = 1/2. Prices are first order [numerical]; each "needs" column is the single-lever requirement.
 
+## Conditional gains (2026-10-31, `conditional_gains.py`)
+
+| inputs assumed | best end face | θ* | vs PR 99 |
+|---|---|---|---|
+| none (bank) | Λ = 2.0001 | 0.87338228 | +3e-7 |
+| K-wall alone, or target 2 alone | Λ ≈ 2.000 | ≈ 0.8733821 | ≈ 0 |
+| K-wall to K = 0.4877 + target 2 | Λ = 1.967 | 0.8733313 | −5.1e-5 (the bar) |
+| K-wall to K = 0.45 + target 2 | Λ = 1.862 | 0.8731558 | −2.3e-4 |
+| K-wall to K ≤ 0.4286 + target 2 | Λ = 1.800 (target-2 floor) | 0.8730743 | −3.1e-4 (maximum of the faces route) |
+
+The K-wall rows need A‴ (open), A (classical, unformalized) and C (open step 3). Target 2 is elementary, with its Lean
+core done.
+
 ## The levers
 
 | lever | sensitivity | bar needs | what it requires | status |

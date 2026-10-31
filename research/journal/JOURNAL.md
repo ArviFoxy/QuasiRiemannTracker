@@ -2676,3 +2676,180 @@ Top singular value s²/S at B = L, against random phases on E's exact zero patte
   There is nothing for the 6-fold character and no Kuznetsov.
 - **Cheaper tests suggested.** T1: only angular frequency 0 carries the excess. T5: the off-V test on the cubic
   family, where the excess is ≍ B^{1/3}. T5 is run in the next entry.
+
+## 2026-10-31 · The balanced-point large sieve with the theta term removed, as a Lean statement (conjecture + proved reductions)
+
+**Lean [`lean/arvi_kwall/SexticSpikeFree.lean`, namespace `QRH.ArviKWall.BalancedSieve`].** The file imports the OAI
+baseline's `Detector.Physical`. Every theorem depends only on `propext`, `Classical.choice` and `Quot.sound`. The
+conjecture is a `def … : Prop`, and nothing in the file assumes it.
+
+The objects are OAI's own:
+- rows: squarefree ideals of ℤ[ω] coprime to 6 with B ≤ N z ≤ 2B;
+- sources: ideals coprime to 6 with squarefree norm ≤ L, taken at their primary generators;
+- kernel χ_z(n)^k with χ_z = `idealRowHom` (k = 1 sextic, k = 2 cubic).
+
+Each twist m = x + yω with N m ≤ M (all associates) gives three spike shapes:
+- the twisted theta g̃(z)·conj χ_z(m)^k, where g̃ is the phase of the row's Gauss sum (OAI's `sexticGauss` at k = 1,
+  `powerGauss_one`);
+- the plain character χ_z(m)^k;
+- its conjugate conj χ_z(m)^k.
+
+Each shape is multiplied by a radial profile (B/N z)^{j/2}, j < J.
+- **Conjecture `SpikeFreeLargeSieve k q`** (sextic (1, 6), cubic (2, 3)): for every ε > 0 there is C such that,
+  for every B and every row vector b orthogonal to all spikes with N m ≤ C B^{1−qε} and j ≤ C B^ε,
+  Σ_n |Σ_z b_z conj χ_z(n)^k|² ≤ C B^{1+ε} ‖b‖².
+  - The cutoff is where the Poisson multiplicity (B/N m)^{1/q} of the dual frequencies m j^q falls to B^ε.
+  - The family has O(C² B^{1−(q−1)ε}) = o(B) members, so the condition leaves almost all of the row space
+    (`exists_orthogonal_of_card_lt`).
+  - C also scales the cutoffs. This absorbs the choice of additive character, which only twists g̃ by χ_z(t),
+    t | 3^a.
+- **Refinement `GradedCorrectedLargeSieve`:** E E* ≼ C B^{1+ε} I + Σ w_i f_i f_i* with the multiplicity weights
+  w = C B^ε (B/N m)^{1/q}. It implies the conjecture (`spikeFree_of_graded`).
+- **The reduction the chain needs (`selected_of_corrected`, generic).** Suppose E E* ≼ Δ I + Σ w f f* and the
+  weighted spikes have Bessel constant Λ_W on a row set W. Then Σ_{z∈W} |Σ_n a_n χ_z(n)^k|² ≤ (Δ + Λ_W)‖a‖².
+  - The proof is by duality with the test vector D·1_W. Restriction and the detector condition are one inequality.
+  - The union bound gives Λ_W ≤ |W| Σ w for flat spikes (`selected_of_graded_flat`). With the graded weights, Σ w is
+    about C³ B^{1−(q−3)ε}, so this helps only for tiny W.
+  - A useful Λ_W is itself a large sieve for the twisted thetas on W. That is the same problem one level down
+    (recursive).
+- **Sanity.** `corrected_trivial` shows Δ = |R||S| always works, so the content is the size of Δ.
+- **Relation to the fortification agent's `SpikeFree.lean`.** That file corrects on the source side, where the
+  selected bound is plain restriction. The Poisson thetas live on the rows, so the row-side form here is the one that
+  matches the mechanism.
+
+**The K-wall from the graded conjecture: the recursion closes.** The formal part is `spikeBessel_of_blocks`,
+`isSelected_trivial` and `selected_of_amplified`. The exponent count below is not formal.
+- **Λ_W is a selected norm.** For a theta spike, ⟨b, f_{m,j}⟩ = Σ_{z∈W} c_z χ_z(m)^k with
+  c_z = b_z conj g̃(z)(B/N z)^{j/2} and |c_z| ≤ |b_z|. The plain kinds are the same with χ or conj χ. So a block of
+  twists with N m ≍ M_r has Bessel constant ≤ 6·S_W(M_r). Here S_W(M) is the selected norm on the same rows W with
+  the twists of norm ≍ M as sources, and 6 counts associates.
+- **Amplification at slope δ.** PR 93's rule n(x) ≤ n(y) − δ(y − x) gives S_W(M_r) ≤ (M_r/B)^δ B^{o(1)} S_W(B). For
+  this, the sources at length B must contain the products of twists and slot primes. That is why the conjecture now
+  takes all ideals of norm ≤ L as sources. Fewer sources only lower the Gram form (`dualForm_mono_sources`), so the
+  squarefree-norm numerics are a special case (`spikeFree_squarefree`).
+- **So Λ_W ≤ η·S_W(B)** with η ≲ B^{o(1)} Σ_r C B^{ε/q}(B/M_r)^{1/q}(M_r/B)^δ.
+  - For δ > 1/q, the top block M_r ≍ C B^{1−qε} dominates, and η ≲ B^{−ε(qδ − 1 − 1/q) + o(1)}.
+  - This tends to 0 exactly when δ > 1/q + 1/q²: 7/36 for the sextic family and 4/9 for the cubic.
+  - Then `selected_of_amplified` gives S_W(B) ≤ C B^{1+ε}/(1 − η). The proof iterates S ↦ Δ + ηS from the trivial
+    constant and passes to the limit.
+- **In log scale this is a new rule outside `Closure.lean`'s closure:**
+  n(1) ≤ max(1 + ε, sup_{x ≤ 1−qε} [n(x) + (1 − x + ε)/q]).
+  - The barrier function n*(x) = max(x, 7/6 − δ(1 − x)) for x < 1 violates it when δ > 7/36. Then
+    n*(x) + (1 − x)/6 = 7/6 − (δ − 1/6)(1 − x) < 7/6 at x ≤ 1 − 6ε, by a margin larger than the ε/6 slack.
+- **Consequence [conditional on the graded conjecture with all-ideal sources].** The selected norm at the balanced
+  point is B^{1+ε} for every slope δ > 7/36, which contains the whole K-wall range 1/3 ≤ δ < 1/2.
+  - So the K-wall reduces to one full-family statement about the sextic row Gram, with no thin-set or detector
+    hypothesis left.
+  - This revises the FlatDilution correction, which kept a separate detector condition. That condition is supplied
+    by the recursion.
+
+**The conjugation of the spikes (numerics `rip/theta/theta_offspan.py`, log `theta_offspan_B10000.log`).**
+- The Lean form is b* E E^H b. Poisson writes the off-diagonal row Gram as Σ_h f_h(z) conj f_h(z') with
+  f_h = g̃·conj χ(h). The ratio r(c) = |Eᵀ c|²/(S|c|²) used in the earlier theta entries is the same form at b = conj c.
+  So the vectors in those entries (conj G·χ(m)χ(u)) are the conjugates of the Lean ones.
+- Check at B = L = 10⁴: |E^H b|²/(S|b|²) = 1.09–1.13 for b = G·conj χ(u)·N^{−1/2} (six units); 0.93–0.98 for the
+  conjugate; 0.956 ± 0.024 for random phases.
+- Three scripts projected conj G·χ out of E E^H, which is the conjugation without the excess: `theta_span.py`
+  ("off V"), `theta_locate.py` and `theta_topspan.py` (theta-span overlaps). Re-run in the right convention, the
+  conclusions stand:
+  - The top singular vector's mass in the span of G·conj χ(u)·N^{−1/2} is 0.040, against 0.046 for a random span of
+    the same dimension. So the outlier is still not the row theta.
+  - Top s²/S off the spans, N(m) ≤ 30 (seven twists incl. m = 1, six units, J = 2): see the table below. The
+    Marchenko–Pastur edge after removing d dimensions is (1 + √((R − d)/S))².
+
+| removed span | dim | top s²/S off it | MP edge for R − d |
+|---|---|---|---|
+| none | 0 | 4.261 | 4.156 |
+| theta, Lean conjugation | 84 | 4.170 | 4.093 |
+| theta, other conjugation | 84 | 4.194 | 4.093 |
+| block, both conjugations | 156 | 3.995 | 4.038 |
+| all | 324 | 3.844 | 3.909 |
+| random | 324 | 3.944 | 3.909 |
+
+At N(m) ≤ 100 (27 twists, dimensions about four times larger):
+
+| removed span | dim | top s²/S off it | MP edge for R − d |
+|---|---|---|---|
+| theta, Lean conjugation | 324 | 3.921 | 3.909 |
+| theta, other conjugation | 324 | 3.970 | 3.909 |
+| block, both conjugations | 636 | 3.541 | 3.663 |
+| all | 1284 | 2.963 | 3.119 |
+| random | 1284 | 3.041 | 3.119 |
+
+**The cubic family (the agent's test T5) and the supplementary twists.** Numerics: `theta_cubic.py`,
+`theta_cubic_struct.py`, `theta_suptwist.py`, `theta_classtwist.py` and `theta_cubic_top.py` (stopped after V(100)),
+with logs `*_B10000.log`.
+- **Setup.** The cubic symbol is the square of the sextic one, so the cubic matrix is E3 = E² on the same rows and
+  sources. Its theta excess should grow like B^{1/3}, not B^{1/6}.
+- **The spectrum at B = L = 10⁴ is far above the bulk.** Top s²/S is 6.69, 5.15, 4.77, 4.55, against an MP edge of
+  4.16. The cubic theta in the Lean conjugation, G3·conj χ³(u)·N^{−1/2}, has r_H = 3.30–3.32 (random 0.95), and its
+  conjugate is at 0.79–0.85.
+- **The numerical V misses the top two outliers.** Off V(30) (twists coprime to 6), the 3rd and 4th outliers drop to
+  4.28 and 4.17, against 4.62 and 4.43 off a random span. The top two stay at 6.33 and 4.95 (random span: 6.45 and
+  5.00). Their mass in V(30) is 0.27 and 0.29 (random 0.20); in V(100) it is 0.56 and 0.53 (random 0.42).
+- **They are thetas twisted by the supplementary symbols.**
+  - u₀ has correlation 0.906 with the single vector G3·(λ²u/z)₃, the λ-twist.
+  - The 54-dimensional span {G3 × class indicator (z mod 9, z mod 2) × profile} holds 0.917 and 0.81 of u₀ and u₁
+    (random 0.14).
+  - The same span with conj G3 holds 0.16 (random level), and with 1 it holds 0.36.
+- **Theta excess by twist**, r_H of G·conj χ(t)·N^{−1/2} for t = λ^e 2^f u:
+
+| family | strongest twists | t = 1 | random |
+|---|---|---|---|
+| cubic | λω 5.70; λ·2·ω 4.02; units 3.30; 2·units 2.35–2.39; the rest ≈ 1.0 | 3.32 | 0.95 |
+| sextic | λ⁴·2·ω 1.338; λ⁴·2·ω·(−1) 1.291; λ⁴ω 1.196 | 1.133 | 0.954 |
+
+- **So the earlier entries understated the theta.** They used twists coprime to 6, and at this size they understated
+  the largest theta spikes by about a factor of 2 in excess (sextic +0.38 against +0.18).
+- **Mechanism [derived, standard].** The sources are primary, which is a congruence condition mod 3, and odd.
+  Poisson summation over such a set has dual frequencies in λ^{−a}2^{−b}·O. That twists the row Gauss sums by
+  (λ/z), (ω/z) and (2/z), which are functions of z mod 9 and mod 2 (cubic) or mod 4 (sextic): thetas at the cusps of
+  a congruence subgroup.
+- **The Lean statement already contains these twists.** Its twist box holds λ, 2 and every product of norm ≤ M, so V
+  contains these vectors. They need N m ≥ 9 for the cubic λ-twist and N m ≥ 324 for λ⁴·2·ω, which is inside
+  C B^{1−qε}. The numerical V(M) did not contain them.
+- **Off the class-twisted span** (classes mod 9 and mod 4 × {G, conj G, 1} × 2 profiles, together with the twists
+  coprime to 6 with N m ≤ 30): 
+
+| cubic, B = L = 10⁴ | dim | top s²/S |
+|---|---|---|
+| none | 0 | 6.692, 5.153, 4.769, 4.553 (MP edge 4.156) |
+| class-twisted span | 648 | 3.774, 3.718, 3.615, 3.589 (MP edge for R − d: 3.653) |
+| random span | 648 | 5.437, 4.277, 3.939, 3.844 |
+| class span + twists coprime to 6, N(m) ≤ 30 | 756 | 3.602, 3.550, 3.468, 3.455 (MP edge 3.566) |
+| random span | 756 | 5.214, 4.083, 3.874, 3.692 |
+
+  - The mass of the top four left vectors in the class span is 0.966, 0.89, 0.76 and 0.81.
+  - Off the class-twisted theta span, every cubic outlier is gone and the top is about 3% above the reduced edge.
+    A random span of the same dimension leaves the leading outlier at 5.44.
+  - This is the first direct numerical evidence for the off-V statement in a family where the theta sits above the
+    bulk at accessible sizes. The agent's T5 asked exactly this question.
+- **The exact Poisson formula confirms the class structure independently** (numerics agent, `theta_poisson.py`,
+  log `theta_poisson_B10000.log`; that agent is still running, and its files will be committed with its report).
+  - G_off = √(L/M)·ε·g(z) conj g(z′)·conj G_M holds to relative error 1e-9.
+  - The phase ε is constant on every pair of row classes mod 4 and mod 9: 31104 of 31104 blocks pure for type-a pairs.
+  - An Euler factor at λ appears for pairs whose character is trivial on the units.
+  - So the dual atoms are Gauss sums times class functions mod 36, i.e. the class-twisted thetas.
+
+- **Sextic family, same test.** Here the top outlier is the low-frequency block one, and the thetas sit below the
+  bulk.
+
+| sextic, B = L = 10⁴ | dim | top s²/S | random span, same dim |
+|---|---|---|---|
+| none | 0 | 4.261 (MP edge 4.156) | – |
+| class span | 648 | 3.555 | 3.656 |
+| class span + twists coprime to 6, N(m) ≤ 30 | 864 | 3.376 (MP edge 3.478) | 3.474 |
+
+  The structured span removes about 3% more than a random span of the same dimension, consistent with the block
+  outlier.
+
+**Reading.**
+- The top outlier lives in the block span: off it, the top falls below the reduced MP edge. A random subspace of the
+  same dimension leaves it above the edge.
+- The theta vectors sit far below the bulk edge at these sizes: Rayleigh ≈ 1.1 S against an edge ≈ 4.2 S. So
+  removing either conjugation barely moves the top. The theta excess shows only in Rayleigh quotients.
+- Extrapolation [numerical, not proved]: with excess ≈ 0.04·B^{1/6} (fit at 3·10⁴), the m = 1 theta reaches the edge
+  only near B ≈ 10¹¹.
+- So the Lean conjecture is falsifiable numerically through its block part, and through the theta part only via
+  Rayleigh quotients.
+- What the K-wall needs from theory is now explicit: the conjecture, plus Λ_W for the spikes on the selected rows.

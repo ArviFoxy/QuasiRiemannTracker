@@ -36,10 +36,20 @@ Not levers: the end face's cap (θ* does not depend on it at the binding), numCa
 - Prime-dilated short reference: the reference wall needs no metaplectic input; Lean core done
   (`lean/arvi_prime_dilation/`, `correlation_bound`).
 - Three Poisson steps evaluate the twist mean square of one smooth Gauss-sum factor without the functional equation
-  (sketch; the polar term comes from ζ_K(6s) at s = 1/6). It reproduces DFDH's cubic exponent, so it is owed a
-  comparison with their method.
+  (the polar term comes from ζ_K(6s) at s = 1/6). Checked against DFDH (journal, "The owed check", 2026-10-31):
+  - Their route is on the twist side (Kubota series, Rankin–Selberg, Lindelöf on average). Ours is dual and
+    elementary.
+  - Every step is now written, including non-squarefree h and squarefree sources.
+  - The polar shape |W̃(s₀)|²H^{1−1/n}X^{1+2/n} matches the existing logs for n = 3 (H- and X-scaling) and n = 6.
+  - Its one gap against DFDH is the restriction to squarefree twists, which our K-wall does not need.
 - Bilinear balanced-point bound for a ⋆ b (balanced, arbitrary coefficients): B^ε(B + X + B^{5/6}X^{5/18}), excess
   1/9 instead of 1/6.
+
+## Literature, re-checked late October 2026
+
+No fourth moment, Lindelöf-on-average or structured large sieve for cubic or sextic families has appeared since
+July; the nearest new items are Dunn's bilinear sieve for metaplectic cusp-form coefficients (arXiv 2403.13151 v5)
+and the PGL₂ cubic moments of Hu–Petrow–Young (arXiv 2506.14741 v2).
 
 ## Reading
 

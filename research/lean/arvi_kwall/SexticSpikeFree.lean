@@ -84,13 +84,21 @@ separate obstacle, because it is controlled by the selected norm itself.
   such blocks with `spikeBessel_of_blocks`.
 * Amplification at slope `δ` (PR 93's rule `n(x) ≤ n(y) − δ(y − x)`) gives `S_W(M_r) ≤ (M_r/B)^δ B^{o(1)} S_W(B)`.
   This needs the sources at length `B` to contain the products of twists and slot primes, e.g. all elements of
-  norm `≤ B`.
+  norm `≤ B`. The step is a formal theorem in the selected-leaf library:
+  `Qrh.JointDetector.selectedNorm_inverse_amplification`. It says
+  `selectedNorm rows sources ≤ C·D·selectedNorm rows merged / A` for any source set and any `merged` containing all
+  products, given an amplifier response `≥ A` on the rows, coefficient mass `C` and fiber bound `D`.
+  - That library writes the kernel as `(z/J)₆` with rows `z ∈ O`. Sextic reciprocity gives `(z/J)₆ = ±(J/z)₆`, with
+    the sign constant on class pairs mod 4.
+  - So its selected constants and the ones here agree up to a bounded factor (144 class-pair blocks and
+    6 associates). That bridge is not yet formal.
 * Hence `Λ_W ≤ η S_W(B)` with `η ≲ B^{o(1)} Σ_r C B^{ε/q} (B/M_r)^{1/q} (M_r/B)^δ`. For `δ > 1/q` the top block
   `M_r ≍ C B^{1−qε}` dominates, so `η ≲ B^{−ε(qδ − 1 − 1/q) + o(1)} → 0` exactly when `δ > 1/q + 1/q²`. That is
   `7/36` for the sextic family and `4/9` for the cubic.
 * `selected_of_amplified` (formal) then gives `S_W(B) ≤ C B^{1+ε} / (1 − η)`.
 
-**[Conditional. Amplification for the twist sieves (PR 93's rule) and the exponent count are not formal.]** The graded conjecture plus amplification give the selected
+**[Conditional. The amplification step is formal in the selected-leaf library. The convention bridge to it and the
+exponent count are not formal yet.]** The graded conjecture plus amplification give the selected
 norm `B^{1+ε}` at the balanced point for every slope `δ > 7/36`. That includes the whole K-wall range
 `1/3 ≤ δ < 1/2` of `Closure.lean`. So the K-wall reduces to a **full-family** statement about the sextic row Gram,
 with no thin-set or detector hypothesis left over.

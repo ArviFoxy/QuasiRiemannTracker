@@ -3668,3 +3668,47 @@ the index t^{−1} ≡ m·p⁴ (mod sixth powers).
     up to a single correction.
 - Next: check (ii) numerically in the reference regime once a size is found where the source theta's excess is
   visible, and read the face's reference weights.
+
+## 2026-10-31 · The source spikes vanish for radial weights with zero Mellin transform at the pole: the reference wall's rescue
+
+[numerical: `rip/theta/theta_level_profile.py`, logs `theta_level_profile_B{30000,100000}.log`; derived]
+
+**Test.** The spike part of a source vector is a Kubota-type sum. Its main term is L^{s₀} times the Mellin transform
+I(U) = ∫ U(t) t^{s₀−1} dt of the vector's radial weight U(N x/L) at the pole. For the sextic matrix, s₀ = 2/3 in
+this normalization (the source theta with weight N^{−1/3} grows like L^{1/3}). Three weights are compared, each
+times the theta level u or the plain level, with the best class phases (72 classes), over the masked null:
+- U1 = t^{−1/3}, the scan's profile, I ≠ 0;
+- U2 = t^{−1/3}(1_{t ≤ 1/2} − c·1_{t > 1/2}) with c = 2^{−1/3}/(1 − 2^{−1/3}) = 3.847, so I = 0;
+- U3, the same pieces with +c, I ≠ 0, as a control.
+
+| level | B = L | U1 (I ≠ 0) | U2 (I = 0) | U3 (control) |
+|---|---|---|---|---|
+| theta u | 3·10⁴ | 2.580 | **1.012** | 2.029 |
+| theta u | 10⁵ | 3.243 | **1.025** | 2.533 |
+| plain | 3·10⁴ | 1.048 | 1.014 | 1.062 |
+| plain | 10⁵ | 1.094 | 1.010 | 1.078 |
+
+**The source spikes are rank one in the radial profile, and the rank-one direction is the Kubota pole.** With
+I(U) = 0 the theta's +224% at 10⁵ falls to +2.5%, and the control with the same two pieces keeps +153%. The
+plain level's growing +9.4% falls to +1%. This confirms the residue mechanism quantitatively and locates the pole
+at s₀ = 2/3.
+
+**Consequences [derived].**
+- **Reference wall (target 2).** The twisted-spike correlations of a plain × prime vector all carry the same
+  factor I(U) of the plain factor's weight (the main term at index m·p⁴ is L^{s₀}·I(U)·τ₆(m p⁴)). So a plain factor
+  with an I(U) = 0 weight is off every twisted spike to leading order. The Patterson bias of the previous entries
+  disappears, and the detector condition is left with the Kubota sums' error terms (random-like) and the prime
+  pool's weak bias.
+- **Two ways to get I(U) = 0 in the detector.**
+  - At height t the plain weight is W(N/X)·N^{−σ−it}, so the main term carries W̃(s₀ − σ − it). This decays like
+    |t|^{−A} for smooth W, so zeros away from the real axis need nothing.
+  - Near t = 0, split W = W₀ + c·W_ref with W̃₀(s₀ − σ) = 0, using two dyadic pieces as above. W₀ is spike-free, and
+    W_ref leaves one explicit rank-one main term per twist, whose coefficient is known.
+- **The levels.** Level 2 (conj g̃₃) and level 3 have their own poles. Killing several Mellin points needs a few more
+  pieces in the split, which is routine.
+- **The corrected sieve.** The correction family needs only the I ≠ 0 radial direction per twist and level. The
+  Lean statement's windows × profiles span more than this, which is harmless.
+
+So target 2 is now: one Poisson step (known technology) plus I(U) = 0 weights for the plain factors, plus error-term
+bounds. That is not GRH-strength. Still to check: the face's reference weights, and whether the reference ledger
+tolerates the rank-one W_ref remainder at small heights.

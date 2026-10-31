@@ -223,6 +223,13 @@ corrected (`CorrectedLargeSieve`), plus a detector condition for the vectors at 
 - **Decision point before more K-wall work:** does the reference see plain-character blocks (#96's inverse theorem,
   classical detector) or Gauss-sum-twisted spikes (GRH-strength detector)? Journal, "The reference wall's detector
   condition". Without target 2 the K-wall buys nothing.
+  - After R1 the vectors are plain-type, so they meet the Gauss-sum-twisted spikes.
+  - **Rescue found (numerical, journal "The source spikes vanish for radial weights with zero Mellin transform"):**
+    the spikes are rank one in the radial profile, at the Kubota pole s₀ = 2/3. With a two-piece weight of zero
+    Mellin transform there, the source theta's excess at 10⁵ falls from +224% to +2.5% (control +153%).
+  - So plain factors with I(U) = 0 weights are off every twisted spike. At height |t| ≫ 1 smooth weights give this
+    automatically (W̃(s₀ − σ − it) decays). Target 2 then needs one Poisson step, the weight split, and error terms:
+    no GRH-strength input. Next: the face's actual reference weights.
 
 ## Open question: a power saving off both thetas
 

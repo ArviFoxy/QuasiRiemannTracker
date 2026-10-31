@@ -1,0 +1,4 @@
+B = L = 30000: R=8474 S=7768; c = 3.847   (9s)
+  theta u  U1 = t^-1/3 (I != 0): 2.580;  U2 split, I = 0: 1.012;  U3 split, I != 0: 2.029
+  plain    U1 = t^-1/3 (I != 0): 1.048;  U2 split, I = 0: 1.014;  U3 split, I != 0: 1.062
+done in 14s

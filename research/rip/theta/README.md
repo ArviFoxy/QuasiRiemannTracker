@@ -49,6 +49,9 @@ be small.
   (`THETA_SRCLEV=1`) takes the 10⁵ remainder at (300, 100) from +2.6% to +1.7% over the masked null (random spans of
   the same dimensions +16%). This is the multi-level correction that the off-spike recursion needs (journal, "The
   Poisson levels").
+- **Rank one in the radial profile.** A radial weight with zero Mellin transform at the Kubota pole s₀ = 2/3 removes
+  the source theta's excess (+224% → +2.5% at 10⁵; control +153%) and the plain level's (+9.4% → +1%)
+  (`theta_level_profile`). So vectors whose smooth factors have such weights are off every spike.
 - **For the K-wall.** The twisted source spikes are flat on slot-selected rows (`theta_src_twisted_selected`). Beyond
   the two-sided spike-free conjecture itself, the new arithmetic input is a shifted-convolution bound for sextic
   theta coefficients at products (`../../frontier/README.md`).
@@ -120,6 +123,7 @@ be small.
 | `theta_dilation_gram.py B order M1,M2,.. [threads]` | conditioning of the dilated residues: spectrum of the normalized Gram of the twisted source images Φ_m = Φ(·m), N(m) ≤ M, against the masked null |
 | `theta_reference_detector.py A [L] [Mtw] [threads]` | reference regime (sources up to A^{2/3}): \|Ev\|²/\|v\|² over the masked null and correlations with twisted thetas, for smooth × prime vectors, their random-phase versions, the pool, smooth vectors and the source theta |
 | `theta_restricted_spikes.py B [Dmax] [Mfam] [threads]` | restricted twisted thetas f·χ(m)·1_{d\|x} (the gcd sorting of the off-spike recursion): their excess over the masked null, alone and off the unrestricted family |
+| `theta_level_profile.py B [threads]` | radial weights: the theta and plain levels with t^{−1/3}, a two-piece weight with zero Mellin transform at the pole s₀ = 2/3, and a control, over the masked null |
 
 All scripts build E and the row Gauss sums through `theta_core.py`. The matrix-free scripts (`theta_top_free2`,
 `theta_selected_free`, `theta_outliers`) use `theta_core.build_tables`, which stops before the dense matrix and returns

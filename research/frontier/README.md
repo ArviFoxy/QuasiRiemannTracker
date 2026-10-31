@@ -32,6 +32,8 @@ outlier and the masked-null two-sided tests (journal, 2026-10-31).
       ζ_K(3w − 1), i.e. a power saving would need RH for ζ_{ℚ(ω)}. Our own zero-free region gives a partial
       X^{0.6245} instead of X^{1/2}.
     - So the faces' sextic input is a paper-level project, before any Lean.
+  - *The whole program on one page:* `PROGRAM.md` (dependency tree A–E with sizes, the settled points, risks and
+    the blocked alternatives).
   - *Target 2* is one corrected Poisson step with the dual bounded by Sil's existing sieve.
   - *D1 by row splitting* needs no reference wall. It does need dilution at every slope in (0, 1/2]. The
     spike-rule recursion covers only δ > 7/36, and the low slopes are an open gap (journal, D1 entry and its

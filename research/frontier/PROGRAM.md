@@ -44,13 +44,14 @@ Either alone buys nothing (journal, "Faces past Λ = 2"; target 2 alone moves th
 |---|---|---|---|---|
 | A | **6-fold Kubota theory, index aspect**: continuation and functional equation of ψ⁽⁶⁾(m, w) (index conductor N(m)), polynomial growth on Re w = 1/2 + ε, uniformly in m | classical (Kubota 1969 for general n); not formalized anywhere | missing | 15–30 person-months (agent scoping, 2026-10-31): the baseline's ≈ 14k-line analytic spine is generic, but it has no functional equation or growth bound even for n = 3. N1a (series, germ at 7/6) 4–7, N1b +2–6, N3 (functional equation) 8–18, N2 (growth) +1–2 |
 | A′ | Lindelöf on average in the index aspect, Σ_{N(m)≤M}\|ψ⁽⁶⁾(m, 1/2 + ε + it)\|² ≪ M^{1+ε}(1 + \|t\|)^R | from A plus the sextic large sieve (approximate functional equation of length ≤ N(m)^{1/2} keeps Sil's Θ₆ diagonal) | missing; the cubic analogue is David–de Faveri–Dunn–Stucky Lemma 6.6 | moderate once A exists |
-| A″ | Mellin rescue: Mellin-zero plain vectors (and convolutions with the zero in the long factor) have spike correlations at square-root size on average over twists | A + A′ + contour shift | numerically at the null (twist, dilation, convolution, mollified shapes; `../rip/theta/`) | small once A, A′ exist |
+| A″ | Mellin rescue: Mellin-zero plain vectors (and convolutions with the zero in the long factor) have spike correlations at square-root size on average over twists | **one dominant smooth factor: elementary, three Poisson steps, no A or A′** (journal, "Three Poisson steps …", 2026-10-31); balanced convolutions: see A‴ | numerically at the null (twist, dilation, convolution, mollified shapes; `../rip/theta/`) | small for one dominant factor (Sil's `pair_poisson` and the baseline's reflection are steps 1–2) |
+| A‴ | **Balanced convolutions** (the K-wall's binding corner x₁ ≈ x₂ ≈ 0.40–0.47): twist mean square ≤ B^{5/6+γ}H^{1/6}‖v‖² for B^{0.25} < H < B^{0.67} | a power-saving asymptotic for a smoothed fourth moment of short sextic character sums; A and A′ do not reach it | **open, type unknown** (natural tool: a metaplectic Kuznetsov formula on the 6-fold cover) | unknown |
 | B | **Target-2 decomposition**: ‖E_{A,B}λ‖² ≤ C(AB)^ε{A‖λ‖² + (A/B)Σ_{N(h)≤B²/A} w_h\|⟨λ, f_h⟩\|²} for B ≤ A^{2/3} | fork of Sil's `SievePoissonBound` (kernel split, Gauss-sum factorization of the dual terms) and `SieveDescent` | restricted descent in Lean (`../lean/arvi_kwall/RestrictedDescent.lean`) | moderate (≈ 1–2k lines); the bar needs it only up to B ≤ A^{0.51}, and for the reference's slot-convolution vectors the dual terms are bounded by Sil's `OptimalBound` alone (no A) |
 | C | **Corrected recursion** for the K-wall: de Faveri's recursion run off the spikes to the fixed point 1 + γ, in weighted form G ≼ B^{1+γ}I + Σ w_f ff* over the generated family | elementary, new; a fork of Sil's formal sieve | iteration arithmetic (`silStep`, `tendsto_silIter`) and transposition (`TransposeCorrection.lean`) in Lean; step 3's corrected Cauchy–Schwarz and level closure are the open core | paper-level, then a large fork |
 | D | Λ_row: row thetas on slot-selected rows, closed by amplification | `SpikeRule.lean` (formal for slopes > 7/36) | conditional on C | small |
 | E | Face forks: native or density machinery carrying the new gates | Lean engineering on the 119 ReturnD modules and the face chain | not started | large |
 
-Order: A → A′ → A″ feeds B (reference wall) and C (K-wall); C → D; B, C, D → E.
+Order: A → A′ → A″ feeds B (reference wall) and C (K-wall); C → D; B, C, D → E. A‴ feeds C at the balanced corner.
 
 ## What is settled (2026-10-31)
 
@@ -74,12 +75,15 @@ Order: A → A′ → A″ feeds B (reference wall) and C (K-wall); C → D; B, 
 1. **C's level closure.** The corrected Cauchy–Schwarz must pull the dual's spikes back to explicit corrections,
    with a family that closes up. This is numerically supported (`theta_level2`, `theta_local_spikes`) but
    unproved. It is the only mathematical risk that is not of classical type.
-2. **A's size.** It is classical, but no proof assistant has the n-fold Kubota Eisenstein series for n ≥ 4.
+2. **A‴, the balanced corner (2026-10-31).** The K-wall's binding geometry has two plain factors of comparable
+   length. Their twist mean square in B^{0.25} < N(m) < B^{0.67} is a fourth-moment-type statement, beyond A. This is
+   now the largest risk.
+3. **A's size.** It is classical, but no proof assistant has the n-fold Kubota Eisenstein series for n ≥ 4.
    - Mapped 2026-10-31: the baseline's analytic spine (≈ 14k lines) is generic in n. The sextic needs Γ(12), the
      quadratic Kubota character and 21 cusps.
    - The baseline has neither the functional equation nor any growth bound, even for n = 3. So A costs
      15–30 person-months.
-3. **D1's low slopes** matter only if D1 replaces the faces route. The faces route needs the K-wall near slope
+4. **D1's low slopes** matter only if D1 replaces the faces route. The faces route needs the K-wall near slope
    0.48 only.
 
 ## Alternatives (each blocked by a named open problem)
@@ -132,3 +136,10 @@ Order: A → A′ → A″ feeds B (reference wall) and C (K-wall); C → D; B, 
 - So the bar is gated by the K-wall alone: the balanced-point corrected sieve (C) plus input A, or Λ_src. Prime
   dilation provably does not help at the balanced point: the dual problem there is balanced again, with about B
   frequencies, and pointwise bounds cannot sum them.
+- **Update (2026-10-31, journal "Three Poisson steps …").** Input A is neither necessary nor sufficient for the
+  K-wall:
+  - not necessary away from the balanced corner, where three Poisson steps give A″ for one dominant smooth factor;
+  - not sufficient at the binding corner, where the leaf vector is a balanced convolution of two plain factors and
+    the band B^{0.25} < N(m) < B^{0.67} needs A‴, a fourth-moment-type input that A and A′ do not reach.
+  - So the faces route to the bar has an open input of unknown type, and the 15–30 person-month estimate no longer
+    bounds its cost.

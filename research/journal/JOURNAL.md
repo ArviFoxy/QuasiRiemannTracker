@@ -4757,8 +4757,15 @@ reciprocity are baseline theorems].**
     unit by which the arbitrary generator of the product's radical differs from the product of the factors'
     generators. The clean identity is not provable as stated (`literal_identity_at_one_iff`).
   - The unit factors are per-source or constant on classes (units × norms mod 36), so Step 2's bound survives.
-  - Still to formalize: the combination T3 (phase multiplicativity + reciprocity + `bilinear_sieve`), then the
-    Poisson fork.
+  - **T3 done (same day)**: `Correlation.lean`. For squarefree supported ideals the radical modulus is the primary
+    generator times a unit, so removing that unit gives a canonical phase `phaseCan` of modulus one that is exactly
+    multiplicative (`phaseCan_mul`). With Sil's `row_reciprocity` (sign by classes mod 4) and
+    `bilinear_sieve_squarefree` this gives `correlation_bound`:
+    ‖Σ_{s,q} α_s a_q·conj(phaseCan(sq))·χ_k(sq)‖² ≤ C(P₂X)^ε·majorant(P₂, X)·Σ‖α‖²·Σ‖a‖², C = 16·C₀ (only the
+    q-sum is split by class). Sources and slots are squarefree there; the long factor's non-squarefree part is
+    still open.
+  - Still to formalize: the Poisson fork itself (Sil's `coherent_weighted_bound` with the sixth-power-repeated dual
+    rows kept as correlations and bounded by `correlation_bound`).
 
 ## 2026-10-31 · What input A must supply for the K-wall, and how much of it the levels supply themselves
 
@@ -4906,3 +4913,98 @@ covers")]
     person-months.
   - What does survive: the small-twist pointwise part needs no functional equation (log-normal weights and an
     exponential-in-t resolvent bound).
+
+## 2026-10-31 · Three Poisson steps give the twist mean square of one smooth factor; the K-wall's balanced corner is out of reach of input A
+
+[derived; sketch with the technical points listed. Numerics cited: entries "The source spikes vanish for radial
+weights with zero Mellin transform at the pole" and "Convolution leaf vectors"]
+
+**The requirement, restated.**
+- The K-wall's source term is Σ_{N m ≤ M} (B/N m)^{1/6}|⟨v, f_m⟩|² ≤ B^{1+γ}‖v‖², with M = B^{1−6γ}. Per dyadic twist
+  range N(m) ∼ H this reads S_v(H) := Σ_{m∼H} |⟨v, f_m⟩|² ≤ B^{5/6+γ}H^{1/6}‖v‖².
+- That is weaker than Lindelöf on average (H‖v‖²) for every H < B. The previous entry's "≈ H·B^{O(γ)}‖v‖² for every
+  H < B" holds only near H ≈ B^{1−6γ}.
+- The twist-aspect large sieve gives (H + X)‖v‖² for sources of length X. It suffices for H ≥ (X/B^{5/6+γ})⁶, which
+  at the corner's X = B^{0.96} is H ≥ B^{0.67}. (Its own theta term re-counts the small twists with weights Σ_D N(D)^{−1}:
+  a logarithm.)
+
+**Three Poisson steps for one smooth factor [derived; sketch].** Take v_n = W(N n/X) and f_m = conj(phase)·χ_m.
+1. **Poisson in m**, modulo n n′. The Gauss sums of conj χ_n·χ_{n′} cancel the phases (the involution of "Correction:
+   the depth family alternates"). So S_v(H) is a diagonal of size HX plus
+   (H/X)·Σ_{h≠0} φ̂(N(h)H/N(n n′))·Σ_{n,n′} W W′ ε(n, n′) χ_n(−h) conj χ_{n′}(h), with ε a sign by classes mod 4 and
+   N(h) ≲ X²/H. The coupling is separated by a dyadic partition in h and a Mellin expansion on the compact box, which
+   keeps every h-weight localized.
+2. **Poisson in n**, for each h. The plain sum A(h) = Σ_n W(N n/X)χ_n(h) has dual length N(h)/X. It is negligible for
+   non-sixth-power h with N(h) < X. Otherwise A(h)·conj A(h) = (X²/N h)·Σ_{k,k′} Ŵ Ŵ′·conj χ_h(k) χ_h(k′).
+3. **Poisson in h**, for each (k, k′). By reciprocity conj χ_h(k)χ_h(k′) is a character in h of conductor
+   ≤ N(k k′) ≤ (N(h)/X)². On a dyadic range N(h) ∼ H₁ ≤ X²/H the dual length is ≤ H₁/X² ≤ 1/H. So for H ≥ X^ε
+   every non-principal pair is negligible.
+- **What is left is explicit:**
+  - the diagonal, and the pairs k = k′ (≈ −HX, cancelling the diagonal to leading order);
+  - pairs with k/k′ a sixth power: O(HX + H^{2/3}X^{4/3}), the second ∝ |W̃(5/6)|²;
+  - h a sixth power, where A(h) has a main term.
+- **The pole.** After the Mellin separation the frequencies h = D⁶ give ζ_K(6s)·X^{2s+1}·W̃(s + 1/2)². The pole of
+  ζ_K(6s) at s = 1/6 is the polar term H^{5/6}X^{4/3}|W̃(2/3)|². That is the numerics' pole at s₀ = 2/3, obtained
+  without the 6-fold cover. The mean square needs only Σ_m |ρ(m)|², which comes out through ζ_K(6s); the individual
+  residues ρ(m) never appear.
+- The other explicit terms are ≤ HX + H^{2/3}X^{4/3}, below the requirement for X, H ≤ B. The bounded floor of the
+  numerics (2.5% at H = X) is of this type.
+- **Technical points, not yet written out.**
+  - The sixth-power-free condition on sources: Möbius over d⁶ | n. Pairs with N(d d′)⁶ < H take steps 2–3. The
+    others take step 3 directly in h, since then the conductor N(n n′) ≤ X²/N(d d′)⁶ is below the h-range.
+  - Non-squarefree h: square-full parts up to H take the same argument; the rest cost X²H^{−1/2}, which is fine for
+    H ≥ X^{1/4}.
+- **Consequence.** A″ for a single smooth factor needs neither the functional equation (N3) nor A′. Step 1 is Sil's
+  `pair_poisson`/`dualTerm`, and step 2 is the baseline's `actual_original_twisted_reflection`.
+- **With a short arbitrary factor.** For v = (smooth, length X/Y) ⋆ (arbitrary, length Y), keep the short factor
+  unexpanded in step 3. Its characters add conductor ≤ Y², so step 3 needs H > Y⁴. For H ≤ Y⁴, Cauchy–Schwarz over
+  the short factor (twists m·y^{±2}) and the single-factor result at twist range HY² give S_v(H) ≲ HY²‖v‖². That is
+  within the requirement when Y ≤ B^{5/32}.
+
+**The K-wall's binding corner is a balanced convolution, and neither route reaches it [derived].**
+- The ledger fails without a near-fixed-point norm only at x₁ ≈ x₂ ≈ 0.40–0.47, slots S ≈ 0.03–0.10, t = 0 (entry
+  "How much selected norm the leaf needs below K = 1/2", 2026-10-30).
+- R1 applies the selected norm to S₁S₂∏T_k or to its reflection S₁*S₂∏T_k. Either way the vector is two smooth plain
+  factors of comparable length (B^{0.45–0.55}) times a short slot part.
+- **Three Poissons fail there.**
+  - Expanding both factors in step 2 gives conductor ≤ N(h)⁴/X² in step 3. Negligibility then needs
+    N(h)³ < X²/H, i.e. it holds only on the bottom of the h-range.
+  - Expanding one factor leaves the other as a short factor of length ≈ √X, so step 3 needs H > X².
+- **A and A′ do not help there either.**
+  - With the functional equation and the Mellin zero in U₁:
+    c_m(U₁ ⋆ U₂) = X₁^{1/2}∫Ũ₁(1/2+it)X₁^{it}·Σ_{n₂} b_{n₂}(m) ψ(m n₂², 1/2+it) dt.
+  - Cauchy–Schwarz over n₂, then A′ over all twists up to HX₂², gives S_v(H) ≲ HX₂²‖v‖². A′ cannot see that only
+    the sparse set {m n₂²} is used. With X₂ = B^{0.48}, X₂² > B^{5/6+γ}, so this fails for every H.
+  - Even a mean value over the sparse set ("A′ at dilated twists") would reach only H ≤ (B^{5/6+γ}/X₂)^{6/5} ≈ B^{0.44}.
+  - The approximate functional equation of ψ(m n₂², ·) has length √H·X₂. The twist large sieve then gives
+    (H + √H·X₂²)X₂, which also fails for every H.
+  - Convexity pointwise, |ψ(m′, 1/2)| ≤ N(m′)^{1/4+ε}, is worse than trivial here.
+- **What is covered without A.**
+  - Pointwise, the cross term of twisted multiplicativity is cubic, so c_m(U₁ ⋆ U₂) is a bilinear form with kernel
+    (n₂/n₁)₃. Heath-Brown's cubic large sieve [literature] gives |c_m|² ≤ X^{5/3+ε}, within the requirement for
+    H ≤ B^{0.25}.
+  - The twist large sieve covers H ≥ B^{0.67}.
+- **The open band is B^{0.25} < N(m) < B^{0.67}.**
+  - After step 1, the band is a power-saving asymptotic for the smoothed fourth moment
+    Σ_h φ̂(N(h)H/X²)|A₁(h)A₂(h)|² of short sextic character sums: each of length ≈ √X, with moduli up to X²/H.
+  - The saving needed is small: B^{0.11}H^{−1/6} over the trivial bound, about B^{0.04} at H = B^{0.44}.
+  - But Poisson in h returns the twist mean square itself (the involution), so the argument is circular without a new
+    input.
+  - Equivalent forms of the missing input:
+    - a large sieve for Kubota values at dilated twists, Σ_m |Σ_{n₂} b_{n₂}(m)ψ(m n₂², 1/2+it)|² ≪ (HX₂)^{1+ε};
+    - Lindelöf on average in m for the divisor-weighted series Σ_n g̃(n) conj χ_n(m) σ_{w₁,w₂}(n) at
+      w₁ = w₂ = 1/2.
+  - For Dirichlet characters the analogous fourth moments are done with Kuznetsov's formula, so the natural tool here
+    is the metaplectic Kuznetsov formula on the 6-fold cover. That is beyond input A.
+- The corner also sits at t = 0, where a Mellin zero cannot remove the polar term for a whole segment of heights
+  (entry "The source spikes vanish ...", low-height caveat).
+
+**Consequences.**
+- PROGRAM.md's row A″ ("convolutions with the zero in the long factor ... small once A, A′ exist") holds only when one
+  factor dominates: Y ≲ B^{0.16}, or the dilation aspect. At the K-wall's binding corner it is not derived, and the
+  15–30 person-months of A do not buy it.
+- Away from the balanced corner, everything the K-wall needs is elementary: the three Poisson steps, Sil's sieve and
+  C's bookkeeping.
+- The open core of the K-wall is now one statement: the twist mean square of balanced smooth convolutions in the band
+  B^{0.25} < N(m) < B^{0.67}. Its type is a fourth-moment asymptotic with power saving, with no known elementary or
+  Kubota-theory route. So the faces route to the bar no longer has open inputs of known type.

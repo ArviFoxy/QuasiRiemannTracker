@@ -3171,6 +3171,10 @@ Same families as at 3·10⁴. V: row thetas and plain characters on classes mod 
   the spike strength.
 - For `q = 3` the same residue is Patterson's `τ₃ ∝ conj g̃₃(z) N(z)^{−1/6}`, which is the cubic row theta itself:
   one theta. For `q = 6`, `τ₆` is not a Gauss sum: two thetas.
+- **Growth exponent for every order.** For order q the pole is at `s = 1/2 + 1/q`, and the source profile is
+  `N^{−(1/2 − 1/q)}` (`theta_pairs.py`). The main term is `L^{2/q} τ_q(z)` with `Σ_{z~B} |τ_q(z)|² ≈ B^{1−1/q}`, and
+  `|f|² ≈ L^{2/q}`. So the spike strength is `θ ∝ L^{2/q − 1} B^{1 − 1/q}`, which is `B^{1/q}` at `L = B`. That is the
+  measured `B^{1/6}` for the sextic family and the `B^{1/3}` theta excess of the cubic one.
 
 **Tests.** Rows are fixed (`N z ∈ [B, 2B]`); only the sources change.
 

@@ -1,0 +1,4 @@
+K=0.45 s0=0.118 stop L=1.9000 [OptimalBound gamma=(x-5/6)_+]: needed extra saving Delta ~ 0.1461 ; last failure (1.9, (np.float64(0.1184), np.float64(0.1184), np.float64(0.9999), np.float64(0.388), np.float64(0.388)))
+K=0.45 s0=0.118 stop L=1.9400 [OptimalBound gamma=(x-5/6)_+]: needed extra saving Delta ~ 0.1391 ; last failure (1.94, (np.float64(0.1248), np.float64(0.1248), np.float64(1.0), np.float64(0.379), np.float64(0.379)))
+K=0.45 s0=0.000 stop L=1.9400 [OptimalBound gamma=(x-5/6)_+]: needed extra saving Delta ~ 0.1652 ; last failure (1.94, (np.float64(0.0069), np.float64(0.0069), np.float64(1.0), np.float64(0.493), np.float64(0.493)))
+K=0.40 s0=0.118 stop L=1.9000 [OptimalBound gamma=(x-5/6)_+]: needed extra saving Delta ~ 0.1359 ; last failure (1.9, (np.float64(0.1236), np.float64(0.1236), np.float64(1.0), np.float64(0.383), np.float64(0.383)))

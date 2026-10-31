@@ -1,0 +1,13 @@
+K=0.40 line end L=1.7953 (principal)
+  K 0.40 s0 0.118 stop L 1.9400 cap 0.1360: theta-bar -2.94e-06  needed Delta 0.0084
+  K 0.40 s0 0.118 stop L 1.9200 cap 0.1367: theta-bar -2.20e-05  needed Delta 0.0112
+  K 0.40 s0 0.118 stop L 1.9000 cap 0.1374: theta-bar -4.18e-05  needed Delta 0.0159
+K=0.43 line end L=1.8095 (principal)
+  K 0.43 s0 0.118 stop L 1.9400 cap 0.1371: theta-bar -2.94e-06  needed Delta 0.0073
+  K 0.43 s0 0.118 stop L 1.9200 cap 0.1382: theta-bar -2.20e-05  needed Delta 0.0096
+  K 0.43 s0 0.118 stop L 1.9000 cap 0.1395: theta-bar -4.18e-05  needed Delta 0.0187
+K=0.45 line end L=1.8623 (principal)
+  K 0.45 s0 0.118 stop L 1.9400 cap 0.1387: theta-bar -2.94e-06  needed Delta 0.0054
+  K 0.45 s0 0.118 stop L 1.9200 cap 0.1407: theta-bar -2.20e-05  needed Delta 0.0117
+  K 0.45 s0 0.118 stop L 1.9000 cap 0.1435: theta-bar -4.18e-05  needed Delta 0.0195
+K=0.48 line end L=1.9461 (refPos)

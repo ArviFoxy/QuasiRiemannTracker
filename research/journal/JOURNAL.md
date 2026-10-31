@@ -5485,3 +5485,79 @@ the open input:
   balanced point is ≪ X^{1+ε}‖v‖²;
 - equivalently, the twisted-theta correlations of the leaf vector are no larger than the thetas' own graded
   strengths.
+
+## 2026-10-31 · Fresh look 3 (θ overall): nothing within reach; a width-floored count face relaxes the K-wall from γ → 0 to γ ≲ 0.05
+
+[delegated review with a neutral brief; float models; scripts and outputs in `fresh-look/third/` (README there).
+Spot-checked by me: `m12.py 0.45 0.118` and `kw10.py 0.45 0.118 1.90` reproduce the outputs in place.]
+
+**Verdict.** Nothing reaches θ ≤ 0.8733319666 with known mathematics. The review agrees with the lever table and
+adds one relaxation.
+
+**Where θ is bound (the review's read).**
+- newTop at δ = 0.426, p = 1/2, count R = 0.62665. Every other edge has ≥ 7.9e-3 of slack.
+- 5e-5 in θ is ≈ 3.9e-4 in R. The ridge within 2.35e-4 of binding is flat (δ ∈ [0.386, 0.464],
+  p ∈ [0.485, 0.5]), so a lever must lower R along the whole ridge, not at a point.
+- R is a three-word minimax over the inverse-marked word (slot cost 2), the plain word (end face) and the long
+  word (5/6).
+  - p_max = 1/2 is sharp, and the (3/4, 1/4) Hölder split is exactly optimal.
+  - Multi-cutoff detectors and mollifiers gain nothing.
+- **Count and physical faces separate.** The count face alone breaks even at Λ ≈ 1.943 (≈ 1.0e-5 per 0.01). At the
+  binding it is read at slot width ≈ 0.13; the physical face at ≈ 0.071.
+
+**The new relaxation: a width-floored count face.**
+- **Idea.** Claim faces with Λ < 2 only for slot widths S ≥ s0, and fall back to the banked base face
+  (0.99999, 2.0001, 0.134284) below s0. Count face only; the physical face stays at 2.0001.
+- **The jump guard.** Collet's `AdmittedWindow` uses the face's widths over the whole [witnessLower, naturalM], not
+  only the witness width. With a floor the plain curve jumps up to the base face at m_s = (B − s0Λ)/2, which needs
+  a guard of the same shape as the natural-tail guard.
+- That caps s0. At Λ = 1.90:
+
+| s0 | θ* vs bar |
+|---|---|
+| 0.118 | −4.2e-5 |
+| 0.120 | −2.6e-5 |
+| 0.122 | +5e-6 |
+| 0.125 | +3.7e-5 |
+
+- **Float prices (ceilings)**, K = 0.45 line, s0 = 0.118, by stop face:
+
+| stop Λ | θ* vs bar |
+|---|---|
+| 1.94 | −2.9e-6 |
+| 1.92 | −2.2e-5 |
+| 1.90 | −4.2e-5 |
+| 1.88 | −6.2e-5 |
+
+- **K-wall tolerance** (`kw10.py`, uniform selected-norm excess):
+  - with the floor: γ ≈ 0.048 (K = 0.45, stop 1.90), 0.051 (stop 1.94), 0.043 (K = 0.40);
+  - without the floor: γ ≈ 0.0009, which reproduces "the K-wall tolerates no excess".
+  - The floor removes the vanishing-slot-width corner. The failure point moves to x₁ = x₂ ≈ 0.39, s = S ≈ 0.12,
+    M ≈ 1: still the balanced plain × plain corner, but at a positive slot width.
+- **Against proven sieves** (`kw12.py`, `kw13.py`; Sil's `OptimalBound` with theta terms plus the pointwise cubic
+  bound, under C):
+  - the floored line is still ≈ B^{0.14}–B^{0.146} short (B^{0.165} without the floor);
+  - the binding roots carry sixth-power multiplicity, i.e. the cluster-inclusive form of the corner (entry
+    "Fresh look at the corner").
+
+**Evaluation.**
+- This is the first relaxation of the K-wall's sharp requirement. It turns "γ → 0 at vanishing slot width" into
+  "γ ≲ 0.05 at slot width ≈ 0.12, count face only".
+- Any partial fourth-moment result with power loss ≤ 0.05 at the moved corner converts into ≈ −4e-5 below the bar
+  (float ceiling).
+- It is still A‴ in kind (the proven sieves are B^{0.14} short), so no θ now. But it is the right target statement
+  for partial progress, and it needs no exact Lindelöf.
+- **Unverified, to check before relying on it:**
+  1. an exact all-edge certificate of a floored count face, with the jump guard in the exact mirror (the float
+     overstates below Λ ≈ 1.95);
+  2. that the floor composes with Sil's native step as the ledger model assumes (fallback to the base face below
+     s0), checked against the Lean step;
+  3. the review's reduction of `OptimalBound` plus the pointwise bound to per-root excesses.
+
+**Checked and dead (the review).**
+- Density steps past the native end: ≤ 1.2e-5. Break-even slope 0.123, killed by dens_mem, the cap facet and the
+  reference wall.
+- Bootstrap and transport: ≈ 1e-6.
+- Guth–Maynard, Huxley, Halász–Montgomery: inapplicable to the long words; Halász needs σ > (1 + β*)/2.
+- A PR 96 port: 0.8791.
+- Numerator capacity alone, B, the cap, the prime-dilated reference alone: not levers.

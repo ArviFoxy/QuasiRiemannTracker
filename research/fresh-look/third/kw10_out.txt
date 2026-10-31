@@ -1,0 +1,5 @@
+K=0.45 s0=0.118 stop L=1.9000: uniform gamma tolerated ~ 0.0478 (fails at 0.0488) [8s]
+K=0.45 s0=0.118 stop L=1.9400: uniform gamma tolerated ~ 0.0506 (fails at 0.0516) [7s]
+K=0.45 s0=0.000 stop L=1.9400: uniform gamma tolerated ~ 0.0009 (fails at 0.0019) [23s]
+K=0.40 s0=0.118 stop L=1.9000: uniform gamma tolerated ~ 0.0431 (fails at 0.0441) [8s]
+K=0.45 s0=0.130 stop L=1.9000: uniform gamma tolerated ~ 0.0534 (fails at 0.0544) [4s]

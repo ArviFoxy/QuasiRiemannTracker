@@ -149,7 +149,27 @@ Upstream facts we rely on [Lean, read]:
 
 ## 9. Fresh look at θ overall (2026-10-31, delegated, neutral brief)
 
-(Pending: filled in when the review returns.)
+- **Verdict.** Nothing reaches the bar with known mathematics. The lever table above is complete within the
+  architecture.
+- **The binding.** newTop at δ = 0.426, p = 1/2. The ridge within the bar's margin is flat (δ ∈ [0.386, 0.464],
+  p ∈ [0.485, 0.5]), so a lever must lower the count along the whole ridge.
+- **Count face and physical face separate.** The count face alone breaks even at Λ ≈ 1.943.
+- **New: a width-floored count face.** Faces below Λ = 2 are claimed only for slot widths ≥ s0 ≈ 0.118, with the
+  base face below the floor.
+  - s0 is capped by a jump guard in Collet's window.
+  - Float ceilings: −4.2e-5 vs the bar at a stop face 1.90, −6.2e-5 at 1.88.
+  - The K-wall then tolerates a uniform excess γ ≈ 0.048 (instead of 0) at a moved corner: x₁ = x₂ ≈ 0.39,
+    slot width ≈ 0.12.
+  - Against the proven sieves it is still ≈ B^{0.14} short. So it is A‴ in weakened form (Lindelöf on average up to
+    B^{0.05} at the moved corner), plus C and target 2.
+  - It is the right target for partial fourth-moment progress. Exact check, composition with Sil's step and the
+    jump-guard reading are still to verify.
+- **Dead:**
+  - density steps past the native end (≤ 1.2e-5);
+  - bootstrap and transport (≈ 1e-6);
+  - Guth–Maynard, Huxley and Halász–Montgomery (inapplicable);
+  - a PR 96 port.
+- Details: journal entry "Fresh look 3"; scripts in `fresh-look/third/`.
 
 ## 10. Repository notes
 

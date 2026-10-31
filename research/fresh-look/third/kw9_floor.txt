@@ -1,0 +1,7 @@
+K=0.450 s0=0.120 stop at L=1.9200 [C]: Delta=0 fail (1.952, np.float64(5.074678975976791e-06), (np.float64(0.1204), np.float64(0.1204), np.float64(1.0), np.float64(0.382), np.float64(0.382))) ; needed Delta ~ 0.0064
+K=0.450 s0=0.120 stop at L=1.9000 [C]: Delta=0 fail (1.94, np.float64(6.0686636550704825e-06), (np.float64(0.1248), np.float64(0.1248), np.float64(1.0), np.float64(0.379), np.float64(0.379))) ; needed Delta ~ 0.0142
+K=0.450 s0=0.115 stop at L=1.9000 [C]: Delta=0 fail (1.9801, np.float64(3.8108545691107958e-06), (np.float64(0.1186), np.float64(0.1186), np.float64(1.0), np.float64(0.383), np.float64(0.383))) ; needed Delta ~ 0.0193
+K=0.450 s0=0.110 stop at L=1.9000 [C]: Delta=0 fail (2.0001, np.float64(3.136205076531135e-06), (np.float64(0.1141), np.float64(0.1141), np.float64(1.0), np.float64(0.386), np.float64(0.386))) ; needed Delta ~ 0.0295
+K=0.450 s0=0.115 stop at L=1.9200 [C]: Delta=0 fail (1.9841, np.float64(3.6788046680552962e-06), (np.float64(0.1184), np.float64(0.1184), np.float64(1.0), np.float64(0.383), np.float64(0.383))) ; needed Delta ~ 0.0189
+K=0.450 s0=0.120 stop at L=1.9200 [noC]: Delta=0 fail (2.0001, np.float64(3.6896530313045253e-06), (np.float64(0.1343), np.float64(0.1343), np.float64(1.0), np.float64(0.366), np.float64(0.366))) ; needed Delta ~ 0.0287
+K=0.450 s0=0.115 stop at L=1.9000 [noC]: Delta=0 fail (2.0001, np.float64(3.6896530313045253e-06), (np.float64(0.1343), np.float64(0.1343), np.float64(1.0), np.float64(0.366), np.float64(0.366))) ; needed Delta ~ 0.0336

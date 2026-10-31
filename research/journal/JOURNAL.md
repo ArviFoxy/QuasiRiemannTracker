@@ -5321,3 +5321,31 @@ the twist mean square of one smooth factor") ignores source pairs with d = gcd(n
     - a pointwise bound X^{0.80} at twist size B^{0.3}.
   - Neither is written. The numerics (Mellin-zero vectors at the null from H = 16 up) show no such gap in the
     truth.
+
+**Second correction, same day: the squarefree support is a real gap, not a technical point [derived].**
+- With Gauss-sum weights only squarefree n contribute, since the Gauss sum of an imprimitive character mod p² is 0.
+  The step-1 dual is therefore A(h) = Σ_n μ²(n)w(n)χ_n(h): plain sums over squarefree n.
+- Möbius over d² | n gives χ_{d²n′}(h) = (h/d)₃·χ_{n′}(h). Each block carries a cubic symbol of conductor d.
+- The sketch's "Möbius over d⁶ | n" is the sixth-power-free case, where χ_{d⁶} is invisible. It does not apply here.
+- The pair (d, d′) can be treated in three ways:
+  - steps 2–3, with step-3 conductor N(d d′)·N(k k′) ≤ N(d d′)³N(h)²/X², so explicit when N(d d′)³ < H;
+  - Poisson in h directly after step 1, so explicit when N(d d′) > H;
+  - Poisson in one sum only, so explicit when N(d′) > N(d)³.
+- **What is left.** Pairs with N(d) ≤ N(d′) ≤ N(d)³ and H^{1/3} ≤ N(d d′) ≤ H.
+  - Bounded blockwise by the large sieve (X²/N(d d′) each), their sum is X² log²: no better than the twist large
+    sieve.
+  - Truncating the Möbius at T and using the sparsity of the tail (‖tail‖² ≈ 1/T) gives at best ≈ X²H^{−1/12}.
+- **Consequences.**
+  - The single-factor asymptotic is proved by this argument only where X²H^{−1/12} is below the terms kept. Against
+    the K-wall's need B^{5/6}H^{1/6}X that is H ≥ (X/B^{5/6})⁴, i.e. H ≥ B^{0.51} (X = B^{0.96}) to B^{0.63}
+    (X = B^{0.99}). With the pointwise bound for H ≤ B^{0.21}, a band [B^{0.21}, B^{0.5–0.63}] stays open for a
+    single smooth factor too.
+  - So "away from the balanced corner, everything the K-wall needs is elementary" (entry "Three Poisson steps give
+    the twist mean square ...") is withdrawn. Input A, whose Kubota series carries the squarefree condition as a
+    finite combination ψ(a/d, s) (as in DFDH), or a squarefree sieve in the dual with power saving, is needed again
+    there.
+  - The DFDH comparison of the entry above keeps its reading of the polar shape, which is numerical. It loses its
+    claim of an elementary route to DFDH's theorem.
+  - The corner's status is unchanged.
+- The numerics show nothing of this gap: Mellin-zero vectors sit at the null for every twist range measured. The
+  gap is in the method, not in the truth.

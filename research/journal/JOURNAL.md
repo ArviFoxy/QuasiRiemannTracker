@@ -4751,3 +4751,11 @@ reciprocity are baseline theorems].**
     correlation: B^{0.91} at γ = 0.015, against at most B^{2/9}.
   - So the mechanism is a small-twist-range tool by nature. The reference needs a saving of only K = A^{0.02};
     the K-wall needs near square-root cancellation on average, which is what the Mellin rescue (input A) supplies.
+- **Lean status of Step 2 (same day) [Lean: `lean/arvi_prime_dilation/`; no `sorry`, standard axioms].**
+  - `bilinear_sieve`: the bilinear Cauchy–Schwarz plus Sil's `OptimalBound` with rows {q²}, as used in Step 2.
+  - `phase_mul_unit`: Sil's phase is multiplicative on coprime sources up to `idealRowHom u (IJ)`, where u is the
+    unit by which the arbitrary generator of the product's radical differs from the product of the factors'
+    generators. The clean identity is not provable as stated (`literal_identity_at_one_iff`).
+  - The unit factors are per-source or constant on classes (units × norms mod 36), so Step 2's bound survives.
+  - Still to formalize: the combination T3 (phase multiplicativity + reciprocity + `bilinear_sieve`), then the
+    Poisson fork.

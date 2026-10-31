@@ -3931,3 +3931,44 @@ metaplectic one is not.
   - Once the functional equation in s has been applied, the d-sum carries cubic Gauss sums g(χ_d). The functional
     equation in w then needs Kubota's series, not a Hecke L-function.
   - So the Kubota series is the rank-one input of the multiple-Dirichlet-series machinery, not one of its outputs.
+
+## 2026-10-31 · The twist-aspect mean value holds numerically: Mellin-zero vectors are at the null against every twist up to B
+
+[numerical; `rip/theta/theta_twist_meanvalue.py`, logs `theta_twist_meanvalue_q3_L100000.log`,
+`theta_twist_meanvalue_q6_L100000.log`]
+
+**Question (from "Sil's inclusion monotonicity").** The corrected sieve subtracts Σ_{N(m)≤μ}(B/N(m))^{1/n}|⟨λ, f_m⟩|²,
+f_m the twisted source thetas. The K-wall needs this ≲ B^{1+γ}‖λ‖², so the correlations must be at square-root size
+on average over twists of every size up to μ = B^{1−nγ}. A theta loss in the twist aspect (growth like N(m)^{1/n})
+would cap the method at γ ≥ 1/(n(n+1)).
+
+**Test.**
+- λ = V(N(b)/L) is plain and smooth on [L/8, L], L = 10⁵, with Mellin zeros at three points around the pole s₀
+  (V~(s₀) ≈ 10⁻¹⁷). The control V₀ is a single bump (V₀~(s₀) ≈ 0.44–0.51).
+- For twists m in dyadic ranges from [16, 32] to [65536, 131072]: R = mean_m |Σ_b λ_b g(b) χ_m(b)|²/‖λ‖², in both
+  orientations g and conj g. The null is i.i.d. phases on the same zero pattern (≈ 0.94).
+
+| twists N(m) | rows | cubic λ·conj g | cubic V₀·conj g | sextic λ·conj g | sextic V₀·conj g |
+|---|---|---|---|---|---|
+| [128, 256] | 37 | 0.73 | 28.6 | 1.07 | 1.19 |
+| [1024, 2048] | 294 | 0.97 | 13.5 | 1.01 | 1.24 |
+| [8192, 16384] | 2311 | 0.89 | 8.2 | 1.00 | 1.31 |
+| [65536, 131072] | 18491 | 0.90 | 4.4 | 0.94 | 1.20 |
+
+- The spike sits in the conj g orientation. In the g orientation even the control is at the null.
+- Cubic control: 52.7 at [16, 32], falling to 4.4 at [65536, 131072]. That is the slope N(m)^{−0.30}, close to the
+  N(m)^{−1/3} that |τ(m)|² predicts. So the pole terms matter for every twist up to B.
+- Sextic control: a flat 1.2–1.7, a weaker theta.
+- With the Mellin zero both families are at the null in every range with at least 37 rows: 0.73–1.29 (cubic) and
+  0.87–1.11 (sextic, from N(m) ≈ 128). There is **no growth with the twist size**.
+- Plain (Hecke) calibration: Σ V χ_m is small while N(m) ≪ L (0.04–0.4) and reaches the null at N(m) ≈ L.
+
+**Reading.**
+- For the K-wall's simplest vectors the twist-aspect requirement holds as stated. The correction sum is about
+  ‖λ‖²Σ_{m≤μ}(B/N(m))^{1/n} = B^{1−(n−1)γ}‖λ‖², below the target B^{1+γ}‖λ‖².
+- The conductor question of the previous entry therefore makes no numerical difference here. Either the twist
+  conductor is N(m), or the level-2 pole of the twist sieve is killed by the same Mellin zero (the levels share the
+  pole).
+- Still open numerically: the actual leaf vector is a convolution of two plain factors times a slot. The
+  correlations of a convolution are bilinear Kubota sums with poles in each variable, so both factors need the zero.
+- Proof status unchanged: the statement is Patterson-type (previous entry).

@@ -23,8 +23,9 @@ outlier and the masked-null two-sided tests (journal, 2026-10-31).
     The faces' plain vectors meet the sextic (6-fold) series, which is not formalized; the cubic development is
     the template.
   - *Target 2* is one corrected Poisson step with the dual bounded by Sil's existing sieve.
-  - *Cheapest route to the bar on present knowledge: D1 by row splitting.* It needs the K-wall at excess ≈ 0.03
-    for slopes ≈ 0.19–0.5 and the Mellin rescue (6-fold), but no reference wall.
+  - *D1 by row splitting* needs no reference wall. It does need dilution at every slope in (0, 1/2]. The
+    spike-rule recursion covers only δ > 7/36, and the low slopes are an open gap (journal, D1 entry and its
+    correction). The faces route needs both walls.
 
 Next bar: θ ≤ 0.87336198 (5e-5 below #97). Open upstream PRs: #98 (Bebel, θ = 0.8733821435) and **#99** (Bebel,
 θ = 0.8733819666133, "positive-reserve-selected-gap": a selected-energy adapter for every fixed positive gap above

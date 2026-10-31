@@ -29,8 +29,14 @@ be small.
 - **The residue has components.** At small rows the source classes mod 4 give about eight independent residue
   vectors, consistent with the components of the sextic theta over Bröker–Hoffstein's representatives. The large-B
   outlier is one combination of them.
-- **Every twist carries a copy.** Twisting the source theta by `(x/m)₆` gives the residue at `zm`. The twisted copies
-  weaken only like `N(m)^{−1/6}`, so they matter up to `N(m)` of order B.
+- **Every +1 twist carries a copy.** Twisting a source vector by `(x/m)^k` dilates its row image to `zm`
+  (`rowImage_twist_dilation`, Lean). So the source theta twisted by `(x/m)^{+1}` lands on the residue at `zm`, with
+  energy 1.4–2.1 times the null at 3·10⁴, decaying like `N(m)^{−0.25}` (sextic) and `N(m)^{−0.36}` (cubic); the
+  residue picture predicts `N(m)^{−1/q}`. The `(x/m)^{−1}` twists land on `z m^{q−1}`, where the theta coefficients
+  vanish, and sit at the null (`theta_twisted_norms`). The +1 copies matter up to `N(m)` of order B.
+- **Where the twisted copies live.** For the cubic matrix they are the twisted row thetas `G conj χ_z(m)²` up to class
+  structure mod 9 (82% of their energy on the unit classes, 95% on classes mod 9). For the sextic matrix they lie
+  outside every row family tried, so they can only be removed on the source side (`theta_twisted_images`).
 - **Removing them works at 3·10⁴.** Against the right null (random phases on E's zero pattern, about 4.5% below the
   Marchenko–Pastur formula), E off twisted thetas on both sides (row twists to 300, source twists to 100) sits at the
   null for the sextic and the cubic matrix alike. Random spans of the same dimensions do not. At 10⁵ the same families

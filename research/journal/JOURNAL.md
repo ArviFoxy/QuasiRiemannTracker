@@ -4759,3 +4759,49 @@ reciprocity are baseline theorems].**
   - The unit factors are per-source or constant on classes (units × norms mod 36), so Step 2's bound survives.
   - Still to formalize: the combination T3 (phase multiplicativity + reciprocity + `bilinear_sieve`), then the
     Poisson fork.
+
+## 2026-10-31 · What input A must supply for the K-wall, and how much of it the levels supply themselves
+
+[derived; heuristic where marked]
+
+**C's weights close [derived].**
+- In Sil's recursion the Poisson prefactors of consecutive levels multiply to 1: (M/N)·(L/N) = 1 with L = N²/M.
+- So the correction weights keep their natural size, accumulate additively over the ≈ 400 levels, and pick up
+  constant factors per level. With step 1 (the above/below split is an identity; restricted thetas are kept as
+  corrections), input C is bookkeeping on Sil's proved code (`OFFSPIKE_PROOF_PLAN.md`).
+
+**What the K-wall application needs [derived].**
+- The requirement is Σ_{N m ≤ M} (B/N m)^{1/6} |⟨v, f_m⟩|² ≤ B^{1+γ}‖v‖², with M = B^{1−6γ}. That means average
+  correlations of size B^{6γ}‖v‖² (B^{0.09} at γ = 0.015), i.e. square-root cancellation on average.
+- **Small twists (N(m) ≤ B^c)** need the pointwise polar input: the Mellin zero removes the polar term, and the
+  remainder is X^{1/2} N(m)^{O(1)}.
+  - A contour shift to Re s = 1 + η (Re w = 1/2 + η) needs only meromorphy on Re s > 1 and some growth bound
+    there.
+  - With log-normal weights W(x) = exp(−(log x)²/σ²), whose Mellin transforms decay like exp(−σ²t²/4), even
+    exponential growth exp(c|t|) suffices.
+  - Exponential growth in t, polynomial in N(m), is what the baseline's resolvent route gives naturally: the
+    resolvent norm is ≤ 1/(2η|t|), and the K-Bessel normalization of the coefficient costs e^{π|t|/2}.
+  - So the small-twist part needs **no functional equation (N3)**. It needs N1a + N1b plus a quantitative resolvent
+    bound that is exponential in t (the agent's "N2 spectral-only", in its easier exponential form).
+- **Large twists (N(m) ≥ X²)**: the large sieve over the twists already gives square-root cancellation on average.
+- **The middle range** is where A′ (Lindelöf on average) is needed. There the twist-aspect large sieve is balanced,
+  and its own excess is the next level's spikes.
+
+**The levels may supply A′ themselves [heuristic, to check].**
+- Run C on the twist-aspect problem. The middle-range mean square becomes B^{1+γ} plus the correlations of the
+  smooth factor with the level-2 functionals g̃₆²·χ.
+- g̃₆² = (normalized Jacobi sum)·g̃₃, and the Jacobi sum is a Hecke character (Weil). So the level-2 correlations of
+  smooth vectors are **cubic** Kubota sums twisted by a Hecke character: the cubic polar input. The baseline has
+  θ₃ and its reflection, and the cubic polar Voronoi estimate is about 3k lines.
+- Level 3 is g̃₆³·χ, an angle times a character: Hecke-character sums of smooth vectors, which are elementary.
+- Level 4 returns to the sextic polar type at a smaller twist range.
+- If this closes, input A for the bar is:
+  - N1a + N1b + an exponential-in-t resolvent bound, for the sextic small-twist polar input;
+  - the cubic polar input (baseline plus about 3k lines);
+  - no functional equation N3, and no separate A′.
+  That would be roughly 8–13 person-months instead of 15–30.
+- **To check:**
+  - that level 2's Jacobi-sum identity holds with the exact normalizations (Davenport–Hasse for sextic and cubic
+    characters over ℤ[ω]);
+  - that the level-4 return happens at a strictly smaller twist range, so the recursion terminates;
+  - that the exponential resolvent bound is uniform in the index m, the agent's "windows at height 1/|m|" issue.

@@ -13,6 +13,19 @@ outlier and the masked-null two-sided tests (journal, 2026-10-31).
     the K-wall chain, except at low heights.
   - See "Roadmap for the faces" below.
 
+- **Evening of 2026-10-31: where the new-math route stands** (journal entries of that evening).
+  - *Form.* The corrected sieve must be weighted, with explicit corrections. Exact orthogonality fails because
+    dilations accumulate. Transposition works with image corrections (`lean/arvi_kwall/TransposeCorrection.lean`),
+    and Sil's form of the step is in Lean (`silStep`, fixed point 1 + γ).
+  - *Numerics.* Mellin-zero plain vectors are at the null against twisted thetas of every twist size up to B, at
+    three scales and in both families. For the K-wall's convolution vectors one designed factor suffices.
+  - *Lean inputs.* The baseline formalizes the cubic Kubota Eisenstein series, its theta and a reflection formula.
+    The faces' plain vectors meet the sextic (6-fold) series, which is not formalized; the cubic development is
+    the template.
+  - *Target 2* is one corrected Poisson step with the dual bounded by Sil's existing sieve.
+  - *Cheapest route to the bar on present knowledge: D1 by row splitting.* It needs the K-wall at excess ≈ 0.03
+    for slopes ≈ 0.19–0.5 and the Mellin rescue (6-fold), but no reference wall.
+
 Next bar: θ ≤ 0.87336198 (5e-5 below #97). Open upstream PRs: #98 (Bebel, θ = 0.8733821435) and **#99** (Bebel,
 θ = 0.8733819666133, "positive-reserve-selected-gap": a selected-energy adapter for every fixed positive gap above
 1/2, i.e. the engineering limit K → 1/2⁺ that fresh look 2 priced at 0.87338197). Against the best open PR the bar

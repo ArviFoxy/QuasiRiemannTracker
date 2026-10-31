@@ -50,7 +50,10 @@ contains `λ`, `2` and all their products, so the spike family includes these tw
   (`theta_suptwist.py`).
 * Cubic family at `B = L = 10⁴`: the theta sits far above the bulk (top `s²/S = 6.69` against an edge of `4.16`).
   Off the class-twisted spike span, the top is `3.77` against a reduced edge of `3.65`. A random span of the same
-  dimension leaves `5.44` (`theta_classtwist.py`). This is numerical support for `CubicSpikeFree` at that size.
+  dimension leaves `5.44` (`theta_classtwist.py`).
+* Cubic family at `B = L = 3·10⁴`, top `8.98`. Removing the spike family (theta kind, the 27 supplementary twists
+  times the twists `N m ≤ 60`, 2 profiles; dimension 702) leaves `4.27`, against a reduced edge of `4.00`. A random
+  span of the same dimension leaves `8.35` (`theta_cubic_vm.py`). This is numerical support for `CubicSpikeFree`.
 
 ## The conjecture
 

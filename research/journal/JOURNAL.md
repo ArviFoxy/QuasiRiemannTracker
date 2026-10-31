@@ -2853,3 +2853,34 @@ with logs `*_B10000.log`.
 - So the Lean conjecture is falsifiable numerically through its block part, and through the theta part only via
   Rayleigh quotients.
 - What the K-wall needs from theory is now explicit: the conjecture, plus Λ_W for the spikes on the selected rows.
+
+## 2026-10-31 · Cubic family at B = 3·10⁴: the predicted spike family brings the large sieve to the bulk
+
+**Numerics [`rip/theta/theta_cubic_vm.py`, `theta_classtwist.py`; logs `theta_cubic_vm_B30000.log`,
+`theta_classtwist_cubic_B30000.log`].** E3 = E² is the cubic symbol on the sextic rows and sources, at B = L = 3·10⁴
+(R = 8474, S = 7768).
+- **The spike grows like the cubic theta.** The top s²/S goes from 6.69 at 10⁴ to 8.98 at 3·10⁴. Read as a
+  rank-one spike, the strength goes from 4.19 to 6.43, a slope of 0.39 in log B. The prediction is 1/3.
+- **V(M) is the Lean statement's spike family, theta kind only:** G3·conj χ₃(t·m)·(N z/B)^{−j/2}. Here t runs over
+  the 27 supplementary characters λ^e 2^f ω^g, m over 1 and the sources with N(m) ≤ M, and j < 2.
+
+| removed span | dim | top s²/S off it | MP edge for R − d | random span, same dim |
+|---|---|---|---|---|
+| none | 0 | 8.979, 6.479, 5.725, 5.513 | 4.180 | – |
+| class span (mod 9, mod 4) × {G, conj G, 1} × 2 profiles | 648 | 4.983, 4.745, 4.622, 4.578 | 4.015 | 8.355 |
+| V(0): m = 1 × 27 twists | 54 | 5.302, 4.975, 4.863, 4.798 | 4.166 | 8.94 |
+| V(30) | 378 | 4.499, 4.429, 4.323, 4.263 | 4.084 | 8.63 |
+| V(60) | 702 | 4.268, 4.019, 3.962, 3.948 | 4.001 | 8.35 |
+
+**Reading.**
+- **Removing V(M) brings the cubic large sieve to the bulk.** Off V(60), one eigenvalue is 7% above the reduced edge
+  and the rest sit on it. A random span of the same dimension leaves the leading outlier at 8.35, about twice the edge.
+- **The twisted thetas with m ≠ 1 matter here.** The class span has no m ≠ 1 twists and stops at 4.98 with
+  dimension 648. V(30) does better (4.50) with dimension 378.
+- **The cutoff behaves as predicted.** Each twist m has spike strength ∝ (B/N m)^{1/3}. Raising M removes every spike
+  above the threshold that M sets, and the residual at M = 60 is presumably a twist just above 60.
+- **The plain kinds were not needed here.** The cubic family shows no low-frequency block outlier at this size; that
+  outlier is a sextic phenomenon.
+- **For the conjecture.** This is direct numerical support for `CubicSpikeFree`, with the exact spike family of the
+  Lean statement, at a size where the theta is far above the bulk. It is one size; the next check is 10⁵,
+  matrix-free.

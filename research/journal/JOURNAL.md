@@ -5435,3 +5435,53 @@ open inputs moves.
   - So, conditional on both walls, the certified payoff with today's return design is ≈ 1.2e-4 below PR 99 at
     Λ = 1.80, between 1.2e-4 and the float ceiling 3.1e-4 after re-tuning. It is not monotone in Λ (1.85 is worse
     than 1.90).
+
+## 2026-10-31 · Fresh look at the corner: a sixth-power amplifier (circular), and two corrections to the twist large sieve
+
+[delegated read (fresh look, clean-math brief); checked by me against Sil's `SexticSieve.OptimalBound`; derived]
+
+**The amplifier.**
+- Since χ_n(mP⁶) = χ_n(m) for P ∤ n, we have c_{mP⁶} = c_m − c_m^{(P)}, where c^{(P)} is the part of the sum with
+  P | n.
+- Averaging |c_m|² ≤ 2|c_{mP⁶}|² + 2|c_m^{(P)}|² over primes N P ~ K = (X/H)^{1/6} spreads each twist over K
+  copies at twist range HK⁶ = X.
+- A large sieve over all twists N m′ ≤ X of size X^{2+ε} would then give S(H) ≪ X²/K = X^{11/6}H^{1/6}: exactly the
+  K-wall's need, for every H.
+- **It is circular.**
+  - The rows m′ = m₀u⁶ copy row m₀ (up to the u | n part). So the cluster-inclusive sum is
+    Σ_{N m′ ≤ X}|c_{m′}|² ≈ Σ_{m₀ sixth-power-free}(X/N m₀)^{1/6}|c_{m₀}|².
+  - That is the K-wall's graded source term at B = X. Bounding it by X^{2+ε} is the goal in summed form.
+  - The proven sieve (Sil's `OptimalBound`) takes sixth-power-free rows only. For those rows the amplifier gains
+    nothing (the dilated vectors are nearly parallel and their Gram block has norm ≈ XK).
+- **What it leaves.** A clean equivalent of the corner: for the leaf vector, the large sieve over the full row family
+  (sixth-power multiples included, i.e. with multiplicity) is diagonal at the balanced point.
+- The other ideas the fresh look checked fail on exponents:
+  - interpolating the large sieve and the pointwise bound, because the kink at H = X^{1/3} is concave;
+  - Hölder with a fourth moment, which is circular;
+  - Weil or Burgess on the dual, because the sums A(h) have length Y < √N h;
+  - sum-product or decoupling, because nothing additive is present.
+
+**Correction 1: the twist large sieve [Lean, read: `FourthPower/SexticSieve.lean`].**
+- The proven bound is `OptimalBound`: energy ≤ C(AB)^ε·(A + B + A^{5/6}B^{1/3} + A^{1/3}B^{5/6})·mass, with rows and
+  columns sixth-power-free. This is de Faveri's conjectured optimum, proved in Sil's library.
+- Entries above wrote "the twist large sieve gives (H + X)‖v‖²". That drops the theta terms. For twists N m ~ H and
+  sources ~ X the dominant term is H^{1/3}X^{5/6}·X once H > √X.
+- Against the K-wall's need B^{5/6}H^{1/6}X this covers no H in [1, X]:
+  - for H ≤ √X it needs H ≥ (X/B^{5/6})⁶;
+  - above √X the theta term exceeds the need.
+- So the large sieve covers only H ≳ X, and **the open band is [B^{0.21}, B^{0.96}]**, not [B^{0.23}, B^{0.76}]. The
+  lower end comes from the pointwise bilinear bound.
+
+**Correction 2: the "bilinear balanced-point bound B^{10/9}" (entry "The K-wall tolerates no excess") is withdrawn.**
+- With the theta term, the dual twist range H ~ L = X²/B contributes (L/H)^{1/6}·H^{1/3}X^{5/6}·X. At X = B that is
+  B^{13/6}, i.e. excess 1/6.
+- The pointwise bilinear bound H·X^{5/3} is worse there. So bilinear plus `OptimalBound` gives B^{7/6}, no
+  improvement on Θ₆.
+- The earlier B^{10/9} came from the orthogonal (H + X).
+
+**Status.** Unchanged in kind; the corner is now known to be open across a wider band. The single cleanest form of
+the open input:
+- for the K-wall's balanced leaf vector, the large sieve over the full row family (multiplicity included) at the
+  balanced point is ≪ X^{1+ε}‖v‖²;
+- equivalently, the twisted-theta correlations of the leaf vector are no larger than the thetas' own graded
+  strengths.

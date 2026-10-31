@@ -4057,3 +4057,36 @@ would cap the method at γ ≥ 1/(n(n+1)).
 N(m)¹ and twist conductor N(a)². So the twist-aspect mean value is the lossy case of the large-sieve accounting
 ("Sil's inclusion monotonicity", last items). The measured absence of loss (twist-aspect entry) then says the level-2
 pole of the twist sieve is killed by the same Mellin zero.
+
+## 2026-10-31 · The weighted corrected bound transposes with explicit image corrections
+
+[derived; short proof]
+
+**Problem.** Sil's recursion bounds the dual (fewer rows than columns) through the swap θ(L, N) = θ(N, L), an
+operator-norm identity. A corrected statement is about vectors. It must survive transposition, and the corrections
+of the transposed statement must be explicit, so that the application can evaluate them as Kubota-type sums.
+
+**Lemma.** Let E be a matrix. Suppose that for all λ, ‖Eλ‖² ≤ Δ‖λ‖² + Σ_f w_f |⟨λ, f⟩|² with w_f ≥ 0. Then for all x,
+
+  ‖E*x‖² ≤ 2Δ‖x‖² + Δ⁻¹ Σ_f w_f |⟨x, E f⟩|².
+
+**Proof.**
+1. Put λ = E*x. Then ‖EE*x‖² ≤ Δ‖E*x‖² + Σ w_f |⟨E*x, f⟩|², and ⟨E*x, f⟩ = ⟨x, Ef⟩.
+2. ‖E*x‖⁴ = ⟨x, EE*x⟩² ≤ ‖x‖²‖EE*x‖². With y = ‖E*x‖², a = ‖x‖² and S = Σ w_f|⟨x, Ef⟩|², this gives
+   y² ≤ aΔy + aS.
+3. Hence y ≤ aΔ + √(aS) ≤ 2aΔ + S/Δ (AM–GM on √(aS) ≤ aΔ + S/(4Δ)).
+
+In precondition form it reads: λ ⊥ F ⇒ ‖Eλ‖² ≤ Δ‖λ‖² gives x ⊥ E(F) ⇒ ‖E*x‖² ≤ Δ‖x‖², by the same three lines with
+S = 0.
+
+**Consequence.** The corrections of the transposed problem are the images Ef of the original ones. These are the row
+images of twisted thetas, explicit Kubota-type sums (≈ L^{1/3}τ(zm) by the residue picture), not implicit polar
+vectors. So the swap in `completed_of_exponent` has a corrected analogue at the cost of a factor 2 in Δ and weights
+w_f/Δ.
+
+**State of the corrected recursion's form.**
+- Weighted, not precondition: dilations accumulate (entry above).
+- Explicit corrections throughout: twisted thetas, closed under the level shift u·f, restriction or dilation, images
+  under E (this lemma), and heights.
+- Every member's correlation with a Mellin-zero vector is a Kubota-type sum. Numerically all of them are at the null
+  (twist, dilation and convolution entries). The proof of each needs the continuation for the relevant cover.

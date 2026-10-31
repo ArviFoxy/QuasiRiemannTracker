@@ -18,6 +18,12 @@ p = 1/2. Prices are first order [numerical]; each "needs" column is the single-l
 The K-wall rows need A‴ (open), A (classical, unformalized) and C (open step 3). Target 2 is elementary, with its Lean
 core done.
 
+Exact all-edge check with the bank's guard constants (`conditional_exact.py`):
+- Λ = 1.9669 gives 0.8733321 (the bar, +9e-8).
+- 1.95 gives −7.0e-5 vs PR 99; 1.90 gives −8.0e-5; 1.80 gives −1.21e-4.
+- The float column above is the ceiling. It is reached near the bar but overstated by up to 2.5× below Λ ≈ 1.95
+  unless the guard constants are re-tuned.
+
 ## The levers
 
 | lever | sensitivity | bar needs | what it requires | status |

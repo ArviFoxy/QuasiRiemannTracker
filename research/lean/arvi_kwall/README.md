@@ -173,14 +173,19 @@ Imports `SexticSpikeFree` and `JointDetector.IdealAmplification`. It checks in a
 
 ## SourceSpike.lean: the source-side theta, and the conjecture with both thetas removed
 
-Imports `SexticSpikeFree`. It checks in about 5 s. All 10 `#print axioms` reports show only `propext`,
-`Classical.choice` and `Quot.sound`.
+Imports `SexticSpikeFree` and OAI's Eisenstein embedding. It checks in about 5 s. All 12 `#print axioms` reports
+show only `propext`, `Classical.choice` and `Quot.sound`.
 
 - **Source spikes.** The row shapes with the source as the modulus: conj g̃(n) χ_n(m)^k, g̃(n) conj χ_n(m)^k,
   χ_n(m)^k and conj χ_n(m)^k. Each comes with or without the Liouville sign (−1)^{Ω(n)}, on dyadic windows
   2^w ≤ N n < 2^{w+1} with profiles (2^w/N n)^{j/2} (`sourceSpike`, bounded by 1: `norm_sourceSpike_le`). The
   numerics' class phases are twists by units, λ and 2; their parity sign is a combination of 1, χ_x(−1) and the
   Liouville sign.
+- **Poisson levels (2026-10-31).** Each shape also carries a level (`levelFactor`; index `Fin 16` = kind × level):
+  1, conj g̃(n)·(x/|x|), conj g̃(n), conj(x/|x|), with `idealAngle` the angle of the primary generator under the
+  Eisenstein embedding (`norm_idealAngle_le`, `norm_levelFactor_le`). On the kind-0 and plain shapes these give the
+  higher source spikes found numerically: conj g̃²(x/|x|) (the conjugate cubic Gauss sum up to classes, sextic level 2),
+  conj(x/|x|) (sextic level 3) and conj g̃² (cubic level 2). Journal, "The Poisson levels".
 - **`rowImage` and `rowInner_rowImage`.** A row vector is orthogonal to the row image E ψ exactly when its dual sum
   is orthogonal to ψ.
 - **Conjecture `TwoSidedSpikeFree k q`** (`SexticTwoSided`, `CubicTwoSided`). This is `SpikeFreeLargeSieve` with

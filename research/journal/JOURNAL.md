@@ -3427,3 +3427,60 @@ b ∼ B. The proof is a recursion:
   identified and shown to be spike-type, or harmless, on the vectors the K-wall uses.
 - The same skeleton gives the cubic case, where the level-2 directions conj g̃₃² = g̃₃·(angular character) are again
   pole-free. That makes the cubic family (one theta, explicit Gauss sums) the place to try obstacles 1–3 first.
+
+## 2026-10-31 · The Poisson levels: the source side has spikes along the next Gauss-sum powers, and they close up
+
+[numerical; `rip/theta/theta_level2.py`, `theta_level2_rows.py`, `theta_level_images.py`; logs
+`theta_level2_{cubic,sextic}_B{10000,30000,100000}.log`, `theta_level2_rows_sextic_B30000.log`,
+`theta_level_images_sextic_B30000.log`; identification by Davenport–Hasse, derived]
+
+**Why look.** In the off-spike recursion (previous entry) the dual problem's own thetas pull back through the Poisson
+map to new source directions: the root number β times the dual's modulus theta, i.e. u² with u = conj g̃, up to
+angular and class factors. Repeating gives u³, u⁴, …. Obstacle 1 asks whether these carry an excess.
+
+**Test.** For v = u^j (x/|x|)^l N(x)^{−(1/2−1/q)}, restricted to 72 source classes (x mod 4, the parity of the number of
+prime factors, the cube-root class mod 9), the top eigenvalue of the class-compressed source Gram (the best class
+phases), divided by the same for the masked random matrix. A value of 1 means no spike. The table gives the excess
+(ratio − 1); every other (j, l) with |l| ≤ 3 is within 4% of 1, and most are within 1.5%.
+
+| family | 10⁴ | 3·10⁴ | 10⁵ |
+|---|---|---|---|
+| sextic, level 1: u (the source theta) | 1.03 | 1.58 | 2.24 |
+| sextic, level 2: u²·(x/\|x\|) ∝ conj g̃₃ | 0.10 | 0.20 | 0.29 |
+| sextic, level 3: conj(x/\|x\|) | 0.11 | 0.22 | 0.28 |
+| sextic, plain | 0.01 | 0.05 | 0.09 |
+| cubic, level 1: u | 3.28 | 5.71 | 9.43 |
+| cubic, level 2: u² | 0.38 | 0.56 | 0.73 |
+| cubic, plain | 0.18 | 0.26 | 0.28 |
+
+- **The sextic levels close up after three steps.** The sextic table repeats under (j, l) → (j + 3, l + 2), so
+  u³ ∝ (x/|x|)^{−2} up to class functions. Davenport–Hasse gives the same thing [derived]:
+  - g(χ)g(χ⁴) = conj χ(4)·g(χ²)g(χ³) gives g̃₆ = conj χ(4)·g̃₃²·g̃₂;
+  - g̃₃³ = J(χ², χ²)/√p is an angle (π/|π|)^{±1} times a unit, so g̃₃² ∝ (x/|x|)^{±1}·conj g̃₃;
+  - hence level 1 is u ∝ (x/|x|)^{∓1}·g̃₃·conj g̃₂, level 2 is u²·(x/|x|) ∝ conj g̃₃ (the conjugate cubic Gauss sum),
+    and level 3 is u³·(x/|x|) ∝ conj(x/|x|)·conj g̃₂, an angular family (g̃₂, the quadratic Gauss sum, is a class
+    sign).
+  - So the sextic source side has three spike levels and a weak plain one. In terms of the cubic Gauss sum they are
+    g̃₃·(angle), conj g̃₃ and the angle.
+- **The levels grow with B.** Between 3·10⁴ and 10⁵, sextic level 2 grows by ×1.41, the same rate as level 1 (×1.42).
+  The cubic level 2 grows by ×1.29; the cubic plain level saturates (×1.09).
+- **The row side has almost none.** The row-side scan (sextic, 3·10⁴; vectors w^j (z/|z|)^l with w = conj g̃(z),
+  mapped by the adjoint) shows the row theta (+51%), a plain level (+5%) and one angular level (+2.5%). As with the
+  theta itself, the source side carries the structure because the sources span every scale and the rows one dyadic
+  window.
+- **V removes them only partly.** The row images of the best class combinations have these energy fractions in the
+  growing row family V (twists N(m) ≤ 300, 3·10⁴, random level 0.425): theta 0.76, level 2 0.59, level 3 0.58,
+  plain 0.60. So the two-sided projection takes out part of each level, and the rest must come off on the source
+  side.
+- The 2026-10-30 entry's "conj G², G², conj G³: 0.90–0.98" was the row side without angular twists, which agrees.
+
+**What it means.**
+- **Obstacle 1 is real.** The pull-back of the dual's thetas through the Poisson map shows up as genuine source spikes
+  along the next Gauss-sum powers, with the predicted angular twists. It is not an artifact of the recursion's sup
+  bound.
+- **The family is finite.** Up to angular characters the Gauss rotation is periodic, since u³ is an angle for q = 6
+  (u³ = conj g̃₃³, also an angle, for q = 3). So the multi-level correction in the recursion is a finite family: three
+  levels for the sextic and two for the cubic, times classes and twists. Obstacle 1 becomes a closure statement: the
+  pull-back of each level's dual family is the next level's family.
+- **The two-sided conjecture's source family should include the higher levels** (kinds u²·(x/|x|)^l and (x/|x|)^l
+  besides u and plain). Otherwise growing spikes are left in it.

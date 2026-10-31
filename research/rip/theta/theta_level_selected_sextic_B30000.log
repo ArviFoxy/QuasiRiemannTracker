@@ -1,0 +1,6 @@
+order 6, B = L = 30000: R=8474 S=7768   (8s)
+  theta u        concentration on W: P0=40 rho=0.10: 1.038 (random 0.991);  P0=40 rho=0.01: 0.866 (random 1.053);  P0=200 rho=0.10: 0.929 (random 0.991);  P0=200 rho=0.01: 1.068 (random 0.962)
+  u^2 (x/|x|)    concentration on W: P0=40 rho=0.10: 0.964 (random 0.988);  P0=40 rho=0.01: 0.886 (random 0.997);  P0=200 rho=0.10: 0.975 (random 1.000);  P0=200 rho=0.01: 0.963 (random 0.968)
+  conj(x/|x|)    concentration on W: P0=40 rho=0.10: 1.113 (random 0.980);  P0=40 rho=0.01: 1.418 (random 0.936);  P0=200 rho=0.10: 0.968 (random 0.999);  P0=200 rho=0.01: 1.212 (random 1.039)
+  plain          concentration on W: P0=40 rho=0.10: 0.982 (random 1.001);  P0=40 rho=0.01: 0.872 (random 0.993);  P0=200 rho=0.10: 0.957 (random 1.000);  P0=200 rho=0.01: 0.878 (random 0.984)
+done in 10s

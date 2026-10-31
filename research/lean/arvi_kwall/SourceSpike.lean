@@ -1,4 +1,5 @@
 import Submissions.arvi_kwall.SexticSpikeFree
+import Submissions.openai_baseline.OAI.NumberTheory.DirichletL.Arithmetic.EisensteinEmbedding
 
 /-!
 # The source-side theta, and the balanced-point conjecture with both thetas removed
@@ -38,6 +39,13 @@ shapes with the source as the modulus: `conj g̃(n) χ_n(m)^k`, `g̃(n) conj χ_
 `conj χ_n(m)^k`. Each comes with or without the Liouville sign `(−1)^{Ω(n)}`, on dyadic windows
 `2^w ≤ N n < 2^{w+1}` with profiles `(2^w / N n)^{j/2}`.
 - The class phases `A(x mod 4) (3/x)₃` are twists by units, `λ` and `2`, which the twist box contains.
+- **Poisson levels** (`levelFactor`, journal 2026-10-31, "The Poisson levels"). The source side also carries spikes along
+  the next Gauss-sum powers: `conj g̃² (x/|x|)` (for `k = 1` the conjugate cubic Gauss sum up to classes) and the angle
+  `conj(x/|x|)` for the sextic matrix, `conj g̃²` for the cubic one. Their excess grows with `B` (sextic level 2: 0.10,
+  0.20, 0.29 at `10⁴, 3·10⁴, 10⁵`), and the row family captures only part of their images. Up to angles the Gauss
+  rotation is periodic (`u³` is an angle for both orders), so the levels form a finite family. The source shapes carry
+  a level index (`Fin 16` = kind × level); `idealAngle` is the angle of the primary generator under the Eisenstein
+  embedding.
 - The sign `ε(x)` is a combination of `1`, `χ_x(−1)`, the Liouville sign and their product.
 
 * `TwoSidedSpikeFree k q` is the corrected conjecture. `twoSided_of_spikeFree`: the one-sided conjecture implies it.
@@ -155,17 +163,46 @@ noncomputable def liouvilleSign (n : Ideal O) : ℂ := (-1) ^ (UniqueFactorizati
 theorem norm_liouvilleSign (n : Ideal O) : ‖liouvilleSign n‖ = 1 := by
   simp [liouvilleSign]
 
-/-- Source spike shapes: the row shapes with the source as the modulus. Kind `0` is `conj g̃(n) χ_n(m)^k` (the
+/-- The angle `x/|x|` of the primary generator `x` of `n`, through the Eisenstein embedding (zero when the generator
+is zero). -/
+noncomputable def idealAngle (n : Ideal O) : ℂ :=
+  phase (ConcreteTraceCRT.eisEmbedding (CompletedGauss.primaryGenerator n))
+
+theorem norm_idealAngle_le (n : Ideal O) : ‖idealAngle n‖ ≤ 1 := norm_phase_le _
+
+/-- The Poisson level factor (journal 2026-10-31, "The Poisson levels"). Level `0` is `1`. Level `1` is
+`conj g̃(n)·(x/|x|)`, which turns the kind-`0` shape into `conj g̃² (x/|x|)`: for `k = 1` the conjugate cubic Gauss
+sum up to classes (Davenport–Hasse), the sextic level 2. Level `2` is `conj g̃(n)`, giving `conj g̃²`, the cubic
+level 2. Level `3` is `conj (x/|x|)`, which on the plain kinds gives the sextic level 3. -/
+noncomputable def levelFactor (k l : ℕ) (n : Ideal O) : ℂ :=
+  if l = 1 then conj (gaussPhase k n) * idealAngle n
+  else if l = 2 then conj (gaussPhase k n)
+  else if l = 3 then conj (idealAngle n)
+  else 1
+
+theorem norm_levelFactor_le (k l : ℕ) (n : Ideal O) : ‖levelFactor k l n‖ ≤ 1 := by
+  unfold levelFactor
+  split_ifs
+  · rw [norm_mul, Complex.norm_conj]
+    exact mul_le_one_of_le_one (norm_gaussPhase_le k n) (norm_nonneg _) (norm_idealAngle_le n)
+  · rw [Complex.norm_conj]
+    exact norm_gaussPhase_le k n
+  · rw [Complex.norm_conj]
+    exact norm_idealAngle_le n
+  · simp
+
+/-- Source spike shapes: the row shapes with the source as the modulus, times a Poisson level. The index
+`c : Fin 16` encodes the kind `c % 4` and the level `c / 4` (`levelFactor`). Kind `0` is `conj g̃(n) χ_n(m)^k` (the
 orientation the numerics find), `1` is `g̃(n) conj χ_n(m)^k`, `2` is `χ_n(m)^k` and `3` is `conj χ_n(m)^k`. With the
 flag set, the shape is multiplied by the Liouville sign. -/
-noncomputable def sourceShape (k : ℕ) (c : Fin 4) (s : Bool) (m : ℤ × ℤ) (n : Ideal O) : ℂ :=
-  (if s then liouvilleSign n else 1) *
-    (if c = 0 then conj (gaussPhase k n) * CanonicalRowCompletion.idealRowHom (twistElement m) n ^ k
-    else if c = 1 then gaussPhase k n * conj (CanonicalRowCompletion.idealRowHom (twistElement m) n ^ k)
-    else if c = 2 then CanonicalRowCompletion.idealRowHom (twistElement m) n ^ k
+noncomputable def sourceShape (k : ℕ) (c : Fin 16) (s : Bool) (m : ℤ × ℤ) (n : Ideal O) : ℂ :=
+  levelFactor k (c.val / 4) n * (if s then liouvilleSign n else 1) *
+    (if c.val % 4 = 0 then conj (gaussPhase k n) * CanonicalRowCompletion.idealRowHom (twistElement m) n ^ k
+    else if c.val % 4 = 1 then gaussPhase k n * conj (CanonicalRowCompletion.idealRowHom (twistElement m) n ^ k)
+    else if c.val % 4 = 2 then CanonicalRowCompletion.idealRowHom (twistElement m) n ^ k
     else conj (CanonicalRowCompletion.idealRowHom (twistElement m) n ^ k))
 
-theorem norm_sourceShape_le (k : ℕ) (c : Fin 4) (s : Bool) (m : ℤ × ℤ) (n : Ideal O) :
+theorem norm_sourceShape_le (k : ℕ) (c : Fin 16) (s : Bool) (m : ℤ × ℤ) (n : Ideal O) :
     ‖sourceShape k c s m n‖ ≤ 1 := by
   have hχ : ‖CanonicalRowCompletion.idealRowHom (twistElement m) n ^ k‖ ≤ 1 := by
     rw [norm_pow]
@@ -175,9 +212,9 @@ theorem norm_sourceShape_le (k : ℕ) (c : Fin 4) (s : Bool) (m : ℤ × ℤ) (n
     split_ifs
     · exact (norm_liouvilleSign n).le
     · simp
-  have hc : ‖(if c = 0 then conj (gaussPhase k n) * CanonicalRowCompletion.idealRowHom (twistElement m) n ^ k
-      else if c = 1 then gaussPhase k n * conj (CanonicalRowCompletion.idealRowHom (twistElement m) n ^ k)
-      else if c = 2 then CanonicalRowCompletion.idealRowHom (twistElement m) n ^ k
+  have hc : ‖(if c.val % 4 = 0 then conj (gaussPhase k n) * CanonicalRowCompletion.idealRowHom (twistElement m) n ^ k
+      else if c.val % 4 = 1 then gaussPhase k n * conj (CanonicalRowCompletion.idealRowHom (twistElement m) n ^ k)
+      else if c.val % 4 = 2 then CanonicalRowCompletion.idealRowHom (twistElement m) n ^ k
       else conj (CanonicalRowCompletion.idealRowHom (twistElement m) n ^ k))‖ ≤ 1 := by
     split_ifs
     · rw [norm_mul, Complex.norm_conj]
@@ -188,8 +225,9 @@ theorem norm_sourceShape_le (k : ℕ) (c : Fin 4) (s : Bool) (m : ℤ × ℤ) (n
     · rw [Complex.norm_conj]
       exact hχ
   unfold sourceShape
-  rw [norm_mul]
-  exact mul_le_one_of_le_one hs (norm_nonneg _) hc
+  rw [norm_mul, norm_mul]
+  exact mul_le_one_of_le_one (mul_le_one_of_le_one (norm_levelFactor_le _ _ _) (norm_nonneg _) hs)
+    (norm_nonneg _) hc
 
 /-- The window profile: `(2^w / N n)^{j/2}` on the dyadic window `2^w ≤ N n < 2^{w+1}`, zero outside. On the window it
 lies in `(2^{−j/2}, 1]`. -/
@@ -218,8 +256,8 @@ theorem sourceProfile_le_one (w j : ℕ) (n : Ideal O) : sourceProfile w j n ≤
     exact pow_le_one₀ (Real.sqrt_nonneg _) hs
   · exact zero_le_one
 
-/-- Source spike index: (kind, Liouville flag), twist, window, profile degree. -/
-abbrev SourceIdx := (Fin 4 × Bool) × (ℤ × ℤ) × ℕ × ℕ
+/-- Source spike index: (kind and level, Liouville flag), twist, window, profile degree. -/
+abbrev SourceIdx := (Fin 16 × Bool) × (ℤ × ℤ) × ℕ × ℕ
 
 /-- The source spike vector: shape times window profile. -/
 noncomputable def sourceSpike (k : ℕ) (i : SourceIdx) (n : Ideal O) : ℂ :=
@@ -231,7 +269,8 @@ theorem norm_sourceSpike_le (k : ℕ) (i : SourceIdx) (n : Ideal O) : ‖sourceS
   exact mul_le_one_of_le_one (norm_sourceShape_le _ _ _ _ _) (sourceProfile_nonneg _ _ _)
     (sourceProfile_le_one _ _ _)
 
-/-- Source spike indices: every kind and flag, twists of norm `≤ M`, windows `w < V`, profile degrees `j < J`. -/
+/-- Source spike indices: every kind, level and flag, twists of norm `≤ M`, windows `w < V`, profile degrees
+`j < J`. -/
 def sourceIndex (M V J : ℕ) : Finset SourceIdx :=
   Finset.univ ×ˢ (twistBox M ×ˢ (Finset.range V ×ˢ Finset.range J))
 
@@ -359,6 +398,8 @@ end QRH.ArviKWall.BalancedSieve
 #print axioms QRH.ArviKWall.BalancedSieve.rowInner_rowImage
 #print axioms QRH.ArviKWall.BalancedSieve.spikeBessel_disjSum
 #print axioms QRH.ArviKWall.BalancedSieve.norm_liouvilleSign
+#print axioms QRH.ArviKWall.BalancedSieve.norm_idealAngle_le
+#print axioms QRH.ArviKWall.BalancedSieve.norm_levelFactor_le
 #print axioms QRH.ArviKWall.BalancedSieve.norm_sourceShape_le
 #print axioms QRH.ArviKWall.BalancedSieve.sourceProfile_le_one
 #print axioms QRH.ArviKWall.BalancedSieve.norm_sourceSpike_le

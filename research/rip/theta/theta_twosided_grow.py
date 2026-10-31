@@ -21,6 +21,9 @@ sums are cached in $SCRATCH (theta_util.scratch_path).
 THETA_TWCLS=9 puts the twisted row parts of V on the classes (z mod 9) x chi_z(-1) instead of the 6 unit classes.
 THETA_ROWCONJ=1 adds the twisted row thetas with the other conjugation, G chi_z(m), to V (the Lean statement removes
 every power chi_z(m)^k).
+THETA_SRCLEV=1 adds the higher Poisson levels to P (theta_level2.py): u^2 (x/|x|), conj(x/|x|) and plain for q = 6
+(u = conj g~; u^2 (x/|x|) is the conjugate cubic Gauss sum up to classes), u^2 and plain for q = 3, on the cells, and the
+first two (first one for q = 3) times (x/m)^{+-1} on the classes mod 4.
 Order 3 (last argument 3): the cubic matrix E^2 (kernel mode 2) with cubic Gauss sums of rows and sources (twisted
 multiplicativity, as theta_pairs.py), source profile N^{-1/6}, twisted characters (x/m)_3 = (x/m)_6^2; the
 class-signed source theta is replaced by conj g3(x) N(x)^{-1/6} on the classes mod 4.
@@ -251,10 +254,19 @@ def row_family(M):
     return orth(np.concatenate(cols, axis=1))
 
 
+# THETA_SRCLEV=1: also the higher Poisson levels u^j (x/|x|)^l, u = conj g~ (theta_level2.py): for q = 6 the conjugate
+# cubic Gauss sum u^2 (x/|x|), the angular level conj(x/|x|) and the plain level; for q = 3, u^2 and the plain level
+xang = (SA + SB * np.exp(2j * np.pi / 3)) / np.abs(SA + SB * np.exp(2j * np.pi / 3))
+uu = np.conj(Gsrc) / np.where(np.abs(Gsrc) > 1e-9, np.abs(Gsrc), 1)
+levels = ([uu ** 2 * xang, np.conj(xang), np.ones(S, complex)] if qord == 6 else [uu ** 2, np.ones(S, complex)])
+
+
 def source_family(Mp, betas):
     cols = []
     for be in betas:
         cols += [tu.class_span(cell, np.conj(Gsrc) * SN ** (-be)), tu.class_span(cell, Gsrc * SN ** (-be))]
+        if os.environ.get('THETA_SRCLEV') == '1':
+            cols += [tu.class_span(cell, lv * SN ** (-be)) for lv in levels]
     for t, j in enumerate(twists):
         if SN[j] > Mp:
             break
@@ -262,6 +274,8 @@ def source_family(Mp, betas):
         cols += [tu.class_span(c4, bsig * ch), tu.class_span(c4, bsig * np.conj(ch)),
                  tu.class_span(c4, np.conj(bsig) * ch), tu.class_span(c4, np.conj(bsig) * np.conj(ch)),
                  tu.class_span(c4, ch), tu.class_span(c4, np.conj(ch))]
+        if os.environ.get('THETA_SRCLEV') == '1':
+            cols += [tu.class_span(c4, lv * SN ** (-betas[0]) * c) for lv in levels[:-1] for c in (ch, np.conj(ch))]
     return orth(np.concatenate(cols, axis=1))
 
 

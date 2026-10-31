@@ -1,0 +1,7 @@
+  source Gauss sums of order 3 computed (171s)
+order 3, B = L = 100000: R=28210 S=25936; top of the class-compressed Gram of u^j (x/|x|)^l N^-0.167 over the masked null
+   j \ l       -3      -2      -1       0       1       2       3
+     0      1.001   1.028   1.035   1.278   1.041   1.009   1.002   (72 classes, 226s)
+     1      0.996   1.030   1.006  10.429   1.013   1.026   1.005   (72 classes, 279s)
+     2      1.004   1.003   0.993   1.726   1.001   1.003   0.996   (72 classes, 331s)
+done in 331s

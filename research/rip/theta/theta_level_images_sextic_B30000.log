@@ -1,0 +1,6 @@
+order 6, B = L = 30000: R=8474 S=7768; row family V with twists N(m) <= 300: dim 3600 (random level 0.425)   (43s)
+  theta u        best class combination: energy fraction of its row image in V 0.762
+  u^2 (x/|x|)    best class combination: energy fraction of its row image in V 0.587
+  conj(x/|x|)    best class combination: energy fraction of its row image in V 0.577
+  plain          best class combination: energy fraction of its row image in V 0.603
+done in 46s

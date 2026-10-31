@@ -41,6 +41,12 @@ be small.
   Marchenko–Pastur formula), E off twisted thetas on both sides (row twists to 300, source twists to 100) sits at the
   null for the sextic and the cubic matrix alike. Random spans of the same dimensions do not. At 10⁵ the same families
   are relatively smaller and leave a few percent (`theta_twosided_grow`).
+- **Higher Poisson levels.** The source side also has spikes along the next Gauss-sum powers (`theta_level2`): for
+  the sextic matrix `u²(x/|x|)` ∝ conj g̃₃ (the conjugate cubic Gauss sum) and the angle `conj(x/|x|)`, with excess
+  0.29 and 0.28 at 10⁵ against 2.24 for the theta itself, growing with B; for the cubic matrix `u²`. Up to angles
+  `u³` is an angle, so the levels close up: three for the sextic, two for the cubic. The row side has almost none.
+  The row family captures 58–60% of their images (random 43%), so they belong in the source family. This is the
+  multi-level correction that the off-spike recursion needs (journal, "The Poisson levels").
 - **For the K-wall.** The twisted source spikes are flat on slot-selected rows (`theta_src_twisted_selected`). Beyond
   the two-sided spike-free conjecture itself, the new arithmetic input is a shifted-convolution bound for sextic
   theta coefficients at products (`../../frontier/README.md`).
@@ -100,6 +106,14 @@ be small.
 | `theta_src_coherence.py B L nwin` | row images of the fixed class-signed source theta on disjoint source windows: their mutual correlation, against the masked null and random class phases |
 | `theta_src_lscale.py B L1,L2,...` | main energy of the class-signed source theta (\|Ef\|² minus the masked null) against L at fixed B |
 | `theta_twosided_grow.py B L CONFIGS [J] [threads]` | two-sided test with growing families (row twists N(m) ≤ M, twisted source thetas N(m) ≤ M′, several β), matrix-free through the kernel's forward and adjoint products; compared with the masked null on the same spans and with random spans |
+| `theta_src_twisted_selected.py B L M P0,.. rho,.. [ndraw] [threads]` | twisted source spikes on slot-selected rows: concentration of their row images on W and the Bessel constant Λ_src(W) against random row sets, E and the masked null |
+| `theta_tau6_small.py B L` | small rows, long sources: singular values of the 12-class image matrix against the masked null, stability of the top row vector, and Bröker–Hoffstein tests on prime rows |
+| `theta_twisted_norms.py B order` | \|E f_m\|² over the masked null for the twisted source thetas (x/m)^{+1} and (x/m)^{−1}, N(m) ≤ 30 |
+| `theta_twisted_images.py B L M M' [order]` | energy of the twisted source images in row spans (unit classes, the other conjugation, mod-9 classes, conjugate theta) |
+| `theta_level2.py B order [threads]` | Poisson levels on the source side: u^j (x/\|x\|)^l N^{−(1/2−1/q)} with best class phases (72 classes), top of the compressed source Gram over the masked null |
+| `theta_level2_rows.py B order [threads]` | the same on the row side: w^j (z/\|z\|)^l, w = conj g̃(z), through the adjoint |
+| `theta_level_images.py B order M [threads]` | fraction of each level's row image in the growing row family V |
+| `theta_level_selected.py B order P0,.. rho,.. [threads]` | concentration of each level's row image on slot-selected rows, against random row sets |
 
 All scripts build E and the row Gauss sums through `theta_core.py`. The matrix-free scripts (`theta_top_free2`,
 `theta_selected_free`, `theta_outliers`) use `theta_core.build_tables`, which stops before the dense matrix and returns

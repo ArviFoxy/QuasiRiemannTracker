@@ -5153,3 +5153,37 @@ the sextic family on balanced convolutions of smooth plain sums. Nothing in the 
 - **Next:** find where Seam B (WP-H: Seam A → packing dictionary → linear forms → weighted common separation)
   uses the Gauss scale. Whether the packed rows y can carry D as a separate short factor decides whether 0.1u is
   available.
+
+**Addendum (same day): the envelope lever is R2's block-type ledger at the native line; c = 6 stays forced
+[read: `newpowers/R2_ledger.md` §§0.2, 2, 4, 5.1; derived].**
+- R2 writes a selected block type as (e, c, r): room, scale and width per unit selected width. Its descent condition
+  is Λ₀ > c·q·B₀/(e + q·r).
+  - Sil's simple D⁴ block is (1, 6, 1) (the `envelope_identity` arithmetic, [L]).
+  - At q = K = 1/2 this is exactly the overshoot gate above. The bar needs c/(e + r/2) < 3.93, i.e. c ≤ 5.9 for
+    e = r = 1.
+- **Barriers at q = 1/2 for each block type:**
+
+  | type | (e, c, r) | barrier |
+  |---|---|---|
+  | simple D⁴ | (1, 6, 1) | 2B |
+  | D¹ with cubic twist, j = 0 | (0, 2 + κ, 1) | (2 + κ)B (no gain at κ ≥ 0) |
+  | other twisted types | — | above 2B |
+  | doubled D² | (2, 6, 1) | 1.2B |
+
+- So the only known type that beats Λ = 2 at the native line is the doubled block.
+  - The mixture law (payments add) gives a barrier of 3B/(1.5 + φ) for a doubled share φ. **The bar needs φ ≈ 2.5%.**
+  - Squared-prime slots are not forced by zeros (`DIRECTIONS.md` D2: alignment a ≈ P^{β−1} ≪ 1/√2), so no
+    current source supplies them. That needs new math.
+- **The sparse-row idea does not escape.**
+  - Keeping the rows D⁴w on their sublattices (or jointly, as a sparse union) instead of extending to the ball
+    lengthens the second Poisson's dual.
+  - R2 §4.3: the child's diagonal becomes W·U^{m′}, returning the count W.
+  - The ball extension is the trade that makes the child short. It is not a waste.
+  - What the bar would need is a joint estimate for the union ⋃_D D⁴O that keeps the child of the ball and pays
+    less than 4u. That is a sparse-moduli (power-moduli) sextic large sieve with a saving of Z^{0.1u}; no route is
+    known.
+- **Net.** The envelope is a sharper statement of where the bar sits, not a new open door. The two inputs that would
+  each clear the bar at the native line are:
+  - a 2.5% doubled share (squared slots visible to zeros);
+  - c ≤ 5.9 from a new block type.
+  Each is new math, and neither is the K-wall's fourth moment.

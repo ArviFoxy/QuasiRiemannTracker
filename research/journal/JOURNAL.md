@@ -3688,6 +3688,14 @@ times the theta level u or the plain level, with the best class phases (72 class
 | plain | 3·10⁴ | 1.048 | 1.014 | 1.062 |
 | plain | 10⁵ | 1.094 | 1.010 | 1.078 |
 
+**The pole located, and the floor (logs `theta_level_profile_B10000.log`, `theta_pole_scan_B100000.log`).**
+- Sweeping the split weight's zero across s at 10⁵ (`rip/theta/theta_pole_scan.py`), the theta's excess over the null
+  is 1.0553, 1.0284, 1.0250, **1.0246**, 1.0256, 1.0271, 1.0296 at s = 0.55, 0.60, 0.633, **2/3**, 0.70, 0.733, 0.80.
+  The minimum is at s₀ = 2/3.
+- With the zero at s₀ the theta keeps a floor of 2.7%, 1.2%, 2.5% at 10⁴, 3·10⁴, 10⁵. The floor does not grow and is
+  flat in s near s₀, so it is not a mismatch of the zero. The other levels go to 0.997–1.011 at every size. So the
+  residue main term is removed exactly (per row it is L^{s₀}·Ũ(s₀)·τ(z)), and what is left is small and bounded.
+
 **All levels share the pole (10⁵, same weights).** The higher Poisson levels vanish with the same I(U) = 0 weight:
 u²(x/|x|) (conj g̃₃ up to classes) 1.286 → **1.002** (control 1.165); conj(x/|x|) 1.276 → **1.003** (control 1.125).
 So every source spike, at every level and twist, has one common radial direction: the residual pole s₀ = 2/3 of the

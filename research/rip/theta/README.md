@@ -125,6 +125,7 @@ be small.
 | `theta_restricted_spikes.py B [Dmax] [Mfam] [threads]` | restricted twisted thetas f·χ(m)·1_{d\|x} (the gcd sorting of the off-spike recursion): their excess over the masked null, alone and off the unrestricted family |
 | `theta_level_profile.py B [threads]` | radial weights: the theta and plain levels with t^{−1/3}, a two-piece weight with zero Mellin transform at the pole s₀ = 2/3, and a control, over the masked null |
 | `theta_height_twist.py B t1,t2,.. [threads]` | the source theta times N(x)^{−it}: excess over the masked null against the Mellin prediction \|1/3 − it\|^{−2} |
+| `theta_pole_scan.py B s1,s2,.. [threads]` | the source theta with a split weight whose Mellin zero is swept across s: locates the pole (minimum excess at s₀ = 2/3) |
 
 All scripts build E and the row Gauss sums through `theta_core.py`. The matrix-free scripts (`theta_top_free2`,
 `theta_selected_free`, `theta_outliers`) use `theta_core.build_tables`, which stops before the dense matrix and returns

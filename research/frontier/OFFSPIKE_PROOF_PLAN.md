@@ -46,6 +46,10 @@ Each step lists de Faveri's statement, the corrected version, and the evidence.
 4. **n-th powers (Lemma 6.1).** L₂(K, B) ≤ max_{R ≤ (K/M)^{1/n}} R·L₁(K/R^n, B) on kernels > M.
    - Corrected: the multiplicity is at most c₁ = (B²/(AM))^{1/n}, which is the A·c₁ term. [derived]
 5. **Monotonicity (Lemma 4.2).** L₁(A₁, B) ≲ L₁(A₂, B) for A₂ ≥ C A₁ log, via rows a·p and λ·conj χ_p.
+   - **Simpler in Sil's form (2026-10-31):** with rows = all moduli of norm ≤ T, monotonicity is inclusion
+     (`theta_mono`). The vector is not twisted, the twist range μ stays fixed, and no local spikes arise. The step map
+     is `silStep` (fixed point 1 + γ; Lean: `OffSpikeIteration.lean`, `tendsto_silIter`). The de Faveri-form items
+     below are kept for reference.
    - Corrected: the source twist range shrinks, M → M A₁/A₂ (A·M conserved), and the row range grows,
      M_V → M_V (A₂/A₁)² (A²/M_V conserved). So c₁ and c₂ are constant along the orbit. [derived; the source part is
      exact]
@@ -86,9 +90,15 @@ Each step lists de Faveri's statement, the corrected version, and the evidence.
 Sil's formal optimal sextic sieve (`FourthPower/Sieve*.lean`, about 6,100 lines; `optimal_bound`) is de Faveri's
 recursion. Its `step α = (12α − 7)/(6α − 1)` is the n = 6 case of 2 − (n−1)/(nα − 1). The corrected version is a fork:
 1. `SieveGrowthAlgebra.secondaryCoefficient`: carry the twist range M_tw, giving (2N/(M·M_tw))^{1/6}.
-2. Monotonicity: shift the twist range (A·M conserved).
-3. `SieveImprovement.step`: replace by 2 + γ − (1+γ)/α (arithmetic already in `OffSpikeIteration.lean`).
+2. Monotonicity: unchanged. It is inclusion in Sil's form, and the twist range stays fixed.
+3. `SieveImprovement.step`: replace by `silStep 6 γ` (arithmetic proved in `OffSpikeIteration.lean`; `silStep_sil`
+   checks that γ = 1/6 gives Sil's map).
 4. `SievePoissonBound`: split the dual sum by kernel. The small-kernel part becomes the correction form, and the
    large-kernel part is bounded as before.
+5. `completed_of_exponent`: the dual's own (row-side) theta N^{5/6}L^{1/3} is no longer absorbed by L^{1/6}N once the
+   twist range is nontrivial (ratio (Lμ/N)^{1/6}). The corrected hypothesis must be two-sided and transposable
+   (E compressed on both sides), because this lemma uses the swap θ(L, N) = θ(N, L).
 
-Step 4 is the analytic addition. Steps 1–3 are bookkeeping on proved code.
+Steps 4 and 5 are the analytic additions. Steps 1–3 are bookkeeping on proved code. The precondition family grows
+by one level per step (journal, "Sil's inclusion monotonicity"): about 400 levels for γ = 0.015, mostly angular
+twists of the three spiky ones.

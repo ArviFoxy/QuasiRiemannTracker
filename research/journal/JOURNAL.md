@@ -3807,3 +3807,73 @@ row energy (rows z ∈ ℤ[ω] weighted by Φ(‖z‖²/K), with Φ a caller-sup
   The analytic addition is the small-kernel split of the dual sum inside `SievePoissonBound`, with its correction
   form.
 - Both are large Lean projects. Unlike the earlier picture, neither needs a classical open problem.
+
+## 2026-10-31 · Sil's inclusion monotonicity, and where the corrected recursion's closure is decided
+
+[read: Sil's `SieveImprovement`, `SievePoissonRecurrence`, `SieveExponent`, `SieveRanges`; Lean: the arithmetic,
+`lean/arvi_kwall/OffSpikeIteration.lean` (Sil's form); derived: the rest]
+
+**Monotonicity by inclusion [read + Lean].**
+- In Sil's formal sieve the rows are all moduli of norm ≤ T (`freeRange`, `fullRange`). So θ(M, N) ≤ θ(T, N) for
+  T ≥ M by inclusion (`theta_mono`). `improve` then bounds θ(T, N) by T + T^{1−α}N^{2α−1} + T^{5/6}N^{1/3} at
+  T = max(M, N^{enlargement α}).
+- The source vector is never twisted. Off the twisted source thetas of kernel ≤ μ, the twist range μ stays fixed
+  along the orbit, and the theta term is T(N²/(Tμ))^{1/n}. With μ = N^{1−nγ} this is T^{1−1/n}N^{1/n+γ}
+  (`sil_theta_eq`).
+- Balancing gives silStep n γ α = (1−1/n)(2α−1−1/n−γ)/(α−1/n) + 1/n + γ. At γ = 1/n (nothing removed) and n = 6
+  this is exactly Sil's step (12α−7)/(6α−1), and the enlargement is his (12α−8)/(6α−1) (`silStep_sil`,
+  `silEnlargement_sil`).
+- The fixed point is 1 + γ again. The contraction factor is (1−1/n)/(1−1/n+γ), 0.982 at n = 6, γ = 0.015
+  (`tendsto_silIter`), so about 400 steps bring the exponent within 10⁻³ of 1 + γ.
+- For the plan: step 5 (monotonicity) needs no twist shift and produces no local spikes on this route.
+
+**Where the dual's own thetas enter [read + derived].**
+- Sil bounds the dual with the completed hypothesis λ(L, N) ≲ L^α + L^{1/6}N, L = N²/T ≤ N. `completed_of_exponent`
+  obtains it by reciprocity: θ(L/r⁶, N) = θ(N, L/r⁶) ≤ N + (L/r⁶)^α + N^{5/6}(L/r⁶)^{1/3}, summed over sixth
+  powers r⁶ ≤ L.
+- The L^{1/6}N term is the swapped sub-problems' diagonal "+N", once per r. This is the theta term. Off the spikes
+  only the r with L/r⁶ > μ survive, which gives the corrected (L/μ)^{1/6}N.
+- The last term, N^{5/6}(L/r⁶)^{1/3}, is the dual's own (row-side) theta. Since L ≤ N it is absorbed by L^{1/6}N.
+  Off the spikes it is not: the ratio N^{5/6}L^{1/3}/((L/μ)^{1/6}N) = (Lμ/N)^{1/6} is N^{(1−6γ)/6} at the fixed
+  point (T ≈ N ≈ L).
+- So the corrected recursion must correct the dual's row-side theta too. That is the two-sided requirement, and it
+  sits in one lemma, `completed_of_exponent`.
+- The swap θ(L, N) = θ(N, L) is an operator statement. A corrected statement is about vectors, so it must be stated
+  in a transposable form: E compressed on both sides, (I − P_rows) E (I − P_cols).
+
+**The precondition set grows by one level per step [derived].**
+- The dual vector is c = λ·g̃ (times heights N^{it}). So ⟨c, f⟩ = ⟨λ, u f⟩ with u = conj g̃: each correction of the
+  dual pulls back one level up. In precondition form ("λ ⊥ S"), S_{k+1} ⊇ S₁ ∪ u·S_k, so after k steps λ must be
+  off u⁰, …, u^{k+1}, with their twists and heights.
+- For n = 3, u³ = conj(ang), so u^j = u^{j mod 3}·conj(ang)^{⌊j/3⌋}. The higher levels are the three spiky ones
+  with angular Hecke twists. Numerically these carry no excess (every l ≠ 0 entry of the cubic level scan is
+  0.98–1.02).
+- They are still needed as preconditions. A vector aligned with u³χ_m has a dual aligned with u²χ_m, which is a
+  spike of the dual problem. Dropping them would let the recursion "prove" spike-size bounds for vectors whose true
+  energy is at the null.
+- The number of steps is finite for each target exponent, so the family is finite: three spiky levels, their angular
+  twists up to about ang^{−130}, twists ≤ μ, and heights up to about 400·T₀.
+
+**What the K-wall then needs from its vectors [derived; the last two items heuristic].**
+- The corrected sieve subtracts Σ_{N(m) ≤ μ} (B/N(m))^{1/n} |⟨λ, f_m⟩|² at each level. For the K-wall this has to
+  be ≲ B^{1+γ}‖λ‖² (‖λ‖² ≈ B).
+- With the pole killed by a Mellin zero, each correlation is the off-pole part of a twisted Kubota sum. Square-root
+  size on average over m is enough: Σ_m (B/N(m))^{1/n}·B = B^{2−(n−1)γ}.
+- Pointwise convexity in m is not enough: with an N(m)^{1/2} loss it fails above N(m) ≈ B^{0.64} (n = 6). So the
+  K-wall needs a mean value of off-pole twisted Kubota sums over twists N(m) ≤ μ = B^{1−nγ}, i.e. Lindelöf on
+  average over the twist.
+- By the large sieve in m this follows if the twisted series' approximate functional equation has length about
+  N(m)^{1/2}. If the length is about N(m) (degree-2 behaviour, conductor N(m)²), the m-sieve's own theta costs
+  N(m)^{1/n}, and the requirement becomes γ ≥ 1/(n(n+1)): 1/42 for n = 6, against the 0.015 needed.
+- In that second case the m-sieve is itself a balanced sieve at the smaller scale H ≤ μ, for theta-type vectors
+  whose approximate-functional-equation weight can carry a Mellin zero at the level-2 pole. With the corrected bound
+  H^{1+γ} at that scale the requirement becomes (1−nγ)(1−1/n+γ) ≤ 1−1/n+γ, which always holds. So the closure is a
+  strong induction on the scale, B from B^{1−nγ}.
+
+**Assessment.**
+- Sil's inclusion monotonicity removes one obstacle from the plan (local spikes) and puts the dual's own thetas in a
+  single named lemma.
+- Closure is not fatal but it is not short. The precondition family has about 400 levels, mostly angular twists of
+  the three spiky ones. The K-wall's own vectors need a twist-aspect mean value. That mean value is either the large
+  sieve (conductor N(m)) or the corrected sieve at the smaller scale B^{1−nγ} (conductor N(m)²).
+- Next check: the twist-aspect conductor of Σ_b g̃(b)χ_m(b)N(b)^{−s} from Patterson's functional equation (cubic).

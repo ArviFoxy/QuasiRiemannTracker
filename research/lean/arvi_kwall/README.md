@@ -204,7 +204,8 @@ show only `propext`, `Classical.choice` and `Quot.sound`.
 
 ## OffSpikeIteration.lean: the arithmetic of de Faveri's recursion with the spikes removed
 
-Journal, 2026-10-31, "de Faveri's recursion, run off the spikes". About 25 s; standard axioms.
+Journal, 2026-10-31, "de Faveri's recursion, run off the spikes" and "Sil's inclusion monotonicity". About 26 s;
+standard axioms.
 
 de Faveri proves the optimal n-th order sieve (arXiv 2610.04045, Prop 7.1) by iterating
 α ↦ 2 − (n−1)/(nα−1), whose fixed point 1 + 1/n is the theta exponent. With the twisted source thetas of kernel
@@ -220,6 +221,14 @@ iteration, not the analytic steps.
 | `step_sub`, `step_sub_le`, `step_lt`, `fixed_le_step` | step γ α − (1+γ) = (α − (1+γ))/α: a contraction by 1/(1+γ) toward 1 + γ |
 | `iter_bounds`, `tendsto_iter` | from any α₀ ≥ 1 + γ the iterates stay ≥ 1 + γ, within (α₀ − 1 − γ)/(1+γ)^k of it, and converge to 1 + γ (γ > 0) |
 | `defaveri_step_sub` | de Faveri's map: step − (1 + 1/n) = (n−1)(α − 1 − 1/n)/(nα − 1) |
+| `silStep_sil`, `silEnlargement_sil` | Sil's form (monotonicity by inclusion): at γ = 1/n (nothing removed) and n = 6, silStep and silEnlargement are Sil's formal `step α = (12α−7)/(6α−1)` and `enlargement α = (12α−8)/(6α−1)` |
+| `sil_theta_eq` | with twist range μ = N^{1−nγ}, the theta term T(N²/(Tμ))^{1/n} is T^{1−1/n}N^{1/n+γ} |
+| `silBalance`, `one_le_silEnlargement` | at T = N^{silEnlargement}, T^{1−α}N^{2α−1} and T^{1−1/n}N^{1/n+γ} both equal N^{silStep}; T ≥ N once α ≥ 1 + γ |
+| `silStep_sub_le`, `silIter_bounds`, `tendsto_silIter` | silStep − (1+γ) = (1−1/n)(α−1−γ)/(α−1/n), a contraction by (1−1/n)/(1−1/n+γ); the iterates converge to 1 + γ (n > 1, γ > 0) |
+
+In Sil's formal proof the rows are all moduli of norm ≤ T, so monotonicity is inclusion and the source vector is
+never twisted. Off the spikes the twist range μ then stays fixed along the orbit and no local spikes arise (journal,
+2026-10-31, "Sil's inclusion monotonicity"). The fixed point is again 1 + γ.
 
 So the recursion that proves the optimal sieve, run off the spikes, has fixed point 1 + γ: the exponent of
 `TwoSidedSpikeFree` with twist range B^{1−6γ}. Whether each analytic step survives the removal is open. The

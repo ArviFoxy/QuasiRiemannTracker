@@ -3925,3 +3925,9 @@ metaplectic one is not.
   conj(m²/c) = (m/c)). If the conductor in the index is N(r), as Heath-Brown's convexity bound
   ψ(r, 1 + it) ≪ N(r)^{1/4+ε} suggests, the twist conductor is N(m)². [recollection; not checked against the paper]
   That is the case where the K-wall needs the induction on the scale (previous entry).
+- **Checked: double Dirichlet series do not bypass it [literature + derived].** Brubaker–Bump's functional equation
+  for Kubota's series is cited as resting on Eisenstein series. The structural reason is this.
+  - In Z(s, w) = Σ_{c,d} (d/c)₃ N(c)^{−s} N(d)^{−w}, either order of summation gives Hecke L-functions.
+  - Once the functional equation in s has been applied, the d-sum carries cubic Gauss sums g(χ_d). The functional
+    equation in w then needs Kubota's series, not a Hecke L-function.
+  - So the Kubota series is the rank-one input of the multiple-Dirichlet-series machinery, not one of its outputs.

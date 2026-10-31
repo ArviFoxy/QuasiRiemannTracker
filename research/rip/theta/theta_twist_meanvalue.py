@@ -11,7 +11,8 @@ m with N(m) in dyadic ranges [Bz, 2 Bz] the script prints
 
     R = mean_m |sum_b lambda_b g(b) chi_m(b)|^2 / ||lambda||^2      (g = Gauss sum, both orientations g and conj g),
 
-the same for the control, for the plain vector itself (Hecke: no pole for m != 1), and for the masked null (i.i.d.
+the same for the control, for the plain vector itself (Hecke: no pole for m != 1), for the Liouville-signed control
+mu(b) V0 (pole-free by Moebius absorption, mu conj g6 = G^{-1} conj(c/|c|) g3), and for the masked null (i.i.d.
 phases on the same zero pattern, applied to lambda * g).
 
 usage: python3 -I theta_twist_meanvalue.py L order Bz1,Bz2,... [threads]
@@ -68,7 +69,7 @@ def onto(grid, t):
 
 print('order %d, sources N(b) <= %d; V: Mellin zeros at %s (V~(s0) = %.1e); control V0: V0~(s0) = %.3f'
       % (q, L, ', '.join('%.3f' % z for z in zeros), mellin(Vz, s0), mellin(V0, s0)), flush=True)
-print('   twists N(m)      R   lam*g  lam*conj g  V0*g  V0*conj g   plain    null', flush=True)
+print('   twists N(m)      R   lam*g  lam*conj g  V0*g  V0*conj g   plain  muV0*g  muV0*cg    null', flush=True)
 cols = None
 for Bz in Bzs:
     Tb = tc.build_tables(Bz, L, verbose=False)
@@ -82,14 +83,22 @@ for Bz in Bzs:
         g = G / np.where(np.abs(G) > 1e-9, np.abs(G), 1)
         tsrc = Tb.SN.astype(float) / L
         lam, lam0 = onto(Vz, tsrc), onto(V0, tsrc)
-        cols = np.stack([lam * g, lam * np.conj(g), lam0 * g, lam0 * np.conj(g), lam.astype(complex)], axis=1)
+        # Liouville sign of b: sources have squarefree norm, so mu(b) = (-1)^{omega(N(b))}
+        def omega(n):
+            k = 0
+            while n > 1:
+                p = int(Tb.spf[n]); n //= p; k += 1
+            return k
+        mu = np.array([(-1.0) ** omega(int(n)) for n in Tb.SN])
+        cols = np.stack([lam * g, lam * np.conj(g), lam0 * g, lam0 * np.conj(g), lam.astype(complex),
+                         mu * lam0 * g, mu * lam0 * np.conj(g)], axis=1)
         nrm = np.sum(np.abs(cols) ** 2, axis=0)
     K = ck.Kernel(Tb.T, Tb.LOC, nthreads=nth)
     EV = K.forward(cols, mode=modeE)
     EN = K.forward(cols[:, :1], mode=1, seed=3)
     r = np.mean(np.abs(EV) ** 2, axis=0) / nrm
     rn = np.mean(np.abs(EN[:, 0]) ** 2) / nrm[0]
-    print('  [%6d,%6d] %5d  %7.3f  %9.3f  %6.3f  %9.3f  %7.3f  %6.3f   (%.0fs)'
-          % (Bz, 2 * Bz, R, r[0], r[1], r[2], r[3], r[4], rn, time.time() - t0), flush=True)
+    print('  [%6d,%6d] %5d  %7.3f  %9.3f  %6.3f  %9.3f  %7.3f  %6.3f  %7.3f  %6.3f   (%.0fs)'
+          % (Bz, 2 * Bz, R, r[0], r[1], r[2], r[3], r[4], r[5], r[6], rn, time.time() - t0), flush=True)
     del K, Tb
 print('done in %.0fs' % (time.time() - t0))

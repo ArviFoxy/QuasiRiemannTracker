@@ -4246,3 +4246,26 @@ spot-checked in the source by me]
   reflection from ∂̄ conj θ₃ to conj θ₃ itself, keeping the constant term, would give the cubic polar Voronoi
   formula: main term from v^{2/3} plus a dual sum. That is the cubic Mellin rescue.
 - The faces' sextic case needs the 6-fold cover besides; the cubic development is its template.
+
+## 2026-10-31 · Liouville-signed test: inconclusive, the cached Gauss sums use another normalization
+
+[numerical; `theta_twist_meanvalue.py` with Liouville-signed columns, logs `theta_twist_meanvalue_mu_q{3,6}_L100000.log`]
+
+- **Prediction (baseline's Möbius absorption).** μ(c)·conj g̃₆(c) = G(c)⁻¹·conj(c/|c|)·g̃₃(c) is pole-free. So
+  Liouville-signed plain vectors μ(b)V₀ should be at the null against the sextic spikes, with no Mellin zero.
+- **Cubic.** As predicted: μV₀·conj g is at the null (0.75–1.40, null ≈ 0.94–1.3 in the small ranges), while
+  V₀·conj g runs 35.9 → 4.4.
+- **Sextic.** μV₀·conj g keeps the plain control's excess (1.17–1.44 against 1.2–1.7), while a Mellin zero removes
+  it.
+- **The cached Gauss sums do not satisfy the identity in our normalization.** On the 10⁵ cache, the best
+  combination, μ·conj(g6)·ang/g3, equals its class representative (mod 4 × mod 9 in both coordinates) for only 75% of
+  sources. The ratio is +0.78 on average at primes and +0.23 for two prime factors. Without μ the result is the same.
+  - So the theta cache's g6 and g3 differ from the baseline's `canonicalProductGauss` normalization by a non-class
+    sign, likely the cross-term and primary conventions in the product formula. The "Liouville sign" here is not the
+    baseline's μ-normalization, and the sextic column cannot be read.
+- **The `orders/` numerics, computed in the baseline's convention, already confirm the prediction.** μ·conj g̃₆
+  partial sums cancel better than random (slope 0.28–0.30), while g̃₆ grows like X^{2/3} (`orders/README.md`).
+- **Consequence for earlier sextic numerics [caveat].** The theta cache is spike-aligned (large, growing, Mellin-killable
+  excesses), so the qualitative findings stand. But quantitative sextic excesses may be understated if the cache
+  differs from the canonical g̃₆ by a non-class sign. Rebuilding the sextic cache in the baseline's normalization
+  (`orders/gauss_mobius.py` has it) is the fix before any further sextic quantities are quoted.

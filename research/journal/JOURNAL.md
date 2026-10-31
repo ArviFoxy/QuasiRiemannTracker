@@ -4364,3 +4364,65 @@ derived: the mechanism]
 - **Size.** About 3k lines, of which about 1k is the three new pieces. Roughly 1–3 months at human pace.
 - **What it buys.** The cubic polar asymptotic Σ g̃₃(c)ψ(c)W(N(c)/X) = main term + dual sum, i.e. the cubic Mellin
   rescue. The faces' sextic spikes need the 6-fold cover besides; the cubic twin is its template.
+
+## 2026-10-31 · The sextic series as a Rankin–Selberg square of the cubic theta: no shortcut past the 6-fold cover
+
+[derived; Lean, read: `infinityCoefficient_squarefree`, `infinityCoefficient_squarefree_cube`; literature, read:
+de Faveri–Dunn–Hoffstein arXiv 2607.07911 §§1.2, 2, 5, 7; Bröker–Hoffstein arXiv 1312.0568 §1; X. Li arXiv
+2208.07343 Thm 1.1]
+
+**The cubic Mellin rescue is a published theorem [literature].**
+- David–de Faveri–Dunn–Stucky (arXiv 2410.03048), Lemma 6.7, as used in dFDH (2.3)–(2.5): for squarefree
+  a ≡ 1 mod 3,
+  Σ_b (a/b)₃ g̃₃(b)H(N(b)/B) = P_B(a) + R_B(a), with P_B(a) ∝ H̃(5/6)·g̃₃(a)N(a)^{−1/6}B^{5/6} and
+  R_B(a) ≪ B^{1/2+ε}Σ_{d | a} N(d)^{−1/2−ε}∫|ψ⁽³⁾(a/d, 1 + ε + iy)|(1 + |y|)^{−100}dy.
+- Their Lemma 6.6 (dFDH (2.9)) is Lindelöf on average in the twist: Σ_{N(a)≤A}|ψ⁽³⁾(a, 1 + ε + it)|² ≪
+  A^{1+ε}(1 + |t|)^R.
+- Together: for H̃(5/6) = 0 the twisted correlations have mean square ≪ (AB)^{1+ε} over twists N(a) ≤ A. That is
+  exactly the cubic twist-aspect mean value our numerics found at the null. It is unconditional.
+- **The sextic analogue is not in the literature.** dFDH §1.2 expect the n ≥ 5 analogues "within reach of current
+  tools", via n-fold metaplectic Eisenstein series with level structure (their §2.2 names the needed sums,
+  Σ τ_n(r₁a)τ_n(r₂a) with uniformity in r₁, r₂).
+
+**The Rankin–Selberg identity [derived].**
+- On squarefree c, g̃₆ = g̃₃²·(class) (`orders/`, exact). Patterson's coefficients are τ₃(c) = κ·(class)·conj g̃₃(c)
+  (`infinityCoefficient_squarefree`). So the sextic Kubota series is, up to class twists, Σ_{c sqfree} τ₃(c)²N(c)^{−w}.
+- θ₃ transforms by the Kubota character κ, which has order 3. So θ₃² transforms by κ², and θ₃²·E_κ(·, s) is
+  Γ-invariant, where E_κ is the cubic Kubota Eisenstein series whose residue at 4/3 is θ₃. Unfolding gives
+  ∫_reg θ₃²E_κ(·, 2w) = γ(w)·D(w), with D(w) = Σ_δ τ₃(δ)τ₃(−δ)N(δ)^{−w} and γ the K_{1/3}² Mellin factor.
+  - D has the sextic pole at w = 2/3, i.e. E_κ's theta pole at s = 4/3. Its leading coefficient involves the
+    regularized ∫θ₃³.
+  - So everything lives on the 3-fold cover, where the baseline already has θ₃, E_κ and the cusp expansions.
+    dFDH §5 (Zagier's regularization on H³) is the template.
+- **The cube support carries a zeta factor [derived from the Lean theorem].**
+  - `infinityCoefficient_squarefree_cube` gives τ₃(c·d³) = N(d)^{1/2}·τ₃(c) for c squarefree and any d, with no
+    character.
+  - Hence, exactly, D(w) = ζ_K(3w − 1)·S(w), with S the squarefree sextic series.
+  - The n-fold normalization (Bröker–Hoffstein: ζ_K(4w − 1)ψ₄ for n = 4; dFDH (2.10): ζ_K(3s − 2)ψ₃ for n = 3) is
+    ζ_K(6w − 2)·S(w) nice for n = 6. So D = [ζ_K(u)/ζ_K(2u)]·(nice), with u = 3w − 1: the squarefree zeta.
+  - Consistency check: the poles of D at zeros of ζ_K(6w − 2) are E_κ's poles at zeros of its scattering
+    denominator ζ_K(3s − 2), s = 2w.
+- **The obstruction.**
+  - The Rankin–Selberg integral gives D. S = D/ζ_K(3w − 1) can then have poles at zeros of ζ_K(3w − 1), i.e.
+    anywhere in 1/3 < Re w < 2/3 as far as the integral knows.
+  - Shifting the contour to Re w = 1/2 + ε therefore needs RH for ζ_{ℚ(ω)}. Unconditionally the error is only
+    X^{2/3}·exp(−c√log X).
+  - The 6-fold theory instead puts the ζ-zero poles at Re w < 1/2 (zeros of ζ_K(6w − 2)). It is needed for a power
+    saving.
+  - Möbius over cubes does not help: every cube-dilated Rankin–Selberg term is N(d)^{1/2−3w}·D, so the inversion is
+    exactly the division by ζ_K(3w − 1).
+- **The bootstrap version [derived; partial].** Our own zero-free region (Hecke L-functions over ℚ(√−3) nonzero
+  for Re > θ₀ ≈ 0.8734, inside the continuation argument) puts the poles of S at Re w ≤ (1 + θ₀)/3 ≈ 0.6245.
+  - So the sextic polar asymptotic holds with error X^{0.6245+ε}·cond^{O(1)} unconditionally inside the
+    bootstrap. That is a power saving X^{−0.042} below the main term X^{2/3}.
+  - Twisted versions bring L(3w − 1, ψ_m) with ψ_m a quadratic Hecke character of K (the quadratic part of
+    χ_m = χ₂·χ̄₃). Those are covered by the same hypothesis.
+  - For the faces this is only partial: the squared spike excess drops from X^{1/3} to X^{0.249}, not to O(X^ε).
+    Whether a partial rescue moves the walls at all needs the faces' quantitative model. The rescue would also
+    become a bootstrap loop (better θ, better error).
+- **P1's comparison class, rechecked.** X. Li (Invent. 2024) gets the second moment of quadratic twists of a
+  modular L-function unconditionally with error X(log X)^{1/2+ε}: a log saving, as `frontier/README.md` says.
+
+**Verdict.** The 6-fold cover is genuinely needed for a power-saving sextic Mellin rescue. A Rankin–Selberg square of
+the cubic theta reaches the same series with the factor ζ_K(3w − 1) in the way. The only unconditional version is the
+bootstrap's partial one. [the faces' sextic input stays a paper-level project]

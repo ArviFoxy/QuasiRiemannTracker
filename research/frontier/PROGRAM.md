@@ -69,6 +69,20 @@ Order: A → A′ → A″ feeds B (reference wall) and C (K-wall); C → D; B, 
 | D1 (prime-pool face) | the K-wall at all slopes, or the plain eighth moment of the thin family | Lindelöf on average for an eighth moment |
 | D4 (sixth moment) | thin-family sixth moment past the row count | open |
 
+## The other architecture: PR 96 (blocked by size and verification, not by an open problem)
+
+- PR 96 (liqsweep, 224 pages, no Lean) replaces OpenAI's probe by a sextic × cubic two-slot probe with a Hecke target
+  of nonzero infinity type. It claims 0.8392.
+- Its own constraint model, re-derived in `../pr96/CONSTRAINTS.md`: 0.8791 with de Faveri's sieve and its chart, and
+  0.8656 with the Voronoi chart dpx. Below 0.87 it needs the K-chart infrastructure and dpx or the graded inverse
+  theorem GS1.
+- Its polar objects are cubic. It imports Kazhdan–Patterson for n ∈ {3, 6}, but downstream uses only D̃₃, with
+  twists of every infinity type. So it needs no 6-fold cover, but it does need non-spherical cubic Eisenstein series.
+- **Cost.** A new probe layer (the OpenAI analogue is ≈ 264k lines), Hecke characters with infinity type (10–20k), the
+  uniform cubic Voronoi split (5–15k), angular Poisson (2–4k) (`../pr96/LEAN_INVENTORY.md`).
+- The 3k-line cubic polar formula is the l = 0 slice of its Chapter 2. That is a direct ingredient, where the faces
+  route uses it only as a template.
+
 ## Recommendation
 
 - No θ gain is in reach of library-only or engineering work. The architecture limit (0.87338197) is PR 99's value.

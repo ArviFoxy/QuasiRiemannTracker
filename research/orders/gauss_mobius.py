@@ -309,25 +309,8 @@ print('  %d squarefree primary ideals, %d classes   (%.0fs)' % (len(recN), len(c
       flush=True)
 
 # ------------------------------------------------------------------------------------------------- brute-force check
-def brute(idx):
-    """g~ of the record idx from the definition, for a modulus with squarefree norm (O/c = Z/Nc)."""
-    pass
-
-
-chk = 0
-order = np.argsort(recN)
-for idx in order:
-    Nn = int(recN[idx])
-    if Nn < 50 or Nn > 3000 or chk >= 6:
-        continue
-    # rebuild the factorization by trial: find the primes dividing; only squarefree norms (O/c cyclic)
-    if any(Nn % (pp * pp) == 0 for pp in range(2, int(math.isqrt(Nn)) + 1)):
-        continue
-    fac = [Pr for Pr in primes if Pr.N <= Nn and Nn % Pr.N == 0 and isinstance(Pr, Split)]
-    # the record's generator is not stored; recompute it from the record order is awkward, so test on a fresh product
-    chk += 0
-    break
-# fresh products for the check: two and three split primes
+# twisted multiplicativity against the definition, on products of two and three split primes (squarefree norms,
+# so O/c = Z/N(c) and the integers 0..N(c)-1 are a complete residue system)
 def gauss_brute(fs):
     gen = (1, 0)
     for Pr in fs:

@@ -3511,3 +3511,54 @@ phases), divided by the same for the masked random matrix. A value of 1 means no
   (+2.6% without the levels). Random spans of the same dimensions give +16.0% (+18.6% before). So the structured
   addition removes 35% of the remaining excess, while the extra dimensions alone account for about 14% of the random
   spans' excess.
+
+## 2026-10-31 · Λ_src is a Rankin–Selberg problem for dilated thetas, and the dilated family is well-conditioned
+
+[derived (heuristic where marked); numerical: `rip/theta/theta_dilation_gram.py`, log
+`theta_dilation_gram_sextic_B30000.log`]
+
+**Where the K-wall stands.** With the off-spike recursion as the route to the corrected sieve (two entries up), the
+sextic K-wall needs three inputs: the corrected two-sided sieve, Λ_row (twist sieves on W, closed by amplification
+for δ > 7/36), and Λ_src, the Bessel constant on the slot-selected rows W of the source spikes' row images. Λ_src was
+the open one: duality absorption fails (β_src ≥ 1), and the frontier called its twisted part "shifted convolutions of
+τ₆ at products, no known tool".
+
+**Amplification on the source side does not help [derived].** Writing 1_W ≤ |T/T₀|^{2k} turns the amplified energy
+of a source image into the row energy of the source vector Σ_Π a_Π f^{(Π)}, the spike shifted to multiples of
+slot products Π. That vector lives at source length L·P₀^k > B. PR 93's rule n(x) ≤ n(y) − δ(y − x) then costs
+(1 − δ) per unit past the balanced point, so it gains nothing below δ = 1/2. This is the same wall.
+
+**The right reading: dilations, not shifts [heuristic].**
+- The twisted source image is a dilation: Φ_m(z) = Φ(zm) (`rowImage_twist_dilation`), with Φ ≈ L^{1/3} conj τ₆.
+- With the amplifier, the Gram of {Φ_m} on W becomes Σ_z ψ(z) τ₆(zm) conj τ₆(zm′) w(N z/B), with ψ = χ_·(Π/Π′) of
+  conductor ≤ P₀^{2k}. That is a Rankin–Selberg integral of the dilated thetas θ₆(m·) and θ₆(m′·) against an
+  Eisenstein series twisted by ψ. It is not an additive shifted convolution.
+- ψ trivial (Π = Π′): the main term is B^{5/6} times the Petersson Gram ⟨θ₆(m·), θ₆(m′·)⟩ of the dilated thetas.
+  The Bessel constant on W is then ρ times that Gram's top eigenvalue, if the dilated family is well-conditioned.
+- ψ nontrivial: the twisted Eisenstein series is entire, so these sums save a power of B over the main term. The
+  savings must be polynomial in cond(ψ) and in m m′.
+- Tools: de Faveri–Dunn–Hoffstein's regularized Rankin–Selberg for metaplectic forms (Zagier's method on covers;
+  arXiv 2607.07911) and their Lindelöf-on-average for Kubota series in the twist aspect. Extending them to the
+  6-fold cover with level m m′ and a character is technical but needs no new kind of input.
+
+**Numerics: the dilated family is as well-conditioned as the null.** C_{m,m′} = ⟨Φ_m, Φ_{m′}⟩/(‖Φ_m‖‖Φ_{m′}‖) over all
+rows at B = L = 3·10⁴ (sextic, twists N(m) ≤ M with m = 1 included):
+
+| twists | E: top eigenvalue | masked null: top eigenvalue |
+|---|---|---|
+| N(m) ≤ 30 (6) | 1.063 | 1.089 |
+| N(m) ≤ 100 (26) | 1.250 | 1.333 |
+| N(m) ≤ 300 (76) | 1.782 | 1.930 |
+| N(m) ≤ 1000 (256) | 3.548 | 3.824 |
+
+The mean |C_{m,m′}|² off the diagonal is 0.0003–0.0008 for E, against 0.0005–0.0009 for the null. Its growth with
+the number of twists is the null's random-matrix growth, not structure. Together with the flatness on W
+(2026-10-31, "Twisted source spikes are flat on slot-selected rows"), this is what the Rankin–Selberg route needs
+numerically.
+
+**Revised K-wall chain [heuristic].** The three inputs are now:
+- (i) the corrected two-sided sieve: the off-spike de Faveri recursion, a long but elementary bookkeeping task;
+- (ii) Λ_row: amplification (formal in `SpikeRule.lean`);
+- (iii) Λ_src: metaplectic Rankin–Selberg for dilated thetas with amplifier twists (DFDH technology).
+
+None is a classical open problem of the P1/B2 kind. Each is a long technical program, and none is done.

@@ -1,0 +1,14 @@
+order 6, B = L = 30000: R=8474 S=7768; 256 twisted source thetas with N(m) <= 1000   (9s)
+  E:
+    N(m) <= 30 (6 twists): top 1.063, 2nd 1.036, mean |off-diag|^2 0.0003
+    N(m) <= 100 (26 twists): top 1.250, 2nd 1.213, mean |off-diag|^2 0.0005
+    N(m) <= 300 (76 twists): top 1.782, 2nd 1.620, mean |off-diag|^2 0.0007
+    N(m) <= 1000 (256 twists): top 3.548, 2nd 3.413, mean |off-diag|^2 0.0008
+    random level of |off-diag|^2: 1.2e-04 (1/R)
+  masked null:
+    N(m) <= 30 (6 twists): top 1.089, 2nd 1.034, mean |off-diag|^2 0.0005
+    N(m) <= 100 (26 twists): top 1.333, 2nd 1.244, mean |off-diag|^2 0.0007
+    N(m) <= 300 (76 twists): top 1.930, 2nd 1.725, mean |off-diag|^2 0.0009
+    N(m) <= 1000 (256 twists): top 3.824, 2nd 3.663, mean |off-diag|^2 0.0009
+    random level of |off-diag|^2: 1.2e-04 (1/R)
+done in 11s

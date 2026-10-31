@@ -267,6 +267,13 @@ block outlier is a residue").**
     shifted convolutions of theta coefficients. Without twisted multiplicativity for `τ₆` there is no known tool.
 - So, beyond the conjecture itself, the sextic K-wall's new arithmetic input is a shifted-convolution bound for
   sextic theta coefficients at products. The cubic analogue would follow from Patterson's formula.
+- **Revised (2026-10-31, journal "Λ_src is a Rankin–Selberg problem").** The twisted part is a dilation, Φ_m(z) = Φ(zm),
+  so the amplified Gram on W is Σ_z ψ(z) τ₆(zm) conj τ₆(zm′): a Rankin–Selberg integral of the dilated thetas θ₆(m·),
+  θ₆(m′·), twisted by the amplifier's characters, not an additive shifted convolution. The ψ = 1 part is the
+  Petersson Gram of the dilated thetas; numerically that family is as well-conditioned as the masked null's images.
+  The ψ ≠ 1 parts are entire. de Faveri–Dunn–Hoffstein's regularized metaplectic Rankin–Selberg is the tool. So
+  the K-wall chain's three inputs are (i) the off-spike recursion, (ii) amplification, and (iii) this Rankin–Selberg
+  computation. None is a classical open problem, but each is a long technical program.
 - **Duality does not close `Λ_src` (checked, 2026-10-31).** By `rowInner_rowImage`,
   `Σ_i w_i |⟨b, E s_i⟩|² = Σ_i w_i |⟨E^H b, s_i⟩|² ≤ β_src ‖E^H b‖²`, with `β_src` the Bessel constant of the weighted
   source spikes in source space. That gives `Δ_W ≤ C B^{1+ε} + Λ_row + β_src Δ_W`, which closes only if `β_src < 1`.

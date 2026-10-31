@@ -1,0 +1,9 @@
+B=10000: R=2816 S=2610; row family V (M=30, J=2) dim 1080 (0.384 R); source family P (betas [0.3333333]) dim 432 (0.166 S)   (8s)
+full top                        [4.261 4.109 4.093 4.025]   MP edge 4.156
+  pair 0: left in V 0.517 (random 0.384); right in P 0.451 (random 0.166)
+  pair 1: left in V 0.407 (random 0.384); right in P 0.218 (random 0.166)
+one-sided, off V                [3.18  3.156 3.111 3.103]   MP edge 3.296;  its top right vector in P 0.178
+two-sided, off V and P          [2.852 2.838 2.832 2.806]   MP edge 2.990
+off V, random source span       [2.847 2.824 2.809 2.791]
+random spans, same dims         [2.932 2.867 2.83  2.815]
+done in 172s

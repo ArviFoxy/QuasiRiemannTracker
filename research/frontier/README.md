@@ -206,6 +206,17 @@ analysis yet. A future attempt should be split into separately briefed pieces: (
 L = B with the primary/odd normalization; (2) whether the corrected remainder is self-similar under duality; (3) the
 cubic check, where the two thetas coincide.
 
+**First sketch (2026-10-31, heuristic).**
+- The mechanism agent's exact Poisson formula (`../rip/theta/theta_dualcore.py`, Task A) writes the off-diagonal Gram
+  as D_g̃·(Σ_h w_h conj χ(h) χ(h)*)·D_g̃*, with dual length about B at L = B.
+- The spikes are the h with a large sixth-power part. Remove them, and the remainder is the Gram of the dual family
+  on sixth-power-free h: again a balanced sextic large sieve, so the structure is self-similar.
+- At the next level, the sixth-power-free restriction is a Möbius sum over d⁶. It multiplies that level's theta
+  multiplicity by Σ_{N d ≤ Y} μ(d)/N(d), which tends to 0 only like the prime number theorem error exp(−c√log Y).
+- So the naive corrected recursion gains a sub-power factor, not a power. A power saving would need the dual family's
+  own spikes (twists, sources) handled with a genuine saving at each level. The open question is whether the
+  two-sided projection supplies that.
+
 ## Queued directions
 
 ### Q1. A product (tensor) RKHS for the dual frame, with a multiresolution that resolves W at its own coarse scale (queued 2026-10-31, Arvi)

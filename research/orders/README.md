@@ -93,3 +93,21 @@ on every squarefree modulus; each ratio below is constant on classes.
 - So the quartic route needs one new theorem: the biquadratic theta conjecture, or a probe built from the 4-fold
   Eisenstein series' Gauss-sum coefficients instead of θ₄. On top of that, every analytic input of the chain would
   have to be redone at exchange rate 4. That is a new architecture, not a modification of the current proof.
+
+## Which orders absorb the Möbius sign into a single Gauss sum (classification, derived)
+
+For order `n = 2k`, Hasse–Davenport against the quadratic subcharacter gives
+`g(χ^{n−1}) ∝ g(χ^{n−2}) / g(χ^{k−1})` up to class constants. Absorption into one Gauss sum needs the right-hand side
+to collapse.
+- **n = 4 (k = 2):** `g(χ²)` is quadratic, so trivial up to class, and `g(χ³) ∝ 1/g(χ)`. It lands on the quartic
+  Gauss sum itself (exact numerically, above).
+- **n = 6 (k = 3):** `g(χ⁴) ∝ conj g(χ²)`, so `g(χ⁵) ∝ conj g(χ²)/g(χ²)`. With `γ₂³ = μα` this is the cubic
+  Gauss sum (exact numerically, above).
+- **n = 8, 10, 12, …:** a ratio of two distinct Gauss sums remains: orders 4 and 8 for n = 8, two quintic ones for
+  n = 10, orders 6 and 12 for n = 12. There is no single-sum absorption.
+- **Odd n** (no quadratic subcharacter) and **n = 2** (no Jacobi sum carrying α): the Möbius sign stays. For n = 3,
+  `μ·conj g̃₃·α = μ·g̃₃²`, and the sums of μ·g̃₃ show no main term (slope 0.45 at 3·10⁵).
+
+So exactly two orders absorb the Möbius sign into one Gauss sum: 4 and 6. Only 6 lands on the coefficients of an
+explicit theta, the cubic one. This refines `LOG.md`'s three conditions: the quadratic subcharacter and the quadratic
+leftover twist hold for n = 4 as well, and only the explicit-theta condition fails there.

@@ -5215,3 +5215,77 @@ the sextic family on balanced convolutions of smooth plain sums. Nothing in the 
     exactly the κ = 1/2 gate.
   - The two obstructions at the native line, the overshoot gate and the corner, are both the ratio of Sil's
     envelope coefficient 6 to the budget.
+
+## 2026-10-31 · The owed check: three Poisson steps against de Faveri–Dunn–Hoffstein; the polar shape is confirmed for n = 3 and 6
+
+[read: arXiv 2607.07911 (abstract and introduction); derived; numerical: existing logs
+`rip/theta/theta_twist_meanvalue_q3_L{10000,30000,100000}.log`, `theta_twist_meanvalue_canon_q6_L100000.log`]
+
+**DFDH's route is different from ours [read].**
+- Their test vector is β_b = conj g̃₃(b)·1_{b≡1}·H(N b/B) on squarefree twists a ≡ 1 mod 3. They work on the twist
+  side: the Kubota series ψ⁽ⁿ⁾(a, s) splits each correlation into a polar term P_B(a) and a remainder R_B(a).
+- Two inputs, both from Zagier's regularized Rankin–Selberg:
+  - a lower bound for Σ_a |τ_n(a)|² (explicit for n = 3 through Patterson; for n = 4 there is no formula for τ₄);
+  - Lindelöf on average for the second moment of ψ⁽ⁿ⁾(a, s), to control Σ_a |R_B(a)|².
+- They note that convexity plus GRH, which worked for n = 3 before, does not give the right lower bound for n ≥ 4.
+
+**The three-Poisson route works on the dual side [derived].**
+- After Poisson in m, the Gauss sums cancel the phases. The polar term comes from the dual frequencies h = Dⁿ through
+  ζ_K(ns) at s = 1/n. The individual theta coefficients never appear; their mean square comes out through ζ_K(ns).
+- So it bypasses both of DFDH's inputs. It needs no functional equation and no Rankin–Selberg.
+- Points re-derived today:
+  1. **Step 3.** For each non-principal pair (k, k′), the h-sum is a smooth sum of a character of conductor
+     ≤ C·N(k k′) ≤ C(N h/X)². Its Poisson dual has length ≤ H₁/X² ≤ 1/H. ✓
+  2. **Non-squarefree h** (the sketch's "technical point", now checked).
+     - Write h = h₁r with h₁ squarefree and r square-full, coprime. The conductor is h₁·rad r.
+     - Möbius on h₁ (f² | h₁) is exact by step 3 for N(f) < √H, since the condition reduces to
+       N(f)²·Q·N(rad r)²/(N(r)X²) < 1 and N(rad r)² ≤ N(r).
+     - For the tail N(f) ≥ √H, Poisson back in k: the formal term equals N(f)·|S_f|², where S_f is a sum of
+       length X/N(f). With the sextic large sieve over h′ this costs (H/X)·Σ_f (N(h₁)X/N(f)² + X²/N(f)), i.e.
+       X²H^{−1/2} + HX·log Q. That is the sketch's X²H^{−1/2}.
+  3. **Squarefree sources** (d² | n). The pairs with N(d d′)³ < H go through steps 2–3, because the cubic symbol
+     (h/d)₃ adds conductor N(d). The rest are bounded by Cauchy–Schwarz and the large sieve,
+     H·(Q + X)/N(d d′) ≈ X²/N(d d′), giving X²H^{−1/3}.
+- **Result [derived; sketch with every step now written].** With the twists m running over all of O and the sources
+  squarefree,
+  Σ_m φ(N m/H) |Σ_n W(N n/X) conj g̃(n) χ_n(m)|² = C_n·W̃(1/2 + 1/n)²·H^{1−1/n}X^{1+2/n} + O((HX + X²H^{−1/3})(HX)^ε).
+  The error terms are below the polar term for X^{4/7} ≪ H ≪ X² (n = 6) and X^{1/3} ≪ H ≪ X² (n = 3). The cubic
+  numerics below show the polar shape already from H ≈ X^{0.24}, so the X²H^{−1/3} bound is pessimistic.
+- **Where it falls short of DFDH.** Their theorem restricts the twists to squarefree a.
+  - Möbius over e² | a is fine for small e: the dilated families have polar terms with weight N(e)^{4/n−3}, which
+    is summable.
+  - The tail N(e) > E needs Σ_{a: e²|a, N e > E} |c_a|² ≪ A^{1−1/n}B^{1+2/n}. The trivial bound and the large sieve
+    both give √A·B² per unit of B, which suffices only for B ≪ √A. But B ≪ √A is exactly the range where the polar
+    term is not above the diagonal A.
+  - So the tail needs pointwise cancellation in sums of Gauss sums, which is Kubota theory. The elementary route
+    proves non-orthogonality only for the large sieve over all twists, in √A < B < A (there the Gauss-sum term
+    A^{1−1/n}B^{2/n} beats both A + B and the n-th power obstruction A^{1/n}B). This is weaker than DFDH's statement,
+    but it holds for every n.
+
+**Numerical check of the shape [numerical; existing logs, no new runs].** R = mean_m |c_m|²/‖λ‖² for the control
+V0 with conj g̃ (no Mellin zero), against the masked null ≈ 0.94. The predicted relative excess is
+∝ X^{2/n}H^{−1/n}.
+
+| order | test | predicted | measured |
+|---|---|---|---|
+| 3 | excess per doubling of H at L = 10⁵ (12 doublings, H = 16 … 65536) | 2^{−1/3} = 0.794 | 0.80 on average; 51.8 → 3.49 against 3.24 |
+| 3 | excess at H = 4096 for L = 10⁴ → 3·10⁴ → 10⁵ | ×2.08, ×2.23 | 1.99 → 4.21 → 8.68 (×2.12, ×2.06) |
+| 3 | excess at H = 16384, same L | ×2.08, ×2.23 | 1.21 → 2.59 → 5.65 (×2.14, ×2.18) |
+| 6 (canonical phases) | excess from H = 2¹² to 2¹⁷ | 2^{−5/6} = 0.56 | 0.79 → 0.45 (0.57) |
+| 3, 6 | Mellin zero at s₀ (V) | at the null | at the null |
+
+The non-canonical sextic run (class signs not normalized) shows a smaller, flatter excess (0.29 → 0.26). The class
+signs ε(n, n′) of step 1 enter the polar constant as a quadratic form over classes; they shrink it there. The
+constant C_n is not checked.
+
+**Consequences.**
+- The owed check is closed, up to the constant. The K-wall's single-factor input (twist mean square of a smooth
+  factor with a Mellin zero) is elementary. Input A is not needed away from the balanced corner.
+- **The corner, re-read once more [derived].**
+  - The full-family fourth moment of plain sums is Lindelöf on average in the library (`plain_unmarked`,
+    Lemma 18.1 at z = 0). So at zero slot width the corner holds.
+  - For small positive slot width s, the full-family route with slots is Lemma 18.1 with slot cost 6κ, which is
+    the parent face; it fails by the 6u.
+  - The selected norm saves δS but needs γ ≤ δS.
+  - So the corner needs the selected norm at its fixed point below slope 1/2 for leaf vectors with vanishing slot
+    width, as recorded. No loophole in the ledger model.

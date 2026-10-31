@@ -65,6 +65,15 @@ Each step lists de Faveri's statement, the corrected version, and the evidence.
    - The fixed point is 1 + γ. [Lean: `OffSpikeIteration.lean`, `balance`, `tendsto_iter`]
    - The base case (E₂) is trivial (Lemma 7.2, unchanged).
 
+## Form of the statement (2026-10-31)
+
+The recursion cannot prove a bound for vectors exactly orthogonal to a fixed spike span. Each Poisson step restricts
+to coprimality with r ≤ B^γ, i.e. dilations, and after the ≈ log(1/ε)/γ steps the accumulated dilated family spans
+the source space (journal, "Exact orthogonality cannot be the corrected sieve's form"). The target is the weighted
+form G ≼ B^{1+γ}·I + Σ_f w_f f f*, with the weights carried through the recursion. Applications then need
+Σ_f w_f |⟨λ, f⟩|² small: Patterson-type mean values in the twist aspect (numerically confirmed) and the dilation
+aspect (untested).
+
 ## Where the real work is
 
 - **Step 3's corrected Cauchy–Schwarz and level closure.** This is the substantive new part. The corrections must be

@@ -3972,3 +3972,25 @@ would cap the method at γ ≥ 1/(n(n+1)).
 - Still open numerically: the actual leaf vector is a convolution of two plain factors times a slot. The
   correlations of a convolution are bilinear Kubota sums with poles in each variable, so both factors need the zero.
 - Proof status unchanged: the statement is Patterson-type (previous entry).
+
+## 2026-10-31 · Exact orthogonality cannot be the corrected sieve's form: the dilation family fills the space
+
+[derived]
+
+- In each Poisson step the dual vectors are λ·g̃·1_{(b,r)=1} for r up to R = (K/μ)^{1/n} = B^γ. By Möbius, the
+  coprimality is a sum of restrictions to multiples of d | r. A restriction to d | b is a dilation: the sub-problem
+  with vector λ_{d·} at scale B/N(d), whose spikes pull back to dilated twisted thetas (twisted by d^{±1}; journal,
+  "Restriction carries no spike").
+- In precondition form ("λ ⊥ S_k"), S_{k+1}(B) must contain the dilations by d ≤ R of u·S_k(B/N(d)). After k steps
+  the dilations are by products d₁⋯d_k, up to R^k = B^{kγ}. Convergence needs k ≈ log(1/ε)/γ steps, so the
+  dilations reach every d ≤ B.
+- Dimension count: dim S ≈ Σ_{N(D) ≤ B} τ_k(D) (B/N(D))^{1−nγ} ≈ B (log B)^{k−1}, the whole source space. Exact
+  orthogonality to the accumulated family is vacuous.
+- So the corrected sieve has to be stated in weighted form, G ≼ B^{1+γ}·I + Σ_f w_f f f*, with the weights carried
+  through the recursion. A dilated spike at scale B/N(d) carries the sub-problem's strength, which falls with N(d).
+- The content then sits in the application: Σ_f w_f |⟨λ, f⟩|² must be small for the vectors used. For the K-wall's
+  plain vectors this is a twist- and dilation-aspect mean value of off-pole Kubota sums. The twist aspect alone is
+  confirmed numerically (previous entry); dilations are untested.
+- Consequence for `OFFSPIKE_PROOF_PLAN.md` and `SourceSpike.lean`: the target statement should be the weighted form,
+  not orthogonality to a fixed span. The fixed-span statements remain true numerically at the sizes tested but are
+  not what the recursion can prove.

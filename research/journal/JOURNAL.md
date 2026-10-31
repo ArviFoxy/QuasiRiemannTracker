@@ -4805,3 +4805,58 @@ reciprocity are baseline theorems].**
     characters over ℤ[ω]);
   - that the level-4 return happens at a strictly smaller twist range, so the recursion terminates;
   - that the exponential resolvent bound is uniform in the index m, the agent's "windows at height 1/|m|" issue.
+
+## 2026-10-31 · The depth family of the corrected recursion: Jacobi types, and a GRH-strength trap in "keep everything"
+
+[numerical: `rip/jacobi/jacobi_type.py`, log `jacobi_type.log`; derived; the Möbius absorption identity is the
+baseline's `moebius_star_gauss_one_eq_coefficient` (spot-checked, journal "What the baseline's metaplectic Lean theory
+covers")]
+
+**Correction to the entry above ("C's weights close"; "C is bookkeeping").**
+- The weight telescoping stands.
+- The design rule of step 1 does not: "keep every restricted theta as a correction" pushes GRH-strength sums into
+  the application.
+
+**The depth family.**
+- Iterated Poisson in the rows always produces Gauss sums of the same source variable. So depth j of the recursion
+  corrects by conj(g̃₆)^j·χ_k (journal, "In Sil's form").
+- **Jacobi types [numerical].** For all 207 primes p ≡ 1 mod 3 below 3000, J(χ₆, χ₆) and J(χ₆, χ₆²) are unit
+  multiples of π, never of π̄: infinity type +1.
+- **Powers [derived].**
+  - Davenport–Hasse gives g̃₆² = J̃(χ₆, χ₆)·g̃₃ and g̃₆³ = J̃(χ₆, χ₆)·J̃(χ₆, χ₆²)·g̃₂.
+  - The CRT cross terms of g̃₆^j are (c₁/c₂)₆^{2j} up to reciprocity signs. They are cubic for j ≢ 0 mod 3 and
+    trivial (signs) for j ≡ 0 mod 3.
+  - Möbius absorption gives g̃₆ = μ·(mod-4 unit)·(angle)·conj g̃₃, so g̃₆^j carries μ^j.
+  - Consistency of the two forces the normalized quadratic Gauss sum g̃₂(c) to carry μ(c).
+
+| depth j | functional type | correlation with a smooth vector |
+|---|---|---|
+| 1 | μ·angle·cubic Gauss | the sextic pole (Kubota residue): needs the Mellin rescue (input A) |
+| 2 | angle·cubic Gauss, no μ | pole-free angular cubic: the baseline's reflection |
+| 3 | **μ·Hecke character** (type 2)·unit | **Möbius-signed Hecke sum: unconditionally only exp(−c√log X) saving** |
+| 4 | angle·conj cubic Gauss, no μ | pole-free angular cubic |
+| 5 | μ·(sextic twisted by a type-4 angle) | pole-free in principle, but sextic non-spherical theory or Heath-Brown–Patterson strength only |
+| 6 | Hecke character, no μ | elementary |
+
+**The trap [derived].**
+- With "keep everything", the depth-3 corrections for the K-wall vectors (smooth ⋆ smooth ⋆ slots) are
+  ⟨v, μ·Ξ·χ_{R₀}⟩.
+- Since χ_{R₀} is completely multiplicative, these factor as a product of Möbius-signed Hecke sums over the three
+  factors, each with only a PNT-type saving.
+- At small R₀ the weights are ≈ B^{1/6}. The K-wall needs square-root cancellation on average (B^{6γ}).
+- So the deferred depth-3 terms need GRH-strength input. The design rule must be dropped for depths ≥ 2.
+
+**Why this is an artifact, not a spike [derived].**
+- The depth-3 functionals μΞχ are not spikes of the operator. Their correlations with the level-1 spikes are
+  Σ μΞχ·conj(g̃₆)χ_k: the μ's cancel (μ² = 1 on squarefree support), leaving a pole-free angular cubic sum.
+- This matches the numerics (off the level-1 and row families the excess is +1.7%, against +16% for random spans).
+- So the true corrected sieve likely needs only level-1-type corrections. Deeper depths arise only from the
+  recursion's upper bounds.
+
+**Where C's risk now sits.**
+- C must show, inside the recursion, that the depth-j repeated rows (j ≥ 2) cost at most B^{1+γ} plus the true
+  level-1 corrections, without keeping them as explicit corrections.
+- The tools would be the pole-free bounds (the baseline's angular cubic reflection at even depths) and an
+  operator-level argument at odd depths ≥ 3.
+- That is no longer bookkeeping. **The non-classical risk of the faces route is back in C**, now located precisely:
+  the odd depths ≥ 3 of the recursion.

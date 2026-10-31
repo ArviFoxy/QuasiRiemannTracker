@@ -107,6 +107,10 @@ Each step lists de Faveri's statement, the corrected version, and the evidence.
       repeated row is row R₀ **restricted to the columns coprime to D**, and it vanishes elsewhere. So the below
       energy is Σ_{R₀ ≤ μ} Σ_D |⟨μ_{(D)}, row_{R₀}⟩|², with μ_{(D)} the vector restricted to columns coprime to D.
       Pulled back through the Poisson identity, these are **restricted twisted thetas** (step 2's objects).
+  - **Design rule (withdrawn for depths ≥ 2 the same day; journal, "The depth family of the corrected
+    recursion").** Depth j corrects by conj(g̃₆)^j·χ, and odd powers carry μ (Möbius absorption). Depth 3 is
+    μ·(Hecke character): its correlations with smooth vectors need GRH-strength input, so depths ≥ 2 must be
+    absorbed inside C, not deferred. The original rule read:
   - **Design rule: every metaplectic fact goes to the application.**
     - Keep the restricted thetas as corrections, instead of proving they carry no excess. That removes step 2's
       d^{−2}-twist and Kazhdan–Patterson vanishing from C, so C becomes purely elementary bookkeeping on Sil's

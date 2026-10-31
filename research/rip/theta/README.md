@@ -23,6 +23,11 @@ be small.
 | `theta_primepool.py B L` | prime-pool row vectors: energy and overlap with the top left vector |
 | `theta_classes.py B L [sample]` | reciprocity sign s(z, z′) and χ_z(−1) by row class mod 4; per-class spectra and theta excess (no anti-self-dual class) |
 | `theta_offspan.py B L [M,...] [J]` | in the Lean statement's convention b* E E^H b (`../../lean/arvi_kwall/SexticSpikeFree.lean`): the theta G·conj χ(u)·profile against its conjugate; the top of E off the theta span (each conjugation), the block span (both conjugations), all of them, and a random span of the same dimension |
+| `theta_cubic.py B L [M] [J]` | the cubic family E3 = E² (agent test T5): cubic theta G3·conj χ³(u) against its conjugate; the top of E3 off the theta span, the block span, both, and a random span (twists coprime to 6) |
+| `theta_cubic_struct.py B L [k]` | structure of the top cubic vectors: flatness, mass in the span of class indicators (z mod 9, z mod 2) × {1, G3, conj G3} × profile, and the single supplementary twists χ³(λ^e 2^f u) × {1, G3, conj G3} |
+| `theta_suptwist.py B L k [top]` | r_H of every supplementary twist λ^e 2^f ω^g (−1)^h for the theta (Lean conjugation), the other conjugation and the plain character, in the sextic (k = 1) or cubic (k = 2) family |
+| `theta_classtwist.py B L k [M]` | the top of E^k off the class-twisted span (classes mod 9 and mod 4 × {G_k, conj G_k, 1} × profiles), alone and together with the twists coprime to 6, against random spans |
+| `theta_cubic_top.py B L [M,...]` | mass of the top cubic vectors in V(M) and in the source-side theta span (the 10⁴ run was stopped after V(100); superseded by `theta_cubic_struct`) |
 
 All scripts build E and the row Gauss sums through `theta_core.py`.
 

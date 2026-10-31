@@ -1,0 +1,6 @@
+B=10000 L=10000  R=2816 rows  S=2610 sources   built in 2.4s
+  |G(z,1)|: min 1.000 max 1.000   (built 10.0s)
+  |G3| rows 1.000..1.000, sources 1.000..1.000   (20s)
+top s^2/S: [6.692 5.153 4.769 4.553 4.439 4.348]   MP edge 4.156
+row span V(  30) dim  120: top left vectors mass [0.273 0.29  0.685 0.798 0.595 0.536] ; random span [0.205 0.195 0.2   0.211 0.227 0.2  ]
+row span V( 100) dim  480: top left vectors mass [0.564 0.532 0.759 0.846 0.699 0.651] ; random span [0.422 0.407 0.419 0.406 0.419 0.423]

@@ -43,6 +43,15 @@ convention here the theta vector carries the excess and its conjugate does not: 
 `|E* b|²/(S‖b‖²)` is about `1.12` for `b = g̃ conj χ(u)` and about `0.93` for the conjugate, against `0.96` for random
 phases (`theta_offspan.py`).
 
+The largest spikes are twists by the supplementary symbols `(λ/z)`, `(ω/z)`, `(2/z)`. These depend only on `z` mod 9
+and mod 4. The sources are primary and odd, so the dual frequencies live in `λ^{−a} 2^{−b} O`. The twist box below
+contains `λ`, `2` and all their products, so the spike family includes these twists.
+* Sextic family at `B = 10⁴`: the twist `λ⁴·2·ω` has `|E* b|²/(S‖b‖²) = 1.34`, against `1.13` for `m = 1`
+  (`theta_suptwist.py`).
+* Cubic family at `B = L = 10⁴`: the theta sits far above the bulk (top `s²/S = 6.69` against an edge of `4.16`).
+  Off the class-twisted spike span, the top is `3.77` against a reduced edge of `3.65`. A random span of the same
+  dimension leaves `5.44` (`theta_classtwist.py`). This is numerical support for `CubicSpikeFree` at that size.
+
 ## The conjecture
 
 `SpikeFreeLargeSieve k q`: for every `ε > 0` there is `C` with the following property. For every `B ≥ 1` and every

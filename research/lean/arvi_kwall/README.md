@@ -84,7 +84,9 @@ The conjecture is a `def … : Prop`, and nothing in the file assumes it.
 
 - **Objects (OAI's own).**
   - Rows `sexticRows B`: squarefree ideals of ℤ[ω] coprime to 6 with B ≤ N z ≤ 2B.
-  - Sources `sexticSources L`: ideals coprime to 6 with squarefree norm ≤ L, taken at their primary generators.
+  - Sources `sexticSources L`: all ideals coprime to 6 with norm ≤ L, taken at their primary generators. This set is
+    closed under products, which the recursion below needs. The numerics' squarefree-norm subfamily is
+    `squarefreeSources`; fewer sources only lower the form (`dualForm_mono_sources`, `spikeFree_squarefree`).
   - Kernel `orderKernel k z n = χ_z(n)^k` with χ_z = `idealRowHom` (k = 1 sextic, k = 2 cubic).
   - The row Gram form `dualForm` is b* E E* b = Σ_n |Σ_z b_z conj χ_z(n)^k|².
 - **Spike family.** Every twist m = x + yω with N m ≤ M (all associates) gives three shapes:
@@ -107,8 +109,30 @@ The conjecture is a `def … : Prop`, and nothing in the file assumes it.
     spikes (`norm_spikeVector_le`). With the graded weights it helps only for very small W.
   - `corrected_trivial`: Δ = |R||S| always works.
   - `exists_orthogonal_of_card_lt`: with fewer spikes than rows, some nonzero b is orthogonal to all of them.
+  - `spikeBessel_of_blocks` and `selected_of_amplified`: suppose every selected constant S₀ on W makes the spike
+    Bessel constant at most η S₀ with η < 1. Then Δ/(1 − η) is a selected constant. The proof iterates
+    S ↦ Δ + ηS from `isSelected_trivial` and takes the limit.
+- **The K-wall from the conjecture (exponent count in the docstring, not formal).**
+  - The spike Bessel constant on W is a sum over twist blocks. Each block is a selected sieve on W at the shorter
+    source length M_r.
+  - PR 93's amplification bounds that block by (M_r/B)^δ times the balanced selected norm.
+  - So η → 0 when δ > 1/q + 1/q²: 7/36 for the sextic family. That covers the whole K-wall range 1/3 ≤ δ < 1/2.
 - **Convention.** This is the b* E E* b form. Most earlier theta scripts measure |Eᵀc|², whose spikes are the complex
   conjugates (conj g̃·χ(m)). See `research/rip/theta/theta_offspan.py` and the journal entry of 2026-10-30.
 - **Relation to `SpikeFree.lean`.** That file corrects on the source side, where the selected bound is plain
   restriction. Here the spikes live on the rows, as the Poisson theta vectors do, so the selected bound needs
   duality and a Bessel bound for the spikes on W.
+
+## SpikeRule.lean: the spike rule is outside the amplify–reflect closure (log scale)
+
+Mathlib and `Closure.lean` only. It checks in about 10 s. Every theorem depends only on `propext`,
+`Classical.choice` and `Quot.sound`.
+
+- `spike_rule_forces`: suppose amplification at slope δ holds with q + 1 < δq², i.e. δ > 1/q + 1/q². Suppose also
+  the spike rule n(1) ≤ max(1 + ε, n(x) + (1 − x + ε)/q) holds at a dominant block x ≤ 1 − qε. Then
+  n(1) ≤ 1 + ε.
+- `nstar_violates_spike_rule`: for 7/36 < δ and 0 < ε < 1/6, the barrier function `nstar δ` breaks the sextic spike
+  rule. That function obeys the three closure rules with n(1) = 7/6.
+- `sextic_spike_rule_forces`: the case q = 6.
+- So the graded spike-free conjecture is genuinely new input, and it is enough to remove the 1/6 excess at the
+  balanced point.

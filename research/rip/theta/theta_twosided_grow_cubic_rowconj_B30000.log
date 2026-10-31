@@ -4,3 +4,6 @@ B=30000: R=8474 S=7768; order 3; 76 twists with N(m) <= 300   (9s)
 full top [8.979 6.479 5.725 5.513]   masked null [3.992 3.981 3.974 3.963]   MP edge 4.180   (16s)
 M=100 M'=0 betas [0.167]: dV 2112 (0.249 R), dP 432 (0.056 S)
     off both [3.986 3.874 3.762 3.691]   masked null [3.353 3.348 3.336 3.332]   random spans [6.689 4.909 4.429 4.278]   MP edge 3.522   (117s)
+M=300 M'=0 betas [0.167]: dV 4512 (0.532 R), dP 432 (0.056 S)
+    off both [2.846 2.827 2.786 2.765]   masked null [2.705 2.694 2.685 2.677]   random spans [4.577 3.486 3.23  3.119]   MP edge 2.842   (358s)
+done in 358s

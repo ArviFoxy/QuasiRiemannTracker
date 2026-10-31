@@ -1,0 +1,8 @@
+order 6, B = L = 30000: |E f_m|^2 / masked null for the twisted source thetas, (x/m)^+1 and (x/m)^-1:
+  N(m) =    7:  +1 1.58   -1 0.94
+  N(m) =    7:  +1 1.59   -1 0.95
+  N(m) =   13:  +1 1.49   -1 1.00
+  N(m) =   13:  +1 1.49   -1 1.00
+  N(m) =   19:  +1 1.46   -1 0.96
+  N(m) =   19:  +1 1.44   -1 0.97
+  untwisted source theta: 2.16

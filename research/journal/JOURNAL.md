@@ -3296,3 +3296,40 @@ conjugations) and the plain `(x/m)₆^{±1}`, on the twelve classes mod 4.
     is `G(z)·χ_z(m)²`, the other conjugation, while V holds only `G(z)·conj χ_z(m)²`. The Lean statement removes
     every power `χ_z(m)^k`, so the numerical V is a subset of it. A run with both conjugations in V
     (`THETA_ROWCONJ=1`) checks this. [derived]
+
+## 2026-10-31 · Only the +1 twists of the source theta carry a spike, and they decay like N(m)^{−1/q}
+
+[numerical; `rip/theta/theta_twisted_norms.py`, logs `theta_twisted_norms_{cubic,sextic}_B30000.log`;
+`theta_twisted_images.py`, logs `theta_twisted_images_cubic_B30000.log`, `…_conjG.log`; the cubic matrix via kernel
+mode 2]
+
+**Energy of the twisted images.** For each twist m (N(m) ≤ 30), `|E f_m|²` divided by the masked null, for
+`f_m = b(x)(x/m)^{+1}` and `b(x)(x/m)^{−1}` at B = L = 3·10⁴:
+
+| N(m) | 7 | 13 | 19 | untwisted |
+|---|---|---|---|---|
+| cubic, `(x/m)^{+1}` | 2.10 | 1.93 | 1.77 | 4.12 |
+| cubic, `(x/m)^{−1}` | 1.37 | 1.15 | 1.00 | |
+| sextic, `(x/m)^{+1}` | 1.58 | 1.49 | 1.45 | 2.16 |
+| sextic, `(x/m)^{−1}` | 0.94 | 1.00 | 0.96 | |
+
+- **Only the +1 twist is a spike.** In the residue picture `f_m^{+}` lands on the residue at the index `zm`, and
+  `f_m^{−}` on the index `z m^{q−1}`. The theta coefficients vanish there (the cubic ones are zero off squarefree ×
+  cube), so the −1 images are noise. The data agree: the −1 images sit at the null by N(m) = 19 (sextic: already at
+  N(m) = 7).
+- **Decay.** The excess of the +1 images falls like `N(m)^{−0.36}` (cubic) and `N(m)^{−0.25}` (sextic). The residue
+  picture predicts `N(m)^{−1/q}` (`Σ_z |τ(zm)|²` over a row window): 0.33 and 0.17. The cubic exponent matches, and
+  the sextic one roughly does.
+- **Where the cubic +1 images live.** Their energy in the row family V (twisted row thetas `G conj χ_z(m)²` on the 6
+  unit classes, twists to 100) is 0.818 against a random level of 0.212. On classes `(z mod 9) × χ_z(−1)` it is
+  0.947. The −1 images are at the random level in every row span tried: the other conjugation `G χ_z(m)²`, the
+  conjugate theta `conj G χ_z(m)^{±2}`, and mod-9 classes.
+- **This explains the cubic growing-family runs.** Adding source twists helped even though the cubic family has one
+  theta. V's unit-class approximation captures only about 82% of each twisted spike, and the source side removes the
+  spike exactly. With mod-9 classes on the twisted row family (`THETA_TWCLS=9`), (100, 0) reaches the null on its own
+  (−2.0%), but V is then 76% of the rows (random spans: +36%). The other conjugation helps only a little (+9.4% →
+  +5.2% at (300, 0), with more dimensions).
+- **For the conjecture.** The source family needs only the +1 twists, half the current size. On the row side the
+  twisted thetas need class structure finer than the unit classes: the reciprocity and supplementary laws make the
+  twisted spike `G(z) conj χ_z(m)^k` times a function of z mod 9 (and mod 4 for q = 6). The Lean statement's
+  dyadic-window shapes already allow class functions through the unit and λ twists. [heuristic]

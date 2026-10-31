@@ -15,6 +15,8 @@ imports may import this package.
 | `Polar.lean` | `thetaCorr` (full-range twisted theta correlation of a radial weight); `PolarInput k q W v₁ ε`; **`polarInput` (sorry)**; `mellin_zero_bounds`; `heightTwist`, `mellin_heightTwist`, `height_meanvalue` |
 | `Bessel.lean` | `twistNorm_pos`, `mem_twistBox_of_norm_le`, `shell_bounds`; `weighted_dyadic` (pure analysis); `weighted_bessel` |
 | `KWall.lean` | `FullRangeCorrected k q γ` (input C, full-range form, an open hypothesis); `kwall_source_term`; `source_exponent_le` |
+| `RootEnergyFrom.lean` | `NaturalSelectedCellNormFrom δ₀` (the K-wall at the bank's interface, an open hypothesis); **`selectedRootEnergy_of_cellNormFrom`**: R1 at every cut `K ≥ δ₀ + 10⁻⁶`; `selectedRootEnergy_banked` (sanity check at `δ₀ = 1/2`) |
+| `Walls.lean` | `ReferenceAtγ` (Sil's reserves with short-reference threshold `γ`), `referenceAtγ_half`; `WallGates`; **`walls_gates`**, **`walls_reference`**: the line at `K₀ = 0.4869`, `γ₀ = 0.51` down to `Λ = 1.965` |
 
 ## The stated input (`polarInput`)
 
@@ -72,6 +74,32 @@ pole-free cubic reflection.
      `RootParameters` and the files that apply the reference large sieve below `upperOne`, with target 2 supplying
      the new range.
 
+## Downstream to the bank (proved; no `sorry`, no polar input)
+
+1. **R1 below `K = 1/2` reduces to one statement** (`RootEnergyFrom.lean`).
+   - The banked R1 uses `K ≥ 1/2` only through the threshold of Bebel's per-cell selected norm.
+   - `cap_body` needs only `0 ≤ K ≤ 1`. The histogram step uses `δ ≥ 1/2` only for the constant `smin/4` (`smin/8`
+     at `δ ≥ 3/8`). The plumbing ignores `K`.
+   - The file is generated from the banked declarations by these substitutions:
+
+     | banked | fork | change |
+     |---|---|---|
+     | `FineSlotHistogram.cell_geometry` | `cell_geometry_from` | `1/2 ≤ δ` → `3/8 ≤ δ`, `smin/4` → `smin/8` |
+     | `FineSlotHistogram.finite_aggregate_norm` | `finite_aggregate_norm_from` | the same hypothesis; cell norm at `smin/8` |
+     | `FineSlotHistogram.naturalAggregateSlotNorm_of_cell` | `aggregate_of_cell_from` | cell input `NaturalSelectedCellNormFrom δ₀`, output `AggregateFrom (δ₀ + 10⁻⁶)` |
+     | `FineNaturalCount.ActualSelectedSlotNorm` | `ActualFrom δ₁` | `δ ∈ Icc (500001/1000000) (3/4)` → `δ ∈ Icc δ₁ (3/4)` |
+     | `FineActualSelectedNorm.actualSelectedSlotNorm_of_aggregate` | `actual_of_aggregate_from` | none |
+     | `R1/Cap.cap_proof` | `cap_proof_from` | the banked norm → the hypothesis `hact` |
+
+     Names are qualified with `FineDetectorWords.` where `R1.Cap`'s imports make them ambiguous.
+2. **The reference wall is a constant, not a slope** (`Walls.lean`).
+   - With short-reference threshold `γ`, Sil's `upperOne` is `(P − S − (1 − γ))/2`. The first reserve clause
+     becomes `(3/4 + γ/2 − B) + (L − 2)S − (9/2) sel S`.
+   - So the bar's face needs only `γ ≈ 0.509`, i.e. the short reference diagonal for `B ≤ A^{0.51}`.
+3. **The scalar gates close at the bar.** `walls_gates` and `walls_reference` cover every step of the banked cap
+   line in `[1.965, 5143/2000]` at `K₀ = 0.4869`, `γ₀ = 0.51`. At `Λ = 1.965` the float model gives θ* 3.6e-6 below
+   the bar.
+
 ## Verdict so far
 
 - The polar input is a small, clean interface (one statement per order). Downstream it delivers exactly the K-wall's
@@ -81,3 +109,11 @@ pole-free cubic reflection.
   - the convolution (dilation-aspect) version of the polar input;
   - a separate argument for the low-height slice;
   - the two bank-chain forks.
+- The forks are now sized (items 1–3 above):
+  - **K-wall.** `NaturalSelectedCellNormFrom 0.487` at the interface, and nothing else in R1. But that is an operator
+    bound, which the Mellin rescue does not reach. To use the rescue, R1's body must be re-proved per vector.
+  - **Reference.** Sil's root reference forked to `ReferenceAtγ`, with the short reference valid up to `A^{0.51}`.
+    Only twists of norm `≤ A^{0.02}` enter there, so the polar input is needed pointwise, not on average.
+  - **Ledger.** A small fork of `e5_ledger` (`selOne`, `selTwo`).
+- The polar input itself is costly. For `q = 6` it is input A, about 15–30 person-months by the scoping of
+  2026-10-31: the baseline has no functional equation or growth bound, even for `n = 3`.

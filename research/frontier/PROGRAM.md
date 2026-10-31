@@ -15,6 +15,21 @@ Both walls must move:
 - the **K-wall** (K < 1/2), at slope ≈ 0.48 with excess γ ≈ 0.015;
 - the **reference wall** (target 2), the short reference past √A for smooth × prime vectors.
 
+**What each wall must reach (journal, "Downstream to the bank", 2026-10-31).**
+
+| end face Λ | θ* − bar | cut K | short-reference threshold γ |
+|---|---|---|---|
+| 1.9673 (the bar) | 0 | 0.4877 | 0.509 |
+| 1.965 | −3.6e-6 | 0.4870 | 0.5095 |
+| 1.93 | −6.0e-5 | 0.474 | 0.519 |
+| 1.85 | −1.8e-4 | 0.446 | 0.543 |
+
+- The reference wall is a constant in Sil's root interval, not a slope. So it needs only B ≤ A^{0.51} at the bar,
+  where target 2's corrections run over twists N(h) ≤ A^{0.02}.
+- The K-wall binds. At the bank's interface it is the single statement `NaturalSelectedCellNormFrom δ₀`
+  (`../lean/arvi_polar_sketch/RootEnergyFrom.lean`: it gives R1 at every K ≥ δ₀ + 10⁻⁶).
+- The scalar gates of the line close down to Λ = 1.965 at K₀ = 0.4869, γ₀ = 0.51 (`Walls.lean`).
+
 Either alone buys nothing (journal, "Faces past Λ = 2"; target 2 alone moves the native end from 2.005 to about
 2.003).
 
@@ -22,10 +37,10 @@ Either alone buys nothing (journal, "Faces past Λ = 2"; target 2 alone moves th
 
 | id | input | type | status | size |
 |---|---|---|---|---|
-| A | **6-fold Kubota theory, index aspect**: continuation and functional equation of ψ⁽⁶⁾(m, w) (index conductor N(m)), polynomial growth on Re w = 1/2 + ε, uniformly in m | classical (Kubota 1969 for general n); not formalized anywhere | missing | paper-level in Lean (the baseline's cubic development is 53k lines) |
+| A | **6-fold Kubota theory, index aspect**: continuation and functional equation of ψ⁽⁶⁾(m, w) (index conductor N(m)), polynomial growth on Re w = 1/2 + ε, uniformly in m | classical (Kubota 1969 for general n); not formalized anywhere | missing | 15–30 person-months (agent scoping, 2026-10-31): the baseline's ≈ 14k-line analytic spine is generic, but it has no functional equation or growth bound even for n = 3. N1a (series, germ at 7/6) 4–7, N1b +2–6, N3 (functional equation) 8–18, N2 (growth) +1–2 |
 | A′ | Lindelöf on average in the index aspect, Σ_{N(m)≤M}\|ψ⁽⁶⁾(m, 1/2 + ε + it)\|² ≪ M^{1+ε}(1 + \|t\|)^R | from A plus the sextic large sieve (approximate functional equation of length ≤ N(m)^{1/2} keeps Sil's Θ₆ diagonal) | missing; the cubic analogue is David–de Faveri–Dunn–Stucky Lemma 6.6 | moderate once A exists |
 | A″ | Mellin rescue: Mellin-zero plain vectors (and convolutions with the zero in the long factor) have spike correlations at square-root size on average over twists | A + A′ + contour shift | numerically at the null (twist, dilation, convolution, mollified shapes; `../rip/theta/`) | small once A, A′ exist |
-| B | **Target-2 decomposition**: ‖E_{A,B}λ‖² ≤ C(AB)^ε{A‖λ‖² + (A/B)Σ_{N(h)≤B²/A} w_h\|⟨λ, f_h⟩\|²} for B ≤ A^{2/3} | fork of Sil's `SievePoissonBound` (kernel split, Gauss-sum factorization of the dual terms) and `SieveDescent` | restricted descent in Lean (`../lean/arvi_kwall/RestrictedDescent.lean`) | moderate (≈ 1–2k lines) |
+| B | **Target-2 decomposition**: ‖E_{A,B}λ‖² ≤ C(AB)^ε{A‖λ‖² + (A/B)Σ_{N(h)≤B²/A} w_h\|⟨λ, f_h⟩\|²} for B ≤ A^{2/3} | fork of Sil's `SievePoissonBound` (kernel split, Gauss-sum factorization of the dual terms) and `SieveDescent` | restricted descent in Lean (`../lean/arvi_kwall/RestrictedDescent.lean`) | moderate (≈ 1–2k lines); the bar needs it only up to B ≤ A^{0.51} |
 | C | **Corrected recursion** for the K-wall: de Faveri's recursion run off the spikes to the fixed point 1 + γ, in weighted form G ≼ B^{1+γ}I + Σ w_f ff* over the generated family | elementary, new; a fork of Sil's formal sieve | iteration arithmetic (`silStep`, `tendsto_silIter`) and transposition (`TransposeCorrection.lean`) in Lean; step 3's corrected Cauchy–Schwarz and level closure are the open core | paper-level, then a large fork |
 | D | Λ_row: row thetas on slot-selected rows, closed by amplification | `SpikeRule.lean` (formal for slopes > 7/36) | conditional on C | small |
 | E | Face forks: native or density machinery carrying the new gates | Lean engineering on the 119 ReturnD modules and the face chain | not started | large |
@@ -54,8 +69,11 @@ Order: A → A′ → A″ feeds B (reference wall) and C (K-wall); C → D; B, 
 1. **C's level closure.** The corrected Cauchy–Schwarz must pull the dual's spikes back to explicit corrections,
    with a family that closes up. This is numerically supported (`theta_level2`, `theta_local_spikes`) but
    unproved. It is the only mathematical risk that is not of classical type.
-2. **A's size.** It is classical, but no proof assistant has the n-fold Kubota Eisenstein series for n ≥ 4. The
-   baseline's n = 3 development is the template. How much of it is generic in n is unmapped.
+2. **A's size.** It is classical, but no proof assistant has the n-fold Kubota Eisenstein series for n ≥ 4.
+   - Mapped 2026-10-31: the baseline's analytic spine (≈ 14k lines) is generic in n. The sextic needs Γ(12), the
+     quadratic Kubota character and 21 cusps.
+   - The baseline has neither the functional equation nor any growth bound, even for n = 3. So A costs
+     15–30 person-months.
 3. **D1's low slopes** matter only if D1 replaces the faces route. The faces route needs the K-wall near slope
    0.48 only.
 

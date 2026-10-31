@@ -4516,3 +4516,124 @@ At Arvi's request the polar theorems are stated first, with `sorry`, before comm
     reference's spike term.
   - θ still needs input C in full-range form with rank-one correction functionals, the dilation-aspect polar input,
     a low-height argument, and the two bank forks.
+
+## 2026-10-31 · Downstream to the bank: the bar needs K ≈ 0.487 and a short-reference threshold of only 0.51
+
+[Lean: `lean/arvi_polar_sketch/RootEnergyFrom.lean`, `Walls.lean` (no `sorry`, standard axioms); numerical: float
+model of the newTop row at h = 0.8097; derived]
+
+**R1 below K = 1/2 reduces to one statement [Lean].**
+- The banked R1 (`selectedRootEnergy`, K ∈ [0.500001, 3/4]) uses K ≥ 1/2 only through the threshold of Bebel's
+  per-cell selected norm (`NaturalSelectedCellNorm`, slopes δ ≥ 1/2 + gap):
+  - `cap_body` needs only 0 ≤ K ≤ 1 and the all-source norm at slope δ = K;
+  - the histogram step (`FineSlotHistogram.cell_geometry`) uses δ ≥ 1/2 only for the constant smin/4. At δ ≥ 3/8 it
+    gives smin/8;
+  - the actual-slot plumbing and the peel/swap reductions do not look at K.
+- `selectedRootEnergy_of_cellNormFrom`: the cell norm at slopes ≥ δ₀ (any δ₀ ≥ 3/8) gives `SelectedRootEnergy K` for
+  every K ∈ [δ₀ + 10⁻⁶, 3/4]. The fork copies the banked declarations by script, with the threshold as a parameter.
+  `selectedRootEnergy_banked` recovers the banked range at δ₀ = 1/2.
+- So the K-wall, at the interface the bank consumes, is exactly `NaturalSelectedCellNormFrom δ₀`.
+
+**The reference wall is a constant, not a slope [derived from `CubeFree/RootParameters.lean`].**
+- The centred root exponent must lie below upperOne = (P − S − 1/2)/2. The 1/2 is the short reference's threshold
+  (diagonal for B ≤ A^{1/2}; the identification is inferred, journal 2026-10-30).
+- With a threshold γ, upperOne = (P − S − (1 − γ))/2. The interval condition becomes P + 2S + 9u/2 < 3/4 + γ/2.
+  Through the face relation P + LS ≤ B, the first reserve clause reads (3/4 + γ/2 − B) + (L − 2)S − (9/2) sel S
+  (`ReferenceAtγ`; `referenceAtγ_half` recovers `ReferenceAt`).
+- The 2 in front of S does not move. A face Λ < 2 is paid by the constant: γ − 1/2 ≥ 2(2 − Λ + 9a/2)·cap − 2(1 − B).
+
+**What each end face needs [numerical; `$SCRATCH/walls/walls_table.py`].** Banked cap line
+c(Λ) = 1/10 + (3/50)(5143/2000 − Λ), B = 0.99999, a = 10⁻⁵. K is read off the overshoot gate with a 10⁻⁴ end margin.
+
+| Λ | θ* − bar | K needed | γ needed | cap |
+|---|---|---|---|---|
+| 1.99 | +3.50e-5 | 0.4962 | 0.5027 | 0.1349 |
+| 1.97 | +4.2e-6 | 0.4888 | 0.5082 | 0.1361 |
+| 1.9675 | +3.1e-7 | 0.4879 | 0.5089 | 0.1362 |
+| 1.965 | −3.6e-6 | 0.4870 | 0.5095 | 0.1364 |
+| 1.95 | −2.74e-5 | 0.4815 | 0.5137 | 0.1373 |
+| 1.93 | −5.98e-5 | 0.4742 | 0.5194 | 0.1385 |
+| 1.90 | −1.10e-4 | 0.4634 | 0.5281 | 0.1403 |
+| 1.85 | −1.78e-4 | 0.4458 | 0.5430 | 0.1433 |
+| 1.80 | −2.07e-4 | 0.4285 | 0.5585 | 0.1463 |
+
+**The walls' line in Lean [Lean].** With K₀ = 0.4869 and γ₀ = 0.51, every step of length ≤ 1/400000000 between faces
+of the banked cap line in [1.965, 5143/2000]:
+- passes the E5 gates, with `principal` replaced by the γ₀-reference at both ends of S ∈ [0, c] and by the two
+  consequences that the ledger's selected branch uses (`walls_gates`);
+- keeps Sil's reserves positive with the γ₀-reference (`walls_reference`).
+
+At Λ = 1.965 the float model gives θ* = 0.87332836, 3.6e-6 below the bar. Not proved: that the steps exist. That
+needs R1 at K₀, Sil's root reference forked to `ReferenceAtγ` with its short reference valid up to A^{0.51}, and a
+small fork of `e5_ledger`.
+
+**Reading.**
+1. **The reference wall is small.**
+   - The whole useful range needs γ ≤ 0.56 (and 0.51 at the bar), against target 2's 2/3.
+   - In target 2's decomposition the corrections run over twists N(h) ≤ B²/A = A^{2γ−1}. That is A^{0.02} at
+     γ = 0.51, so only tiny twists enter.
+   - So the reference needs the polar input only pointwise, with polynomial dependence on N(h). It does not need
+     the mean square over twists (input A′) [derived from target 2's shape].
+2. **The K-wall binds.**
+   - It must reach slope ≈ 0.487 with no excess (Z^{loss} for every loss > 0).
+   - At the banked interface it is an operator bound on slot-selected rows, for all source vectors. A corrected
+     sieve gives that only with the spikes' Bessel constants on those rows (Λ_row, Λ_src). The Mellin rescue does
+     not reach Λ_src: it bounds correlations of specific vectors.
+   - **To use the rescue, R1 must be re-proved per vector** [heuristic]:
+     - amplify the leaf's packed polynomial by its heavy block;
+     - bound the amplified vector on all rows with a one-sided corrected sieve;
+     - then its spike correlations are dilation-aspect correlations of the Mellin-zero plain factors.
+   - That is a fork of R1's body (`R1/Body.lean`, `RootBound`), not of the interface.
+3. **The margin at the bar is thin.**
+   - The bar is crossed at Λ ≈ 1.9673 (K ≈ 0.4877). A 1e-5 margin needs Λ ≈ 1.961 (K ≈ 0.4855).
+   - The curve flattens near −2.1e-4 at Λ = 1.80 (K ≈ 0.43, γ ≈ 0.56).
+
+## 2026-10-31 · Scoping the 6-fold Kubota port: the baseline has no functional equation or growth bound, even for n = 3
+
+[agent map of `openai_baseline/OAI/NumberTheory/DirichletL/` (82 Eisenstein files, 53k lines); spot-checked by me:
+the continuation region and the absence of any functional equation, scattering matrix or growth bound]
+
+**Reusable [read].**
+- About 14k lines are a generic analytic spine. Only 13 lines of it mention a symbol, λ or Gauss sum. It covers:
+  - H³ geometry and fundamental domains (already stated for any H ≤ Γ(3));
+  - the Laplacian, Green identity and cusp cutoffs;
+  - the Dirichlet form, Friedrichs resolvent, Rellich compactness and coercivity;
+  - Fredholm and meromorphic continuation;
+  - Whittaker/Bessel Fourier expansions.
+- n = 3 enters as data: the Kubota character on Γ(3) (cubic reciprocity), the centre 4/3, the cusp lattice 3O and
+  9√3/2, and the 3-cusp decomposition. The rest is n = 3 arithmetic: the Fourier-coefficient identification, the
+  λ-adic tables and the constant term ζ(3s − 3)/ζ(3s − 2).
+
+**Sextic [agent numerics: random elements, exact arithmetic; evidence, not proof].**
+- γ ↦ (c/a)₆ is a character on Γ(12) and Γ(24), but not on Γ(3), Γ(6) or Γ(9). On Γ(12), κ₆ = κ₃²·κ₂, matching the
+  baseline's `sexticChar`. Only the quadratic Kubota character κ₂ is new.
+- The index grows from 648 to 2,488,320. Γ(12)·SL₂(ℤ) has 21 cusps against 3, so the finite `decide` checks must go
+  through CRT.
+
+**Missing even for n = 3 [read; spot-checked].**
+- The coefficients are proved `MeromorphicOn {1 < Re s, 0 < Im s}` and meromorphic at the centre 4/3
+  (`WhittakerContinuation`), with the residue. There is nothing more:
+  - no functional equation, scattering matrix or Maass–Selberg relation;
+  - no bound in |Im s|, no Lindelöf.
+- Absolute convergence holds only for Re s > 2. The only h-uniform bound is at a fixed s.
+
+**Agent estimates (person-months, 100–150 new lines/day).**
+
+| piece | content | estimate |
+|---|---|---|
+| N1a | sextic series, continuation on {Im > 0}, germ at 7/6 | 4–7 (5–9k new, 1.5–2.5k edited) |
+| N1b | all of Re s > 1; "only pole at 7/6" | +2; +3–6 |
+| N3 | functional equation with the scattering matrix over all cusps | 8–18 (10–25k) |
+| N2 | polynomial growth: from N3 with Phragmén–Lindelöf, or a quantitative resolvent | +1–2; high risk |
+
+Riskiest, in order: N3, the pole location, the 2-adic and λ-adic factors, N2's uniformity in m, and 21-cusp checks.
+
+**Consequences for the faces program.**
+- Input A (continuation, functional equation and growth of ψ⁽⁶⁾(m, w) in the index aspect) is N1a + N1b + N2 +
+  probably N3: roughly 15–30 person-months, not the baseline's 53k lines reused.
+- The cubic polar Voronoi estimate (about 3k lines) stands. It goes through the theta's own reflection, not the
+  Eisenstein functional equation. But it is not a template for this cost: for n = 6 the Gauss-sum series is an
+  Eisenstein coefficient, not a theta L-series, so it needs N2.
+- Combined with the entry above: the reference wall needs A only pointwise for tiny twists. That still needs
+  continuation past the pole with growth in |Im w|, i.e. N1b + N2. The cheaper cubic route covers only the cubic
+  analogue.

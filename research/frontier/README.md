@@ -202,6 +202,25 @@ returns the trivial bound (journal: "One shape for all three walls").
 | faces' K-wall | selected norm at slope ≈ 0.48 within B^{0.015} of its fixed point at source length ≈ B^{0.96} (the t = 0 corner) | Guth–Maynard for a thin family at the kernel's self-dual point (conductors multiply). Equivalently, at the binding corner (two plain sums just below √(conductor), slot sliver s ≈ 0.03), a classical-strength structured face suffices: a twisted fourth moment of the sextic family whose prime twist goes past the √ limit, i.e. the faces' slot-cost atom again | barrier proved in Lean (`lean/arvi_kwall/`); the Θ₆ closure is about 11× too weak; the parent face only relieves the tiny-slot corner; pointwise bootstrap bounds on the plain sums do not help (journal, "K-wall corner") |
 | faces' reference | short reference past √A for smooth × prime vectors | GS1-type structured sextic sieve (#96, unverified) | pays only together with the K-wall |
 
+## Roadmap for the faces after the off-spike analysis (2026-10-31; derived + numerics, nothing proved)
+
+A face past Λ = 2 needs **both** walls moved (journal, "Faces past Λ = 2"): the K-wall (K < 1/2, or κ(1/2) > 0.902) and
+a relaxed reference (target 2 above). Payoff if both move and the steps reach the faces: −1e-4 to −5e-4 (physical slot
+0.0675 → 0.08–0.11). Both walls are now statements about one object, the sextic sieve with its Poisson spikes
+corrected (`CorrectedLargeSieve`), plus a detector condition for the vectors at hand.
+
+| wall | regime | corrected sieve needed | detector condition | status of the inputs |
+|---|---|---|---|---|
+| reference (target 2) | sources B ≤ A^{2/3}, dual length B²/A ≤ A^{1/3} | **one** Poisson step: with every dual kernel ≤ M ≥ B²/A subtracted, the Gram is A·I plus gcd/coupling terms (de Faveri Lemmas 3.3, 4.4, 5.1); no recursion | smooth × prime reference vectors against twisted Gauss-sum thetas of twist ≤ A^{1/3}, restricted to multiples of small d, with N^{it} twists. The m = 1 correlation (Patterson bias of the smooth factor) is the main term to control | Poisson step: known technology. Detector: open |
+| K-wall | balanced, L ≈ B^{0.96}, slope δ ≈ 0.48, γ ≈ 0.015 | the off-spike recursion to fixed point 1 + γ, with the finite family of Poisson levels and local spikes | none beyond Λ_row (amplification, `SpikeRule.lean`) and Λ_src (Bessel of the dilated residues on W) | recursion: long elementary bookkeeping; Λ_src: metaplectic Rankin–Selberg (DFDH); numerics support every step |
+
+- The levels, local spikes and dilated-family conditioning are in the journal (2026-10-31: "The Poisson levels",
+  "de Faveri's recursion, run off the spikes", "Λ_src is a Rankin–Selberg problem").
+- In the reference regime the classical √-barrier term A^{5/6}B^{1/3} is exactly the spike part
+  (A/B)·Σ_k mult(k)|⟨λ, w_k⟩|². So "diagonal past √A for smooth × prime vectors" is equivalent to their spike
+  correlations being small. That is a statement about Gauss sums over smooth × prime moduli, not about the sieve.
+- Both forks (native or density machinery carrying the new gate) remain large Lean projects.
+
 ## Open question: a power saving off both thetas
 
 **A proof route with the right exponent (2026-10-31; derived + Lean arithmetic, journal "de Faveri's recursion, run

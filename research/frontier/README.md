@@ -235,7 +235,9 @@ B^{1−6γ} (`../lean/arvi_kwall/OffSpikeIteration.lean`). Open, in order:
    rather than orthogonality;
 3. combining the row side into one two-sided statement.
 The cubic family (explicit Gauss sums, one theta) is the place to try these first. The older sketches below
-stayed at the self-dual point.
+stayed at the self-dual point. **Proof plan, step by step against de Faveri's lemmas, with the evidence for each
+corrected step: `OFFSPIKE_PROOF_PLAN.md`.** Every closure check is now numerical: levels close up, local spikes only
+redistribute energy, and restricted spikes carry nothing.
 
 Can the Heath-Brown / de Faveri recursion (Poisson, duality, recursion on the large sieve constant) prove a power
 saving for the sextic large sieve at L = B once both thetas are removed (`../lean/arvi_kwall/SourceSpike.lean`)?

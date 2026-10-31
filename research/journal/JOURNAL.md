@@ -3074,3 +3074,12 @@ and logs in `rip/theta/README.md`]
     constants, for n = 3 (proven), 4 and 6 (conjectural). "Explicit" means the root is itself a Gauss sum, which
     happens only for n = 3.
   - Map of what a quartic detector needs: `orders/README.md`.
+- **Synthesis: rank against explicitness** [literature + heuristic; `orders/README.md`].
+  - Explicit thetas exist for every order n at rank r = n or n − 1 (Kazhdan–Patterson). For n = r their coefficients
+    are n-th order Gauss sums (Bump–Hoffstein for the cubic case on GL(3)).
+  - The detector also needs GL(2)'s efficient reflection, length C²/N against C^r/N in rank r.
+  - Explicit and GL(2) together force the carrier to be the cubic theta. The Möbius absorption then forces the row
+    order to be 6. So "why ℚ(ζ₃)" has a precise answer: it is the only point where an explicit carrier, GL(2)
+    reflection and Möbius absorption meet.
+  - The quartic route (starting bound 7/8) needs either Patterson's biquadratic conjecture (a GL(2) carrier) or a
+    higher-rank carrier with a weaker reflection.

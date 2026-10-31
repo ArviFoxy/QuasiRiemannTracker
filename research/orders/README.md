@@ -111,3 +111,21 @@ to collapse.
 So exactly two orders absorb the Möbius sign into one Gauss sum: 4 and 6. Only 6 lands on the coefficients of an
 explicit theta, the cubic one. This refines `LOG.md`'s three conditions: the quadratic subcharacter and the quadratic
 leftover twist hold for n = 4 as well, and only the explicit-theta condition fails there.
+
+## Rank versus explicitness: why the baseline sits at (n, r) = (3, 2) (synthesis, literature + heuristic)
+
+- **Kazhdan–Patterson.** On the n-fold cover of GL(r), the theta representation is generic for n ≥ r and has a
+  unique Whittaker model only for n = r or n = r + 1 (the latter for special covers).
+- **Bump–Hoffstein and later work.** For n = r the theta's Whittaker coefficients are n-th order Gauss sums: cubic
+  on GL(3), and similarly for every n ≥ 2.
+- So explicit automorphic carriers exist for every order, at rank about n. That is the "something for every n".
+- **The detector also needs an efficient reflection.** The baseline's theta reflection is GL(2) duality: a sum of
+  length N becomes one of length about C²/N. A GL(r) Voronoi formula gives about C^r/N, which is much weaker for
+  r ≥ 3.
+- Explicit **and** GL(2) means n ∈ {2, 3}. Absorbing the Möbius sign into that carrier forces the row order to be 6,
+  because 6 lands on cubic Gauss sums (the classification above). So the sextic family over ℤ[ω] is the unique
+  power-residue detector with an explicit GL(2) carrier.
+- **Quartic options** (starting bound 7/8):
+  - (a) the GL(2) biquadratic theta, which needs Patterson's conjecture;
+  - (b) an explicit higher-rank carrier, the 4-fold theta on GL(3) or GL(4), which pays the weaker GL(3)/GL(4)
+    reflection. Whether that loss eats the 1/24 head start is the open question for this route.

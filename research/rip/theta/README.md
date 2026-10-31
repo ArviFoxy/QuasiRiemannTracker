@@ -118,6 +118,7 @@ be small.
 | `theta_level_selected.py B order P0,.. rho,.. [threads]` | concentration of each level's row image on slot-selected rows, against random row sets |
 | `theta_local_spikes.py B order [Pmax] [threads]` | local spikes: energy of the (x/p)^{∓1} twists of the source theta on the rows divisible by p and on the others, over the masked null |
 | `theta_dilation_gram.py B order M1,M2,.. [threads]` | conditioning of the dilated residues: spectrum of the normalized Gram of the twisted source images Φ_m = Φ(·m), N(m) ≤ M, against the masked null |
+| `theta_reference_detector.py A [L] [Mtw] [threads]` | reference regime (sources up to A^{2/3}): \|Ev\|²/\|v\|² over the masked null and correlations with twisted thetas, for smooth × prime vectors, their random-phase versions, the pool, smooth vectors and the source theta |
 
 All scripts build E and the row Gauss sums through `theta_core.py`. The matrix-free scripts (`theta_top_free2`,
 `theta_selected_free`, `theta_outliers`) use `theta_core.build_tables`, which stops before the dense matrix and returns

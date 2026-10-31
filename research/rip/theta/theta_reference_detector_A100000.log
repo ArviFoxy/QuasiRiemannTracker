@@ -1,0 +1,17 @@
+A=100000 L=2154 (A^0.67, square-root barrier at 316): R=28210 S=560   (4s)
+|E v|^2/|v|^2 over the masked null, and max / mean of S|<v, f_m>|^2/(|v|^2|f_m|^2) over 12 twisted thetas (N(m) <= 60; random level 1):
+  smooth x prime, P0=8 X1=135 ind            support    62   ratio 0.998   corr max    3.00 mean   1.26
+    same support, random phases              support    62   ratio 0.999   corr max    2.60 mean   1.01
+  smooth x prime, P0=8 X1=135 bump           support    62   ratio 0.997   corr max    5.99 mean   2.09
+  smooth x prime, P0=20 X1=54 ind            support    40   ratio 0.985   corr max    2.94 mean   1.34
+    same support, random phases              support    40   ratio 1.006   corr max    4.81 mean   1.19
+  smooth x prime, P0=20 X1=54 bump           support    40   ratio 0.990   corr max    4.18 mean   2.06
+  smooth x prime, P0=50 X1=22 ind            support    70   ratio 0.994   corr max    3.37 mean   1.12
+    same support, random phases              support    70   ratio 1.006   corr max    3.95 mean   1.43
+  smooth x prime, P0=50 X1=22 bump           support    70   ratio 0.986   corr max    9.97 mean   3.13
+  prime pool, 50 <= N(p) <= L                support   304   ratio 0.995   corr max    2.74 mean   1.08
+  smooth: all x, weight 1                    support   560   ratio 0.984   corr max    2.38 mean   1.00
+  smooth: all x, bump (1 - N x/L)            support   560   ratio 0.991   corr max    5.87 mean   1.60
+  class-signed source theta                  support   560   ratio 1.062   corr max    0.72 mean   0.47
+  random phases, all x                       support   560   ratio 1.003   corr max    1.46 mean   0.61
+done in 4s

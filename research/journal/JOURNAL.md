@@ -3562,3 +3562,45 @@ numerically.
 - (iii) Λ_src: metaplectic Rankin–Selberg for dilated thetas with amplifier twists (DFDH technology).
 
 None is a classical open problem of the P1/B2 kind. Each is a long technical program, and none is done.
+
+## 2026-10-31 · The reference wall's detector condition: numerically out of reach, and the m = 1 term is the crux
+
+[numerical: `rip/theta/theta_reference_detector.py`, log `theta_reference_detector_A100000.log`; heuristic derivation]
+
+**Setting.** In the reference regime (rows N(z) ∈ [A, 2A], sources up to L = A^{2/3}) one Poisson step makes the
+corrected Gram A·I, so the √-barrier term A^{5/6}L^{1/3} is exactly the spike part (frontier, "Roadmap for the faces").
+The question is whether the reference's smooth × prime vectors correlate with the twisted source thetas.
+
+**Numerics: too small to decide.** At A = 10⁵, L = 2154 = A^{0.67} (S = 560 sources), |E v|²/|v|² over the masked
+null is:
+- 0.985–0.998 for smooth × prime vectors (pool N(p) ∈ [P0, 2P0] with P0 = 8, 20, 50; smooth part up to L/(2P0),
+  indicator or bump weight);
+- 0.999–1.006 for the same supports with random phases;
+- 0.995 for the prime pool, and 0.984/0.991 for the smooth vectors;
+- **1.062 for the class-signed source theta itself.**
+
+The spike is too weak in this regime at reachable sizes: its excess is (L²/A)^{1/6} = A^{1/18} times a small constant.
+So the detector condition has to come from theory.
+
+**Heuristic reduction [derived, conventions unchecked].** For v(x) = Σ_{x=sp} w(s)a(p) and the twisted theta
+g̃(x)χ_x(m):
+- twisted multiplicativity and reciprocity give g̃(sp)χ_{sp}(m) = g̃(p)χ_p(m)·g̃(s)χ_s(m p²)·(unit factor);
+- the s-sum is a Kubota series at the index (mp²)^{±1}. Its main term is X₁^{5/6} times the theta coefficient there
+  (the Patterson bias of the smooth factor).
+- In the −1 orientation the index is m⁵p^{10}, where τ₆ vanishes for squarefree m ≠ 1 (Kazhdan–Patterson, τ₆(a p⁵) = 0).
+  This is the same vanishing that makes the (x/m)^{−1} twists spike-free. So only m = 1 can correlate.
+- For m = 1 the correlation is X₁^{5/6}·Σ_p a(p)·g̃(p)·τ₆(p⁴)·(unit). By Davenport–Hasse and the known values
+  τ₆(p²), τ₆(p⁴) (Chinta–Friedberg–Hoffstein, Bröker–Hoffstein), that is a prime sum of a Hecke Grössencharacter over
+  the pool.
+- Size: the m = 1 spike part, relative to the diagonal, is about A^{1/9}P₀^{1/3}·δ², where δ is the relative
+  cancellation of that prime sum over [P₀, 2P₀]. The bootstrap's zero-free half-plane gives δ ≈ P₀^{−1/8}. For
+  P₀ = A^{0.03} that is far from the needed A^{−1/18}.
+
+**Reading.**
+- If the orientation is right, every twisted spike except m = 1 is harmless for smooth × prime vectors, by the same
+  Kazhdan–Patterson vanishing.
+- The m = 1 term, the smooth factor's Patterson bias, is the crux of target 2. It must be carried as an explicit main
+  term in the reference (a corrected reference energy), not bounded away. Short-pool cancellation for
+  Grössencharacters is GRH-strength.
+- Next: fix the orientation with exact conventions (`theta_dualcore.py`'s Poisson formula), and check whether Sil's
+  reference ledger can absorb a rank-one Patterson main term.

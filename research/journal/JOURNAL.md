@@ -3189,6 +3189,11 @@ A = B the extremal term is `B^{7/6}`, the `B^{1/6}` excess measured here. So the
 n = 3, 4 and expected for all n. What the tests below add is the sextic case and its structure: coherence over source
 scales, only the +1 twists, several components. Their second-moment bound is also the input that would make the
 identification below a theorem.
+- Their proof of the cubic bound (§2.1) is this computation. With sources `β_b = g̃₃(b) H(N(b)/B)` on one dyadic
+  window, the row sum is a polar term `P_B(a) ∝ g̃₃(a) N(a)^{−1/6} B^{5/6}` plus a remainder bounded by the
+  Kubota second moment of David–de Faveri–Dunn–Stucky (their (2.3)–(2.8)). For q = 3 the identification is
+  therefore a theorem. For q = 6 it needs the polar term with `τ₆` and the sextic second moment; they expect the
+  lower bound for every n ≥ 5 to be within reach of current tools.
 
 **Tests.** Rows are fixed (`N z ∈ [B, 2B]`); only the sources change.
 

@@ -5289,3 +5289,35 @@ constant C_n is not checked.
   - The selected norm saves δS but needs γ ≤ δS.
   - So the corner needs the selected norm at its fixed point below slope 1/2 for leaf vectors with vanishing slot
     width, as recorded. No loophole in the ledger model.
+
+**Correction, same day: the gcd(n, n′) pairs [derived].** The sketch above (and the entry "Three Poisson steps give
+the twist mean square of one smooth factor") ignores source pairs with d = gcd(n, n′) > 1.
+- For such a pair, step 1's modulus is lcm = d n₀ n₀′. The Gauss sums of n₀, n₀′ still cancel the phases.
+- What is left:
+  - a Ramanujan sum c_d(h) in the dual weight;
+  - a character of conductor d in n₀ (the twisted-multiplicativity symbol (d/n₀)₃ times χ_{n₀}(d), together a
+    sextic-type symbol mod d).
+- So each d-block is the single-factor problem at length X_d = X/N(d), with an extra fixed character of conductor
+  d.
+- **Steps 2–3 for the d-block.** Write c_d(h) = Σ_{e | (d, h)} μ(d/e)N(e).
+  - The terms with d | h (weight ≈ 1, h = d h′, N h′ ≲ X_d²/H) are explicit when N(d)² < H.
+  - The terms with (h, d) = 1 (weight μ(d)/N(d), N h ≲ N(d)X_d²/H) are explicit when N(d)³ < H, since the
+    step-3 conductor is (N(h)N(d)/X_d)².
+- **The rest.** The twist large sieve at length X_d gives |block| ≪ (H + X_d)X_d·X^ε, i.e. X²/N(d)² for
+  N(d) < X/H. In total:
+  S(H) = (explicit) + O((HX + X²H^{−1/3})X^ε).
+  This is the same size as the squarefree-source error, so the asymptotic of the entry above stands with error
+  HX + X²H^{−1/3}.
+- **Consequence for the K-wall's single-factor input (Mellin zero, need S(H) ≤ B^{5/6}H^{1/6}X).**
+  - The error X²H^{−1/3} is within the need for H ≥ (X/B^{5/6})², i.e. H ≥ B^{0.25} at X = B^{0.96} and
+    H ≥ B^{0.31} at X = B^{0.99}.
+  - Below, the elementary pointwise bound covers H ≤ B^{0.21}–B^{0.23}. That bound comes from
+    g̃₆ = μ·α·conj g̃₃·(class): Vaughan, with Heath-Brown's cubic sieve on Type II, gives |c_m|² ≪ X^{5/3}, but
+    Type I needs twisted cubic Kubota sums.
+  - So "away from the corner everything is elementary" holds only up to a small gap in the twist range,
+    [B^{0.23}, B^{0.25}] to [B^{0.21}, B^{0.31}], unless the gcd blocks are handled better. Two candidate fixes:
+    - positivity: drop the coprimality (m, f) = 1 in the squares T_f, then apply three Poisson steps to each T_f
+      up to N(f) < √H, which would leave X²H^{−1/2};
+    - a pointwise bound X^{0.80} at twist size B^{0.3}.
+  - Neither is written. The numerics (Mellin-zero vectors at the null from H = 16 up) show no such gap in the
+    truth.

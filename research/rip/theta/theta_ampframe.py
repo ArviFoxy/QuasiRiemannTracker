@@ -40,8 +40,10 @@ print('B=%d: slot P0=%d (%d primes), |W| = %d (rho %.2f)' % (B, P0s[0], n0, n, r
 
 
 def lam_max_EQE(qdiag):
-    M = E.conj().T @ (qdiag[:, None] * E)
-    return float(np.linalg.eigvalsh(M)[-1]) / S
+    """top eigenvalue of E^H diag(q) E / S by Lanczos (matrix-free)."""
+    from scipy.sparse.linalg import eigsh, LinearOperator
+    op = LinearOperator((S, S), dtype=complex, matvec=lambda v: E.conj().T @ (qdiag * (E @ v)))
+    return float(eigsh(op, k=1, which='LA', return_eigenvectors=False, tol=1e-6)[0]) / S
 
 
 def bound_diag(qdiag, name):
@@ -51,8 +53,7 @@ def bound_diag(qdiag, name):
     return cW * lam
 
 
-EW = E[W]
-truth = float(np.linalg.eigvalsh(EW.conj().T @ EW)[-1]) / S
+truth = lam_max_EQE(inW.astype(float))
 triv = lam_max_EQE(np.ones(R))
 print('  truth |E_W|^2/S %.3f ; trivial (Q = I) %.3f' % (truth, triv))
 Pw = inW.astype(float) + 0.1

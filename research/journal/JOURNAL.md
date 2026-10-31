@@ -4891,3 +4891,18 @@ covers")]
     since the weights are caller-supplied.
 - The Jacobi-type numerics (both sextic Jacobi sums are associates of π) and the identities
   g̃₆² = J̃·g̃₃, g̃₆³ = J̃·J̃′·g̃₂ stand as facts. They are not needed by the recursion.
+- **Also withdrawn: "the levels may supply A′" (entry "What input A must supply").**
+  - That claim rested on the same wrong level structure. With the alternating family, even depths are plain
+    restricted characters, which stay elementary. But the middle-range twist mean square still needs Lindelöf on
+    average.
+  - C applied to the twist-aspect problem gives ≈ (H + B)^{1+γ}‖v‖² per dyadic twist range N(m) ∼ H. That is
+    dominated by the source dimension B. The K-wall weights (B/H)^{1/6} need ≈ H·B^{O(γ)}‖v‖², i.e. square-root
+    cancellation on average for every H < B.
+  - Pointwise bounds X^{1/2}N(m)^{O(1)} cover only N(m) ≤ B^{O(γ)}.
+  - Dilation by the short factors (twists m·u⁴) does not help: Cauchy–Schwarz over u inflates the twist dimension
+    to M·U⁴.
+  - So A′ is needed, and it needs the functional equation (approximate functional equation plus Sil's sieve; the
+    cubic model is David–de Faveri–Dunn–Stucky Lemma 6.6). The estimate for input A stays at 15–30
+    person-months.
+  - What does survive: the small-twist pointwise part needs no functional equation (log-normal weights and an
+    exponential-in-t resolvent bound).

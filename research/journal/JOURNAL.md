@@ -3063,3 +3063,14 @@ and logs in `rip/theta/README.md`]
   for sums of quartic Gauss sums at each place the baseline uses the cubic theta. The tools are the Kubota–Patterson
   functional equation (any order), Patterson's 1987 general Gauss-sum estimates, and David–Dunn–Hamieh–Lin
   (arXiv 2306.11875).
+- **Addendum: the signal identities transfer.**
+  - On every squarefree modulus, g̃₆ = g̃₃²·(class) and g̃₃³ = μα·(class) hold exactly. These are the baseline's (4.7),
+    extended to all moduli.
+  - The quartic analogue g̃₄² = μα·(class) also holds exactly: a square where the sextic has a cube.
+  - So the algebra of the signal channel exists for order 4. The missing piece is the automorphic carrier. The
+    biquadratic theta's coefficients are conjecturally square roots of quartic Gauss sums (Patterson's
+    biquadratic conjecture).
+  - Unifying pattern [heuristic]: the n-fold theta coefficient at a prime is an n-th root of −α(p) up to class
+    constants, for n = 3 (proven), 4 and 6 (conjectural). "Explicit" means the root is itself a Gauss sum, which
+    happens only for n = 3.
+  - Map of what a quartic detector needs: `orders/README.md`.

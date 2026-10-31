@@ -58,3 +58,38 @@ reflection. This directory tests that identity numerically, for order 6 (and 3) 
     2306.11875) improve them for quartic Gauss sums, using the quadratic large sieve over ℚ(i) and Suzuki's
     evaluation of quartic theta coefficients at squares.
   - Whether these are strong enough for each place where the baseline uses the cubic theta is open.
+
+## The signal identities transfer too (exact, every squarefree modulus)
+
+The baseline's signal channel uses (4.7), `γ₁ = γ₂²G` and `γ₂³ = μα` (`barriers/README.md`, atom 4). With them, the
+dual coefficient at the sixth-power frequencies becomes the target's own `1/L`. `gauss_mobius.py` checks the analogues
+on every squarefree modulus; each ratio below is constant on classes.
+
+| family | identity | status |
+|---|---|---|
+| ℤ[ω] | g̃₆ = g̃₃²·(class unit) | exact |
+| ℤ[ω] | g̃₃³ = μ·α·(class unit) | exact: the cube of the cubic Gauss sum is Möbius times a Hecke character |
+| ℤ[i] | g̃₄² = μ·α·(class unit) | exact: the quartic signal identity, a square instead of a cube |
+| ℤ[i] | g̃₄⁴ = α²·(class unit) | exact |
+
+## What a quartic detector would need (map, heuristic)
+
+| ingredient | sextic (baseline) | quartic analogue | status |
+|---|---|---|---|
+| Möbius absorption | μ·conj γ₁·α ∝ γ₂ (cubic) | μ·conj γ₄·α ∝ γ₄ | both exact (numerics) |
+| signal identity | γ₂³ = μα | γ₄² = μα | both exact (numerics) |
+| automorphic carrier of the row | cubic theta θ₃, coefficients ∝ γ₂ (Patterson) | biquadratic theta θ₄; τ₄(p)² = 2γ̃₄(p) | Patterson's biquadratic conjecture, open |
+| theta bias = signal | 1/12 | 1/8 | follows the exchange rate |
+| starting bound | 11/12 | 7/8 | |
+| slot cost, long line, plain descent | rate 6 | rate 4 | the chain would have to be recomputed |
+
+- In every case known or conjectured, the n-fold theta's coefficient at a prime is an n-th root of the Hecke
+  character −α(p), up to class constants:
+  - n = 3: τ₃ ∝ γ₂, so τ₃³ ∝ μα (Patterson);
+  - n = 4: τ₄² = 2γ₄ and γ₄² ∝ μα (Patterson's conjecture);
+  - n = 6: τ₆² is related to cubic Gauss sums (Chinta–Friedberg–Hoffstein, Bröker–Hoffstein).
+  - "Explicit" (n = 3) means the root is itself a Gauss sum. For n = 4 and 6 only the square of the root is one, so
+    a sign stays ambiguous.
+- So the quartic route needs one new theorem: the biquadratic theta conjecture, or a probe built from the 4-fold
+  Eisenstein series' Gauss-sum coefficients instead of θ₄. On top of that, every analytic input of the chain would
+  have to be redone at exchange rate 4. That is a new architecture, not a modification of the current proof.

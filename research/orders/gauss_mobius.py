@@ -404,6 +404,24 @@ else:
         print('  identity check on %-6s: |rho| = 1 (%.2e); mean within-class |rho - class mean|^2 = %.4f '
               '(2 for unrelated phases); classes used %d' % (name, np.max(np.abs(np.abs(r_) - 1)), within.mean(),
                                                              int(np.sum(c > 0))), flush=True)
+def class_constant(name, rho):
+    """is rho (unimodular) a function of the class only?  prints the mean within-class squared deviation."""
+    for nm, sel in (('primes', recMu < 0), ('all', np.ones(len(rho), bool))):
+        cl_ = recCl[sel]; r_ = rho[sel]
+        m = np.zeros(len(cls_keys), complex); np.add.at(m, cl_, r_)
+        c = np.bincount(cl_, minlength=len(cls_keys))
+        within = np.abs(r_ - (m / np.maximum(c, 1))[cl_]) ** 2
+        print('  %-34s on %-6s: within-class |rho - mean|^2 = %.4f (2 for unrelated phases)'
+              % (name, nm, within.mean()), flush=True)
+
+
+print('  signal identities (the baseline uses gamma1 = gamma2^2 G and gamma2^3 = mu alpha):')
+if FIELD == 'eis':
+    class_constant('g3^3 / (mu a)', recG[3] ** 3 / (mu * al))
+    class_constant('g6 / g3^2', recG[6] / recG[3] ** 2)
+else:
+    class_constant('g4^2 / (mu a)', recG[4] ** 2 / (mu * al))
+    class_constant('g4^4 / a^2', recG[4] ** 4 / al ** 2)
 o = np.argsort(recN)
 Ns = recN[o]; cl = recCl[o]
 ncl = len(cls_keys)

@@ -173,7 +173,7 @@ for (nm, M), QV in (spans.items() if ('3' in fams or '5' in fams) else []):
         for eps in EPS:
             f2 = top_eig(eps * A + CC) / S
             f1s = {lab: 1 / eps - (1 / eps - 1 / (1 + eps)) * lamPmin[lab] for lab, _ in sets}
-            report('5', 'P_low + %g I, low = block N(m)<=%d dim %d' % (eps, M, QV.shape[1]), f2, f1s)
+            report('5', 'P_low + %g I, low = %s N(m)<=%d dim %d' % (eps, nm, M, QV.shape[1]), f2, f1s)
     print('    lambda_max((P_V)_WW) per set: ' + ', '.join('%s %.3f' % (lab.split('(')[0].strip(), lamP[lab]) for lab, _ in sets),
           '(%s)' % stamp(), flush=True)
 
@@ -219,7 +219,7 @@ if '6' in fams:
     s2 = sv ** 2 / S
     print('  singular values^2/S: top %s ; k=%d..: %s   (%s)' % (np.round(s2[:6], 4), 32, np.round(s2[31:34], 4), stamp()), flush=True)
 epsgrid = np.concatenate([np.linspace(0.99, 0.5, 50), np.geomspace(0.5, 0.01, 40)])
-for k in ((1, 2, 4, 8, 16, 32, 64, 128, 256, 384, 512, 768, 1024, 1536, 2048) if '6' in fams else ()):
+for k in ((k_ for k_ in (1, 2, 4, 8, 16, 32, 64, 128, 256, 384, 512, 768, 1024, 1536, 2048) if k_ < S) if '6' in fams else ()):
     Uk = U[:, :k]
     lamP = {lab: np.linalg.norm(Uk[W], 2) ** 2 for lab, W in sets}
     for lab, _ in sets:

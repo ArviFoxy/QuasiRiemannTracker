@@ -1,0 +1,76 @@
+B=10000 L=10000  R=2816 rows  S=2610 sources   built in 3.7s
+  |G(z,1)|: min 1.000 max 1.000   (built 10.4s)
+top s^2/S: [4.261 4.109 4.093 4.025 4.007 3.992 3.971 3.948]
+
+1. twisted copies f * chi_x(m)^s  (12 smallest sources m; random-phase 12-dim span top ~ 1.05 at B = 1e4)
+   m = 1                       : top [2.522 1.826 1.776] ; excess over random 1.468 ; |<f,v0>| 0.521
+   m = ( -1, -3) N=  7  s=+1 : top [1.895 1.428 1.4  ] ; excess 0.842 ; overlaps with v0..v5 [0.08 0.06 0.02 0.05 0.09 0.12]
+   m = ( -1, -3) N=  7  s=-1 : top [1.052 1.027 1.   ] ; excess -0.002 ; overlaps with v0..v5 [0.01 0.01 0.03 0.   0.01 0.02]
+   m = (  2,  3) N=  7  s=+1 : top [1.895 1.428 1.4  ] ; excess 0.842 ; overlaps with v0..v5 [0.08 0.06 0.02 0.05 0.09 0.12]
+   m = (  2,  3) N=  7  s=-1 : top [1.052 1.027 1.   ] ; excess -0.002 ; overlaps with v0..v5 [0.01 0.01 0.03 0.   0.01 0.02]
+   m = ( -4, -3) N= 13  s=+1 : top [1.726 1.334 1.302] ; excess 0.673 ; overlaps with v0..v5 [0.04 0.08 0.01 0.03 0.04 0.04]
+   m = ( -4, -3) N= 13  s=-1 : top [1.045 1.01  1.001] ; excess -0.009 ; overlaps with v0..v5 [0.02 0.03 0.02 0.01 0.01 0.02]
+   m = ( -1,  3) N= 13  s=+1 : top [1.726 1.334 1.302] ; excess 0.673 ; overlaps with v0..v5 [0.04 0.08 0.01 0.03 0.04 0.04]
+   m = ( -1,  3) N= 13  s=-1 : top [1.045 1.01  1.001] ; excess -0.009 ; overlaps with v0..v5 [0.02 0.03 0.02 0.01 0.01 0.02]
+   m = (  2, -3) N= 19  s=+1 : top [1.699 1.3   1.254] ; excess 0.645 ; overlaps with v0..v5 [0.01 0.1  0.1  0.11 0.08 0.06]
+   m = (  2, -3) N= 19  s=-1 : top [1.032 1.012 0.993] ; excess -0.022 ; overlaps with v0..v5 [0.03 0.01 0.01 0.02 0.01 0.03]
+   m = (  5,  3) N= 19  s=+1 : top [1.699 1.3   1.254] ; excess 0.645 ; overlaps with v0..v5 [0.01 0.1  0.1  0.11 0.08 0.06]
+   m = (  5,  3) N= 19  s=-1 : top [1.032 1.012 0.993] ; excess -0.022 ; overlaps with v0..v5 [0.03 0.01 0.01 0.02 0.01 0.03]
+   m = ( -1, -6) N= 31  s=+1 : top [1.566 1.215 1.19 ] ; excess 0.513 ; overlaps with v0..v5 [0.01 0.07 0.1  0.04 0.04 0.03]
+   m = ( -1, -6) N= 31  s=-1 : top [1.019 1.005 0.988] ; excess -0.034 ; overlaps with v0..v5 [0.03 0.03 0.03 0.01 0.02 0.02]
+   m = (  5,  6) N= 31  s=+1 : top [1.566 1.215 1.19 ] ; excess 0.513 ; overlaps with v0..v5 [0.01 0.07 0.1  0.04 0.04 0.03]
+   m = (  5,  6) N= 31  s=-1 : top [1.019 1.005 0.988] ; excess -0.034 ; overlaps with v0..v5 [0.03 0.03 0.03 0.01 0.02 0.02]
+   m = ( -7, -3) N= 37  s=+1 : top [1.553 1.246 1.138] ; excess 0.499 ; overlaps with v0..v5 [0.1  0.05 0.02 0.08 0.05 0.05]
+   m = ( -7, -3) N= 37  s=-1 : top [1.049 1.022 1.012] ; excess -0.004 ; overlaps with v0..v5 [0.03 0.02 0.04 0.03 0.01 0.02]
+   m = ( -4,  3) N= 37  s=+1 : top [1.553 1.246 1.138] ; excess 0.499 ; overlaps with v0..v5 [0.1  0.05 0.02 0.08 0.05 0.05]
+   m = ( -4,  3) N= 37  s=-1 : top [1.049 1.022 1.012] ; excess -0.004 ; overlaps with v0..v5 [0.03 0.02 0.04 0.03 0.01 0.02]
+   m = ( -7, -6) N= 43  s=+1 : top [1.554 1.184 1.16 ] ; excess 0.501 ; overlaps with v0..v5 [0.03 0.04 0.11 0.03 0.03 0.07]
+   m = ( -7, -6) N= 43  s=-1 : top [1.049 1.019 0.996] ; excess -0.004 ; overlaps with v0..v5 [0.03 0.01 0.01 0.03 0.02 0.01]
+   m = ( -1,  6) N= 43  s=+1 : top [1.554 1.184 1.16 ] ; excess 0.501 ; overlaps with v0..v5 [0.03 0.04 0.11 0.03 0.03 0.07]
+   m = ( -1,  6) N= 43  s=-1 : top [1.049 1.019 0.996] ; excess -0.004 ; overlaps with v0..v5 [0.03 0.01 0.01 0.03 0.02 0.01]
+   union of the s=+1 spans (m = 1 and the 12 smallest): dim 156, random 0.060 ; energy of v0..v7: [0.363 0.159 0.191 0.127 0.137 0.164 0.106 0.147]
+   compressed top-12 of the union: [2.632 2.11  2.053 2.01  2.001 1.98  1.964 1.907 1.883 1.845 1.794 1.78 ]
+   random span, same dim         : [1.437 1.419 1.412 1.387 1.376 1.368 1.358 1.346 1.344 1.329 1.318 1.308]
+   singular values s_k^2/R of E  : [3.949 3.808 3.794 3.731 3.714 3.7   3.681 3.659]
+
+2. row splits by the unit character of z: top singular values of the submatrices, refitted class phases, overlaps
+   chi_z(-1)=+1   R'=1408: top s^2/S [3.197 3.051 2.933] (masked random 2.842, excess +12.5%) ; class-signed span top 3.073 ; |A| spread 0.07 ; phases/30deg [ 0.  -0.   4.3 -3.4  1.2  5.3  3.2 -2.7  4.3 -0.8 -4.6 -3.4]
+   chi_z(-1)=-1   R'=1408: top s^2/S [3.15  3.035 2.951] (masked random 2.831, excess +11.2%) ; class-signed span top 2.152 ; |A| spread 0.64 ; phases/30deg [ 0.  -4.6  1.4 -4.6 -4.2 -4.8 -4.3 -4.5  1.4 -4.6 -5.   2.8]
+   unit class -3  R'= 468: top s^2/S [2.063 2.004 1.952] (masked random 1.917, excess +7.6%) ; class-signed span top 2.125 ; |A| spread 0.53 ; phases/30deg [ 0.  -4.6  2.  -3.4 -3.5  4.7 -0.8 -1.9  2.   5.9 -4.6  4. ]
+   unit class -2  R'= 456: top s^2/S [2.074 2.007 1.952] (masked random 1.890, excess +9.7%) ; class-signed span top 2.284 ; |A| spread 0.42 ; phases/30deg [ 0.   0.6  3.9 -4.9  1.2  5.   2.7 -3.4  3.9 -0.9 -5.5 -4.3]
+   unit class -1  R'= 484: top s^2/S [2.074 2.006 1.985] (masked random 1.932, excess +7.4%) ; class-signed span top 2.467 ; |A| spread 0.49 ; phases/30deg [ 0.  -6.   0.4 -5.2 -5.3 -5.6 -5.6 -5.4 -5.6 -5.7 -5.8  0.8]
+   unit class 3   R'= 469: top s^2/S [1.994 1.953 1.936] (masked random 1.905, excess +4.6%) ; class-signed span top 2.976 ; |A| spread 0.12 ; phases/30deg [ 0.  -0.   4.3 -3.3  1.2  5.4  3.3 -2.6  4.3 -0.7 -4.5 -3.3]
+   unit class 4   R'= 478: top s^2/S [2.177 2.005 1.985] (masked random 1.950, excess +11.7%) ; class-signed span top 3.270 ; |A| spread 0.26 ; phases/30deg [ 0.  -0.   4.2 -3.5  1.1  5.2  3.2 -2.7  4.2 -0.8 -4.6 -3.6]
+   unit class 5   R'= 461: top s^2/S [1.978 1.95  1.941] (masked random 1.927, excess +2.6%) ; class-signed span top 3.097 ; |A| spread 0.10 ; phases/30deg [ 0.  -0.   4.2 -3.7  1.2  5.2  3.1 -2.8  4.2 -0.9 -4.8 -3.7]
+   overlaps |<A^a, A^b>| of the refitted class-phase vectors (order ['chi_z(-1)=+1', 'chi_z(-1)=-1', 'unit class -3', 'unit class -2', 'unit class -1', 'unit class 3', 'unit class 4', 'unit class 5']):
+[[1.   0.19 0.35 0.88 0.03 0.99 0.98 0.99]
+ [0.19 1.   0.64 0.   0.98 0.19 0.14 0.22]
+ [0.35 0.64 1.   0.31 0.55 0.39 0.32 0.33]
+ [0.88 0.   0.31 1.   0.18 0.9  0.84 0.87]
+ [0.03 0.98 0.55 0.18 1.   0.03 0.   0.07]
+ [0.99 0.19 0.39 0.9  0.03 1.   0.94 0.99]
+ [0.98 0.14 0.32 0.84 0.   0.94 1.   0.96]
+ [0.99 0.22 0.33 0.87 0.07 0.99 0.96 1.  ]]
+   overlaps |<v_a, v_b>| of the sub-spike (top right) vectors:
+[[1.   0.02 0.01 0.01 0.   0.16 0.51 0.15]
+ [0.02 1.   0.09 0.28 0.06 0.01 0.02 0.02]
+ [0.01 0.09 1.   0.03 0.   0.02 0.   0.02]
+ [0.01 0.28 0.03 1.   0.03 0.01 0.04 0.02]
+ [0.   0.06 0.   0.03 1.   0.   0.01 0.02]
+ [0.16 0.01 0.02 0.01 0.   1.   0.01 0.03]
+ [0.51 0.02 0.   0.04 0.01 0.01 1.   0.01]
+ [0.15 0.02 0.02 0.02 0.02 0.03 0.01 1.  ]]
+   |<full v_k, sub-spike vector>| (rows k = 0..5, columns = ['chi_z(-1)=+1', 'chi_z(-1)=-1', 'unit class -3', 'unit class -2', 'unit class -1', 'unit class 3', 'unit class 4', 'unit class 5']):
+[[0.04 0.22 0.   0.27 0.12 0.13 0.11 0.07]
+ [0.47 0.36 0.18 0.   0.05 0.05 0.32 0.02]
+ [0.05 0.62 0.   0.22 0.04 0.03 0.14 0.05]
+ [0.46 0.07 0.17 0.   0.06 0.02 0.34 0.05]
+ [0.11 0.1  0.01 0.02 0.07 0.08 0.14 0.14]
+ [0.09 0.19 0.05 0.02 0.05 0.09 0.13 0.23]]
+   energy of v_0..v_7 in the span of the 8 sub-spike vectors (random 0.0031): [0.14 0.38 0.41 0.28 0.06 0.14 0.11 0.1 ]
+
+done in 27s
+
+real	0m27.956s
+user	0m13.553s
+sys	0m2.280s

@@ -1,0 +1,15 @@
+B=100000 L=100000  R=28210 rows  S=25936 sources  11511 row primes   tables in 137s
+source Gauss sums done (292s); |g~| in [1.000, 1.000]
+top eigenvalues of E^H E / S (Lanczos on the kernel) ...
+    (53 matvecs, 33s)
+top s^2/S = [4.9486 4.7508 4.6232]  (327s)
+alpha = 0.200: 12-dim class-signed span top s^2/R [3.313 2.373 2.349] (random phases 0.987 +- 0.003) ; |<f,v0>| = 0.752 ; |<Ef,u0>| = 0.881   (335s)
+alpha = 0.300: 12-dim class-signed span top s^2/R [3.406 2.385 2.351] (random phases 0.979 +- 0.001) ; |<f,v0>| = 0.767 ; |<Ef,u0>| = 0.886   (343s)
+alpha = 0.333: 12-dim class-signed span top s^2/R [3.391 2.358 2.325] (random phases 0.985 +- 0.007) ; |<f,v0>| = 0.765 ; |<Ef,u0>| = 0.886   (350s)
+alpha = 0.400: 12-dim class-signed span top s^2/R [3.255 2.249 2.238] (random phases 0.983 +- 0.001) ; |<f,v0>| = 0.745 ; |<Ef,u0>| = 0.880   (359s)
+
+B = 100000: sum N^-2/3 = 34.96 ; kernel-predicted sigma^2/R = 2.277 ; measured excess (compressed top - random span) = 2.406 ; ratio 1.057
+BBP from the measured excess: theta_span = 2.636 ; predicted top s^2/S = 4.981 ; observed 4.9486
+max possible overlap^2 for theta = 2.64 is 0.621 ; observed |<f,v0>|^2 = 0.585
+
+done in 359s

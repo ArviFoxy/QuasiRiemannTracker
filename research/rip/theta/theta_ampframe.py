@@ -11,7 +11,10 @@ split primes p with N p in [P0, 2 P0]) and for:
   Q = I (trivial);  single amplifier |T|^2/A;  its square |T|^4/A^2;  families over several slot ranges;  the oracle
   P_W + 0.1 I;  and the truth |E_W|^2/S.
 
-usage: python3 -I theta_ampframe.py B L [rho] [P0,P0,...]
+With model = 'rand' the sextic matrix is replaced by independent uniform sixth roots of unity on the same zero
+pattern (same R, S, slot columns): the random-matrix control for every line of the table.
+
+usage: python3 -I theta_ampframe.py B L [rho] [P0,P0,...] [model]   (model: 'arith' (default) or 'rand')
 """
 import os, sys, math
 sys.dont_write_bytecode = True
@@ -25,6 +28,11 @@ rho = float(sys.argv[3]) if len(sys.argv) > 3 else 0.1
 P0s = [int(t) for t in sys.argv[4].split(',')] if len(sys.argv) > 4 else [40, 100, 250]
 F = tc.build(B, L)
 E, R, S, SN, spf = F.E, F.R, F.S, F.SN, F.spf
+model = sys.argv[5] if len(sys.argv) > 5 else 'arith'
+if model == 'rand':
+    _rng = np.random.default_rng(67)
+    E = (np.abs(E) > 0.5) * np.exp(2j * np.pi * _rng.integers(0, 6, size=E.shape) / 6)
+    print('model rand: sixth roots of unity on the zero pattern of E', flush=True)
 
 
 def slot_sum(P0):

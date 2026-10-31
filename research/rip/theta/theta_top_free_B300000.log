@@ -4,3 +4,14 @@ kernel: 3 threads, 3.57s per matvec (R x S = 6.59e+09 entries), 1029s elapsed
 sextic E      : [5.4701 5.1104 5.0719 4.7684]   (1304s)
     (252 matvecs, 927s)
 masked random : [3.9952 3.9909 3.9893 3.9871]   seed 1  (2231s)
+    (318 matvecs, 1212s)
+masked random : [3.9948 3.9913 3.988  3.9877]   seed 2  (3443s)
+    (217 matvecs, 1112s)
+masked random : [3.9952 3.9907 3.9888 3.9868]   seed 3  (4556s)
+    (320 matvecs, 1155s)
+RCHAR         : [3.9994 3.9961 3.9937 3.9929]   draw 1  (5715s)
+    (316 matvecs, 724s)
+RCHAR         : [3.9994 3.9938 3.9922 3.9911]   draw 2  (6443s)
+MP edge (no mask) 4.175
+SUMMARY B=300000 L=300000 R=84672 S=77808: sextic 5.4701  masked random edge 3.9951 (sd 0.0002, 3 seeds)  excess +36.9%  theta 3.160
+SUMMARY RCHAR top 3.9994, 3.9994

@@ -1,0 +1,21 @@
+B=10000 L=10000  R=2816 rows  S=2610 sources   built in 1.7s
+  |G(z,1)|: min 1.000 max 1.000   (built 5.6s)
+B=10000 L=10000  R=2816 S=2610  top s^2/S [4.261 4.109 4.093 4.025]   216 row classes mod 36   (7s)
+  source theta: compressed top 2.522 (s^2/R); |<f, v0>| 0.521
+  twists m: 6 sources with N(m) <= 30
+  kind 0 (theta), m = 1, classes mod 36        dim   432  random 0.153 | u0 0.160 u1 0.170 u2 0.177 u3 0.168 E f 0.170 | span top 2.143
+  kinds 1/2 (plain), m = 1, classes mod 36     dim   432  random 0.153 | u0 0.263 u1 0.165 u2 0.162 u3 0.166 E f 0.294 | span top 2.107
+  kinds 0-2, m = 1, classes mod 36             dim   864  random 0.307 | u0 0.406 u1 0.332 u2 0.332 u3 0.321 E f 0.434 | span top 2.617
+  kind 0, N(m) <= M, unit classes              dim    72  random 0.026 | u0 0.031 u1 0.028 u2 0.031 u3 0.031 E f 0.046 | span top 1.488
+  kinds 1/2, N(m) <= M, unit classes           dim   144  random 0.051 | u0 0.105 u1 0.048 u2 0.070 u3 0.068 E f 0.187 | span top 2.089
+  all kinds: classes mod 36 (m = 1) + twists   dim  1080  random 0.384 | u0 0.517 u1 0.407 u2 0.425 u3 0.418 E f 0.601 | span top 2.936
+  source theta on N(x) >     30 (|f|^2 share 0.928): row image off the family, Rayleigh s^2/S 2.062
+  source theta on N(x) >    300 (|f|^2 share 0.744): row image off the family, Rayleigh s^2/S 1.957
+  source theta on N(x) >   3000 (|f|^2 share 0.357): row image off the family, Rayleigh s^2/S 1.737
+  control: random phases on N(x) > 30, same projection: Rayleigh s^2/S 1.571
+  row image |Ef|^2 / mean: quantiles 10/50/90/99% [0.16 0.77 2.1  4.43], max 8.54 (exponential law: 0.11/0.69/2.30/4.61)
+  slot P0=40 (10 primes), W = top 10% by |T|: share of |Ef|^2 on W 0.0976; of |u0|^2 0.1002
+  slot P0=40 (10 primes), W = top 1% by |T|: share of |Ef|^2 on W 0.0096; of |u0|^2 0.0088
+  slot P0=100 (20 primes), W = top 10% by |T|: share of |Ef|^2 on W 0.1026; of |u0|^2 0.0952
+  slot P0=100 (20 primes), W = top 1% by |T|: share of |Ef|^2 on W 0.0082; of |u0|^2 0.0069
+done in 416s

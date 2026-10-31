@@ -193,3 +193,27 @@ def class_signed_fit(A, alpha=1.0 / 3, conj=True, Esub=None, mask=None, k=12):
     X = X[:, np.linalg.norm(X, axis=0) > 1e-12]
     Xn = X / np.linalg.norm(X, axis=0, keepdims=True)
     return base, Xn
+
+
+def free_namespace(Tb):
+    """A theta_core.build-like namespace WITHOUT the dense matrix, from theta_core.build_tables, for the matrix-free scripts: it
+    carries S, SA, SB, SN, spf, ID, pc, zo, sym and a generator() for SPLIT prime ideals only (the sources have squarefree norm, so
+    only split primes occur), with the same primary generator and Gauss sum as theta_core.build.generator (the inert branch is
+    not needed for the source Gauss sums).  source_data / src_class_data / lam3 accept it in place of F."""
+    import theta_core as tc
+    from types import SimpleNamespace
+    ID, pc, zo = Tb.ID, tc.pc, tc.zo
+    cache = {}
+
+    def generator(i):
+        if i in cache:
+            return cache[i]
+        assert i < ID.ns, 'split primes only'
+        p, r = ID.split_pr(np.array([i]))
+        p = int(p[0]); r = int(r[0])
+        a, b = pc.primary_generator(p, r)
+        gs, gc = pc.gauss_sums(dict(p=p, r=r, a=a, b=b))
+        cache[i] = dict(a=a, b=b, G=gc, prime=zo.Prime(p, (a, b)))
+        return cache[i]
+    return SimpleNamespace(S=Tb.S, R=Tb.R, SA=Tb.SA, SB=Tb.SB, SN=Tb.SN, spf=Tb.spf, ID=ID, pc=pc, zo=zo, sym=tc.sym, generator=generator,
+                           rows=Tb.rows)

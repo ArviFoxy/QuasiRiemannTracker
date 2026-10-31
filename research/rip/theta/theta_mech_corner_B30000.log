@@ -1,5 +1,5 @@
-B=30000 L=30000  R=8474 rows  S=7768 sources   built in 13.7s
-  |G(z,1)|: min 1.000 max 1.000   (built 45.5s)
+B=30000 L=30000  R=8474 rows  S=7768 sources   built in 17.4s
+  |G(z,1)|: min 1.000 max 1.000   (built 67.9s)
 top s^2/S: [4.55  4.334 4.292 4.205 4.201 4.156] ; s^2/R: [4.171 3.973 3.935]
 
 1. literal candidates
@@ -41,7 +41,7 @@ top s^2/S: [4.55  4.334 4.292 4.205 4.201 4.156] ; s^2/R: [4.171 3.973 3.935]
   alpha = 0.333 (reference)                    dim  12  top s^2/R [2.898 2.094 2.036]  (random phases 1.011 +- 0.007)  |<f,v0>| 0.613  |<Ef,u0>| 0.736
    fitted class coefficients A(c) of the top vector (class = (a mod 4, b mod 4); phase in degrees relative to class (0, 1), in units of 30 degrees):
      (0,1): |A|=0.30 ph=  +0.0 (+0.00)  (0,3): |A|=0.33 ph=  +1.4 (+0.05)  (1,0): |A|=0.26 ph=+125.7 (+4.19)  (1,1): |A|=0.33 ph=-109.9 (-3.66)  (1,2): |A|=0.29 ph= +39.3 (+1.31)  (1,3): |A|=0.29 ph=+151.5 (+5.05)  (2,1): |A|=0.29 ph=+100.0 (+3.33)  (2,3): |A|=0.27 ph= -82.8 (-2.76)  (3,0): |A|=0.23 ph=+125.7 (+4.19)  (3,1): |A|=0.27 ph= -25.7 (-0.86)  (3,2): |A|=0.29 ph=-147.8 (-4.93)  (3,3): |A|=0.30 ph=-108.5 (-3.62)
-   BBP check: compressed top 2.898 - fit bonus 0.011 -> Rayleigh excess sigma^2/R = 1.887 ; threshold sqrt(S/R) = 0.957 ; predicted outlier s^2/R = 4.289 ; observed 4.171
+   BBP check (mask-corrected, v0 = 0.951): compressed top 2.898 - random-phase span 1.011 -> sigma^2/R = 1.984 ; threshold sqrt(S/R) = 0.957 ; masked edge 3.975 ; predicted outlier s^2/S = 4.526 ; observed 4.550
 
 3. 3-adic twist: omega^(j m + k n) for the 9 cubic characters (m = (a+1)/3, n = b/3 mod 3), alpha = 0.333
   conj g~ lam3 = w^(0m+0n)                     dim  12  top s^2/R [2.236 1.585 1.517]  (random phases 1.002 +- 0.002)  |<f,v0>| 0.165  |<Ef,u0>| 0.225
@@ -104,4 +104,4 @@ top s^2/S: [4.55  4.334 4.292 4.205 4.201 4.156] ; s^2/R: [4.171 3.973 3.935]
    RCHAR draw 0: 12-dim class-signed span top s^2/R [1.265 1.16  1.127] ; sextic 2.898 ; random-phase span 1.011
    RCHAR draw 1: 12-dim class-signed span top s^2/R [1.237 1.143 1.132] ; sextic 2.898 ; random-phase span 1.011
 
-done in 218s
+done in 200s

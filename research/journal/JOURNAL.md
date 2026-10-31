@@ -2884,3 +2884,82 @@ with logs `*_B10000.log`.
 - **For the conjecture.** This is direct numerical support for `CubicSpikeFree`, with the exact spike family of the
   Lean statement, at a size where the theta is far above the bulk. It is one size; the next check is 10⁵,
   matrix-free.
+
+## 2026-10-31 · The block outlier is the source-side theta; the one-sided conjecture misses it (amended in Lean)
+
+**Mechanism [numerical; agent, checked; `rip/theta/theta_mech_*.py`, logs `theta_mech_*_B*.log`].**
+- The top singular pair of the sextic matrix is a spiked-Wishart outlier of the source Gram E*E. Its source vector is
+  f(x) = A(x mod 4)·(3/x)₃·ε(x)·conj g̃(x)·N(x)^{−1/3}:
+  - g̃(x) is the source's own sextic Gauss sum;
+  - A is a twelfth root of unity on each class mod 4, stable in B;
+  - (3/x)₃ = χ_x(3)² is a cubic character mod 9;
+  - ε(x) = −1 on odd-class sources with an odd number of prime factors, and +1 otherwise.
+- **BBP fit.** With this spike, the spiked-Wishart formula reproduces the top eigenvalue within 3% at
+  B = 3·10³, 10⁴, 3·10⁴, 10⁵, 2·10⁵ and 3·10⁵. The strength is θ ≈ 0.378·B^{1/6}.
+- **Mechanism.** Poisson summation in the row variable has dual atoms h = u·j⁶. These add coherently with
+  multiplicity (N(x)N(x′)/B)^{1/6}. The fitted kernel is flat in y = N N′/B over 6 ≤ y ≤ 2000. [heuristic derivation]
+- **Controls.** Breaking reciprocity (RCHAR), masked random phases and random spans all sit at the random level.
+- **Correction.** The journal entry "The low-frequency outlier grows like a B^{1/6} spike, and it is neither theta"
+  tested G(x)χ_x(u)N(x)^{−1/2}. That shape lacks the class phases, the cubic character, the parity sign and the
+  profile, which is why it failed.
+- **Poisson self-duality** of the Gaussian primary-n Gram is exact to 10⁻⁹. The dual is the same family at the
+  pair-dependent length 27 N N′/(4L), dilated by the unit type (shares 2/3, 1/6, 1/6). It carries a twelfth-root
+  phase that is constant on classes mod 36, not mod 4. The outlier needs the full row range: in a narrow window the
+  off-diagonal Gram is Marchenko–Pastur-like.
+
+**Is it in the Lean spike family? [numerical; `theta_blockcover.py`, logs `theta_blockcover_B10000.log`,
+`theta_blockcover_B30000.log`].** "Rayleigh" below is s²/S of the vector left after the projection.
+
+| | B = 10⁴ | B = 3·10⁴ |
+|---|---|---|
+| energy of u0 in the row-theta span g̃·(classes mod 36)·(2 profiles), random baseline | 0.160 (0.153) | 0.062 (0.051) |
+| energy of E f in the same span | 0.170 | 0.067 |
+| energy of E f in all kinds, m = 1 with classes + twists N(m) ≤ 30 (random) | 0.601 (0.384) | 0.370 (0.127) |
+| f on N(x) > 30, image off that family: Rayleigh (random phases) | 2.06 (1.57) | 2.97 (1.85) |
+| f on N(x) > 3000, same | 1.74 (1.57) | 2.60 (1.85) |
+| share of \|E f\|² on the top 10% / 1% of rows by a slot sum (10 primes) | 0.098 / 0.0096 | 0.102 / 0.0085 |
+
+- The row image is not a row theta. It sits partly in the plain characters, but its weight is at N(x) near B.
+- Restricted to large sources, it keeps an excess off the low-twist family, and the excess grows with B.
+- **So `SpikeFreeLargeSieve` is expected to fail for ε < 1/6.** Its plain kinds stop at N(m) ≤ C B^{1−qε}, and the
+  share of |f|² above that cutoff tends to 1. If θ keeps growing like B^{1/6}, some b orthogonal to the whole family
+  has b*Gb ≫ B^{7/6}‖b‖². [derived from the numerical model, not proved]
+- The earlier sextic tests that reached the bulk edge (journal 2026-10-31, class span + twists at 10⁴) did so below
+  the BBP threshold: θ = 1.74 there, and a partial projection is enough.
+
+**Amendment [Lean: `lean/arvi_kwall/SourceSpike.lean`, ≈5 s, 10 axiom reports standard; `SexticSpikeFree.lean`
+docstring caveat].**
+- **Source spikes.** The row shapes with the source as the modulus, with or without the Liouville sign, on dyadic
+  windows of N(n) with profiles.
+- **`TwoSidedSpikeFree k q`.** b must also be orthogonal to the row images of the source spikes; equivalently, its
+  dual sum must be orthogonal to them (`rowInner_rowImage`).
+- **Proved.**
+  - `twoSided_of_spikeFree`: the old statement implies the new one.
+  - `GradedTwoSided` ⇒ `TwoSidedSpikeFree`.
+  - `selected_of_gradedTwoSided`: on W the selected bound is C B^{1+ε} + Λ_row + Λ_src.
+  - `sourceBessel_union`: Λ_src is at most the weighted energy of the source images on W.
+- **For the K-wall.** The untwisted source image is flat on the rows and does not concentrate on slot-selected rows.
+  With |W| = B^{1−δ} it adds about θ·S·|W|/R ≈ B^{7/6−δ}, which stays below B^{1+ε} for δ ≥ 1/6. The barrier range
+  1/3 ≤ δ < 1/2 is untouched. [heuristic]
+- **Open.** The twisted source spikes, and whether their images keep the twist-sieve structure that amplification
+  needs. Heuristic: if the source-theta series Φ(w) = Σ_x χ_w(x) f(x) is multiplicative in the modulus, then
+  E ψ_m(z) = Φ(zm), and Λ_src is again a twist sieve.
+
+**Also verified [Lean; agent, checked: `lean/arvi_kwall/ReciprocityBridge.lean`, 1201 lines, 30 axiom reports
+standard].**
+- The twist sieve and PR 93's `selectedNorm` agree up to 72 = 6·12 (associates × odd source classes), in both
+  directions.
+- `twistKernel_one_amplification` runs the amplification end to end. The recursion's convention bridge is therefore
+  formal, and with `SpikeRule.lean` so is the exponent count. What remains conditional is the conjecture, now the
+  two-sided one, plus the source part of Λ_W.
+
+## 2026-10-31 · Q1: the dual-frame table is free probability
+
+[numerical; `rip/theta/theta_ampframe.py` (model `rand`), `theta_ampfree.py`; details in `frontier/README.md`, Q1]
+- At B = 10⁴, every diagonal metric's dual-frame bound is the free-Poisson edge of its weights, times 1.04–1.08 (the
+  theta excess). A random matrix with the same zero pattern reproduces the free edge within 2%.
+- The amplifier's loss is its dynamic range on W: the single-row test vector alone gives 3.43 of its 4.02. Capping
+  the amplifier at 1 on W removes 70% of its excess over the truth.
+- These are constant factors. Over R rows the dynamic range of a slot sum is about log R / log(1/ρ).
+- With the metric Q = P_V^⊥ + ε P_V, the dual-frame bound becomes the K-wall recursion inequality. So Q1's exponent
+  content is the spike-free conjecture, and as a separate lever Q1 is closed.

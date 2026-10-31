@@ -1,3 +1,77 @@
 B=30000 L=30000  R=8474 rows  S=7768 sources   built in 11.7s
   |G(z,1)|: min 1.000 max 1.000   (built 42.8s)
 top s^2/S: [4.55  4.334 4.292 4.205 4.201 4.156]
+masked-random top s^2/S: [3.987 3.979]
+
+1. radial profile S|v|^2 by N(x) bin  [count]
+   N in (     1,     10]  [    2]   v0  12.16   v1   0.90   v2   1.46   masked-random top   1.68
+   N in (    10,     30]  [    4]   v0  15.10   v1   0.16   v2   5.20   masked-random top   1.03
+   N in (    30,    100]  [   20]   v0   6.70   v1   1.79   v2   2.86   masked-random top   1.17
+   N in (   100,    300]  [   50]   v0   3.67   v1   1.86   v2   2.29   masked-random top   1.09
+   N in (   300,   1000]  [  180]   v0   2.64   v1   1.49   v2   1.98   masked-random top   1.04
+   N in (  1000,   3000]  [  522]   v0   1.61   v1   1.36   v2   1.34   masked-random top   0.98
+   N in (  3000,  10000]  [ 1832]   v0   1.14   v1   1.06   v2   1.05   masked-random top   1.03
+   N in ( 10000,  30000]  [ 5158]   v0   0.77   v1   0.92   v2   0.89   masked-random top   0.99
+   regression of the binned profile on b + a N^-p (weights = counts): residual rms (relative) for p in {1/4, 1/2, 2/3, 1, 3/2} -> the exponent 2*alpha of |f|^2 ~ N^-2alpha
+   v0 : p=0.25: a=18.1 b=-0.81 rms 0.195 | p=0.50: a=48.7 b=0.46 rms 0.140 | p=0.67: a=81.0 b=0.77 rms 0.265 | p=1.00: a=155.8 b=0.96 rms 0.445 | p=1.50: a=343.9 b=0.99 rms 0.537
+   v1 : p=0.25: a=4.3 b=0.57 rms 0.082 | p=0.50: a=8.2 b=0.91 rms 0.126 | p=0.67: a=9.7 b=0.97 rms 0.148 | p=1.00: a=7.1 b=1.00 rms 0.161 | p=1.50: a=-1.6 b=1.00 rms 0.163
+
+2. global overlaps |<v, f>|/|f|  (random level 1/sqrt(S) = 0.011 ; rms of the null over 10 random f: see last column)
+   identification: lam3(x) = omega^(-n) equals chi_x(3)^2 = (3/x)_3 exactly: max deviation 2.6e-15 ; chi_x(3)^3 = chi_x(-1): True
+   f                              v0     v1     v2     v3   | null top
+   conj g~                        0.038  0.008  0.029  0.012 | 0.005
+   g~                             0.005  0.005  0.005  0.007 | 0.008
+   conj g~ chi(u0)                0.038  0.008  0.029  0.012 | 0.005
+   conj g~ chi(u1)                0.028  0.016  0.051  0.020 | 0.004
+   conj g~ chi(u2)                0.028  0.016  0.051  0.020 | 0.013
+   conj g~ chi(u3)                0.014  0.016  0.042  0.012 | 0.006
+   conj g~ chi(u4)                0.022  0.002  0.029  0.003 | 0.012
+   conj g~ chi(u5)                0.022  0.002  0.029  0.003 | 0.006
+   chi_x(u1) (plain unit twist)   0.006  0.014  0.006  0.002 | 0.005
+   chi_x(u2) (plain unit twist)   0.006  0.014  0.006  0.002 | 0.011
+   chi_x(u3) (plain unit twist)   0.003  0.001  0.005  0.020 | 0.008
+   chi_x(u4) (plain unit twist)   0.003  0.007  0.004  0.006 | 0.011
+   chi_x(u5) (plain unit twist)   0.003  0.007  0.004  0.006 | 0.017
+   chi_x(3)^2 = (3/x)_3           0.011  0.004  0.005  0.001 | 0.014
+   mu = (-1)^omega                0.006  0.004  0.001  0.003 | 0.010
+   omega - mean                   0.007  0.001  0.002  0.003 | 0.016
+   prime indicator - mean         0.007  0.001  0.001  0.001 | 0.014
+   N^-1/2                         0.015  0.024  0.001  0.034 | 0.013
+   log N - mean                   0.004  0.014  0.008  0.008 | 0.008
+   energy in span of the 12 class indicators mod 4 : v0 0.0020 v1 0.0029 v2 0.0043 ; null 0.0013 ; random 0.0015
+
+3. coherence |sum v g|/(sqrt(n) rms|v|) over cells (class mod 4) x (norm range): v ~ conj g~  [first: no further twist; second: cells refined by the cubic class t = n mod 3 with parsign]
+   class mod 4 only               v0 ~ conj g~ : 36 cells, mean coherence 1.66 (pure noise 0.89), cells > 2.5: 7 (noise: 0.1), > 4: 2, max 5.46
+   class mod 4 only               v0 ~ g~      : 36 cells, mean coherence 0.90 (pure noise 0.89), cells > 2.5: 1 (noise: 0.1), > 4: 0, max 2.82
+   class mod 4 x t, with parsign  v0 ~ conj g~ : 106 cells, mean coherence 4.59 (pure noise 0.89), cells > 2.5: 87 (noise: 0.2), > 4: 67, max 8.25
+   class mod 4 x t, with parsign  v0 ~ g~      : 106 cells, mean coherence 0.87 (pure noise 0.89), cells > 2.5: 1 (noise: 0.2), > 4: 0, max 3.46
+   NOTE: within a cell the model also needs a constant class phase; the coherence |sum| is insensitive to it.
+   per-cell detail (class mod 4 x t, parsign, conj g~), rows = class (a,b) mod 4, columns = t = 0,1,2 for the three norm ranges:
+     (0,1):  2.5  2.6  2.3 |  4.9  6.1  5.9 |  5.4  7.8  6.8 |
+     (0,3):  2.6  2.6  2.1 |  5.2  6.2  5.5 |  6.1  8.2  5.8 |
+     (1,0):  -    2.5  2.5 |  3.2  5.4  5.4 |  4.1  4.4  4.4 |
+     (1,1):  2.6  2.1  2.6 |  5.2  5.5  6.2 |  6.1  5.8  8.2 |
+     (1,2):  2.6  2.5  2.2 |  4.9  5.9  5.7 |  5.1  7.0  6.5 |
+     (1,3):  2.7  2.4  2.3 |  3.7  5.9  5.4 |  4.0  6.5  6.2 |
+     (2,1):  2.7  2.3  2.4 |  3.7  5.4  5.9 |  4.0  6.2  6.5 |
+     (2,3):  2.4  2.4  2.5 |  4.4  5.8  5.0 |  4.7  6.8  6.9 |
+     (3,0):  -    2.7  2.7 |  3.7  5.0  5.0 |  1.1  6.3  6.3 |
+     (3,1):  2.4  2.5  2.4 |  4.4  5.0  5.8 |  4.7  6.9  6.8 |
+     (3,2):  2.6  2.2  2.5 |  4.9  5.7  5.9 |  5.1  6.5  7.0 |
+     (3,3):  2.5  2.3  2.6 |  4.9  5.9  6.1 |  5.4  6.8  7.8 |
+
+4. in which norm range does v follow the class-signed model f? (f = conj g~ N^-1/3 lam3 parsign, 12 fitted class coefficients)
+   compressed top s^2/R = 2.898 ; |<f, v0>| = 0.613 ; energy of v0 in the 12-dim span 0.381
+   N in (    30,    100]  n =    20 : cos(v0, f) = 0.925   cos(v1, f) = 0.098   (random level 0.224)   mass of v0 0.017  mass of f 0.062
+   N in (   100,    300]  n =    50 : cos(v0, f) = 0.870   cos(v1, f) = 0.266   (random level 0.141)   mass of v0 0.024  mass of f 0.064
+   N in (   300,   1000]  n =   180 : cos(v0, f) = 0.885   cos(v1, f) = 0.036   (random level 0.075)   mass of v0 0.061  mass of f 0.113
+   N in (  1000,   3000]  n =   522 : cos(v0, f) = 0.770   cos(v1, f) = 0.020   (random level 0.044)   mass of v0 0.108  mass of f 0.150
+   N in (  3000,  10000]  n =  1832 : cos(v0, f) = 0.601   cos(v1, f) = 0.041   (random level 0.023)   mass of v0 0.270  mass of f 0.242
+   N in ( 10000,  30000]  n =  5158 : cos(v0, f) = 0.499   cos(v1, f) = 0.016   (random level 0.014)   mass of v0 0.509  mass of f 0.320
+
+5. omega(x) dependence: mean S|v|^2 for v0, the null, and the model f (normalised to unit norm), by omega(x) within three norm ranges
+   N in (0, 300]: omega=1 [  56]: v0 6.24 null 1.16 f 20.37 ; omega=2 [  20]: v0 2.62 null 1.01 f 10.99
+   N in (300, 3000]: omega=1 [ 358]: v0 2.19 null 1.12 f 3.06 ; omega=2 [ 328]: v0 1.57 null 0.87 f 2.79 ; omega=3 [  16]: v0 1.04 null 0.56 f 2.02
+   N in (3000, 1e+09]: omega=1 [2806]: v0 0.98 null 1.12 f 0.64 ; omega=2 [3472]: v0 0.83 null 0.96 f 0.62 ; omega=3 [ 712]: v0 0.60 null 0.71 f 0.57
+
+done in 185s

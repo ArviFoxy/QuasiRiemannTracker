@@ -100,6 +100,13 @@ The conjecture is a `def … : Prop`, and nothing in the file assumes it.
   there is C such that for B ≥ 1, if b is orthogonal to every spike with N m ≤ C B^{1−qε} and j ≤ C B^ε, then
   b* E E* b ≤ C B^{1+ε} ‖b‖². The refinement `GradedCorrectedLargeSieve` asks for
   E E* ≼ C B^{1+ε} I + Σ w_i f_i f_i* with the multiplicity weights w = C B^ε (B/N m)^{1/q}.
+- **Caveat (2026-10-31): expected to fail for ε < 1/6.**
+  - The conjecture removes spikes on the row side only. At the balanced point, Poisson summation in the rows gives a
+    second theta, on the source side. It is the large "block" outlier of the numerics, with strength ≈ 0.38 B^{1/6}.
+  - Its row image has no component along the row thetas. Its weight sits at N(x) near B, above the twist cutoff of
+    the plain kinds.
+  - The corrected statement is `TwoSidedSpikeFree` in `SourceSpike.lean` (below).
+  - [The failure is derived from the numerical model, not proved.]
 - **Proved.**
   - `spikeFree_of_graded`.
   - `selected_of_corrected`: a corrected large sieve plus a Bessel constant Λ_W for the weighted spikes on W ⊆ rows
@@ -115,7 +122,8 @@ The conjecture is a `def … : Prop`, and nothing in the file assumes it.
   - `spikeBessel_of_blocks` and `selected_of_amplified`: suppose every selected constant S₀ on W makes the spike
     Bessel constant at most η S₀ with η < 1. Then Δ/(1 − η) is a selected constant. The proof iterates
     S ↦ Δ + ηS from `isSelected_trivial` and takes the limit.
-- **The K-wall from the conjecture (exponent count in the docstring, not formal).**
+- **The K-wall from the conjecture.** The exponent count is formal in `SpikeRule.lean`, and the convention bridge to
+  PR 93's library in `ReciprocityBridge.lean`.
   - The spike Bessel constant on W is a sum over twist blocks. Each block is a selected sieve on W at the shorter
     source length M_r.
   - PR 93's amplification bounds that block by (M_r/B)^δ times the balanced selected norm.
@@ -142,3 +150,48 @@ Mathlib and `Closure.lean` only. It checks in about 10 s. Every theorem depends 
   exactly when δ > 1/q + 1/q².
 - So the graded spike-free conjecture is genuinely new input, and it is enough to remove the 1/6 excess at the
   balanced point.
+
+## ReciprocityBridge.lean: the twist sieve against PR 93's selected norm (formal bridge)
+
+Imports `SexticSpikeFree` and `JointDetector.IdealAmplification`. It checks in about 12 s on a warm cache. All 30
+`#print axioms` reports show only `propext`, `Classical.choice` and `Quot.sound`.
+
+- **Reciprocity for composite ideals** (`reciprocity_composite`): `(pg J / I) = recSign(I mod 4, J mod 4)·(pg I / J)`
+  for supported ideals. This is OAI's `idealRowHom_ideal_reciprocity`, restated with the sign explicit.
+- **Generic selected-constant moves** (`IsSelected.of_class_twist`, `sign_blocks`, `unit_twist_iff`, `associates`,
+  `mono_sources`, `mono_rows`, `swap`, `comap`, `image`). A bounded class twist on the sources costs the number of
+  classes. A unimodular row twist costs nothing.
+- **The bridge** (`twistKernel_one_isSelected_image`, `selectedNorm_image_le_of_twistKernel_one`): the twist sieve's
+  selected constant and the library's `selectedNorm` agree up to the factor 72 = 6·12 (six associates, twelve odd
+  source classes), in both directions.
+- **End to end** (`twistKernel_one_amplification`): a selected constant S₁ for the twist sieve on a big twist set gives
+  72·(C D·72 S₁/A) on a small one, through `selectedNorm_inverse_amplification`.
+- **Not covered.**
+  - Twists divisible by λ or 2 are covered in the forward direction only (`…_supplementary`, `…_box`), which is the
+    direction the amplification chain needs.
+  - The cubic case takes the k-th power leaf constant as a hypothesis, since the library has only the sextic norm.
+
+## SourceSpike.lean: the source-side theta, and the conjecture with both thetas removed
+
+Imports `SexticSpikeFree`. It checks in about 5 s. All 10 `#print axioms` reports show only `propext`,
+`Classical.choice` and `Quot.sound`.
+
+- **Source spikes.** The row shapes with the source as the modulus: conj g̃(n) χ_n(m)^k, g̃(n) conj χ_n(m)^k,
+  χ_n(m)^k and conj χ_n(m)^k. Each comes with or without the Liouville sign (−1)^{Ω(n)}, on dyadic windows
+  2^w ≤ N n < 2^{w+1} with profiles (2^w/N n)^{j/2} (`sourceSpike`, bounded by 1: `norm_sourceSpike_le`). The
+  numerics' class phases are twists by units, λ and 2; their parity sign is a combination of 1, χ_x(−1) and the
+  Liouville sign.
+- **`rowImage` and `rowInner_rowImage`.** A row vector is orthogonal to the row image E ψ exactly when its dual sum
+  is orthogonal to ψ.
+- **Conjecture `TwoSidedSpikeFree k q`** (`SexticTwoSided`, `CubicTwoSided`). This is `SpikeFreeLargeSieve` with
+  one more condition on b: it must also be orthogonal to the row images of the source spikes (twist norm
+  ≤ C B^{1−qε}, every window up to B, profile degree ≤ C B^ε).
+- **Proved.**
+  - `twoSided_of_spikeFree`: the old conjecture implies the new one.
+  - `GradedTwoSided` (source weights C B^ε 2^{−w} 2^{−j}) implies it (`twoSided_of_graded`).
+  - `selected_of_gradedTwoSided`: the selected bound C B^{1+ε} + Λ_row + Λ_src (`spikeBessel_disjSum`).
+  - `sourceBessel_union`: Λ_src is at most the weighted energy of the source images on W.
+- **Open.**
+  - The recursion's source part. Numerically the untwisted source image is flat on the rows, which gives
+    Λ_src ≈ B^{7/6−δ} for |W| = B^{1−δ}. That is harmless for δ ≥ 1/6.
+  - The twisted source spikes are not analyzed.

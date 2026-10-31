@@ -1,0 +1,22 @@
+B=10000 L=10000  R=2816 rows  S=2610 sources   built in 2.1s
+  |G(z,1)|: min 1.000 max 1.000   (built 8.1s)
+model arith  B=10000  R=2816  S=2610  entry variance 0.9507  |W| = 281  slot primes 10
+  amplifier x = |T|^2/A: mean 0.476, mean on W 1.490, max 2.905
+                                           (compare with the lambda column of the theta_ampframe logs)
+  truth (q = 1_W)                          dynamic range on W   1.00   free edge x c_W   1.677   single row x c_W  1.107
+  trivial Q = I                            dynamic range on W   1.00   free edge x c_W   3.951   single row x c_W  2.054
+  oracle P_W + 0.1 I                       dynamic range on W   1.00   free edge x c_W   1.767   single row x c_W  1.191
+  single amplifier |T|^2/A                 dynamic range on W   2.90   free edge x c_W   3.750   single row x c_W  3.433
+  squared amplifier                        dynamic range on W   8.44   free edge x c_W   9.265   single row x c_W  8.962
+  half amplifier + half identity           dynamic range on W   1.95   free edge x c_W   3.338   single row x c_W  2.717
+  mix: 0.10 x + 0.90                       dynamic range on W   1.19   free edge x c_W   3.753   single row x c_W  2.144
+  mix: 0.25 x + 0.75                       dynamic range on W   1.48   free edge x c_W   3.503   single row x c_W  2.359
+  mix: 0.75 x + 0.25                       dynamic range on W   2.43   free edge x c_W   3.482   single row x c_W  3.075
+  fractional power x^0.25                  dynamic range on W   1.31   free edge x c_W   3.177   single row x c_W  2.079
+  fractional power x^0.50                  dynamic range on W   1.70   free edge x c_W   2.994   single row x c_W  2.352
+  clipped min(x, 1) + 0.30                 dynamic range on W   1.00   free edge x c_W   2.583   single row x c_W  1.578
+  clipped min(x, 1) + 0.10                 dynamic range on W   1.00   free edge x c_W   2.426   single row x c_W  1.496
+  clipped min(x, 1) + 0.03                 dynamic range on W   1.00   free edge x c_W   2.363   single row x c_W  1.460
+  clipped power min(x, 1)^2 + 0.1          dynamic range on W   1.00   free edge x c_W   2.163   single row x c_W  1.366
+  clipped power min(x, 1)^4 + 0.1          dynamic range on W   1.00   free edge x c_W   2.014   single row x c_W  1.286
+done

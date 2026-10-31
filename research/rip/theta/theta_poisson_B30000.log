@@ -1,0 +1,18 @@
+B=30000 L=100  R=8474 rows  S=26 sources   built in 0.1s
+  |G(z,1)|: min 1.000 max 1.000   (built 39.8s)
+rows in window [B, 1.5B]: 4238 ; sample 30 ; L = 98698 (self-dual length (3 sqrt3/2) N0, N0 = 37989) ; Lt in [64319, 137097]
+primary elements to 690885: 278476 ; dual elements (all h) to 959681: 3481368   (41s)
+symbol tables done (44s)
+
+1. exact Poisson formula, 415 coprime pairs: relative error of G_direct vs G_formula (median, 90%, max): 4.8e-10 2.4e-09 6.3e-08
+   (Gaussian tails cut at N > 7 * length; the residual 1e-10..1e-8 is that truncation)
+
+2. reduction of T to primary-h sums, by the unit character of psi = chi_z conj chi_z': pair counts {'a': 285, 'c': 70, 'b': 60}
+   type a: |T - T_reduced|/|T| (median, 90%, max): 3.5e-14 2.0e-13 5.0e-12   ;  |G - sqrt(L/M) eps g conj g conj G_M|/|G|: 4.7e-10 2.7e-09 6.3e-08
+   type b: |T - T_reduced|/|T| (median, 90%, max): 2.1e-14 5.0e-14 1.1e-13   ;  |G - sqrt(L/M) eps g conj g conj G_M|/|G|: 6.4e-10 1.5e-09 3.6e-09
+   type c: |T - T_reduced|/|T| (median, 90%, max): 1.1e-14 3.3e-14 1.5e-13
+   closed form U/3 = 1 if psi(w) = w^A else psi(-1): max deviation from the numerical unit sum over type-a pairs: 1.1e-15
+   type a: psi(w) != 1, T = U conj G_L~,  U = +-3 real;  type b: psi(w) = 1, psi(-1) = -1, T = -3 sqrt3 i A conj psi(pi3) conj G_{L~/3};
+   type c: psi trivial on units, T = -3 conj psi(pi3) G~(L~/3) + 6 conj psi(3) sum_j conj psi(pi3)^j G~(L~/3^(j+2))  (Euler factor at pi3)
+
+3. skipped for R = 8474 > 6000 (the python class-constancy loops are too slow); see the B = 10000 log

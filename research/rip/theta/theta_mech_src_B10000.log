@@ -1,5 +1,5 @@
-B=10000 L=10000  R=2816 rows  S=2610 sources   built in 1.7s
-  |G(z,1)|: min 1.000 max 1.000   (built 7.0s)
+B=10000 L=10000  R=2816 rows  S=2610 sources   built in 2.7s
+  |G(z,1)|: min 1.000 max 1.000   (built 8.3s)
 top s^2/S: [4.261 4.109 4.093 4.025 4.007 3.992]
 masked-random top s^2/S: [3.952 3.928]
 
@@ -16,20 +16,27 @@ masked-random top s^2/S: [3.952 3.928]
    v1 : p=0.25: a=1.6 b=0.79 rms 0.116 | p=0.50: a=1.6 b=0.97 rms 0.130 | p=0.67: a=0.7 b=1.00 rms 0.134 | p=1.00: a=-4.4 b=1.00 rms 0.133 | p=1.50: a=-19.3 b=1.00 rms 0.131
 
 2. global overlaps |<v, f>|/|f|  (random level 1/sqrt(S) = 0.020 ; rms of the null over 10 random f: see last column)
-   f                        v0     v1     v2     v3   | null top
-   conj g~                  0.046  0.015  0.049  0.037 | 0.008
-   g~                       0.022  0.029  0.001  0.023 | 0.045
-   conj g~ chi(u0)          0.046  0.015  0.049  0.037 | 0.008
-   conj g~ chi(u1)          0.024  0.060  0.030  0.052 | 0.019
-   conj g~ chi(u2)          0.024  0.060  0.030  0.052 | 0.016
-   conj g~ chi(u3)          0.029  0.020  0.044  0.004 | 0.030
-   conj g~ chi(u4)          0.016  0.051  0.021  0.023 | 0.021
-   conj g~ chi(u5)          0.016  0.051  0.021  0.023 | 0.002
-   mu = (-1)^omega          0.021  0.008  0.010  0.028 | 0.013
-   omega - mean             0.028  0.009  0.002  0.003 | 0.018
-   prime indicator - mean   0.028  0.003  0.006  0.012 | 0.017
-   N^-1/2                   0.016  0.030  0.004  0.014 | 0.024
-   log N - mean             0.021  0.001  0.017  0.004 | 0.016
+   identification: lam3(x) = omega^(-n) equals chi_x(3)^2 = (3/x)_3 exactly: max deviation 2.6e-15 ; chi_x(3)^3 = chi_x(-1): True
+   f                              v0     v1     v2     v3   | null top
+   conj g~                        0.046  0.015  0.049  0.037 | 0.008
+   g~                             0.022  0.029  0.001  0.023 | 0.045
+   conj g~ chi(u0)                0.046  0.015  0.049  0.037 | 0.008
+   conj g~ chi(u1)                0.024  0.060  0.030  0.052 | 0.019
+   conj g~ chi(u2)                0.024  0.060  0.030  0.052 | 0.016
+   conj g~ chi(u3)                0.029  0.020  0.044  0.004 | 0.030
+   conj g~ chi(u4)                0.016  0.051  0.021  0.023 | 0.021
+   conj g~ chi(u5)                0.016  0.051  0.021  0.023 | 0.002
+   chi_x(u1) (plain unit twist)   0.015  0.012  0.010  0.028 | 0.014
+   chi_x(u2) (plain unit twist)   0.015  0.012  0.010  0.028 | 0.031
+   chi_x(u3) (plain unit twist)   0.000  0.004  0.031  0.020 | 0.034
+   chi_x(u4) (plain unit twist)   0.010  0.008  0.015  0.016 | 0.015
+   chi_x(u5) (plain unit twist)   0.010  0.008  0.015  0.016 | 0.016
+   chi_x(3)^2 = (3/x)_3           0.028  0.019  0.025  0.050 | 0.012
+   mu = (-1)^omega                0.021  0.008  0.010  0.028 | 0.013
+   omega - mean                   0.028  0.009  0.002  0.003 | 0.018
+   prime indicator - mean         0.028  0.003  0.006  0.012 | 0.017
+   N^-1/2                         0.016  0.030  0.004  0.014 | 0.024
+   log N - mean                   0.021  0.001  0.017  0.004 | 0.016
    energy in span of the 12 class indicators mod 4 : v0 0.0046 v1 0.0065 v2 0.0058 ; null 0.0062 ; random 0.0046
 
 3. coherence |sum v g|/(sqrt(n) rms|v|) over cells (class mod 4) x (norm range): v ~ conj g~  [first: no further twist; second: cells refined by the cubic class t = n mod 3 with parsign]
@@ -65,8 +72,4 @@ masked-random top s^2/S: [3.952 3.928]
    N in (300, 3000]: omega=1 [ 358]: v0 1.51 null 1.05 f 1.51 ; omega=2 [ 328]: v0 1.10 null 0.92 f 1.38 ; omega=3 [  16]: v0 0.98 null 0.54 f 1.06
    N in (3000, 1e+09]: omega=1 [ 808]: v0 0.91 null 1.20 f 0.51 ; omega=2 [ 872]: v0 0.78 null 0.90 f 0.51 ; omega=3 [ 152]: v0 0.50 null 0.68 f 0.47
 
-done in 31s
-
-real	0m32.132s
-user	0m23.856s
-sys	0m1.157s
+done in 20s

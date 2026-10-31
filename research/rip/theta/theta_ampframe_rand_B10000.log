@@ -1,0 +1,24 @@
+B=10000 L=10000  R=2816 rows  S=2610 sources   built in 1.1s
+  |G(z,1)|: min 1.000 max 1.000   (built 5.1s)
+model rand: sixth roots of unity on the zero pattern of E
+B=10000: slot P0=40 (10 primes), |W| = 281 (rho 0.10)
+  truth |E_W|^2/S 1.678 ; trivial (Q = I) 3.944
+  oracle P_W + 0.1 I (c_W = 1/1.1): bound 1.770
+  single amplifier |T|^2/A (P0=40)               c_W 1.000  lambda 3.687  bound 3.687
+  squared amplifier |T|^4/A^2                    c_W 1.000  lambda 9.111  bound 9.111
+  half amplifier + half identity                 c_W 1.000  lambda 3.294  bound 3.294
+  family mean over scales (normalized)           c_W 1.000  lambda 3.687  bound 3.687
+  family geometric mean (product of pieces)      c_W 1.000  lambda 3.687  bound 3.687
+  -- functions q(x) of the amplifier x = |T|^2/A, all >= 1 on W (so c_W <= 1):
+  mix: 0.10 x + 0.90                             c_W 1.000  lambda 3.742  bound 3.742
+  mix: 0.25 x + 0.75                             c_W 1.000  lambda 3.490  bound 3.490
+  mix: 0.50 x + 0.50                             c_W 1.000  lambda 3.294  bound 3.294
+  mix: 0.75 x + 0.25                             c_W 1.000  lambda 3.426  bound 3.426
+  fractional power x^0.25                        c_W 1.000  lambda 3.156  bound 3.156
+  fractional power x^0.50                        c_W 1.000  lambda 2.961  bound 2.961
+  clipped min(x, 1) + 0.30                       c_W 1.000  lambda 2.556  bound 2.556
+  clipped min(x, 1) + 0.10                       c_W 1.000  lambda 2.398  bound 2.398
+  clipped min(x, 1) + 0.03                       c_W 1.000  lambda 2.335  bound 2.335
+  clipped power min(x, 1)^2 + 0.1                c_W 1.000  lambda 2.134  bound 2.134
+  clipped power min(x, 1)^4 + 0.1                c_W 1.000  lambda 1.982  bound 1.982
+done

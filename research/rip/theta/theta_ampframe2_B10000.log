@@ -1,0 +1,23 @@
+B=10000 L=10000  R=2816 rows  S=2610 sources   built in 1.5s
+  |G(z,1)|: min 1.000 max 1.000   (built 5.8s)
+B=10000: slot P0=40 (10 primes), |W| = 281 (rho 0.10)
+  truth |E_W|^2/S 1.768 ; trivial (Q = I) 4.261
+  oracle P_W + 0.1 I (c_W = 1/1.1): bound 1.857
+  single amplifier |T|^2/A (P0=40)               c_W 1.000  lambda 4.015  bound 4.015
+  squared amplifier |T|^4/A^2                    c_W 1.000  lambda 9.831  bound 9.831
+  half amplifier + half identity                 c_W 1.000  lambda 3.480  bound 3.480
+  family mean over scales (normalized)           c_W 1.000  lambda 4.015  bound 4.015
+  family geometric mean (product of pieces)      c_W 1.000  lambda 4.015  bound 4.015
+  -- functions q(x) of the amplifier x = |T|^2/A, all >= 1 on W (so c_W <= 1):
+  mix: 0.10 x + 0.90                             c_W 1.000  lambda 4.046  bound 4.046
+  mix: 0.25 x + 0.75                             c_W 1.000  lambda 3.754  bound 3.754
+  mix: 0.50 x + 0.50                             c_W 1.000  lambda 3.480  bound 3.480
+  mix: 0.75 x + 0.25                             c_W 1.000  lambda 3.690  bound 3.690
+  fractional power x^0.25                        c_W 1.000  lambda 3.365  bound 3.365
+  fractional power x^0.50                        c_W 1.000  lambda 3.121  bound 3.121
+  clipped min(x, 1) + 0.30                       c_W 1.000  lambda 2.700  bound 2.700
+  clipped min(x, 1) + 0.10                       c_W 1.000  lambda 2.527  bound 2.527
+  clipped min(x, 1) + 0.03                       c_W 1.000  lambda 2.462  bound 2.462
+  clipped power min(x, 1)^2 + 0.1                c_W 1.000  lambda 2.262  bound 2.262
+  clipped power min(x, 1)^4 + 0.1                c_W 1.000  lambda 2.109  bound 2.109
+done

@@ -8,7 +8,8 @@ E^H E v = sum_z conj(E[z, :])^T (E[z, :] v) is accumulated in the same pass.  Mo
           generator keyed by (seed, row, column) so that the matrix is the same at every call.
 Single precision arithmetic, thread-local float32 accumulators, planar complex vectors.
 
-The C source below is compiled at first use into a temporary directory (gcc, -fopenmp, -march=native).
+The C source below is compiled at first use into a temporary directory (gcc, -fopenmp, -march=native); it needs a CPU
+with AVX-512 (F, BW, DQ, VBMI).
 
 usage (library):
     import theta_ckernel as ck

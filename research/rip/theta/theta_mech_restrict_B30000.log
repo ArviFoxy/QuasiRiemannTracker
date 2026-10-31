@@ -1,0 +1,19 @@
+B=30000 L=30000  R=8474 rows  S=7768 sources   built in 13.5s
+  |G(z,1)|: min 1.000 max 1.000   (built 54.7s)
+full matrix: top s^2/S [4.55  4.334 4.292]
+
+rows restricted (all sources):
+  all                                            R'= 8474 S'= 7768 | sextic 4.550 4.334 | random 3.988 | excess  +14.1% | span lambda 2.898 (bonus 0.008) -> predicted 4.529 ( +13.6%)
+  prime rows (omega(z) = 1)                      R'= 2814 S'= 7768 | sextic 2.607 2.586 | random 2.556 | excess   +2.0% | span lambda 3.175 (bonus 0.096) -> predicted 2.596 (  +1.6%)
+  rows with chi_z(-1) = +1 (6 classes mod 4)     R'= 4238 S'= 7768 | sextic 3.448 3.246 | random 2.878 | excess  +19.8% | span lambda 3.561 (bonus 0.032) -> predicted 3.207 ( +11.4%)
+  rows in one class mod 4 (largest)              R'=  730 S'= 7768 | sextic 1.647 1.633 | random 1.627 | excess   +1.2% | span lambda 3.772 (bonus 0.152) -> predicted 1.627 (  +0.0%)
+  random 50% of the rows                         R'= 4237 S'= 7768 | sextic 3.002 2.977 | random 2.880 | excess   +4.2% | span lambda 2.918 (bonus 0.035) -> predicted 2.977 (  +3.4%)
+
+sources restricted (all rows):
+  prime sources (omega(x) = 1)                   R'= 8474 S'= 3220 | sextic 7.227 6.979 | random 6.845 | excess   +5.6% | span lambda 1.972 (bonus 0.050) -> predicted 7.140 (  +4.3%)
+  sources with t = 0 only (n = 0 mod 3)          R'= 8474 S'= 2588 | sextic 8.485 7.833 | random 7.539 | excess  +12.6% | span lambda 2.054 (bonus 0.008) -> predicted 8.354 ( +10.8%)
+  sources N(x) > 300                             R'= 8474 S'= 7692 | sextic 4.448 4.333 | random 4.001 | excess  +11.2% | span lambda 2.681 (bonus 0.015) -> predicted 4.378 (  +9.4%)
+  sources N(x) <= 1000                           R'= 8474 S'=  256 | sextic 47.574 44.050 | random 43.767 | excess   +8.7% | span lambda 1.293 (bonus 0.007) -> predicted 45.032 (  +2.9%)
+  random 50% of the sources                      R'= 8474 S'= 3884 | sextic 6.104 5.995 | random 5.855 | excess   +4.2% | span lambda 1.939 (bonus 0.014) -> predicted 6.025 (  +2.9%)
+
+done in 1035s

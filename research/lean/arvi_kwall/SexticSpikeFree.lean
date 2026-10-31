@@ -33,9 +33,11 @@ theta vector
   `f_m(z) = g̃(z) conj(χ_z(m)^k)`,  where `g̃(z) = g(z)/|g(z)|` is the phase of the Gauss sum of the row.
 Two more kinds of vector enter the spike family.
 * The plain characters `χ_z(m)^k` and `conj(χ_z(m)^k)`. The numerics (`research/rip/theta`) show a low-frequency
-  outlier at the top of the spectrum, growing like `B^{1/6}`. It disappears off the span of these characters
-  (`theta_offspan.py`). Its mechanism is not known, so both conjugations are included. The outlier and the theta
-  excess both go away when reciprocity is broken (the RCHAR model).
+  outlier at the top of the spectrum, growing like `B^{1/6}`. At `B = 10⁴` it disappears off the span of these
+  characters (`theta_offspan.py`). The outlier and the theta excess both go away when reciprocity is broken (the
+  RCHAR model). Its mechanism is now known: it is the row image of a second theta, on the source side
+  (`SourceSpike.lean`). The plain characters capture only the part of it carried by sources below the twist cutoff.
+  See the caveat below.
 * Radial profiles `(B / N z)^{j/2}`, `j < J`. The Poisson kernel depends smoothly on `N(z) N(z')`, so a dual
   frequency gives a rank-one form only after an expansion in such profiles. The numerics use `j = 1`.
 The numerics mostly measure `|Eᵀ c|²`, so their vectors are the complex conjugates of these (`spikeVector`). In the
@@ -61,7 +63,19 @@ contains `λ`, `2` and all their products, so the spike family includes these tw
 row vector `b` orthogonal to all spike vectors with twist norm `N m ≤ C B^{1 − qε}` and profile degree `j ≤ C B^ε`
 (all three kinds, every associate),
   `b* G b ≤ C B^{1+ε} ‖b‖²`.
-`SexticSpikeFree` is `k = 1, q = 6`, and `CubicSpikeFree` is `k = 2, q = 3`. The cutoff `B^{1−qε}` is where the
+`SexticSpikeFree` is `k = 1, q = 6`, and `CubicSpikeFree` is `k = 2, q = 3`.
+
+**Caveat (2026-10-31): this one-sided statement is expected to fail for `ε < 1/6`.**
+- At the balanced point, Poisson summation in the rows produces a theta on the source side:
+  `f(x) ∝ conj g̃(x)·(class phase)·N(x)^{−1/3}`, with strength `≈ 0.38 B^{1/6}` up to `B = 3·10⁵`.
+- Its row image is the low-frequency outlier above. It has no component along the row thetas, and its weight sits at
+  `N(x)` near `B`, above the twist cutoff of the plain kinds.
+- Restricted to large sources and projected off the family, it keeps an excess that grows from `B = 10⁴` to `3·10⁴`.
+- The corrected conjecture also removes the source spikes: `TwoSidedSpikeFree` in `SourceSpike.lean`. It is implied
+  by this one (`twoSided_of_spikeFree`), and it adds a source term `Λ_src` to the recursion below.
+- [The failure is derived from the numerical model of the source theta, not proved.]
+
+The cutoff `B^{1−qε}` is where the
 multiplicity `(B/N m)^{1/q}` drops to `B^ε`. Twists above it carry less than `B^ε` copies each. The spike family
 has `3 · #twists · J = O(C² B^{1−(q−1)ε}) = o(B)` members, so the condition on `b` leaves almost all of the row space
 (`exists_orthogonal_of_card_lt`). Extra vectors in the family only weaken the conjecture. The constant `C` also
@@ -93,16 +107,20 @@ separate obstacle, because it is controlled by the selected norm itself.
   products, given an amplifier response `≥ A` on the rows, coefficient mass `C` and fiber bound `D`.
   - That library writes the kernel as `(z/J)₆` with rows `z ∈ O`. Sextic reciprocity gives `(z/J)₆ = ±(J/z)₆`, with
     the sign constant on class pairs mod 4.
-  - So its selected constants and the ones here agree up to a bounded factor (144 class-pair blocks and
-    6 associates). That bridge is not yet formal.
+  - So its selected constants and the ones here agree up to a bounded factor. The bridge is formal in
+    `ReciprocityBridge.lean`, with factor `72 = 6 · 12` (six associates, twelve odd source classes):
+    `twistKernel_one_amplification` feeds the twist sieve into `selectedNorm_inverse_amplification`.
 * Hence `Λ_W ≤ η S_W(B)` with `η ≲ B^{o(1)} Σ_r C B^{ε/q} (B/M_r)^{1/q} (M_r/B)^δ`. For `δ > 1/q` the top block
   `M_r ≍ C B^{1−qε}` dominates, so `η ≲ B^{−ε(qδ − 1 − 1/q) + o(1)} → 0` exactly when `δ > 1/q + 1/q²`. That is
   `7/36` for the sextic family and `4/9` for the cubic.
 * `selected_of_amplified` (formal) then gives `S_W(B) ≤ C B^{1+ε} / (1 − η)`.
 
-**[Conditional. The amplification step is formal in the selected-leaf library. The convention bridge to it and the
-exponent count are not formal yet.]** The graded conjecture plus amplification give the selected
-norm `B^{1+ε}` at the balanced point for every slope `δ > 7/36`. That includes the whole K-wall range
+**[Conditional.]** The amplification step is formal in the selected-leaf library, the convention bridge in
+`ReciprocityBridge.lean`, and the exponent count in `SpikeRule.lean`. The graded conjecture plus amplification
+give the selected norm `B^{1+ε}` at the balanced point for every slope `δ > 7/36`. With the corrected two-sided
+conjecture (`SourceSpike.lean`), the selected bound also carries the source term `Λ_src`. Numerically the untwisted
+source image is flat on the rows, so it adds about `B^{7/6−δ}` for `|W| = B^{1−δ}`, harmless for `δ ≥ 1/6`. The
+twisted source spikes are not analyzed yet. That includes the whole K-wall range
 `1/3 ≤ δ < 1/2` of `Closure.lean`. So the K-wall reduces to a **full-family** statement about the sextic row Gram,
 with no thin-set or detector hypothesis left over.
 
@@ -700,7 +718,10 @@ noncomputable def profileCutoff (C ε : ℝ) (B : ℕ) : ℕ := ⌊C * (B : ℝ)
 
 /-- **Conjecture: the large sieve at the balanced point `L = B` with the theta term removed.** For every `ε > 0` there
 is `C > 0` such that for every `B ≥ 1` and every row vector `b` orthogonal to the spike vectors with twist norm
-`≤ C B^{1−qε}` and profile degree `≤ C B^ε`, `Σ_n |Σ_z b_z conj χ_z(n)^k|² ≤ C B^{1+ε} Σ_z |b_z|²`. -/
+`≤ C B^{1−qε}` and profile degree `≤ C B^ε`, `Σ_n |Σ_z b_z conj χ_z(n)^k|² ≤ C B^{1+ε} Σ_z |b_z|²`.
+
+Expected to fail for `ε < 1/6`: the source-side theta is not removed (module caveat). The corrected statement is
+`TwoSidedSpikeFree` in `SourceSpike.lean`. -/
 def SpikeFreeLargeSieve (k q : ℕ) : Prop :=
   ∀ ε : ℝ, 0 < ε → ∃ C : ℝ, 0 < C ∧ ∀ B : ℕ, 1 ≤ B → ∀ b : Ideal O → ℂ,
     (∀ i ∈ spikeIndex (twistCutoff q C ε B) (profileCutoff C ε B),

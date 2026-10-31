@@ -252,6 +252,64 @@ W the top 10% of rows by |T|, T the slot sum over the 10 split primes with norm 
 - **Naive multi-scale families fail.** Slot sums at other scales are uncorrelated with W (correlation about −0.01 to
   −0.06), and normalizing them on W wrecks c_W. The coarse level must be W's own defining scale.
 - **The best diagonal Q is the oracle**, the indicator of {|T|² ≥ A}. So Q1 becomes: approximate that indicator by
-  structured weights whose λ_max(EᴴQE) is provable. Higher polynomial degree gets closer to the oracle but costs
-  longer amplified polynomials, which is the classical amplifier-degree tradeoff.
+  structured weights whose λ_max(EᴴQE) is provable. (An earlier version of this note said higher polynomial degree
+  gets closer to the oracle. The second scan below shows the opposite for positive polynomials in |T|².)
 - **Open question:** can a non-diagonal Q (a true RKHS on the rows) beat every diagonal one at the same proof cost?
+
+**Second scan and controls (2026-10-31; `theta_ampframe.py` with model `rand`, `theta_ampfree.py`; logs
+`theta_ampframe2_B10000.log`, `theta_ampframe_rand_B10000.log`, `theta_ampfree_B10000.log`).** Same setting. Below,
+x = |T|²/A, so x ≥ 1 exactly on W, and every metric is normalized so that c_W = 1. The columns are:
+- sextic E: the bound for the sextic matrix;
+- random E: independent sixth roots of unity on the same zero pattern, with W and x built the same way from the
+  random slot columns;
+- free edge: the edge of the free Poisson law of the weights,
+  λ₊(q) = min_w [1/w + (1/S)Σ_z a_z/(1 − a_z w)] with a_z = s²q_z and s² = 0.951 the fraction of nonzero symbols.
+  For q = 1_W this is the Marchenko–Pastur edge (1 + √(s²|W|/S))².
+
+| metric q | dynamic range on W | sextic E | random E | free edge | sextic / free |
+|---|---|---|---|---|---|
+| truth, 1_W | 1 | 1.768 | 1.678 | 1.677 | 1.054 |
+| oracle 1_W + 0.1 | 1 | 1.857 | 1.770 | 1.767 | 1.051 |
+| Q = I | 1 | 4.261 | 3.944 | 3.951 | 1.078 |
+| x, the single amplifier | 2.90 | 4.015 | 3.687 | 3.750 | 1.071 |
+| x² | 8.44 | 9.831 | 9.111 | 9.265 | 1.061 |
+| ½x + ½ | 1.95 | 3.480 | 3.294 | 3.338 | 1.043 |
+| x^{1/2} | 1.70 | 3.121 | 2.961 | 2.994 | 1.042 |
+| min(x, 1) + 0.03 | 1 | 2.462 | 2.335 | 2.363 | 1.042 |
+| min(x, 1)⁴ + 0.1 | 1 | 2.109 | 1.982 | 2.014 | 1.047 |
+
+(`theta_ampfree_B10000.log` has all 16 metrics. The ratio sextic/free stays in 1.04–1.08 on every line.)
+
+- **The table is free probability.** The free edge reproduces the random matrix within 2% on every line, and within
+  0.5% for the truth, the oracle and Q = I. The sextic matrix is the free edge times a nearly uniform 4–8%, which is
+  its theta excess at B = 10⁴. The ranking of diagonal metrics carries no
+  arithmetic.
+- **The amplifier's loss is its dynamic range.**
+  - A single-row test vector a = conj(e_z)/‖e_z‖ concentrates D on one row, so the bound is at least about
+    max_z q_z / min_W q.
+  - For x this test alone gives 3.43 of the 4.02.
+  - Capping x at 1 on W removes 70% of the amplifier's excess over the truth: 4.015 → 2.462, against a truth of 1.768.
+  - Positive polynomials in x, the provable ones, are increasing on W. So raising the degree widens the dynamic
+    range: x² is worse than x.
+- **These are constants, not exponents.** A slot sum has sub-Gaussian tails, so over R rows the dynamic range of x is
+  about log R / log(1/ρ). That is a B^{o(1)} loss. Metric design among diagonal Q moves constants only.
+- **The exponent content is in proving λ_max(EᴴQE).**
+  - For Q a polynomial in slot sums, EᴴQE is the Gram of the longer, amplified family. Its bound is that family's
+    large sieve at an unbalanced point, theta excess included.
+  - Non-diagonal Q built from character features χ_z(m) (the product kernels of the proposal) turn EᴴQE into Grams of
+    dual sums Σ_z χ_z(n)·conj χ_z(m) over the moduli. Those are large sieves on the dual side, with their own theta.
+- **The coarse structure that matters is the spike family.**
+  - Take the non-diagonal metric Q = P_V^⊥ + ε·P_V, with V the spike family of `SexticSpikeFree.lean` (twisted thetas
+    and supplementary class functions: low twists, coarse congruence data).
+  - Then c_W(Q) ≤ 1 + ‖P_V P_W‖²/ε, and λ_max(EᴴQE) ≤ λ_max off V + ε·(spike strength).
+  - The dual-frame bound becomes "large sieve off V, plus the spikes' overlap with W". That is the recursion
+    inequality S_W ≤ Δ + Λ_W of the K-wall (task 197).
+  - So the "include the theta's coarse structure" part of the proposal is the spike-free conjecture itself. The rest
+    of Q1 moves constants.
+
+**Status [numerics at 10⁴ + derivation].**
+- As a separate lever, Q1 is closed: the optimal diagonal metric is known in closed form (the free edge is minimized
+  by the oracle), and its exponent content reduces to the spike-free conjecture.
+- What would reopen it: a metric whose EᴴQE has a provably smaller theta excess than the plain large sieve. The
+  sextic/free column is the quantity to watch. If it shrank with B for some structured Q while staying flat for Q = I,
+  that Q would be a lever. A B-scan of that column is the one remaining test.

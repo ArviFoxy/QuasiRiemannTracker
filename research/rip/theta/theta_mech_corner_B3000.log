@@ -1,5 +1,5 @@
-B=3000 L=3000  R=848 rows  S=778 sources   built in 0.3s
-  |G(z,1)|: min 1.000 max 1.000   (built 1.0s)
+B=3000 L=3000  R=848 rows  S=778 sources   built in 0.1s
+  |G(z,1)|: min 1.000 max 1.000   (built 0.7s)
 top s^2/S: [4.061 3.995 3.942 3.898 3.857 3.789] ; s^2/R: [3.726 3.665 3.616]
 
 1. literal candidates
@@ -41,7 +41,7 @@ top s^2/S: [4.061 3.995 3.942 3.898 3.857 3.789] ; s^2/R: [3.726 3.665 3.616]
   alpha = 0.333 (reference)                    dim  12  top s^2/R [2.302 1.695 1.6  ]  (random phases 1.134 +- 0.017)  |<f,v0>| 0.275  |<Ef,u0>| 0.350
    fitted class coefficients A(c) of the top vector (class = (a mod 4, b mod 4); phase in degrees relative to class (0, 1), in units of 30 degrees):
      (0,1): |A|=0.25 ph=  +0.0 (+0.00)  (0,3): |A|=0.29 ph=  -3.0 (-0.10)  (1,0): |A|=0.36 ph=+121.5 (+4.05)  (1,1): |A|=0.29 ph=-113.9 (-3.80)  (1,2): |A|=0.26 ph= +35.8 (+1.19)  (1,3): |A|=0.27 ph=+154.9 (+5.16)  (2,1): |A|=0.27 ph= +88.2 (+2.94)  (2,3): |A|=0.31 ph= -89.5 (-2.98)  (3,0): |A|=0.35 ph=+121.5 (+4.05)  (3,1): |A|=0.31 ph= -27.5 (-0.92)  (3,2): |A|=0.26 ph=-152.7 (-5.09)  (3,3): |A|=0.25 ph=-116.9 (-3.90)
-   BBP check: compressed top 2.302 - fit bonus 0.134 -> Rayleigh excess sigma^2/R = 1.168 ; threshold sqrt(S/R) = 0.958 ; predicted outlier s^2/R = 3.871 ; observed 3.726
+   BBP check (mask-corrected, v0 = 0.951): compressed top 2.302 - random-phase span 1.134 -> sigma^2/R = 1.228 ; threshold sqrt(S/R) = 0.958 ; masked edge 3.974 ; predicted outlier s^2/S = 4.035 ; observed 4.061
 
 3. 3-adic twist: omega^(j m + k n) for the 9 cubic characters (m = (a+1)/3, n = b/3 mod 3), alpha = 0.333
   conj g~ lam3 = w^(0m+0n)                     dim  12  top s^2/R [1.62  1.254 1.246]  (random phases 1.147 +- 0.011)  |<f,v0>| 0.070  |<Ef,u0>| 0.106
@@ -101,8 +101,4 @@ top s^2/S: [4.061 3.995 3.942 3.898 3.857 3.789] ; s^2/R: [3.726 3.665 3.616]
    RCHAR draw 0: 12-dim class-signed span top s^2/R [1.288 1.19  1.16 ] ; sextic 2.302 ; random-phase span 1.134 ; top singular s^2/S of RCHAR [3.93  3.904 3.831]
    RCHAR draw 1: 12-dim class-signed span top s^2/R [1.33  1.196 1.119] ; sextic 2.302 ; random-phase span 1.134 ; top singular s^2/S of RCHAR [3.965 3.905 3.861]
 
-done in 61s
-
-real	1m1.903s
-user	0m40.423s
-sys	0m0.208s
+done in 3s

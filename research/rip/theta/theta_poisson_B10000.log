@@ -1,8 +1,8 @@
 B=10000 L=100  R=2816 rows  S=26 sources   built in 0.0s
-  |G(z,1)|: min 1.000 max 1.000   (built 5.4s)
+  |G(z,1)|: min 1.000 max 1.000   (built 6.2s)
 rows in window [B, 1.5B]: 1403 ; sample 30 ; L = 33994 (self-dual length (3 sqrt3/2) N0, N0 = 13084) ; Lt in [20785, 44576]
-primary elements to 237956: 95913 ; dual elements (all h) to 312033: 1131912   (6s)
-symbol tables done (6s)
+primary elements to 237956: 95913 ; dual elements (all h) to 312033: 1131912   (7s)
+symbol tables done (7s)
 
 1. exact Poisson formula, 422 coprime pairs: relative error of G_direct vs G_formula (median, 90%, max): 5.1e-10 2.1e-09 1.7e-08
    (Gaussian tails cut at N > 7 * length; the residual 1e-10..1e-8 is that truncation)
@@ -15,7 +15,7 @@ symbol tables done (6s)
    type a: psi(w) != 1, T = U conj G_L~,  U = +-3 real;  type b: psi(w) = 1, psi(-1) = -1, T = -3 sqrt3 i A conj psi(pi3) conj G_{L~/3};
    type c: psi trivial on units, T = -3 conj psi(pi3) G~(L~/3) + 6 conj psi(3) sum_j conj psi(pi3)^j G~(L~/3^(j+2))  (Euler factor at pi3)
 
-3. phase eps over ALL coprime pairs of the 2816 rows (B,2B]  [87s]
+3. phase eps over ALL coprime pairs of the 2816 rows (B,2B]  [119s]
    coprime pairs: 3750014 of 3963520
    s(z,z') exponent values (0 = +1, 3 = -1): {np.int64(0): np.int64(2336324), np.int64(3): np.int64(1413690)}
    s constant on every (class mod 4, class mod 4) block: True
@@ -30,9 +30,6 @@ symbol tables done (6s)
    type b: eps constant on class pairs (z_* mod 4 and mod 9): 7776 of 7776 blocks pure (7776 class pairs seen)
    type a: eps constant on class pairs (z_* mod 4, mod 9, unit class): 31104 of 31104 blocks pure (31104 class pairs seen)
    type b: eps constant on class pairs (z_* mod 4, mod 9, unit class): 7776 of 7776 blocks pure (7776 class pairs seen)
+   type c: (Pair, psi(pi3), psi(3)) constant on class pairs (z_* mod 4 and mod 9): 7776 of 7776 blocks pure
 
-done in 104s
-
-real	1m44.200s
-user	1m5.140s
-sys	0m12.722s
+done in 135s

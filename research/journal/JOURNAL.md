@@ -4269,3 +4269,38 @@ spot-checked in the source by me]
   excesses), so the qualitative findings stand. But quantitative sextic excesses may be understated if the cache
   differs from the canonical g̃₆ by a non-class sign. Rebuilding the sextic cache in the baseline's normalization
   (`orders/gauss_mobius.py` has it) is the fix before any further sextic quantities are quoted.
+
+## 2026-10-31 · The cached sextic Gauss sums, resolved; Möbius signs kill the sextic spike as predicted
+
+[numerical; logs `theta_twist_meanvalue_canon_q6_L100000.log`, `theta_twist_meanvalue_conv_canon_q6_L100000.log`;
+derived: the mechanism]
+
+- **Why the cache differs from the canonical normalization [derived, then checked].**
+  - The theta cache builds g6 of a source c by twisted multiplicativity over its primes, each normalized ≡ 2 mod 3.
+    So it computes g6 of the element (−1)^{k+1}c (k = number of prime factors). That changes the sum by
+    χ_c(−1)^{k+1}.
+  - This is a factor μ(c) exactly on the classes with χ_c(−1) = −1, i.e. N(c) ≡ 7 mod 12. The cubic sum is immune
+    (−1 is a cube).
+  - Check: μ·conj(g6)·ang/g3 is constant on mod-4 × mod-9 classes for 100% of the N(c) ≡ 1 mod 12 sources and 50.8%
+    of the N(c) ≡ 7 mod 12 ones. It is 100% constant once the classes include the parity of k.
+- **Which earlier numerics are affected.**
+  - The class-compressed tests (`theta_level2`, `theta_pole_scan`, `theta_level_profile`, …) include the parity
+    bit in their 72 classes, so they absorb the factor and are unaffected.
+  - The raw twist tests mixed polar and pole-free halves. They understated the sextic excess; the conclusions about
+    Mellin zeros stand. `THETA_CANON=1` in `theta_twist_meanvalue*.py` applies the correction.
+- **Canonical twist test (sextic, L = 10⁵, null ≈ 0.90–1.16):**
+
+  | twists N(m) | plain V₀·conj g | Liouville μV₀·conj g | Mellin-zero λ·conj g |
+  |---|---|---|---|
+  | [256, 512] | 1.68 | 0.90 | 0.89 |
+  | [4096, 8192] | 1.73 | 0.97 | 0.89 |
+  | [65536, 131072] | 1.40 | 0.95 | 0.95 |
+
+  - The plain spike is stronger than measured before (1.4–1.76 against 1.2–1.3).
+  - **The Liouville-signed vector is at the null, as Möbius absorption predicts** (μ·conj g̃₆ is the angular-twisted
+    cubic sum, which the baseline's reflection covers with no main term). This replaces the "inconclusive" reading
+    of the previous entry.
+  - The convolution of two √L factors stays at the null in all four variants in the canonical normalization too.
+- **Reading.** Two mechanisms remove the sextic source spike from a plain-type vector: a Mellin zero at the pole, or a
+  Möbius (Liouville) sign. Only the second has a proof route in the baseline's existing Lean (pole-free reflection),
+  but the faces' plain sums carry no sign.

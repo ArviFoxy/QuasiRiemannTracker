@@ -82,9 +82,13 @@ for Bz in Bzs:
     if cols is None:
         cand = ([tu.scratch_path('srcgauss_q%d_L%d.npz' % (q, L)), tu.scratch_path('gauss_B%d_L%d_q%d.npz' % (L, L, q))]
                 if q != 6 else [tu.scratch_path('gauss_B%d_L%d.npz' % (L, L)), tu.scratch_path('srcgauss_L%d.npz' % L)])
-        G = np.load([c for c in cand if os.path.exists(c)][0])['Gsrc']
+        dd = np.load([c for c in cand if os.path.exists(c)][0])
+        G = dd['Gsrc']
         assert len(G) == Tb.S, (len(G), Tb.S)
         g = G / np.where(np.abs(G) > 1e-9, np.abs(G), 1)
+        if q == 6 and os.environ.get('THETA_CANON') == '1':
+            # canonical normalization: undo mu(c) on the classes N(c) = 7 mod 12 (see theta_twist_meanvalue.py)
+            g = g * np.where(Tb.SN % 12 == 7, (-1.0) ** dd['nprime'], 1.0)
         SN = Tb.SN.astype(np.int64)
         lam = {}
         for k1, w1 in (('z', Vz), ('b', V0)):

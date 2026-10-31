@@ -81,6 +81,12 @@ for Bz in Bzs:
         G = d['Gsrc']
         assert len(G) == Tb.S, (len(G), Tb.S)
         g = G / np.where(np.abs(G) > 1e-9, np.abs(G), 1)
+        if q == 6 and os.environ.get('THETA_CANON') == '1':
+            # The cache multiplies prime Gauss sums of primes normalized = 2 mod 3, i.e. it computes g6 of the element
+            # (-1)^{k+1} c; this differs from the canonical g6(c) by chi_c(-1)^{k+1}, a factor mu(c) on the classes
+            # with N(c) = 7 mod 12 (journal 2026-10-31, "The cached sextic Gauss sums").  Undo it.
+            npr = d['nprime']
+            g = g * np.where(Tb.SN % 12 == 7, (-1.0) ** npr, 1.0)
         tsrc = Tb.SN.astype(float) / L
         lam, lam0 = onto(Vz, tsrc), onto(V0, tsrc)
         # Liouville sign of b: sources have squarefree norm, so mu(b) = (-1)^{omega(N(b))}

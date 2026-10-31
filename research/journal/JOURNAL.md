@@ -3225,6 +3225,12 @@ Same families as at 3·10⁴. V: row thetas and plain characters on classes mod 
   - A test of Bröker–Hoffstein's conjectured prime values needs that combination in their normalization. With the
     top singular vector instead, the sixth-power phase test gives 0.18 against about 0.1 for random phases (10 pairs
     of conjugate primes): inconclusive. One clean regularity: `|τ̂(π)|² = |τ̂(π̄)|²` on every pair of conjugate primes.
+  - With the outlier's own class combination (the twelve class phases of the 10⁴ fit, near twelfth roots of unity),
+    the small rows at `L = 10⁵` carry `|τ̂|²` about 8 times the masked null, and the null decays like noise. On the
+    prime rows the magnitudes come in conjugate pairs and spread over a factor 5–10. That is compatible with
+    Bröker–Hoffstein's discrete factors (3, 7, 13), but the levels are not resolved. The sixth-power phase test is not
+    stable in L (0.02 at 3.3·10⁴, 0.50 at 10⁵; 10 independent pairs). The direct identification stays open.
+    [exploratory; scratch scripts, not kept]
 
 ## 2026-10-31 · Twisted source spikes are flat on slot-selected rows (Λ_src, 3·10⁴)
 

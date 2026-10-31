@@ -3638,3 +3638,18 @@ the index t^{−1} ≡ m·p⁴ (mod sixth powers).
   conductor) that is a power saving.
 - Whether the reference's plain factors are t-twisted, and at which t the face binds, decides target 2. Not yet
   checked.
+
+**Which spikes does the reference see? This decides whether the faces program is viable [open].**
+- The difficulty above assumed the reference vectors meet the Gauss-sum-twisted spikes g̃·χ(m) of our matrix E.
+- #96's graded inverse theorem (journal 2026-10-30, "Faces past Λ = 2") says the excess over A + B comes only from
+  correlations of the vector with *plain* characters (m₀/n)₆, N m₀ ≤ K₀. That is because after R1's Poisson step the
+  row's Gauss sum is a unimodular row factor absorbed into the vector.
+- If the reference's post-Poisson vector is smooth × prime with the Gauss sum absorbed, its correlations with
+  (m₀/·)₆ are classical small-modulus character sums: Pólya–Vinogradov for the smooth factor (X₁ ≫ m₀),
+  Siegel–Walfisz or the bootstrap's zero-free region for the prime factor. m₀ = 1 is the zero frequency, i.e. the
+  diagonal. Target 2 would then follow from GS1 (#96, unverified) plus classical inputs.
+- If instead the vectors meet the Gauss-sum-twisted spikes, the analysis above applies (GRH-strength, unless
+  t-twists rescue it).
+- To decide: read which variable Sil's short reference (`MixedFirstActualReference`) sums over, and where the Gauss
+  sum sits relative to the vector. Without target 2 the K-wall program buys nothing, so this check comes before any
+  further K-wall work.

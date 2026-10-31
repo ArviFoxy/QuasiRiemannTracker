@@ -220,6 +220,9 @@ corrected (`CorrectedLargeSieve`), plus a detector condition for the vectors at 
   (A/B)·Σ_k mult(k)|⟨λ, w_k⟩|². So "diagonal past √A for smooth × prime vectors" is equivalent to their spike
   correlations being small. That is a statement about Gauss sums over smooth × prime moduli, not about the sieve.
 - Both forks (native or density machinery carrying the new gate) remain large Lean projects.
+- **Decision point before more K-wall work:** does the reference see plain-character blocks (#96's inverse theorem,
+  classical detector) or Gauss-sum-twisted spikes (GRH-strength detector)? Journal, "The reference wall's detector
+  condition". Without target 2 the K-wall buys nothing.
 
 ## Open question: a power saving off both thetas
 

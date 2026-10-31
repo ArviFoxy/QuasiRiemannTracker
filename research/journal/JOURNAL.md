@@ -3730,4 +3730,9 @@ appear.
 - So for weight-designed leaf vectors the K-wall needs only (i) the off-spike corrected sieve (the recursion) and
   (ii) amplification for Λ_row (`SpikeRule.lean`). The metaplectic Rankin–Selberg input for Λ_src is not needed.
 - Still to check: that R1's dualized plain factors can carry such weights. The dual of a smooth sum has the Fourier
-  transform of the weight as its weight, so the Mellin condition is imposed at the dual's pole.
+  transform of the weight as its weight, so the Mellin condition is imposed at the dual's pole (for radial weights
+  on ℂ, M[Ŵ](s) = Γ-factor · M[W](1 − s)).
+- **Caveat: low heights.** At height t the main term carries W̃(s₀ − σ − it), an analytic function of t. It decays for
+  |t| ≫ 1 but cannot vanish on a whole segment |t| ≤ T₀. So zeros with |t| ≲ 1 leave one rank-one main term per
+  spike, with a known bounded coefficient. That slice needs either the Λ_src (Rankin–Selberg) route or a separate
+  low-height argument. Its share of the count is about 1/T of the zeros.

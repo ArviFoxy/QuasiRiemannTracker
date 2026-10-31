@@ -4637,3 +4637,77 @@ Riskiest, in order: N3, the pole location, the 2-adic and λ-adic factors, N2's 
 - Combined with the entry above: the reference wall needs A only pointwise for tiny twists. That still needs
   continuation past the pole with growth in |Im w|, i.e. N1b + N2. The cheaper cubic route covers only the cubic
   analogue.
+
+## 2026-10-31 · The reference wall needs no metaplectic input: a prime-dilated short reference
+
+[derived; every inequality used is a formal theorem of Sil's library or the baseline except the assembly. Not checked:
+the higher Poisson levels, the gcd and collision bookkeeping, and how the reference's slot factor matches the face's S]
+
+**Correction to the entry above.** Reading 1 there ("the reference needs the polar input only pointwise") is
+superseded. The reference wall at the bar, and down to Λ ≈ 1.80, needs no information on individual spike
+correlations.
+
+**The vectors.** Sil's short reference (`uniform_actual_reference`) sieves, after one Poisson step in the long plain
+sum, a source vector λ = α ⋆ a.
+- α (the dual long plain times the short plain) has length X.
+- a (the slot primes) has length P, is squarefree, and has support coprime to α's.
+- Rows have norm ∼ A, and B = XP. Exponents in units of log A: b, S, x = b − S, k = 2b − 1.
+
+**Step 1: one Poisson step [Lean pieces: `gram_pairing_poisson`, `pair_coupling`, `SieveUncoupling`].**
+- On coprime pairs the Gram is exactly A·I plus dual terms (A/‖IJ‖)·Ŵ(A|k|²/|IJ|²)·f_k(I)·conj f_k(J)·(class sign),
+  for k ≠ 0. Here f_k(b) = g̃(b)·conj χ_b(k), and only N(k) ≲ K = B²/A matter.
+- Mellin separation of Ŵ and a split by classes mod 4 turn the dual part into
+  ≪ (A/B)·Σ_{N k ≲ K} |⟨λ′, f_k⟩|², with λ′ = λ·N^{σ+it}·(class), again a convolution.
+
+**Step 2: each spike correlation is a bilinear cubic form [derived; Gauss-sum multiplicativity and sextic
+reciprocity are baseline theorems].**
+- For coprime s, q: g̃(sq) = g̃(s)·g̃(q)·(q/s)₆²·η(s, q), with η a sign constant on classes mod 4. So
+  ⟨α ⋆ a, f_k⟩ = Σ_{s,q} u_s v_q (q/s)₆^{−2}, where u_s = α_s conj g̃(s) χ_s(k) and v_q = a_q conj g̃(q) χ_q(k).
+- Cauchy–Schwarz over q, and (s/q)₆² = (s/q²)₆, give
+  |⟨λ, f_k⟩|² ≤ ‖a‖² · Σ_q |Σ_s u_s conj(s/q²)₆|² ≤ C (PX)^ε · majorant(P², X) · ‖λ‖².
+  This is Sil's formal `OptimalBound` with rows {q²} (sixth-power-free) and columns {s}. It is **pointwise in k**:
+  no information on any single spike, and no large sieve over the twists.
+
+**Step 3: the count.**
+- The dual part is ≪ (A/B)·K·majorant(P², X)·‖λ‖², so the sieve is diagonal when K·majorant(P², X) ≤ XP.
+- In exponents that is k ≤ S, k + S ≤ x, 3k/2 + S ≤ x and k ≤ S/3 + x/6, i.e.
+  b ≤ γ_pd(S) = min((1 + S)/2, 3/4 − S, (6 + S)/11).
+- The diagonal pairs q₁ = q₂ reduce to α alone, with X ≤ A^{1/2} because b ≤ 1/2 + S. Sil's bound then gives
+  A·‖α‖² there. Partial overlaps of q₁, q₂ give sub-problems of the same form with smaller P and K.
+
+**Step 4: what the faces need [numerical; exponent check].**
+- Clause 1 needs γ(S) = 2B − 3/2 + 2(2 − Λ + 9a/2)S at every S ∈ (0, cap]. The table below gives the worst value of
+  γ_pd(S) − γ(S) over S ∈ (0, cap] (the binding end is S → 0, where both are ≈ 1/2):
+
+  | Λ | γ needed at cap | γ_pd(cap) | worst γ_pd − γ |
+  |---|---|---|---|
+  | 1.9675 (the bar) | 0.5088 | 0.5578 | +1e-4 |
+  | 1.93 | 0.5194 | 0.5580 | +1e-4 |
+  | 1.85 | 0.5430 | 0.5585 | +0 |
+  | 1.80 | 0.5585 | 0.5588 | +0 |
+
+- So the prime-dilated reference covers every face down to Λ ≈ 1.80, where the float model flattens anyway.
+
+**Why it works.**
+- A theta spike is a Gauss-sum vector, and Gauss sums are only twisted-multiplicative.
+- A convolution with a squarefree prime factor turns each spike correlation into a bilinear sextic form in
+  (s, q²), and the √-barrier is then paid by the prime factor's length.
+- At the balanced point (the K-wall, K ≈ B) the same bound fails by a factor of about X: there are K ≈ B
+  frequencies, and pointwise bounds cannot sum them. So the K-wall still needs C and A.
+
+**Remaining checks (all bookkeeping, no new estimate).**
+- The higher Poisson levels for non-squarefree sources: imprimitive characters, with dual frequencies divisible by
+  the square part. Each level's correlation is again bilinear in (s, q), with the symbol at the conductor part of s
+  and τ-bounded fibres.
+- The collision part, where a plain variable shares a slot prime (it lands in level 2).
+- The gcd sorting of non-coprime pairs (Sil's `SieveGcd`).
+- How the slot factor of `uniform_actual_reference`'s rectangle matches the S of `RootParameters.upperOne`.
+
+**Consequences.**
+- The bar's dependence on input A is now through the K-wall only.
+- The reference fork becomes Lean engineering on Sil's library:
+  - fork `SievePoissonBound` to keep the dual terms and bound them with the bilinear `OptimalBound` instead of the
+    descent;
+  - make `upperOne`'s threshold S-dependent, (P − S − (1 − γ_pd(S)))/2;
+  - fork the native gates (`Walls.lean` has the scalar side).
+- This does not move θ alone. The K-wall's overshoot gate still pins the native end at 2.003 (journal 2026-10-30).

@@ -113,7 +113,9 @@ pole-free cubic reflection.
   - **K-wall.** `NaturalSelectedCellNormFrom 0.487` at the interface, and nothing else in R1. But that is an operator
     bound, which the Mellin rescue does not reach. To use the rescue, R1's body must be re-proved per vector.
   - **Reference.** Sil's root reference forked to `ReferenceAtγ`, with the short reference valid up to `A^{0.51}`.
-    Only twists of norm `≤ A^{0.02}` enter there, so the polar input is needed pointwise, not on average.
+    No polar input is needed there (journal, "The reference wall needs no metaplectic input"). The reference's
+    vectors are convolutions with the slot primes. Every spike correlation is then a bilinear sextic form, bounded
+    pointwise by Sil's formal `OptimalBound`.
   - **Ledger.** A small fork of `e5_ledger` (`selOne`, `selTwo`).
-- The polar input itself is costly. For `q = 6` it is input A, about 15–30 person-months by the scoping of
+- So the polar input matters only for the K-wall. It is also costly. For `q = 6` it is input A, about 15–30 person-months by the scoping of
   2026-10-31: the baseline has no functional equation or growth bound, even for `n = 3`.

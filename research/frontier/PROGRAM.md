@@ -26,6 +26,11 @@ Both walls must move:
 
 - The reference wall is a constant in Sil's root interval, not a slope. So it needs only B ≤ A^{0.51} at the bar,
   where target 2's corrections run over twists N(h) ≤ A^{0.02}.
+- **It needs no metaplectic input** (journal, "The reference wall needs no metaplectic input"). The reference's
+  vectors are convolutions with the slot primes. Gauss-sum multiplicativity makes every spike correlation a bilinear
+  sextic form in (s, q²), and Sil's formal `OptimalBound` bounds it pointwise in the twist. The short reference is
+  then diagonal up to b ≤ min((1 + S)/2, 3/4 − S, (6 + S)/11), which covers every face down to Λ ≈ 1.80. Input A is
+  needed for the K-wall only.
 - The K-wall binds. At the bank's interface it is the single statement `NaturalSelectedCellNormFrom δ₀`
   (`../lean/arvi_polar_sketch/RootEnergyFrom.lean`: it gives R1 at every K ≥ δ₀ + 10⁻⁶).
 - The scalar gates of the line close down to Λ = 1.965 at K₀ = 0.4869, γ₀ = 0.51 (`Walls.lean`).
@@ -40,7 +45,7 @@ Either alone buys nothing (journal, "Faces past Λ = 2"; target 2 alone moves th
 | A | **6-fold Kubota theory, index aspect**: continuation and functional equation of ψ⁽⁶⁾(m, w) (index conductor N(m)), polynomial growth on Re w = 1/2 + ε, uniformly in m | classical (Kubota 1969 for general n); not formalized anywhere | missing | 15–30 person-months (agent scoping, 2026-10-31): the baseline's ≈ 14k-line analytic spine is generic, but it has no functional equation or growth bound even for n = 3. N1a (series, germ at 7/6) 4–7, N1b +2–6, N3 (functional equation) 8–18, N2 (growth) +1–2 |
 | A′ | Lindelöf on average in the index aspect, Σ_{N(m)≤M}\|ψ⁽⁶⁾(m, 1/2 + ε + it)\|² ≪ M^{1+ε}(1 + \|t\|)^R | from A plus the sextic large sieve (approximate functional equation of length ≤ N(m)^{1/2} keeps Sil's Θ₆ diagonal) | missing; the cubic analogue is David–de Faveri–Dunn–Stucky Lemma 6.6 | moderate once A exists |
 | A″ | Mellin rescue: Mellin-zero plain vectors (and convolutions with the zero in the long factor) have spike correlations at square-root size on average over twists | A + A′ + contour shift | numerically at the null (twist, dilation, convolution, mollified shapes; `../rip/theta/`) | small once A, A′ exist |
-| B | **Target-2 decomposition**: ‖E_{A,B}λ‖² ≤ C(AB)^ε{A‖λ‖² + (A/B)Σ_{N(h)≤B²/A} w_h\|⟨λ, f_h⟩\|²} for B ≤ A^{2/3} | fork of Sil's `SievePoissonBound` (kernel split, Gauss-sum factorization of the dual terms) and `SieveDescent` | restricted descent in Lean (`../lean/arvi_kwall/RestrictedDescent.lean`) | moderate (≈ 1–2k lines); the bar needs it only up to B ≤ A^{0.51} |
+| B | **Target-2 decomposition**: ‖E_{A,B}λ‖² ≤ C(AB)^ε{A‖λ‖² + (A/B)Σ_{N(h)≤B²/A} w_h\|⟨λ, f_h⟩\|²} for B ≤ A^{2/3} | fork of Sil's `SievePoissonBound` (kernel split, Gauss-sum factorization of the dual terms) and `SieveDescent` | restricted descent in Lean (`../lean/arvi_kwall/RestrictedDescent.lean`) | moderate (≈ 1–2k lines); the bar needs it only up to B ≤ A^{0.51}, and for the reference's slot-convolution vectors the dual terms are bounded by Sil's `OptimalBound` alone (no A) |
 | C | **Corrected recursion** for the K-wall: de Faveri's recursion run off the spikes to the fixed point 1 + γ, in weighted form G ≼ B^{1+γ}I + Σ w_f ff* over the generated family | elementary, new; a fork of Sil's formal sieve | iteration arithmetic (`silStep`, `tendsto_silIter`) and transposition (`TransposeCorrection.lean`) in Lean; step 3's corrected Cauchy–Schwarz and level closure are the open core | paper-level, then a large fork |
 | D | Λ_row: row thetas on slot-selected rows, closed by amplification | `SpikeRule.lean` (formal for slopes > 7/36) | conditional on C | small |
 | E | Face forks: native or density machinery carrying the new gates | Lean engineering on the 119 ReturnD modules and the face chain | not started | large |

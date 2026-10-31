@@ -4860,3 +4860,34 @@ covers")]
   operator-level argument at odd depths ≥ 3.
 - That is no longer bookkeeping. **The non-classical risk of the faces route is back in C**, now located precisely:
   the odd depths ≥ 3 of the recursion.
+
+## 2026-10-31 · Correction: the depth family alternates; there is no GRH trap
+
+[derived from Sil's `dualTerm` with exact conjugations]
+
+**The previous entry is wrong, and so is the level-family bullet of "In Sil's form".**
+- Both assumed that depth j corrects by conj(g̃₆)^j·χ. That came from a conjugation error.
+- Redone with `dualTerm`:
+  - For fixed dual frequency k, the dual form is |Σ_j λ_j·phase(j)·conj(χ_k(j))|² with χ_k(j) = idealRowHom k (b_j).
+    So the spike functional is **f_k = conj(phase)·χ_k**, and the depth-1 problem is E(conj(λ·phase)): rows k,
+    since E₁(ν) = E(conj ν) for the conjugated row characters.
+  - Applying the hypothesis's corrections to that vector gives
+    ⟨conj(λ·phase), conj(phase)·χ_R⟩ = Σ conj(λ)·conj(phase)·phase·conj(χ_R) = conj⟨λ, conj χ_R⟩,
+    a **plain character**.
+  - The pull-back map is T(f) = conj(phase)·conj(f). It sends conj(phase)·χ to conj χ and conj χ to conj(phase)·χ:
+    an involution, as the plan's "rotation f ↦ g̃·conj f" already said.
+- So the depth family is **{conj(phase)·χ_R, conj χ_R}**, up to restrictions to columns coprime to D, Galois
+  conjugation, N^{it} and class characters. **Phase powers never accumulate.**
+
+**Consequences.**
+- No μ·Hecke functionals arise, so there is no GRH-strength trap. The design rule of step 1 (keep the restricted
+  thetas as corrections; every metaplectic fact goes to the application) is **reinstated**. Together with the
+  telescoping weights, C is again bookkeeping on Sil's proved code.
+- The application needs two things:
+  - **odd depths** (conj(phase)·χ_R, restricted): the Mellin rescue, input A;
+  - **even depths** (plain restricted characters): smooth character sums of the K-wall vectors. These are tiny for
+    nontrivial χ_R of conductor ≪ X (Poisson). The trivial character, from sixth-power rows R₀ = 1, gives the mean
+    |Σ_b λ_b|². That is removed by also asking W̃(1) = 0 of the plain weights, a second Mellin condition, free
+    since the weights are caller-supplied.
+- The Jacobi-type numerics (both sextic Jacobi sums are associates of π) and the identities
+  g̃₆² = J̃·g̃₃, g̃₆³ = J̃·J̃′·g̃₂ stand as facts. They are not needed by the recursion.

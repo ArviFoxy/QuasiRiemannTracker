@@ -88,12 +88,11 @@ Each step lists de Faveri's statement, the corrected version, and the evidence.
 - **Corrected step (an identity, no loss).** Keep the D = 1 copy, θ(L, N), for the recursion. Move the D ≠ 1
   copies into the correction Σ_{R₀}(w_{R₀} − 1)|⟨λ′, χ_{R₀}⟩|². Pulled back through the Poisson identity, it is
   Σ (w − 1)|⟨λ, f_{R₀}⟩|², with f = phase·conj χ (Sil's `pair_coupling` normal form).
-- **Level family.**
-  - The dual vector is λ·conj(phase)·N^{it}, up to class characters. Its own corrections pull back to
-    conj(phase)²·χ, and level j gives conj(phase)^j·χ_k.
-  - Since phase³ is an angle (a Hecke character ξ of infinity type), the family is
-    {conj(phase)^j·ξ^m·χ_k : j ∈ {0, 1, 2}, m ≥ 0}: three spiky types with accumulating angular twists. That
-    matches the "about 400 levels, mostly angular twists" count below.
+- **Level family (corrected the same day).**
+  - The spike functional is f = conj(phase)·χ_k. The depth-1 problem is E(conj(λ·phase)).
+  - The pull-back T(f) = conj(phase)·conj(f) is an involution. So the family alternates:
+    {conj(phase)·χ_R, conj χ_R}, up to restrictions, Galois conjugation, N^{it} and class characters.
+  - An earlier version claimed accumulating powers conj(phase)^j. That was a conjugation error.
 - **Step 1, precisely (2026-10-31) [derived; the named lemmas are Lean].**
   - Sil's recursion (`SievePoissonRecurrence.lambda_recurrence`) assumes λ(L, B) ≤ A(LB)^ε(L^α + L^{1/6}B). It
     concludes λ(M, N) ≲ M + M^{1−α}N^{2α−1} + M^{5/6}N^{1/3}. The last term is the dual's multiplicity L^{1/6}B at
@@ -107,11 +106,9 @@ Each step lists de Faveri's statement, the corrected version, and the evidence.
       repeated row is row R₀ **restricted to the columns coprime to D**, and it vanishes elsewhere. So the below
       energy is Σ_{R₀ ≤ μ} Σ_D |⟨μ_{(D)}, row_{R₀}⟩|², with μ_{(D)} the vector restricted to columns coprime to D.
       Pulled back through the Poisson identity, these are **restricted twisted thetas** (step 2's objects).
-  - **Design rule (withdrawn for depths ≥ 2 the same day; journal, "The depth family of the corrected
-    recursion").** Depth j corrects by conj(g̃₆)^j·χ, and odd powers carry μ (Möbius absorption). Depth 3 is
-    μ·(Hecke character): its correlations with smooth vectors need GRH-strength input, so depths ≥ 2 must be
-    absorbed inside C, not deferred. The original rule read:
-  - **Design rule: every metaplectic fact goes to the application.**
+  - **Design rule: every metaplectic fact goes to the application.** (It was briefly withdrawn on 2026-10-31
+    after a conjugation error and then reinstated: the depth family alternates between conj(phase)·χ and conj χ,
+    so phase powers never accumulate. Journal, "Correction: the depth family alternates".)
     - Keep the restricted thetas as corrections, instead of proving they carry no excess. That removes step 2's
       d^{−2}-twist and Kazhdan–Patterson vanishing from C, so C becomes purely elementary bookkeeping on Sil's
       proved code.

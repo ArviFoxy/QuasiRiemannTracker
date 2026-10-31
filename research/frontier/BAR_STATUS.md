@@ -36,12 +36,13 @@ Not levers: the end face's cap (θ* does not depend on it at the binding), numCa
 - Prime-dilated short reference: the reference wall needs no metaplectic input; Lean core done
   (`lean/arvi_prime_dilation/`, `correlation_bound`).
 - Three Poisson steps evaluate the twist mean square of one smooth Gauss-sum factor without the functional equation
-  (the polar term comes from ζ_K(6s) at s = 1/6). Checked against DFDH (journal, "The owed check", 2026-10-31):
-  - Their route is on the twist side (Kubota series, Rankin–Selberg, Lindelöf on average). Ours is dual and
-    elementary.
-  - Every step is now written, including non-squarefree h and squarefree sources.
-  - The polar shape |W̃(s₀)|²H^{1−1/n}X^{1+2/n} matches the existing logs for n = 3 (H- and X-scaling) and n = 6.
-  - Its one gap against DFDH is the restriction to squarefree twists, which our K-wall does not need.
+  (the polar term comes from ζ_K(6s) at s = 1/6). Checked against DFDH (journal, "The owed check", 2026-10-31,
+  with two corrections the same day):
+  - The polar shape |W̃(s₀)|²H^{1−1/n}X^{1+2/n} matches the existing logs for n = 3 and 6.
+  - The argument has a real gap. Gauss-sum vectors live on squarefree n, so the dual plain sums do too. The Möbius
+    blocks d² | n carry the cubic symbol (h/d)₃, which defeats the last Poisson step for H^{1/3} ≲ N(d d′) ≲ H.
+  - The best crude bound for those blocks is X²H^{−1/12}. So the single-factor input is proved only for twist
+    ranges H ≥ B^{0.51–0.63}, and "elementary away from the corner" is withdrawn.
 - Bilinear balanced-point bound for a ⋆ b (balanced, arbitrary coefficients): B^ε(B + X + B^{5/6}X^{5/18}), excess
   1/9 instead of 1/6.
 

@@ -4208,3 +4208,41 @@ absorption, live in the cubic world the baseline already covers, but they are cr
      the cubic template in the baseline) and Λ_row (row thetas on W);
   3. the spike rule plus PR 93 amplification (in Lean);
   4. the face forks: native or density with target 2 (faces route), or D1 with the low-slope gap.
+
+## 2026-10-31 · What the baseline's metaplectic Lean theory covers: pole-free sums only
+
+[agent mapping of `openai_baseline/OAI/NumberTheory/DirichletL/` (Eisenstein/, GaussSum/, …); two central claims
+spot-checked in the source by me]
+
+**What is proved [Lean, read].**
+- **The cubic Kubota Eisenstein series.** The constant term ζ-ratio is proved. The h ≠ 0 coefficients are
+  continued only meromorphically on {1 < Re s, 0 < Im s} and at s = 4/3, via the resolvent and a Fredholm
+  argument (`E/WhittakerContinuation`, `E/MeromorphicResolvent`).
+- The residue at 4/3 is the cubic theta (5/6 normalized). Its coefficients at squarefree c are Patterson's Gauss
+  sums (`infinityCoefficient_squarefree`), with squarefree × cube support and a prime recurrence. There is no
+  continuation to a half-plane and no bound on any line left of the pole.
+- **Reflection exists only for the pole-free series.** Every cusp-reflection theorem is for the horizontal
+  Wirtinger-∂̄ derivative of conj θ₃ (`cuspBarProfile`; spot-checked). That derivative kills the constant term
+  v^{2/3}, i.e. the pole.
+  - The reflected coefficients are `squarefreeGaussCoefficient c = conj(c/|c|)·g̃₃(c)` (spot-checked), the
+    angular-twisted cubic Gauss sums.
+  - The exact Voronoi identity is `completedT_canonical_smoothed_reflection` (`E/FullFrequencyExpansion:530`), for
+    periodic twists ψ and smooth compactly supported weights.
+  - With the proved kernel decay and coefficient bounds it gives Σ_c W(N(c)/X) conj(c/|c|) g̃₃(c) ψ(c) ≪
+    X^{1/2}·cond^{O(1)}. The assembly into one statement is not in Lean.
+- **Sextic.** Only Möbius absorption, `moebius_star_gauss_one_eq_coefficient` (spot-checked):
+  μ(c)·conj g̃₆(c) = G(c)⁻¹·conj(c/|c|)·g̃₃(c), with G depending only on c mod 4. There is no 6-fold cover.
+
+**Reading.**
+- Pole-free sums are covered: Möbius-signed sextic sums (equivalently angular-twisted cubic ones) have square-root
+  bounds via the baseline's reflection. This is the baseline's own mechanism ("Möbius vectors avoid the theta
+  spike").
+- **Polar sums are not covered, even for n = 3.** The Mellin rescue needs exactly the polar asymptotic: plain smooth
+  vectors against sextic (or cubic) thetas.
+- Liouville-signed plain vectors (μ(b)U(b)) would be pole-free and covered. The faces' plain sums are coefficients
+  of L(s, χ) and carry no sign.
+- **A concrete formalization target.** The expansions of the cubic residue with constant term
+  3π·(residue)·v^{2/3} are in Lean (`cubicResidualFunction`, `sourceCusp_bessel_expansion`). Extending the cusp
+  reflection from ∂̄ conj θ₃ to conj θ₃ itself, keeping the constant term, would give the cubic polar Voronoi
+  formula: main term from v^{2/3} plus a dual sum. That is the cubic Mellin rescue.
+- The faces' sextic case needs the 6-fold cover besides; the cubic development is its template.

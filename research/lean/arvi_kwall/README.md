@@ -251,3 +251,17 @@ bound is about vectors, so the swap needs a vector form.
 
 The transposed corrections are the images Ef (row images of twisted thetas, explicit Kubota-type sums), not
 polar-decomposition vectors. So `completed_of_exponent`'s swap has a corrected analogue at the cost of a factor 2.
+
+## RestrictedDescent.lean: Sil's sixth-power descent restricted to large kernels
+
+Journal, 2026-10-31, "Target 2 needs one corrected Poisson step". Imports Sil's `FourthPower/SieveRanges`; about 25 s;
+standard axioms.
+
+After a Poisson step the completed rows are the dual frequencies. The frequencies whose sixth-power-free kernel has
+norm ≤ μ are the twisted source spikes of the original problem. Removing them is a row restriction.
+
+| theorem | statement |
+|---|---|
+| `aboveRows_extraction` | ‖E_{aboveRows μ A, B}‖² ≤ Σ_{D ∈ roots of aboveRows} θ(A/N(D)⁶, B): Sil's `lambda_sixth_extraction` on the large-kernel rows |
+| `root_bound_of_above` | every root D of a large-kernel row has μ·N(D)⁶ < A, so only (A/μ)^{1/6} roots survive (the corrected theta multiplicity) |
+| `aboveRows_eq_empty_of_le`, `above_le_lambda` | nothing survives once μ ≥ A; the restricted sieve is at most the completed one |

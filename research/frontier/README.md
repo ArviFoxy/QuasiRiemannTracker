@@ -253,6 +253,11 @@ block outlier is a residue").**
     shifted convolutions of theta coefficients. Without twisted multiplicativity for `τ₆` there is no known tool.
 - So, beyond the conjecture itself, the sextic K-wall's new arithmetic input is a shifted-convolution bound for
   sextic theta coefficients at products. The cubic analogue would follow from Patterson's formula.
+- **Duality does not close `Λ_src` (checked, 2026-10-31).** By `rowInner_rowImage`,
+  `Σ_i w_i |⟨b, E s_i⟩|² = Σ_i w_i |⟨E^H b, s_i⟩|² ≤ β_src ‖E^H b‖²`, with `β_src` the Bessel constant of the weighted
+  source spikes in source space. That gives `Δ_W ≤ C B^{1+ε} + Λ_row + β_src Δ_W`, which closes only if `β_src < 1`.
+  But `CorrectedLargeSieve` must cover the outlier itself, which forces `w_i ≳ 1/‖s_i‖²` and so `β_src ≥ 1`. So
+  `Λ_src` needs a direct bound: flatness of the residue images on W.
 - **For the Dunn–Radziwiłł route** (journal 2026-10-30, obstacle 3: "the sextic theta function has no explicit
   coefficients"). The term a corrected sextic large sieve has to subtract is the residue of the sextic Kubota series,
   which is what the numerics now show the outlier to be. That term exists analytically whether or not `τ₆` is

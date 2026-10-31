@@ -3101,6 +3101,10 @@ and logs in `rip/theta/README.md`]
   above. The source-theta family does more than a random source span of the same dimension.
 - This is numerical support for `TwoSidedSpikeFree` at one size. The runs at 10⁵ and 2·10⁵ (matrix-free) will
   decide whether it persists. (It does not with these fixed families; see "Two-sided at 10⁵ and 2·10⁵" below.)
+- **Correction (same day).** The Marchenko–Pastur formula is the wrong null. E is zero where a row and a source
+  share a prime, and that puts its bulk edge about 4.5% lower. The masked random matrix (i.i.d. phases on E's zero
+  pattern) projected off the same spans gives 3.616 here (`theta_twosided_grow_B30000.log`). So the top off both
+  families is 4.3% above the null, not at the edge. See "Growing families against the masked null" below.
 
 ## 2026-10-31 · Two-sided at 10⁵ and 2·10⁵: the fixed families stay above the bulk edge
 
@@ -3208,6 +3212,19 @@ Same families as at 3·10⁴. V: row thetas and plain characters on classes mod 
     The unknown sixth roots `ζ₆^{k(π)}` are not class functions, and such a span cannot see them.
   - Computing `τ₆` independently is out of reach: Bröker–Hoffstein sum Gauss sums to norm 10⁸ to get `τ₆(π)` for
     `N(π) < 900`, while our rows have norm 10⁴ and up. The tests above are the available evidence.
+- **Small rows, long sources** (`theta_tau6_small.py`, log `theta_tau6_small_B100_L100000.log`). Rows have
+  `N(z) ∈ [100, 200]` (28 rows) and sources go up to 10⁵. The source theta is applied class by class (12 classes of
+  x mod 4).
+  - The 12 × 28 class-image matrix, divided by `L^{1/3}`, has singular values 0.60, 0.55, 0.47, 0.46, 0.42, 0.38, …
+    at `L = 3.3·10⁴` and 0.56, 0.53, 0.48, 0.42, 0.39, 0.34, … at `L = 10⁵`. They are stable in L.
+  - The masked null's values decay like `L^{−1/6}`, as noise should: 0.35, 0.31, 0.28, … and 0.29, 0.26, 0.24, ….
+  - So about eight directions carry a main term growing like `L^{1/3}`. **The residue is a small family of row
+    vectors, not one**: the classes of the source carry different combinations. That fits the several components
+    `τ(·, η)` of the sextic theta over Bröker–Hoffstein's twelve representatives η. The outlier at large B is one
+    combination.
+  - A test of Bröker–Hoffstein's conjectured prime values needs that combination in their normalization. With the
+    top singular vector instead, the sixth-power phase test gives 0.18 against about 0.1 for random phases (10 pairs
+    of conjugate primes): inconclusive. One clean regularity: `|τ̂(π)|² = |τ̂(π̄)|²` on every pair of conjugate primes.
 
 ## 2026-10-31 · Twisted source spikes are flat on slot-selected rows (Λ_src, 3·10⁴)
 

@@ -1,0 +1,17 @@
+B=100 L=100000  R=28 rows  S=25936 sources  28 row primes   tables in 0s
+  source Gauss sums (0s)
+sources up to 33333: singular values of the 12 x 28 class-image matrix (/L^{1/3}): [0.6   0.546 0.474 0.46  0.423 0.378 0.292 0.28  0.227 0.159 0.1   0.094]
+    masked null (mean of 4): [0.348 0.306 0.28  0.258 0.235 0.221 0.197 0.173 0.158 0.144 0.12  0.095]
+sources up to 100000: singular values of the 12 x 28 class-image matrix (/L^{1/3}): [0.564 0.528 0.48  0.42  0.389 0.337 0.282 0.24  0.22  0.102 0.086 0.076]
+    masked null (mean of 4): [0.294 0.256 0.237 0.217 0.203 0.185 0.166 0.151 0.134 0.122 0.105 0.081]
+|<top right vector (L/3), top right vector (L)>|^2 = 0.4243   (random level 0.036)
+20 split prime rows (norms [103, 109, 127, 139, 151, 157, 163, 181, 193, 199])
+  phase coherence |mean of unit (tau^^2 g3)^6| = 0.130   (random phases: 0.071)
+  phase coherence |mean of unit (tau^^2 conj g3)^6| = 0.181   (random phases: 0.118)
+  phase coherence |mean of unit (conj tau^^2 g3)^6| = 0.181   (random phases: 0.012)
+  phase coherence |mean of unit (conj tau^^2 conj g3)^6| = 0.130   (random phases: 0.199)
+  |tau^(pi)|^2 on prime rows, sorted (mean 1 over all rows): [0.32 0.32 0.37 0.37 0.62 0.62 0.65 0.65 0.82 0.82 0.95 0.95 1.12 1.12
+ 1.56 1.56 2.21 2.21 2.49 2.49]
+  ratios to the smallest: [1.   1.   1.17 1.17 1.95 1.95 2.05 2.05 2.57 2.57 2.98 2.98 3.53 3.53
+ 4.89 4.89 6.95 6.95 7.83 7.83]
+done in 1s

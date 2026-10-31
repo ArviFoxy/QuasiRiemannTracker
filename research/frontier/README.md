@@ -212,7 +212,7 @@ corrected (`CorrectedLargeSieve`), plus a detector condition for the vectors at 
 | wall | regime | corrected sieve needed | detector condition | status of the inputs |
 |---|---|---|---|---|
 | reference (target 2) | sources B ≤ A^{2/3}, dual length B²/A ≤ A^{1/3} | **one** Poisson step: with every dual kernel ≤ M ≥ B²/A subtracted, the Gram is A·I plus gcd/coupling terms (de Faveri Lemmas 3.3, 4.4, 5.1); no recursion | smooth × prime reference vectors against twisted Gauss-sum thetas of twist ≤ A^{1/3}, restricted to multiples of small d, with N^{it} twists. The m = 1 correlation (Patterson bias of the smooth factor) is the main term to control | Poisson step: known technology. Detector: open |
-| K-wall | balanced, L ≈ B^{0.96}, slope δ ≈ 0.48, γ ≈ 0.015 | the off-spike recursion to fixed point 1 + γ, with the finite family of Poisson levels and local spikes | none beyond Λ_row (amplification, `SpikeRule.lean`) and Λ_src (Bessel of the dilated residues on W) | recursion: long elementary bookkeeping; Λ_src: metaplectic Rankin–Selberg (DFDH); numerics support every step |
+| K-wall | balanced, L ≈ B^{0.96}, slope δ ≈ 0.48, γ ≈ 0.015 | the off-spike recursion to fixed point 1 + γ, with the finite family of Poisson levels and local spikes | Λ_row (amplification, `SpikeRule.lean`). Λ_src is avoided if the leaf's plain factors carry I(U) = 0 weights: every source spike shares the pole s₀ = 2/3 (journal 2026-10-31) | recursion: long elementary bookkeeping; weight design for R1's dual factors: to check; numerics support every step |
 
 - The levels, local spikes and dilated-family conditioning are in the journal (2026-10-31: "The Poisson levels",
   "de Faveri's recursion, run off the spikes", "Λ_src is a Rankin–Selberg problem").

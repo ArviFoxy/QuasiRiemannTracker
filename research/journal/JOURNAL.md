@@ -3717,3 +3717,17 @@ at s₀ = 2/3.
 So target 2 is now: one Poisson step (known technology) plus I(U) = 0 weights for the plain factors, plus error-term
 bounds. That is not GRH-strength. Still to check: the face's reference weights, and whether the reference ledger
 tolerates the rank-one W_ref remainder at small heights.
+
+**The K-wall chain loses its Rankin–Selberg input [derived].** The selected bound on W was C B^{1+ε} + Λ_row + Λ_src
+(`selected_of_gradedTwoSided`). For a source vector v orthogonal to the source spikes,
+Σ_{z∈W} |(Ev)(z)|² ≤ 2 Σ_{z∈W} |(P_V E v)(z)|² + 2 ‖P_V^⊥ E P_P^⊥‖² ‖v‖², so only Λ_row and the off-spike constant
+appear.
+- The leaf's vectors after R1 are plain × plain × slots. With I(U) = 0 weights on the plain factors (or at large
+  height), their source-spike correlations have no main term.
+- The remaining correlations are the Kubota sums' error terms, random-like (Lindelöf on average in the twist aspect,
+  as in DFDH's (2.9)). Weighted by the spike strengths (B/N m)^{1/6} over N(m) ≤ B^{1−6γ}, they sum to about
+  B^{1/6}M^{5/6}/S ≈ B^{−0.08}.
+- So for weight-designed leaf vectors the K-wall needs only (i) the off-spike corrected sieve (the recursion) and
+  (ii) amplification for Λ_row (`SpikeRule.lean`). The metaplectic Rankin–Selberg input for Λ_src is not needed.
+- Still to check: that R1's dualized plain factors can carry such weights. The dual of a smooth sum has the Fourier
+  transform of the weight as its weight, so the Mellin condition is imposed at the dual's pole.

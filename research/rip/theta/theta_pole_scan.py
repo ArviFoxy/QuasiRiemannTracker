@@ -5,7 +5,10 @@ c(s) = 2^{-(s-1/3)}/(1 - 2^{-(s-1/3)}), the Mellin transform of t^{-1/3}-normali
 of the top of the class-compressed source Gram (72 classes) over the masked null should be smallest when s is the
 pole (2/3 if the residue picture is right) and grow like |s - s0|^2 on either side.
 
-usage: python3 -I theta_pole_scan.py B s1,s2,... [threads]
+For the cubic matrix (order 3, kernel mode 2, cubic Gauss sums, weight t^{-1/6}) the theory puts the pole at
+1/2 + 1/n = 5/6 in the same normalization.
+
+usage: python3 -I theta_pole_scan.py B s1,s2,... [threads] [order]
 """
 import os, sys, time
 sys.dont_write_bytecode = True
@@ -22,10 +25,13 @@ import theta_util as tu          # noqa: E402
 B = L = int(sys.argv[1])
 ss = [float(x) for x in sys.argv[2].split(',')]
 nth = int(sys.argv[3]) if len(sys.argv) > 3 else 3
+q = int(sys.argv[4]) if len(sys.argv) > 4 else 6
+modeE = 0 if q == 6 else 2
+w0 = 0.5 - 1.0 / q
 t0 = time.time()
 Tb = tc.build_tables(B, L, verbose=False)
 R, S = Tb.R, Tb.S
-d = np.load(tu.scratch_path('gauss_B%d_L%d.npz' % (B, L)))
+d = np.load(tu.scratch_path('gauss_B%d_L%d.npz' % (B, L) if q == 6 else 'gauss_B%d_L%d_q%d.npz' % (B, L, q)))
 Gsrc, nprime = d['Gsrc'], d['nprime']
 K = ck.Kernel(Tb.T, Tb.LOC, nthreads=nth)
 SA, SB = Tb.SA.astype(np.int64), Tb.SB.astype(np.int64)
@@ -39,7 +45,7 @@ def top_ratio(v):
     X = X[:, np.linalg.norm(X, axis=0) > 1e-12]
     X = X / np.linalg.norm(X, axis=0, keepdims=True)
     out = []
-    for mode, seed in ((0, 0), (1, 3), (1, 4)):
+    for mode, seed in ((modeE, 0), (1, 3), (1, 4)):
         EX = np.zeros((R, X.shape[1]), complex)
         for st in range(0, X.shape[1], 8):
             EX[:, st:st + 8] = K.forward(X[:, st:st + 8], mode=mode, seed=seed)
@@ -48,10 +54,10 @@ def top_ratio(v):
     return out[0] / np.mean(out[1:])
 
 
-print('B = L = %d: R=%d S=%d   (%.0fs)' % (B, R, S, time.time() - t0), flush=True)
+print('order %d, B = L = %d: R=%d S=%d   (%.0fs)' % (q, B, R, S, time.time() - t0), flush=True)
 for s in ss:
-    q = 2 ** (-(s - 1 / 3))
-    c = q / (1 - q)
-    r = top_ratio(u * t ** (-1 / 3) * np.where(t <= 0.5, 1.0, -c))
+    h = 2 ** (-(s - w0))
+    c = h / (1 - h)
+    r = top_ratio(u * t ** (-w0) * np.where(t <= 0.5, 1.0, -c))
     print('  zero at s = %.3f (c = %.3f): %.4f' % (s, c, r), flush=True)
 print('done in %.0fs' % (time.time() - t0))

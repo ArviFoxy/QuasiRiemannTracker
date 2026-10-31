@@ -3696,6 +3696,17 @@ times the theta level u or the plain level, with the best class phases (72 class
   flat in s near s₀, so it is not a mismatch of the zero. The other levels go to 0.997–1.011 at every size. So the
   residue main term is removed exactly (per row it is L^{s₀}·Ũ(s₀)·τ(z)), and what is left is small and bounded.
 
+**The pole against theory (cubic scan, log `theta_pole_scan_cubic_B30000.log`).**
+- For normalized n-th order Gauss sums the Kubota series Σ g̃(c) N(c)^{−s} has its pole at 1/2 + 1/n (Patterson: the
+  cubic Σ g(c) N(c)^{−s} has it at 4/3). That is 2/3 for n = 6 and 5/6 for n = 3.
+- The cubic scan at 3·10⁴ (weight t^{−1/6}, split) gives excess 1.2256, 1.0675, 1.0415, 1.0255, 1.0173, 1.0106, 1.0055,
+  1.0100 at s = 0.60, 0.70, 0.75, 0.80, 0.833, 0.867, 0.90, 0.95.
+- Fitting excess = floor + slope·|I(U_s)(s₀)|²/‖U_s‖² over candidate poles s₀, the best fits are s₀ ≈ 0.87 (cubic) and
+  ≈ 0.70 (sextic, 10⁵ scan). Both are the theoretical value + 0.03.
+- A common offset fits the source density in t, which the continuum Mellin transform ignores, rather than a different
+  pole. So the weight's zero should be calibrated with the actual density: an empirical zero at s ≈ 0.90 leaves the
+  cubic theta at 1.0055.
+
 **All levels share the pole (10⁵, same weights).** The higher Poisson levels vanish with the same I(U) = 0 weight:
 u²(x/|x|) (conj g̃₃ up to classes) 1.286 → **1.002** (control 1.165); conj(x/|x|) 1.276 → **1.003** (control 1.125).
 So every source spike, at every level and twist, has one common radial direction: the residual pole s₀ = 2/3 of the

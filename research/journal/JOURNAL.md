@@ -3994,3 +3994,11 @@ would cap the method at γ ≥ 1/(n(n+1)).
 - Consequence for `OFFSPIKE_PROOF_PLAN.md` and `SourceSpike.lean`: the target statement should be the weighted form,
   not orthogonality to a fixed span. The fixed-span statements remain true numerically at the sizes tested but are
   not what the recursion can prove.
+- **Dilation aspect = twist aspect at smaller scales [derived + numerical].** A dilated twisted theta 1_{d|b} u(b/d)
+  χ_m(b/d) meets the Mellin-zero vector in Σ_{b′} V(N(d)N(b′)/L) g(b′) conj χ_m(b′). This is the twist-aspect sum
+  at scale L/N(d) with a rescaled weight, and rescaling keeps the Mellin zero.
+  - Rerun at L = 10⁴ and 3·10⁴ (cubic; logs `theta_twist_meanvalue_q3_L10000.log`, `..._L30000.log`): the Mellin-zero
+    vector is at the null in every twist range (0.82–1.09 wherever there are ≥ 74 rows).
+  - The control at the smallest twists grows with the scale as the pole predicts: 13.7, 28.0 and 52.7 at
+    L = 10⁴, 3·10⁴, 10⁵, about L^{0.59} against L^{2/3}.
+  - So with weights falling in N(d), the dilated corrections are harmless for these vectors as well.

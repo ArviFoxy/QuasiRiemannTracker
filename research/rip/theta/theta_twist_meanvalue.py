@@ -74,8 +74,9 @@ for Bz in Bzs:
     Tb = tc.build_tables(Bz, L, verbose=False)
     R = Tb.R
     if cols is None:
-        d = np.load(tu.scratch_path('srcgauss_q%d_L%d.npz' % (q, L)) if q != 6 else
-                    tu.scratch_path('gauss_B%d_L%d.npz' % (L, L)))
+        cand = ([tu.scratch_path('srcgauss_q%d_L%d.npz' % (q, L)), tu.scratch_path('gauss_B%d_L%d_q%d.npz' % (L, L, q))]
+                if q != 6 else [tu.scratch_path('gauss_B%d_L%d.npz' % (L, L)), tu.scratch_path('srcgauss_L%d.npz' % L)])
+        d = np.load([c for c in cand if os.path.exists(c)][0])
         G = d['Gsrc']
         assert len(G) == Tb.S, (len(G), Tb.S)
         g = G / np.where(np.abs(G) > 1e-9, np.abs(G), 1)

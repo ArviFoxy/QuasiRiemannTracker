@@ -3180,6 +3180,16 @@ Same families as at 3·10⁴. V: row thetas and plain characters on classes mod 
   `|f|² ≈ L^{2/q}`. So the spike strength is `θ ∝ L^{2/q − 1} B^{1 − 1/q}`, which is `B^{1/q}` at `L = B`. That is the
   measured `B^{1/6}` for the sextic family and the `B^{1/3}` theta excess of the cubic one.
 
+**Prior work (found after the tests).** de Faveri–Dunn–Hoffstein, "Non-orthogonality of the cubic and quartic large
+sieves via Rankin–Selberg" (arXiv 2607.07911, July 2026), prove the cubic large sieve is essentially optimal and the
+quartic one is not orthogonal, by this mechanism: the Gauss-sum bias, Kubota series with Lindelöf-on-average second
+moments, and theta coefficients that are large on average (Rankin–Selberg). They conjecture
+`Ξ_n(A, B) = (AB)^{o(1)}(A + B + A^{1−1/n}B^{2/n} + A^{2/n}B^{1−1/n})` for every n ≥ 3 (their (1.8)). At n = 6 and
+A = B the extremal term is `B^{7/6}`, the `B^{1/6}` excess measured here. So the residue mechanism is known for
+n = 3, 4 and expected for all n. What the tests below add is the sextic case and its structure: coherence over source
+scales, only the +1 twists, several components. Their second-moment bound is also the input that would make the
+identification below a theorem.
+
 **Tests.** Rows are fixed (`N z ∈ [B, 2B]`); only the sources change.
 
 | test | E | control |

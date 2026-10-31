@@ -9,6 +9,9 @@ be small.
 
 [numerical, with the mechanism heuristic; details in `../../journal/JOURNAL.md`, entries of 2026-10-31]
 
+- **Prior work.** de Faveri–Dunn–Hoffstein (arXiv 2607.07911, 2026) prove the cubic and quartic large-sieve lower
+  bounds by this mechanism and conjecture the order-n operator norm, whose n = 6 extremal term at A = B is the
+  `B^{7/6}` measured here. The items below are the sextic numerics and their structure.
 - **The excess is the residue of a Kubota series.** For a source vector built from Gauss sums,
   `E f(z) = Σ_x f(x)(x/z)₆` is, by reciprocity and twisted multiplicativity, a partial sum of the sextic Kubota series
   `ψ₆(z, s) = Σ_x g̃(z, x) N(x)^{−s}` at the index z. Its pole gives a main term proportional to `L^{1/3}` times the

@@ -4090,3 +4090,21 @@ w_f/Δ.
   under E (this lemma), and heights.
 - Every member's correlation with a Mellin-zero vector is a Kubota-type sum. Numerically all of them are at the null
   (twist, dilation and convolution entries). The proof of each needs the continuation for the relevant cover.
+
+## 2026-10-31 · The faces need the 6-fold cover: plain vectors see the Möbius-signed cubic series
+
+[derived]
+
+- By Davenport–Hasse and Möbius absorption (`orders/`), the sextic source spike direction is
+  conj g̃₆(b) = μ(b)·g̃₃(b)·(Hecke character × class function × angular factor). This is the reason
+  `SourceSpike.lean`'s source shapes carry an optional `liouvilleSign`.
+- So a plain smooth vector's spike correlation, Σ_b U(N(b)/X)·conj f_m(b), is a **Möbius-signed** twisted cubic
+  Kubota sum. Its analytic theory is that of the sextic series (6-fold cover, pole at 2/3), not the cubic one.
+- Only Liouville-signed source vectors would meet the cubic series directly, and those are coefficients of
+  L(2s, χ²)/L(s, χ), the inverse word. The faces' plain sums are coefficients of L(s, χ) itself.
+- The same holds for convolutions of plain factors: a product of two Möbius-signed cubic sums with cross symbols.
+
+**Sizing.** The faces program needs the 6-fold Kubota Eisenstein series: continuation, the residue at 2/3, and growth
+on Re s = 1/2, uniformly in twists. The baseline's cubic development (`OAI/.../Eisenstein/`, 53k lines) is the
+template; how much of it is generic in the order is the question for the mapping in progress. P1 and B2, after
+absorption, live in the cubic world the baseline already covers, but they are critical-line (moment) problems.

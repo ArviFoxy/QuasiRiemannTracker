@@ -3432,6 +3432,17 @@ smaller problem on the rows divisible by p.
   N(p) ≤ B^{(1−6γ)/5}, and those are exactly the twists by p⁵ that the twist box N(m) ≤ B^{1−6γ} of
   `TwoSidedSpikeFree` contains. [derived]
 
+**Restriction carries no spike (numerical, `rip/theta/theta_restricted_spikes.py`, log
+`theta_restricted_spikes_B30000.log`).** Obstacle 2 asks whether the twisted thetas restricted to multiples of d,
+f·χ(m)·1_{d|x}, carry excess of their own.
+- At 3·10⁴, with N(d) = 7–37 and N(m) = 7, 13, the ratio over the masked null is 0.98–1.02. The unrestricted twist
+  N(m) = 7 alone is at 1.58.
+- Projected off the unrestricted family (N(m′) ≤ 300), the ratio is 0.93–1.01.
+- Why the spike disappears [derived]: writing x = dx′, the cross term χ_d(x′)χ_{x′}(d) ≈ χ_{x′}(d)² turns the
+  restricted sum into a twist by d^{−2}, which lands off the residue.
+- So the gcd sorting needs no restricted corrections, at least at this size. The correction family stays: twisted
+  thetas (all twists up to the cutoff) × the finite Poisson levels. Local spikes only redistribute energy.
+
 **Assessment.**
 - This is the first route to (LS off V) with the right exponent. The recursion that proves the optimal sieve, with
   the spikes taken out at each Poisson step, has fixed point 1 + γ instead of 1 + 1/n.

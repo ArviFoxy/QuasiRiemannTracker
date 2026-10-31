@@ -1,0 +1,17 @@
+B = L = 30000: R=8474 S=7768; unrestricted family N(m) <= 300, dim 76   (9s)
+  untwisted theta f: 2.133;  f off the family: 2.140
+/home/user/QuasiRiemannTracker/research/rip/theta/theta_restricted_spikes.py:66: RuntimeWarning: invalid value encountered in scalar divide
+  return e / n
+/home/user/QuasiRiemannTracker/research/rip/theta/theta_restricted_spikes.py:88: RuntimeWarning: invalid value encountered in scalar divide
+  np.linalg.norm(voff) ** 2 / np.linalg.norm(v) ** 2))
+  d with N(d) =   7 ( 865 multiples):  m=7: nan / off nan (kept nan);  m=7: 0.995 / off 0.931 (kept 0.82);  m=13: 0.999 / off 0.942 (kept 0.82);  m=13: 0.998 / off 0.956 (kept 0.83)
+  d with N(d) =   7 ( 865 multiples):  m=7: 1.005 / off 0.948 (kept 0.82);  m=7: nan / off nan (kept nan);  m=13: 1.000 / off 0.956 (kept 0.83);  m=13: 0.998 / off 0.943 (kept 0.82)
+  d with N(d) =  13 ( 515 multiples):  m=7: 1.006 / off 0.973 (kept 0.87);  m=7: 0.994 / off 0.975 (kept 0.87);  m=13: nan / off nan (kept nan);  m=13: 0.993 / off 0.964 (kept 0.87)
+  d with N(d) =  13 ( 515 multiples):  m=7: 1.012 / off 0.982 (kept 0.87);  m=7: 1.008 / off 0.977 (kept 0.87);  m=13: 0.989 / off 0.971 (kept 0.87);  m=13: nan / off nan (kept nan)
+  d with N(d) =  19 ( 369 multiples):  m=7: 1.005 / off 0.980 (kept 0.89);  m=7: 1.016 / off 0.997 (kept 0.89);  m=13: 1.001 / off 0.992 (kept 0.89);  m=13: 0.996 / off 0.986 (kept 0.89)
+  d with N(d) =  19 ( 369 multiples):  m=7: 1.005 / off 0.981 (kept 0.89);  m=7: 1.020 / off 0.991 (kept 0.89);  m=13: 1.007 / off 1.000 (kept 0.89);  m=13: 0.994 / off 0.985 (kept 0.89)
+  d with N(d) =  31 ( 235 multiples):  m=7: 1.007 / off 0.998 (kept 0.92);  m=7: 1.000 / off 0.985 (kept 0.92);  m=13: 1.000 / off 0.993 (kept 0.91);  m=13: 0.982 / off 0.973 (kept 0.91)
+  d with N(d) =  31 ( 235 multiples):  m=7: 1.017 / off 1.007 (kept 0.92);  m=7: 1.006 / off 0.998 (kept 0.92);  m=13: 0.993 / off 0.985 (kept 0.91);  m=13: 1.010 / off 1.000 (kept 0.91)
+  d with N(d) =  37 ( 197 multiples):  m=7: 1.008 / off 1.000 (kept 0.92);  m=7: 1.006 / off 0.997 (kept 0.92);  m=13: 1.008 / off 0.995 (kept 0.92);  m=13: 1.004 / off 1.003 (kept 0.92)
+  d with N(d) =  37 ( 197 multiples):  m=7: 1.019 / off 1.005 (kept 0.92);  m=7: 1.006 / off 1.002 (kept 0.92);  m=13: 1.007 / off 0.999 (kept 0.92);  m=13: 0.999 / off 0.991 (kept 0.92)
+done in 11s

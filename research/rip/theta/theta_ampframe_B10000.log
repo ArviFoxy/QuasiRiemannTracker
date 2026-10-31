@@ -1,0 +1,13 @@
+B=10000 L=10000  R=2816 rows  S=2610 sources   built in 2.1s
+  |G(z,1)|: min 1.000 max 1.000   (built 7.5s)
+B=10000: slot P0=40 (10 primes), |W| = 281 (rho 0.10)
+  truth |E_W|^2/S 1.768 ; trivial (Q = I) 4.261
+  oracle P_W + 0.1 I (c_W = 1/1.1): bound 1.857
+  single amplifier |T|^2/A (P0=40)               c_W 1.000  lambda 4.015  bound 4.015
+  squared amplifier |T|^4/A^2                    c_W 1.000  lambda 9.831  bound 9.831
+  half amplifier + half identity                 c_W 1.000  lambda 3.480  bound 3.480
+  slot P0=100: 20 primes; corr(|T_0|^2, |T_k|^2) on W -0.013
+  slot P0=250: 40 primes; corr(|T_0|^2, |T_k|^2) on W -0.056
+  family mean over scales (normalized)           c_W 1.000  lambda 11.419  bound 11.419
+  family geometric mean (product of pieces)      c_W 1.000  lambda 52326965785.489  bound 52326965785.489
+done

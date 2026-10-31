@@ -232,3 +232,26 @@ whole content.
 
 **What would kill it.** λ_max(M*QM) does not drop below the plain large sieve once c_W(Q) is kept O(1). That would
 mean the coarse cells carry no averaging gain at the balanced point.
+
+**First results (2026-10-31; `../rip/theta/theta_ampframe.py`, log `theta_ampframe_B10000.log`).** Setting: B = L = 10⁴,
+W the top 10% of rows by |T|, T the slot sum over the 10 split primes with norm in [40, 80], |W| = 281.
+
+| metric Q | bound | note |
+|---|---|---|
+| truth \|E_W\|²/S | 1.768 | |
+| oracle P_W + 0.1 I | 1.857 | |
+| Q = I | 4.261 | trivial |
+| single amplifier \|T\|²/A | 4.015 | −6% |
+| ½ amplifier + ½ I | 3.480 | −18% |
+| squared amplifier | 9.83 | worse |
+| mean of slot sums at three scales | 11.4 | worse |
+| geometric mean of the three scales | blows up | |
+
+- **Amplification is the diagonal case of the dual-frame bound.** With Q = |T|²/A we have Q ≥ 1 on W and
+  ⟨Ea, QEa⟩ = Σ|TD|²/A.
+- **Naive multi-scale families fail.** Slot sums at other scales are uncorrelated with W (correlation about −0.01 to
+  −0.06), and normalizing them on W wrecks c_W. The coarse level must be W's own defining scale.
+- **The best diagonal Q is the oracle**, the indicator of {|T|² ≥ A}. So Q1 becomes: approximate that indicator by
+  structured weights whose λ_max(EᴴQE) is provable. Higher polynomial degree gets closer to the oracle but costs
+  longer amplified polynomials, which is the classical amplifier-degree tradeoff.
+- **Open question:** can a non-diagonal Q (a true RKHS on the rows) beat every diagonal one at the same proof cost?

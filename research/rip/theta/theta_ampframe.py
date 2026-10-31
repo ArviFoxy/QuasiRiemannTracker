@@ -75,4 +75,17 @@ Qf = sum(fam) / len(fam)
 bound_diag(Qf / Qf[W].min() * 1.0, 'family mean over scales (normalized)')
 Qprod = np.prod(fam, axis=0) ** (1.0 / len(fam))
 bound_diag(Qprod / Qprod[W].min(), 'family geometric mean (product of pieces)')
+# ---- structured approximations of the indicator of W by functions of the amplifier x = |T|^2/A (>= 1 on W)
+x = a0 / A0
+print('  -- functions q(x) of the amplifier x = |T|^2/A, all >= 1 on W (so c_W <= 1):', flush=True)
+for al in (0.1, 0.25, 0.5, 0.75):
+    bound_diag(al * x + (1 - al), 'mix: %.2f x + %.2f' % (al, 1 - al))
+for be in (0.25, 0.5):
+    bound_diag(x ** be, 'fractional power x^%.2f' % be)
+for eta in (0.3, 0.1, 0.03):
+    q = np.minimum(x, 1.0) + eta
+    bound_diag(q / q[W].min(), 'clipped min(x, 1) + %.2f' % eta)
+for k in (2, 4):
+    q = np.minimum(x, 1.0) ** k + 0.1
+    bound_diag(q / q[W].min(), 'clipped power min(x, 1)^%d + 0.1' % k)
 print('done')

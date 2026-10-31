@@ -1,0 +1,30 @@
+B=10000 L=10000  R=2816 rows  S=2610 sources   built in 1.5s
+  |G(z,1)|: min 1.000 max 1.000   (built 6.5s)
+ReLU kernel Maclaurin coefficients b_0..b_4: fitted [0.15915 0.25    0.07958 0.      0.00664], claimed [0.15915 0.25    0.07958 0.      0.00663] (max dev 7.3e-06); b_5 -2.8e-15, b_6 0.0019 (1/(160 pi) = 0.0020)
+B=10000 L=10000 R=2816 S=2610: trivial bound |E|^2/S = 4.2608   (19s)
+row sets and truths |E_W|^2/S: slot P0=40 rho=0.10 (|W|=281): 1.7675; random rho=0.10 #1: 1.6884; random rho=0.10 #2: 1.6776; random rho=0.10 #3: 1.6873; slot P0=40 rho=0.03 (|W|=84): 1.3736; random rho=0.03 #1: 1.3106; random rho=0.03 #2: 1.3076; random rho=0.03 #3: 1.3199
+spans (dimension): block-conj N(m)<=30: 36, theta-lean N(m)<=30: 36, both-lean N(m)<=30: 72
+(1) Q = I                                    f2 4.2608 | slot P0=40 rho=0.10: f1 1 prod 4.261 (2.41 x truth, 1.00 x triv) | random rho=0.10 #1: f1 1 prod 4.261 (2.52 x truth, 1.00 x triv) | slot P0=40 rho=0.03: f1 1 prod 4.261 (3.10 x truth, 1.00 x triv) | random rho=0.03 #1: f1 1 prod 4.261 (3.25 x truth, 1.00 x triv)
+(4b) inverse kernel degrees 0-4: Q^-1 = K + 0.1 I f2 1.7126 | slot P0=40 rho=0.10: f1 91.1 prod 155.975 (88.25 x truth, 36.61 x triv) | random rho=0.10 #1: f1 91 prod 155.931 (92.35 x truth, 36.60 x triv) | slot P0=40 rho=0.03: f1 27.8 prod 47.581 (34.64 x truth, 11.17 x triv) | random rho=0.03 #1: f1 27.7 prod 47.509 (36.25 x truth, 11.15 x triv)
+(4b) inverse kernel degrees 0-4: Q^-1 = K + 0.01 I f2 1.7845 | slot P0=40 rho=0.10: f1 91 prod 162.357 (91.86 x truth, 38.10 x triv) | random rho=0.10 #1: f1 91 prod 162.311 (96.13 x truth, 38.09 x triv) | slot P0=40 rho=0.03: f1 27.7 prod 49.416 (35.98 x truth, 11.60 x triv) | random rho=0.03 #1: f1 27.6 prod 49.341 (37.65 x truth, 11.58 x triv)
+(4b) inverse kernel degrees 0-4: Q^-1 = K + 1 I f2 1.2483 | slot P0=40 rho=0.10: f1 92 prod 114.807 (64.95 x truth, 26.94 x triv) | random rho=0.10 #1: f1 91.9 prod 114.775 (67.98 x truth, 26.94 x triv) | slot P0=40 rho=0.03: f1 28.7 prod 35.803 (26.06 x truth, 8.40 x triv) | random rho=0.03 #1: f1 28.6 prod 35.750 (27.28 x truth, 8.39 x triv)
+(4b) inverse kernel degrees 1-4: Q^-1 = K + 0.1 I f2 1.1794 | slot P0=40 rho=0.10: f1 1.72 prod 2.025 (1.15 x truth, 0.48 x triv) | random rho=0.10 #1: f1 1.66 prod 1.956 (1.16 x truth, 0.46 x triv) | slot P0=40 rho=0.03: f1 1.43 prod 1.683 (1.22 x truth, 0.39 x triv) | random rho=0.03 #1: f1 1.38 prod 1.622 (1.24 x truth, 0.38 x triv)
+(4b) inverse kernel degrees 1-4: Q^-1 = K + 0.01 I f2 1.2133 | slot P0=40 rho=0.10: f1 1.63 prod 1.974 (1.12 x truth, 0.46 x triv) | random rho=0.10 #1: f1 1.57 prod 1.903 (1.13 x truth, 0.45 x triv) | slot P0=40 rho=0.03: f1 1.34 prod 1.622 (1.18 x truth, 0.38 x triv) | random rho=0.03 #1: f1 1.29 prod 1.559 (1.19 x truth, 0.37 x triv)
+(4b) inverse kernel degrees 1-4: Q^-1 = K + 1 I f2 0.9374 | slot P0=40 rho=0.10: f1 2.62 prod 2.453 (1.39 x truth, 0.58 x triv) | random rho=0.10 #1: f1 2.56 prod 2.398 (1.42 x truth, 0.56 x triv) | slot P0=40 rho=0.03: f1 2.33 prod 2.181 (1.59 x truth, 0.51 x triv) | random rho=0.03 #1: f1 2.28 prod 2.133 (1.63 x truth, 0.50 x triv)
+(4b) inverse kernel degrees 2-4: Q^-1 = K + 0.1 I f2 3.8785 | slot P0=40 rho=0.10: f1 1.12 prod 4.357 (2.46 x truth, 1.02 x triv) | random rho=0.10 #1: f1 1.12 prod 4.349 (2.58 x truth, 1.02 x triv) | slot P0=40 rho=0.03: f1 1.11 prod 4.314 (3.14 x truth, 1.01 x triv) | random rho=0.03 #1: f1 1.11 prod 4.304 (3.28 x truth, 1.01 x triv)
+(4b) inverse kernel degrees 2-4: Q^-1 = K + 0.01 I f2 4.2251 | slot P0=40 rho=0.10: f1 1.03 prod 4.366 (2.47 x truth, 1.02 x triv) | random rho=0.10 #1: f1 1.03 prod 4.357 (2.58 x truth, 1.02 x triv) | slot P0=40 rho=0.03: f1 1.02 prod 4.319 (3.14 x truth, 1.01 x triv) | random rho=0.03 #1: f1 1.02 prod 4.309 (3.29 x truth, 1.01 x triv)
+(4b) inverse kernel degrees 2-4: Q^-1 = K + 1 I f2 2.1313 | slot P0=40 rho=0.10: f1 2.02 prod 4.312 (2.44 x truth, 1.01 x triv) | random rho=0.10 #1: f1 2.02 prod 4.308 (2.55 x truth, 1.01 x triv) | slot P0=40 rho=0.03: f1 2.01 prod 4.289 (3.12 x truth, 1.01 x triv) | random rho=0.03 #1: f1 2.01 prod 4.284 (3.27 x truth, 1.01 x triv)
+
+summary (product / truth ; product / trivial) per row set; trivial bound 4.261
+== slot P0=40 rho=0.10 (|W|=281): truth 1.7675, trivial 4.2608 (trivial/truth = 2.41)
+   family (1) best: Q = I                                        f1 1 f2 4.2608 product 4.2608 = 2.411 x truth = 1.000 x trivial
+   family (4b) best: inverse kernel degrees 1-4: Q^-1 = K + 0.01 I f1 1.627 f2 1.2133 product 1.9743 = 1.117 x truth = 0.463 x trivial
+== random rho=0.10 #1: truth 1.6884, trivial 4.2608 (trivial/truth = 2.52)
+   family (1) best: Q = I                                        f1 1 f2 4.2608 product 4.2608 = 2.524 x truth = 1.000 x trivial
+   family (4b) best: inverse kernel degrees 1-4: Q^-1 = K + 0.01 I f1 1.568 f2 1.2133 product 1.9026 = 1.127 x truth = 0.447 x trivial
+== slot P0=40 rho=0.03 (|W|=84): truth 1.3736, trivial 4.2608 (trivial/truth = 3.10)
+   family (1) best: Q = I                                        f1 1 f2 4.2608 product 4.2608 = 3.102 x truth = 1.000 x trivial
+   family (4b) best: inverse kernel degrees 1-4: Q^-1 = K + 0.01 I f1 1.337 f2 1.2133 product 1.6218 = 1.181 x truth = 0.381 x trivial
+== random rho=0.03 #1: truth 1.3106, trivial 4.2608 (trivial/truth = 3.25)
+   family (1) best: Q = I                                        f1 1 f2 4.2608 product 4.2608 = 3.251 x truth = 1.000 x trivial
+   family (4b) best: inverse kernel degrees 1-4: Q^-1 = K + 0.01 I f1 1.285 f2 1.2133 product 1.5592 = 1.190 x truth = 0.366 x trivial

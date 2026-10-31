@@ -19,6 +19,13 @@ be small.
 | `theta_locate.py B L` | top of E after projecting the rows off the block span or the twisted-theta span, or dropping small/large sources |
 | `theta_reciprocity.py B L [seed]` | theta excess in RCHAR, with its own Gauss sums |
 | `theta_top_free.py B L [k]` | matrix-free top of E (int8 codes, chunked Lanczos) against masked random phases and RCHAR, for B up to 10⁵ |
+| `theta_top_free2.py B L [--k] [--threads] [--nrandom] [--nrchar]` | `theta_top_free.py` through the compiled kernel `theta_ckernel.py` (E rebuilt row by row from the int8 symbol table, EᴴE v accumulated in the same pass; AVX-512 + OpenMP): 40× faster per product, B up to 3·10⁵ (table 2.4 GB). Several seeds of the masked random phases and several RCHAR draws; prints the excess and the implied spike strength θ |
+| `theta_ckernel.py` | the kernel as a library: EᴴE v, the same on a row subset with unit-norm rows (the unit-diagonal Gram), E v, top eigenpairs by ARPACK |
+| `theta_growth.py [log ...]` | growth table from the `theta_top_free*` logs: excess over the masked random edge, θ, adjacent, grid and least-squares slopes d log θ / d log B |
+| `theta_outliers.py B L [--k]` | how many eigenvalues of EᴴE/S sit above the masked random edge, and how far |
+| `theta_selected.py B L P0,... [rho,...]` | slot-selected rows W (top ρR by \|Σ χ_z(π)\|, N(π) ∈ [P0, 2P0]) against random rows and against RCHAR: top of the unit-diagonal Gram on W, and the concentration of the top singular vectors on W (dense, B ≤ 3·10⁴) |
+| `theta_selected_free.py B L P0,... [rho,...]` | the same matrix-free (B up to 3·10⁵), with a positive control (rows aligned with the outlier) and a dilution check on random row sets |
+| `theta_dualframe.py B L [P0] [rho,...] [M,...]` | dual-frame bound Σ_W \|Ea\|² ≤ λ_max((Q⁻¹)_WW)·λ_max(EᴴQE)·‖a‖² for slot-selected W: Q from the theta and block spans (both conjugations), the wide ReLU kernel (as Q and as Q⁻¹), a low-pass metric, and the spectral metrics Q = f(EEᴴ) as references |
 | `theta_srcspike.py B L` | source-side theta vectors G(x)χ_x(u)N(x)^{−1/2}: energy, overlap with the top right vectors, twisted source-theta span |
 | `theta_primepool.py B L` | prime-pool row vectors: energy and overlap with the top left vector |
 | `theta_classes.py B L [sample]` | reciprocity sign s(z, z′) and χ_z(−1) by row class mod 4; per-class spectra and theta excess (no anti-self-dual class) |

@@ -1,0 +1,56 @@
+B=10000 L=100  R=2816 rows  S=26 sources   built in 0.0s
+  |G(z,1)|: min 1.000 max 1.000   (built 7.9s)
+window [B, 1.10B]: 278 rows ; N0 = 10504 ; L = 54582 (x2.00 of self-dual) ; common dual length Lt0 = 13646 ; Lt(z,z') in [12374, 14945]
+primary sources to 382074: 154000
+  symbols (10s)
+Gram done (79s); mean diagonal 6597.9 (= sum_n w ~ L/(9) (2/sqrt3) * coprime density = 7002.9)
+dual elements to 104613: 379506 (primary: 42168)
+  dual symbols (82s)
+dual Grams done (172s)
+pair types among coprime pairs: a 0.669 b 0.165 c 0.166 ; non-coprime pairs 0.050
+
+share of ||G_off||_F^2 on non-coprime pairs: 0.042 ; on type a / b / c coprime pairs: 0.647 / 0.154 / 0.158
+
+relative error of the predicted dual image    Frobenius  operator  | Frobenius on coprime pairs of type a  b  c
+  P0  exact formula, common Lt0              0.2068    0.3037   |  0.0283 0.0280 0.0288
+  P0' + first-order dilation correction      0.2068    0.3037   |  0.0283 0.0280 0.0288
+  P1  primary-h Grams, 3 types (= P0)        0.2068    0.3037   |  0.0283 0.0280 0.0288
+  P3  single-length family image             0.4846    0.4807   |  0.0201 0.5124 0.9823
+  P4  naive sign s*chi(-1) only              1.3546    1.2716   |  1.4097 1.4181 1.1229
+  zero prediction                            1.0000    1.0000   |  1.0000 1.0000 1.0000
+  (P1 - P0 relative size: 9.3e-16)
+
+same comparison on COPRIME pairs only (G_off and P both restricted to coprime pairs): Frobenius  operator
+  P0  exact formula, common Lt0              0.0284    0.0314
+  P0' + first-order dilation correction      0.0284    0.0314
+  P3  single-length family image             0.4486    0.4567
+  P4  naive sign                             1.3680    1.2874
+  P0: complex cosine with G_off on coprime pairs 0.9996 +0.0000i ; least-squares scale 0.9989
+  P0': complex cosine with G_off on coprime pairs 0.9996 +0.0000i ; least-squares scale 0.9989
+  P3: complex cosine with G_off on coprime pairs 0.8994 +0.0000i ; least-squares scale 0.8991
+
+eigenvalues of G_off / mean diagonal: top5 [0.306 0.295 0.291 0.282 0.28 ] ; bottom5 [-0.245 -0.244 -0.237 -0.236 -0.233] ; Frobenius^2/R 0.019
+  Marchenko-Pastur reference for a random Gram with K_eff = (sum w)^2/sum w^2 = 14006 sources (c = R/K_eff = 0.0198): edges 0.302, -0.262 ; ||G_off||_F^2/(R diag^2) would be 0.0198
+  G_off with the non-coprime pairs removed: top5 [0.301 0.29  0.287 0.277 0.273] ; bottom5 [-0.245 -0.243 -0.237 -0.236 -0.231]
+  vs P0 : max |sorted eigenvalue difference| / ||.||_op = 0.0053
+  vs P0': max |sorted eigenvalue difference| / ||.||_op = 0.0053
+  P0 : top5 [0.3   0.29  0.286 0.277 0.274] ; bottom5 [-0.245 -0.242 -0.238 -0.236 -0.231] ; max |sorted eigenvalue difference| / ||G_off||_op 0.0246
+  P0': top5 [0.3   0.29  0.286 0.277 0.274] ; bottom5 [-0.245 -0.242 -0.238 -0.236 -0.231] ; max |sorted eigenvalue difference| / ||G_off||_op 0.0246
+  P3 : top5 [0.296 0.286 0.282 0.275 0.268] ; bottom5 [-0.258 -0.252 -0.247 -0.242 -0.239] ; max |sorted eigenvalue difference| / ||G_off||_op 0.0427
+  P4 : top5 [0.214 0.206 0.2   0.197 0.194] ; bottom5 [-0.166 -0.165 -0.161 -0.158 -0.158] ; max |sorted eigenvalue difference| / ||G_off||_op 0.2995
+  P0 : |<top eigvec of G_off, of P>| = 0.976 ; |<bottom, bottom>| = 0.897
+  P0': |<top eigvec of G_off, of P>| = 0.976 ; |<bottom, bottom>| = 0.897
+  P3 : |<top eigvec of G_off, of P>| = 0.454 ; |<bottom, bottom>| = 0.442
+
+what the sieve's own source restrictions do to the off-diagonal Gram (cosine with the Gaussian G_off, mean diagonal in units of the Gaussian one):
+  sharp 0.5L                 cosine 0.891 +0.000i ; mean diag 10362.4 ; ||G_off||_F/R 97.87
+  sharp 0.5L odd             cosine 0.769 +0.000i ; mean diag 7770.8 ; ||G_off||_F/R 85.02
+  sharp 0.5L odd sqfree      cosine 0.722 -0.000i ; mean diag 6741.6 ; ||G_off||_F/R 79.74
+  sharp 1.0L                 cosine 0.759 +0.000i ; mean diag 20726.1 ; ||G_off||_F/R 138.22
+  sharp 1.0L odd             cosine 0.657 -0.000i ; mean diag 15543.8 ; ||G_off||_F/R 120.06
+  sharp 1.0L odd sqfree      cosine 0.617 -0.000i ; mean diag 13502.7 ; ||G_off||_F/R 112.49
+  sharp 2.0L                 cosine 0.551 +0.000i ; mean diag 41454.4 ; ||G_off||_F/R 195.78
+  sharp 2.0L odd             cosine 0.473 -0.000i ; mean diag 31091.9 ; ||G_off||_F/R 170.18
+  sharp 2.0L odd sqfree      cosine 0.443 +0.000i ; mean diag 26995.1 ; ||G_off||_F/R 159.53
+
+done in 180s

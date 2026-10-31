@@ -1,0 +1,130 @@
+B=100000 L=100000  R=28210 rows  S=25936 sources  11511 row primes   tables in 107s
+slots: P0=25: 6 split primes with norm in [25, 50], P0=40: 10 split primes with norm in [40, 80], P0=60: 14 split primes with norm in [60, 120], P0=100: 20 split primes with norm in [100, 200], P0=160: 26 split primes with norm in [160, 320], P0=250: 40 split primes with norm in [250, 500]
+sextic: top eigenvalues of E^H E / S [4.949 4.751 4.623 4.427]   (152s)
+sextic  random sets rho 0.200 |W|  5642: top 2.171 +- 0.003   (205s)
+sextic  random sets rho 0.300 |W|  8463: top 2.550 +- 0.008   (263s)
+sextic  random sets rho 0.500 |W| 14105: top 3.297 +- 0.004   (321s)
+sextic  P0  25 rho 0.100 |W|  2821: slot-selected W 1.868   random W 1.772 +- 0.003   MP 1.768   (W - random) +0.096   conc u1..u4 [0.93 0.96 0.9  1.03] (random [1.   1.   1.   1.01])   (426s)
+sextic  P0  25 rho 0.030 |W|   846: slot-selected W 1.458   random W 1.390 +- 0.002   MP 1.394   (W - random) +0.068   conc u1..u4 [0.92 0.99 0.9  1.02] (random [1.01 1.01 1.   1.01])   (427s)
+sextic  P0  25 rho 0.010 |W|   282: slot-selected W 1.262   random W 1.215 +- 0.003   MP 1.219   (W - random) +0.047   conc u1..u4 [0.89 0.94 0.78 1.01] (random [0.99 1.03 1.03 0.97])   (428s)
+sextic  P0  40 rho 0.100 |W|  2821: slot-selected W 1.848   random W 1.772 +- 0.003   MP 1.768   (W - random) +0.076   conc u1..u4 [0.97 0.99 0.99 0.92] (random [1.   0.99 0.99 1.  ])   (432s)
+sextic  P0  40 rho 0.030 |W|   846: slot-selected W 1.453   random W 1.390 +- 0.002   MP 1.394   (W - random) +0.063   conc u1..u4 [0.93 1.01 0.93 0.86] (random [1. 1. 1. 1.])   (433s)
+sextic  P0  40 rho 0.010 |W|   282: slot-selected W 1.254   random W 1.215 +- 0.003   MP 1.219   (W - random) +0.038   conc u1..u4 [0.97 1.   0.91 0.83] (random [0.99 0.95 1.   1.  ])   (433s)
+sextic  P0  60 rho 0.100 |W|  2821: slot-selected W 1.866   random W 1.772 +- 0.003   MP 1.768   (W - random) +0.094   conc u1..u4 [1.01 0.99 0.98 1.  ] (random [1.01 1.   0.99 1.01])   (436s)
+sextic  P0  60 rho 0.030 |W|   846: slot-selected W 1.454   random W 1.390 +- 0.002   MP 1.394   (W - random) +0.064   conc u1..u4 [1.02 0.96 0.88 0.93] (random [1.01 1.   1.02 0.99])   (437s)
+sextic  P0  60 rho 0.010 |W|   282: slot-selected W 1.249   random W 1.215 +- 0.003   MP 1.219   (W - random) +0.034   conc u1..u4 [0.93 0.92 0.98 0.97] (random [0.99 0.98 1.03 0.99])   (437s)
+sextic  P0 100 rho 0.100 |W|  2821: slot-selected W 1.846   random W 1.772 +- 0.003   MP 1.768   (W - random) +0.074   conc u1..u4 [0.98 1.   0.97 0.96] (random [1.   0.98 1.   0.99])   (440s)
+sextic  P0 100 rho 0.030 |W|   846: slot-selected W 1.438   random W 1.390 +- 0.002   MP 1.394   (W - random) +0.048   conc u1..u4 [0.96 1.02 1.04 0.98] (random [1.   1.02 1.   0.99])   (441s)
+sextic  P0 100 rho 0.010 |W|   282: slot-selected W 1.239   random W 1.215 +- 0.003   MP 1.219   (W - random) +0.023   conc u1..u4 [0.94 0.96 1.09 0.94] (random [1.   1.02 0.98 0.98])   (442s)
+sextic  P0 160 rho 0.100 |W|  2821: slot-selected W 1.870   random W 1.772 +- 0.003   MP 1.768   (W - random) +0.098   conc u1..u4 [0.99 1.03 0.97 0.97] (random [1.   1.   0.99 1.  ])   (444s)
+sextic  P0 160 rho 0.030 |W|   846: slot-selected W 1.459   random W 1.390 +- 0.002   MP 1.394   (W - random) +0.069   conc u1..u4 [0.97 0.95 0.92 0.97] (random [1.01 0.98 1.01 1.  ])   (444s)
+sextic  P0 160 rho 0.010 |W|   282: slot-selected W 1.263   random W 1.215 +- 0.003   MP 1.219   (W - random) +0.048   conc u1..u4 [0.96 0.89 0.89 0.86] (random [0.97 1.02 1.02 1.  ])   (445s)
+sextic  P0 250 rho 0.100 |W|  2821: slot-selected W 1.794   random W 1.772 +- 0.003   MP 1.768   (W - random) +0.021   conc u1..u4 [0.96 0.99 1.06 0.99] (random [0.98 0.99 1.   1.  ])   (450s)
+sextic  P0 250 rho 0.030 |W|   846: slot-selected W 1.409   random W 1.390 +- 0.002   MP 1.394   (W - random) +0.018   conc u1..u4 [1.02 1.11 1.12 0.99] (random [1.01 1.02 1.01 1.  ])   (451s)
+sextic  P0 250 rho 0.010 |W|   282: slot-selected W 1.224   random W 1.215 +- 0.003   MP 1.219   (W - random) +0.008   conc u1..u4 [1.11 1.16 0.92 0.93] (random [1.02 0.98 1.01 0.99])   (452s)
+sextic  oracle (top-4 singular subspace) rho 0.100 |W|  2821: W 2.326   random W 1.772 +- 0.003   (W - random) +0.553   subspace energy on W 2.66 x flat   (454s)
+sextic  oracle (top-4 singular subspace) rho 0.030 |W|   846: W 1.678   random W 1.390 +- 0.002   (W - random) +0.287   subspace energy on W 3.78 x flat   (455s)
+sextic  oracle (top-4 singular subspace) rho 0.010 |W|   282: W 1.341   random W 1.215 +- 0.003   (W - random) +0.125   subspace energy on W 5.02 x flat   (455s)
+RCHAR1: top eigenvalues of E^H E / S [3.994 3.99  3.983 3.98 ]   (646s)
+RCHAR1  random sets rho 0.200 |W|  5642: top 2.151 +- 0.003   (723s)
+RCHAR1  random sets rho 0.300 |W|  8463: top 2.471 +- 0.002   (821s)
+RCHAR1  random sets rho 0.500 |W| 14105: top 3.025 +- 0.001   (974s)
+RCHAR1  P0  25 rho 0.100 |W|  2821: slot-selected W 1.868   random W 1.766 +- 0.002   MP 1.768   (W - random) +0.102   conc u1..u4 [0.99 0.98 1.   1.01] (random [0.99 0.99 1.   1.  ])   (1047s)
+RCHAR1  P0  25 rho 0.030 |W|   846: slot-selected W 1.466   random W 1.391 +- 0.002   MP 1.394   (W - random) +0.075   conc u1..u4 [0.96 0.93 0.98 1.  ] (random [1.   1.   1.01 1.01])   (1048s)
+RCHAR1  P0  25 rho 0.010 |W|   282: slot-selected W 1.265   random W 1.216 +- 0.002   MP 1.219   (W - random) +0.049   conc u1..u4 [0.95 0.85 0.93 0.93] (random [1.   1.01 0.99 0.98])   (1048s)
+RCHAR1  P0  40 rho 0.100 |W|  2821: slot-selected W 1.846   random W 1.766 +- 0.002   MP 1.768   (W - random) +0.079   conc u1..u4 [1.01 1.02 0.99 1.02] (random [1.   1.01 1.   1.  ])   (1052s)
+RCHAR1  P0  40 rho 0.030 |W|   846: slot-selected W 1.451   random W 1.391 +- 0.002   MP 1.394   (W - random) +0.060   conc u1..u4 [0.97 1.03 0.93 1.06] (random [1.   0.98 0.99 0.99])   (1053s)
+RCHAR1  P0  40 rho 0.010 |W|   282: slot-selected W 1.252   random W 1.216 +- 0.002   MP 1.219   (W - random) +0.036   conc u1..u4 [0.97 1.05 0.97 0.97] (random [1.01 1.   1.   1.01])   (1053s)
+RCHAR1  P0  60 rho 0.100 |W|  2821: slot-selected W 1.842   random W 1.766 +- 0.002   MP 1.768   (W - random) +0.076   conc u1..u4 [0.98 1.03 1.   0.99] (random [1.   1.   1.   1.01])   (1056s)
+RCHAR1  P0  60 rho 0.030 |W|   846: slot-selected W 1.449   random W 1.391 +- 0.002   MP 1.394   (W - random) +0.058   conc u1..u4 [1.   1.03 0.93 0.94] (random [0.99 1.01 1.   0.99])   (1057s)
+RCHAR1  P0  60 rho 0.010 |W|   282: slot-selected W 1.251   random W 1.216 +- 0.002   MP 1.219   (W - random) +0.035   conc u1..u4 [1.12 1.03 1.   0.95] (random [1.03 0.96 1.03 1.  ])   (1057s)
+RCHAR1  P0 100 rho 0.100 |W|  2821: slot-selected W 1.851   random W 1.766 +- 0.002   MP 1.768   (W - random) +0.085   conc u1..u4 [1.   1.   1.   1.02] (random [1. 1. 1. 1.])   (1059s)
+RCHAR1  P0 100 rho 0.030 |W|   846: slot-selected W 1.451   random W 1.391 +- 0.002   MP 1.394   (W - random) +0.060   conc u1..u4 [1.01 0.95 0.99 1.01] (random [1.03 1.01 1.01 0.99])   (1060s)
+RCHAR1  P0 100 rho 0.010 |W|   282: slot-selected W 1.254   random W 1.216 +- 0.002   MP 1.219   (W - random) +0.038   conc u1..u4 [1.09 0.94 1.02 1.07] (random [1.   1.   1.01 1.01])   (1060s)
+RCHAR1  P0 160 rho 0.100 |W|  2821: slot-selected W 1.853   random W 1.766 +- 0.002   MP 1.768   (W - random) +0.087   conc u1..u4 [1.   1.03 1.02 1.01] (random [0.99 0.99 1.   0.99])   (1061s)
+RCHAR1  P0 160 rho 0.030 |W|   846: slot-selected W 1.456   random W 1.391 +- 0.002   MP 1.394   (W - random) +0.065   conc u1..u4 [1.   1.03 0.96 1.03] (random [0.99 1.01 0.98 0.99])   (1062s)
+RCHAR1  P0 160 rho 0.010 |W|   282: slot-selected W 1.241   random W 1.216 +- 0.002   MP 1.219   (W - random) +0.025   conc u1..u4 [1.06 1.01 0.97 1.05] (random [0.98 1.01 1.   1.01])   (1062s)
+RCHAR1  P0 250 rho 0.100 |W|  2821: slot-selected W 1.790   random W 1.766 +- 0.002   MP 1.768   (W - random) +0.024   conc u1..u4 [1.01 0.96 0.98 1.01] (random [1.   1.01 1.01 1.  ])   (1066s)
+RCHAR1  P0 250 rho 0.030 |W|   846: slot-selected W 1.405   random W 1.391 +- 0.002   MP 1.394   (W - random) +0.014   conc u1..u4 [1.07 0.92 0.94 1.  ] (random [1.   1.01 1.   1.01])   (1067s)
+RCHAR1  P0 250 rho 0.010 |W|   282: slot-selected W 1.222   random W 1.216 +- 0.002   MP 1.219   (W - random) +0.007   conc u1..u4 [1.09 0.96 0.95 1.05] (random [1.03 1.   0.98 1.  ])   (1067s)
+RCHAR1  oracle (top-4 singular subspace) rho 0.100 |W|  2821: W 1.834   random W 1.766 +- 0.002   (W - random) +0.068   subspace energy on W 2.10 x flat   (1070s)
+RCHAR1  oracle (top-4 singular subspace) rho 0.030 |W|   846: W 1.399   random W 1.391 +- 0.002   (W - random) +0.008   subspace energy on W 2.56 x flat   (1070s)
+RCHAR1  oracle (top-4 singular subspace) rho 0.010 |W|   282: W 1.220   random W 1.216 +- 0.002   (W - random) +0.004   subspace energy on W 2.96 x flat   (1071s)
+RCHAR2: top eigenvalues of E^H E / S [3.997 3.992 3.987 3.982]   (1158s)
+RCHAR2  random sets rho 0.200 |W|  5642: top 2.150 +- 0.001   (1195s)
+RCHAR2  random sets rho 0.300 |W|  8463: top 2.471 +- 0.002   (1258s)
+RCHAR2  random sets rho 0.500 |W| 14105: top 3.025 +- 0.003   (1388s)
+RCHAR2  P0  25 rho 0.100 |W|  2821: slot-selected W 1.864   random W 1.768 +- 0.002   MP 1.768   (W - random) +0.096   conc u1..u4 [1.01 0.99 1.01 1.02] (random [1.01 1.   1.   1.  ])   (1463s)
+RCHAR2  P0  25 rho 0.030 |W|   846: slot-selected W 1.461   random W 1.391 +- 0.002   MP 1.394   (W - random) +0.070   conc u1..u4 [1.03 0.95 1.03 0.99] (random [1.01 1.03 0.99 0.99])   (1465s)
+RCHAR2  P0  25 rho 0.010 |W|   282: slot-selected W 1.264   random W 1.214 +- 0.002   MP 1.219   (W - random) +0.050   conc u1..u4 [1.01 0.92 1.01 0.88] (random [0.96 0.99 0.97 0.99])   (1465s)
+RCHAR2  P0  40 rho 0.100 |W|  2821: slot-selected W 1.850   random W 1.768 +- 0.002   MP 1.768   (W - random) +0.082   conc u1..u4 [1.   0.99 0.99 0.99] (random [1.   0.99 1.   1.01])   (1470s)
+RCHAR2  P0  40 rho 0.030 |W|   846: slot-selected W 1.450   random W 1.391 +- 0.002   MP 1.394   (W - random) +0.060   conc u1..u4 [1.   0.99 0.98 0.98] (random [1.01 0.99 1.   0.99])   (1471s)
+RCHAR2  P0  40 rho 0.010 |W|   282: slot-selected W 1.260   random W 1.214 +- 0.002   MP 1.219   (W - random) +0.046   conc u1..u4 [0.97 0.88 0.98 1.04] (random [0.99 0.99 0.98 0.99])   (1471s)
+RCHAR2  P0  60 rho 0.100 |W|  2821: slot-selected W 1.843   random W 1.768 +- 0.002   MP 1.768   (W - random) +0.075   conc u1..u4 [0.98 1.01 1.02 1.01] (random [1. 1. 1. 1.])   (1475s)
+RCHAR2  P0  60 rho 0.030 |W|   846: slot-selected W 1.446   random W 1.391 +- 0.002   MP 1.394   (W - random) +0.056   conc u1..u4 [0.93 0.96 1.   1.02] (random [0.99 1.   1.01 1.01])   (1476s)
+RCHAR2  P0  60 rho 0.010 |W|   282: slot-selected W 1.247   random W 1.214 +- 0.002   MP 1.219   (W - random) +0.033   conc u1..u4 [0.89 0.9  1.03 1.02] (random [0.99 0.99 1.01 1.  ])   (1477s)
+RCHAR2  P0 100 rho 0.100 |W|  2821: slot-selected W 1.852   random W 1.768 +- 0.002   MP 1.768   (W - random) +0.084   conc u1..u4 [0.99 1.01 1.04 0.99] (random [0.99 0.99 1.   1.  ])   (1480s)
+RCHAR2  P0 100 rho 0.030 |W|   846: slot-selected W 1.448   random W 1.391 +- 0.002   MP 1.394   (W - random) +0.057   conc u1..u4 [0.99 1.02 0.98 0.97] (random [1.   1.02 1.   1.  ])   (1480s)
+RCHAR2  P0 100 rho 0.010 |W|   282: slot-selected W 1.246   random W 1.214 +- 0.002   MP 1.219   (W - random) +0.032   conc u1..u4 [1.08 0.96 1.04 1.01] (random [1.   1.01 1.01 1.  ])   (1481s)
+RCHAR2  P0 160 rho 0.100 |W|  2821: slot-selected W 1.851   random W 1.768 +- 0.002   MP 1.768   (W - random) +0.083   conc u1..u4 [1.02 1.03 1.04 1.01] (random [1.01 1.01 1.01 1.  ])   (1483s)
+RCHAR2  P0 160 rho 0.030 |W|   846: slot-selected W 1.436   random W 1.391 +- 0.002   MP 1.394   (W - random) +0.045   conc u1..u4 [1.04 1.04 1.07 1.03] (random [1.   1.01 1.   0.99])   (1484s)
+RCHAR2  P0 160 rho 0.010 |W|   282: slot-selected W 1.229   random W 1.214 +- 0.002   MP 1.219   (W - random) +0.015   conc u1..u4 [0.99 1.07 1.06 0.99] (random [1.   1.01 1.   1.  ])   (1484s)
+RCHAR2  P0 250 rho 0.100 |W|  2821: slot-selected W 1.785   random W 1.768 +- 0.002   MP 1.768   (W - random) +0.017   conc u1..u4 [1.   1.01 1.   0.98] (random [0.99 1.   1.   1.  ])   (1489s)
+RCHAR2  P0 250 rho 0.030 |W|   846: slot-selected W 1.409   random W 1.391 +- 0.002   MP 1.394   (W - random) +0.018   conc u1..u4 [0.97 1.02 1.03 0.96] (random [1.01 0.99 0.99 1.  ])   (1490s)
+RCHAR2  P0 250 rho 0.010 |W|   282: slot-selected W 1.220   random W 1.214 +- 0.002   MP 1.219   (W - random) +0.006   conc u1..u4 [0.98 1.03 1.05 0.98] (random [1.01 1.   0.99 1.  ])   (1491s)
+RCHAR2  oracle (top-4 singular subspace) rho 0.100 |W|  2821: W 1.835   random W 1.768 +- 0.002   (W - random) +0.066   subspace energy on W 2.11 x flat   (1494s)
+RCHAR2  oracle (top-4 singular subspace) rho 0.030 |W|   846: W 1.396   random W 1.391 +- 0.002   (W - random) +0.005   subspace energy on W 2.58 x flat   (1496s)
+RCHAR2  oracle (top-4 singular subspace) rho 0.010 |W|   282: W 1.217   random W 1.214 +- 0.002   (W - random) +0.003   subspace energy on W 2.98 x flat   (1496s)
+RCHAR3: top eigenvalues of E^H E / S [3.995 3.991 3.986 3.98 ]   (1592s)
+RCHAR3  random sets rho 0.200 |W|  5642: top 2.150 +- 0.002   (1632s)
+RCHAR3  random sets rho 0.300 |W|  8463: top 2.473 +- 0.001   (1682s)
+RCHAR3  random sets rho 0.500 |W| 14105: top 3.027 +- 0.002   (1788s)
+RCHAR3  P0  25 rho 0.100 |W|  2821: slot-selected W 1.859   random W 1.767 +- 0.002   MP 1.768   (W - random) +0.092   conc u1..u4 [1.03 1.03 1.01 1.02] (random [1.   0.99 1.   1.  ])   (1857s)
+RCHAR3  P0  25 rho 0.030 |W|   846: slot-selected W 1.463   random W 1.390 +- 0.003   MP 1.394   (W - random) +0.073   conc u1..u4 [1.03 0.98 1.   1.05] (random [1.01 0.98 1.01 1.  ])   (1858s)
+RCHAR3  P0  25 rho 0.010 |W|   282: slot-selected W 1.265   random W 1.214 +- 0.004   MP 1.219   (W - random) +0.051   conc u1..u4 [1.03 0.96 0.93 1.15] (random [0.99 1.03 0.97 0.98])   (1859s)
+RCHAR3  P0  40 rho 0.100 |W|  2821: slot-selected W 1.845   random W 1.767 +- 0.002   MP 1.768   (W - random) +0.078   conc u1..u4 [1.01 0.98 1.   0.98] (random [1. 1. 1. 1.])   (1863s)
+RCHAR3  P0  40 rho 0.030 |W|   846: slot-selected W 1.451   random W 1.390 +- 0.003   MP 1.394   (W - random) +0.061   conc u1..u4 [1.03 0.92 1.02 0.99] (random [1.01 1.01 1.01 1.  ])   (1864s)
+RCHAR3  P0  40 rho 0.010 |W|   282: slot-selected W 1.256   random W 1.214 +- 0.004   MP 1.219   (W - random) +0.042   conc u1..u4 [1.   0.95 0.98 0.96] (random [1.02 1.   1.   0.98])   (1864s)
+RCHAR3  P0  60 rho 0.100 |W|  2821: slot-selected W 1.861   random W 1.767 +- 0.002   MP 1.768   (W - random) +0.094   conc u1..u4 [1.03 0.98 1.   1.02] (random [1.   1.01 1.   1.01])   (1867s)
+RCHAR3  P0  60 rho 0.030 |W|   846: slot-selected W 1.450   random W 1.390 +- 0.003   MP 1.394   (W - random) +0.060   conc u1..u4 [1.03 0.96 0.98 1.03] (random [0.99 0.99 1.01 1.01])   (1868s)
+RCHAR3  P0  60 rho 0.010 |W|   282: slot-selected W 1.254   random W 1.214 +- 0.004   MP 1.219   (W - random) +0.040   conc u1..u4 [1.05 0.91 0.97 0.98] (random [1.03 1.02 1.   0.99])   (1868s)
+RCHAR3  P0 100 rho 0.100 |W|  2821: slot-selected W 1.852   random W 1.767 +- 0.002   MP 1.768   (W - random) +0.085   conc u1..u4 [1.   1.01 0.99 0.97] (random [1. 1. 1. 1.])   (1869s)
+RCHAR3  P0 100 rho 0.030 |W|   846: slot-selected W 1.438   random W 1.390 +- 0.003   MP 1.394   (W - random) +0.048   conc u1..u4 [1.   0.97 0.93 0.98] (random [0.98 1.01 0.99 1.  ])   (1870s)
+RCHAR3  P0 100 rho 0.010 |W|   282: slot-selected W 1.240   random W 1.214 +- 0.004   MP 1.219   (W - random) +0.026   conc u1..u4 [0.96 0.96 0.92 1.04] (random [1.01 1.01 1.03 1.  ])   (1870s)
+RCHAR3  P0 160 rho 0.100 |W|  2821: slot-selected W 1.867   random W 1.767 +- 0.002   MP 1.768   (W - random) +0.100   conc u1..u4 [1.   1.02 1.01 1.01] (random [1.   1.   1.   1.01])   (1872s)
+RCHAR3  P0 160 rho 0.030 |W|   846: slot-selected W 1.456   random W 1.390 +- 0.003   MP 1.394   (W - random) +0.066   conc u1..u4 [1.01 1.09 0.98 0.96] (random [1.01 0.99 1.01 1.  ])   (1873s)
+RCHAR3  P0 160 rho 0.010 |W|   282: slot-selected W 1.245   random W 1.214 +- 0.004   MP 1.219   (W - random) +0.030   conc u1..u4 [0.99 1.04 0.95 0.85] (random [1.02 0.98 1.01 0.99])   (1873s)
+RCHAR3  P0 250 rho 0.100 |W|  2821: slot-selected W 1.788   random W 1.767 +- 0.002   MP 1.768   (W - random) +0.021   conc u1..u4 [1.03 1.   1.   0.98] (random [1.   1.01 1.   1.  ])   (1876s)
+RCHAR3  P0 250 rho 0.030 |W|   846: slot-selected W 1.408   random W 1.390 +- 0.003   MP 1.394   (W - random) +0.018   conc u1..u4 [0.97 1.02 1.   0.96] (random [1.   1.   0.99 0.99])   (1877s)
+RCHAR3  P0 250 rho 0.010 |W|   282: slot-selected W 1.223   random W 1.214 +- 0.004   MP 1.219   (W - random) +0.009   conc u1..u4 [1.03 1.03 1.03 0.91] (random [0.97 1.02 1.   1.  ])   (1877s)
+RCHAR3  oracle (top-4 singular subspace) rho 0.100 |W|  2821: W 1.839   random W 1.767 +- 0.002   (W - random) +0.072   subspace energy on W 2.10 x flat   (1879s)
+RCHAR3  oracle (top-4 singular subspace) rho 0.030 |W|   846: W 1.401   random W 1.390 +- 0.003   (W - random) +0.010   subspace energy on W 2.57 x flat   (1880s)
+RCHAR3  oracle (top-4 singular subspace) rho 0.010 |W|   282: W 1.215   random W 1.214 +- 0.004   (W - random) +0.001   subspace energy on W 2.97 x flat   (1881s)
+
+summary: (W - random) for the sextic, for RCHAR (mean over draws), and their difference (noise: sd of the random sets, combined)
+P0    25 rho 0.100: sextic +0.096   RCHAR +0.096 (draws +0.102 +0.096 +0.092)   difference -0.001   noise ~ 0.003
+P0    25 rho 0.030: sextic +0.068   RCHAR +0.073 (draws +0.075 +0.070 +0.073)   difference -0.005   noise ~ 0.003
+P0    25 rho 0.010: sextic +0.047   RCHAR +0.050 (draws +0.049 +0.050 +0.051)   difference -0.003   noise ~ 0.003
+P0    40 rho 0.100: sextic +0.076   RCHAR +0.080 (draws +0.079 +0.082 +0.078)   difference -0.004   noise ~ 0.003
+P0    40 rho 0.030: sextic +0.063   RCHAR +0.060 (draws +0.060 +0.060 +0.061)   difference +0.003   noise ~ 0.003
+P0    40 rho 0.010: sextic +0.038   RCHAR +0.041 (draws +0.036 +0.046 +0.042)   difference -0.003   noise ~ 0.003
+P0    60 rho 0.100: sextic +0.094   RCHAR +0.082 (draws +0.076 +0.075 +0.094)   difference +0.012   noise ~ 0.003
+P0    60 rho 0.030: sextic +0.064   RCHAR +0.058 (draws +0.058 +0.056 +0.060)   difference +0.006   noise ~ 0.003
+P0    60 rho 0.010: sextic +0.034   RCHAR +0.036 (draws +0.035 +0.033 +0.040)   difference -0.002   noise ~ 0.003
+P0   100 rho 0.100: sextic +0.074   RCHAR +0.085 (draws +0.085 +0.084 +0.085)   difference -0.011   noise ~ 0.003
+P0   100 rho 0.030: sextic +0.048   RCHAR +0.055 (draws +0.060 +0.057 +0.048)   difference -0.007   noise ~ 0.003
+P0   100 rho 0.010: sextic +0.023   RCHAR +0.032 (draws +0.038 +0.032 +0.026)   difference -0.009   noise ~ 0.003
+P0   160 rho 0.100: sextic +0.098   RCHAR +0.090 (draws +0.087 +0.083 +0.100)   difference +0.008   noise ~ 0.003
+P0   160 rho 0.030: sextic +0.069   RCHAR +0.058 (draws +0.065 +0.045 +0.066)   difference +0.010   noise ~ 0.003
+P0   160 rho 0.010: sextic +0.048   RCHAR +0.024 (draws +0.025 +0.015 +0.030)   difference +0.024   noise ~ 0.003
+P0   250 rho 0.100: sextic +0.021   RCHAR +0.021 (draws +0.024 +0.017 +0.021)   difference +0.001   noise ~ 0.003
+P0   250 rho 0.030: sextic +0.018   RCHAR +0.017 (draws +0.014 +0.018 +0.018)   difference +0.002   noise ~ 0.003
+P0   250 rho 0.010: sextic +0.008   RCHAR +0.007 (draws +0.007 +0.006 +0.009)   difference +0.001   noise ~ 0.003
+P0 oracle rho 0.100: sextic +0.553   RCHAR +0.069 (draws +0.068 +0.066 +0.072)   difference +0.485   noise ~ 0.003
+P0 oracle rho 0.030: sextic +0.287   RCHAR +0.008 (draws +0.008 +0.005 +0.010)   difference +0.280   noise ~ 0.003
+P0 oracle rho 0.010: sextic +0.125   RCHAR +0.003 (draws +0.004 +0.003 +0.001)   difference +0.123   noise ~ 0.003
+
+dilution check: full matrix sextic top 4.949, RCHAR edge 3.995, theta = 2.564
+rho 0.200: random sets sextic 2.1713   RCHAR 2.1502   ratio 1.0098   rank-one prediction theta*sqrt(rho) = 1.15 -> ratio 1.0047
+rho 0.300: random sets sextic 2.5498   RCHAR 2.4719   ratio 1.0315   rank-one prediction theta*sqrt(rho) = 1.40 -> ratio 1.0291
+rho 0.500: random sets sextic 3.2970   RCHAR 3.0256   ratio 1.0897   rank-one prediction theta*sqrt(rho) = 1.81 -> ratio 1.0912

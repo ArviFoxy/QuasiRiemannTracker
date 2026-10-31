@@ -1,0 +1,32 @@
+B=30000 L=30000  R=8474 rows  S=7768 sources   built in 13.8s
+  |G(z,1)|: min 1.000 max 1.000   (built 44.3s)
+slots: P0=40: 10 split primes with norm in [40, 80], P0=100: 20 split primes with norm in [100, 200]
+sextic: top eigenvalues of E^H E / S [4.55  4.334 4.292 4.205]
+sextic  P0  40 rho 0.100 |W|   847: slot-selected W 1.834   random W 1.766 +- 0.005   MP 1.769   (W - random) +0.068   conc u1..u4 [1.08 1.08 0.99 0.97] (random [1.   1.02 1.   1.02])
+sextic  P0  40 rho 0.030 |W|   254: slot-selected W 1.436   random W 1.386 +- 0.004   MP 1.394   (W - random) +0.050   conc u1..u4 [1.05 1.13 1.1  0.97] (random [0.99 0.96 0.99 0.99])
+sextic  P0  40 rho 0.010 |W|    84: slot-selected W 1.249   random W 1.208 +- 0.005   MP 1.219   (W - random) +0.041   conc u1..u4 [0.84 1.34 0.83 1.06] (random [0.98 1.02 1.01 1.  ])
+sextic  P0 100 rho 0.100 |W|   847: slot-selected W 1.821   random W 1.766 +- 0.005   MP 1.769   (W - random) +0.054   conc u1..u4 [0.89 0.93 1.   0.98] (random [1.01 0.99 1.02 0.99])
+sextic  P0 100 rho 0.030 |W|   254: slot-selected W 1.427   random W 1.386 +- 0.004   MP 1.394   (W - random) +0.041   conc u1..u4 [0.9  0.95 0.99 1.09] (random [0.99 0.97 1.02 0.99])
+sextic  P0 100 rho 0.010 |W|    84: slot-selected W 1.237   random W 1.208 +- 0.005   MP 1.219   (W - random) +0.029   conc u1..u4 [0.98 1.08 1.17 1.06] (random [0.96 1.05 1.02 0.98])
+RCHAR1: top eigenvalues of E^H E / S [3.994 3.99  3.972 3.965]
+RCHAR1  P0  40 rho 0.100 |W|   847: slot-selected W 1.846   random W 1.762 +- 0.006   MP 1.769   (W - random) +0.084   conc u1..u4 [0.95 0.99 0.94 1.01] (random [1.   0.99 1.   1.  ])
+RCHAR1  P0  40 rho 0.030 |W|   254: slot-selected W 1.426   random W 1.387 +- 0.004   MP 1.394   (W - random) +0.039   conc u1..u4 [0.87 0.94 0.94 0.99] (random [1.02 1.02 1.04 1.  ])
+RCHAR1  P0  40 rho 0.010 |W|    84: slot-selected W 1.248   random W 1.207 +- 0.005   MP 1.219   (W - random) +0.041   conc u1..u4 [0.94 0.98 1.06 1.11] (random [1.01 1.07 0.96 1.03])
+RCHAR1  P0 100 rho 0.100 |W|   847: slot-selected W 1.823   random W 1.762 +- 0.006   MP 1.769   (W - random) +0.061   conc u1..u4 [1.   1.01 1.04 1.07] (random [1.   0.98 1.   1.01])
+RCHAR1  P0 100 rho 0.030 |W|   254: slot-selected W 1.426   random W 1.387 +- 0.004   MP 1.394   (W - random) +0.039   conc u1..u4 [0.98 1.01 1.01 1.04] (random [1.03 1.01 1.   0.98])
+RCHAR1  P0 100 rho 0.010 |W|    84: slot-selected W 1.228   random W 1.207 +- 0.005   MP 1.219   (W - random) +0.021   conc u1..u4 [1.11 1.03 1.12 1.08] (random [1.04 1.02 1.   1.02])
+RCHAR2: top eigenvalues of E^H E / S [3.998 3.987 3.977 3.968]
+RCHAR2  P0  40 rho 0.100 |W|   847: slot-selected W 1.825   random W 1.762 +- 0.005   MP 1.769   (W - random) +0.063   conc u1..u4 [1.01 1.05 1.04 1.03] (random [1.   1.02 1.   1.  ])
+RCHAR2  P0  40 rho 0.030 |W|   254: slot-selected W 1.433   random W 1.384 +- 0.005   MP 1.394   (W - random) +0.049   conc u1..u4 [1.08 0.98 1.06 1.03] (random [1.   1.   1.   0.97])
+RCHAR2  P0  40 rho 0.010 |W|    84: slot-selected W 1.243   random W 1.207 +- 0.004   MP 1.219   (W - random) +0.036   conc u1..u4 [0.98 1.01 1.05 0.95] (random [1.02 1.   0.98 0.95])
+RCHAR2  P0 100 rho 0.100 |W|   847: slot-selected W 1.813   random W 1.762 +- 0.005   MP 1.769   (W - random) +0.051   conc u1..u4 [0.97 1.01 1.03 1.06] (random [1.   0.99 1.02 1.01])
+RCHAR2  P0 100 rho 0.030 |W|   254: slot-selected W 1.418   random W 1.384 +- 0.005   MP 1.394   (W - random) +0.033   conc u1..u4 [0.99 1.04 1.01 0.98] (random [1.01 1.01 0.99 0.98])
+RCHAR2  P0 100 rho 0.010 |W|    84: slot-selected W 1.217   random W 1.207 +- 0.004   MP 1.219   (W - random) +0.010   conc u1..u4 [1.08 1.09 1.06 0.98] (random [0.98 1.03 1.04 0.97])
+
+summary: (W - random) for the sextic, for RCHAR (mean over draws), and their difference (+- the sd of the random sets, combined)
+P0  40 rho 0.100: sextic +0.068   RCHAR +0.074 (draws +0.084 +0.063)   difference -0.006   noise ~ 0.007
+P0  40 rho 0.030: sextic +0.050   RCHAR +0.044 (draws +0.039 +0.049)   difference +0.006   noise ~ 0.005
+P0  40 rho 0.010: sextic +0.041   RCHAR +0.039 (draws +0.041 +0.036)   difference +0.002   noise ~ 0.006
+P0 100 rho 0.100: sextic +0.054   RCHAR +0.056 (draws +0.061 +0.051)   difference -0.002   noise ~ 0.007
+P0 100 rho 0.030: sextic +0.041   RCHAR +0.036 (draws +0.039 +0.033)   difference +0.005   noise ~ 0.005
+P0 100 rho 0.010: sextic +0.029   RCHAR +0.015 (draws +0.021 +0.010)   difference +0.013   noise ~ 0.006

@@ -1,0 +1,10 @@
+B=10000 L=10000  R=2816 rows  S=2610 sources   built in 2.3s
+  |G(z,1)|: min 1.000 max 1.000   (built 7.4s)
+  k = 1: |G_k| 1.000..1.000   (13s)
+108 row classes (z mod 9, z mod 4); full top [4.261 4.109 4.093 4.025]   MP edge 4.156
+class span dim 648: mass of the top left vectors [0.583 0.501 0.498 0.506]
+  off class span                 dim  648: [3.555 3.512 3.501 3.47 ]   MP edge 3.653
+  off a random span           dim  648: [3.656 3.563 3.518 3.495]
+  off class + twists N(m) <= 30  dim  864: [3.376 3.315 3.307 3.298]   MP edge 3.478
+  off a random span           dim  864: [3.474 3.358 3.353 3.324]
+done in 831s

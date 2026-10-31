@@ -1,0 +1,10 @@
+B=10000 L=10000  R=2816 rows  S=2610 sources  1445 row primes   tables in 2s
+    (224 matvecs, 1s)
+B=10000: masked random edge 3.9503; top 24 eigenvalues of E^H E / S:
+  4.261 4.109 4.093 4.025 4.007 3.992 3.971 3.948 3.922 3.919 3.888 3.868 3.862 3.849 3.835 3.814 3.813 3.799 3.781 3.773 3.769 3.744 3.733 3.722
+  lambda_i / edge - 1 (%%): 7.9 4.0 3.6 1.9 1.4 1.1 0.5 -0.1 -0.7 -0.8 -1.6 -2.1 -2.2 -2.6 -2.9 -3.4 -3.5 -3.8 -4.3 -4.5 -4.6 -5.2 -5.5 -5.8
+  theta_i: 1.74 1.49 1.46 1.32 1.27 1.23 1.16 - - - - - - - - - - - - - - - - -
+  eigenvalues above edge*(1+0.01): 6   (6s)
+  eigenvalues above edge*(1+0.02): 3   (6s)
+  eigenvalues above edge*(1+0.05): 1   (6s)
+  eigenvalues above edge*(1+0.10): 0   (6s)

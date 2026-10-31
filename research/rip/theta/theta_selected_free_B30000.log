@@ -1,0 +1,57 @@
+B=30000 L=30000  R=8474 rows  S=7768 sources  3880 row primes   tables in 14s
+slots: P0=40: 10 split primes with norm in [40, 80], P0=100: 20 split primes with norm in [100, 200]
+sextic: top eigenvalues of E^H E / S [4.55  4.334 4.292 4.205]   (21s)
+sextic  random sets rho 0.200 |W|  1694: top 2.156 +- 0.006   (24s)
+sextic  random sets rho 0.300 |W|  2542: top 2.500 +- 0.009   (28s)
+sextic  random sets rho 0.500 |W|  4237: top 3.155 +- 0.003   (33s)
+sextic  P0  40 rho 0.100 |W|   847: slot-selected W 1.835   random W 1.763 +- 0.005   MP 1.769   (W - random) +0.071   conc u1..u4 [1.07 1.08 1.   0.97] (random [1.   0.98 1.   0.99])   (39s)
+sextic  P0  40 rho 0.030 |W|   254: slot-selected W 1.434   random W 1.385 +- 0.007   MP 1.394   (W - random) +0.049   conc u1..u4 [1.04 1.11 1.08 0.97] (random [1.02 1.02 1.01 1.  ])   (39s)
+sextic  P0  40 rho 0.010 |W|    84: slot-selected W 1.249   random W 1.206 +- 0.004   MP 1.219   (W - random) +0.043   conc u1..u4 [0.84 1.31 0.85 1.02] (random [1.03 0.96 0.96 1.  ])   (40s)
+sextic  P0 100 rho 0.100 |W|   847: slot-selected W 1.821   random W 1.763 +- 0.005   MP 1.769   (W - random) +0.057   conc u1..u4 [0.89 0.93 1.   0.98] (random [1.01 1.   0.98 1.01])   (40s)
+sextic  P0 100 rho 0.030 |W|   254: slot-selected W 1.427   random W 1.385 +- 0.007   MP 1.394   (W - random) +0.043   conc u1..u4 [0.89 0.97 1.   1.07] (random [1.   0.98 0.99 0.99])   (40s)
+sextic  P0 100 rho 0.010 |W|    84: slot-selected W 1.234   random W 1.206 +- 0.004   MP 1.219   (W - random) +0.028   conc u1..u4 [0.99 1.16 1.2  1.03] (random [0.93 1.03 0.9  0.96])   (40s)
+sextic  oracle (top-4 singular subspace) rho 0.100 |W|   847: W 2.204   random W 1.763 +- 0.005   (W - random) +0.441   subspace energy on W 2.35 x flat   (40s)
+sextic  oracle (top-4 singular subspace) rho 0.030 |W|   254: W 1.529   random W 1.385 +- 0.007   (W - random) +0.144   subspace energy on W 3.01 x flat   (40s)
+sextic  oracle (top-4 singular subspace) rho 0.010 |W|    84: W 1.305   random W 1.206 +- 0.004   (W - random) +0.099   subspace energy on W 3.64 x flat   (40s)
+RCHAR1: top eigenvalues of E^H E / S [3.984 3.976 3.97  3.964]   (49s)
+RCHAR1  random sets rho 0.200 |W|  1694: top 2.144 +- 0.002   (52s)
+RCHAR1  random sets rho 0.300 |W|  2542: top 2.464 +- 0.003   (57s)
+RCHAR1  random sets rho 0.500 |W|  4237: top 3.024 +- 0.004   (67s)
+RCHAR1  P0  40 rho 0.100 |W|   847: slot-selected W 1.839   random W 1.763 +- 0.004   MP 1.769   (W - random) +0.077   conc u1..u4 [1.01 1.03 1.01 1.04] (random [0.98 1.01 1.   1.01])   (73s)
+RCHAR1  P0  40 rho 0.030 |W|   254: slot-selected W 1.447   random W 1.387 +- 0.005   MP 1.394   (W - random) +0.060   conc u1..u4 [1.03 1.   0.97 1.11] (random [1.04 0.98 0.99 0.99])   (73s)
+RCHAR1  P0  40 rho 0.010 |W|    84: slot-selected W 1.240   random W 1.207 +- 0.005   MP 1.219   (W - random) +0.032   conc u1..u4 [1.08 0.94 0.98 1.18] (random [1.01 0.97 0.96 0.96])   (73s)
+RCHAR1  P0 100 rho 0.100 |W|   847: slot-selected W 1.816   random W 1.763 +- 0.004   MP 1.769   (W - random) +0.053   conc u1..u4 [1.03 1.07 1.03 1.02] (random [1.   0.99 1.02 1.  ])   (74s)
+RCHAR1  P0 100 rho 0.030 |W|   254: slot-selected W 1.433   random W 1.387 +- 0.005   MP 1.394   (W - random) +0.046   conc u1..u4 [1.03 1.1  0.99 1.02] (random [1.01 0.99 1.01 1.02])   (74s)
+RCHAR1  P0 100 rho 0.010 |W|    84: slot-selected W 1.218   random W 1.207 +- 0.005   MP 1.219   (W - random) +0.011   conc u1..u4 [1.16 1.09 0.9  1.06] (random [0.96 0.94 0.98 1.05])   (74s)
+RCHAR1  oracle (top-4 singular subspace) rho 0.100 |W|   847: W 1.842   random W 1.763 +- 0.004   (W - random) +0.079   subspace energy on W 2.09 x flat   (74s)
+RCHAR1  oracle (top-4 singular subspace) rho 0.030 |W|   254: W 1.408   random W 1.387 +- 0.005   (W - random) +0.021   subspace energy on W 2.56 x flat   (74s)
+RCHAR1  oracle (top-4 singular subspace) rho 0.010 |W|    84: W 1.214   random W 1.207 +- 0.005   (W - random) +0.006   subspace energy on W 3.00 x flat   (74s)
+RCHAR2: top eigenvalues of E^H E / S [3.999 3.993 3.975 3.969]   (81s)
+RCHAR2  random sets rho 0.200 |W|  1694: top 2.147 +- 0.002   (85s)
+RCHAR2  random sets rho 0.300 |W|  2542: top 2.467 +- 0.003   (90s)
+RCHAR2  random sets rho 0.500 |W|  4237: top 3.022 +- 0.003   (100s)
+RCHAR2  P0  40 rho 0.100 |W|   847: slot-selected W 1.842   random W 1.762 +- 0.004   MP 1.769   (W - random) +0.080   conc u1..u4 [0.99 0.97 0.98 1.01] (random [1.   1.   1.01 1.  ])   (107s)
+RCHAR2  P0  40 rho 0.030 |W|   254: slot-selected W 1.444   random W 1.387 +- 0.007   MP 1.394   (W - random) +0.057   conc u1..u4 [0.96 0.92 0.99 0.93] (random [1.   0.99 1.02 1.  ])   (107s)
+RCHAR2  P0  40 rho 0.010 |W|    84: slot-selected W 1.259   random W 1.207 +- 0.004   MP 1.219   (W - random) +0.052   conc u1..u4 [0.88 0.95 1.02 1.06] (random [1.02 1.02 0.97 0.98])   (107s)
+RCHAR2  P0 100 rho 0.100 |W|   847: slot-selected W 1.829   random W 1.762 +- 0.004   MP 1.769   (W - random) +0.067   conc u1..u4 [0.97 1.02 1.01 0.97] (random [1. 1. 1. 1.])   (107s)
+RCHAR2  P0 100 rho 0.030 |W|   254: slot-selected W 1.427   random W 1.387 +- 0.007   MP 1.394   (W - random) +0.040   conc u1..u4 [1.07 1.08 1.03 0.91] (random [1.02 1.03 0.96 1.  ])   (107s)
+RCHAR2  P0 100 rho 0.010 |W|    84: slot-selected W 1.237   random W 1.207 +- 0.004   MP 1.219   (W - random) +0.029   conc u1..u4 [1.23 1.28 1.01 0.94] (random [1.06 1.04 0.96 1.03])   (107s)
+RCHAR2  oracle (top-4 singular subspace) rho 0.100 |W|   847: W 1.859   random W 1.762 +- 0.004   (W - random) +0.097   subspace energy on W 2.11 x flat   (108s)
+RCHAR2  oracle (top-4 singular subspace) rho 0.030 |W|   254: W 1.405   random W 1.387 +- 0.007   (W - random) +0.018   subspace energy on W 2.57 x flat   (108s)
+RCHAR2  oracle (top-4 singular subspace) rho 0.010 |W|    84: W 1.210   random W 1.207 +- 0.004   (W - random) +0.003   subspace energy on W 2.99 x flat   (108s)
+
+summary: (W - random) for the sextic, for RCHAR (mean over draws), and their difference (noise: sd of the random sets, combined)
+P0    40 rho 0.100: sextic +0.071   RCHAR +0.078 (draws +0.077 +0.080)   difference -0.007   noise ~ 0.006
+P0    40 rho 0.030: sextic +0.049   RCHAR +0.059 (draws +0.060 +0.057)   difference -0.009   noise ~ 0.008
+P0    40 rho 0.010: sextic +0.043   RCHAR +0.042 (draws +0.032 +0.052)   difference +0.001   noise ~ 0.005
+P0   100 rho 0.100: sextic +0.057   RCHAR +0.060 (draws +0.053 +0.067)   difference -0.003   noise ~ 0.006
+P0   100 rho 0.030: sextic +0.043   RCHAR +0.043 (draws +0.046 +0.040)   difference -0.000   noise ~ 0.008
+P0   100 rho 0.010: sextic +0.028   RCHAR +0.020 (draws +0.011 +0.029)   difference +0.008   noise ~ 0.005
+P0 oracle rho 0.100: sextic +0.441   RCHAR +0.088 (draws +0.079 +0.097)   difference +0.353   noise ~ 0.006
+P0 oracle rho 0.030: sextic +0.144   RCHAR +0.019 (draws +0.021 +0.018)   difference +0.125   noise ~ 0.008
+P0 oracle rho 0.010: sextic +0.099   RCHAR +0.005 (draws +0.006 +0.003)   difference +0.094   noise ~ 0.005
+
+dilution check: full matrix sextic top 4.550, RCHAR edge 3.991, theta = 2.078
+rho 0.200: random sets sextic 2.1562   RCHAR 2.1454   ratio 1.0051   rank-one prediction theta*sqrt(rho) = 0.93 -> ratio 1.0000
+rho 0.300: random sets sextic 2.5003   RCHAR 2.4655   ratio 1.0141   rank-one prediction theta*sqrt(rho) = 1.14 -> ratio 1.0042
+rho 0.500: random sets sextic 3.1554   RCHAR 3.0231   ratio 1.0438   rank-one prediction theta*sqrt(rho) = 1.47 -> ratio 1.0375

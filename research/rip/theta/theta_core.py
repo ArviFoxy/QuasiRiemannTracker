@@ -6,7 +6,9 @@ G(z,1) uses the Kubota character e(Tr(x/(sqrt(-3) z))) (ppcore 'canon'), extende
 G(c1 c2) = (c1/c2)_6 (c2/c1)_6 G(c1) G(c2).  unit_tw[z, k] = chi_z(u_k) for the six units u_k.
 
 build(B, L) returns a namespace with E, R, S, rows, SA, SB, SN, spf, Grow, unit_tw and the helpers generator, sym,
-sqfree_int; t0 is the build's start time.
+sqfree_int; t0 is the build's start time.  build_tables(B, L) is the part of it that does not form the dense matrix
+(rows, sources and the int8 symbol table T of row prime x source, 100 = "prime divides source"), for the matrix-free
+scripts at sizes where E does not fit in memory; build() starts from it.
 """
 import os, sys, time
 from types import SimpleNamespace
@@ -25,7 +27,10 @@ def sym(prime, x):
     return None if k is None else np.exp(2j * np.pi * k / 6)
 
 
-def build(B, L):
+def build_tables(B, L, verbose=True):
+    """Rows, sources and the symbol table, without the dense matrix.  Returns a namespace with ID, rows, R, S, SA, SB, SN,
+    spf, uid (sorted ids of the row primes), T (len(uid) x S int8), LOC (R x J positions of z's primes in uid, -1
+    padded), sqfree_int and t0."""
     t0 = time.time()
     ID = pc.Ideals(max(2 * B, L) + 16)
     rows = pc.enumerate_rows(B, ID)
@@ -46,7 +51,20 @@ def build(B, L):
     uid = np.unique(rows['PID'][rows['PID'] >= 0])
     T = pc.symbol_table(ID, uid, SA, SB)
     LOC = pc.local_index(rows['PID'], uid)
+    if verbose:
+        print('B=%d L=%d  R=%d rows  S=%d sources  %d row primes   tables in %.0fs' % (B, L, R, S, len(uid), time.time() - t0),
+              flush=True)
+    return SimpleNamespace(ID=ID, rows=rows, R=R, S=S, SA=SA, SB=SB, SN=SN, spf=spf, uid=uid, T=T, LOC=LOC,
+                           sqfree_int=sqfree_int, t0=t0)
+
+
+def build(B, L):
+    t0 = time.time()
+    Tb = build_tables(B, L, verbose=False)
+    ID, rows, R, SA, SB, SN, spf, S, T, LOC, sqfree_int = (Tb.ID, Tb.rows, Tb.R, Tb.SA, Tb.SB, Tb.SN, Tb.spf, Tb.S,
+                                                           Tb.T, Tb.LOC, Tb.sqfree_int)
     E = pc.chi_chunk(LOC, T, 0, R).astype(np.complex128)
+    del T, Tb
     print('B=%d L=%d  R=%d rows  S=%d sources   built in %.1fs' % (B, L, R, S, time.time() - t0), flush=True)
 
     gen_cache = {}

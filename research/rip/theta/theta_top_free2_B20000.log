@@ -1,0 +1,25 @@
+B=20000 L=20000  R=5632 rows  S=5184 sources  2686 row primes   tables in 4s
+kernel: 1 threads, 0.02s per matvec (R x S = 2.92e+07 entries), 5s elapsed
+    (76 matvecs, 1s)
+sextic E      : [4.3552 4.246  4.2109 4.1423]   (7s)
+    (145 matvecs, 2s)
+masked random : [3.9778 3.9605 3.9517 3.9369]   seed 1  (9s)
+    (146 matvecs, 2s)
+masked random : [3.9804 3.9732 3.9577 3.9425]   seed 2  (11s)
+    (147 matvecs, 2s)
+masked random : [3.9739 3.9666 3.9561 3.9461]   seed 3  (14s)
+    (146 matvecs, 2s)
+masked random : [3.9686 3.9535 3.9366 3.9329]   seed 4  (16s)
+    (146 matvecs, 2s)
+masked random : [3.9894 3.962  3.9411 3.937 ]   seed 5  (18s)
+    (179 matvecs, 3s)
+masked random : [3.9704 3.9549 3.9507 3.9325]   seed 6  (21s)
+    (112 matvecs, 2s)
+RCHAR         : [3.9929 3.9725 3.9574 3.9349]   draw 1  (23s)
+    (180 matvecs, 3s)
+RCHAR         : [3.9606 3.9498 3.9414 3.9301]   draw 2  (25s)
+    (147 matvecs, 2s)
+RCHAR         : [3.9793 3.9578 3.9497 3.9362]   draw 3  (27s)
+MP edge (no mask) 4.171
+SUMMARY B=20000 L=20000 R=5632 S=5184: sextic 4.3552  masked random edge 3.9768 (sd 0.0069, 6 seeds)  excess +9.5%  theta 1.836
+SUMMARY RCHAR top 3.9929, 3.9606, 3.9793

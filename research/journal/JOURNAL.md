@@ -4133,3 +4133,29 @@ absorption, live in the cubic world the baseline already covers, but they are cr
   2. the spike part small for the reference vectors: a twist-aspect mean value of Mellin-zero sextic correlations up
      to N(h) ≤ B²/A ≤ A^{1/3} (numerically at the null, entries above; the proof needs the 6-fold Kubota theory).
 - The K-wall (balanced point) still needs the full corrected recursion.
+
+## 2026-10-31 · D1 by row splitting needs the K-wall but not the reference wall, and only γ ≲ 0.03
+
+[derived from `lean/arvi_primeface/RowSplit.lean`'s ledger; heuristic where marked]
+
+- **Ledger (RowSplit.lean).** Split the twisted fourth moment Σ_z |A|²|Q|² by the pool's amplitude class
+  |Q|² ≈ ‖a‖² Z^{σs}. A class is harmless iff σs + sel(σ) ≤ 1, where Z^{sel(σ)} bounds the plain energy on its rows.
+  - PR 93 gives sel(σ) ≤ max(μ, 1 − σ + σμ) for σ > 1/2.
+  - At that fixed point every class is harmless on the ideal face μ + s ≤ 1 (`class_le_of_fixPt`).
+- **With a corrected K-wall of excess γ″** (sel(σ) ≤ fixPt(σ, μ) + γ″ for σ ≤ 1/2), the worst class is σ = 1/2. It
+  needs s/2 + (1/2 + μ/2) + γ″ ≤ 1, i.e. **μ + s ≤ 1 − 2γ″**.
+- **The γ″ needed [heuristic, the binding point read as μ ≈ 0.86].** Λ_eff = (1 − μ)/s = 0.14/(0.14 − 2γ″). The bar
+  (Λ ≈ 1.95 by D1's price table, interpolated) then needs **γ″ ≲ 0.034**.
+- **Low slopes are cheap.** With only the full-family bound (sel = 1), a class costs σs. The recursion route (task
+  197) targets slopes above 1/q + 1/q² ≈ 0.19 (n = 6). Below that the cost is ≤ 0.19 s ≈ 0.013–0.027 for
+  s = 0.07–0.14, inside the same budget.
+- **What D1 avoids.** It is a face proved outside Sil's packing, so it needs no reference wall (target 2) and no fork
+  of Sil's reference. It needs:
+  1. the corrected sieve with amplification on slot-selected rows (the K-wall), at excess γ″ ≈ 0.03, for slopes
+     ≈ 0.19–0.5;
+  2. the Mellin rescue for the plain product A = X₁X₂. One designed factor suffices (convolution entry), and it needs
+     the 6-fold theory;
+  3. the face machinery forked to accept a D1 face.
+- **Comparison with the faces route.** That route needs the K-wall (γ ≈ 0.015 at slope 0.48) and target 2. D1 needs
+  the K-wall at a comparable or larger γ, over a range of slopes, and no target 2. On present knowledge D1 is the
+  cheaper route to the bar.

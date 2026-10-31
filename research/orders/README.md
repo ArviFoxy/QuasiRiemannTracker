@@ -105,8 +105,10 @@ to collapse.
   Gauss sum (exact numerically, above).
 - **n = 8, 10, 12, …:** a ratio of two distinct Gauss sums remains: orders 4 and 8 for n = 8, two quintic ones for
   n = 10, orders 6 and 12 for n = 12. There is no single-sum absorption.
-- **Odd n** (no quadratic subcharacter) and **n = 2** (no Jacobi sum carrying α): the Möbius sign stays. For n = 3,
-  `μ·conj g̃₃·α = μ·g̃₃²`, and the sums of μ·g̃₃ show no main term (slope 0.45 at 3·10⁵).
+- **Odd n** (no quadratic subcharacter) and **n = 2** (no Jacobi sum carrying α): the Möbius sign stays. For n = 3
+  the dual coefficient is `μ·γ₋₁ = μ·conj g̃₃`, Möbius times the theta coefficient itself. The cube relation
+  `g̃₃³ = μα·(class unit)` only rewrites it as `(class unit)·conj α·g̃₃²`, and `g̃₃² = μα·(class unit)·conj g̃₃` is again
+  Möbius times a coefficient. The sums of μ·g̃₃ show no main term (slope 0.45 at 3·10⁵).
 
 So exactly two orders absorb the Möbius sign into one Gauss sum: 4 and 6. Only 6 lands on the coefficients of an
 explicit theta, the cubic one. This refines `LOG.md`'s three conditions: the quadratic subcharacter and the quadratic

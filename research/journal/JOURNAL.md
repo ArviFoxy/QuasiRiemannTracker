@@ -3040,3 +3040,26 @@ and logs in `rip/theta/README.md`]
 - So the order n enters through the theta's Whittaker structure, not only through the theta exponent 1/n. This is
   the concrete answer the numerics give to the question "why this particular n".
 - A function-field version (where CFH is a theorem) is the natural laboratory for the two-sided statement.
+
+## 2026-10-31 · Möbius absorption is exact for orders 6 and 4; only the landing object differs
+
+[numerical; `orders/gauss_mobius.py`, logs `orders/gauss_mobius_*_X300000.log`; details in `orders/README.md`]
+- **Setting.** Gauss sums of all primary squarefree moduli of norm ≤ 3·10⁵ over ℤ[ω] (orders 6 and 3) and ℤ[i]
+  (order 4), by twisted multiplicativity, checked against the definition to 1.6e-15.
+- **Order 6.** μ(c)·conj g̃₆(c)·α(c) / g̃₃(c) is constant on each of the 108 classes, on every squarefree modulus.
+  This is the baseline's prime identity γ₁γ₂ = −α·G, extended to all moduli. The partial sums of μ·conj g̃₆·α
+  therefore carry the cubic theta's main term (slope 0.824, Heath-Brown–Patterson 5/6).
+- **Order 4.** μ(c)·conj g̃₄(c)·α(c) / g̃₄(c) is constant on each of the 32 classes. This is the Jacobi-sum
+  evaluation, whose minus sign absorbs μ(p) = −1. So the Möbius sign is absorbed into the quartic Gauss sum itself,
+  with the Kubota–Patterson main term (slope 0.739, 3/4). This corrects `LOG.md`, "Why order 6".
+- **The difference.** Cubic Gauss sums are the cubic theta's coefficients (Patterson). Quartic Gauss sums are
+  conjecturally the squares of the biquadratic theta's coefficients at primes (Patterson's quartic conjecture;
+  Eckhardt–Patterson 1992; Bröker–Hoffstein). The sextic theta has the analogous Chinta–Friedberg–Hoffstein relation
+  to cubic Gauss sums.
+- **The inverse-moment mechanism is order-independent.** Without the matching angular factor, the Möbius-weighted
+  sums cancel better than random phases in both families (slopes 0.28–0.34, against 0.50). Möbius vectors avoid the
+  theta spike.
+- **For a quartic detector,** which would start at 7/8 instead of 11/12, the precise missing input is a reflection
+  for sums of quartic Gauss sums at each place the baseline uses the cubic theta. The tools are the Kubota–Patterson
+  functional equation (any order), Patterson's 1987 general Gauss-sum estimates, and David–Dunn–Hamieh–Lin
+  (arXiv 2306.11875).

@@ -752,6 +752,11 @@ A catalogue cross-check (21.9k records) found nothing that moves them. → `cap-
   - For `k = 2` (quartic over `Z[i]`) one gets `γ₋₁ ∝ conj(γ₁)`, and the Möbius sign survives as
     `(−1)^{ω(n)}conj(γ₁(n))`. The quartic theta's squarefree coefficients are not known in that form
     (Suzuki), so there is no explicit reflection.
+    - **Correction (2026-10-31, `orders/`).** The Möbius sign is absorbed for `k = 2` too, through the Jacobi-sum
+      evaluation `g(χ)² = J(χ,χ)g(χ²)` with `J(χ,χ) = −χ(−1)π`. Numerically `μ·conj γ₁·α / γ₁` is constant on
+      classes, on every squarefree modulus. But it lands on the quartic Gauss sum itself. That sum is conjecturally the
+      square of a biquadratic theta coefficient (Patterson's quartic conjecture), not a coefficient, so the missing
+      piece is still an explicit reflection.
   - For `k = 5` the ratio of two distinct quintic Gauss sums remains.
   - So the sextic family, and with it the exchange rate 6 (11/12 = 1 − 1/(2·6), the long line, the
     plain descent), is forced by the one case with explicit theta coefficients. A smaller exchange

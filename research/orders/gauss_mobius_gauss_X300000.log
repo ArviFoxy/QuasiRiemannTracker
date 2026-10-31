@@ -1,0 +1,20 @@
+gauss, order 4: 26013 prime ideals of norm <= 300000   (0s)
+  prime Gauss sums: |g~| in [1.000000, 1.000000]   (227s)
+  104263 squarefree primary ideals, 32 classes   (227s)
+  twisted multiplicativity against the definition (squarefree norms): max |diff| = 1.24e-15
+  identity check on primes: |rho| = 1 (4.44e-16); mean within-class |rho - class mean|^2 = 0.0000 (2 for unrelated phases); classes used 32
+  identity check on all   : |rho| = 1 (4.44e-16); mean within-class |rho - class mean|^2 = 0.0000 (2 for unrelated phases); classes used 32
+  counts: 104263 terms up to X (0.348 X)
+  weight        RMS_c |S_c| at X/100, X/10, X   slope(RMS)  slope(max)  max_c |S_c(X)|/sqrt(#terms in c)
+  g4                 10.6      61.5     299.9    0.739       0.739        12.76
+  mu g4               5.5      12.1      31.5    0.343       0.356         1.01
+  mu conj g4          5.5      12.1      31.5    0.343       0.356         1.01
+  mu conj g4 * a^1       10.6      61.5     299.9    0.739       0.739        12.76
+  mu g4 * a^1         5.3      13.3      42.2    0.496       0.506         1.90
+  mu conj g4 * a^2        4.8      13.0      28.5    0.355       0.393         1.05
+  mu g4 * a^2         5.7      17.5      41.7    0.461       0.538         1.40
+  mu conj g4 * a^3        4.7      13.3      41.5    0.509       0.429         1.20
+  mu g4 * a^3         5.2      19.8      53.2    0.517       0.547         1.96
+  g4^2 * conj a        5.2      15.7      42.7    0.450       0.468         1.59
+  random phases        5.9      19.9      63.4    0.529       0.603         2.56
+done in 227s

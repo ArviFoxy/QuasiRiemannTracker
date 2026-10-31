@@ -43,6 +43,17 @@ Each step lists de Faveri's statement, the corrected version, and the evidence.
      corrections pull back to λ-corrections (through β·N^{it}). [derived]
    - The pull-back of the dual's own spikes is the next Poisson level. [numerical, `theta_level2`: levels exist,
      grow with B, and close up: u³ is an angle for n = 6, and for n = 3]
+   - **Alternative without Cauchy–Schwarz (2026-10-31, derived; the identity is numerical to 1e-9).** With a
+     Gaussian weight the row Gram is exactly self-dual (`../rip/theta/theta_poisson.py`):
+     G_L(z, z′) = √(L/M)·ε·g̃(z)conj g̃(z′)·conj G_M(z, z′) on coprime pairs, where M = 27N(z)N(z′)/(4L) and ε is
+     constant on class pairs mod 4 and mod 9 (`theta_poisson_B10000.log`, item 3).
+     - So a corrected bound for the dual family transfers exactly. A correction f becomes g̃·conj f times class
+       characters mod 36. The pair-dependent length M becomes N^{it} twists by a Mellin separation in N(z)N(z′).
+       The class-phase matrix costs a bounded factor (its singular values, through AM–GM).
+     - The rotation f ↦ g̃·conj f is an involution up to class characters, since |g̃| = 1. Non-coprime pairs
+       still need the gcd sorting of step 2.
+     - Caveat: this replaces only the Poisson step. The n-th-power descent and the alternation of the two sides
+       are unchanged.
 4. **n-th powers (Lemma 6.1).** L₂(K, B) ≤ max_{R ≤ (K/M)^{1/n}} R·L₁(K/R^n, B) on kernels > M.
    - Corrected: the multiplicity is at most c₁ = (B²/(AM))^{1/n}, which is the A·c₁ term. [derived]
 5. **Monotonicity (Lemma 4.2).** L₁(A₁, B) ≲ L₁(A₂, B) for A₂ ≥ C A₁ log, via rows a·p and λ·conj χ_p.

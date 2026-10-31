@@ -5066,3 +5066,39 @@ the sextic family on balanced convolutions of smooth plain sums. Nothing in the 
 - the bilinear cubic sieve (excess 1/9);
 - prime dilation (saving ≤ B^{2/9});
 - RIP-type designs (journal 2026-10-30).
+
+## 2026-10-31 · Literature check (July 2026): the sextic balanced-point excess is real for general vectors; fourth moments are open
+
+[web, abstracts and introduction read; arXiv 2607.07911, 2607.27131]
+
+- **de Faveri–Dunn–Hoffstein, "Non-orthogonality of the cubic and quartic large sieves via Rankin–Selberg"
+  (arXiv 2607.07911, July 2026).**
+  - They prove Ξ₃(A, B) ≫ (AB)^{−ε}(A + B + (AB)^{2/3}): the cubic large sieve is optimal, so its (AB)^{2/3} term is
+    attained.
+  - For the quartic case they prove Ξ₄ ≫ (AB)^{−ε}(A + B + A^{3/4}B^{1/2} + A^{1/2}B^{3/4}).
+  - **Conjecture (1.9)** for order n: Ξₙ(A, B) = (AB)^{o(1)}(A + B + A^{1−1/n}B^{2/n} + A^{2/n}B^{1−1/n}). For n = 6 the
+    balanced value is X^{7/6}.
+  - The extremal vectors are smooth Gauss-sum vectors conj(g̃₃(b))·H(N(b)/B), the program's spike directions.
+  - Inputs:
+    - (2.10), Lindelöf on average for the cubic Kubota series, Σ_{N(a)≤A}|ψ⁽³⁾(a, 1+ε+it)|² ≪ A^{1+ε}(1+|t|)^R (on the
+      critical line in their normalization). That is input A′ for n = 3.
+    - A lower bound for Σ|τ(a)|² of a Rankin–Selberg convolution of metaplectic thetas, by Zagier's regularization.
+- **Diaconu–Ion–Paşol–Popa, second moments of r-th order Hecke L-functions (arXiv 2607.27131, July 2026).**
+  - Asymptotics for the first and second twisted moments, r ≥ 3, over fields containing the 2r-th roots of unity, by
+    multiple Dirichlet series.
+  - r = 3 over ℚ(ω) qualifies. r = 6 over ℚ(ω) does not, since it needs ζ₁₂.
+- **No fourth moment** of cubic or sextic Hecke L-functions at Lindelöf strength turned up.
+
+**What this means here.**
+- The excess 1/6 of the sextic sieve at the balanced point is (conjecturally) the true operator norm, attained by
+  the spike directions. So the K-wall's fixed point (previous entry) can only come from the leaf vectors' structure.
+  That has been the program's working assumption since 2026-10-30, and it is now backed by the literature's
+  conjecture and by the n = 3, 4 theorems.
+- The open input is A‴: the balanced-point sieve at B^{1+ε} for smooth plain × plain convolutions, i.e. Lindelöf on
+  average for a fourth moment of the sextic family. It is beyond the present literature; the second-moment
+  technology (DFDH (2.10), DIPP) stops at A′.
+- **A check owed.** DFDH's cubic main term, the twist mean square of the smooth Gauss vector in the range
+  √A < B < A², has exponent (AB)^{2/3}·B. The three-Poisson sketch ("Three Poisson steps …", above) gives the same
+  exponent H^{2/3}X^{5/3}, from the pole of ζ_K(3s), with no Rankin–Selberg or Lindelöf input. DFDH use the heavier
+  route, so the sketch must be compared with their method before anything rests on it. The step to check is step 3
+  (negligibility of the non-principal (k, k′) after the coupling separation).

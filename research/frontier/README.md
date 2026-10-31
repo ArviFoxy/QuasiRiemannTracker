@@ -253,6 +253,12 @@ block outlier is a residue").**
     shifted convolutions of theta coefficients. Without twisted multiplicativity for `τ₆` there is no known tool.
 - So, beyond the conjecture itself, the sextic K-wall's new arithmetic input is a shifted-convolution bound for
   sextic theta coefficients at products. The cubic analogue would follow from Patterson's formula.
+- **For the Dunn–Radziwiłł route** (journal 2026-10-30, obstacle 3: "the sextic theta function has no explicit
+  coefficients"). The term a corrected sextic large sieve has to subtract is the residue of the sextic Kubota series,
+  which is what the numerics now show the outlier to be. That term exists analytically whether or not `τ₆` is
+  explicit, and an upper bound needs its size and its interaction with the remainder, not its values. Its size is
+  Rankin–Selberg, `Σ_{N z ≤ X} |τ₆(z)|² ≍ X^{5/6}`. So obstacle 3 is less "no explicit formula" than "no Type II
+  (bilinear) estimate for `g̃₆(ab)` with the residue removed", the sextic analogue of their Prop 10.1. [heuristic]
 
 ## Queued directions
 

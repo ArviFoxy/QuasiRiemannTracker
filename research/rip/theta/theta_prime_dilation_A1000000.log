@@ -1,0 +1,27 @@
+A=1000000 L=10000 (A^0.67, square-root barrier at 1000): R=282248 S=2610, |gauss| in [1.000, 1.000]   (68s)
+|E v|^2/|v|^2 over the masked null, and max / mean of S|<v, f_m>|^2/(|v|^2|f_m|^2) over 12 twisted thetas (N(m) <= 60; random level 1):
+  gauss, all x                                 support  2610   ratio 1.193   corr max     0.06 mean    0.03
+  theta (gauss * N^-1/3), all x                support  2610   ratio 1.118   corr max     1.13 mean    0.66
+  random phases, all x                         support  2610   ratio 0.996   corr max     3.72 mean    0.78
+  gauss restricted to N <= X1 = 625            support   164   ratio 1.002   corr max     1.39 mean    0.69
+  gauss * pool[8, 16], a = 1                   support   284   ratio 1.001   corr max     1.84 mean    0.73
+  gauss * pool[8, 16], a = conj g~(p)          support   284   ratio 1.004   corr max     1.33 mean    0.73
+    same support, random phases                support   284   ratio 1.001   corr max     2.92 mean    0.96
+    same support, gauss phases (no dilation)   support   284   ratio 1.013   corr max     0.38 mean    0.14
+  gauss restricted to N <= X1 = 250            support    66   ratio 1.001   corr max     4.87 mean    1.98
+  gauss * pool[20, 40], a = 1                  support   244   ratio 1.002   corr max     1.16 mean    0.43
+  gauss * pool[20, 40], a = conj g~(p)         support   244   ratio 0.997   corr max     1.90 mean    1.10
+    same support, random phases                support   244   ratio 1.001   corr max     1.25 mean    0.46
+    same support, gauss phases (no dilation)   support   244   ratio 1.012   corr max     0.49 mean    0.15
+  gauss restricted to N <= X1 = 100            support    26   ratio 1.003   corr max     8.38 mean    4.46
+  gauss * pool[50, 100], a = 1                 support   200   ratio 1.005   corr max     2.03 mean    0.78
+  gauss * pool[50, 100], a = conj g~(p)        support   200   ratio 1.002   corr max     2.34 mean    1.52
+    same support, random phases                support   200   ratio 1.005   corr max     2.75 mean    0.98
+    same support, gauss phases (no dilation)   support   200   ratio 1.016   corr max     0.56 mean    0.23
+  gauss * pool[7, 100], a = 1, no length cap   support  1388   ratio 0.994   corr max     3.27 mean    0.77
+    same support, random phases                support  1388   ratio 1.002   corr max     4.84 mean    1.32
+    same support, gauss phases (no dilation)   support  1388   ratio 1.097   corr max     0.16 mean    0.05
+  gauss * pool[7, 400], a = 1, no length cap   support  1388   ratio 0.995   corr max     2.66 mean    0.55
+    same support, random phases                support  1388   ratio 1.000   corr max     3.85 mean    1.14
+    same support, gauss phases (no dilation)   support  1388   ratio 1.097   corr max     0.16 mean    0.05
+done in 75s

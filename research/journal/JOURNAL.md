@@ -4711,3 +4711,34 @@ reciprocity are baseline theorems].**
   - make `upperOne`'s threshold S-dependent, (P − S − (1 − γ_pd(S)))/2;
   - fork the native gates (`Walls.lean` has the scalar side).
 - This does not move θ alone. The K-wall's overshoot gate still pins the native end at 2.003 (journal 2026-10-30).
+- **The levels, in Sil's form (same day) [derived].**
+  - Sil's sieve uses characters primitive mod the radical (`SievePrimitive.character`, `modulus I` = radical). So
+    the coprime-pair dual terms are exact (`pair_poisson`), with no imprimitive levels.
+  - Each carries the coupling c(I, J) = idealRowHom(rad J)(I)·conj idealRowHom(rad I)(J) (`pair_coupling`). By
+    reciprocity, c(I, J) = (gen I / rad J)₆·conj(rad I / J)₆·(class sign).
+  - Write every source as s = ρσ, with ρ = rad s and σ = gen s/rad s its square-full excess. Then, for slot
+    factors q, q′ (squarefree, coprime to the plain parts), c(sq, s′q′) = (σ/ρ′q′)₆·conj(ρq/σ′)₆·(sign).
+  - That is **rank one on each block pair (σ, σ′)**. Each block pair's dual form is X_{σσ′}·conj Y_{σ′σ}, where
+    X_{σσ′} is the block's correlation with f_k twisted by (·/σ′). The bilinear bound of Step 2 applies to it
+    pointwise.
+  - For divisor-bounded plain factors (the reference's dual-long and short plain sums are), block σ carries mass
+    ≪ ‖α‖²_∞·X/N(σ)². The double sum over (σ, σ′) of the square roots then costs only (log X)².
+  - So the levels cost logarithms. The remaining bookkeeping is the gcd sorting of non-coprime pairs.
+- **Numerical check (same day) [numerical: `rip/theta/theta_prime_dilation.py`, log
+  `theta_prime_dilation_A1000000.log`].**
+  - Setup: A = 10⁶ rows, sources N(x) ≤ L = 10⁴ = A^{2/3} (2610 sources). The table shows |E v|²/|v|² over the
+    masked null.
+
+  | vector | support | ratio |
+  |---|---|---|
+  | Gauss-sum vector conj g̃·(class sign) | 2610 | 1.193 |
+  | Gauss vector ⋆ pool [7, 100] | 1388 | **0.994** |
+  | same support, random phases | 1388 | 1.002 |
+  | same support, Gauss phases (no dilation) | 1388 | **1.097** |
+  | Gauss ⋆ pool [P₀, 2P₀], P₀ = 8, 20, 50 (a = 1 or conj g̃(p)) | 200–284 | 0.997–1.005 |
+  | same supports, Gauss phases (no dilation) | 200–284 | 1.012–1.016 |
+
+  - Convolving the spike direction itself with a prime pool removes the theta excess completely. The same support
+    with Gauss phases keeps it.
+  - The twisted-theta correlations of the convolutions are at the random level. This is the mechanism of Step 2,
+    seen directly.

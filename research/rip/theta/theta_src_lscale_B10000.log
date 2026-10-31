@@ -1,0 +1,12 @@
+B=10000 L=2000  R=2816 rows  S=520 sources   built in 0.2s
+  |G(z,1)|: min 1.000 max 1.000   (built 4.2s)
+B=10000 L=2000 R=2816 S=520: |Ef|^2 4907.6, masked-null |Ef|^2 2663.6, main 2244.1, main/L^(1/3) 178.11, main/L^(1/2) 50.18
+B=10000 L=5000  R=2816 rows  S=1300 sources   built in 0.9s
+  |G(z,1)|: min 1.000 max 1.000   (built 5.0s)
+B=10000 L=5000 R=2816 S=1300: |Ef|^2 5929.0, masked-null |Ef|^2 2672.2, main 3256.9, main/L^(1/3) 190.46, main/L^(1/2) 46.06
+B=10000 L=10000  R=2816 rows  S=2610 sources   built in 1.2s
+  |G(z,1)|: min 1.000 max 1.000   (built 5.0s)
+B=10000 L=10000 R=2816 S=2610: |Ef|^2 7101.9, masked-null |Ef|^2 2673.1, main 4428.7, main/L^(1/3) 205.56, main/L^(1/2) 44.29
+B=10000 L=30000  R=2816 rows  S=7768 sources   built in 3.3s
+  |G(z,1)|: min 1.000 max 1.000   (built 7.6s)
+B=10000 L=30000 R=2816 S=7768: |Ef|^2 9252.4, masked-null |Ef|^2 2683.0, main 6569.4, main/L^(1/3) 211.42, main/L^(1/2) 37.93

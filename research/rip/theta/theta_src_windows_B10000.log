@@ -1,0 +1,19 @@
+B=10000 L=10000  R=2816 rows  S=2610 sources  1445 row primes   tables in 1s
+window N(x) in (5000, 10000]: 1310 sources (R/S_W = 2.15); top s^2/S_W [5.863 5.806], masked null [5.739 5.7  ]   (3s)
+window N(x) in (2500, 5000]: 660 sources (R/S_W = 4.27); top s^2/S_W [8.995 8.909], masked null [8.934 8.848]   (3s)
+window N(x) in (1250, 2500]: 322 sources (R/S_W = 8.75); top s^2/S_W [14.821 14.69 ], masked null [14.893 14.711]   (4s)
+window N(x) in (625, 1250]: 154 sources (R/S_W = 18.29); top s^2/S_W [26.429 26.193], masked null [26.688 26.308]   (4s)
+window N(x) in (312, 625]: 82 sources (R/S_W = 34.34); top s^2/S_W [45.6   44.442], masked null [45.126 44.107]   (5s)
+overlaps |<u0_W, u_W'>|^2 between windows (random level 3.6e-04):
+  window 1: [1.    0.001 0.001 0.002 0.   ]
+  window 2: [0.001 1.    0.    0.002 0.002]
+  window 3: [0.001 0.    1.    0.    0.001]
+  window 4: [0.002 0.002 0.    1.    0.001]
+  window 5: [0.    0.002 0.001 0.001 1.   ]
+u0 of each window against u0, u1 of the others (max over the first k): 
+  window 1: [1.    0.002 0.001 0.002 0.   ]
+  window 2: [0.001 1.    0.    0.002 0.002]
+  window 3: [0.001 0.    1.    0.    0.001]
+  window 4: [0.002 0.002 0.002 1.    0.001]
+  window 5: [0.002 0.002 0.001 0.001 1.   ]
+done in 5s

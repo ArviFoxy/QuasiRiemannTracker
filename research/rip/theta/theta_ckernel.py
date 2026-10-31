@@ -19,6 +19,7 @@ usage (library):
     K.matvec(v, rows=W_idx, normalize=True)     # the same restricted to the rows W_idx, each row scaled to unit norm:
                                                 #   E_W^H D^-1 E_W v, the unit-diagonal Gram of the row set
     Y = K.forward(V, rows=None)                 # E V (all rows, or the rows given)
+    W = K.adjoint(Y, rows=None)                 # E^H Y (Y has one row per row of E, or per row given)
     lam = K.top(k=4, mode=0, tol=1e-4)          # top eigenvalues of E^H E / S (ARPACK Lanczos on the operator)
     lam, vec = K.top(k=4, vectors=True)         # with the eigenvectors (right singular vectors of E)
     K.top(k=1, rows=W_idx, normalize=True)      # top eigenvalue of the unit-diagonal Gram of a row set
@@ -151,11 +152,17 @@ static inline int64_t popnz(const uint64_t *nz, int64_t nblk) {
 }
 
 /* mode_fwd = 0: W += conj(e)^T (w e V) with w = 1 (or 1 / #nonzero entries of the row when normalize);
-   mode_fwd = 1: store y = e V in Y[(2j + c) * ldy + slot] and nothing else */
+   mode_fwd = 1: store y = e V in Y[(2j + c) * ldy + slot] and nothing else;
+   mode_fwd = 2: W += conj(e)^T y with y read from Y[(2j + c) * ldy + slot] (adjoint product; V is not read) */
 static inline __attribute__((always_inline)) void row_apply(const uint8_t *kb, const uint64_t *nz, int64_t nblk,
         int64_t Sp, const float *V, float *Wl, const tabs_t *t, const int b, int normalize, int fwd,
         float *Y, int64_t ldy, int64_t slot) {
     float yr[MAXB], yi[MAXB];
+    if (fwd == 2) {
+        for (int j = 0; j < b; j++) { yr[j] = Y[(int64_t)(2 * j) * ldy + slot]; yi[j] = Y[(int64_t)(2 * j + 1) * ldy + slot]; }
+        phase2(kb, nz, nblk, Sp, Wl, t, b, yr, yi);
+        return;
+    }
     phase1(kb, nz, nblk, Sp, V, t, b, yr, yi);
     if (fwd) {
         for (int j = 0; j < b; j++) { Y[(int64_t)(2 * j) * ldy + slot] = yr[j]; Y[(int64_t)(2 * j + 1) * ldy + slot] = yi[j]; }
@@ -184,13 +191,14 @@ static void row_dispatch(const uint8_t *kb, const uint64_t *nz, int64_t nblk, in
 
 /* W = sum_z conj(e_z)^T (w_z e_z V) over rows z in the list rows[0..nrows) (NULL: all rows 0..R), w_z = 1 or, with
    normalize, 1 / (number of nonzero entries of row z) -- the unit-diagonal Gram.  V, W planar [b][2][Sp].
-   fwd != 0: instead Y[(2j + c) * ny + q] = (e_{rows[q]} V_j) (real / imaginary part), W unused. */
+   fwd == 1: instead Y[(2j + c) * ny + q] = (e_{rows[q]} V_j) (real / imaginary part), W unused.
+   fwd == 2: W = sum_q conj(e_{rows[q]})^T y_q with y_q read from Y in the same layout (the adjoint E^H Y), V unused. */
 void normal_matvec(const int8_t *T, int64_t S, int64_t Sp, const int32_t *LOC, int64_t R, int J, const int64_t *rows,
                    int64_t nrows, const float *V, int b, float *W, int mode, uint64_t seed, int nthreads, int normalize,
                    int fwd, float *Y) {
     int64_t nblk = Sp / 64;
     int64_t wlen = (int64_t)2 * b * Sp;
-    if (!fwd) memset(W, 0, sizeof(float) * wlen);
+    if (fwd != 1) memset(W, 0, sizeof(float) * wlen);
     int64_t nr = rows ? nrows : R;
     tabs_t t;
     make_tabs(mode, &t);
@@ -210,7 +218,7 @@ void normal_matvec(const int8_t *T, int64_t S, int64_t Sp, const int32_t *LOC, i
             gen_codes(T, S, nblk, li, nj, mode, seedz, &tl, kb, nz);
             row_dispatch(kb, nz, nblk, Sp, V, Wl, &tl, b, normalize, fwd, Y, nr, q);
         }
-        if (!fwd) {
+        if (fwd != 1) {
             #pragma omp critical
             { for (int64_t i = 0; i < wlen; i++) W[i] += Wl[i]; }
         }
@@ -339,6 +347,31 @@ class Kernel:
         self.lib.normal_matvec(self.T.ctypes.data, self.S, self.Sp, self.LOC.ctypes.data, self.R, self.J, rp, nr,
                                Vp.ctypes.data, b, None, mode, ctypes.c_uint64(seed), self._nt(nr), 0, 1, Y.ctypes.data)
         return (Y[:, 0, :].astype(np.float64) + 1j * Y[:, 1, :].astype(np.float64)).T
+
+    def adjoint(self, Y, mode=0, seed=0, rows=None):
+        """E^H Y for Y of shape (R, b), or (len(rows), b) for the rows given in that order, b <= 8; returns complex128
+        (S, b)."""
+        Y = np.asarray(Y)
+        if Y.ndim == 1:
+            Y = Y[:, None]
+        b = Y.shape[1]
+        assert 1 <= b <= 8
+        if rows is None:
+            rp, nr = None, self.R
+        else:
+            rows = np.ascontiguousarray(rows, dtype=np.int64)
+            rp, nr = rows.ctypes.data, len(rows)
+        assert Y.shape[0] == nr
+        Yp = np.zeros((b, 2, nr), np.float32)
+        Yp[:, 0, :] = Y.real.T
+        Yp[:, 1, :] = Y.imag.T
+        Wp = np.empty((b, 2, self.Sp), np.float32)
+        # the V argument is not read in adjoint mode
+        self.lib.normal_matvec(self.T.ctypes.data, self.S, self.Sp, self.LOC.ctypes.data, self.R, self.J, rp, nr,
+                               Wp.ctypes.data, b, Wp.ctypes.data, mode, ctypes.c_uint64(seed), self._nt(nr), 0, 2,
+                               Yp.ctypes.data)
+        out = Wp[:, 0, :self.S].astype(np.float64) + 1j * Wp[:, 1, :self.S].astype(np.float64)
+        return out.T
 
     def row(self, z, mode=0, seed=0):
         re = np.empty(self.S, np.float32); im = np.empty(self.S, np.float32)

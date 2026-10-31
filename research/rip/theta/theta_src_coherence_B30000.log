@@ -1,0 +1,7 @@
+B=30000 L=30000  R=8474 rows  S=7768 sources   built in 10.8s
+  |G(z,1)|: min 1.000 max 1.000   (built 42.9s)
+B=30000 L=30000: class-signed source theta, Rayleigh 3.161 S (top of the 12-class compression)
+E, source theta              mean off-diagonal |corr|^2 0.0522 (random level 1.2e-04); adjacent windows [0.078 0.071 0.037 0.034 0.022]
+masked null, source theta    mean off-diagonal |corr|^2 0.0001 (random level 1.2e-04); adjacent windows [0. 0. 0. 0. 0.]
+E, random class phases       mean off-diagonal |corr|^2 0.0027 (random level 1.2e-04); adjacent windows [0.006 0.006 0.001 0.001 0.   ]
+windows: (15000, 30000], (7500, 15000], (3750, 7500], (1875, 3750], (938, 1875], (469, 938]

@@ -55,6 +55,11 @@ be small.
 | `theta_cfh.py B L` | is the sextic outlier's row vector the sextic theta function? Modulus law of u₀ on prime rows, and its squared phase against cubic and sextic Gauss sums × classes (a Chinta–Friedberg–Hoffstein-type test) |
 | `theta_twosided.py B L [M] [J] [beta,...]` | the sextic family with both thetas removed (dense): row family V (thetas and plain characters on classes mod 36, twists N(m) ≤ M, J profiles) and source family P (conj g̃, g̃ times N^{−β} on cells mod 36 × parity); one-sided, two-sided and random-span tops |
 | `theta_twosided_free.py B L [M] [J] [beta,...] [threads]` | the same matrix-free (compiled kernel, E^H Q_V by a chunked pass), B up to 2·10⁵ |
+| `theta_src_residue.py B L1,L2,... [k] [threads]` | rows fixed, sources up to each L: top of E and of the masked null, and overlaps of the top left vectors across L (rows matched by factorization) |
+| `theta_src_windows.py B L nwin [k] [threads]` | E restricted to disjoint dyadic source windows: top against the masked null, and overlaps of the windows' top row vectors |
+| `theta_src_coherence.py B L nwin` | row images of the fixed class-signed source theta on disjoint source windows: their mutual correlation, against the masked null and random class phases |
+| `theta_src_lscale.py B L1,L2,...` | main energy of the class-signed source theta (\|Ef\|² minus the masked null) against L at fixed B |
+| `theta_twosided_grow.py B L CONFIGS [J] [threads]` | two-sided test with growing families (row twists N(m) ≤ M, twisted source thetas N(m) ≤ M′, several β), matrix-free through the kernel's forward and adjoint products; compared with the masked null on the same spans and with random spans |
 
 All scripts build E and the row Gauss sums through `theta_core.py`. The matrix-free scripts (`theta_top_free2`,
 `theta_selected_free`, `theta_outliers`) use `theta_core.build_tables`, which stops before the dense matrix and returns
@@ -99,6 +104,13 @@ the rows, the sources and the int8 symbol table (`build` starts from it and give
   3·10⁴, 4.442 / 4.058 at 10⁵, 4.756 / 4.118 at 2·10⁵. Random spans of the same dimensions: 4.016, 4.746, 5.171.
   Both families carry signal at every size, but fixed families do not reach the edge at large B, as expected from
   one spike per twist (below). Families that grow with B are the next test.
+- **The block outlier is a residue** (`theta_src_residue`, `theta_src_windows`, `theta_src_coherence`,
+  `theta_src_lscale`). With the rows fixed, the top row vector is the same for every source length (overlaps 0.56–0.74
+  at 10⁴). The row images of the class-signed source theta on disjoint dyadic source windows are correlated (mean
+  |corr|² 0.046 at 10⁴, 0.052 at 3·10⁴; masked null 0.0003 and 0.0001). Its main energy grows roughly like L^{1/3} at
+  fixed B. This fits the residue of the sextic Kubota series in the source variable, `L^{1/3} conj τ₆(z)`, which gives
+  B^{1/6} at L = B. For q = 3 the residue is Patterson's Gauss-sum vector, the row theta itself, which explains one
+  theta (cubic) against two (sextic). See the journal. [identification with τ₆ heuristic]
 - **Exact Poisson self-duality** of the Gaussian primary-n Gram, to the 10⁻⁹ truncation level (`theta_poisson`).
   - The dual is the same family at a pair-dependent length 27 N(z)N(z′)/(4L), dilated by the unit type.
   - It carries a twelfth-root phase that is constant on classes mod 36, not mod 4.

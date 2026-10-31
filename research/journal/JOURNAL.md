@@ -3153,3 +3153,46 @@ Same families as at 3·10⁴. V: row thetas and plain characters on classes mod 
   sextic residue symbol, and larger fields give the same exponents with more units. A different order needs a
   specific piece of new mathematics: a GL(2)-type summation formula for quartic Gauss sums at index `n` that leaves
   a quadratic twist.
+
+## 2026-10-31 · The block outlier is a residue: the source theta's row image is one vector at every scale
+
+[numerical; `rip/theta/theta_src_residue.py`, `theta_src_windows.py`, `theta_src_coherence.py`,
+`theta_src_lscale.py`, logs `theta_src_*_B10000.log` and `theta_src_coherence_B30000.log`. The identification with
+τ₆ is heuristic.]
+
+**Heuristic.** Put the source theta `f(x) = conj g̃₆(x) N(x)^{−1/3}` (times class phases) into E.
+- Reciprocity and twisted multiplicativity give `(x/z)₆ conj g̃(x) = conj g̃(z, x)` up to classes. So
+  `E f(z) = Σ_x conj g̃(z, x) N(x)^{−1/3}` is a partial sum of the sextic Kubota series
+  `ψ₆(z, s) = Σ_x g̃(z, x) N(x)^{−s}` at the index `z`.
+- Its pole at `s = 2/3` gives a main term `c L^{1/3} conj τ₆(z)`, with `τ₆` the Fourier coefficients of the sextic
+  theta function. So the outlier would be the rank-one residue part of E: `τ₆(z)` on the rows and
+  `conj g̃₆(x) N(x)^{−1/3}` on the sources.
+- Its energy is about `L^{1/3} Σ_z |τ₆(z)|² ≈ L^{1/3} B^{5/6}`. At `L = B` this is the observed `B^{1/6}` growth of
+  the spike strength.
+- For `q = 3` the same residue is Patterson's `τ₃ ∝ conj g̃₃(z) N(z)^{−1/6}`, which is the cubic row theta itself:
+  one theta. For `q = 6`, `τ₆` is not a Gauss sum: two thetas.
+
+**Tests.** Rows are fixed (`N z ∈ [B, 2B]`); only the sources change.
+
+| test | E | control |
+|---|---|---|
+| top row vector for sources up to L against L′ (B = 10⁴, neighbouring L in 10³ … 10⁴) | overlaps 0.56–0.74; 0.22 from 10³ to 10⁴ | random 3.6e-4 |
+| row images of the class-signed source theta on disjoint dyadic source windows (B = 10⁴, 5 windows) | mean \|corr\|² 0.046, adjacent 0.028–0.055 | masked null 0.0003; random class phases 0.0019 |
+| the same at B = 3·10⁴ (6 windows) | 0.052, adjacent 0.022–0.078 | masked null 0.0001; random class phases 0.0027 |
+| main energy \|Ef\|² minus the masked null (B = 10⁴; L = 2·10³, 5·10³, 10⁴, 3·10⁴) | 2244, 3257, 4429, 6569; ÷ L^{1/3}: 178, 190, 206, 211 | an L^{1/2} law would give 50, 46, 44, 38 |
+
+- **Coherence across disjoint windows is the decisive test.** A fixed source vector, cut into windows that share no
+  source, sends each window to the same row direction. The size matches a residue model: about 23% signal per window
+  image gives an expected 0.05.
+- **A single window shows no outlier.** E restricted to one dyadic window has its top at the masked null, and the
+  windows' top vectors are unrelated. This is expected: each window holds about a fifth of the main energy, which is
+  below the BBP threshold. The outlier needs the coherent sum over all scales.
+- **The L-dependence.** The main energy grows with local exponents 0.44, 0.44 and 0.36, against the predicted 1/3. A
+  lower-order term or a logarithm may account for the difference.
+- **Why the row theta is weak.** [heuristic] The same mechanism in the row variable makes `E^H G₆ ∝ τ₆(x)`: the row
+  theta pairs with the theta coefficients on the sources, with the same scaling. But the rows fill one dyadic window
+  `[B, 2B]`, while the sources fill every scale from 1 to L. The coherent build-up gives the source theta about ten
+  times the energy, which matches the observed ratio (θ ≈ 2.1 against a row-theta excess of 0.22 at 3·10⁴).
+- **Not yet checked.** That the fixed row vector is `τ₆` itself rather than some other fixed vector. The earlier CFH
+  phase test (`u₀²` against cubic Gauss sums) was negative. With about 64% signal in `u₀` at 10⁴ and no explicit
+  form of `τ₆(p)²` to test against, that test is weak.

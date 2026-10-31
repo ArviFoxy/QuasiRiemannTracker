@@ -4,6 +4,14 @@
 (0.87338196661320752), so the bar stays θ ≤ **0.8733319666**. New today, none of it a θ gain: the price of rank
 (`../orders/README.md`: no other power-residue family beats the sextic base), the residue mechanism of the sextic
 outlier and the masked-null two-sided tests (journal, 2026-10-31).
+- **Later the same day: the faces program has a full architecture.**
+  - de Faveri's recursion run off the spikes converges to the conjectured exponent 1 + γ
+    (`OFFSPIKE_PROOF_PLAN.md`; arithmetic in Lean).
+  - Its correction family closes up numerically: finite Poisson levels, local spikes, no restricted spikes.
+  - Every source spike shares one radial direction, the pole s₀ = 2/3. So weights with zero Mellin transform there
+    remove all source spikes from structured vectors. That rescues the reference wall's detector and drops Λ_src from
+    the K-wall chain, except at low heights.
+  - See "Roadmap for the faces" below.
 
 Next bar: θ ≤ 0.87336198 (5e-5 below #97). Open upstream PRs: #98 (Bebel, θ = 0.8733821435) and **#99** (Bebel,
 θ = 0.8733819666133, "positive-reserve-selected-gap": a selected-energy adapter for every fixed positive gap above

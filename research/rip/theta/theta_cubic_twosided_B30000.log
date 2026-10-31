@@ -1,0 +1,11 @@
+B=30000 L=30000  R=8474 rows  S=7768 sources   built in 14.2s
+  |G(z,1)|: min 1.000 max 1.000   (built 45.4s)
+  row side: G3 and 27 supplementary characters; V(60): 13 twists, dim 702   (78s)
+  source side: |g3| 1.000..1.000, 216 cells, betas [0.1666667, 0.3333333]: dim 864   (87s)
+full top                     [8.979 6.479 5.725 5.513]   MP edge 4.180
+one-sided, off V(60)         [4.268 4.019 3.962 3.948]   MP edge 4.001
+  energy of its top right vector in the source-theta span P: 0.113 (random 0.111)
+two-sided, off V(60) and P   [3.942 3.746 3.676 3.649]   MP edge 3.775
+random spans, same dims      [7.484 5.484 4.855 4.727]
+V(60) with a random source span [3.94  3.737 3.687 3.678]
+done in 835s

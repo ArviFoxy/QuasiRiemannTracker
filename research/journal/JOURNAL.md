@@ -2963,3 +2963,80 @@ standard].**
 - These are constant factors. Over R rows the dynamic range of a slot sum is about log R / log(1/ρ).
 - With the metric Q = P_V^⊥ + ε P_V, the dual-frame bound becomes the K-wall recursion inequality. So Q1's exponent
   content is the spike-free conjecture, and as a separate lever Q1 is closed.
+
+## 2026-10-31 · The outlier to B = 3·10⁵, selected rows, and arithmetic dual frames (agent; verified logs)
+
+[numerical; `rip/theta/theta_top_free2.py`, `theta_outliers.py`, `theta_selected_free.py`, `theta_dualframe.py`; table
+and logs in `rip/theta/README.md`]
+- **Growth.** The sextic top is 5.470 at B = L = 3·10⁵, against a masked random edge of 3.995 (+36.9%), so θ = 3.16.
+  - The least-squares slope over ten sizes is d log θ / d log B = 0.183 ± 0.005. That is consistent with B^{1/6}
+    plus an offset.
+  - RCHAR stays at the random level at every size.
+- **A cluster, growing with R.** The number of eigenvalues above 1.05 × edge is 1, 5, 18, 37 and ≥ 48 at 10⁴, 3·10⁴,
+  10⁵, 2·10⁵ and 3·10⁵, about 6·10⁻⁴ R. This is what the multiplicity law predicts. A spike of strength
+  ∝ (B/N m)^{1/6} clears any fixed relative threshold for N(m) up to a fixed fraction of B, so the count is ∝ B.
+  [heuristic] Twisted source copies with decreasing excess were seen directly (`theta_mech_cluster`).
+- **No concentration on slot-selected rows.** Sextic minus RCHAR of (W − random W) is 0.00 ± 0.01 at 3·10⁴, 10⁵ and
+  2·10⁵. A positive control with outlier-aligned rows gives +0.12 to +0.71, so the test would see concentration.
+  On random row sets the spike dilutes as `FlatDilution` predicts, and it re-emerges only for ρ > 1/θ². This agrees
+  with `theta_blockcover`: the source image's share on W equals the density of W.
+- **Dual frames.** No W-independent arithmetic metric (theta and block spans, wide kernels, low-pass) beats the
+  trivial bound at B = 10⁴. The best arithmetic choice is 1.16× trivial.
+  - The cost is c_W ≈ 1 + (1/ε − 1)·λ_max((P_V)_WW). That is the Haar value, except for spans containing the slot
+    primes.
+  - Only flattening E's own singular spectrum helps, to 0.64–0.73 of trivial. That is Marchenko–Pastur plus
+    delocalization, with no arithmetic. Same conclusion as Q1.
+
+## 2026-10-31 · One theta for n = 3, two thetas for n = 6 (why the order matters)
+
+**Numerics [numerical; `rip/theta/theta_pairs.py`, `theta_cubic_twosided.py`, `theta_cfh.py`].**
+- Same spans for both families:
+  - **row thetas:** G_k(z)·(class functions mod 36)·(2 profiles);
+  - **source thetas:** conj g_k(x) and g_k(x) on cells (x mod 4, x mod 9, parity of ω(x)), with profile
+    N(x)^{−(1/2 − 1/q)}.
+- Table entries are the energies of the top singular pairs (u_t, v_t) in these spans.
+
+| | B | pair 0 | pair 1 | pair 2 | pair 3 | random |
+|---|---|---|---|---|---|---|
+| cubic, u_t in row thetas | 10⁴ | 0.86 | 0.70 | 0.50 | 0.60 | 0.153 |
+| cubic, v_t in source thetas | 10⁴ | 0.87 | 0.69 | 0.48 | 0.59 | 0.166 |
+| sextic, u_t in row thetas | 10⁴ | 0.16 | 0.17 | 0.18 | 0.17 | 0.153 |
+| sextic, v_t in source thetas | 10⁴ | 0.45 | 0.22 | 0.28 | 0.22 | 0.166 |
+| cubic, u_t in row thetas | 3·10⁴ | 0.89 | 0.80 | 0.61 | 0.65 | 0.051 |
+| cubic, v_t in source thetas | 3·10⁴ | 0.90 | 0.78 | 0.58 | 0.64 | 0.056 |
+| sextic, u_t in row thetas | 3·10⁴ | 0.06 | 0.07 | 0.08 | 0.07 | 0.051 |
+| sextic, v_t in source thetas | 3·10⁴ | 0.46 | 0.12 | 0.18 | 0.14 | 0.056 |
+
+- **Cubic: one spike family.** Each top pair is a row theta on the left and a source theta on the right, with
+  matching energies.
+  - Removing the row thetas V(60) at 3·10⁴ already removes the source theta. The residual's top right vector has
+    energy 0.113 in the source span, against a random 0.111.
+  - Removing the source-theta span on top of V(60) gives 3.942. A random source span of the same dimension gives
+    3.940.
+- **Sextic: two families.** The top pair is a source theta whose row vector has no row-theta content.
+- **The sextic row vector looks random** (`theta_cfh_B10000.log`).
+  - |u₀|² follows the exponential law on prime rows as well (quantiles 0.11/0.71/2.19/4.31).
+  - Its squared phase does not correlate with cubic or sextic Gauss sums × classes (0.116 against 0.105 random).
+  - So it is not visibly the coefficient vector of the sextic theta function. The spike's structure lives on the
+    source side only.
+
+**Literature [checked: abstracts and secondary statements].**
+- **Patterson:** the cubic theta function (3-fold cover of GL(2)) has Fourier coefficients that are essentially
+  cubic Gauss sums.
+- **Kazhdan–Patterson (Metaplectic forms, 1984):** the theta representation of the n-fold cover of GL(r) has a unique
+  Whittaker model only for n = r or n = r + 1. On GL(2) that means n = 2 or 3. For n = 6 the coefficients are not
+  determined by local data.
+- **Chinta–Friedberg–Hoffstein** conjectured that the sextic theta's coefficients at squares relate to cubic Gauss
+  sums. They proved it over rational function fields.
+- **Bröker–Hoffstein** ("Fourier coefficients of sextic theta series", Math. Comp. 2016, arXiv 1312.0568) give
+  partly proven, partly conjectured values of τ(π)², τ(π²) and τ(π⁴).
+
+**Reading [heuristic].**
+- Poisson in the rows produces Gauss-sum Dirichlet series whose poles carry the theta coefficients.
+- For n = 3 those coefficients are Gauss sums, so the source theta's row image lands on the row theta: one spike,
+  seen from both sides. That explains why the cubic one-sided tests reached the bulk.
+- For n = 6 the coefficients are not Gauss sums, and the source spike's row image is a new, unstructured row vector.
+  This is why the sextic conjecture has to be two-sided (`SourceSpike.lean`).
+- So the order n enters through the theta's Whittaker structure, not only through the theta exponent 1/n. This is
+  the concrete answer the numerics give to the question "why this particular n".
+- A function-field version (where CFH is a theorem) is the natural laboratory for the two-sided statement.

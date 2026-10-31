@@ -222,7 +222,7 @@ whole content.
   - Make Q smooth (averaging) above ℓ_W. That is where λ_max(M*QM) should gain over the plain large sieve.
 - **Include the theta's coarse structure.** The theta spikes are Gauss sums times class functions of z mod 36
   (journal, 2026-10-31: supplementary twists by λ, ω and 2). The same coarse levels can carry them, which links this
-  to the spike-free conjecture (`SexticSpikeFree.lean`).
+  to the spike-free conjecture (`SexticSpikeFree.lean`; corrected to the two-sided form in `SourceSpike.lean`).
 
 **First steps.**
 1. Wait for the wide-kernel Q test at B = 10⁴ (large-B numerics agent, `../rip/theta/theta_dualframe.py`).
@@ -299,7 +299,8 @@ x = |T|²/A, so x ≥ 1 exactly on W, and every metric is normalized so that c_W
   - Non-diagonal Q built from character features χ_z(m) (the product kernels of the proposal) turn EᴴQE into Grams of
     dual sums Σ_z χ_z(n)·conj χ_z(m) over the moduli. Those are large sieves on the dual side, with their own theta.
 - **The coarse structure that matters is the spike family.**
-  - Take the non-diagonal metric Q = P_V^⊥ + ε·P_V, with V the spike family of `SexticSpikeFree.lean` (twisted thetas
+  - Take the non-diagonal metric Q = P_V^⊥ + ε·P_V, with V the spike family of `SexticSpikeFree.lean`, extended by the
+    source-theta images of `SourceSpike.lean` (twisted thetas
     and supplementary class functions: low twists, coarse congruence data).
   - Then c_W(Q) ≤ 1 + ‖P_V P_W‖²/ε, and λ_max(EᴴQE) ≤ λ_max off V + ε·(spike strength).
   - The dual-frame bound becomes "large sieve off V, plus the spikes' overlap with W". That is the recursion

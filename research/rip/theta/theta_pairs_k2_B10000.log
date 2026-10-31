@@ -1,0 +1,7 @@
+k=2 (order 3): |G_k| rows 1.000..1.000, sources 1.000..1.000; row-theta span dim 432, source-theta span dim 432 (beta 0.167)   (14s)
+top s^2/S [6.692 5.153 4.769 4.553]   MP edge 4.156
+  pair 0 (s^2/S 6.692): left in row thetas 0.863 (random 0.153)   right in source thetas 0.872 (random 0.166)
+  pair 1 (s^2/S 5.153): left in row thetas 0.701 (random 0.153)   right in source thetas 0.690 (random 0.166)
+  pair 2 (s^2/S 4.769): left in row thetas 0.498 (random 0.153)   right in source thetas 0.482 (random 0.166)
+  pair 3 (s^2/S 4.553): left in row thetas 0.600 (random 0.153)   right in source thetas 0.590 (random 0.166)
+done in 22s

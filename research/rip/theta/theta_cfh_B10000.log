@@ -1,0 +1,17 @@
+B=10000: R=2816 rows, 1026 split prime rows, 108 classes on them
+  u0 on all rows  : quantiles 10/50/90/99% of |u|^2/mean [0.11 0.69 2.31 4.37] (exponential law 0.11/0.69/2.30/4.61)
+  u1 on all rows  : quantiles 10/50/90/99% of |u|^2/mean [0.12 0.68 2.35 4.82] (exponential law 0.11/0.69/2.30/4.61)
+  u0 on prime rows: quantiles 10/50/90/99% of |u|^2/mean [0.11 0.71 2.19 4.31] (exponential law 0.11/0.69/2.30/4.61)
+  u1 on prime rows: quantiles 10/50/90/99% of |u|^2/mean [0.14 0.68 2.36 4.34] (exponential law 0.11/0.69/2.30/4.61)
+  span of {g3, conj g3, g6, conj g6, 1} x classes on prime rows: dim 534 of 1026 (random 0.520)
+  u0: energy in the span of  u^2/|u| 0.541   conj 0.541   phase u/|u| 0.552   |  random phases 0.500
+      single family g3       x classes (dim 108): u^2/|u| 0.116, conj 0.105, random 0.096
+      single family conj g3  x classes (dim 108): u^2/|u| 0.105, conj 0.116, random 0.112
+      single family g6       x classes (dim 108): u^2/|u| 0.122, conj 0.128, random 0.099
+      single family conj g6  x classes (dim 108): u^2/|u| 0.128, conj 0.122, random 0.096
+  u1: energy in the span of  u^2/|u| 0.534   conj 0.533   phase u/|u| 0.541   |  random phases 0.513
+      single family g3       x classes (dim 108): u^2/|u| 0.108, conj 0.100, random 0.091
+      single family conj g3  x classes (dim 108): u^2/|u| 0.100, conj 0.108, random 0.113
+      single family g6       x classes (dim 108): u^2/|u| 0.116, conj 0.108, random 0.101
+      single family conj g6  x classes (dim 108): u^2/|u| 0.108, conj 0.116, random 0.106
+done in 50s

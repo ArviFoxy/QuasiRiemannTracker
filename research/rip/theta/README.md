@@ -50,6 +50,9 @@ be small.
 | `theta_mech_growth.py` | growth law θ ≈ 0.378 B^{1/6} of the source-theta spike from the kernel fit, against the measured tops |
 | `theta_mech_free.py B L [threads]` | matrix-free source-theta checks at B = 10⁵ and 2·10⁵ |
 | `theta_mech_cluster.py B L` | second tier: twisted copies χ_x(m)·f, and the row split by χ_z(−1) |
+| `theta_cubic_twosided.py B L [M] [J] [beta,...]` | the cubic family with both thetas removed: row thetas V(M) and the source-theta span (cubic Gauss sums of the sources on cells mod 4 × mod 9 × parity × N^{−β}); one-sided, two-sided and random-span tops; energies of the top pairs |
+| `theta_pairs.py B L k [ntop]` | one theta or two? Energies of the top singular pairs of E^k in the row-theta span (left) and the source-theta span (right), same spans for k = 1 and k = 2 |
+| `theta_cfh.py B L` | is the sextic outlier's row vector the sextic theta function? Modulus law of u₀ on prime rows, and its squared phase against cubic and sextic Gauss sums × classes (a Chinta–Friedberg–Hoffstein-type test) |
 
 All scripts build E and the row Gauss sums through `theta_core.py`. The matrix-free scripts (`theta_top_free2`,
 `theta_selected_free`, `theta_outliers`) use `theta_core.build_tables`, which stops before the dense matrix and returns
@@ -83,6 +86,12 @@ the rows, the sources and the int8 symbol table (`build` starts from it and give
     a growing excess (`theta_blockcover`).
   - So the one-sided Lean conjecture misses it; see `../../lean/arvi_kwall/SourceSpike.lean`.
   - E f is flat on rows (exponential law), and its share on slot-selected rows equals their density.
+- **One theta for the cubic family, two for the sextic** (`theta_pairs`, `theta_cubic_twosided`). Cubic top pairs are
+  row thetas on the left and source thetas on the right, with matching energies (0.89/0.90 at 3·10⁴). Removing the
+  row thetas removes the cubic source theta too. The sextic top pair is a source theta (0.46) whose row vector has no
+  row-theta content (0.06 against 0.05). That row vector looks random, and it is not visibly the sextic theta
+  function (`theta_cfh`). Patterson's Gauss-sum theta for n = 3 against Kazhdan–Patterson non-uniqueness for n = 6;
+  see the journal.
 - **Exact Poisson self-duality** of the Gaussian primary-n Gram, to the 10⁻⁹ truncation level (`theta_poisson`).
   - The dual is the same family at a pair-dependent length 27 N(z)N(z′)/(4L), dilated by the unit type.
   - It carries a twelfth-root phase that is constant on classes mod 36, not mod 4.

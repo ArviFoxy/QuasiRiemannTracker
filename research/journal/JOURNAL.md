@@ -4426,3 +4426,23 @@ de Faveri–Dunn–Hoffstein arXiv 2607.07911 §§1.2, 2, 5, 7; Bröker–Hoffst
 **Verdict.** The 6-fold cover is genuinely needed for a power-saving sextic Mellin rescue. A Rankin–Selberg square of
 the cubic theta reaches the same series with the factor ζ_K(3w − 1) in the way. The only unconditional version is the
 bootstrap's partial one. [the faces' sextic input stays a paper-level project]
+
+## 2026-10-31 · The face the bar needs, at the banked design: Λ ≈ 1.967 (K ≈ 0.488)
+
+[numerical; float model of the newTop row, `fresh-look/second/base_models/worth.py`, run with h = 0.8097]
+
+- At h = 0.8097 and Λ = 2.0001 the model gives 0.87338228, the bank exactly.
+- Against the bar θ ≤ 0.8733319666:
+
+  | Λ (count and physical faces) | 1.98 | 1.97 | 1.96 | 1.95 | 1.94 |
+  |---|---|---|---|---|---|
+  | θ* − bar | +1.97e-5 | +4.2e-6 | −1.15e-5 | −2.74e-5 | −4.35e-5 |
+
+  So the bar needs **Λ ≈ 1.967**, and Λ ≈ 1.951 at PR 97's design (h = 0.8001361). This corrects the range
+  1.95–1.97 first written in `frontier/PROGRAM.md`.
+- Through the native overshoot gate Λ = 6K/(1 + K) (B ≈ 1), Λ = 1.967 means K ≈ 0.488: a step of 0.012 below the
+  K-wall. Small as it is, the K-wall entry's tolerance (excess γ ≈ 0.015 at slope ≈ 0.48) still asks for nearly the
+  whole √-barrier excess to be removed. So the full corrected recursion stays necessary.
+- `frontier/PROGRAM.md` collects the faces program on one page: inputs A (6-fold Kubota, index aspect), A′
+  (Lindelöf on average), A″ (Mellin rescue), B (target-2 decomposition, a Sil fork), C (corrected recursion), D
+  (Λ_row), E (face forks).

@@ -18,6 +18,7 @@ The masked null is the right edge: E is zero where a row and a source share a pr
 4.5% below the Marchenko-Pastur formula (sqrt((R - dV)/S) + sqrt((S - dP)/S))^2, also printed.  Row and source Gauss
 sums are cached in $SCRATCH (theta_util.scratch_path).
 
+THETA_TWCLS=9 puts the twisted row parts of V on the classes (z mod 9) x chi_z(-1) instead of the 6 unit classes.
 THETA_ROWCONJ=1 adds the twisted row thetas with the other conjugation, G chi_z(m), to V (the Lean statement removes
 every power chi_z(m)^k).
 Order 3 (last argument 3): the cubic matrix E^2 (kernel mode 2) with cubic Gauss sums of rows and sources (twisted
@@ -179,6 +180,8 @@ K = ck.Kernel(Tb.T, Tb.LOC, nthreads=nth)
 # row classes
 c36 = ((gen[:, 0] % 4) * 4 + gen[:, 1] % 4) * 81 + (gen[:, 0] % 9) * 9 + gen[:, 1] % 9
 unit = (np.rint(ut[:, 3].real) > 0) * 3 + np.rint(np.angle(ut[:, 1]) / (2 * np.pi / 3)).astype(int) % 3
+if os.environ.get('THETA_TWCLS') == '9':       # twisted row parts on (z mod 9) x chi_z(-1) instead of the unit classes
+    unit = ((gen[:, 0] % 9) * 9 + gen[:, 1] % 9) * 2 + (np.rint(ut[:, 3].real) > 0)
 prof = [(rows['N'].astype(float) / B) ** (-j / 2) for j in range(J)]
 # source classes and the class-signed source theta (theta_util.src_class_data, lam3)
 SA, SB, SN = Tb.SA, Tb.SB, Tb.SN.astype(float)

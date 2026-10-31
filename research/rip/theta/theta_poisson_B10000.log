@@ -1,0 +1,38 @@
+B=10000 L=100  R=2816 rows  S=26 sources   built in 0.0s
+  |G(z,1)|: min 1.000 max 1.000   (built 5.4s)
+rows in window [B, 1.5B]: 1403 ; sample 30 ; L = 33994 (self-dual length (3 sqrt3/2) N0, N0 = 13084) ; Lt in [20785, 44576]
+primary elements to 237956: 95913 ; dual elements (all h) to 312033: 1131912   (6s)
+symbol tables done (6s)
+
+1. exact Poisson formula, 422 coprime pairs: relative error of G_direct vs G_formula (median, 90%, max): 5.1e-10 2.1e-09 1.7e-08
+   (Gaussian tails cut at N > 7 * length; the residual 1e-10..1e-8 is that truncation)
+
+2. reduction of T to primary-h sums, by the unit character of psi = chi_z conj chi_z': pair counts {'a': 278, 'b': 62, 'c': 82}
+   type a: |T - T_reduced|/|T| (median, 90%, max): 2.0e-14 1.0e-13 3.5e-13   ;  |G - sqrt(L/M) eps g conj g conj G_M|/|G|: 5.8e-10 2.9e-09 1.7e-08
+   type b: |T - T_reduced|/|T| (median, 90%, max): 9.3e-15 3.5e-14 7.4e-14   ;  |G - sqrt(L/M) eps g conj g conj G_M|/|G|: 4.1e-10 1.7e-09 4.0e-09
+   type c: |T - T_reduced|/|T| (median, 90%, max): 5.9e-15 1.7e-14 3.5e-14
+   closed form U/3 = 1 if psi(w) = w^A else psi(-1): max deviation from the numerical unit sum over type-a pairs: 9.8e-16
+   type a: psi(w) != 1, T = U conj G_L~,  U = +-3 real;  type b: psi(w) = 1, psi(-1) = -1, T = -3 sqrt3 i A conj psi(pi3) conj G_{L~/3};
+   type c: psi trivial on units, T = -3 conj psi(pi3) G~(L~/3) + 6 conj psi(3) sum_j conj psi(pi3)^j G~(L~/3^(j+2))  (Euler factor at pi3)
+
+3. phase eps over ALL coprime pairs of the 2816 rows (B,2B]  [87s]
+   coprime pairs: 3750014 of 3963520
+   s(z,z') exponent values (0 = +1, 3 = -1): {np.int64(0): np.int64(2336324), np.int64(3): np.int64(1413690)}
+   s constant on every (class mod 4, class mod 4) block: True
+   pair types: a 0.667  b 0.167  c 0.167
+   eps = Pair * kappa in 12th roots of unity: exponent counts (units 2pi/12): by type
+     type a: {0: 520849, 2: 313189, 4: 518574, 6: 312682, 8: 523082, 10: 312121}
+     type b: {1: 103084, 3: 105391, 5: 103197, 7: 105069, 9: 103181, 11: 105130}
+     type c (Pair only, exponent in 1/6): {0: 155731, 1: 51702, 2: 158352, 3: 51959, 4: 153800, 5: 52921}
+   type a: eps constant on class pairs (z_* mod 4): 0 of 144 blocks pure (144 class pairs seen)
+   type b: eps constant on class pairs (z_* mod 4): 0 of 72 blocks pure (72 class pairs seen)
+   type a: eps constant on class pairs (z_* mod 4 and mod 9): 31104 of 31104 blocks pure (31104 class pairs seen)
+   type b: eps constant on class pairs (z_* mod 4 and mod 9): 7776 of 7776 blocks pure (7776 class pairs seen)
+   type a: eps constant on class pairs (z_* mod 4, mod 9, unit class): 31104 of 31104 blocks pure (31104 class pairs seen)
+   type b: eps constant on class pairs (z_* mod 4, mod 9, unit class): 7776 of 7776 blocks pure (7776 class pairs seen)
+
+done in 104s
+
+real	1m44.200s
+user	1m5.140s
+sys	0m12.722s

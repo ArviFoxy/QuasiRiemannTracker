@@ -1,0 +1,59 @@
+B=10000 L=10000  R=2816 rows  S=2610 sources   built in 2.7s
+  |G(z,1)|: min 1.000 max 1.000   (built 8.9s)
+top s^2/S: [4.261 4.109 4.093 4.025 4.007 3.992]
+masked-random top s^2/S: [3.969 3.934]
+
+1. energy of u_k in the block span {chi_z(m) chi_z(u): N(m) <= M, 6 units}
+   M      #m  dim   u0     u1     u2    | masked-random top | random subspace d/R
+   30       6    36  0.071  0.015  0.026 |      0.016        | 0.013
+   100     26   156  0.211  0.094  0.108 |      0.055        | 0.055
+   300     76   456  0.399  0.274  0.323 |      0.169        | 0.162
+   1000   256  1536  0.756  0.715  0.717 |      0.554        | 0.545
+
+2. separate unit twists (N(m) <= 100): energy of u_k in span{chi_z(m) chi_z(u_j)}, u_j = 1, w, w^2, -1, -w, -w^2
+   u0 : 0.131 0.012 0.012 0.035 0.015 0.015   (random 0.009)
+   u1 : 0.032 0.018 0.018 0.012 0.009 0.009   (random 0.009)
+   u2 : 0.023 0.017 0.017 0.019 0.015 0.015   (random 0.009)
+
+3. plain columns: R |<q_m, u0>|^2 (noise floor 1) by N(m); power-law regression of the excess
+   N(m) in (    1,     10]  [   2]  mean R|c|^2 =  10.22   primes  10.22 [2]  composites    nan [0]   null (masked random)  0.42
+   N(m) in (   10,     30]  [   4]  mean R|c|^2 =  19.78   primes  19.78 [4]  composites    nan [0]   null (masked random)  2.60
+   N(m) in (   30,    100]  [  20]  mean R|c|^2 =  14.02   primes  17.24 [16]  composites   1.15 [4]   null (masked random)  0.89
+   N(m) in (  100,    300]  [  50]  mean R|c|^2 =   9.85   primes  10.97 [34]  composites   7.47 [16]   null (masked random)  1.08
+   N(m) in (  300,   1000]  [ 180]  mean R|c|^2 =   6.85   primes   8.17 [104]  composites   5.05 [76]   null (masked random)  1.00
+   N(m) in ( 1000,   3000]  [ 522]  mean R|c|^2 =   5.46   primes   5.72 [254]  composites   5.21 [268]   null (masked random)  1.10
+   N(m) in ( 3000,  1e+09]  [1832]  mean R|c|^2 =   3.64   primes   3.89 [808]  composites   3.45 [1024]   null (masked random)  1.02
+   regression log(R|c|^2 - 1) on log N over N < 1500: exponent -0.30  (i.e. |c_m| ~ N^-0.15)
+
+4. class functions of the rows: energy of u_k in the span of class indicators (random = dim/R), and of the null vector
+   z_* mod 4                      dim  12 : u0 0.012  u1 0.004  u2 0.002   null 0.002   random 0.004
+   parity omega(z)                dim   2 : u0 0.006  u1 0.000  u2 0.000   null 0.001   random 0.001
+   z_* mod 9                      dim  18 : u0 0.036  u1 0.005  u2 0.005   null 0.009   random 0.006
+   z_* mod 12                     dim  24 : u0 0.016  u1 0.010  u2 0.006   null 0.006   random 0.009
+   z_* mod 36                     dim 216 : u0 0.173  u1 0.093  u2 0.089   null 0.078   random 0.077
+   unit class (chi(-1), chi(w))   dim   6 : u0 0.026  u1 0.002  u2 0.004   null 0.002   random 0.002
+   omega(z) = 1,2,3,4             dim   4 : u0 0.006  u1 0.001  u2 0.001   null 0.001   random 0.001
+
+5. omega(z) profile of R|u|^2 (primes = rows with one prime ideal)
+   omega(z) = 1 [ 1031 rows]: u0 1.19  u1 1.14  u2 1.14   null 1.14
+   omega(z) = 2 [ 1405 rows]: u0 0.95  u1 0.96  u2 0.94   null 0.97
+   omega(z) = 3 [  369 rows]: u0 0.67  u1 0.79  u2 0.86   null 0.76
+   omega(z) = 4 [   11 rows]: u0 0.72  u1 0.36  u2 0.73   null 0.29
+
+6. row image of the class-signed source theta
+   compressed top s^2/R 2.522 ; |<f,v0>| 0.521 ; |<Ef/|Ef|, u0>| 0.652
+   block-span energies (M: u0, Ef/|Ef|, random):
+     M=30    dim   36 : u0 0.071   Ef 0.159   random 0.013
+     M=100   dim  156 : u0 0.211   Ef 0.361   random 0.055
+     M=300   dim  456 : u0 0.399   Ef 0.573   random 0.162
+     M=1000  dim 1536 : u0 0.756   Ef 0.845   random 0.545
+   class-function energy (mod 36): u0 0.173  Ef 0.209  random 0.077
+   omega(z) = 1: R|u0|^2 1.19   R|Ef|^2/|Ef|^2 1.12
+   omega(z) = 2: R|u0|^2 0.95   R|Ef|^2/|Ef|^2 0.97
+   omega(z) = 3: R|u0|^2 0.67   R|Ef|^2/|Ef|^2 0.78
+
+done in 54s
+
+real	0m54.946s
+user	0m45.782s
+sys	0m2.758s

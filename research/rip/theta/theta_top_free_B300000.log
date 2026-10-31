@@ -1,0 +1,6 @@
+B=300000 L=300000  R=84672 rows  S=77808 sources  31457 row primes   tables in 1024s
+kernel: 3 threads, 3.57s per matvec (R x S = 6.59e+09 entries), 1029s elapsed
+    (74 matvecs, 275s)
+sextic E      : [5.4701 5.1104 5.0719 4.7684]   (1304s)
+    (252 matvecs, 927s)
+masked random : [3.9952 3.9909 3.9893 3.9871]   seed 1  (2231s)

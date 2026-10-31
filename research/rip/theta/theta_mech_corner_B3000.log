@@ -1,0 +1,108 @@
+B=3000 L=3000  R=848 rows  S=778 sources   built in 0.3s
+  |G(z,1)|: min 1.000 max 1.000   (built 1.0s)
+top s^2/S: [4.061 3.995 3.942 3.898 3.857 3.789] ; s^2/R: [3.726 3.665 3.616]
+
+1. literal candidates
+   random level of overlaps: 1/sqrt(S) = 0.036, 1/sqrt(R) = 0.034
+   x <= 100        conj g~ N^-1/2   : source Rayleigh |Ec|^2/(R|c|^2) 0.953 (random phases 0.905), overlap with v0 0.023 ; row image a = Ec: |<a,u0>| 0.045, |E^*a|^2/(S|a|^2) 1.990
+   x <= 1000       conj g~ N^-1/2   : source Rayleigh |Ec|^2/(R|c|^2) 1.023 (random phases 0.955), overlap with v0 0.043 ; row image a = Ec: |<a,u0>| 0.081, |E^*a|^2/(S|a|^2) 2.047
+   x <= all        conj g~ N^-1/2   : source Rayleigh |Ec|^2/(R|c|^2) 1.026 (random phases 0.946), overlap with v0 0.019 ; row image a = Ec: |<a,u0>| 0.035, |E^*a|^2/(S|a|^2) 2.061
+   x <= 100        g~ N^-1/2        : source Rayleigh |Ec|^2/(R|c|^2) 0.900 (random phases 0.930), overlap with v0 0.080 ; row image a = Ec: |<a,u0>| 0.164, |E^*a|^2/(S|a|^2) 1.930
+   x <= 1000       g~ N^-1/2        : source Rayleigh |Ec|^2/(R|c|^2) 0.948 (random phases 0.921), overlap with v0 0.047 ; row image a = Ec: |<a,u0>| 0.094, |E^*a|^2/(S|a|^2) 1.951
+   x <= all        g~ N^-1/2        : source Rayleigh |Ec|^2/(R|c|^2) 1.006 (random phases 0.945), overlap with v0 0.044 ; row image a = Ec: |<a,u0>| 0.086, |E^*a|^2/(S|a|^2) 2.028
+
+2. class-signed conj source theta: base = conj g~ * N^-alpha * lam3 * parsign on the 12 classes mod 4
+  alpha = 0.000                                dim  12  top s^2/R [2.154 1.744 1.634]  (random phases 1.137 +- 0.001)  |<f,v0>| 0.253  |<Ef,u0>| 0.333
+  alpha = 0.100                                dim  12  top s^2/R [2.249 1.763 1.655]  (random phases 1.161 +- 0.012)  |<f,v0>| 0.264  |<Ef,u0>| 0.340
+  alpha = 0.200                                dim  12  top s^2/R [2.316 1.756 1.655]  (random phases 1.138 +- 0.011)  |<f,v0>| 0.273  |<Ef,u0>| 0.346
+  alpha = 0.250                                dim  12  top s^2/R [2.328 1.74  1.643]  (random phases 1.144 +- 0.010)  |<f,v0>| 0.275  |<Ef,u0>| 0.348
+  alpha = 0.300                                dim  12  top s^2/R [2.32  1.716 1.621]  (random phases 1.158 +- 0.001)  |<f,v0>| 0.276  |<Ef,u0>| 0.350
+  alpha = 0.333                                dim  12  top s^2/R [2.302 1.695 1.6  ]  (random phases 1.131 +- 0.011)  |<f,v0>| 0.275  |<Ef,u0>| 0.350
+  alpha = 0.400                                dim  12  top s^2/R [2.236 1.647 1.544]  (random phases 1.154 +- 0.018)  |<f,v0>| 0.270  |<Ef,u0>| 0.349
+  alpha = 0.500                                dim  12  top s^2/R [2.079 1.564 1.437]  (random phases 1.153 +- 0.005)  |<f,v0>| 0.256  |<Ef,u0>| 0.343
+  alpha = 0.600                                dim  12  top s^2/R [1.896 1.471 1.33 ]  (random phases 1.133 +- 0.003)  |<f,v0>| 0.237  |<Ef,u0>| 0.333
+  alpha = 0.750                                dim  12  top s^2/R [1.65  1.333 1.216]  (random phases 1.128 +- 0.023)  |<f,v0>| 0.209  |<Ef,u0>| 0.315
+  alpha = 1.000                                dim  12  top s^2/R [1.375 1.163 1.139]  (random phases 1.108 +- 0.007)  |<f,v0>| 0.174  |<Ef,u0>| 0.287
+   best alpha (largest compressed top eigenvalue): 0.250
+   using alpha = 0.333 below
+   truncated at N(x) <= M (rest of f set to zero):
+  M = 30                                       dim   6  top s^2/R [1.036 0.961 0.939]  (random phases 1.036 +- 0.000)  |<f,v0>| 0.001  |<Ef,u0>| 0.001
+  M = 100                                      dim  10  top s^2/R [1.142 1.012 0.991]  (random phases 1.098 +- 0.019)  |<f,v0>| 0.047  |<Ef,u0>| 0.084
+  M = 300                                      dim  12  top s^2/R [1.332 1.114 1.049]  (random phases 1.142 +- 0.014)  |<f,v0>| 0.178  |<Ef,u0>| 0.297
+  M = 1000                                     dim  12  top s^2/R [1.746 1.339 1.262]  (random phases 1.120 +- 0.015)  |<f,v0>| 0.236  |<Ef,u0>| 0.344
+  M = 3000                                     dim  12  top s^2/R [2.302 1.695 1.6  ]  (random phases 1.138 +- 0.012)  |<f,v0>| 0.275  |<Ef,u0>| 0.350
+  M = all                                      dim  12  top s^2/R [2.302 1.695 1.6  ]  (random phases 1.104 +- 0.018)  |<f,v0>| 0.275  |<Ef,u0>| 0.350
+   truncated at N(x) > M (small sources removed):
+  N(x) > 10                                    dim  12  top s^2/R [2.321 1.719 1.642]  (random phases 1.159 +- 0.004)  |<f,v0>| 0.280  |<Ef,u0>| 0.355
+  N(x) > 30                                    dim  12  top s^2/R [2.312 1.729 1.677]  (random phases 1.173 +- 0.022)  |<f,v0>| 0.279  |<Ef,u0>| 0.354
+  N(x) > 100                                   dim  12  top s^2/R [2.123 1.704 1.582]  (random phases 1.150 +- 0.010)  |<f,v0>| 0.270  |<Ef,u0>| 0.358
+  N(x) > 300                                   dim  12  top s^2/R [1.848 1.64  1.47 ]  (random phases 1.127 +- 0.006)  |<f,v0>| 0.201  |<Ef,u0>| 0.285
+  N(x) > 1000                                  dim  12  top s^2/R [1.472 1.402 1.353]  (random phases 1.145 +- 0.010)  |<f,v0>| 0.100  |<Ef,u0>| 0.159
+  alpha = 0.333 (reference)                    dim  12  top s^2/R [2.302 1.695 1.6  ]  (random phases 1.134 +- 0.017)  |<f,v0>| 0.275  |<Ef,u0>| 0.350
+   fitted class coefficients A(c) of the top vector (class = (a mod 4, b mod 4); phase in degrees relative to class (0, 1), in units of 30 degrees):
+     (0,1): |A|=0.25 ph=  +0.0 (+0.00)  (0,3): |A|=0.29 ph=  -3.0 (-0.10)  (1,0): |A|=0.36 ph=+121.5 (+4.05)  (1,1): |A|=0.29 ph=-113.9 (-3.80)  (1,2): |A|=0.26 ph= +35.8 (+1.19)  (1,3): |A|=0.27 ph=+154.9 (+5.16)  (2,1): |A|=0.27 ph= +88.2 (+2.94)  (2,3): |A|=0.31 ph= -89.5 (-2.98)  (3,0): |A|=0.35 ph=+121.5 (+4.05)  (3,1): |A|=0.31 ph= -27.5 (-0.92)  (3,2): |A|=0.26 ph=-152.7 (-5.09)  (3,3): |A|=0.25 ph=-116.9 (-3.90)
+   BBP check: compressed top 2.302 - fit bonus 0.134 -> Rayleigh excess sigma^2/R = 1.168 ; threshold sqrt(S/R) = 0.958 ; predicted outlier s^2/R = 3.871 ; observed 3.726
+
+3. 3-adic twist: omega^(j m + k n) for the 9 cubic characters (m = (a+1)/3, n = b/3 mod 3), alpha = 0.333
+  conj g~ lam3 = w^(0m+0n)                     dim  12  top s^2/R [1.62  1.254 1.246]  (random phases 1.147 +- 0.011)  |<f,v0>| 0.070  |<Ef,u0>| 0.106
+  conj g~ lam3 = w^(0m+1n)                     dim  12  top s^2/R [1.085 1.029 1.016]  (random phases 1.162 +- 0.010)  |<f,v0>| 0.011  |<Ef,u0>| 0.021
+  conj g~ lam3 = w^(0m+2n)                     dim  12  top s^2/R [2.302 1.695 1.6  ]  (random phases 1.120 +- 0.004)  |<f,v0>| 0.275  |<Ef,u0>| 0.350
+  conj g~ lam3 = w^(1m+0n)                     dim  12  top s^2/R [1.174 1.033 1.01 ]  (random phases 1.151 +- 0.003)  |<f,v0>| 0.009  |<Ef,u0>| 0.015
+  conj g~ lam3 = w^(1m+1n)                     dim  12  top s^2/R [1.79  1.292 1.232]  (random phases 1.156 +- 0.016)  |<f,v0>| 0.106  |<Ef,u0>| 0.153
+  conj g~ lam3 = w^(1m+2n)                     dim  12  top s^2/R [1.06  1.049 0.997]  (random phases 1.136 +- 0.014)  |<f,v0>| 0.043  |<Ef,u0>| 0.081
+  conj g~ lam3 = w^(2m+0n)                     dim  12  top s^2/R [1.06  1.049 0.997]  (random phases 1.151 +- 0.001)  |<f,v0>| 0.043  |<Ef,u0>| 0.081
+  conj g~ lam3 = w^(2m+1n)                     dim  12  top s^2/R [1.174 1.033 1.01 ]  (random phases 1.136 +- 0.013)  |<f,v0>| 0.009  |<Ef,u0>| 0.015
+  conj g~ lam3 = w^(2m+2n)                     dim  12  top s^2/R [1.79  1.292 1.232]  (random phases 1.120 +- 0.000)  |<f,v0>| 0.106  |<Ef,u0>| 0.153
+  g~     lam3 = w^(0m+0n)                      dim  12  top s^2/R [1.141 1.116 1.063]  (random phases 1.138 +- 0.019)  |<f,v0>| 0.031  |<Ef,u0>| 0.057
+  g~     lam3 = w^(0m+1n)                      dim  12  top s^2/R [1.212 1.093 1.047]  (random phases 1.134 +- 0.005)  |<f,v0>| 0.004  |<Ef,u0>| 0.008
+  g~     lam3 = w^(0m+2n)                      dim  12  top s^2/R [1.152 1.119 1.044]  (random phases 1.151 +- 0.005)  |<f,v0>| 0.040  |<Ef,u0>| 0.072
+  g~     lam3 = w^(1m+0n)                      dim  12  top s^2/R [1.157 1.079 1.061]  (random phases 1.150 +- 0.031)  |<f,v0>| 0.068  |<Ef,u0>| 0.122
+  g~     lam3 = w^(1m+1n)                      dim  12  top s^2/R [1.155 1.103 1.052]  (random phases 1.145 +- 0.013)  |<f,v0>| 0.041  |<Ef,u0>| 0.074
+  g~     lam3 = w^(1m+2n)                      dim  12  top s^2/R [1.143 1.099 1.036]  (random phases 1.158 +- 0.007)  |<f,v0>| 0.031  |<Ef,u0>| 0.055
+  g~     lam3 = w^(2m+0n)                      dim  12  top s^2/R [1.143 1.099 1.036]  (random phases 1.147 +- 0.004)  |<f,v0>| 0.031  |<Ef,u0>| 0.055
+  g~     lam3 = w^(2m+1n)                      dim  12  top s^2/R [1.157 1.079 1.061]  (random phases 1.143 +- 0.007)  |<f,v0>| 0.068  |<Ef,u0>| 0.122
+  g~     lam3 = w^(2m+2n)                      dim  12  top s^2/R [1.155 1.103 1.052]  (random phases 1.154 +- 0.033)  |<f,v0>| 0.041  |<Ef,u0>| 0.074
+   without parsign / without any 3-adic twist (class phases only):
+  conj g~, lam3 = w^-n, no parsign             dim  12  top s^2/R [1.685 1.576 1.492]  (random phases 1.126 +- 0.008)  |<f,v0>| 0.045  |<Ef,u0>| 0.067
+  conj g~, parsign, no 3-adic twist            dim  12  top s^2/R [1.62  1.254 1.246]  (random phases 1.131 +- 0.013)  |<f,v0>| 0.070  |<Ef,u0>| 0.106
+  conj g~ only, 12 class phases                dim  12  top s^2/R [1.348 1.221 1.174]  (random phases 1.135 +- 0.016)  |<f,v0>| 0.023  |<Ef,u0>| 0.038
+
+4. free coefficients on the 216 classes (mod 36, parity), base conj g~ N^-alpha: compressed spectrum vs singular values
+   dim 210 ; top-12 compressed eigenvalues (s^2/R): [2.663 2.484 2.242 2.231 2.192 2.111 2.072 2.026 1.997 1.954 1.939 1.911]
+   random-phase span, same classes          : [2.087 2.065 2.032 1.97  1.952 1.929 1.898 1.88  1.843 1.829 1.811 1.803]
+   singular values s_k^2/R of E (k = 0..7)  : [3.726 3.665 3.616 3.577 3.538 3.476 3.447 3.408]
+   |<v_k, w_j>| for k = 0..5 (rows), j = 0..11 (columns):
+     v0: [0.38 0.08 0.06 0.11 0.11 0.14 0.08 0.09 0.11 0.09 0.04 0.08]
+     v1: [0.31 0.21 0.24 0.04 0.23 0.21 0.13 0.04 0.07 0.02 0.01 0.06]
+     v2: [0.32 0.12 0.17 0.06 0.21 0.12 0.01 0.02 0.08 0.07 0.03 0.01]
+     v3: [0.07 0.36 0.14 0.18 0.07 0.06 0.01 0.16 0.02 0.04 0.11 0.05]
+     v4: [0.23 0.25 0.13 0.14 0.01 0.11 0.1  0.21 0.04 0.02 0.1  0.08]
+     v5: [0.19 0.02 0.05 0.01 0.22 0.11 0.14 0.11 0.03 0.01 0.1  0.1 ]
+   energy of v_k in the whole 216-dim span (random 0.270): [0.37  0.405 0.354 0.355 0.344 0.288 0.292 0.326]
+   energy of v_k in the 12-dim class-signed span (random 0.015)    : [0.085 0.135 0.133 0.047 0.078 0.063 0.041 0.04 ]
+   12-dim compressed eigenvalues (all 12): [2.302 1.695 1.6   1.519 1.467 1.251 1.166 1.097 1.082 0.625 0.582 0.542]
+
+5. coherent kernel of H = E^*E: phase-aligned mean of H(x,x') g~(x) conj g~(x') conj Theta(x) Theta(x') / R over pairs, binned by y = N N'/B
+   fitted on even-indexed sources (compressed top 1.637), evaluated on odd-indexed pairs; random-pair sd of the entries ~ 1/sqrt(R) = 0.0343
+   y = N N'/B bin          pairs     mean Psi/R      s.e.    K = mean*sqrt(N N')   K/y^(1/6)   K/y^(1/3)   (geometric mean y)
+   [    0.3,       1)        182   +0.00549   0.00183   +0.2406         +0.2592      +0.2792     y=0.64
+   [      1,       3)        620   +0.00404   0.00090   +0.3093         +0.2767      +0.2476     y=1.95
+   [      3,      10)       2264   +0.00492   0.00047   +0.6589         +0.4892      +0.3632     y=5.97
+   [     10,      30)       4904   +0.00327   0.00033   +0.7734         +0.4750      +0.2917     y=18.64
+   [     30,     100)      13832   +0.00249   0.00020   +1.0568         +0.5339      +0.2698     y=60.11
+   [    100,     300)      27584   +0.00231   0.00014   +1.7212         +0.7212      +0.3022     y=184.83
+   [    300,    1000)      55662   +0.00100   0.00010   +1.3117         +0.4552      +0.1579     y=572.86
+   [   1000,    3000)      45836   +0.00056   0.00011   +1.2019         +0.3531      +0.1037     y=1555.18
+   power-law fit of the mean over bins with y >= 1: Psi ~ y^-0.30   (no multiplicity: y^-0.5 ; sixth-power multiplicity: y^-1/3)
+   power-law fit of the mean over bins with y >= 3: Psi ~ y^-0.37   (no multiplicity: y^-0.5 ; sixth-power multiplicity: y^-1/3)
+   power-law fit of the mean over bins with y >= 10: Psi ~ y^-0.40   (no multiplicity: y^-0.5 ; sixth-power multiplicity: y^-1/3)
+
+6. control RCHAR: each row prime's character conjugated at random (rows still characters, reciprocity broken); same spans, true Gauss sums
+   RCHAR draw 0: 12-dim class-signed span top s^2/R [1.288 1.19  1.16 ] ; sextic 2.302 ; random-phase span 1.134 ; top singular s^2/S of RCHAR [3.93  3.904 3.831]
+   RCHAR draw 1: 12-dim class-signed span top s^2/R [1.33  1.196 1.119] ; sextic 2.302 ; random-phase span 1.134 ; top singular s^2/S of RCHAR [3.965 3.905 3.861]
+
+done in 61s
+
+real	1m1.903s
+user	0m40.423s
+sys	0m0.208s

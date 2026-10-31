@@ -1,0 +1,2 @@
+B=200000 L=200000  R=56470 rows  S=51852 sources  21617 row primes   tables in 294s
+slots: P0=40: 10 split primes with norm in [40, 80], P0=100: 20 split primes with norm in [100, 200], P0=160: 26 split primes with norm in [160, 320]

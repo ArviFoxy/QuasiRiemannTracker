@@ -1,0 +1,9 @@
+B = L = 30000: R=8474 S=7768   (9s)
+  t =  0.00: 2.580   (prediction 2.580)
+  t =  0.25: 2.212   (prediction 2.011)
+  t =  0.50: 1.596   (prediction 1.486)
+  t =  1.00: 1.153   (prediction 1.158)
+  t =  2.00: 1.016   (prediction 1.043)
+  t =  4.00: 1.003   (prediction 1.011)
+  t =  8.00: 1.017   (prediction 1.003)
+done in 14s

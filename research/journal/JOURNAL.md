@@ -3736,3 +3736,12 @@ appear.
   |t| ≫ 1 but cannot vanish on a whole segment |t| ≤ T₀. So zeros with |t| ≲ 1 leave one rank-one main term per
   spike, with a known bounded coefficient. That slice needs either the Λ_src (Rankin–Selberg) route or a separate
   low-height argument. Its share of the count is about 1/T of the zeros.
+- **Measured (`rip/theta/theta_height_twist.py`, log `theta_height_twist_B30000.log`).** The class-signed theta times
+  N(x)^{−it} at 3·10⁴, over the masked null, against the Mellin prediction 1 + 1.58·(1/9)/(1/9 + t²):
+
+  | t | 0 | 0.25 | 0.5 | 1 | 2 | 4 | 8 |
+  |---|---|---|---|---|---|---|---|
+  | measured | 2.580 | 2.212 | 1.596 | 1.153 | 1.016 | 1.003 | 1.017 |
+  | predicted | 2.580 | 2.011 | 1.486 | 1.158 | 1.043 | 1.011 | 1.003 |
+
+  The excess follows |1/3 − it|^{−2} and is at the null from t ≈ 2. So the low-height slice is |t| ≲ 2.

@@ -5405,3 +5405,33 @@ edge.]
 **Decision.** No long Lean project on the faces route now. A conditional Lean reduction ("A‴ + A + C + target 2
 ⇒ θ ≤ 0.87308") would certify a 3e-4 payoff that hangs on a breakthrough. It is worth doing only once one of the
 open inputs moves.
+
+**Exact check of the conditional faces (same day) [exact rationals: `frontier/conditional_exact.py`, log
+`frontier/logs/conditional_exact.log`].**
+- **Method.** The kernel mirror (`fresh-look/scripts/mirror3.py` + `cover3.py`) covers all four return edges.
+  - It reproduces the bank exactly: N = 6330886 covers every edge, N + 1 fails on newTop at δ ≈ 0.425, p = 1/2.
+  - Design constants are the bank's: sMinus 27/1000, mMinus 3/10, 11/25, numerator cap 3/40, physical cap 3/25
+    (the capped physical branch's cap; my first run wrongly used the face cap there).
+  - Windows are rescanned at each face as maximal δ-intervals passing the exact fifteen guards. The bank's two
+    C-windows fail their guards below Λ ≈ 1.97. h is scanned over 0.7950–0.8095 in steps of 0.0005.
+- **Results:**
+
+| Λ | exact θ (all edges) | vs PR 99 | vs bar | float model, vs PR 99 |
+|---|---|---|---|---|
+| 2.0001 | 0.87338228 | +3e-7 | +5.0e-5 | +3e-7 |
+| 1.9669 | 0.8733321 (h 0.8084) | −5.0e-5 | +9e-8 | −5.1e-5 |
+| 1.96 | 0.8733233 | −5.9e-5 | −8.7e-6 | −6.2e-5 |
+| 1.95 | 0.8733117 | −7.0e-5 | −2.0e-5 | −7.8e-5 |
+| 1.90 | 0.8733021 | −8.0e-5 | −3.0e-5 | −1.6e-4 |
+| 1.85 | 0.8733092 | −7.3e-5 | −2.3e-5 | −2.5e-4 |
+| 1.80 | 0.8732612 | −1.21e-4 | −7.1e-5 | −3.1e-4 |
+
+- **Reading.**
+  - Near the bar the float model is right to ≈ 1e-6. The bar needs Λ ≤ ≈ 1.966 (exact), i.e. K ≈ 0.487.
+  - Below Λ ≈ 1.95 the binding leaves the float model's point. At 1.96 it is at δ ≈ 0.369 instead of 0.425, where
+    the C-windows lose their guards. The float model then overstates the gain by up to 2.5×.
+  - The exact numbers keep the bank's guard constants, which were tuned for Λ = 2.0001. Re-tuning sMinus, mMinus,
+    the 11/25 bound and the physical cap per face could recover part of the difference. Not done.
+  - So, conditional on both walls, the certified payoff with today's return design is ≈ 1.2e-4 below PR 99 at
+    Λ = 1.80, between 1.2e-4 and the float ceiling 3.1e-4 after re-tuning. It is not monotone in Λ (1.85 is worse
+    than 1.90).

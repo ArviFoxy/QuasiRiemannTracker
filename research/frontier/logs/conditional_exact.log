@@ -1,0 +1,6 @@
+Lambda 1.9669 cap 0.13628: best N 6333378  theta 0.87333244  h 101/125  vs PR99 -4.95e-05  vs bar +4.73e-07  windows 28  (59s)
+Lambda 1.9600 cap 0.13669: best N 6333837  theta 0.87332326  h 807/1000  vs PR99 -5.87e-05  vs bar -8.71e-06  windows 28  (52s)
+Lambda 1.9500 cap 0.13729: best N 6334414  theta 0.87331172  h 161/200  vs PR99 -7.02e-05  vs bar -2.02e-05  windows 28  (49s)
+Lambda 1.9000 cap 0.14029: best N 6334895  theta 0.87330210  h 1599/2000  vs PR99 -7.99e-05  vs bar -2.99e-05  windows 28  (28s)
+Lambda 1.8500 cap 0.14329: best N 6334541  theta 0.87330918  h 201/250  vs PR99 -7.28e-05  vs bar -2.28e-05  windows 28  (37s)
+Lambda 1.8000 cap 0.14629: best N 6336939  theta 0.87326122  h 803/1000  vs PR99 -1.21e-04  vs bar -7.07e-05  windows 28  (33s)

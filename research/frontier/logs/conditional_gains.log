@@ -1,0 +1,43 @@
+bank check: 0.87338228  bar 0.8733319666
+
+== A. End face of the native line under the two walls ==
+K=0.500001 ref=half                          Lambda_end 2.0122 cap 0.1242 (principal)  theta* 0.87340032 [h 0.8095]  (h=0.8097: 0.87340033)  vs PR99 +1.84e-05  vs bar +6.84e-05
+K=0.500001 ref=pd                            Lambda_end 2.0007 cap 0.1469 (principal)  theta* 0.87338318 [h 0.8097]  (h=0.8097: 0.87338318)  vs PR99 +1.21e-06  vs bar +5.12e-05
+K=0.480000 ref=half                          Lambda_end 2.0026 cap 0.1054 (principal)  theta* 0.87352381 [h 0.8027]  (h=0.8097: 0.87353589)  vs PR99 +1.42e-04  vs bar +1.92e-04
+K-wall to K=0.4950 + target 2                Lambda_end 1.9873 cap 0.1468 (principal)  theta* 0.87336288 [h 0.8098]  (h=0.8097: 0.87336289)  vs PR99 -1.91e-05  vs bar +3.09e-05
+K-wall to K=0.4900 + target 2                Lambda_end 1.9739 cap 0.1460 (principal)  theta* 0.87334223 [h 0.8099]  (h=0.8097: 0.87334226)  vs PR99 -3.97e-05  vs bar +1.03e-05
+K-wall to K=0.4877 + target 2                Lambda_end 1.9677 cap 0.1457 (principal)  theta* 0.87333256 [h 0.8099]  (h=0.8097: 0.87333259)  vs PR99 -4.94e-05  vs bar +5.94e-07
+K-wall to K=0.4869 + target 2                Lambda_end 1.9656 cap 0.1451 (principal)  theta* 0.87332927 [h 0.8099]  (h=0.8097: 0.87332930)  vs PR99 -5.27e-05  vs bar -2.70e-06
+K-wall to K=0.4800 + target 2                Lambda_end 1.9469 cap 0.1440 (principal)  theta* 0.87329954 [h 0.8099]  (h=0.8097: 0.87329959)  vs PR99 -8.24e-05  vs bar -3.24e-05
+K-wall to K=0.4700 + target 2                Lambda_end 1.9195 cap 0.1423 (principal)  theta* 0.87325465 [h 0.8099]  (h=0.8097: 0.87325474)  vs PR99 -1.27e-04  vs bar -7.73e-05
+K-wall to K=0.4600 + target 2                Lambda_end 1.8918 cap 0.1404 (principal)  theta* 0.87320756 [h 0.8099]  (h=0.8097: 0.87320770)  vs PR99 -1.74e-04  vs bar -1.24e-04
+K-wall to K=0.4500 + target 2                Lambda_end 1.8639 cap 0.1378 (principal)  theta* 0.87318363 [h 0.8041]  (h=0.8097: 0.87320474)  vs PR99 -1.98e-04  vs bar -1.48e-04
+K-wall to K=0.4400 + target 2                Lambda_end 1.8360 cap 0.1343 (principal)  theta* 0.87319066 [h 0.8043]  (h=0.8097: 0.87323757)  vs PR99 -1.91e-04  vs bar -1.41e-04
+K-wall to K=0.4200 + target 2                Lambda_end 1.7836 cap 0.1223 (principal)  theta* 0.87324440 [h 0.8020]  (h=0.8097: 0.87334999)  vs PR99 -1.38e-04  vs bar -8.76e-05
+K-wall to K=0.4000 + target 2                Lambda_end 1.7532 cap 0.1057 (principal)  theta* 0.87337649 [h 0.8000]  (h=0.8097: 0.87350567)  vs PR99 -5.48e-06  vs bar +4.45e-05
+K-wall to K=0.3500 + target 2                Lambda_end 1.7505 cap 0.0854 (principal)  theta* 0.87356734 [h 0.8000]  (h=0.8097: 0.87369666)  vs PR99 +1.85e-04  vs bar +2.35e-04
+K-wall to K=0.3000 + target 2                Lambda_end 1.7502 cap 0.0772 (principal)  theta* 0.87364386 [h 0.8000]  (h=0.8097: 0.87377327)  vs PR99 +2.62e-04  vs bar +3.12e-04
+K-wall to K=0.2500 + target 2                Lambda_end 1.7501 cap 0.0721 (principal)  theta* 0.87369161 [h 0.8000]  (h=0.8097: 0.87382108)  vs PR99 +3.10e-04  vs bar +3.60e-04
+K-wall to K=0.2000 + target 2                Lambda_end 1.7500 cap 0.0685 (principal)  theta* 0.87372579 [h 0.8000]  (h=0.8097: 0.87385530)  vs PR99 +3.44e-04  vs bar +3.94e-04
+
+== B. theta* along the face Lambda (cap from the bank cap line), independent of how the face is reached ==
+face Lambda=2.0001 (cap line)                Lambda_end 2.0001 cap 0.1343 ()  theta* 0.87338228 [h 0.8097]  (h=0.8097: 0.87338228)  vs PR99 +3.12e-07  vs bar +5.03e-05
+face Lambda=1.9900 (cap line)                Lambda_end 1.9900 cap 0.1349 ()  theta* 0.87336700 [h 0.8098]  (h=0.8097: 0.87336701)  vs PR99 -1.50e-05  vs bar +3.50e-05
+face Lambda=1.9800 (cap line)                Lambda_end 1.9800 cap 0.1355 ()  theta* 0.87335168 [h 0.8099]  (h=0.8097: 0.87335169)  vs PR99 -3.03e-05  vs bar +1.97e-05
+face Lambda=1.9700 (cap line)                Lambda_end 1.9700 cap 0.1361 ()  theta* 0.87333616 [h 0.8099]  (h=0.8097: 0.87333618)  vs PR99 -4.58e-05  vs bar +4.19e-06
+face Lambda=1.9600 (cap line)                Lambda_end 1.9600 cap 0.1367 ()  theta* 0.87332044 [h 0.8099]  (h=0.8097: 0.87332048)  vs PR99 -6.15e-05  vs bar -1.15e-05
+face Lambda=1.9500 (cap line)                Lambda_end 1.9500 cap 0.1373 ()  theta* 0.87330452 [h 0.8099]  (h=0.8097: 0.87330457)  vs PR99 -7.75e-05  vs bar -2.75e-05
+face Lambda=1.9300 (cap line)                Lambda_end 1.9300 cap 0.1385 ()  theta* 0.87327204 [h 0.8099]  (h=0.8097: 0.87327212)  vs PR99 -1.10e-04  vs bar -5.99e-05
+face Lambda=1.9000 (cap line)                Lambda_end 1.9000 cap 0.1403 ()  theta* 0.87322169 [h 0.8099]  (h=0.8097: 0.87322181)  vs PR99 -1.60e-04  vs bar -1.10e-04
+face Lambda=1.8500 (cap line)                Lambda_end 1.8500 cap 0.1433 ()  theta* 0.87313594 [h 0.8079]  (h=0.8097: 0.87315354)  vs PR99 -2.46e-04  vs bar -1.96e-04
+face Lambda=1.8000 (cap line)                Lambda_end 1.8000 cap 0.1463 ()  theta* 0.87307425 [h 0.8047]  (h=0.8097: 0.87312545)  vs PR99 -3.08e-04  vs bar -2.58e-04
+face Lambda=1.7500 (cap line)                Lambda_end 1.7500 cap 0.1493 ()  theta* 0.87301496 [h 0.8039]  (h=0.8097: 0.87309737)  vs PR99 -3.67e-04  vs bar -3.17e-04
+face Lambda=1.7000 (cap line)                Lambda_end 1.7000 cap 0.1523 ()  theta* 0.87295755 [h 0.8015]  (h=0.8097: 0.87306930)  vs PR99 -4.24e-04  vs bar -3.74e-04
+face Lambda=1.6670 (cap line)                Lambda_end 1.6670 cap 0.1543 ()  theta* 0.87292145 [h 0.8000]  (h=0.8097: 0.87305077)  vs PR99 -4.61e-04  vs bar -4.11e-04
+
+== C. Single levers at the bank face ==
+long slope 5/6 - 0.0010: theta* 0.87337796  vs bar +4.60e-05
+long slope 5/6 - 0.0050: theta* 0.87336066  vs bar +2.87e-05
+long slope 5/6 - 0.0107: theta* 0.87333591  vs bar +3.94e-06
+long slope 5/6 - 0.0200: theta* 0.87329528  vs bar -3.67e-05
+long slope 5/6 - 0.0500: theta* 0.87316204  vs bar -1.70e-04

@@ -1,0 +1,13 @@
+reachable end face with both walls: Lambda_end = max(overshoot 6KB/(1+K), target-2 floor at the cap-line cap, 5/3)
+K=0.5000  overshoot 2.0000  ref floor 1.7852  -> Lambda_end 2.0000  theta* 0.87338210 [h 0.8097]  vs PR99 +1.32e-07  vs bar +5.01e-05
+K=0.4877  overshoot 1.9669  ref floor 1.7877  -> Lambda_end 1.9669  theta* 0.87333132 [h 0.8099]  vs PR99 -5.06e-05  vs bar -6.46e-07
+K=0.4869  overshoot 1.9647  ref floor 1.7879  -> Lambda_end 1.9647  theta* 0.87332791 [h 0.8099]  vs PR99 -5.41e-05  vs bar -4.05e-06
+K=0.4800  overshoot 1.9459  ref floor 1.7892  -> Lambda_end 1.9459  theta* 0.87329797 [h 0.8099]  vs PR99 -8.40e-05  vs bar -3.40e-05
+K=0.4700  overshoot 1.9183  ref floor 1.7912  -> Lambda_end 1.9183  theta* 0.87325272 [h 0.8099]  vs PR99 -1.29e-04  vs bar -7.92e-05
+K=0.4600  overshoot 1.8904  ref floor 1.7931  -> Lambda_end 1.8904  theta* 0.87320512 [h 0.8099]  vs PR99 -1.77e-04  vs bar -1.27e-04
+K=0.4500  overshoot 1.8621  ref floor 1.7951  -> Lambda_end 1.8621  theta* 0.87315579 [h 0.8092]  vs PR99 -2.26e-04  vs bar -1.76e-04
+K=0.4400  overshoot 1.8333  ref floor 1.7970  -> Lambda_end 1.8333  theta* 0.87311332 [h 0.8051]  vs PR99 -2.69e-04  vs bar -2.19e-04
+K=0.4300  overshoot 1.8042  ref floor 1.7989  -> Lambda_end 1.8042  theta* 0.87307916 [h 0.8046]  vs PR99 -3.03e-04  vs bar -2.53e-04
+K=0.4286  overshoot 1.8001  ref floor 1.7991  -> Lambda_end 1.8001  theta* 0.87307432 [h 0.8047]  vs PR99 -3.08e-04  vs bar -2.58e-04
+K=0.4200  overshoot 1.7746  ref floor 1.8007  -> Lambda_end 1.8007  theta* 0.87307510 [h 0.8047]  vs PR99 -3.07e-04  vs bar -2.57e-04
+K=0.4000  overshoot 1.7143  ref floor 1.8044  -> Lambda_end 1.8044  theta* 0.87307942 [h 0.8046]  vs PR99 -3.03e-04  vs bar -2.53e-04

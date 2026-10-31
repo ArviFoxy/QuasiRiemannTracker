@@ -5359,3 +5359,49 @@ the twist mean square of one smooth factor") ignores source pairs with d = gcd(n
     comparable to the squarefree part. The weight is multiplicative but not uniform on sixth-power-free I.
   - Its decomposition again produces square-part blocks with visible symbols ((h/d)₃, (h/S)₆ mod rad S). The "d⁶"
     treatment would need uniform dual weights, which neither the squarefree nor the sixth-power-free setup has.
+
+## 2026-10-31 · Conditional θ gains, priced before any long project
+
+[numerical: `frontier/conditional_gains.py`, logs `frontier/logs/conditional_gains.log` and
+`frontier/logs/conditional_gains_reachable.log`; float model of the newTop row, h re-optimized in the bank fork's box
+(h < 81/100, floor margin 1/1000); it reproduces the bank 0.87338228. First order: the model sees only the newTop
+edge.]
+
+**The faces route (both walls).**
+- With both walls, the native line ends at Λ_end = max(6KB/(1 + K), the target-2 reference floor).
+- In the a → 0 limit, with the bank's cap line, that floor is (3/4 + γ_pd(S)/2 − B) + (Λ − 2)S > 0, i.e.
+  Λ ≈ 1.80.
+- θ* at that face:
+
+| K-wall cut K | Λ_end | θ* | vs PR 99 | vs bar |
+|---|---|---|---|---|
+| 0.5 (today) | 2.0000 | 0.87338210 | +1.3e-7 | +5.0e-5 |
+| 0.4877 | 1.9669 | 0.87333132 | −5.1e-5 | −6e-7 |
+| 0.48 | 1.9459 | 0.87329797 | −8.4e-5 | −3.4e-5 |
+| 0.47 | 1.9183 | 0.87325272 | −1.29e-4 | −7.9e-5 |
+| 0.45 | 1.8621 | 0.87315579 | −2.26e-4 | −1.76e-4 |
+| 0.43 | 1.8042 | 0.87307916 | −3.03e-4 | −2.53e-4 |
+| ≤ 0.4286 | ≈ 1.800 (reference floor) | 0.8730743 | −3.08e-4 | −2.58e-4 |
+
+- Near K = 0.48, each 0.01 of K is worth ≈ 4.5e-5. Below K ≈ 0.4286 the target-2 floor binds, so the maximum
+  conditional gain of the faces route is ≈ 3.1e-4 below PR 99 (≈ 6 bars).
+- **Either wall alone buys ≈ 0.** With the K-wall but today's reference, the principal gate holds Λ at 2. With
+  target 2 but K = 1/2, the overshoot holds Λ at 2.0000.
+- **The conditions behind the K-wall rows.**
+  - A‴: the balanced-corner fourth moment, open. Every K < 1/2 needs it at its fixed point.
+  - A: the 6-fold Kubota theory, classical but unformalized. Since today's second correction it is needed for
+    single-factor leaves in the twist band B^{0.21}–B^{0.6}.
+  - C: the corrected recursion, whose step-3 core is open, for slopes down to K.
+- Target 2 is elementary; its Lean core is done.
+- So the route's payoff is real (up to 6 bars), but it is gated by one breakthrough-level input (A‴), one large
+  classical formalization (A) and one open elementary step (C).
+
+**The other levers (single-lever prices at the bank face; the earlier tables for D-levers).**
+- **Long slope.** 5/6 − 0.001: +4.6e-5 vs bar; 5/6 − 0.0107: +3.9e-6; 5/6 − 0.02: −3.7e-5; 5/6 − 0.05: −1.7e-4.
+  The input is B2, a Möbius sieve past the family size, twisted-Chowla strength.
+- **D2, D4, D1** (from "Fresh look 2"): the bar needs η₀ ≈ 7e-4, ε₆ ≈ 0.115, Λ ≈ 1.97; −3e-4 needs η₀ ≈ 0.01,
+  ε₆ ≈ 0.10, Λ ≈ 1.82. Each is open at the stated strength.
+
+**Decision.** No long Lean project on the faces route now. A conditional Lean reduction ("A‴ + A + C + target 2
+⇒ θ ≤ 0.87308") would certify a 3e-4 payoff that hangs on a breakthrough. It is worth doing only once one of the
+open inputs moves.

@@ -1,0 +1,16 @@
+B=30000 L=30000  R=8474 rows  S=7768 sources  3880 row primes   tables in 7s
+  source Gauss sums (17s)
+  row Gauss sums (46s); cached
+B=30000: R=8474 S=7768; 76 twists with N(m) <= 300   (48s)
+full top [4.55  4.334 4.292 4.205]   masked null [3.992 3.981 3.974 3.963]   MP edge 4.180   (55s)
+M=30 M'=0 betas [0.333]: dV 1080 (0.127 R), dP 432 (0.056 S)
+    off both [3.773 3.727 3.701 3.691]   masked null [3.616 3.609 3.597 3.589]   random spans [3.992 3.836 3.808 3.756]   MP edge 3.792   (116s)
+M=100 M'=0 betas [0.333]: dV 1800 (0.212 R), dP 432 (0.056 S)
+    off both [3.509 3.493 3.481 3.464]   masked null [3.437 3.428 3.416 3.41 ]   random spans [3.745 3.626 3.575 3.545]   MP edge 3.605   (205s)
+M=100 M'=30 betas [0.333]: dV 1800 (0.212 R), dP 864 (0.111 S)
+    off both [3.37  3.35  3.335 3.319]   masked null [3.332 3.325 3.311 3.301]   random spans [3.61  3.474 3.452 3.423]   MP edge 3.496   (322s)
+M=300 M'=0 betas [0.333]: dV 3600 (0.425 R), dP 432 (0.056 S)
+    off both [2.949 2.94  2.926 2.92 ]   masked null [2.962 2.951 2.943 2.937]   random spans [3.094 3.03  3.023 3.004]   MP edge 3.111   (508s)
+M=300 M'=100 betas [0.333]: dV 3600 (0.425 R), dP 2304 (0.297 S)
+    off both [2.487 2.476 2.464 2.458]   masked null [2.531 2.521 2.516 2.502]   random spans [2.582 2.571 2.565 2.534]   MP edge 2.660   (826s)
+done in 826s

@@ -3252,3 +3252,36 @@ N(m) ≤ 100) and `theta_src_twisted_selected_B30000_M400.log` (N(m) ≤ 400)]
 - **For the K-wall.** At these sizes the twisted source spikes behave like the untwisted one: `Λ_src(W) ≈ ρ Λ_src`
   up to random-set fluctuations, with no slot-driven concentration. The structural worry (the sextic `Λ_src` is not
   a twist sieve, frontier README) has no numerical footprint yet. Whether that persists at larger B is open.
+
+## 2026-10-31 · Growing families against the masked null (3·10⁴, 10⁵)
+
+[numerical; `rip/theta/theta_twosided_grow.py` (kernel forward and adjoint products, so families cost nothing to
+precompute), logs `theta_twosided_grow_B30000.log`, `theta_twosided_grow_B100000.log`]
+
+**The null.** E is zero where a row and a source share a prime, so its bulk edge sits about 4.5% below the
+Marchenko–Pastur formula used in the two entries above. The right comparison is the masked random matrix (i.i.d.
+phases on E's zero pattern, kernel mode 1) projected off the same spans. Below, each entry is the top `s²/S` of E off
+both families as a percentage above that null. "Random" is E off random spans of the same dimensions, against the
+same null.
+
+**Families.** The row family V(M) holds the thetas and plain characters on classes mod 36 with two profiles, plus
+the twists `N(m) ≤ M` on unit classes. The source family P(M′) holds `conj g̃` and `g̃` times `N^{−1/3}` on cells
+mod 36 × parity, plus, for each twist `N(m) ≤ M′`, the class-signed source theta times `(x/m)₆^{±1}` (both
+conjugations) and the plain `(x/m)₆^{±1}`, on the twelve classes mod 4.
+
+| (M, M′) | 3·10⁴: dV/R | off both | random | 10⁵: dV/R | off both | random |
+|---|---|---|---|---|---|---|
+| full matrix | | +14.0% | | | +24.0% | |
+| (30, 0) | 0.13 | +4.3% | +10.4% | 0.04 | +14.5% | +22.7% |
+| (100, 0) | 0.21 | +2.1% | +9.0% | 0.06 | +13.4% | +21.9% |
+| (100, 30) | 0.21 | +1.1% | +8.3% | | | |
+| (300, 0) | 0.42 | −0.4% | +4.5% | 0.13 | +10.3% | +20.6% |
+| (300, 100) | 0.42 | −1.7% | +2.0% | | (running) | |
+
+- **At 3·10⁴ families that grow reach the null.** Each step (more row twists, then twisted source thetas) removes
+  about half of what is left, while random spans of the same dimensions stay several percent above. Once the families
+  are large, E off them sits slightly below the null, as expected: they remove directions where E has more than its
+  average energy.
+- **At 10⁵ the same families do much less.** They are a third of the relative size (dV/R 0.13 against 0.42), and the
+  excess falls only from 14.5% to 10.3%. A run with row twists to 1000 (dV/R ≈ 0.35) is queued to see whether the
+  relative size is what matters.

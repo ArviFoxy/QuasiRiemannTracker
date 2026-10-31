@@ -100,10 +100,21 @@ the rows, the sources and the int8 symbol table (`build` starts from it and give
   function (`theta_cfh`). Patterson's Gauss-sum theta for n = 3 against Kazhdan–Patterson non-uniqueness for n = 6;
   see the journal.
 - **Both thetas removed, fixed families** (`theta_twosided`, `theta_twosided_free`; V of dimension 1080 with twists
-  N(m) ≤ 30, P of dimension 432). Top s²/S off both families against the edge of what is left: 3.773 / 3.792 at
-  3·10⁴, 4.442 / 4.058 at 10⁵, 4.756 / 4.118 at 2·10⁵. Random spans of the same dimensions: 4.016, 4.746, 5.171.
-  Both families carry signal at every size, but fixed families do not reach the edge at large B, as expected from
-  one spike per twist (below). Families that grow with B are the next test.
+  N(m) ≤ 30, P of dimension 432). Top s²/S off both families: 3.773 at 3·10⁴, 4.442 at 10⁵, 4.756 at 2·10⁵. Random
+  spans of the same dimensions: 4.016, 4.746, 5.171.
+  - **Null (correction).** Compare with the masked random matrix projected off the same spans, not with the
+    Marchenko–Pastur formula. E's zero pattern puts its edge about 4.5% lower: 3.616 at 3·10⁴ and 3.879 at 10⁵. So
+    the remainder is 4.3% and 14.5% above the null, not "at the edge" at 3·10⁴.
+  - Both families carry signal at every size, but fixed families leave a growing excess, as expected from one spike
+    per twist (below).
+- **Growing families** (`theta_twosided_grow`, matrix-free through the kernel's forward and adjoint products).
+  Excess over the masked null with the same spans:
+  - 3·10⁴: +4.3%, +2.1%, +1.1%, −0.4%, −1.7% for (M, M′) = (30, 0), (100, 0), (100, 30), (300, 0), (300, 100).
+    Random spans of the same dimensions stay at +10% … +2%.
+  - 10⁵: +14.5%, +13.4%, +10.3% for (30, 0), (100, 0), (300, 0), where V is 4–13% of the rows against 13–42% at
+    3·10⁴.
+  - So families that grow reach the null at 3·10⁴. At 10⁵ the same families are relatively three times smaller and
+    remove less; see the journal for the follow-up.
 - **The block outlier is a residue** (`theta_src_residue`, `theta_src_windows`, `theta_src_coherence`,
   `theta_src_lscale`). With the rows fixed, the top row vector is the same for every source length (overlaps 0.56–0.74
   at 10⁴). The row images of the class-signed source theta on disjoint dyadic source windows are correlated (mean

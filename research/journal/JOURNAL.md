@@ -3356,3 +3356,74 @@ mode 2]
   twisted thetas need class structure finer than the unit classes: the reciprocity and supplementary laws make the
   twisted spike `G(z) conj χ_z(m)^k` times a function of z mod 9 (and mod 4 for q = 6). The Lean statement's
   dyadic-window shapes already allow class functions through the unit and λ twists. [heuristic]
+
+## 2026-10-31 · de Faveri's recursion, run off the spikes, converges to B^{1+γ}: a proof route for (LS off V)
+
+[read: de Faveri, arXiv 2610.04045, §§4–7; derived: the off-spike iteration; heuristic: that each step of the proof
+survives the removal; Lean: the iteration's arithmetic, `lean/arvi_kwall/OffSpikeIteration.lean`]
+
+**How the optimal bound is proved [read].** L₁(A, B) is the sieve over n-th-power-free moduli a ∼ A and arguments
+b ∼ B. The proof is a recursion:
+- complete the a-sum by positivity (Lemma 4.3), then sort by gcd(b₁, b₂) (Lemma 4.4);
+- Poisson in a (Lemma 5.1). The dual has length K ≈ B²/A and vector λ_b·β_b, with β the root numbers (Gauss sums).
+  It is bounded by Cauchy–Schwarz through L₂(K, ·), the sieve over all dual a′, not only kernels;
+- n-th powers (Lemma 6.1): write a′ = d·r^n. Since χ_b(r^n) = 1, the r-sum is trivial, so L₂(K, B) ≤ max_R R·L₁(K/R^n, B)
+  with R ≤ K^{1/n};
+- monotonicity (Lemma 4.2): L₁(A₁, B) ≲ L₁(A₂, B) for A₂ ≫ A₁. Multiply a by primes p ∼ A₂/A₁ and twist λ by conj χ_p;
+- iteration (Prop 7.1). Assume (E_α): L₁ ≲ A^α + B + A(B²/A)^{1/n} + B(A²/B)^{1/n}. One step gives
+  L₁ ≲ A + A^{1−α}B^{2α−1} + A(B²/A)^{1/n}. When the middle term wins, monotonicity raises A until it balances the
+  theta term. That proves E_{α′} with α′ = 2 − (n−1)/(nα−1), whose attracting fixed point is **1 + 1/n**, the theta
+  exponent at A = B.
+- The theta term A(B²/A)^{1/n} is R·B at R = (B²/A)^{1/n}: the dual frequencies r^n·m with a small kernel m, each a copy
+  of the plain row χ(m). These copies are the twisted source thetas (journal 2026-10-30, "one Poisson spike per
+  twist").
+
+**Off the spikes [derived].** Let L(A, B; M) be the same sieve for vectors λ orthogonal to the twisted source thetas
+β·χ(m), N(m) ≤ M.
+- **Poisson.** A dual frequency with kernel m, N(m) ≤ M, contributes ⟨λ, β χ(m)⟩ = 0. Only kernels above M survive,
+  so R ≤ (B²/(AM))^{1/n} and the theta term becomes A·(B²/(AM))^{1/n}.
+- **Monotonicity.** λ·conj χ_p is orthogonal to β χ(m₁) for every N(m₁) ≤ M/P (take m = p m₁). So
+  L(A, B; M) ≲ L(AP, B; M/P). The product A·M is conserved, and along the orbit the theta term is A·c with
+  c := (B²/(AM))^{1/n} fixed. Write c = B^γ.
+- **One step** at (A′, B; M′) gives L ≲ A′ + A′^{1−α}B^{2α−1} + A′c. Take A′ = (B^{2α−1}/c)^{1/α}; both terms then equal
+  B^{g(α)} with g(α) = 2 + γ − (1+γ)/α. This needs A′ ≥ A = B, which holds exactly when α ≥ 1 + γ.
+- **The iteration α ↦ g(α).** g(α) − (1+γ) = (α − 1 − γ)/α. The fixed points are 1 + γ (attracting, g′ = 1/(1+γ)) and
+  1 (repelling), so from α = 2 the exponent converges to **1 + γ**.
+- At A = B with M = B^{1−nγ}, c = B^γ and the bound is **B^{1+γ}**. That is exactly (LS off V): twist range B^{1−6γ}
+  for n = 6, with the forced γ-loss of the 2026-10-30 entry. With γ = 0 (all twists up to B removed) the fixed point
+  is 1.
+- **Row side.** In monotonicity the row theta transforms as θ_m(ap) = const·θ_{m p^{−2}}(a), by the twisted
+  multiplicativity of g̃ and reciprocity. So the row twist range must grow to M_V·P². A²/M_V is conserved, and the
+  row theta term B(A²/(B M_V))^{1/n} is the same at every point of the orbit.
+
+**What must be checked before this is a proof [heuristic], in order of difficulty.**
+1. **The dual's own thetas at the fixed point.** Near α = 1 + γ the optimal A′ tends to B, so the dual problem
+   L₁(K/R^n, B) is balanced again and its theta terms are B^{1+1/n}. de Faveri absorbs them only because α > 1 + 1/n.
+   The recursion closes only if the dual is corrected too, so the correction is multi-level.
+   - Under the Poisson map the dual's modulus-side theta pulls back to E-directions conj g̃ times that theta, i.e.
+     ∝ conj g̃². These carry an angular Hecke twist (Davenport–Hasse) and show no excess (2026-10-30: conj G², G²,
+     conj G³ at 0.90–0.98 against 0.946).
+   - So the level-2 corrections cost dimension but, as far as the numerics see, no energy. A proof needs them
+     identified at every level (the Gauss rotation is periodic mod n up to angular characters) and shown to be
+     harmless on the K-wall's vectors.
+2. **Restriction to sub-lattices.** The gcd sorting (Lemma 4.4), the split b = b^♮ b^* (Lemma 5.1) and the
+   coprimality 1_{(b,r)=1} in Lemma 6.1 all restrict λ to multiples of some d. Orthogonality to β χ(m) is not
+   inherited by λ·1_{d|b}.
+   - Fix: the corrected form `CorrectedLargeSieve` (G ≼ Δ I + Σ_i w_i f_i f_i*). Subtract the small-kernel dual
+     frequencies instead of projecting. The correction is then defined after the sorting, so it survives the
+     restriction, and its pieces are restricted twisted thetas.
+   - For squarefree λ, b^♮ = 1, and r ≤ c = B^γ in Lemma 6.1.
+3. **The row side through Lemma 4.3 and monotonicity.** A projection on the moduli does not localize to sub-ranges
+   of a. The fix is the same corrected form for the row Gram, but the two corrections must combine into one two-sided
+   statement.
+
+**Assessment.**
+- This is the first route to (LS off V) with the right exponent. The recursion that proves the optimal sieve, with
+  the spikes taken out at each Poisson step, has fixed point 1 + γ instead of 1 + 1/n.
+- The first sketch in the frontier ("the naive corrected recursion gains a sub-power factor") stayed at the
+  self-dual point. Monotonicity moves off it, and the conservation of A·M keeps the theta term linear in A along the
+  orbit.
+- Nothing analytic is proved. Obstacle 1 is the substantive one: the dual thetas at every level have to be
+  identified and shown to be spike-type, or harmless, on the vectors the K-wall uses.
+- The same skeleton gives the cubic case, where the level-2 directions conj g̃₃² = g̃₃·(angular character) are again
+  pole-free. That makes the cubic family (one theta, explicit Gauss sums) the place to try obstacles 1–3 first.

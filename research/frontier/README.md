@@ -202,7 +202,21 @@ returns the trivial bound (journal: "One shape for all three walls").
 | faces' K-wall | selected norm at slope ≈ 0.48 within B^{0.015} of its fixed point at source length ≈ B^{0.96} (the t = 0 corner) | Guth–Maynard for a thin family at the kernel's self-dual point (conductors multiply). Equivalently, at the binding corner (two plain sums just below √(conductor), slot sliver s ≈ 0.03), a classical-strength structured face suffices: a twisted fourth moment of the sextic family whose prime twist goes past the √ limit, i.e. the faces' slot-cost atom again | barrier proved in Lean (`lean/arvi_kwall/`); the Θ₆ closure is about 11× too weak; the parent face only relieves the tiny-slot corner; pointwise bootstrap bounds on the plain sums do not help (journal, "K-wall corner") |
 | faces' reference | short reference past √A for smooth × prime vectors | GS1-type structured sextic sieve (#96, unverified) | pays only together with the K-wall |
 
-## Open question: a power saving off both thetas (not yet analyzed)
+## Open question: a power saving off both thetas
+
+**A proof route with the right exponent (2026-10-31; derived + Lean arithmetic, journal "de Faveri's recursion, run
+off the spikes").** de Faveri proves the optimal sieve (arXiv 2610.04045) by a Poisson/monotonicity recursion whose
+fixed point 1 + 1/n is the theta exponent. Run off the twisted source thetas of kernel norm ≤ M, the Poisson step
+keeps only kernels above M, and monotonicity conserves A·M. The theta term is then A·B^γ along the orbit, and the
+iteration becomes α ↦ 2 + γ − (1+γ)/α, with attracting fixed point **1 + γ**: exactly (LS off V) with twist range
+B^{1−6γ} (`../lean/arvi_kwall/OffSpikeIteration.lean`). Open, in order:
+1. the dual problem's own thetas at the fixed point (the correction becomes multi-level; level-2 directions
+   conj g̃² carry an angular Hecke twist and show no excess numerically);
+2. restriction to sub-lattices (gcd sorting, the b^♮ b^* split, coprimality), handled by the corrected form
+   rather than orthogonality;
+3. combining the row side into one two-sided statement.
+The cubic family (explicit Gauss sums, one theta) is the place to try these first. The older sketches below
+stayed at the self-dual point.
 
 Can the Heath-Brown / de Faveri recursion (Poisson, duality, recursion on the large sieve constant) prove a power
 saving for the sextic large sieve at L = B once both thetas are removed (`../lean/arvi_kwall/SourceSpike.lean`)?

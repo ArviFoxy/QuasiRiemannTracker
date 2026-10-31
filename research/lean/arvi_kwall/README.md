@@ -196,3 +196,27 @@ Imports `SexticSpikeFree`. It checks in about 5 s. All 10 `#print axioms` report
     Λ_src ≈ B^{7/6−δ} for |W| = B^{1−δ}. That is harmless for δ ≥ 1/6.
   - The twisted source spikes: `rowImage_twist_dilation` proves that twisting a source vector by `χ_m^k` dilates its
     row image to the modulus `z·m`; `twisted_energy_eq` moves the energy on W to the dilated set (standard axioms).
+
+## OffSpikeIteration.lean: the arithmetic of de Faveri's recursion with the spikes removed
+
+Journal, 2026-10-31, "de Faveri's recursion, run off the spikes". About 25 s; standard axioms.
+
+de Faveri proves the optimal n-th order sieve (arXiv 2610.04045, Prop 7.1) by iterating
+α ↦ 2 − (n−1)/(nα−1), whose fixed point 1 + 1/n is the theta exponent. With the twisted source thetas of kernel
+norm ≤ M removed, Poisson keeps only kernels above M and monotonicity conserves A·M. The theta term is then A·B^γ
+along the orbit, and one step reads L(A′) ≲ A′ + A′^{1−α}B^{2α−1} + A′B^γ. The file proves the arithmetic of that
+iteration, not the analytic steps.
+
+| theorem | statement |
+|---|---|
+| `c_eq` | with twist range M = B^{1−nγ} at A = B, the multiplicity bound (B²/(AM))^{1/n} is B^γ |
+| `balance` | at A′ = B^{(2α−1−γ)/α}, both A′B^γ and A′^{1−α}B^{2α−1} equal B^{step γ α}, step γ α = 2 + γ − (1+γ)/α |
+| `balance_ge` | A′ ≥ B once α ≥ 1 + γ (so monotonicity applies) |
+| `step_sub`, `step_sub_le`, `step_lt`, `fixed_le_step` | step γ α − (1+γ) = (α − (1+γ))/α: a contraction by 1/(1+γ) toward 1 + γ |
+| `iter_bounds`, `tendsto_iter` | from any α₀ ≥ 1 + γ the iterates stay ≥ 1 + γ, within (α₀ − 1 − γ)/(1+γ)^k of it, and converge to 1 + γ (γ > 0) |
+| `defaveri_step_sub` | de Faveri's map: step − (1 + 1/n) = (n−1)(α − 1 − 1/n)/(nα − 1) |
+
+So the recursion that proves the optimal sieve, run off the spikes, has fixed point 1 + γ: the exponent of
+`TwoSidedSpikeFree` with twist range B^{1−6γ}. Whether each analytic step survives the removal is open. The
+obstacles, in order: the dual problem's own thetas at the fixed point (level-2 corrections), restriction to
+sub-lattices in the gcd sorting, and the row side.

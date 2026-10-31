@@ -128,6 +128,7 @@ be small.
 | `theta_pole_scan.py B s1,s2,.. [threads]` | the source theta with a split weight whose Mellin zero is swept across s: locates the pole (minimum excess at s₀ = 2/3) |
 | `theta_twist_conductor.py L order Bz1,Bz2,.. [threads]` | where smooth pole-free twisted theta sums stop, against the twist norm, with plain sums (conductor N(z)) as the calibration; inconclusive because the source set's squarefree-norm restriction leaves slowly decaying tails (journal, "The Mellin rescue needs Patterson's continuation") |
 | `theta_twist_meanvalue.py L order Bz1,Bz2,.. [threads]` | correlations of a Mellin-zero plain vector with the twisted thetas, per dyadic twist range up to N(m) ≈ L: at the null for every twist size, cubic and sextic, while the control carries the pole terms (cubic 52.7 → 4.4, slope ≈ N(m)^{−1/3}). The twist-aspect mean value the K-wall needs |
+| `theta_twist_meanvalue_conv.py L order X1 Bz1,Bz2,.. [threads]` | the same for the K-wall leaf shape, a convolution U₁ * U₂ (weights depend only on N(b) on our source set): one Mellin zero in either factor removes the spike (cubic: 0.76–1.00 against 4.2 → 1.26 without) |
 
 All scripts build E and the row Gauss sums through `theta_core.py`. The matrix-free scripts (`theta_top_free2`,
 `theta_selected_free`, `theta_outliers`) use `theta_core.build_tables`, which stops before the dense matrix and returns

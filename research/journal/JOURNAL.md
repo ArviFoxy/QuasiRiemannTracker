@@ -4028,3 +4028,32 @@ would cap the method at γ ≥ 1/(n(n+1)).
   which of the statements the faces program needs (the asymptotic for smooth twisted cubic Gauss-sum sums with
   residue at 5/6, uniform in the twist and the weight, and the mean values over twists) follow from what the baseline
   proves, and which need extensions (the sextic theta τ₆ is not covered by the cubic theory). Mapping that next.
+
+## 2026-10-31 · Convolution leaf vectors: one Mellin zero in either factor removes the spike
+
+[numerical; `rip/theta/theta_twist_meanvalue_conv.py`, logs `theta_twist_meanvalue_conv_q3_L100000.log`,
+`..._q6_L100000.log`; derived: the mechanism]
+
+- **Setting.** The K-wall's leaf vector is a convolution of two plain factors, λ = U₁ * U₂, here with
+  X₁ = X₂ = √L, L = 10⁵. On our source set the divisors of b are the subsets of the primes of N(b), so
+  λ_b = F(N(b)) with F(n) = Σ_{d|n} U₁(d/X₁) U₂(n/(dX₂)). The correlations with the twisted thetas are bilinear
+  Kubota sums.
+- **Cubic** (ratio to the null, twist ranges [64, 128] → [65536, 131072]):
+  - both factors with Mellin zeros: 0.92–1.00;
+  - a zero in either one factor only: 0.76–0.93;
+  - neither: 4.2 → 1.26, the spike, decaying with the twist size.
+- **Sextic**: all four variants at the null (0.63–1.48 at [64, 128] with 19 rows, 0.84–1.07 elsewhere). The sextic
+  theta is weak here (single-factor control 1.2–1.7, previous entries), and a convolution carries a product of two
+  residues.
+- **Mechanism [derived].**
+  - With twisted multiplicativity, the term that keeps the pole in b₂ has residue ∝ τ(b₁)-type coefficients.
+  - The remaining b₁-sum is Σ U₁ g̃ τ ∝ Σ U₁ N^{−1/6} (cubic). Its main term needs Ũ₁ at the same point 5/6.
+  - So a zero in one factor kills both the double-pole and the single-pole terms. This is the "levels share the pole"
+    phenomenon again.
+- **Consequence for the K-wall.** Only one of the two plain factors needs the designed weight. The other factor's
+  weight stays free (the dyadic partition can be kept).
+
+**Conductor note (cross-reference).** #96's Thm N1, read in the P1 deep-dive (2026-10-30), gives index conductor
+N(m)¹ and twist conductor N(a)². So the twist-aspect mean value is the lossy case of the large-sieve accounting
+("Sil's inclusion monotonicity", last items). The measured absence of loss (twist-aspect entry) then says the level-2
+pole of the twist sieve is killed by the same Mellin zero.

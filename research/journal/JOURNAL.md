@@ -4180,3 +4180,31 @@ absorption, live in the cubic world the baseline already covers, but they are cr
     reference gate (target 2) decides Λ.
   - So the faces route needs the K-wall only near slope 0.48 (with target 2). D1 needs it at every slope unless D1
     can also delete the low classes. Whether it can is open.
+
+## 2026-10-31 · What the recursion must deliver: a generated-family version of `GradedTwoSided`
+
+[read: `lean/arvi_kwall/SourceSpike.lean`, `SpikeRule.lean`; derived]
+
+- `GradedTwoSided k q` is a weighted corrected form at the balanced point. Its corrections are fixed: row twisted
+  thetas (`spikeVector`) and the row images of the source spikes (`rowImage … sourceSpike`), with twists up to
+  `twistCutoff`, height profiles up to `profileCutoff`, and graded weights.
+  - `selected_of_gradedTwoSided` turns it into the selected bound C B^{1+ε} + Λ_row + Λ_src on any row set W, with
+    Λ_row and Λ_src the Bessel constants of the weighted corrections on W.
+  - The spike rule (`SpikeRule.lean`) then gives the K-wall for slopes δ > 7/36.
+- The recursion (entries above) generates a larger explicit family:
+  - the level shifts u·f;
+  - dilations and restrictions;
+  - images under E (transposition);
+  - heights.
+
+  So the statement it can prove is `GradedTwoSided` with the family replaced by the generated one. Nothing
+  downstream changes: `selected_of_corrected` and the spike rule take any family, and only the Bessel constants on W
+  grow. In the application these are sums of Kubota-type correlations of the K-wall vectors, killed by the Mellin
+  zero numerically.
+- **The program in Lean, in dependency order:**
+  1. the generated-family corrected sieve (a Sil fork: kernel split in the Poisson bound, restricted descent,
+     transposition via `TransposeCorrection.lean`, `silStep` iteration);
+  2. Bessel bounds for the K-wall vectors on slot-selected rows: the Mellin rescue (6-fold Kubota theory, after
+     the cubic template in the baseline) and Λ_row (row thetas on W);
+  3. the spike rule plus PR 93 amplification (in Lean);
+  4. the face forks: native or density with target 2 (faces route), or D1 with the low-slope gap.

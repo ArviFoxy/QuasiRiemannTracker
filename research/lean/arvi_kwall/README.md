@@ -109,6 +109,9 @@ The conjecture is a `def … : Prop`, and nothing in the file assumes it.
     spikes (`norm_spikeVector_le`). With the graded weights it helps only for very small W.
   - `corrected_trivial`: Δ = |R||S| always works.
   - `exists_orthogonal_of_card_lt`: with fewer spikes than rows, some nonzero b is orthogonal to all of them.
+  - `IsSelected.transpose` and `blockBessel_of_twistSieve`: each family of spikes over a twist set T has Bessel
+    constant at most the selected constant of the twist sieve on W with sources T. So the spike Bessel constant
+    really is a sum of selected norms at shorter source lengths.
   - `spikeBessel_of_blocks` and `selected_of_amplified`: suppose every selected constant S₀ on W makes the spike
     Bessel constant at most η S₀ with η < 1. Then Δ/(1 − η) is a selected constant. The proof iterates
     S ↦ Δ + ηS from `isSelected_trivial` and takes the limit.

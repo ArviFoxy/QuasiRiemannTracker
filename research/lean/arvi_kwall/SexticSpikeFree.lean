@@ -78,8 +78,10 @@ dual length `B^{1+ε}`, with decaying profile weights. It implies the conjecture
 separate obstacle, because it is controlled by the selected norm itself.
 * For a theta spike, `⟨b, f_{m,j}⟩ = Σ_{z∈W} c_z χ_z(m)^k` with `c_z = b_z conj g̃(z) (B/N z)^{j/2}` and
   `|c_z| ≤ |b_z|`. The plain kinds are the same with `conj χ` or `χ`. So a block of twists with `N m ≍ M_r` has
-  Bessel constant at most `6 S_W(M_r)`, where `S_W(M)` is the selected norm on `W` with the twists of norm `≍ M` as
-  sources, and 6 counts associates. Group the spikes into such blocks (`spikeBessel_of_blocks`).
+  Bessel constant at most `S_W(M_r)`, the selected constant on `W` with the block's twists (every associate) as
+  sources. This is formal: `rowInner_spike_theta`, `rowInner_spike_plain` and `rowInner_spike_conj` give the inner
+  products, `IsSelected.transpose` the duality, and `blockBessel_of_twistSieve` the block bound. Group the spikes into
+  such blocks with `spikeBessel_of_blocks`.
 * Amplification at slope `δ` (PR 93's rule `n(x) ≤ n(y) − δ(y − x)`) gives `S_W(M_r) ≤ (M_r/B)^δ B^{o(1)} S_W(B)`.
   This needs the sources at length `B` to contain the products of twists and slot primes, e.g. all elements of
   norm `≤ B`.
@@ -88,7 +90,7 @@ separate obstacle, because it is controlled by the selected norm itself.
   `7/36` for the sextic family and `4/9` for the cubic.
 * `selected_of_amplified` (formal) then gives `S_W(B) ≤ C B^{1+ε} / (1 − η)`.
 
-**[Conditional; the exponent count is not formal.]** The graded conjecture plus amplification give the selected
+**[Conditional. Amplification for the twist sieves (PR 93's rule) and the exponent count are not formal.]** The graded conjecture plus amplification give the selected
 norm `B^{1+ε}` at the balanced point for every slope `δ > 7/36`. That includes the whole K-wall range
 `1/3 ≤ δ < 1/2` of `Closure.lean`. So the K-wall reduces to a **full-family** statement about the sextic row Gram,
 with no thin-set or detector hypothesis left over.
@@ -105,6 +107,9 @@ with no thin-set or detector hypothesis left over.
   with `Δ = |R||S|`, so the content of the conjecture is the size of `Δ`.
 * `exists_orthogonal_of_card_lt`: fewer spike vectors than rows leaves a nonzero row vector orthogonal to all of them.
   So the condition in the conjecture is not vacuous.
+* `IsSelected.transpose`: a selected constant also bounds the transposed sums.
+* `blockBessel_of_twistSieve`: every family of spikes over a twist set `T` (fixed kind and profile degree) has Bessel
+  constant at most the selected constant of the twist sieve on `W` with sources `T`.
 * `spikeBessel_of_blocks`: the spike Bessel constant from per-block constants. `selected_of_amplified`: if every
   selected constant `S0` on `W` gives the spike Bessel constant `η S0` with `η < 1`, then `Δ / (1 − η)` is a
   selected constant. The proof iterates `S0 ↦ Δ + η S0` from the trivial constant (`isSelected_trivial`) and passes
@@ -395,6 +400,51 @@ theorem isSelected_trivial (K : ρ → σ → ℂ) (hK : ∀ z n, ‖K z n‖ �
         rw [Finset.sum_const, nsmul_eq_mul]
         ring
 
+/-- **Duality for selected constants.** A selected constant also bounds the transposed sums
+`Σ_{n∈S} |Σ_{z∈W} c_z K(z,n)|² ≤ S0 Σ_{z∈W} |c_z|²`. -/
+theorem IsSelected.transpose {K : ρ → σ → ℂ} {W : Finset ρ} {S : Finset σ} {S0 : ℝ}
+    (h : IsSelected K W S S0) (hS0 : 0 ≤ S0) (c : ρ → ℂ) :
+    ∑ n ∈ S, ‖∑ z ∈ W, c z * K z n‖ ^ 2 ≤ S0 * ∑ z ∈ W, ‖c z‖ ^ 2 := by
+  obtain ⟨y, hy⟩ : ∃ y : σ → ℂ, y = fun n => ∑ z ∈ W, c z * K z n := ⟨_, rfl⟩
+  have hyn : ∀ n, ∑ z ∈ W, c z * K z n = y n := fun n => by rw [hy]
+  simp only [hyn]
+  obtain ⟨X, hX⟩ : ∃ X : ℝ, X = ∑ n ∈ S, ‖y n‖ ^ 2 := ⟨_, rfl⟩
+  obtain ⟨Cn, hC⟩ : ∃ Cn : ℝ, Cn = ∑ z ∈ W, ‖c z‖ ^ 2 := ⟨_, rfl⟩
+  rw [← hX, ← hC]
+  have hX0 : 0 ≤ X := by rw [hX]; exact Finset.sum_nonneg fun n _ => by positivity
+  have hC0 : 0 ≤ Cn := by rw [hC]; exact Finset.sum_nonneg fun z _ => by positivity
+  have hsel := h (fun n => conj (y n))
+  simp only [Complex.norm_conj] at hsel
+  rw [← hX] at hsel
+  have hkey : (X : ℂ) = ∑ z ∈ W, c z * ∑ n ∈ S, conj (y n) * K z n := by
+    symm
+    calc ∑ z ∈ W, c z * ∑ n ∈ S, conj (y n) * K z n
+        = ∑ z ∈ W, ∑ n ∈ S, c z * (conj (y n) * K z n) := by simp_rw [Finset.mul_sum]
+      _ = ∑ n ∈ S, ∑ z ∈ W, c z * (conj (y n) * K z n) := Finset.sum_comm
+      _ = ∑ n ∈ S, conj (y n) * ∑ z ∈ W, c z * K z n := by
+          refine Finset.sum_congr rfl fun n _ => ?_
+          rw [Finset.mul_sum]
+          exact Finset.sum_congr rfl fun z _ => by ring
+      _ = ∑ n ∈ S, conj (y n) * y n := by simp only [hyn]
+      _ = (X : ℂ) := by
+          rw [hX]
+          push_cast
+          exact Finset.sum_congr rfl fun n _ => by rw [Complex.conj_mul']
+  have hcs : ‖∑ z ∈ W, c z * ∑ n ∈ S, conj (y n) * K z n‖ ^ 2 ≤
+      Cn * ∑ z ∈ W, ‖∑ n ∈ S, conj (y n) * K z n‖ ^ 2 := by
+    rw [hC]
+    exact norm_sum_mul_sq_le W c fun z => ∑ n ∈ S, conj (y n) * K z n
+  have hXn : ‖(X : ℂ)‖ = X := by rw [Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg hX0]
+  have hXsq : X * X ≤ (S0 * Cn) * X := by
+    calc X * X = ‖(X : ℂ)‖ ^ 2 := by rw [hXn]; ring
+      _ ≤ Cn * ∑ z ∈ W, ‖∑ n ∈ S, conj (y n) * K z n‖ ^ 2 := by rw [hkey]; exact hcs
+      _ ≤ Cn * (S0 * X) := mul_le_mul_of_nonneg_left hsel hC0
+      _ = (S0 * Cn) * X := by ring
+  rcases hX0.lt_or_eq with hpos | hzero
+  · exact le_of_mul_le_mul_right hXsq hpos
+  · rw [← hzero]
+    exact mul_nonneg hS0 hC0
+
 /-- **The recursion closes.** Suppose the row Gram obeys a corrected large sieve with constant `Δ`, and the spike part
 on `W` is controlled by the selected norm itself: every selected constant `S0` gives the spike Bessel constant
 `η S0`, with `η < 1`. This is what amplification provides, because each block of twists is a selected sieve on `W` at
@@ -557,6 +607,80 @@ theorem norm_spikeVector_le (k B : ℕ) (i : Fin 3 × (ℤ × ℤ) × ℕ) (z : 
         zero_le_one
     _ = 1 := one_mul 1
 
+/-- The twist sieve kernel `χ_z(m)^k`, with the twists as sources. -/
+noncomputable def twistKernel (k : ℕ) (z : Ideal O) (m : ℤ × ℤ) : ℂ :=
+  CanonicalRowCompletion.idealRowHom (twistElement m) z ^ k
+
+theorem rowInner_spike_theta (k B j : ℕ) (W : Finset (Ideal O)) (b : Ideal O → ℂ) (m : ℤ × ℤ) :
+    rowInner W b (spikeVector k B ((0 : Fin 3), m, j)) =
+      ∑ z ∈ W, (b z * conj (gaussPhase k z) * (rowProfile B z : ℂ) ^ j) * twistKernel k z m := by
+  unfold rowInner
+  refine Finset.sum_congr rfl fun z _ => ?_
+  simp [spikeVector, spikeShape, twistKernel, map_mul, map_pow, Complex.conj_ofReal]
+  ring
+
+theorem rowInner_spike_plain (k B j : ℕ) (W : Finset (Ideal O)) (b : Ideal O → ℂ) (m : ℤ × ℤ) :
+    rowInner W b (spikeVector k B ((1 : Fin 3), m, j)) =
+      ∑ z ∈ W, (b z * (rowProfile B z : ℂ) ^ j) * conj (twistKernel k z m) := by
+  unfold rowInner
+  refine Finset.sum_congr rfl fun z _ => ?_
+  simp [spikeVector, spikeShape, twistKernel, map_mul, map_pow, Complex.conj_ofReal]
+  ring
+
+theorem rowInner_spike_conj (k B j : ℕ) (W : Finset (Ideal O)) (b : Ideal O → ℂ) (m : ℤ × ℤ) :
+    rowInner W b (spikeVector k B ((2 : Fin 3), m, j)) =
+      ∑ z ∈ W, (b z * (rowProfile B z : ℂ) ^ j) * twistKernel k z m := by
+  unfold rowInner
+  refine Finset.sum_congr rfl fun z _ => ?_
+  simp [spikeVector, spikeShape, twistKernel, map_mul, map_pow, Complex.conj_ofReal]
+  ring
+
+/-- The profile factor never increases a coefficient. -/
+theorem norm_mul_profile_le (B j : ℕ) (z : Ideal O) (x : ℂ) :
+    ‖x * (rowProfile B z : ℂ) ^ j‖ ≤ ‖x‖ := by
+  rw [norm_mul, norm_pow, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (rowProfile_nonneg B z)]
+  calc ‖x‖ * rowProfile B z ^ j ≤ ‖x‖ * 1 :=
+        mul_le_mul_of_nonneg_left (pow_le_one₀ (rowProfile_nonneg B z) (rowProfile_le_one B z)) (norm_nonneg _)
+    _ = ‖x‖ := mul_one _
+
+/-- **A block of spikes is a twist sieve on `W`.** If `S0` is a selected constant for the twist sieve on the rows `W`
+with the twists `T` as sources, then each family of spikes over `T` (fixed kind and profile degree) has Bessel
+constant `S0` on `W`. -/
+theorem blockBessel_of_twistSieve (k B j : ℕ) (c : Fin 3) (W : Finset (Ideal O)) (T : Finset (ℤ × ℤ)) {S0 : ℝ}
+    (hS0 : 0 ≤ S0) (h : IsSelected (twistKernel k) W T S0) (b : Ideal O → ℂ) :
+    ∑ m ∈ T, ‖rowInner W b (spikeVector k B (c, m, j))‖ ^ 2 ≤ S0 * ∑ z ∈ W, ‖b z‖ ^ 2 := by
+  -- the three kinds reduce to the transposed sieve with coefficients of norm at most `|b_z|`
+  have hcoef : ∀ e : Ideal O → ℂ, (∀ z, ‖e z‖ ≤ ‖b z‖) →
+      ∑ m ∈ T, ‖∑ z ∈ W, e z * twistKernel k z m‖ ^ 2 ≤ S0 * ∑ z ∈ W, ‖b z‖ ^ 2 := by
+    intro e he
+    refine (h.transpose hS0 e).trans (mul_le_mul_of_nonneg_left ?_ hS0)
+    exact Finset.sum_le_sum fun z _ => pow_le_pow_left₀ (norm_nonneg _) (he z) 2
+  fin_cases c
+  · simp only [Fin.zero_eta, rowInner_spike_theta]
+    refine hcoef _ fun z => ?_
+    rw [mul_assoc, norm_mul]
+    calc ‖b z‖ * ‖conj (gaussPhase k z) * (rowProfile B z : ℂ) ^ j‖
+        ≤ ‖b z‖ * 1 := by
+          refine mul_le_mul_of_nonneg_left ?_ (norm_nonneg _)
+          refine (norm_mul_profile_le B j z _).trans ?_
+          rw [Complex.norm_conj]
+          exact norm_gaussPhase_le k z
+      _ = ‖b z‖ := mul_one _
+  · simp only [Fin.mk_one, rowInner_spike_plain]
+    -- conjugate the inner sums: `|Σ e conj K| = |Σ conj e · K|`
+    have hconj : ∀ m, ‖∑ z ∈ W, b z * (rowProfile B z : ℂ) ^ j * conj (twistKernel k z m)‖ =
+        ‖∑ z ∈ W, conj (b z * (rowProfile B z : ℂ) ^ j) * twistKernel k z m‖ := by
+      intro m
+      rw [← Complex.norm_conj, map_sum]
+      congr 1
+      exact Finset.sum_congr rfl fun z _ => by rw [map_mul, Complex.conj_conj]
+    simp only [hconj]
+    refine hcoef _ fun z => ?_
+    rw [Complex.norm_conj]
+    exact norm_mul_profile_le B j z _
+  · simp only [Fin.reduceFinMk, rowInner_spike_conj]
+    exact hcoef _ fun z => norm_mul_profile_le B j z _
+
 /-- The twist cutoff `⌊C B^{1 − qε}⌋`. -/
 noncomputable def twistCutoff (q : ℕ) (C ε : ℝ) (B : ℕ) : ℕ := ⌊C * (B : ℝ) ^ (1 - (q : ℝ) * ε)⌋₊
 
@@ -668,6 +792,8 @@ end QRH.ArviKWall.BalancedSieve
 #print axioms QRH.ArviKWall.BalancedSieve.spikeBessel_of_blocks
 #print axioms QRH.ArviKWall.BalancedSieve.isSelected_trivial
 #print axioms QRH.ArviKWall.BalancedSieve.selected_of_amplified
+#print axioms QRH.ArviKWall.BalancedSieve.IsSelected.transpose
+#print axioms QRH.ArviKWall.BalancedSieve.blockBessel_of_twistSieve
 #print axioms QRH.ArviKWall.BalancedSieve.exists_orthogonal_of_card_lt
 #print axioms QRH.ArviKWall.BalancedSieve.spikeFree_of_graded
 #print axioms QRH.ArviKWall.BalancedSieve.spikeFree_squarefree

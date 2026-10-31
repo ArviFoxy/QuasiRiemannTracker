@@ -3083,3 +3083,21 @@ and logs in `rip/theta/README.md`]
     reflection and Möbius absorption meet.
   - The quartic route (starting bound 7/8) needs either Patterson's biquadratic conjecture (a GL(2) carrier) or a
     higher-rank carrier with a weaker reflection.
+
+## 2026-10-31 · The sextic family with both thetas removed sits at the bulk edge (3·10⁴)
+
+[numerical; `rip/theta/theta_twosided.py`, log `theta_twosided_B30000.log`; matrix-free version
+`theta_twosided_free.py`, which reproduces the dense run at 10⁴ exactly]
+
+| removed | top s²/S | MP edge |
+|---|---|---|
+| nothing | 4.550 | 4.180 |
+| row family V (dim 1080, 13% of R) | 3.960 | 3.903 |
+| V and the source family P (dim 432, 6% of S) | 3.773 | 3.792 |
+| V and a random source span | 3.817 | |
+| random spans of both dimensions | 4.016 | |
+
+- With both thetas removed, the sextic top sits at the Marchenko–Pastur edge. With the row family alone it stays
+  above. The source-theta family does more than a random source span of the same dimension.
+- This is numerical support for `TwoSidedSpikeFree` at one size. The runs at 10⁵ and 2·10⁵ (matrix-free) will
+  decide whether it persists.

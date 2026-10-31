@@ -48,6 +48,17 @@ shapes with the source as the modulus: `conj g̃(n) χ_n(m)^k`, `g̃(n) conj χ_
 * `selected_of_gradedTwoSided`: the selected bound `C B^{1+ε} + Λ_row + Λ_src` on any row set `W`. Here `Λ_src` is
   the Bessel constant of the source images on `W`; `spikeBessel_disjSum` adds the two families.
 
+## Numerical support for the corrected statement
+
+`theta_twosided.py` at `B = L = 3·10⁴`, removing the row family (thetas and plain characters on classes mod 36, plus
+twists `N(m) ≤ 30`; dimension 1080) and the source family (`conj g̃(x)`, `g̃(x)` times `N(x)^{−1/3}` on cells mod 36 ×
+parity; dimension 432) [numerical]:
+- the full top is 4.550, against an edge of 4.180;
+- off the row family only (the one-sided statement) it is 3.960, against 3.903;
+- off both families it is 3.773, below the edge 3.792;
+- off the row family plus a random source span it is 3.817;
+- off random spans of both dimensions it is 4.016.
+
 ## What the K-wall recursion needs now
 
 - `Λ_row` is the twist sieve of `SexticSpikeFree`, bridged to PR 93's selected norm in `ReciprocityBridge.lean`.

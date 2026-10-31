@@ -5349,3 +5349,13 @@ the twist mean square of one smooth factor") ignores source pairs with d = gcd(n
   - The corner's status is unchanged.
 - The numerics show nothing of this gap: Mellin-zero vectors sit at the null for every twist range measured. The
   gap is in the method, not in the truth.
+- **In Sil's framework the gap persists [Lean, read: `FourthPower/SievePairPoisson.pair_poisson`,
+  `SieveGaussPairs.pair_coupling`, `pair_modulus_norm`].**
+  - Sil's sources are sixth-power-free (`PowerFree 6`). `phase I` is the normalized Gauss sum of the character mod
+    `modulus I` (a generator of the radical).
+  - The Poisson dual carries A·pairGauss/|modulus I·modulus J|, so a source I enters the dual with weight
+    N(rad I)^{−1/2} = N(I)^{−1/2}·√N(sharp I) (`pair_modulus_norm`: N(rad I)·N(sharp I) = N(I)).
+  - Non-squarefree sources are therefore up-weighted in the dual, and their total dual mass is ≈ Σ_p 1/N(p),
+    comparable to the squarefree part. The weight is multiplicative but not uniform on sixth-power-free I.
+  - Its decomposition again produces square-part blocks with visible symbols ((h/d)₃, (h/S)₆ mod rad S). The "d⁶"
+    treatment would need uniform dual weights, which neither the squarefree nor the sixth-power-free setup has.

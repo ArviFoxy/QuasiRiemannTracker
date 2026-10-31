@@ -1,5 +1,10 @@
 # Frontier after the selected-leaf PR (#97, θ = 0.87341198)
 
+**Update (2026-10-31).** Upstream merged #98 and #99. Bebel's open #100 and #101 refine #99 at the 1e-16 level
+(0.87338196661320752), so the bar stays θ ≤ **0.8733319666**. New today, none of it a θ gain: the price of rank
+(`../orders/README.md`: no other power-residue family beats the sextic base), the residue mechanism of the sextic
+outlier and the masked-null two-sided tests (journal, 2026-10-31).
+
 Next bar: θ ≤ 0.87336198 (5e-5 below #97). Open upstream PRs: #98 (Bebel, θ = 0.8733821435) and **#99** (Bebel,
 θ = 0.8733819666133, "positive-reserve-selected-gap": a selected-energy adapter for every fixed positive gap above
 1/2, i.e. the engineering limit K → 1/2⁺ that fresh look 2 priced at 0.87338197). Against the best open PR the bar
@@ -232,6 +237,22 @@ block outlier is a residue").**
 - Its natural tool is the automorphy of `θ₆` itself: detect `n ≡ 0 (mod z)` additively and use the theta
   transformation at the cusps `a/z`. Whether the leftover twist after that step is quadratic (as for the cubic
   theta, where it makes the quadratic large sieve sharp) is the next thing to check.
+- Numerically the twisted images are flat on slot-selected rows at 3·10⁴ (journal, "Twisted source spikes are flat
+  on slot-selected rows"), so `Λ_src(W) ≈ ρ Λ_src` there.
+
+**What the K-wall needs, split by the residue picture (2026-10-31; heuristic map, nothing proved).**
+- On a slot-selected set W, `selected_of_gradedTwoSided` bounds the selected norm by `C B^{1+ε} + Λ_row + Λ_src`.
+  The first term is the two-sided spike-free conjecture: open, and as hard as a large sieve past the √-barrier.
+- The residue parts have explicit shapes, so their dilution on W is a separate question:
+  - **untwisted residue** (`τ₆` on the rows). W is a large-value set of a slot sum `T(z) = Σ_π χ_z(π)`. Moments
+    `Σ_z |τ₆(z)|² |T(z)|^{2k}` expand into `Σ_z |τ₆(z)|² ψ(z)` for characters ψ whose conductor is a product of slot
+    primes. These are Rankin–Selberg sums of `θ₆` with itself, twisted by ψ. Metaplectic Rankin–Selberg theory
+    (meromorphic continuation, a pole only for ψ trivial) should give power savings for small conductors. That
+    would prove the residue's energy on W is its density share. Plausibly within reach; not attempted.
+  - **twisted residues** (`τ₆(zm)`). Their Gram on W has entries `Σ_{z∈W} τ₆(zm) conj τ₆(zm′)`: multiplicative
+    shifted convolutions of theta coefficients. Without twisted multiplicativity for `τ₆` there is no known tool.
+- So, beyond the conjecture itself, the sextic K-wall's new arithmetic input is a shifted-convolution bound for
+  sextic theta coefficients at products. The cubic analogue would follow from Patterson's formula.
 
 ## Queued directions
 

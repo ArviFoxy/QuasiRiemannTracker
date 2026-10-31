@@ -1,0 +1,11 @@
+B=100000 L=100000  R=28210 rows  S=25936 sources  11511 row primes   tables in 72s
+  source Gauss sums (180s)
+  row Gauss sums (503s); cached
+B=100000: R=28210 S=25936; 76 twists with N(m) <= 300   (504s)
+full top [4.949 4.751 4.623 4.427]   masked null [3.99  3.988 3.982 3.977]   MP edge 4.174   (565s)
+M=30 M'=0 betas [0.333]: dV 1080 (0.038 R), dP 432 (0.017 S)
+    off both [4.442 4.334 4.219 4.177]   masked null [3.879 3.874 3.87  3.867]   random spans [4.758 4.562 4.449 4.263]   MP edge 4.058   (875s)
+M=100 M'=0 betas [0.333]: dV 1800 (0.064 R), dP 432 (0.017 S)
+    off both [4.342 4.211 4.136 4.1  ]   masked null [3.828 3.823 3.819 3.815]   random spans [4.666 4.494 4.371 4.204]   MP edge 4.003   (1246s)
+M=300 M'=0 betas [0.333]: dV 3600 (0.128 R), dP 432 (0.017 S)
+    off both [4.073 3.938 3.931 3.912]   masked null [3.692 3.686 3.682 3.679]   random spans [4.451 4.27  4.18  4.013]   MP edge 3.864   (2033s)

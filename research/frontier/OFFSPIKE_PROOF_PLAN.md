@@ -94,6 +94,31 @@ Each step lists de Faveri's statement, the corrected version, and the evidence.
   - Since phase³ is an angle (a Hecke character ξ of infinity type), the family is
     {conj(phase)^j·ξ^m·χ_k : j ∈ {0, 1, 2}, m ≥ 0}: three spiky types with accumulating angular twists. That
     matches the "about 400 levels, mostly angular twists" count below.
+- **Step 1, precisely (2026-10-31) [derived; the named lemmas are Lean].**
+  - Sil's recursion (`SievePoissonRecurrence.lambda_recurrence`) assumes λ(L, B) ≤ A(LB)^ε(L^α + L^{1/6}B). It
+    concludes λ(M, N) ≲ M + M^{1−α}N^{2α−1} + M^{5/6}N^{1/3}. The last term is the dual's multiplicity L^{1/6}B at
+    L = N²/M, i.e. the theta term.
+  - **The split is an identity.** Write the completed rows of norm ≤ L as aboveRows μ L (sixth-power-free kernel
+    > μ) and belowRows μ L. The energy over all rows is the sum of the two (positivity, nothing lost).
+    - Above: `RestrictedDescent.aboveRows_extraction` and `root_bound_of_above` (Lean) bound it by
+      Σ_{D: μN(D)⁶ < L} θ(L/N(D)⁶, B). The multiplicity is (L/μ)^{1/6} instead of L^{1/6}, so the theta term
+      becomes M^{5/6}N^{1/3}μ^{−1/6} = B^{1+γ} at M = N = B, μ = B^{1−6γ}.
+    - Below: the rows are R = R₀D⁶ with N(R₀) ≤ μ. Since rowValue(R₀D⁶)(I) = rowValue(R₀)(I)·(gen D/I)₆⁶, a
+      repeated row is row R₀ **restricted to the columns coprime to D**, and it vanishes elsewhere. So the below
+      energy is Σ_{R₀ ≤ μ} Σ_D |⟨μ_{(D)}, row_{R₀}⟩|², with μ_{(D)} the vector restricted to columns coprime to D.
+      Pulled back through the Poisson identity, these are **restricted twisted thetas** (step 2's objects).
+  - **Design rule: every metaplectic fact goes to the application.**
+    - Keep the restricted thetas as corrections, instead of proving they carry no excess. That removes step 2's
+      d^{−2}-twist and Kazhdan–Patterson vanishing from C, so C becomes purely elementary bookkeeping on Sil's
+      proved code.
+    - The application then bounds ⟨v·1_{(·,D)=1}, f⟩ for its own vectors. By Möbius over d | D that is a dilation
+      of v, which is the dilation aspect of input A that the K-wall needs anyway.
+  - **Corrected Cauchy–Schwarz.**
+    - `coherent_weighted_bound` pairs a-side rows V·K with b-side rows U·K for the same dual frequency K. So the
+      split must be by the sixth-power part of K, which repeats both sides together.
+    - For K with kernel ≤ μ, keep the coupled form. By AM–GM, |Σ conj(a)·b·kernel| ≤ (|A_K|² + |B_K|²)/2, which
+      leaves correction forms on each half.
+    - Sil's argument stays unchanged on the rest.
 - **Fork points in Lean.**
   - `lambda_sixth_extraction`: split D = 1 from D ≠ 1.
   - `coherent_weighted_bound`: keep the D ≠ 1 rows as correlations instead of sieving them.

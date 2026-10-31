@@ -4159,3 +4159,16 @@ absorption, live in the cubic world the baseline already covers, but they are cr
 - **Comparison with the faces route.** That route needs the K-wall (γ ≈ 0.015 at slope 0.48) and target 2. D1 needs
   the K-wall at a comparable or larger γ, over a range of slopes, and no target 2. On present knowledge D1 is the
   cheaper route to the bar.
+
+**Correction to the D1 entry above (same evening) [derived].**
+- The item "low slopes are cheap" is wrong. A class with only the full-family bound (sel = 1) cannot be made
+  harmless by shrinking the face: σs + 1 ≤ 1 fails for every μ, because sel = 1 does not fall with μ. That is why
+  `RowSplit.lean` says row splitting without the K-wall falls back to PR #97's leaf (Λ = 2).
+- So D1 by row splitting needs dilution at **every** slope σ ∈ (0, 1/2]. A constant K-wall excess γ″ is absorbable
+  (face μ + s ≤ 1 − 2γ″, from the worst class σ = 1/2). A missing range of slopes is not.
+- Our K-wall chain covers δ > 7/36 only. `SpikeRule.lean`: the graded block weights C B^{ε/q}(B/M)^{1/q} times the
+  amplification (M/B)^δ sum to B^{o(1)} exactly when δ > 1/q + 1/q². With it (and the graded spike-free
+  conjecture), sel(σ) ≤ fixPt(σ, μ) + ε for σ > 7/36.
+- The gap σ ∈ (0, 7/36] is open. Small σ needs only a small saving Z^{−σs}, so a weaker argument might do. A
+  dilution excess γ_low(σ) ≤ c·σ·s with c < 1 would leave a face (σs(1 − c) ≤ shrinkage). Not attempted.
+- D1's comparison with the faces route stands for the reference wall, but D1 adds this low-slope gap.

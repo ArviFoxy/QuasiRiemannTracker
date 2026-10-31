@@ -4480,3 +4480,39 @@ paper, read: PR 96's `02_ch_arithmetic.tex` (Theorem KUB, Theorem voronoi), `05_
     rescaling g̃(x) = g(x/Q): weight k = 4/3, ε = A·Q^{−2/3}.
   - So that piece is a short instantiation. The pole-crossing contour shift and the polar kernel remain the real
     work.
+
+## 2026-10-31 · Polar sketch: the polar theorems with `sorry`, and what they buy downstream
+
+[Lean, built: `lean/arvi_polar_sketch/` (`Polar`, `Bessel`, `KWall`); `polarInput` is the only `sorry`, every
+consequence takes it as a hypothesis and is checked with standard axioms; derived: the interface findings]
+
+At Arvi's request the polar theorems are stated first, with `sorry`, before committing to proofs.
+- **Stated (`polarInput`, the one `sorry`).** For order q ∈ {6, 3} and smooth W on [v₀, v₁] ⊂ (0, ∞):
+  - the pointwise polar asymptotic Σ W(N n/X) g̃(n) conj χ_n(m)^k = ρ(m) W̃(s₀) X^{s₀} + O(X^{1/2+ε}(1 + N m)^A);
+  - Lindelöf on average over twists of norm ≤ M, with mean square ≪ (MX)^{1+ε}.
+  It is written with the K-wall files' own objects (`gaussPhase`, `idealRowHom`, `twistBox`, `sexticSources`).
+- **Proved from it.**
+  - Mellin-zero vectors have square-root correlations.
+  - The low-height remainder is an explicit term carrying W̃(s₀ − iγ).
+  - `weighted_dyadic` / `weighted_bessel`: with spike strengths (B/N m)^{1/q},
+    Σ w_m |⟨v, f_m⟩|² ≪ log M · B^{1/q} M^{1+ε−1/q} X^{1+ε}.
+  - `kwall_source_term` + `source_exponent_le`: with input C in full-range form (`FullRangeCorrected`, an open
+    hypothesis), the source-spike term sits below the diagonal B^{1+γ}‖v‖² once M ≤ B^{1−qγ}.
+- **Interface findings.**
+  1. Our `GradedTwoSided` (`lean/arvi_kwall/SourceSpike.lean`) corrects by spikes cut into sharp windows with power
+     profiles. A Mellin-zero vector meets those with factors W̃(s₀ − j/2) and partial Mellin integrals that do not
+     vanish. So input C must be stated with full-range spikes, which is also what a Poisson step produces.
+  2. The Poisson coupling, separated by Mellin, twists the corrections by N^{it} with |t| ≲ 1, and a single zero
+     at s₀ does not kill those. The numerics (`theta_level_profile`) show that the actual dual polar part acts as rank
+     one in the radial direction, with a bounded floor. So C's correction functionals must be the actual dual polar
+     functionals, and their rank-one radial structure needs a proof (a Rankin–Selberg-type lattice sum over the
+     sixth-power copies). Not yet in any plan.
+  3. The leaf and reference vectors are convolutions with prime slots. Their polar input needs the dilation aspect
+     (twists m·b₂^{±k}). It is supported numerically but not derived.
+  4. In the banked chain the walls are `SelectedRootEnergy K` (proved for K ≥ 0.500001; the bar needs K ≈ 0.488) and
+     `ReferenceAt` clause 1, (L − 2)S, consumed in Sil's `RootParameters.interval_gap`.
+- **Verdict so far.**
+  - The polar input is a small, clean interface, and downstream it delivers exactly the K-wall's source term and the
+    reference's spike term.
+  - θ still needs input C in full-range form with rank-one correction functionals, the dilation-aspect polar input,
+    a low-height argument, and the two bank forks.

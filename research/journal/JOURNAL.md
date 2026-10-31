@@ -5008,3 +5008,61 @@ weights with zero Mellin transform at the pole" and "Convolution leaf vectors"]
 - The open core of the K-wall is now one statement: the twist mean square of balanced smooth convolutions in the band
   B^{0.25} < N(m) < B^{0.67}. Its type is a fourth-moment asymptotic with power saving, with no known elementary or
   Kubota-theory route. So the faces route to the bar no longer has open inputs of known type.
+
+## 2026-10-31 · The K-wall tolerates no excess: the selected norm must sit at its fixed point (ledger rescan)
+
+[numerical: `selected-leaf/ledger_kwall_gamma.py` on `ledger_gamma.py`/`ledger_gamma2.py` (moved from scratch into the
+repo), log `selected-leaf/logs/ledger_kwall_gamma_K048.log`; derived]
+
+**Rescan.** Along the native line at K = 0.48, take the best of the selected branch (per-root norm
+max(xe, (1 − δ + γ)y + δ·xe)) and the parent face. The quantity shown is max(price) − u.
+
+| γ | worst, default slot grid (21 points) | where |
+|---|---|---|
+| 0 | −2.5e-3 (passes) | S ≈ 0.005, x₁ = x₂ = 0.495 |
+| 0.002 | −5e-4 (passes) | grid edge |
+| 0.004 | +4e-8 to +3e-7 | S ≈ 0.004–0.005, x = 0.495 |
+| 0.01 | +1e-7 to +1e-6 | S ≈ 0.012–0.02, x ≈ 0.48 |
+| 0.06, 0.1, 0.111 | +8e-7 to +7e-6 (the same for all three) | S ≈ 0.08–0.11, x ≈ 0.39–0.41 |
+
+- With a 321-point slot grid, γ = 0.002, 0.001 and 0.0005 all fail, at S ≈ 0.0037, 0.0018 and 0.0009.
+- **Reading.** At the balanced point with slot width s the selected price is γ − (1 − δ)s. So for any γ > 0 the
+  geometries with s < γ/(1 − δ) need the parent face. There the parent face pays the selection's 6u row cost:
+  (P + L₀s − B₀(1 − 6u))/L₀ ≈ 6uB₀/L₀ ≈ 2.6u > u at L₀ ≈ 2.3.
+- So the tolerance is γ = 0. The earlier "γ ≲ 0.015" came from a coarse grid.
+- **The K-wall needs the selected norm at its fixed point up to Z^ε.** At slot width → 0 that is the sextic large
+  sieve at the balanced point at B^{1+ε} for the leaf's balanced convolutions: Lindelöf on average for a fourth
+  moment of the sextic family.
+- For the corrected recursion this is no change of plan (C targets 1 + ε anyway). But the open band of A‴ (previous
+  entry) widens to B^{0.23} < N(m) < B^{0.76} at γ → 0.
+
+**A bilinear improvement of the balanced point, and why it does not help [derived].**
+- Take v = a ⋆ b with arbitrary coefficients on factors of length X₁ ≈ X₂ ≈ √X.
+- After Sil's Poisson step the dual is the twist correlations c_h(v), h ≲ X²/B, with sixth-power multiplicity
+  (L/N h)^{1/6}, L = X²/B.
+- By twisted multiplicativity, c_h(v) is a bilinear form with the cubic kernel (n₂/n₁)₃. So Heath-Brown's cubic large
+  sieve [literature] gives |c_h|² ≤ X^{2/3+ε}‖a‖²‖b‖² pointwise. The twist large sieve gives (H + X)‖v‖² on average.
+- Taking the better of the two on each dyadic range (they cross at H = X^{1/3}):
+  Σ_{N z ≤ B}|Σ_n (a ⋆ b)_n χ_z(n)|² ≪ B^ε(B + X + B^{5/6}X^{5/18})‖a‖²‖b‖², for B^{3/5} ≤ X ≤ B.
+- At X = B that is B^{10/9} against B^{7/6}, i.e. excess 1/9 instead of Θ₆'s 1/6. It needs no metaplectic input and
+  no Mellin zero.
+- The rescan above shows that any γ > 0 leaves the K-wall failing at small S. So this is a correct improvement that
+  buys nothing in θ.
+
+**The face parameter B cannot replace K [numerical: `worth.theta_star`, h = 0.8097].**
+- The overshoot gate is Λ₀ > 6BK/(1 + K). At K = 1/2, B ≈ 0.984 would allow Λ ≈ 1.967 without any K-wall.
+- But θ* rises steeply as B falls:
+  - (Λ, B) = (1.967, 0.99): +1.6e-4 above the bar;
+  - (1.967, 0.985): +2.4e-4;
+  - (1.967, 0.98): +3.3e-4;
+  - (2.0001, 0.98): +3.7e-4;
+  - against +5.0e-5 at (2.0001, 0.99999).
+- So the face's B must stay at 1 − 10⁻⁵, and the bar needs K < 1/2.
+
+**Status of the faces route.** The bar needs, at the K-wall's balanced corner, a sharp (Z^ε) fourth-moment bound for
+the sextic family on balanced convolutions of smooth plain sums. Nothing in the program reaches it:
+- input A and A′ (previous entry);
+- three Poisson steps, which need one dominant factor;
+- the bilinear cubic sieve (excess 1/9);
+- prime dilation (saving ≤ B^{2/9});
+- RIP-type designs (journal 2026-10-30).

@@ -1,0 +1,17 @@
+K=0.480 native line ends at L=2.0003 (principal)
+  gamma=0.000 L=2.3000: max(min(sel,parent)-u) = -2.54e-03  at S=0.0041 x=(0.495, 0.495) M=1.0 sel=-0.0025 par=0.0  (2s)
+  gamma=0.000 L=2.0500: max(min(sel,parent)-u) = -2.46e-03  at S=0.0049 x=(0.495, 0.495) M=1.0 sel=-0.0025 par=0.0  (3s)
+  gamma=0.000 L=2.0005: max(min(sel,parent)-u) = -2.55e-03  at S=0.0053 x=(0.495, 0.495) M=1.0 sel=-0.0025 par=0.0  (4s)
+  gamma=0.010 L=2.3000: max(min(sel,parent)-u) = +1.21e-07  at S=0.0122 x=(0.486, 0.486) M=1.0 sel=0.0024 par=0.0  (5s)
+  gamma=0.010 L=2.0500: max(min(sel,parent)-u) = +6.59e-07  at S=0.0195 x=(0.48, 0.48) M=1.0 sel=0.0002 par=0.0  (7s)
+  gamma=0.010 L=2.0005: max(min(sel,parent)-u) = +1.02e-06  at S=0.0159 x=(0.484, 0.484) M=1.0 sel=0.0024 par=0.0  (8s)
+  gamma=0.060 L=2.3000: max(min(sel,parent)-u) = +8.05e-07  at S=0.0811 x=(0.407, 0.407) M=1.0 sel=0.0094 par=0.0  (9s)
+  gamma=0.060 L=2.0500: max(min(sel,parent)-u) = +3.29e-06  at S=0.0975 x=(0.4, 0.4) M=1.0 sel=0.0108 par=0.0  (11s)
+  gamma=0.060 L=2.0005: max(min(sel,parent)-u) = +6.82e-06  at S=0.1058 x=(0.394, 0.394) M=1.0 sel=0.0092 par=0.0  (12s)
+  gamma=0.111 L=2.3000: max(min(sel,parent)-u) = +8.05e-07  at S=0.0811 x=(0.407, 0.407) M=1.0 sel=0.0604 par=0.0  (13s)
+  gamma=0.111 L=2.0500: max(min(sel,parent)-u) = +3.29e-06  at S=0.0975 x=(0.4, 0.4) M=1.0 sel=0.0618 par=0.0  (15s)
+  gamma=0.111 L=2.0005: max(min(sel,parent)-u) = +6.82e-06  at S=0.1058 x=(0.394, 0.394) M=1.0 sel=0.0602 par=0.0  (16s)
+finer slot grid at K=0.48, L=2.0500:
+  gamma=0.0020 nS=321: +1.23e-07 at S=0.0037 x=(0.496, 0.496) sel=0.0002 par=0.0
+  gamma=0.0010 nS=321: +6.17e-08 at S=0.0018 x=(0.498, 0.498) sel=0.0001 par=0.0
+  gamma=0.0005 nS=321: +3.09e-08 at S=0.0009 x=(0.499, 0.499) sel=0.0 par=0.0

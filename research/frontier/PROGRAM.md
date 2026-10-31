@@ -106,6 +106,20 @@ Order: A → A′ → A″ feeds B (reference wall) and C (K-wall); C → D; B, 
 - The 3k-line cubic polar formula is the l = 0 slice of its Chapter 2. That is a direct ingredient, where the faces
   route uses it only as a template.
 
+## The reference fork in Lean (plan, 2026-10-31)
+
+- Sil's `SievePoissonBound.coherent_weighted_bound` already writes the dual sum as a bilinear form. It splits it
+  by Cauchy–Schwarz into two completed sieves λ(L₁, N₁)·λ(L₂, N₂) over rows V·K (gcd part times dual frequency).
+- In the reference regime, the √-barrier excess there is the sixth-power multiplicity of the dual frequencies:
+  K = K₀·D⁶ gives the same row character on sixth-power-free sources.
+- The fork:
+  1. extract the sixth powers from the dual frequencies (Sil's `SieveDescent` already does this);
+  2. for the repeated rows, bound each correlation pointwise by the bilinear bound for slot convolutions, instead
+     of by the sieve;
+  3. keep the rest of Sil's proof.
+- The bilinear core (phase multiplicativity under CRT; Cauchy–Schwarz into `OptimalBound` with rows q²) is being
+  formalized in `Submissions/arvi_prime_dilation/`.
+
 ## Recommendation
 
 - No θ gain is in reach of library-only or engineering work. The architecture limit (0.87338197) is PR 99's value.
@@ -113,4 +127,8 @@ Order: A → A′ → A″ feeds B (reference wall) and C (K-wall); C → D; B, 
   the named open problems.
 - On paper, C is the piece to settle first: it is elementary, carries the only non-classical risk, and Sil's formal
   sieve is its base.
-- In Lean, B is the cheapest standalone theorem: a corrected unbalanced sextic large sieve.
+- In Lean, B is the cheapest standalone theorem: a corrected unbalanced sextic large sieve. For the reference's
+  slot convolutions it needs no metaplectic input (above).
+- So the bar is gated by the K-wall alone: the balanced-point corrected sieve (C) plus input A, or Λ_src. Prime
+  dilation provably does not help at the balanced point: the dual problem there is balanced again, with about B
+  frequencies, and pointwise bounds cannot sum them.

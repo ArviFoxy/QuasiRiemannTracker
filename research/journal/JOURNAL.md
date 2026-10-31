@@ -4172,3 +4172,11 @@ absorption, live in the cubic world the baseline already covers, but they are cr
 - The gap σ ∈ (0, 7/36] is open. Small σ needs only a small saving Z^{−σs}, so a weaker argument might do. A
   dilution excess γ_low(σ) ≤ c·σ·s with c < 1 would leave a face (σs(1 − c) ≤ shrinkage). Not attempted.
 - D1's comparison with the faces route stands for the reference wall, but D1 adds this low-slope gap.
+- **Why the faces route has no such gap [read: E5 entry; derived].** In the native step, rows below the slope
+  threshold δ are not bounded by energy. They are deleted at rate δ (PR #97's leaf: price δ·deletionNeed), which
+  gives the overshoot gate Λ > 6δB/(1 + δ).
+  - Λ = 1.95 needs δ ≈ 0.481, inside the spike rule's range δ > 7/36.
+  - At δ = 7/36 the overshoot gate would sit at 6(7/36)/(1 + 7/36) ≈ 0.98, i.e. it would stop binding, and the
+    reference gate (target 2) decides Λ.
+  - So the faces route needs the K-wall only near slope 0.48 (with target 2). D1 needs it at every slope unless D1
+    can also delete the low classes. Whether it can is open.

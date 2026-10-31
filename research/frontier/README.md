@@ -196,3 +196,39 @@ returns the trivial bound (journal: "One shape for all three walls").
 | B2 (long word) | N-term saving η ≥ 0.1717 (#97 bar) or 0.1782 (#98 bar) in the complete-family Möbius moment past H = D | the same core estimate as P1 (theta columns against quadratic rows after reflecting `RawMoment`), but needing η > 1/6 to beat deletion ("never combine") | twisted Chowla strength |
 | faces' K-wall | selected norm at slope ≈ 0.48 within B^{0.015} of its fixed point at source length ≈ B^{0.96} (the t = 0 corner) | Guth–Maynard for a thin family at the kernel's self-dual point (conductors multiply). Equivalently, at the binding corner (two plain sums just below √(conductor), slot sliver s ≈ 0.03), a classical-strength structured face suffices: a twisted fourth moment of the sextic family whose prime twist goes past the √ limit, i.e. the faces' slot-cost atom again | barrier proved in Lean (`lean/arvi_kwall/`); the Θ₆ closure is about 11× too weak; the parent face only relieves the tiny-slot corner; pointwise bootstrap bounds on the plain sums do not help (journal, "K-wall corner") |
 | faces' reference | short reference past √A for smooth × prime vectors | GS1-type structured sextic sieve (#96, unverified) | pays only together with the K-wall |
+
+## Queued directions
+
+### Q1. A product (tensor) RKHS for the dual frame, with a multiresolution that resolves W at its own coarse scale (queued 2026-10-31, Arvi)
+
+Origin: the RKHS/basis-pursuit discussion of 2026-10-30. Status [heuristic]; nothing built yet.
+
+**The lever.** `../lean/arvi_kwall/DualFrame.lean` proves the dual-frame bound
+Σ_{z∈W} |D(z)|² ≤ c_W(Q)·λ_max(M*QM)·‖a‖² for every positive definite row metric Q. Here
+c_W(Q) = sup{⟨v, Q⁻¹v⟩ : v a unit vector supported on W}. The bound is exact as Q → P_W, so the design of Q is the
+whole content.
+- Q = I is the trivial restriction bound.
+- A generic smooth Q, i.e. a generic RKHS on the frequency side, cannot help at L = B. The balanced point is
+  critical (Nyquist) sampling, so there is no room for smoothing that ignores the arithmetic.
+
+**The proposal: build Q from the structure that defines W.**
+- **Products of short pieces.** Slot-selected rows are cut out by products of short prime sums
+  T_i(z) = Σ_{p∈P_i} c_p χ_z(p) over disjoint prime ranges P_i. The characters factor over the same pieces:
+  χ_z(n₁n₂) = χ_z(n₁)χ_z(n₂). So take a product kernel Q = ⊗_ℓ Q_ℓ, one factor per prime-size scale ℓ. With such a
+  kernel, ⟨Ma, QMa⟩ should factor over the pieces of the sources.
+- **A multiresolution that resolves W at its own coarse scale.** The cells at level ℓ are the joint values of
+  (χ_z(p))_{p ≤ P_ℓ}. W is measurable at the level ℓ_W of the slot primes.
+  - Make Q exact (cell-resolving) at levels ≤ ℓ_W. Then c_W(Q) = O(1) when W is a union of cells.
+  - Make Q smooth (averaging) above ℓ_W. That is where λ_max(M*QM) should gain over the plain large sieve.
+- **Include the theta's coarse structure.** The theta spikes are Gauss sums times class functions of z mod 36
+  (journal, 2026-10-31: supplementary twists by λ, ω and 2). The same coarse levels can carry them, which links this
+  to the spike-free conjecture (`SexticSpikeFree.lean`).
+
+**First steps.**
+1. Wait for the wide-kernel Q test at B = 10⁴ (large-B numerics agent, `../rip/theta/theta_dualframe.py`).
+2. Build a two-level product Q at B = 10⁴: exact on the slot-prime cells, averaging on the rest. Compute c_W(Q) and
+   λ_max(M*QM), and compare with Q = I and Q = P_W.
+3. Lean: a Kronecker-product lemma, i.e. the dual-frame bound for Q = Q₁ ⊗ Q₂ with factorized c_W.
+
+**What would kill it.** λ_max(M*QM) does not drop below the plain large sieve once c_W(Q) is kept O(1). That would
+mean the coarse cells carry no averaging gain at the balanced point.

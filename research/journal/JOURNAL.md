@@ -3204,3 +3204,24 @@ Same families as at 3·10⁴. V: row thetas and plain characters on classes mod 
     The unknown sixth roots `ζ₆^{k(π)}` are not class functions, and such a span cannot see them.
   - Computing `τ₆` independently is out of reach: Bröker–Hoffstein sum Gauss sums to norm 10⁸ to get `τ₆(π)` for
     `N(π) < 900`, while our rows have norm 10⁴ and up. The tests above are the available evidence.
+
+## 2026-10-31 · Twisted source spikes are flat on slot-selected rows (Λ_src, 3·10⁴)
+
+[numerical; `rip/theta/theta_src_twisted_selected.py`, logs `theta_src_twisted_selected_B30000.log` (twists
+N(m) ≤ 100) and `theta_src_twisted_selected_B30000_M400.log` (N(m) ≤ 400)]
+
+- **Setup.** The source spike is the top right singular vector `v₀` of E. Its twists `v₀(x)(x/m)₆` have row images
+  `Φ_m = E(v₀ (·/m)₆)`, which the residue picture predicts to be about `L^{1/3} τ₆(zm)`. The set W is the top ρR
+  rows by `|T(z)|`, the slot sum over the split primes of norm in `[P₀, 2P₀]`, as in `theta_selected_free.py`.
+  `Λ_src(W)` is the top eigenvalue of the Gram of the `Φ_m` restricted to W.
+- **Energy.** The images are flat on W: their mean energy share on W, divided by ρ, is 0.99–1.01 for
+  `P₀ ∈ {50, 200}` and `ρ ∈ {0.1, 0.03, 0.01}`. The masked null gives the same.
+- **Bessel constant.** `Λ_src(W)` matches random row sets of the same size within about 2σ (98 twists:
+  1.238 against 1.216 ± 0.016, 1.667 against 1.680 ± 0.029, …). The masked null scatters the same way.
+- **One false lead.** With 26 twists, `P₀ = 50` and `ρ = 0.03` gave +7.5% over random sets (about 5σ of the draw
+  spread). A twist-sieve structure (`Φ_π ∝ χ_z(π)^{±}Φ₁` when the twists include the slot primes) would predict that,
+  and an excess for `P₀ = 200` once the twists reach 400. With 98 twists neither appears, so the first number was
+  most likely noise.
+- **For the K-wall.** At these sizes the twisted source spikes behave like the untwisted one: `Λ_src(W) ≈ ρ Λ_src`
+  up to random-set fluctuations, with no slot-driven concentration. The structural worry (the sextic `Λ_src` is not
+  a twist sieve, frontier README) has no numerical footprint yet. Whether that persists at larger B is open.

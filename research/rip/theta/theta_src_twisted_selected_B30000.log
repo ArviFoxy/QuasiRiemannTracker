@@ -1,0 +1,17 @@
+B=30000 L=30000  R=8474 rows  S=7768 sources  3880 row primes   tables in 7s
+B=30000 L=30000: R=8474 S=7768; 26 twists with N(m) <= 100; slot primes {50: 10, 200: 32}   (8s)
+sextic: top s^2/S 4.550
+  P0=50 rho=0.100: concentration on W 0.992 (flat 1); Lambda_src(W)/flat 1.150, random sets 1.120 +- 0.009
+  P0=50 rho=0.030: concentration on W 0.998 (flat 1); Lambda_src(W)/flat 1.499, random sets 1.394 +- 0.021
+  P0=50 rho=0.010: concentration on W 0.987 (flat 1); Lambda_src(W)/flat 1.917, random sets 1.813 +- 0.094
+  P0=200 rho=0.100: concentration on W 0.999 (flat 1); Lambda_src(W)/flat 1.149, random sets 1.161 +- 0.021
+  P0=200 rho=0.030: concentration on W 0.998 (flat 1); Lambda_src(W)/flat 1.372, random sets 1.383 +- 0.048
+  P0=200 rho=0.010: concentration on W 0.996 (flat 1); Lambda_src(W)/flat 1.877, random sets 1.780 +- 0.052
+masked null: top s^2/S 3.979
+  P0=50 rho=0.100: concentration on W 0.997 (flat 1); Lambda_src(W)/flat 1.129, random sets 1.156 +- 0.019
+  P0=50 rho=0.030: concentration on W 0.996 (flat 1); Lambda_src(W)/flat 1.372, random sets 1.444 +- 0.070
+  P0=50 rho=0.010: concentration on W 1.023 (flat 1); Lambda_src(W)/flat 1.874, random sets 1.896 +- 0.075
+  P0=200 rho=0.100: concentration on W 1.009 (flat 1); Lambda_src(W)/flat 1.172, random sets 1.158 +- 0.019
+  P0=200 rho=0.030: concentration on W 1.005 (flat 1); Lambda_src(W)/flat 1.401, random sets 1.423 +- 0.035
+  P0=200 rho=0.010: concentration on W 1.014 (flat 1); Lambda_src(W)/flat 1.867, random sets 1.872 +- 0.074
+done in 13s

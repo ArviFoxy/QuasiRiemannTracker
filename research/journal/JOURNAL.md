@@ -3283,5 +3283,16 @@ conjugations) and the plain `(x/m)₆^{±1}`, on the twelve classes mod 4.
   are large, E off them sits slightly below the null, as expected: they remove directions where E has more than its
   average energy.
 - **At 10⁵ the same families do much less.** They are a third of the relative size (dV/R 0.13 against 0.42), and the
-  excess falls only from 14.5% to 10.3%. A run with row twists to 1000 (dV/R ≈ 0.35) is queued to see whether the
-  relative size is what matters.
+  excess falls only from 14.5% to 10.3%, then to 7.6% with source twists N(m) ≤ 30. A run with row twists to 1000
+  (dV/R ≈ 0.35) is queued to see whether the relative size is what matters. At the same relative size (0.13) the
+  remainder is 31% of the full excess at 3·10⁴ and 43% at 10⁵, so a family of fixed relative size removes a smaller
+  fraction as B grows, at least between these two sizes.
+- **The cubic family** (`theta_twosided_grow.py … 3`, kernel mode 2, log `theta_twosided_grow_cubic_B30000.log`).
+  Same families with cubic Gauss sums and the source profile `N^{−1/6}`. At 3·10⁴ the full matrix is 125% above its
+  masked null (the `B^{1/3}` theta). Off the families: +24.3%, +19.9%, +12.2%, +9.4%, **+0.4%** for (30, 0),
+  (100, 0), (100, 30), (300, 0), (300, 100); random spans of the same dimensions +108% … +64%. So the one-theta family
+  also reaches its null once twists on both sides are removed. The source twists do most of the last step.
+  - Why source twists matter even with one theta: with `(x/m)₃^{−1} = (x/m²)₃` the twisted source theta's row image
+    is `G(z)·χ_z(m)²`, the other conjugation, while V holds only `G(z)·conj χ_z(m)²`. The Lean statement removes
+    every power `χ_z(m)^k`, so the numerical V is a subset of it. A run with both conjugations in V
+    (`THETA_ROWCONJ=1`) checks this. [derived]

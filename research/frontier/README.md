@@ -19,9 +19,11 @@ outlier and the masked-null two-sided tests (journal, 2026-10-31).
     and Sil's form of the step is in Lean (`silStep`, fixed point 1 + γ).
   - *Numerics.* Mellin-zero plain vectors are at the null against twisted thetas of every twist size up to B, at
     three scales and in both families. For the K-wall's convolution vectors one designed factor suffices.
-  - *Lean inputs.* The baseline formalizes the cubic Kubota Eisenstein series, its theta and a reflection formula.
-    The faces' plain vectors meet the sextic (6-fold) series, which is not formalized; the cubic development is
-    the template.
+  - *Lean inputs.* The baseline formalizes the cubic Kubota Eisenstein series and its theta (Patterson's
+    coefficients). Its Voronoi reflection, however, is only for the pole-free series (the ∂̄-derivative, i.e.
+    angular-twisted cubic, equivalently Möbius-signed sextic, sums), with square-root bounds. The Mellin rescue
+    needs the polar asymptotic. That is missing even for n = 3; a concrete target is extending the reflection to
+    conj θ₃ with its constant term. For n = 6 nothing beyond Möbius absorption exists.
   - *Target 2* is one corrected Poisson step with the dual bounded by Sil's existing sieve.
   - *D1 by row splitting* needs no reference wall. It does need dilution at every slope in (0, 1/2]. The
     spike-rule recursion covers only δ > 7/36, and the low slopes are an open gap (journal, D1 entry and its

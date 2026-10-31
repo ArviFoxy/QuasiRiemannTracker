@@ -3472,6 +3472,11 @@ phases), divided by the same for the masked random matrix. A value of 1 means no
   growing row family V (twists N(m) ≤ 300, 3·10⁴, random level 0.425): theta 0.76, level 2 0.59, level 3 0.58,
   plain 0.60. So the two-sided projection takes out part of each level, and the rest must come off on the source
   side.
+- **Flat on slot-selected rows** (`theta_level_selected.py`, logs `theta_level_selected_sextic_B{30000,100000}.log`).
+  The concentration of each level's row image on the top ρR rows by a slot sum (P0 = 40, 200, 1000; ρ = 0.1, 0.01),
+  over the flat value 1, is 0.83–1.13 at 10⁵ for every level, against 0.97–1.03 for random row sets. The noise at
+  ρ = 0.01 (282 rows) is about ±0.1. The angular level's 1.42 at 3·10⁴ (P0 = 40, ρ = 0.01, 85 rows) does not persist.
+  So for Λ_src the levels dilute like the theta.
 - The 2026-10-30 entry's "conj G², G², conj G³: 0.90–0.98" was the row side without angular twists, which agrees.
 
 **What it means.**

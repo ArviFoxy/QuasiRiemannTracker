@@ -128,4 +128,61 @@ leftover twist hold for n = 4 as well, and only the explicit-theta condition fai
 - **Quartic options** (starting bound 7/8):
   - (a) the GL(2) biquadratic theta, which needs Patterson's conjecture;
   - (b) an explicit higher-rank carrier, the 4-fold theta on GL(3) or GL(4), which pays the weaker GL(3)/GL(4)
-    reflection. Whether that loss eats the 1/24 head start is the open question for this route.
+    reflection. The next section prices both: (a) does not help even with the conjecture, and (b) loses the
+    whole head start.
+
+## What the base step needs, and the price of rank (OpenAI, Oct 5 2026 preprint, §2 Steps 2–5)
+
+[derived from the preprint's outline; the rank count is a heuristic, not a theorem]
+
+The 11/12 base runs in three moves.
+1. **Copies.** `χ_n(u p⁶) = χ_n(u)` puts about `H^{1/6}` copies of the target sum `A₁(D)` among the rows `A_u(D)`,
+   `N(u) ≤ H`. The mean square `Σ_u |A_u(D)|² ≪ D^{1+ε} H` then gives `|A₁|² ≪ D H^{5/6}`.
+2. **Poisson in the row.** The dual columns carry `μ(n)γ₋₁(n) ∝ conj α(n) γ₂(n)`, and the mean square reduces to
+   `Σ_{N(h) ≪ 𝓗} |B_h(D)|² ≪ D²` with `𝓗 = D²/H` and
+   `B_h(X) = Σ_n conj α(n) γ₂(n) ξ(n) χ_n(h) U(N(n)/X)`.
+3. **Theta transformation.** By Patterson (Thm 8.1), `γ₂(n)` is the coefficient of Kubota's cubic theta *at
+   index n*: `c_θ(nb³) = 3^{5/2}|b| conj χ_n(λ)² γ₂(n)`. Expanding the twist additively and using automorphy
+   gives dual sums of length `N(h)²/X`. At each `p | h` the Fourier factor `χ_p^{−1}` and the theta multiplier
+   `χ_p^{−2}` combine to `χ_p³`, a quadratic character. So the dual mean square is the quadratic large sieve
+   (Heath-Brown, Goldmakher–Louvel), with the sharp factor `M + L`. That gives
+   `Σ_h |B_h(X)|² ≪ (𝓗X)^ε (X𝓗 + 𝓗²)`, which is `≪ D²` at `X = D`, `𝓗 ≤ D`.
+
+**Quartic family.** Move 1 gives `1 − 1/8 = 7/8`, and move 2 lands on `conj α(n) γ₄(n)`. Move 3 needs a GL(2)
+automorphic form whose coefficient at index `n` is the quartic Gauss sum of modulus `n`.
+- No such form is known. The theta on the 4-fold cover of GL(2) has no unique Whittaker model
+  (Kazhdan–Patterson). Patterson's conjecture makes its prime coefficients square roots: `τ₄(p)² = 2γ̃₄(p)`.
+- Even granting the conjecture, `B_h` would be a twisted sum of `τ₄(n)²`. That is a Rankin–Selberg-type object, a
+  rank-4 carrier, not a GL(2) one.
+- The quartic Kubota series `Σ_c g₄(h, c) N(c)^{−s}` has a functional equation, but its dual coefficients are
+  again quartic Gauss sums with a quartic twist. So the dual mean square is the same quartic large-sieve problem:
+  Poisson twice is the identity. De Faveri's general bound (`A + B + A^{3/4}B^{1/2} + A^{1/2}B^{3/4}`) gives
+  `D^{9/4}` at `A ≈ B ≈ D`, against the needed `D²`.
+- If a GL(2) realization existed, the twist arithmetic would work: a quartic multiplier gives
+  `χ_p^{−1}χ_p^{∓1}`, which is quadratic or trivial. So the obstruction is the missing form.
+
+**The price of rank.** Suppose the absorbed Gauss sums were the coefficients of a carrier of rank `r`, with flat
+coefficients and the best possible leftover twist (quadratic, so the sharp sieve `M + L`). A GL(r) reflection
+sends a sum of length `X`, twisted mod `h`, to one of length `N(h)^r/X`, so
+- `Σ_h |B_h(X)|² ≈ X𝓗 + 𝓗^r`;
+- `≪ D²` needs `𝓗 ≤ D^{2/r}`, i.e. `H ≥ D^{2−2/r}`, which is also the optimal choice of `H`;
+- the base exponent is then `θ₀ = (1 + (2 − 2/r)(1 − 1/n))/2`, for family order `n` (copies at `n`-th powers).
+
+| carrier rank `r` | `n = 2` | `n = 3` | `n = 4` | `n = 6` | `n = 8` |
+|---|---|---|---|---|---|
+| 2 | 3/4 | 5/6 | 7/8 | **11/12** | 15/16 |
+| 3 | 5/6 | 17/18 | 1 | 19/18 | 13/12 |
+| 4 | 7/8 | 1 | 17/16 | 9/8 | 37/32 |
+
+- At rank 2 this is `1 − 1/(2n)`, the baseline.
+- A rank-3 carrier saves something only for `n < 4`, and a rank-4 carrier only for `n < 3`. In general
+  `n < (2r − 2)/(r − 2)`.
+- The only orders that absorb Möbius into one Gauss sum are 4 and 6 (classification above). The explicit quartic
+  carriers have rank 3 or 4, so they give `θ₀ ≥ 1`: **no saving**. The head start of 1/24 is lost entirely, not
+  partly.
+- So within this architecture the sextic family over ℤ[ω] with the cubic theta is optimal, not just the only
+  explicit option. A quartic gain needs new mathematics of a specific kind: a GL(2)-type summation formula for
+  quartic Gauss sums at index `n` that leaves a quadratic twist. Patterson's conjecture alone does not give one.
+- **Larger fields.** For `K ⊇ ℚ(ζ₃)` of higher degree, the sextic argument runs the same way in norms and gives
+  the same exponents. Its infinite unit group adds work and buys nothing. `ℚ(ζ₃)` is the smallest field carrying
+  the sextic residue symbol. [heuristic]

@@ -3129,3 +3129,27 @@ Same families as at 3·10⁴. V: row thetas and plain characters on classes mod 
 - So these numbers neither confirm nor refute `TwoSidedSpikeFree`. They show that a fixed family is not enough, which
   the conjecture allows. The next test grows both families with B (more twists on both sides, source windows), against
   random spans of the same dimensions.
+
+## 2026-10-31 · The price of rank: why no other power-residue family beats the sextic base
+
+[derived from the Oct 5 preprint's outline (§2 Steps 2–5); the rank count is a heuristic; `orders/README.md`]
+
+- **What the base needs.** The 11/12 step uses three moves: copies of the target among the rows (`H^{1/n}` of them
+  for a family of order `n`); Poisson in the row, which absorbs μ into a Gauss sum; and a theta transformation.
+  The last move needs the absorbed Gauss sum at modulus `n` to be the coefficient of a GL(2) form *at index `n`*.
+  For the cubic theta this is Patterson's theorem. Then the Fourier factor `χ_p^{−1}` and the multiplier `χ_p^{−2}`
+  leave the quadratic twist `χ_p³`, and the sharp quadratic large sieve closes the dual mean square.
+- **Quartic family.** μ is absorbed into the quartic Gauss sum `γ₄(n)`. No GL(2) form has `γ₄(n)` at index `n`.
+  The 4-fold theta's prime coefficients are square roots of `γ₄` (Patterson's conjecture), so even the conjecture
+  gives a sum of `τ₄(n)²`, a rank-4 object. The quartic Kubota series reflects quartic Gauss sums into quartic
+  Gauss sums with a quartic twist, which is the same problem again.
+- **Price of rank.** A carrier of rank `r` reflects a sum of length `X`, twisted mod `h`, into one of length
+  `N(h)^r/X`. Even with the best leftover twist (quadratic, sharp sieve) the dual mean square is `X𝓗 + 𝓗^r`. The
+  base exponent is then `θ₀ = (1 + (2 − 2/r)(1 − 1/n))/2`. That is `1 − 1/(2n)` at rank 2. A quartic family with an
+  explicit rank-3 or rank-4 carrier (Kazhdan–Patterson) gets `θ₀ = 1` or `17/16`: no saving, so the 1/24 head start
+  is lost entirely.
+- **Answer to "why ℚ(ζ₃)".** Among power-residue detectors, the sextic family over ℤ[ω] with the cubic theta is not
+  just the only explicit option; within this architecture it is optimal. ℚ(ζ₃) is the smallest field carrying the
+  sextic residue symbol, and larger fields give the same exponents with more units. A different order needs a
+  specific piece of new mathematics: a GL(2)-type summation formula for quartic Gauss sums at index `n` that leaves
+  a quadratic twist.

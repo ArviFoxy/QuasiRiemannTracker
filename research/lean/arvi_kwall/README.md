@@ -234,3 +234,20 @@ So the recursion that proves the optimal sieve, run off the spikes, has fixed po
 `TwoSidedSpikeFree` with twist range B^{1−6γ}. Whether each analytic step survives the removal is open. The
 obstacles, in order: the dual problem's own thetas at the fixed point (level-2 corrections), restriction to
 sub-lattices in the gcd sorting, and the row side.
+
+## TransposeCorrection.lean: corrected bounds transpose with explicit image corrections
+
+Journal, 2026-10-31, "The weighted corrected bound transposes with explicit image corrections". About 26 s;
+standard axioms.
+
+Sil's formal sieve bounds the dual problem through the swap θ(L, N) = θ(N, L), an operator-norm identity. A corrected
+bound is about vectors, so the swap needs a vector form.
+
+| theorem | statement |
+|---|---|
+| `transpose_corrected` | if ‖Eλ‖² ≤ Δ‖λ‖² + Σ_f w_f\|⟨λ, f⟩\|² for every λ, then ‖Eᴴx‖² ≤ 2Δ‖x‖² + Δ⁻¹Σ_f w_f\|⟨x, Ef⟩\|² for every x |
+| `transpose_orthogonal` | precondition form: λ ⊥ F ⇒ ‖Eλ‖² ≤ Δ‖λ‖² gives x ⊥ E(F) ⇒ ‖Eᴴx‖² ≤ Δ‖x‖² |
+| `ip_adj`, `norm_ip_sq_le`, `quad_bound` | ⟨Eᴴx, v⟩ = ⟨x, Ev⟩; Cauchy–Schwarz; y² ≤ aΔy + aS ⇒ y ≤ 2aΔ + S/Δ |
+
+The transposed corrections are the images Ef (row images of twisted thetas, explicit Kubota-type sums), not
+polar-decomposition vectors. So `completed_of_exponent`'s swap has a corrected analogue at the cost of a factor 2.

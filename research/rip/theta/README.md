@@ -5,6 +5,37 @@ The reduction is in Lean (`../../lean/arvi_kwall/FlatDilution.lean`). If M = (fl
 part is diluted by k·|W|/R. That needs k = dim V small. This directory measures what V is, and finds that k cannot
 be small.
 
+## Synthesis (2026-10-31): what the sextic large sieve's excess is
+
+[numerical, with the mechanism heuristic; details in `../../journal/JOURNAL.md`, entries of 2026-10-31]
+
+- **The excess is the residue of a Kubota series.** For a source vector built from Gauss sums,
+  `E f(z) = Σ_x f(x)(x/z)₆` is, by reciprocity and twisted multiplicativity, a partial sum of the sextic Kubota series
+  `ψ₆(z, s) = Σ_x g̃(z, x) N(x)^{−s}` at the index z. Its pole gives a main term proportional to `L^{1/3}` times the
+  sextic theta coefficients at z.
+  - The outlier's row vector is the same for every source length.
+  - Disjoint source windows point the same way.
+  - The main energy grows like about `L^{1/3}`.
+  - The strength at L = B is `B^{1/q}` for order q: `B^{1/6}` for the sextic matrix, `B^{1/3}` for the cubic one.
+- **One theta or two.** For q = 3 the residue is Patterson's Gauss-sum vector, the row theta itself: one spike seen
+  from both sides. For q = 6 the theta coefficients are not Gauss sums (Kazhdan–Patterson), so the source theta and
+  the row theta are different vectors.
+- **Why the source theta dominates.** The sources fill every scale 1 … L and the residue builds up coherently across
+  them; the rows fill one dyadic window. This gives the source theta about ten times the row theta's energy at
+  3·10⁴.
+- **The residue has components.** At small rows the source classes mod 4 give about eight independent residue
+  vectors, consistent with the components of the sextic theta over Bröker–Hoffstein's representatives. The large-B
+  outlier is one combination of them.
+- **Every twist carries a copy.** Twisting the source theta by `(x/m)₆` gives the residue at `zm`. The twisted copies
+  weaken only like `N(m)^{−1/6}`, so they matter up to `N(m)` of order B.
+- **Removing them works at 3·10⁴.** Against the right null (random phases on E's zero pattern, about 4.5% below the
+  Marchenko–Pastur formula), E off twisted thetas on both sides (row twists to 300, source twists to 100) sits at the
+  null for the sextic and the cubic matrix alike. Random spans of the same dimensions do not. At 10⁵ the same families
+  are relatively smaller and leave a few percent (`theta_twosided_grow`).
+- **For the K-wall.** The twisted source spikes are flat on slot-selected rows (`theta_src_twisted_selected`). Beyond
+  the two-sided spike-free conjecture itself, the new arithmetic input is a shifted-convolution bound for sextic
+  theta coefficients at products (`../../frontier/README.md`).
+
 | script | measures |
 |---|---|
 | `theta_span.py B L` | dual energy ratio r = ‖Eᵀc‖²/(S‖c‖²) of theta row vectors conj G(z,1)·profile against random phases; profile Gram (rank one?); detectors' projections; top singular values with V removed |

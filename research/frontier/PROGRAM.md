@@ -5,9 +5,11 @@ inputs are of known type. Evidence tags as in `../journal/JOURNAL.md`.
 
 ## Goal and payoff
 
-A face past Λ = 2 in the count and physical faces. Λ ≈ 1.95–1.97 clears the bar θ ≤ 0.8733319666 (5e-5 below
-PR 99). The bar is −8.0e-5 against PR 97. The face table gives −5.1e-5 at Λ = 1.97 and −1.6e-4 at 1.9. The low
-end assumes no help from the banked engineering (−2.97e-5); the high end assumes it adds. The roadmap payoff with both walls moved is −1e-4 to −5e-4 (`README.md`, "Roadmap for the faces").
+A face past Λ = 2 in the count and physical faces. **Λ ≈ 1.967 clears the bar** θ ≤ 0.8733319666 (5e-5 below
+PR 99) at the banked design.
+- This is the float model of the newTop row, `fresh-look/second/base_models/worth.py`, with h = 0.8097. At
+  Λ = 2.0001 it reproduces the bank, 0.87338228. Λ = 1.97 gives +4.2e-6 against the bar and 1.96 gives −1.15e-5.
+- At PR 97's design (h = 0.8001361) the same bar needs Λ ≈ 1.951. The roadmap payoff with both walls moved is −1e-4 to −5e-4 (`README.md`, "Roadmap for the faces").
 
 Both walls must move:
 - the **K-wall** (K < 1/2), at slope ≈ 0.48 with excess γ ≈ 0.015;

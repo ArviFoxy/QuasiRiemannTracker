@@ -4446,3 +4446,37 @@ bootstrap's partial one. [the faces' sextic input stays a paper-level project]
 - `frontier/PROGRAM.md` collects the faces program on one page: inputs A (6-fold Kubota, index aspect), A′
   (Lindelöf on average), A″ (Mellin rescue), B (target-2 decomposition, a Sil fork), C (corrected recursion), D
   (Λ_row), E (face forks).
+
+## 2026-10-31 · What the cubic polar Voronoi formula would feed (answering "is there a payoff?")
+
+[Lean, read: the baseline's downstream use of cubic Gauss sums; Mathlib, read: `NumberTheory/LSeries/AbstractFuncEq`;
+paper, read: PR 96's `02_ch_arithmetic.tex` (Theorem KUB, Theorem voronoi), `05_ch_nonpolar.tex`,
+`inc_sec_sqclass.tex`]
+
+- **No direct θ.** Downstream of `Eisenstein/` and `GaussSum/`, the baseline uses only the pole-free coefficient
+  `squarefreeGaussCoefficient` (Arithmetic, Cusp, Descent, Detector, MeanSquare, RowCompletion). Patterson's polar
+  coefficients occur only inside `Eisenstein/` and `GaussSum/`. That is by design: Möbius vectors meet only
+  pole-free sums. So no existing estimate of the stack improves from a polar formula.
+- **Consumer 1: the faces (`frontier/PROGRAM.md`).** There the formula is a template, since the faces' spikes are
+  sextic. The payoff when the whole program lands is −5e-5 at Λ ≈ 1.967, rising to about −4e-4 near Λ = 5/3.
+- **Consumer 2: PR 96's architecture.** Its Chapter 2 imports Kazhdan–Patterson (Publ. IHES 1984, with the 1985
+  corrections) for n ∈ {3, 6}:
+  - Theorem KUB: continuation, polynomial growth uniform in the index and the conductor, and the functional equation
+    with archimedean ratio Φ_{n,l};
+  - the Voronoi formula in the index aspect.
+  - Downstream (Chapters 3–7, the square-class section) it uses only the cubic series D̃₃. Its D₆ is de Faveri's
+    sieve exponent, not a 6-fold Kubota series. So PR 96 avoids the 6-fold cover, while our faces need it.
+  - It needs twists θ_f·α^l·N^{−iτ} of nonzero infinity type l: the square-class charts take l ≠ 0, and the detector
+    uses Größencharaktere of infinity type z̄/|z|. That needs Eisenstein series of non-spherical K-type. The
+    baseline's spherical cubic series does not have them, and its ∂̄ trick carries only one angular factor.
+  - So the 3k-line formula (spherical, l = 0, periodic twists) is the l = 0 slice of what PR 96 needs.
+  - In PR 96's own constraint model (re-derived in `pr96/CONSTRAINTS.md`): 0.8791 with de Faveri plus the chart, and
+    0.8656 with the Voronoi chart dpx. Both exceed the record by far, but they need a new probe layer (the OpenAI
+    analogue is ≈ 264k lines) and the paper is unrefereed.
+- **Order-generic core, rechecked.** Of the three new pieces of the cubic twin, the Mellin continuation with
+  constant terms at both ends of a functional equation is Mathlib's `WeakFEPair`. It handles vector-valued f, g, so
+  several cusps at once, and gives meromorphy, poles at 0 and k with explicit residues, and Λ₀(k − s) = ε·Λ₀^{symm}(s).
+  - A cusp profile F(v) ~ c·v^{2/3} at ∞ with reflection F(v) = A·G(1/(Qv)) fits after f(x) = x^{−2/3}F(x) and the
+    rescaling g̃(x) = g(x/Q): weight k = 4/3, ε = A·Q^{−2/3}.
+  - So that piece is a short instantiation. The pole-crossing contour shift and the polar kernel remain the real
+    work.

@@ -8,7 +8,8 @@ plain level (best class phases over 72 classes, as theta_level2.py), three weigh
   U1 = t^{-1/3}                                  (I != 0, the scan's profile)
   U2 = t^{-1/3} (1_{t<=1/2} - c 1_{t>1/2}),  c = 2^{-1/3}/(1 - 2^{-1/3})   (I = 0)
   U3 = t^{-1/3} (1_{t<=1/2} + c 1_{t>1/2})                                  (control: same pieces, I != 0)
-printing the top of the class-compressed source Gram over the masked null.
+printing the top of the class-compressed source Gram over the masked null; also for the higher Poisson levels
+u^2 (x/|x|) (the conjugate cubic Gauss sum up to classes) and conj(x/|x|), whose poles may differ.
 
 usage: python3 -I theta_level_profile.py B [threads]
 """
@@ -57,7 +58,9 @@ def top_ratio(v):
 
 
 print('B = L = %d: R=%d S=%d; c = %.3f   (%.0fs)' % (B, R, S, c, time.time() - t0), flush=True)
-for lname, lv in (('theta u', u), ('plain', np.ones(S, complex))):
-    print('  %-8s %s' % (lname, ';  '.join('%s: %.3f' % (pn, top_ratio(lv * p)) for pn, p in prof.items())),
+xang = (SA + SB * np.exp(2j * np.pi / 3)) / np.abs(SA + SB * np.exp(2j * np.pi / 3))
+for lname, lv in (('theta u', u), ('plain', np.ones(S, complex)), ('u^2(x/|x|)', u ** 2 * xang),
+                  ('conj(x/|x|)', np.conj(xang))):
+    print('  %-12s %s' % (lname, ';  '.join('%s: %.3f' % (pn, top_ratio(lv * p)) for pn, p in prof.items())),
           flush=True)
 print('done in %.0fs' % (time.time() - t0))

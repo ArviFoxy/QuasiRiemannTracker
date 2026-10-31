@@ -3688,6 +3688,12 @@ times the theta level u or the plain level, with the best class phases (72 class
 | plain | 3·10⁴ | 1.048 | 1.014 | 1.062 |
 | plain | 10⁵ | 1.094 | 1.010 | 1.078 |
 
+**All levels share the pole (10⁵, same weights).** The higher Poisson levels vanish with the same I(U) = 0 weight:
+u²(x/|x|) (conj g̃₃ up to classes) 1.286 → **1.002** (control 1.165); conj(x/|x|) 1.276 → **1.003** (control 1.125).
+So every source spike, at every level and twist, has one common radial direction: the residual pole s₀ = 2/3 of the
+metaplectic Eisenstein series, whose residue is the theta function. One Mellin condition on a factor's weight takes
+a vector off all of them.
+
 **The source spikes are rank one in the radial profile, and the rank-one direction is the Kubota pole.** With
 I(U) = 0 the theta's +224% at 10⁵ falls to +2.5%, and the control with the same two pieces keeps +153%. The
 plain level's growing +9.4% falls to +1%. This confirms the residue mechanism quantitatively and locates the pole
@@ -3704,8 +3710,7 @@ at s₀ = 2/3.
     |t|^{−A} for smooth W, so zeros away from the real axis need nothing.
   - Near t = 0, split W = W₀ + c·W_ref with W̃₀(s₀ − σ) = 0, using two dyadic pieces as above. W₀ is spike-free, and
     W_ref leaves one explicit rank-one main term per twist, whose coefficient is known.
-- **The levels.** Level 2 (conj g̃₃) and level 3 have their own poles. Killing several Mellin points needs a few more
-  pieces in the split, which is routine.
+- **The levels** share the pole (table above), so one Mellin condition covers them.
 - **The corrected sieve.** The correction family needs only the I ≠ 0 radial direction per twist and level. The
   Lean statement's windows × profiles span more than this, which is harmless.
 

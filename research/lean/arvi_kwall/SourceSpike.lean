@@ -87,7 +87,11 @@ class-signed source theta times `(x/m)₆^{±1}`, and the plain `(x/m)₆^{±1}`
   0.103 at `B = 10⁴`, and 0.102 and 0.096 at `3·10⁴`. On the top 1% it is 0.0096 and 0.0082, and 0.0085 and 0.0077.
 - A flat image adds about `θ S |W| / R ≈ B^{7/6−δ}` for `|W| = B^{1−δ}`. That is below `B^{1+ε}` once `δ ≥ 1/6`, so
   the barrier range `1/3 ≤ δ < 1/2` is untouched.
-- The twisted source spikes are not analyzed yet. [heuristic]
+- Twisted source spikes. `rowImage_twist_dilation` (proved): the image of `ψ·χ_m^k` at `z` is the image of `ψ` at
+  `z·m`, so the twisted spikes are dilations `z ↦ Φ(zm)` of one series, and `twisted_energy_eq` moves their energy on
+  `W` to the dilated set. Numerically only the `+1` twists carry a spike, with strength decaying roughly like
+  `N(m)^{−1/q}`, and their images are flat on slot-selected rows at 3·10⁴ (`research/journal`, 2026-10-31).
+  [numerical]
 -/
 
 namespace QRH.ArviKWall.BalancedSieve
@@ -328,6 +332,23 @@ theorem sourceBessel_union (k q : ℕ) {C : ℝ} (hC : 0 ≤ C) (ε : ℝ) (B : 
       (∑ i ∈ sourceIndex (twistCutoff q C ε B) (windowCount B) (profileCutoff C ε B),
         sourceWeight C ε B i * ∑ z ∈ W, ‖rowImage (orderKernel k) (sexticSources B) (sourceSpike k i) z‖ ^ 2) :=
   spikeBessel_union W _ _ _ fun i _ => sourceWeight_nonneg hC ε B i
+
+/-- **Dilation.** Twisting a source vector by the symbol modulo `m` dilates its row image: the image of
+`n ↦ ψ(n) χ_m(n)^k` at the row `z` is the image of `ψ` at the modulus `z·m`. The residue symbol is a
+monoid-with-zero homomorphism in the modulus (`idealRowHom`), so no coprimality is needed. This is why the twisted
+source spikes are the dilations `z ↦ Φ(zm)` of one series `Φ` (research journal, "The block outlier is a residue"). -/
+theorem rowImage_twist_dilation (k : ℕ) (S : Finset (Ideal O)) (ψ : Ideal O → ℂ) (m z : Ideal O) :
+    rowImage (orderKernel k) S (fun n => ψ n * orderKernel k m n) z = rowImage (orderKernel k) S ψ (z * m) := by
+  unfold rowImage orderKernel
+  refine Finset.sum_congr rfl fun n _ => ?_
+  rw [map_mul, mul_pow]
+  ring
+
+/-- The energy of a twisted image on a row set is the energy of the untwisted image on the dilated row set. -/
+theorem twisted_energy_eq (k : ℕ) (S W : Finset (Ideal O)) (ψ : Ideal O → ℂ) (m : Ideal O) :
+    ∑ z ∈ W, ‖rowImage (orderKernel k) S (fun n => ψ n * orderKernel k m n) z‖ ^ 2 =
+      ∑ z ∈ W, ‖rowImage (orderKernel k) S ψ (z * m)‖ ^ 2 :=
+  Finset.sum_congr rfl fun z _ => by rw [rowImage_twist_dilation]
 
 end ConcreteSource
 

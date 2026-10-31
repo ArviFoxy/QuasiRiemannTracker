@@ -194,4 +194,5 @@ Imports `SexticSpikeFree`. It checks in about 5 s. All 10 `#print axioms` report
 - **Open.**
   - The recursion's source part. Numerically the untwisted source image is flat on the rows, which gives
     Λ_src ≈ B^{7/6−δ} for |W| = B^{1−δ}. That is harmless for δ ≥ 1/6.
-  - The twisted source spikes are not analyzed.
+  - The twisted source spikes: `rowImage_twist_dilation` proves that twisting a source vector by `χ_m^k` dilates its
+    row image to the modulus `z·m`; `twisted_energy_eq` moves the energy on W to the dilated set (standard axioms).

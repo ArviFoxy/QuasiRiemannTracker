@@ -62,8 +62,9 @@ Not levers: the end face's cap (θ* does not depend on it at the binding), numCa
     blocks d² | n carry the cubic symbol (h/d)₃, which defeats the last Poisson step for H^{1/3} ≲ N(d d′) ≲ H.
   - The best crude bound for those blocks is X²H^{−1/12}. So the single-factor input is proved only for twist
     ranges H ≥ B^{0.51–0.63}, and "elementary away from the corner" is withdrawn.
-- Bilinear balanced-point bound for a ⋆ b (balanced, arbitrary coefficients): B^ε(B + X + B^{5/6}X^{5/18}), excess
-  1/9 instead of 1/6.
+- Bilinear balanced-point bound for a ⋆ b: withdrawn the same day. With the theta terms of Sil's `OptimalBound`, the
+  dual range H ~ X keeps the excess 1/6. The claimed B^{10/9} came from an orthogonal (H + X) large sieve that the
+  sextic family does not have.
 
 ## Literature, re-checked late October 2026
 

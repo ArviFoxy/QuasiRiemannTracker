@@ -3339,6 +3339,10 @@ mode 2]
   unit classes, twists to 100) is 0.818 against a random level of 0.212. On classes `(z mod 9) × χ_z(−1)` it is
   0.947. The −1 images are at the random level in every row span tried: the other conjugation `G χ_z(m)²`, the
   conjugate theta `conj G χ_z(m)^{±2}`, and mod-9 classes.
+- **Sextic, same test** (`theta_twisted_images_sextic_B30000.log`). The +1 images have 0.285 of their energy in V
+  (random 0.212), 0.317 with the other conjugation and 0.352 with the conjugate theta (random 0.249 and 0.286). They
+  are essentially outside every row family, as two thetas predict: `τ₆(zm)` is not a twisted Gauss-sum vector. For
+  the sextic matrix the twisted spikes can only be removed from the source side.
 - **This explains the cubic growing-family runs.** Adding source twists helped even though the cubic family has one
   theta. V's unit-class approximation captures only about 82% of each twisted spike, and the source side removes the
   spike exactly. With mod-9 classes on the twisted row family (`THETA_TWCLS=9`), (100, 0) reaches the null on its own

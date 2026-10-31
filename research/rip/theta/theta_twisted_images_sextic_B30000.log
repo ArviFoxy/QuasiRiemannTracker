@@ -1,0 +1,5 @@
+B=30000 L=30000 order 6: R=8474; row spans with twists N(m) <= 100; 12 twisted source images (N(m) <= 30)   (45s)
+  A unit           dim  1800 (random 0.212): energy of the images (x/m)^+1 0.285, (x/m)^-1 0.290
+  B unit + conj    dim  2112 (random 0.249): energy of the images (x/m)^+1 0.317, (x/m)^-1 0.324
+  E unit + conj G  dim  2424 (random 0.286): energy of the images (x/m)^+1 0.352, (x/m)^-1 0.357
+done in 50s

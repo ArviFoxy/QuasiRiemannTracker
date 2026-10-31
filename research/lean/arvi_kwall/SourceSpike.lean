@@ -69,12 +69,14 @@ class-signed source theta times `(x/m)₆^{±1}`, and the plain `(x/m)₆^{±1}`
 | (M, M′) | (30, 0) | (100, 0) | (100, 30) | (300, 0) | (300, 100) |
 |---|---|---|---|---|---|
 | 3·10⁴ | +4.3% | +2.1% | +1.1% | −0.4% | −1.7% |
-| 10⁵ | +14.5% | +13.4% | | +10.3% | |
+| 10⁵ | +14.5% | +13.4% | | +10.3% | +2.6% |
 
 - At 3·10⁴ families that grow reach the null, and random spans of the same dimensions stay above it.
-- At 10⁵ the same families are a third of the relative size (the row family is 13% of the rows, against 42%) and
-  remove less. The statement removes twists up to `C B^{1−qε}`, a positive fraction of the rows, so these runs are
-  consistent with it but do not test it at 10⁵.
+- At 10⁵ the row family is a third of its relative size (13% of the rows, against 42%) and removes less: +10.3% at
+  (300, 0). The source twists do the rest: +7.6% at (300, 30) and +2.6% at (300, 100), while random spans of the same
+  dimensions stay at +19%. The sextic `(x/m)^{+1}` spikes lie outside every row family, so they must be removed on
+  the source side. The statement removes twists up to `C B^{1−qε}`, a positive fraction of the rows, so these runs
+  are consistent with it but do not test it at 10⁵.
 - The source spike is a residue: `E f(z)` is a partial sum of the sextic Kubota series at the index `z`, and its row
   image is one vector built over every scale of the sources (`research/journal`, "The block outlier is a residue").
   [numerical; identification with the theta coefficients heuristic]

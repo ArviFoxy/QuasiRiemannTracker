@@ -3271,7 +3271,8 @@ N(m) ≤ 100) and `theta_src_twisted_selected_B30000_M400.log` (N(m) ≤ 400)]
 ## 2026-10-31 · Growing families against the masked null (3·10⁴, 10⁵)
 
 [numerical; `rip/theta/theta_twosided_grow.py` (kernel forward and adjoint products, so families cost nothing to
-precompute), logs `theta_twosided_grow_B30000.log`, `theta_twosided_grow_B100000.log`]
+precompute), logs `theta_twosided_grow_B30000.log`, `theta_twosided_grow_B100000.log`,
+`theta_twosided_grow_B100000_300_100.log`]
 
 **The null.** E is zero where a row and a source share a prime, so its bulk edge sits about 4.5% below the
 Marchenko–Pastur formula used in the two entries above. The right comparison is the masked random matrix (i.i.d.
@@ -3291,17 +3292,20 @@ conjugations) and the plain `(x/m)₆^{±1}`, on the twelve classes mod 4.
 | (100, 0) | 0.21 | +2.1% | +9.0% | 0.06 | +13.4% | +21.9% |
 | (100, 30) | 0.21 | +1.1% | +8.3% | | | |
 | (300, 0) | 0.42 | −0.4% | +4.5% | 0.13 | +10.3% | +20.6% |
-| (300, 100) | 0.42 | −1.7% | +2.0% | | (running) | |
+| (300, 30) | | | | 0.13 | +7.6% | +19.7% |
+| (300, 100) | 0.42 | −1.7% | +2.0% | 0.13 | +2.6% | +18.6% |
 
 - **At 3·10⁴ families that grow reach the null.** Each step (more row twists, then twisted source thetas) removes
   about half of what is left, while random spans of the same dimensions stay several percent above. Once the families
   are large, E off them sits slightly below the null, as expected: they remove directions where E has more than its
   average energy.
-- **At 10⁵ the same families do much less.** They are a third of the relative size (dV/R 0.13 against 0.42), and the
-  excess falls only from 14.5% to 10.3%, then to 7.6% with source twists N(m) ≤ 30. A run with row twists to 1000
-  (dV/R ≈ 0.35) is queued to see whether the relative size is what matters. At the same relative size (0.13) the
-  remainder is 31% of the full excess at 3·10⁴ and 43% at 10⁵, so a family of fixed relative size removes a smaller
-  fraction as B grows, at least between these two sizes.
+- **At 10⁵ the row twists do much less, and the source twists do the rest.** The row family is a third of its
+  relative size at 3·10⁴ (dV/R 0.13 against 0.42), and row twists alone take the excess only from 14.5% to 10.3%.
+  Source twists then take it to 7.6% (N(m) ≤ 30) and **2.6%** (N(m) ≤ 100, dP/S 0.089), while random spans of the
+  same dimensions stay at +19%. So at 10⁵ most of what the row family leaves is the twisted source residue: the
+  sextic `(x/m)^{+1}` spikes, which lie outside every row family (next entry). A run with row twists to 1000
+  (dV/R ≈ 0.35, J = 1) was stopped before it printed; with the source twists doing the work it is not needed for
+  this point. [numerical; log `theta_twosided_grow_B100000_300_100.log`]
 - **The cubic family** (`theta_twosided_grow.py … 3`, kernel mode 2, log `theta_twosided_grow_cubic_B30000.log`).
   Same families with cubic Gauss sums and the source profile `N^{−1/6}`. At 3·10⁴ the full matrix is 125% above its
   masked null (the `B^{1/3}` theta). Off the families: +24.3%, +19.9%, +12.2%, +9.4%, **+0.4%** for (30, 0),

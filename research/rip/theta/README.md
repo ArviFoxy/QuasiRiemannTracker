@@ -151,10 +151,11 @@ the rows, the sources and the int8 symbol table (`build` starts from it and give
   Excess over the masked null with the same spans:
   - 3·10⁴: +4.3%, +2.1%, +1.1%, −0.4%, −1.7% for (M, M′) = (30, 0), (100, 0), (100, 30), (300, 0), (300, 100).
     Random spans of the same dimensions stay at +10% … +2%.
-  - 10⁵: +14.5%, +13.4%, +10.3% for (30, 0), (100, 0), (300, 0), where V is 4–13% of the rows against 13–42% at
-    3·10⁴.
-  - So families that grow reach the null at 3·10⁴. At 10⁵ the same families are relatively three times smaller and
-    remove less; see the journal for the follow-up.
+  - 10⁵: +14.5%, +13.4%, +10.3%, +7.6%, +2.6% for (30, 0), (100, 0), (300, 0), (300, 30), (300, 100), where V is
+    4–13% of the rows against 13–42% at 3·10⁴. Random spans of the same dimensions stay at +23% … +19%.
+  - So families that grow reach the null at 3·10⁴, and come within 2.6% of it at 10⁵. At 10⁵ the row twists do
+    less (the row family is relatively three times smaller) and the source twists do most of the last step: the
+    sextic `(x/m)^{+1}` spikes lie outside every row family and must be removed on the source side.
 - **The block outlier is a residue** (`theta_src_residue`, `theta_src_windows`, `theta_src_coherence`,
   `theta_src_lscale`). With the rows fixed, the top row vector is the same for every source length (overlaps 0.56–0.74
   at 10⁴). The row images of the class-signed source theta on disjoint dyadic source windows are correlated (mean

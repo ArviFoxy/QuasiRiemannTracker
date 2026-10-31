@@ -2,3 +2,6 @@ B=100000 L=100000  R=28210 rows  S=25936 sources  11511 row primes   tables in 7
   Gauss sums from the cache gauss_B100000_L100000.npz
 B=100000: R=28210 S=25936; order 6; 76 twists with N(m) <= 300   (77s)
 full top [4.949 4.751 4.623 4.427]   masked null [3.99  3.988 3.982 3.977]   MP edge 4.174   (132s)
+M=300 M'=100 betas [0.333]: dV 3600 (0.128 R), dP 2304 (0.089 S)
+    off both [3.644 3.626 3.615 3.607]   masked null [3.553 3.547 3.544 3.542]   random spans [4.214 4.061 3.957 3.838]   MP edge 3.720   (1516s)
+done in 1516s

@@ -18,9 +18,15 @@ The masked null is the right edge: E is zero where a row and a source share a pr
 4.5% below the Marchenko-Pastur formula (sqrt((R - dV)/S) + sqrt((S - dP)/S))^2, also printed.  Row and source Gauss
 sums are cached in $SCRATCH (theta_util.scratch_path).
 
-usage: python3 -I theta_twosided_grow.py B L CONFIGS [J] [threads]
+THETA_ROWCONJ=1 adds the twisted row thetas with the other conjugation, G chi_z(m), to V (the Lean statement removes
+every power chi_z(m)^k).
+Order 3 (last argument 3): the cubic matrix E^2 (kernel mode 2) with cubic Gauss sums of rows and sources (twisted
+multiplicativity, as theta_pairs.py), source profile N^{-1/6}, twisted characters (x/m)_3 = (x/m)_6^2; the
+class-signed source theta is replaced by conj g3(x) N(x)^{-1/6} on the classes mod 4.
+
+usage: python3 -I theta_twosided_grow.py B L CONFIGS [J] [threads] [order]
   CONFIGS is a ';'-separated list of M,M'[,beta:beta:...], e.g. "30,0;100,0;300,0;300,30;300,100,0.3333333:0.2:0.5"
-  (betas default to 1/3).
+  (betas default to 1/2 - 1/order: 1/3 for the sextic matrix, 1/6 for the cubic one).
 """
 import os, sys, math, time
 sys.dont_write_bytecode = True
@@ -36,13 +42,18 @@ import theta_ckernel as ck       # noqa: E402
 import theta_util as tu          # noqa: E402
 
 B = int(sys.argv[1]); L = int(sys.argv[2])
+J = int(sys.argv[4]) if len(sys.argv) > 4 else 2
+nth = int(sys.argv[5]) if len(sys.argv) > 5 else 3
+qord = int(sys.argv[6]) if len(sys.argv) > 6 else 6
+assert qord in (6, 3)
+kk = 6 // qord                       # character power: chi_z^kk
+modeE = 0 if qord == 6 else 2        # kernel mode of the matrix itself
+beta0 = 0.5 - 1.0 / qord
 configs = []
 for item in sys.argv[3].split(';'):
     f = item.split(',')
-    betas = [float(t) for t in f[2].split(':')] if len(f) > 2 else [1.0 / 3]
+    betas = [float(t) for t in f[2].split(':')] if len(f) > 2 else [beta0]
     configs.append((int(f[0]), int(f[1]), betas))
-J = int(sys.argv[4]) if len(sys.argv) > 4 else 2
-nth = int(sys.argv[5]) if len(sys.argv) > 5 else 3
 t0 = time.time()
 Tb = tc.build_tables(B, L)
 R, S, ID, pc, zo, rows = Tb.R, Tb.S, Tb.ID, tc.pc, tc.zo, Tb.rows
@@ -70,7 +81,73 @@ def row_generator(i, cache={}):
     return val
 
 
-key = tu.scratch_path('gauss_B%d_L%d.npz' % (B, L))
+ZETA6 = np.exp(2j * np.pi * np.arange(6) / 6)
+
+
+def prime_gauss(i, cache={}):
+    """generator dict of prime ideal i with the Gauss sum of chi^kk (theta_pairs.genk); kk = 1 agrees with
+    theta_core.build's generator."""
+    if i in cache:
+        return cache[i]
+    if i < ID.ns:
+        p, r = ID.split_pr(np.array([i]))
+        p = int(p[0]); r = int(r[0])
+        a, b = pc.primary_generator(p, r)
+        x = np.arange(1, p, dtype=np.int64)
+        code = pc.sym_codes(np.array([p]), np.array([r]), x, np.zeros_like(x))[0]
+        G = np.sum(ZETA6[(kk * code.astype(np.int64)) % 6] * np.exp(-2j * np.pi * ((b * x) % p) / p)) / math.sqrt(p)
+        val = dict(a=a, b=b, G=G, prime=zo.Prime(p, (a, b)))
+    else:
+        q = int(ID.inert_q[i - ID.ns])
+        pr = zo.Prime(q)
+        tot = 0j
+        for aa in range(q):
+            for bb in range(q):
+                c = pr.sym((aa, bb))
+                if c is not None:
+                    tot += ZETA6[(kk * c) % 6] * np.exp(2j * np.pi * bb / q)
+        val = dict(a=q, b=0, G=tot / q, prime=pr)
+    cache[i] = val
+    return val
+
+
+def gauss_product(gens):
+    g = 1 + 0j
+    for gi in gens:
+        g *= gi['G']
+    for a_ in range(len(gens)):
+        for b_ in range(a_ + 1, len(gens)):
+            g *= (sym(gens[b_]['prime'], (gens[a_]['a'], gens[a_]['b'])) *
+                  sym(gens[a_]['prime'], (gens[b_]['a'], gens[b_]['b']))) ** kk
+    return g
+
+
+key = tu.scratch_path('gauss_B%d_L%d.npz' % (B, L) if qord == 6 else 'gauss_B%d_L%d_q%d.npz' % (B, L, qord))
+if qord != 6 and not os.path.exists(key):
+    Gsrc = np.zeros(S, complex); utw = np.zeros((S, 6), complex); nprime = np.zeros(S, int)
+    for j, (a, b, n) in enumerate(zip(Tb.SA, Tb.SB, Tb.SN)):
+        gens = [prime_gauss(i) for i in tu.source_prime_ids(Ff, a, b, n)]
+        Gsrc[j] = gauss_product(gens); nprime[j] = len(gens)
+        for k, u in enumerate(pc.UNITS):
+            v = 1 + 0j
+            for gi in gens:
+                v *= sym(gi['prime'], u)
+            utw[j, k] = v
+    print('  source Gauss sums of order %d (%.0fs)' % (qord, time.time() - t0), flush=True)
+    Grow = np.zeros(R, complex); gen = np.zeros((R, 2), np.int64); ut = np.zeros((R, 6), complex)
+    for zi in range(R):
+        gens = [prime_gauss(int(i)) for i in rows['PID'][zi] if i >= 0]
+        x = (1, 0)
+        for gi in gens:
+            x = zo.mul(x, (gi['a'], gi['b']))
+        Grow[zi] = gauss_product(gens); gen[zi] = x
+        for k, u in enumerate(pc.UNITS):
+            v = 1 + 0j
+            for gi in gens:
+                v *= sym(gi['prime'], u)
+            ut[zi, k] = v
+    np.savez(key, Grow=Grow, gen=gen, ut=ut, Gsrc=Gsrc, utw=utw, nprime=nprime)
+    print('  row Gauss sums of order %d (%.0fs); cached' % (qord, time.time() - t0), flush=True)
 if os.path.exists(key):
     d = np.load(key)
     Grow, gen, ut, Gsrc, utw, nprime = d['Grow'], d['gen'], d['ut'], d['Gsrc'], d['utw'], d['nprime']
@@ -109,21 +186,24 @@ cell = (((SA % 4) * 4 + SB % 4) * 81 + (SA % 9) * 9 + SB % 9) * 2 + nprime % 2
 c4 = (SA % 4) * 4 + (SB % 4)
 odd = utw[:, 3].real < 0
 parsign = np.where(odd & (nprime % 2 == 1), -1.0, 1.0)
-lam = tu.lam3(Ff, 0, -1)
-bsig = np.conj(Gsrc) * lam * parsign * SN ** (-1.0 / 3)
+if qord == 6:
+    bsig = np.conj(Gsrc) * tu.lam3(Ff, 0, -1) * parsign * SN ** (-1.0 / 3)
+else:
+    bsig = np.conj(Gsrc) * SN ** (-beta0)
 
 order = np.argsort(SN, kind='stable')
 Mmax = max(c[0] for c in configs); Mpmax = max(c[1] for c in configs)
 twists = [int(j) for j in order if SN[j] <= max(Mmax, Mpmax)]
-print('B=%d: R=%d S=%d; %d twists with N(m) <= %d   (%.0fs)' % (B, R, S, len(twists), max(Mmax, Mpmax),
-                                                                time.time() - t0), flush=True)
+print('B=%d: R=%d S=%d; order %d; %d twists with N(m) <= %d   (%.0fs)' % (B, R, S, qord, len(twists),
+                                                                          max(Mmax, Mpmax), time.time() - t0),
+      flush=True)
 # row side: columns E e_m = chi_z(m)
 Ecol = np.zeros((R, len(twists)), complex)
 for st in range(0, len(twists), 8):
     blk = twists[st:st + 8]
     V = np.zeros((S, len(blk)), complex)
     V[blk, np.arange(len(blk))] = 1
-    Ecol[:, st:st + len(blk)] = K.forward(V)
+    Ecol[:, st:st + len(blk)] = K.forward(V, mode=modeE)
 # source side: x -> (x/m)_6 from the symbol table rows of m's prime ideals
 uid = Tb.uid
 srcchar = np.zeros((len(twists), S), complex)
@@ -136,7 +216,7 @@ for t, j in enumerate(twists):
         row = Tb.T[p_].astype(np.int64)
         zero |= (row & 0x40) != 0
         codes += row & 7
-    srcchar[t] = np.where(zero, 0, np.exp(2j * np.pi * (codes % 6) / 6))
+    srcchar[t] = np.where(zero, 0, np.exp(2j * np.pi * (kk * codes % 6) / 6))
 
 
 def orth(X):
@@ -163,6 +243,8 @@ def row_family(M):
         for p in prof:
             cols += [tu.class_span(unit, Grow * np.conj(e) * p), tu.class_span(unit, e * p),
                      tu.class_span(unit, np.conj(e) * p)]
+            if os.environ.get('THETA_ROWCONJ') == '1':      # the other conjugation G chi_z(m) (the power k = q - 1)
+                cols.append(tu.class_span(unit, Grow * e * p))
     return orth(np.concatenate(cols, axis=1))
 
 
@@ -180,7 +262,8 @@ def source_family(Mp, betas):
     return orth(np.concatenate(cols, axis=1))
 
 
-def top(QV=None, QP=None, k=4, mode=0):
+def top(QV=None, QP=None, k=4, mode=None):
+    mode = modeE if mode is None else mode
     def mv(v):
         v = np.asarray(v).ravel().astype(complex)
         if QP is not None:

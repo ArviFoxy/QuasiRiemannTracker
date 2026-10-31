@@ -4,6 +4,7 @@ E[z, x] = chi_z(x) is never stored.  Row z is rebuilt from the symbol table T (r
 100 = "prime divides source") as the sum of the table rows of z's prime ideals, one cache-resident pass per row, and
 E^H E v = sum_z conj(E[z, :])^T (E[z, :] v) is accumulated in the same pass.  Models, each with E's exact zero pattern:
   mode 0  exact sixth roots of unity (sextic matrix; give the table of RCHAR for the reciprocity-broken matrix);
+  mode 2  the cubic matrix E^2 (code k read as the cube root of unity w^k, w = e^{2 pi i/3}), same zero pattern;
   mode 1  i.i.d. phases uniform on the 32nd roots of unity (the masked random baseline), drawn from a counter-based
           generator keyed by (seed, row, column) so that the matrix is the same at every call.
 Single precision arithmetic, thread-local float32 accumulators, planar complex vectors.
@@ -53,8 +54,9 @@ typedef struct { __m512 cl, ch, sl, sh; __m512i tab6; } tabs_t;
 static void make_tabs(int mode, tabs_t *t) {
     float c[32], s[32];
     for (int i = 0; i < 32; i++) { c[i] = 0.f; s[i] = 0.f; }
-    if (mode == 0) {
-        for (int k = 0; k < 6; k++) { c[k] = (float)cos(M_PI * k / 3.0); s[k] = (float)sin(M_PI * k / 3.0); }
+    if (mode == 0 || mode == 2) {
+        double step = (mode == 0) ? M_PI / 3.0 : 2.0 * M_PI / 3.0;
+        for (int k = 0; k < 6; k++) { c[k] = (float)cos(step * k); s[k] = (float)sin(step * k); }
     } else {
         for (int k = 0; k < 32; k++) { c[k] = (float)cos(2.0 * M_PI * k / 32.0); s[k] = (float)sin(2.0 * M_PI * k / 32.0); }
     }
@@ -84,7 +86,7 @@ static inline void gen_codes(const int8_t *T, int64_t S, int64_t nblk, const int
         __mmask64 zm = _mm512_test_epi8_mask(orv, m40);
         nz[blk] = (~zm) & valid;
         __m512i k;
-        if (mode == 0) {
+        if (mode != 1) {
             k = _mm512_permutexvar_epi8(sum, t->tab6);
         } else {
             __m512i x = _mm512_add_epi64(_mm512_set1_epi64((long long)(seedz + (uint64_t)blk * 8ULL * GOLD)), lane);
@@ -240,7 +242,8 @@ void row_entries(const int8_t *T, int64_t S, int64_t Sp, const int32_t *LOC, int
     gen_codes(T, S, nblk, li, nj, mode, seedz, &t, kb, nz);
     float c[32], s[32];
     for (int i = 0; i < 32; i++) { c[i] = 0.f; s[i] = 0.f; }
-    if (mode == 0) { for (int k = 0; k < 6; k++) { c[k] = (float)cos(M_PI * k / 3.0); s[k] = (float)sin(M_PI * k / 3.0); } }
+    if (mode != 1) { double st = (mode == 0) ? M_PI / 3.0 : 2.0 * M_PI / 3.0;
+                     for (int k = 0; k < 6; k++) { c[k] = (float)cos(st * k); s[k] = (float)sin(st * k); } }
     else { for (int k = 0; k < 32; k++) { c[k] = (float)cos(2.0 * M_PI * k / 32.0); s[k] = (float)sin(2.0 * M_PI * k / 32.0); } }
     for (int64_t x = 0; x < S; x++) {
         int on = (nz[x / 64] >> (x % 64)) & 1;

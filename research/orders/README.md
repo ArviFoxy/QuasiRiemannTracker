@@ -158,8 +158,10 @@ automorphic form whose coefficient at index `n` is the quartic Gauss sum of modu
   again quartic Gauss sums with a quartic twist. So the dual mean square is the same quartic large-sieve problem:
   Poisson twice is the identity. De Faveri's general bound (`A + B + A^{3/4}B^{1/2} + A^{1/2}B^{3/4}`) gives
   `D^{9/4}` at `A ≈ B ≈ D`, against the needed `D²`.
-- If a GL(2) realization existed, the twist arithmetic would work: a quartic multiplier gives
-  `χ_p^{−1}χ_p^{∓1}`, which is quadratic or trivial. So the obstruction is the missing form.
+- If a GL(2) realization existed, the twist arithmetic could work: a quartic multiplier gives `χ_p^{−1}χ_p^{∓1}`,
+  quadratic for one conjugation (the analogue of the cubic case's `χ_p^{−3}`) and trivial for the other, which would
+  be useless. Which one occurs is fixed by the conjugation of the absorbed Gauss sum. Either way, the first obstruction
+  is the missing form.
 
 **The price of rank.** Suppose the absorbed Gauss sums were the coefficients of a carrier of rank `r`, with flat
 coefficients and the best possible leftover twist (quadratic, so the sharp sieve `M + L`). A GL(r) reflection

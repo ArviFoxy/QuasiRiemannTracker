@@ -197,6 +197,15 @@ returns the trivial bound (journal: "One shape for all three walls").
 | faces' K-wall | selected norm at slope ≈ 0.48 within B^{0.015} of its fixed point at source length ≈ B^{0.96} (the t = 0 corner) | Guth–Maynard for a thin family at the kernel's self-dual point (conductors multiply). Equivalently, at the binding corner (two plain sums just below √(conductor), slot sliver s ≈ 0.03), a classical-strength structured face suffices: a twisted fourth moment of the sextic family whose prime twist goes past the √ limit, i.e. the faces' slot-cost atom again | barrier proved in Lean (`lean/arvi_kwall/`); the Θ₆ closure is about 11× too weak; the parent face only relieves the tiny-slot corner; pointwise bootstrap bounds on the plain sums do not help (journal, "K-wall corner") |
 | faces' reference | short reference past √A for smooth × prime vectors | GS1-type structured sextic sieve (#96, unverified) | pays only together with the K-wall |
 
+## Open question: a power saving off both thetas (not yet analyzed)
+
+Can the Heath-Brown / de Faveri recursion (Poisson, duality, recursion on the large sieve constant) prove a power
+saving for the sextic large sieve at L = B once both thetas are removed (`../lean/arvi_kwall/SourceSpike.lean`)?
+Three fresh-look attempts (2026-10-31) each ran out of output budget before writing anything, so there is no
+analysis yet. A future attempt should be split into separately briefed pieces: (1) the Poisson step for G and H at
+L = B with the primary/odd normalization; (2) whether the corrected remainder is self-similar under duality; (3) the
+cubic check, where the two thetas coincide.
+
 ## Queued directions
 
 ### Q1. A product (tensor) RKHS for the dual frame, with a multiresolution that resolves W at its own coarse scale (queued 2026-10-31, Arvi)

@@ -4742,3 +4742,12 @@ reciprocity are baseline theorems].**
     with Gauss phases keeps it.
   - The twisted-theta correlations of the convolutions are at the random level. This is the mechanism of Step 2,
     seen directly.
+- **Why it cannot do the K-wall (same day) [derived].**
+  - The bilinear bound holds for any convolution λ = α ⋆ β, of lengths X ≥ Y, not only for prime factors. It saves
+    the factor XY/majorant(Y², X) per spike correlation.
+  - That saving is at most B^{1/5} for Y ≤ B^{1/5}, and at most B^{2/9} overall (at Y = B^{1/3}, X = Y²).
+  - The balanced corrected recursion (input C at excess γ) carries corrections over twists N(m) ≤ B^{1−6γ}, with
+    weights (B/N m)^{1/6}. Absorbing them into B^{1+γ}‖λ‖² by pointwise bounds needs a saving of B^{1−6γ} per
+    correlation: B^{0.91} at γ = 0.015, against at most B^{2/9}.
+  - So the mechanism is a small-twist-range tool by nature. The reference needs a saving of only K = A^{0.02};
+    the K-wall needs near square-root cancellation on average, which is what the Mellin rescue (input A) supplies.

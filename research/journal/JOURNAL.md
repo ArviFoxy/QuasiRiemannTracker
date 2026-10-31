@@ -3877,3 +3877,51 @@ row energy (rows z ∈ ℤ[ω] weighted by Φ(‖z‖²/K), with Φ a caller-sup
   the three spiky ones. The K-wall's own vectors need a twist-aspect mean value. That mean value is either the large
   sieve (conductor N(m)) or the corrected sieve at the smaller scale B^{1−nγ} (conductor N(m)²).
 - Next check: the twist-aspect conductor of Σ_b g̃(b)χ_m(b)N(b)^{−s} from Patterson's functional equation (cubic).
+
+## 2026-10-31 · The Mellin rescue needs Patterson's continuation, which no Lean stack has
+
+[derived; Lean inventory checked by grep over `Submissions/` and `.lake/packages`; numerics
+`rip/theta/theta_twist_conductor.py`, log `theta_twist_conductor_q3_L100000.log`]
+
+**What the rescue uses.**
+- The rescue (entries above) says: a source vector U(N(b)/B)·α_b whose radial weight has Ũ(s₀) = 0 is off every
+  twisted spike. The proof of that statement is the asymptotic
+  Σ_b φ(N(b)/X) g̃(b) χ(b) = c_χ X^{s₀} + E_χ(X), with a power saving in E_χ uniform in the twist.
+  - With it, the k-th difference U(t) = φ(t) − 2^{s₀}φ(2t) cancels the main term exactly, and only E remains.
+  - Without it there is nothing to cancel. Upper bounds alone (Heath-Brown's large-sieve bounds for Gauss-sum sums)
+    give back the √-barrier.
+- That asymptotic is Patterson's theorem. The twisted Kubota series continues meromorphically, with the residue at
+  s₀ given by the theta coefficients. Its only known proof is through the Eisenstein series on the n-fold cover of
+  SL₂ over Q(ω), acting on hyperbolic 3-space.
+- The K-wall needs more: off-pole sums at square-root size on average over twists. That needs the functional
+  equation as well, and with it the twist-aspect conductor.
+
+**Lean inventory.** Nothing in the local stacks (OpenAI baseline, Sil's `FourthPower`/`CubeFree`, PR 93, our forks,
+Mathlib, PNT+) mentions Kubota, Patterson or metaplectic forms, except our own docstrings. The analytic tools
+present are Poisson summation over Z[ω] with Schwartz weights, Gauss-sum algebra, the optimal sextic large sieve,
+and Hecke-type L-function facts. Hecke's continuation (theta series of lattices) is reachable with these. The
+metaplectic one is not.
+
+**Consequence for the faces program [assessment].**
+- Mathematically the architecture holds: the corrected recursion, the Mellin rescue, and closure by induction on the
+  scale.
+- Its Lean cost is dominated by an item outside every stack: the metaplectic Eisenstein series for n = 3 and n = 6
+  (continuation, residue = theta, functional equation). That is far larger than the sieve fork.
+- The part that is formalizable now is the corrected recursion as a conditional reduction, with the spike
+  correlations as hypotheses. It moves no θ by itself.
+- The same barrier sits under every route that cancels the theta bias: Dunn–Radziwiłł (target 0), D1's (L2), the
+  reference detector. P1 and B2 need critical-line moments instead, which is the other open class.
+
+**Twist-aspect conductor: the numerical test is confounded [numerical, inconclusive].**
+- Plan: a smooth pole-free sum stops once X exceeds the conductor, so the stopping point of
+  Σ_b u_b V(N(b)/X) χ_z(b) against N(z) measures the conductor. V is smooth on [1/8, 1] with three Mellin zeros
+  around 5/6. The calibration is the plain sum (conductor N(z)).
+- Outcome: the plain sums decay only slowly past N(z) (0.04–0.12 of the null at X/N(z) ≈ 1500–6000). The source set
+  keeps only elements of squarefree norm, and that Möbius-type restriction leaves slowly decaying tails.
+- The theta sums stay at 0.5–1.5 everywhere the plain sums have dropped (rows N(z) ∈ [16, 32] and [64, 128], X up
+  to 10⁵). That is consistent with a conductor larger than N(z), but only 5 and 19 rows are available, so it does
+  not fix the exponent.
+- Theory: twisting g̃₃ by χ_m is the Kubota series at index m² (g(r, c) = conj(r/c) g(1, c), and r = m² gives
+  conj(m²/c) = (m/c)). If the conductor in the index is N(r), as Heath-Brown's convexity bound
+  ψ(r, 1 + it) ≪ N(r)^{1/4+ε} suggests, the twist conductor is N(m)². [recollection; not checked against the paper]
+  That is the case where the K-wall needs the induction on the scale (previous entry).

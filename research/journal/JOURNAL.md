@@ -5102,3 +5102,54 @@ the sextic family on balanced convolutions of smooth plain sums. Nothing in the 
   exponent H^{2/3}X^{5/3}, from the pole of ζ_K(3s), with no Rankin–Selberg or Lindelöf input. DFDH use the heavier
   route, so the sketch must be compared with their method before anything rests on it. The step to check is step 3
   (negligibility of the non-principal (k, k′) after the coupling separation).
+
+## 2026-10-31 · A new lever: the packed envelope's 6u. Each 0.1 off the 6 is worth ≈ 5e-5, with no K-wall
+
+[derived from Sil's `CubeFree/Second/Side.lean` and `CubeFree/StepData.lean`; numerical:
+`selected-leaf/envelope_c.py`, log `selected-leaf/logs/envelope_c.log`]
+
+**Where the overshoot gate's 6 comes from.**
+- Sil's packed envelope is H = 2a − k + q_C = 1 + t − 6u (CF (6.1), `envelope_identity`). Here u is the selected width,
+  and the 6 splits as 2 + 4:
+  - **2u**: the selected block D leaves the column, a = A − c − u, and a enters H twice;
+  - **4u**: the **D⁴ transfer** (`Second/FourthTransfer.lean`). Twisted multiplicativity gives
+    G(Dn; k) = (sign)·χ_n(D)²·G(D; k)·G(n; k), and χ_n(D)²G(n; k) = G(n; kD⁴). So the residual Gauss polynomial is
+    evaluated at the row D⁴k, and the Gauss scale grows to k = K + 4u ("K·N(D)⁴").
+- **The overshoot gate is this 6.**
+  - On the boundary geometry (t = 0, PC + LS = B, s = S − u) the deletion price is
+    κ(hS + u(c·B − L₀))/L₀, with c the envelope coefficient.
+  - So retention needs a ≥ κh/(L₀(1 + κ) − cκB): that is native_line's `den` with c = 6, and it gives the gate
+    Λ₀ > cκB/(1 + κ).
+  - The selected-branch gate a ≤ (L − 1)/(c − 2) and the H gate 1 − c·a·cap > 0 carry the same c.
+
+**Payoff [numerical].** Native line with K = 1/2 + 10⁻⁶ (PR 93's selected norm, banked), principal gate from
+`ReferenceAtγ` with the prime-dilated short reference γ_pd(S), θ* from `worth.theta_star` (h = 0.8097):
+
+| c | line ends at Λ | θ* − bar |
+|---|---|---|
+| 6.00 | 2.0007 | +5.1e-5 (the bank) |
+| 5.95 | 1.9841 | +2.6e-5 |
+| **5.90** | **1.9675** | **+3e-7 (the bar)** |
+| 5.85 | 1.9509 | −2.6e-5 |
+| 5.80 | 1.9344 | −5.3e-5 |
+| 5.70 | 1.9014 | −1.1e-4 |
+| 5.50 | 1.8371 | −1.9e-4 |
+
+- With the plain reference (γ = 1/2) the principal gate stops every line near Λ ≈ 2.00–2.01. So the lever needs the
+  reference wall, which is the part that needs no metaplectic input.
+- **So the bar needs c ≤ 5.9 at K = 1/2, i.e. a saving of 0.1u out of the D⁴ transfer's 4u, and no K-wall.** The
+  corner of the K-wall entries does not arise, since K = 1/2 + η keeps PR 93's fixed-point norm.
+
+**Where the slack could be [derived; to check].**
+- The transferred rows are z = D⁴k: D runs over the selected blocks (norm Z^u, at most Z^u of them) and k over a
+  Gauss dyad of radius K. That is about K·Z^u rows inside a box of radius K·Z^{4u}. The envelope charges the radius.
+- The rows are nearly orthogonal: χ_n(kD⁴)·conj χ_n(kD′⁴) = (D′²/D² / n)-type cubic characters of conductor
+  ≤ Z^{2u}, small against columns of length Z^a ≫ Z^{2u}. So a sieve that counts rows instead of radius would
+  charge u instead of 4u, the large sieve for power moduli in sextic form.
+- Doing the D-sum outside instead (no transfer, Z^u separate sieves) costs a full Z^u in energy, the whole budget
+  u. So the gain has to come from the dilated rows' structure inside Seam B, not from undoing the transfer.
+- A D² transfer is not available: the factor's conjugation always matches the Gauss sum's (χ_n(D)² with G, or its
+  conjugate with Ḡ), so the exponent is 4 mod 6 either way.
+- **Next:** find where Seam B (WP-H: Seam A → packing dictionary → linear forms → weighted common separation)
+  uses the Gauss scale. Whether the packed rows y can carry D as a separate short factor decides whether 0.1u is
+  available.

@@ -3504,6 +3504,15 @@ phases), divided by the same for the masked random matrix. A value of 1 means no
   ρ = 0.01 (282 rows) is about ±0.1. The angular level's 1.42 at 3·10⁴ (P0 = 40, ρ = 0.01, 85 rows) does not persist.
   So for Λ_src the levels dilute like the theta.
 - The 2026-10-30 entry's "conj G², G², conj G³: 0.90–0.98" was the row side without angular twists, which agrees.
+- **Row side, exactly [derived from `theta_dualcore.py`'s formula].** For Gaussian-weighted complete sources the
+  exact Poisson identity reads G(L) = √(L/M)·ε·(g̃ conj g̃) ∘ conj G(M): the same family at the dual length M, with ε
+  a class phase (types a/b/c).
+  - So the row spike family is invariant under v ↦ g̃·conj v (up to class phases). That map sends the row theta
+    g̃χ(m) to the plain characters conj χ(m) and back: a 2-cycle. The row-level scan sees exactly these two (row theta
+    +51%, plain +5%).
+  - On the source side the same involution would pair the theta with the plain level only. The observed level 2,
+    u²(x/|x|) ∝ conj g̃₃, needs more: either angular structure in ε, or the Hadamard structure χ₆ = χ₂·conj χ₃, through
+    which the cubic Gauss sum can enter. Open.
 
 **What it means.**
 - **Obstacle 1 is real.** The pull-back of the dual's thetas through the Poisson map shows up as genuine source spikes
